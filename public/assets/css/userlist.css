@@ -1,0 +1,41 @@
+.user {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.usersearch {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.refeshuser{
+    background: #203A5F;
+    border-radius: 0px;
+    border: 1px solid #203A5F;
+    width: 92%;
+    margin: 0;
+    padding: 8px;
+   
+}
+
+.refeshuser:hover{
+    background: #203A5F;
+    border-radius: 0px;
+    border: 1px solid #203A5F;
+}
+
+.bottom-user-page {
+    display: flex;
+    padding: 2%;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed rgba(115, 123, 139, 0.5); 
+    border-bottom: 1px dashed rgba(115, 123, 139, 0.5);
+}
+
+.showdrop{
+   border-color: rgba(115, 123, 139, 0.5); 
+}
