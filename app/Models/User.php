@@ -20,11 +20,20 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'warehouse_id',
+        'address',
         'name',
         'email',
         'password',
         'role',
         'role_id',
+        'status',
+        'phone',
+        'is_deleted',
+        'vehicle_id',
+        'license_number',
+        'license_document',
+        'license_expiry_date',
     ];
 
     /**
@@ -63,4 +72,13 @@ class User extends Authenticatable
     public function city(){
         return $this->belongsTo(City::class,'city_id');
     }
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+    }
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class, 'vehicle_id');
+    }
+
 }

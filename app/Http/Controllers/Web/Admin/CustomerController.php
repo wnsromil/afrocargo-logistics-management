@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\User;
+use App\Models\{User,Menu};
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -20,7 +20,8 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $customers = User::latest()->paginate(5);
+    
+        $customers = User::where('role_id',3)->latest()->paginate(5);
   
         return view('admin.customer.index',compact('customers'));
     }

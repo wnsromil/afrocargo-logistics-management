@@ -82,6 +82,6 @@
         </div>
     </div>
     @section('script')
-
+        
     @endsection
 </x-app-layout>

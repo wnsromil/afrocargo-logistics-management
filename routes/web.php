@@ -6,7 +6,11 @@ use App\Http\Controllers\Web\Admin\{
     RoleController,
     UserController,
     WarehouseController,
-    CustomerController
+    CustomerController,
+    VehicleController,
+    WarehouseManagerController,
+    DriversController,
+    InventoryController
 };
 
 Route::get('/', function () {
@@ -31,6 +35,10 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
     Route::resource('users', UserController::class);
     Route::resource('warehouses', WarehouseController::class);
     Route::resource('customer', CustomerController::class);
+    Route::resource('vehicle', VehicleController::class);
+    Route::resource('warehouse_manager', WarehouseManagerController::class);
+    Route::resource('drivers', DriversController::class);
+    Route::resource('inventories', InventoryController::class);
 });
 
 require __DIR__.'/auth.php';

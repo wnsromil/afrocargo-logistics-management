@@ -4,13 +4,14 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Create New User
+        All Vehicle
 
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="{{route('admin.warehouses.create')}}" class="btn btn-primary">
-                        Add Warehouse
+                    <a href="{{route('admin.vehicle.create')}}" class="btn btn-primary">
+                        <i
+                            class="fa fa-plus-circle me-2"></i>Add Warehouse
                     </a>
                 </div>
             </div>
@@ -27,34 +28,31 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Sn no.</th>
+                                <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
-                                <th>Warehouse Code</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Country</th>
-                                <th>Zip Code</th>
-                                <th>Phone</th>
+                                <th>Vehicle Number</th>
+                                <th>Vehicle Model</th>
+                                <th>Vehicle Year</th>
+                                <th>Capacity</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($warehouses as $index => $warehouse)
+                            @forelse ($vehicles as $index => $vehicle)
                             <tr>
                                 <td>
                                     {{ ++$index }}
                                 </td>
-    
-                                <td>{{ ucfirst($warehouse->warehouse_name ?? '')}}</td>
-                                <td><span>{{$warehouse->warehouse_code ?? '-'}}</span></td>
-                                <td>{{$warehouse->address ?? '-'}}</td>
-                                <td>{{$warehouse->city->name ?? '-'}}</td>
-                                <td>{{$warehouse->state->name ?? '-'}}</td>
-                                <td>{{$warehouse->country->name ?? '-'}}</td>
-                                <td>{{$warehouse->zip_code ?? '-'}}</td>
-                                <td>{{$warehouse->phone ?? '-'}}</td>
-                                <td><span class="badge {{$warehouse->status=='Active' ? 'bg-success-light':'bg-danger-light'}}">{{$warehouse->status ?? '-'}}</span>
+
+                                <td><span>{{$vehicle->vehicle_type ?? '-'}}</span></td>
+                                <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '')}}</td>
+                                
+                                <td>{{$vehicle->vehicle_number ?? '-'}}</td>
+                                <td>{{$vehicle->vehicle_model ?? '-'}}</td>
+                                <td>{{$vehicle->vehicle_year ?? '-'}}</td>
+                                <td>{{$vehicle->vehicle_capacity ?? '-'}}</td>
+                                <td><span class="badge {{$vehicle->status=='Active' ? 'bg-success-light':'bg-danger-light'}}">{{$vehicle->status ?? '-'}}</span>
                                 </td>
                                 <td class="d-flex align-items-center">
                                     {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i> Invoice</a>  
@@ -65,25 +63,25 @@
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{route('admin.warehouses.edit',$warehouse->id)}}"><i class="far fa-edit me-2"></i>Edit</a>
+                                                    <a class="dropdown-item" href="{{route('admin.vehicle.edit',$vehicle->id)}}"><i class="far fa-edit me-2"></i>Edit</a>
                                                 </li>
                                                 <li>
                                                     <!-- Delete form -->
-                                                    <form action="{{ route('admin.warehouses.destroy', $warehouse->id) }}" method="POST" class="d-inline">
+                                                    <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this warehouse? This action can’t be undone! 🚀')"><i class="far fa-trash-alt me-2"></i>Delete</button>
+                                                        <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')"><i class="far fa-trash-alt me-2"></i>Delete</button>
                                                     </form>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i class="far fa-eye me-2"></i>View</a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
                                                     <a class="dropdown-item" href="active-customers.html"><i class="fa-solid fa-power-off me-2"></i>Activate</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="deactive-customers.html"><i class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                                </li>
+                                                </li> --}}
                                             </ul>
                                         </div>
                                     </div>
@@ -92,7 +90,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No users found.</td>
+                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
                             </tr>
                             @endforelse
 
@@ -101,11 +99,10 @@
                     </table>
                     
                     <div class="bottom-user-page mt-3">
-                        {!! $warehouses->links('pagination::bootstrap-5') !!}
+                        {!! $vehicles->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 </x-app-layout>

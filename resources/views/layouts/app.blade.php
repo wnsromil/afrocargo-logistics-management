@@ -55,11 +55,19 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables/datatables.min.css')}}">
 
     <!-- Main CSS -->
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
 
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
+
+    <link href="{{asset('select2-4.1/dist/css/select2.min.css')}}" rel="stylesheet" />
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
+
 
     @yield('style')
 
@@ -141,8 +149,9 @@
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>
 
-    <script src="{{asset('js/admin/select2.js')}}"></script>
     <script src="{{asset('js/comman.js')}}"></script>
+    <script src="{{asset('select2-4.1/dist/js/select2.min.js')}}"></script>
+    <script src="{{asset('js/admin/select2.js')}}"></script>
         
     <script>
         @session('success')
@@ -159,6 +168,22 @@
                 icon: "error"
             });
         @endsession
+
+        function deleteData(self, msg) {
+            Swal.fire({
+                title: msg,
+                icon: "question",
+                showCancelButton: true,
+                showCloseButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Assuming the button that calls deleteData is inside a form
+                    $(self).closest('form').submit(); // Finds the closest form and submits it
+                }
+            });
+        }
     </script>
 
     @yield('script')

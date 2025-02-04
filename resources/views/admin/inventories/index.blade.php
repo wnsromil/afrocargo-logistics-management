@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Warehouse Management') }}
+        {{ __('Inventory Management') }}
     </x-slot>
 
     <x-slot name="cardTitle">
-        Create New User
+        All Inventory
 
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="{{route('admin.warehouses.create')}}" class="btn btn-primary">
-                        Add Warehouse
+                    <a href="{{route('admin.inventories.create')}}" class="btn btn-primary">
+                        Add Inventory
                     </a>
                 </div>
             </div>
@@ -27,34 +27,26 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Sn no.</th>
+                                <th>Inventory Name</th>
                                 <th>Warehouse Name</th>
-                                <th>Warehouse Code</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Country</th>
-                                <th>Zip Code</th>
-                                <th>Phone</th>
+                                <th>In Stock Quantity</th>
+                                <th>Low Stock Warning</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($warehouses as $index => $warehouse)
+                            @forelse ($inventories as $index => $inventory)
                             <tr>
                                 <td>
                                     {{ ++$index }}
                                 </td>
     
-                                <td>{{ ucfirst($warehouse->warehouse_name ?? '')}}</td>
-                                <td><span>{{$warehouse->warehouse_code ?? '-'}}</span></td>
-                                <td>{{$warehouse->address ?? '-'}}</td>
-                                <td>{{$warehouse->city->name ?? '-'}}</td>
-                                <td>{{$warehouse->state->name ?? '-'}}</td>
-                                <td>{{$warehouse->country->name ?? '-'}}</td>
-                                <td>{{$warehouse->zip_code ?? '-'}}</td>
-                                <td>{{$warehouse->phone ?? '-'}}</td>
-                                <td><span class="badge {{$warehouse->status=='Active' ? 'bg-success-light':'bg-danger-light'}}">{{$warehouse->status ?? '-'}}</span>
+                                <td>{{ ucfirst($inventory->category->name ?? '')}}</td>
+                                <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '')}}</td>
+                                <td><span>{{$inventory->in_stock_quantity ?? '-'}}</span></td>
+                                <td><span>{{$inventory->low_stock_warning ?? '-'}}</span></td>
+                                <td><span class="badge {{$inventory->in_stock_quantity >= $inventory->low_stock_warning ? 'bg-success-light':'bg-danger-light'}}">{{$inventory->stock_status ?? '-'}}</span>
                                 </td>
                                 <td class="d-flex align-items-center">
                                     {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i> Invoice</a>  
@@ -65,25 +57,25 @@
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{route('admin.warehouses.edit',$warehouse->id)}}"><i class="far fa-edit me-2"></i>Edit</a>
+                                                    <a class="dropdown-item" href="{{route('admin.inventories.edit',$inventory->id)}}"><i class="far fa-edit me-2"></i>Edit</a>
                                                 </li>
                                                 <li>
                                                     <!-- Delete form -->
-                                                    <form action="{{ route('admin.warehouses.destroy', $warehouse->id) }}" method="POST" class="d-inline">
+                                                    <form action="{{ route('admin.inventories.destroy', $inventory->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this warehouse? This action can’t be undone! 🚀')"><i class="far fa-trash-alt me-2"></i>Delete</button>
+                                                        <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i class="far fa-trash-alt me-2"></i>Delete</button>
                                                     </form>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                    <a class="dropdown-item" href="{{route('admin.inventories.show',$inventory->id)}}"><i class="far fa-eye me-2"></i>View History</a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
                                                     <a class="dropdown-item" href="active-customers.html"><i class="fa-solid fa-power-off me-2"></i>Activate</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="deactive-customers.html"><i class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                                </li>
+                                                </li> --}}
                                             </ul>
                                         </div>
                                     </div>
@@ -101,7 +93,7 @@
                     </table>
                     
                     <div class="bottom-user-page mt-3">
-                        {!! $warehouses->links('pagination::bootstrap-5') !!}
+                        {!! $inventories->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
             </div>
