@@ -26,6 +26,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -34,7 +35,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('success', 'Profile updated successfully!');
     }
 
     /**
@@ -57,4 +58,24 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function uploadProfilePic(Request $request)
+    {
+        $request->validate([
+            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        if ($request->hasFile('profile_pic')) {
+            $file = $request->file('profile_pic');
+            $filename = time() . '.' . $file->getClientOriginalExtension(); // Unique filename
+            $file->move(public_path('uploads/profile_pics'), $filename); // Public folder me move karein
+    
+            // Directly user ka profile_pic update karein
+            $request->user()->profile_pic = 'uploads/profile_pics/' . $filename;
+            $request->user()->save(); // Save user record
+        }
+    
+        return back()->with('success', 'Profile picture updated successfully!');
+    }
+    
 }

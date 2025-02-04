@@ -61,9 +61,8 @@
 
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
-
-    <link href="{{asset('select2-4.1/dist/css/select2.min.css')}}" rel="stylesheet" />
     
+    <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
