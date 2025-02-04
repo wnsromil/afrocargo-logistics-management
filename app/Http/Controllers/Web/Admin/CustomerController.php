@@ -21,7 +21,9 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
     
-        $customers = User::where('role_id',3)->latest()->paginate(5);
+        $customers = User::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->where('role_id',3)->latest()->paginate(5);
   
         return view('admin.customer.index',compact('customers'));
     }
@@ -53,7 +55,7 @@ class CustomerController extends Controller
             'roles' => 'required'
         ]);
     
-        return $input = $request->all();
+        
         $input['password'] = Hash::make($input['password']);
     
         $user = User::create($input);

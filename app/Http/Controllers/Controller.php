@@ -6,6 +6,14 @@ abstract class Controller
 {
     //
 
+    protected $user;
+
+    public function __construct()
+    {
+        // Access the authenticated user
+        $this->user = auth()->user();
+    }
+
     public function sendResponse($result, $message=false)
     {
     	$response = [

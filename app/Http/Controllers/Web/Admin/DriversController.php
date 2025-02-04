@@ -19,7 +19,9 @@ class DriversController extends Controller
     //
     public function index()
     {
-        $warehouses = User::where('role_id', 4)->paginate(10);
+        $warehouses = User::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->where('role_id', 4)->paginate(10);
         return view('admin.drivers.index', compact('warehouses'));
     }
 
@@ -32,8 +34,12 @@ class DriversController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        $warehouses = Warehouse::select('id', 'warehouse_name')->get();
-        $Vehicle_data = Vehicle::select('id', 'vehicle_type')->get();
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->select('id', 'warehouse_name')->get();
+        $Vehicle_data = Vehicle::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->select('id', 'vehicle_type')->get();
         return view('admin.drivers.create', compact('roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
 
@@ -127,8 +133,12 @@ class DriversController extends Controller
         $manager_data = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        $warehouses = Warehouse::select('id', 'warehouse_name')->get();
-        $Vehicle_data = Vehicle::select('id', 'vehicle_type')->get();
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->select('id', 'warehouse_name')->get();
+        $Vehicle_data = Vehicle::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->select('id', 'vehicle_type')->get();
         return view('admin.drivers.edit', compact('manager_data', 'roles', 'countries', 'warehouses','Vehicle_data'));
     }
 

@@ -18,7 +18,10 @@ class WarehouseController extends Controller
     //
     public function index()
     {
-        $warehouses = Warehouse::paginate(10);
+        
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->paginate(10);
         return view('admin.warehouse.index',compact('warehouses'));
     }
 

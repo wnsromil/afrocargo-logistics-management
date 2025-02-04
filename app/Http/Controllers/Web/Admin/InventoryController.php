@@ -20,7 +20,10 @@ class InventoryController extends Controller
     public function index()
     {
         //
-        $inventories = Inventory::paginate(10);
+        
+        $inventories = Inventory::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->paginate(10);
         return view('admin.inventories.index', compact('inventories'));
     }
 
@@ -30,7 +33,10 @@ class InventoryController extends Controller
     public function create()
     {
         //
-        $warehouses = Warehouse::get();
+        
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->get();
         $categories = Category::get();
         return view('admin.inventories.create', compact('warehouses','categories'));
     }
@@ -101,9 +107,14 @@ class InventoryController extends Controller
     public function edit(string $id)
     {
         //
-        $warehouses = Warehouse::get();
+        
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->get();
         $categories = Category::get();
-        $inventory = Inventory::where('id',$id)->first();
+        $inventory = Inventory::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->where('id',$id)->first();
         return view('admin.inventories.edit',compact('inventory','warehouses','categories'));
     }
 

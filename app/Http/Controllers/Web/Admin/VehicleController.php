@@ -20,7 +20,9 @@ class VehicleController extends Controller
     public function index()
     {
         //
-        $vehicles = Vehicle::paginate(10);
+        $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->paginate(10);
         return view('admin.vehicles.index',compact('vehicles'));
     }
 
@@ -30,8 +32,12 @@ class VehicleController extends Controller
     public function create()
     {
         //
-        $vehicle = Vehicle::get();
-        $warehouses = Warehouse::get();
+        $vehicle = Vehicle::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->get();
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->get();
         return view('admin.vehicles.create',compact('vehicle','warehouses'));
     }
 
@@ -85,7 +91,10 @@ class VehicleController extends Controller
     {
         //
         $vehicle = Vehicle::where('id',$id)->first();
-        $warehouses = Warehouse::get();
+
+        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
+            return $q->where('id',$this->user->warehouse_id);
+        })->get();
     
         return view('admin.vehicles.edit',compact('vehicle','warehouses'));
     }
