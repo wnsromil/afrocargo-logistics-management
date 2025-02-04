@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('warehouse_id')->nullable()->after('id');
-            // $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('set null');
+        // Schema::table('users', function (Blueprint $table) {
+        //     $table->unsignedBigInteger('warehouse_id')->nullable()->after('id');
+        //     // $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('set null');
 
-            $table->unsignedBigInteger('vehicle_id')->nullable()->after('id');
-            // $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('set null');
-        });
+        //     $table->unsignedBigInteger('vehicle_id')->nullable()->after('id');
+        //     // $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('set null');
+        // });
     }
 
     public function down()
