@@ -19,7 +19,7 @@ class MenuSeeder extends Seeder
         $menus = [
             ['title' => 'Dashboard', 'icon' => 'assets/images/dashboardlogo.svg', 'route' => 'admin.dashboard', 'active' => 'dashboard*', 'roles' => ['admin', 'manager']],
             ['title' => 'Customers', 'icon' => 'assets/images/Users.svg', 'route' => 'admin.customer.index', 'active' => 'customer*', 'roles' => ['admin', 'sales']],
-            ['title' => 'Warehouse', 'icon' => 'assets/images/warehouse.svg', 'route' => '#', 'active' => 'warehouses*', 'roles' => ['admin', 'warehouse_manager']],
+            ['title' => 'Warehouse', 'icon' => 'assets/images/warehouse.svg', 'route' => '#', 'active' => 'warehouses*,warehouse_manager*', 'roles' => ['admin', 'warehouse_manager']],
             ['title' => 'Drivers', 'icon' => 'assets/images/Drivers.svg', 'route' => 'admin.drivers.index', 'active' => 'drivers*', 'roles' => ['admin', 'logistics']],
             ['title' => 'Vehicle Management', 'icon' => 'assets/images/vehiclemangement.svg', 'route' => 'admin.vehicle.index', 'active' =>'vehicle*', 'roles' => ['admin', 'logistics']],
             ['title' => 'Inventory', 'icon' => 'assets/images/inventory.svg', 'route' => 'admin.inventories.index', 'active' => 'inventories*', 'roles' => ['admin', 'inventory_manager']],

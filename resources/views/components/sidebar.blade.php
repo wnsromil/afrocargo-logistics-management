@@ -53,7 +53,7 @@
                 <ul style="display: {{ !empty($menu->active) ? isActive($menu->active,'block','none'):'' }}">
                     @foreach ($menu->submenu as $submenu)
                         <li class="{{ !empty($submenu->active) ? isActive($submenu->active) : '' }}">
-                            <a href="{{ $submenu->route ? route($submenu->route) : 'javascript:void(0)' }}">
+                            <a href="{{ $submenu->route && !in_array($submenu->route,["#","''"]) ? route($submenu->route) : 'javascript:void(0)' }}">
                                 @if ($submenu->icon)
                                     <img src="{{ asset($submenu->icon) }}" alt="{{ $submenu->title }}">
                                 @endif
@@ -65,7 +65,7 @@
             </li>
         @else
             <li class="{{ !empty($menu->active) ? isActive($menu->active): '' }}">
-                <a href="{{ $menu->route ? route($menu->route) : 'javascript:void(0)' }}">
+                <a href="{{ $menu->route && !in_array($menu->route,["#","''"]) ? route($menu->route) : 'javascript:void(0)' }}">
                     @if ($menu->icon)
                         <img src="{{ asset($menu->icon) }}" alt="{{ $menu->title }}">
                     @endif
