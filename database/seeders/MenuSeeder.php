@@ -23,6 +23,27 @@ class MenuSeeder extends Seeder
             ['title' => 'Drivers', 'icon' => 'assets/images/Drivers.svg', 'route' => 'admin.drivers.index', 'active' => 'drivers*', 'roles' => ['admin', 'logistics']],
             ['title' => 'Vehicle Management', 'icon' => 'assets/images/vehiclemangement.svg', 'route' => 'admin.vehicle.index', 'active' =>'vehicle*', 'roles' => ['admin', 'logistics']],
             ['title' => 'Inventory', 'icon' => 'assets/images/inventory.svg', 'route' => 'admin.inventories.index', 'active' => 'inventories*', 'roles' => ['admin', 'inventory_manager']],
+            [
+                'title' => 'Order/Shipment',
+                'icon' => 'assets/images/ordership.svg',
+                'route' => '#',
+                'active' => '',
+                'roles' => ['admin', 'inventory_manager']
+            ],
+            [
+                'title' => 'Invoice',
+                'icon' => 'assets/images/invoices.svg',
+                'route' => '#',
+                'active' => '',
+                'roles' => ['admin', 'inventory_manager']
+            ],
+            [
+                'title' => 'Notification',
+                'icon' => 'assets/images/notification.svg',
+                'route' => '#',
+                'active' => '',
+                'roles' => ['admin', 'inventory_manager']
+            ],
         ];
 
         foreach ($menus as $menu) {
