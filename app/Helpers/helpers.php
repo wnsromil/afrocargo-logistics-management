@@ -24,3 +24,33 @@ function isActive($urls, $class = 'active',$default='')
     return $default;
 }
 
+function activeStatusKey($statusName = 'Pending') {
+    $parcelStatuses = [
+        'pending'                => 'Pending',
+        'pickup_assign'          => 'Pickup Assign',
+        'pickup_reschedule'      => 'Pickup Re-Schedule',
+        'received_by_pickup_man' => 'Received By Pickup Man',
+        'received_warehouse'     => 'Received Warehouse',
+        'transfer_to_hub'        => 'Transfer to Hub',
+        'received_by_hub'        => 'Received by Hub',
+        'delivery_man_assign'    => 'Delivery Man Assign',
+        'return_to_courier'      => 'Return to Courier',
+        'delivered'              => 'Delivered',
+        'cancelled'              => 'Cancelled',
+        'created'                => 'Created',
+        'updated'                => 'Updated',
+        'deleted'                => 'Deleted',
+        'archived'               => 'Archived',
+        'rejected'               => 'Rejected',
+        'completed'              => 'Completed',
+        'on_hold'                => 'On Hold',
+    ];
+
+    // Look up the key by the display name.
+    $key = array_search($statusName, $parcelStatuses);
+
+    // Return the key if found, or 'pending' if not.
+    return $key !== false ? $key : 'pending';
+}
+
+

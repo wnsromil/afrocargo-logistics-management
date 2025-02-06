@@ -10,7 +10,8 @@ use App\Http\Controllers\Web\Admin\{
     VehicleController,
     WarehouseManagerController,
     DriversController,
-    InventoryController
+    InventoryController,
+    OrderShipmentController
 };
 
 Route::get('/', function () {
@@ -19,10 +20,10 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('admin.dashboard');
+})->middleware(['auth', 'authCheck', 'verified'])->name('admin.dashboard');
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'authCheck'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -33,14 +34,19 @@ Route::middleware('auth')->group(function () {
 // admin routes
 Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
 
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('warehouses', WarehouseController::class);
-    Route::resource('customer', CustomerController::class);
-    Route::resource('vehicle', VehicleController::class);
-    Route::resource('warehouse_manager', WarehouseManagerController::class);
-    Route::resource('drivers', DriversController::class);
-    Route::resource('inventories', InventoryController::class);
+    Route::middleware('authCheck')->group(function(){
+
+        Route::resource('roles', RoleController::class);
+        Route::resource('users', UserController::class);
+        Route::resource('warehouses', WarehouseController::class);
+        Route::resource('customer', CustomerController::class);
+        Route::resource('vehicle', VehicleController::class);
+        Route::resource('warehouse_manager', WarehouseManagerController::class);
+        Route::resource('drivers', DriversController::class);
+        Route::resource('inventories', InventoryController::class);
+        Route::resource('OrderShipment', OrderShipmentController::class);
+
+    });
 });
 
 require __DIR__.'/auth.php';

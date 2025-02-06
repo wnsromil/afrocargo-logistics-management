@@ -23,6 +23,8 @@ class Sidebar extends Component
             }])
             ->orderBy('order')
             ->get();
+        
+            
         // Define sidebar items dynamically
         // $this->items = [
         //     [
@@ -103,6 +105,6 @@ class Sidebar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sidebar');
+        return view('components.sidebar')->with('parcelStatuses');
     }
 }

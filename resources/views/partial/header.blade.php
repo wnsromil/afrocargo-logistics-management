@@ -2,7 +2,7 @@
 
     <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
         <div class="dash-logo">
-            <img src="assets/images/AfroCargoLogo.svg" alt="">
+            <img src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt="">
         </div>
 
     </div>
@@ -46,7 +46,7 @@
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
                 <a class="dropdown-item" href="{{route('profile.edit')}}">
-                    <img class="mr-3" src="assets/images/myprofile.svg" alt="">
+                    <img class="mr-3" src="{{asset('assets/images/myprofile.svg')}}" alt="">
                     <span class="drop-span">{{ __('Profile') }}</span>
                 </a>
             </li>
@@ -55,7 +55,7 @@
                     @csrf
                     <a class="dropdown-item" href="#" onclick="event.preventDefault();
                 this.closest('form').submit();">
-                        <img class="mr-3" src="assets/images/logout.svg" alt="">
+                        <img class="mr-3" src="{{asset('assets/images/logout.svg')}}" alt="">
                         <Span class="drop-span">{{ __('Log Out') }}</Span>
 
                     </a>

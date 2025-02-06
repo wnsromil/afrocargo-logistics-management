@@ -62,8 +62,8 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Order/Shipment',
                 'icon' => 'assets/images/ordership.svg',
-                'route' => '#',
-                'active' => '',
+                'route' => 'admin.OrderShipment.index',
+                'active' => 'OrderShipment*',
                 'roles' => ['admin', 'warehouse_manager','driver']
             ],
             [

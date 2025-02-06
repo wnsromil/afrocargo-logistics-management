@@ -93,7 +93,7 @@
         </div>
 
         <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.warehouses.index') }}" class="btn customer-btn-cancel">Cancel</a>
+            <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel">Cancel</a>
             <button type="submit" class="btn customer-btn-save">Submit</button>
         </div>
     </form>

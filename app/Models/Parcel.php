@@ -9,6 +9,15 @@ class Parcel extends Model
     //
     protected $guarded=[];
 
+    protected $casts = [
+        'parcel_car_ids'=>'array'
+    ];
+
+    public function setParcelCarIdsAttribute($value)
+    {
+        $this->attributes['parcel_car_ids'] = is_array($value) ? collect($value) : $value;
+    }
+
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
