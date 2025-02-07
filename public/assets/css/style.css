@@ -4652,7 +4652,7 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .table .dropdown-menu {
-  width: 160px;
+  width: auto;
   background: #fff;
   border: 1px solid #E0E0E0;
   box-shadow: 0px 16px 32px rgba(190, 190, 190, 0.2);
@@ -9623,6 +9623,7 @@ table .badge {
 .ticket-sidebar .dropdown-menu .dropdown-item {
   font-size: 14px;
   justify-content: start;
+  cursor: pointer;
 }
 .ticket-sidebar .dropdown-menu .dropdown-item i {
   line-height: 20px !important;
