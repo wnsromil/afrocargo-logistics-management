@@ -92,7 +92,6 @@
                                                             <i class="fas fa-warehouse me-2"></i>Received Warehouse
                                                         </span>
                                                     </li>
-                                                @endif
                                                 @elseif($parcel->status == 'Received Warehouse')
                                                     <li>
                                                         <span class="dropdown-item" onclick="handleTransferToHub({{ $parcel->id }}, {{ json_encode($drivers) }})">
