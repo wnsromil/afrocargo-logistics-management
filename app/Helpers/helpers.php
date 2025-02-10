@@ -25,7 +25,8 @@ function isActive($urls, $class = 'active',$default='')
 }
 
 function activeStatusKey($statusName = 'Pending') {
-    $parcelStatuses = [
+    
+    $parcelStatuses = collect([
         'pending'                => 'Pending',
         'pickup_assign'          => 'Pickup Assign',
         'pickup_reschedule'      => 'Pickup Re-Schedule',
@@ -44,13 +45,9 @@ function activeStatusKey($statusName = 'Pending') {
         'rejected'               => 'Rejected',
         'completed'              => 'Completed',
         'on_hold'                => 'On Hold',
-    ];
-
-    // Look up the key by the display name.
-    $key = array_search($statusName, $parcelStatuses);
+        'partial'                => 'Partial',
+    ]);
 
     // Return the key if found, or 'pending' if not.
-    return $key !== false ? $key : 'pending';
+    return str_replace(' ','_',strtolower($statusName));
 }
-
-

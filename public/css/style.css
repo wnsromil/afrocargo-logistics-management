@@ -182,7 +182,7 @@ input#cb-switch {
 }
 
 .badge-transfer_to_hub {
-    background-color: #f0ad4e; /* Yellow/Orange (or choose a different tone if needed) */
+    background-color: #fb5e22; /* Yellow/Orange (or choose a different tone if needed) */
     color: #fff;
     padding: 0.25em 0.5em;
     border-radius: 0.25rem;
@@ -279,6 +279,14 @@ input#cb-switch {
 .badge-on_hold {
     background-color: #ffc107; /* Bootstrap Warning Yellow */
     color: #212529; /* Dark text for contrast */
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.badge-partial {
+    background-color: #fd7e14; /* Orange */
+    color: #fff;
     padding: 0.25em 0.5em;
     border-radius: 0.25rem;
     font-size: 0.875rem;

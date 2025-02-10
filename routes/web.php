@@ -11,7 +11,8 @@ use App\Http\Controllers\Web\Admin\{
     WarehouseManagerController,
     DriversController,
     InventoryController,
-    OrderShipmentController
+    OrderShipmentController,
+    HubTrackingController
 };
 
 Route::get('/', function () {
@@ -45,6 +46,7 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('drivers', DriversController::class);
         Route::resource('inventories', InventoryController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
+        Route::resource('hubs', HubTrackingController::class);
 
     });
 });

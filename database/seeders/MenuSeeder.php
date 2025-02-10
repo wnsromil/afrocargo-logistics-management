@@ -62,16 +62,16 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Order/Shipment',
                 'icon' => 'assets/images/ordership.svg',
-                'route' => 'admin.OrderShipment.index',
-                'active' => 'OrderShipment*',
-                'roles' => ['admin', 'warehouse_manager','driver']
+                'route' => '#',
+                'active' => 'OrderShipment*,hubs*',
+                'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Invoice',
                 'icon' => 'assets/images/invoices.svg',
                 'route' => '#',
                 'active' => '',
-                'roles' => ['admin', 'warehouse_manager','driver']
+                'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Notification',
@@ -91,6 +91,31 @@ class MenuSeeder extends Seeder
         if ($warehouse) {
             Menu::create(['title' => 'Warehouse List', 'route' => 'admin.warehouses.index', 'active' => 'warehouses*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
             Menu::create(['title' => 'Warehouse Manager', 'route' => 'admin.warehouse_manager.index', 'active' => 'warehouse_manager*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
+        }
+        // Add submenus
+        $orderShip = Menu::where('title', 'Order/Shipment')->first();
+        if ($orderShip) {
+            Menu::create([
+                'title' => 'Order', 
+                'route' => 'admin.OrderShipment.index', 
+                'active' => 'OrderShipment*', 
+                'parent_id' => $orderShip->id, 
+                'roles' => ['admin','warehouse_manager']
+            ]);
+            Menu::create([
+                'title' => 'Transfer To Hub', 
+                'route' => 'admin.hubs.index', 
+                'active' => 'hubs*', 
+                'parent_id' => $orderShip->id, 
+                'roles' => ['admin','warehouse_manager']
+            ]);
+            Menu::create([
+                'title' => 'Received To Hub', 
+                'route' => '#', 
+                'active' => '', 
+                'parent_id' => $orderShip->id, 
+                'roles' => ['admin','warehouse_manager']
+            ]);
         }
     }
 }

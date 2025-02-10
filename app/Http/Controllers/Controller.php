@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 abstract class Controller
 {
     //
@@ -14,12 +15,15 @@ abstract class Controller
         $this->user = auth()->user();
     }
 
-    public function sendResponse($result, $message=false)
+    public function sendResponse($result=false, $message=false)
     {
     	$response = [
             'success' => true,
-            'data'    => $result,
         ];
+
+        if($result!=false || $result!=""){
+            $response['data'] = $result;
+        }
 
         if(!empty($message)){
             $response['message']=$message;
@@ -32,7 +36,7 @@ abstract class Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($error, $errorMessages = [], $code = 404)
+    public function sendError($error, $errorMessages = [], $code = 422)
     {
     	$response = [
             'success' => false,

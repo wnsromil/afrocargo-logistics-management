@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers\Web\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\{
+    User,
+    Category,
+    Warehouse,
+    Stock,
+    Inventory,
+    Parcel,
+    ParcelHistory,
+    HubTracking
+};
+
+class HubTrackingController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+        $parcels = HubTracking::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
+        return view('admin.hubs.index', compact('parcels'));
+    }
+    
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+
+        $parcels = Parcel::where('hub_tracking_id',$id)->when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->paginate(10);
+        return view('admin.OrderShipment.index', compact('parcels'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

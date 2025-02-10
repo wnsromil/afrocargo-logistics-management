@@ -10,7 +10,7 @@ use App\Models\City;
 
 class LocationController extends Controller
 {
-    public function getCountries($country_id)
+    public function getCountries()
     {
         return response()->json(Country::get());
     }
