@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+
 class ProfileController extends Controller
 {
     //
@@ -64,6 +67,20 @@ class ProfileController extends Controller
         $user->save();
 
         return $this->sendResponse($user, 'User updated successfully.');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validated = $request->validateWithBag('updatePassword', [
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return $this->sendResponse(false, 'Password changed successfully.');
     }
     
 }

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\{User, Role, VerifyAuthIp};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 
@@ -65,6 +67,7 @@ class RegisterController extends Controller
                 'otp' => 1234,
                 'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
                 'otp_varify_at' => null,
+                'verify_type'=>'auth'
             ]
         );
 
@@ -110,6 +113,7 @@ class RegisterController extends Controller
                     'otp' => 1234,
                     'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
                     'otp_varify_at' => null,
+                    'verify_type'=>'auth'
                 ]
             );
 
@@ -133,7 +137,7 @@ class RegisterController extends Controller
                 [
                     'otp' => 1234,
                     'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
-                    'otp_varify_at' => null,
+                    'otp_varify_at' => null
                 ]
             );
     
@@ -169,6 +173,7 @@ class RegisterController extends Controller
                 $data->otp = null;
                 $data->otp_expire_at = null;
                 $data->otp_varify_at = Carbon::now();
+                
 
                 $data->save();
                 
@@ -214,4 +219,5 @@ class RegisterController extends Controller
 
         return $this->sendError('Unauthorized.', ['error' => 'User is not logged in.'],422);
     }
+
 }

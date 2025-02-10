@@ -19,7 +19,8 @@ class ApiAuthUserCheck
 
         $check = VerifyAuthIp::where([
             'user_id' => auth()->id(),
-            'ip_address' => $request->ip()
+            'ip_address' => $request->ip(),
+            'verify_type'=>'auth'
         ])
         ->whereNotNull('otp_varify_at')  // OTP was verified before
         ->whereNull('otp')               // OTP should be null

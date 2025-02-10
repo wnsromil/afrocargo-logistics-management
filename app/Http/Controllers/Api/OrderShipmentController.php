@@ -32,7 +32,7 @@ class OrderShipmentController extends Controller
         ->when(!empty($request->status),function($q)use($request){
             return $q->whereIn('status',explode(',',$request->status));
         })
-        ->with(['warehouse','customer','driver'])->paginate(10);
+        ->with(['warehouse','customer','driver'])->latest()->paginate(10);
         return $this->sendResponse($parcels, 'Parcel data fetch successfully.');
     }
 

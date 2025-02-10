@@ -26,7 +26,7 @@ class OrderShipmentController extends Controller
 
         $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->paginate(10);
+        })->latest()->paginate(10);
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());

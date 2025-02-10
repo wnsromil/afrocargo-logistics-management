@@ -2,12 +2,15 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\{
+    RegisterController,
+    ForgetPassword,
+    ProfileController
+};
 use App\Http\Controllers\Api\{
     LocationController,
     OrderShipmentController,
-    ProfileController
+    ProductController
 };
 
 // Route::get('/user', function (Request $request) {
@@ -21,11 +24,13 @@ Route::get('/get-cities/{state_id}', [LocationController::class, 'getCities']);
   
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
+Route::post('forgetPassword', [ForgetPassword::class, 'forgetPassword']);
 
 Route::middleware('auth:api')->group( function () {
     Route::post('logout', [RegisterController::class, 'logout']);
     Route::post('verifyOtp', [RegisterController::class, 'verifyOtp']);
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);
+    Route::post('restPassword', [ForgetPassword::class, 'restPassword']);
 
     Route::middleware('apiAuthCheck')->group(function(){
         Route::get('/profile', [ProfileController::class, 'profile']);
@@ -34,5 +39,6 @@ Route::middleware('auth:api')->group( function () {
         Route::put('OrderShipmentStatus', [OrderShipmentController::class,'OrderShipmentStatus']);
         Route::get('OrderHistory/{id}', [OrderShipmentController::class,'OrderHistory']);
         Route::get('inventoryOrderCategories', [OrderShipmentController::class,'inventoryOrderCategories']);
+        Route::post('changePassword', [ProfileController::class, 'changePassword']);
     });
 });

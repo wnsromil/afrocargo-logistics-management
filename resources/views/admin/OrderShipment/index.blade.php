@@ -25,16 +25,16 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Sn no.</th>
-                                <th>Tracking Number</th>
-                                <th>Customer</th>
-                                <th>Warehouse</th>
-                                <th>Weight (kg)</th>
-                                <th>Total Amount ($)</th>
-                                <th>Payment Type</th>
-                                <th>Status</th>
-                                <th>Status update</th>
+                                <th>Tracking ID</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
+                                {{-- <th>Warehouse</th> --}}
                                 <th>Pickup Date</th>
                                 <th>Delivery Date</th>
+                                <th>Status</th>
+                                <th>Status update</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -42,12 +42,62 @@
                             @forelse ($parcels as $index => $parcel)
                                 <tr>
                                     <td>{{ ++$index }}</td>
-                                    <td>{{ ucfirst($parcel->tracking_number ?? '-') }}</td>
-                                    <td>{{ ucfirst($parcel->customer->name ?? '-') }}</td>
-                                    <td>{{ ucfirst($parcel->warehouse->warehouse_name ?? '-') }}</td>
-                                    <td><span>{{ $parcel->weight ?? '-' }}</span></td>
-                                    <td><span>${{ $parcel->total_amount ?? '-' }}</span></td>
-                                    <td><span>{{ ucfirst($parcel->payment_type ?? '-') }}</span></td>
+                                    <td>
+                                        {{ ucfirst($parcel->tracking_number ?? '-') }}
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <p>
+                                                <i class="fe fe-user"></i>{{ ucfirst($parcel->customer->name ?? '-') }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-phone"></i>{{ $parcel->customer->phone ?? '-' }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-map-pin"></i>{{ $parcel->customer->address ?? '-' }}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <p>
+                                                <i class="fe fe-user"></i>{{ ucfirst($parcel->destination_user_name ?? '-') }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-phone"></i>{{ $parcel->destination_user_phone ?? '-' }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-map-pin"></i>{{ $parcel->destination_address ?? '-' }}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    {{-- <td>{{ ucfirst($parcel->warehouse->warehouse_name ?? '-') }}</td> --}}
+                                    {{-- <td><span>{{ $parcel->weight ?? '-' }}</span></td> --}}
+                                    <td>
+                                        <div>
+                                            <p>
+                                                <span class="fw-bold">Partial:</span>
+                                                <span>${{ $parcel->total_amount ?? '-' }}</span>
+                                            </p>
+                                            <p>
+                                                <span class="fw-bold">Due:</span>
+                                                <span>${{ $parcel->total_amount ?? '-' }}</span>
+                                            </p>
+                                            <p>
+                                                <span class="fw-bold">Total:</span>
+                                                <span>${{ $parcel->total_amount ?? '-' }}</span>
+                                            </p>
+                                        </div>
+                                        
+                                    </td>
+                                    <td><span>{{ ucfirst($parcel->payment_type ?? '-') }}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('d/m/Y') : '-' }}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('d/m/Y') : '-' }}</span>
+                                    </td>
                                     <td><span
                                             class="badge-{{ activeStatusKey($parcel->status) }}">{{ $parcel->status ?? '-' }}</span>
                                     </td>
@@ -103,9 +153,6 @@
                                         </div>
                                     </td>
 
-
-                                    <td><span>{{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('d/m/Y') : '-' }}</span></td>
-                                    <td><span>{{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('d/m/Y') : '-' }}</span></td>                                    
                                     <td class="d-flex align-items-center">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -145,9 +192,9 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <div class="bottom-user-page mt-3">
-                        {!! $parcels->links('pagination::bootstrap-5') !!}
-                    </div>
+                </div>
+                <div class="bottom-user-page mt-3">
+                    {!! $parcels->links('pagination::bootstrap-5') !!}
                 </div>
             </div>
         </div>
