@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\{
     User,
     Category,
     Warehouse,
     Stock,
     Inventory,
-    Parcel,ParcelHistory
+    Parcel,
+    ParcelHistory
 };
 
 class OrderShipmentController extends Controller
@@ -21,11 +23,20 @@ class OrderShipmentController extends Controller
     public function index()
     {
         //
-        
-        $parcels = Parcel::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+
+        $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->paginate(10);
-        return view('admin.OrderShipment.index', compact('parcels'));
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+        $drivers = $user->where('role_id', 4)->values();
+        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses'));
     }
 
     /**
@@ -34,23 +45,23 @@ class OrderShipmentController extends Controller
     public function create()
     {
         //
-        
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        $user = collect(User::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
 
-        $customers = $user->where('role_id',3)->values();
+        $customers = $user->where('role_id', 3)->values();
 
-        $drivers = $user->where('role_id',4)->values();
+        $drivers = $user->where('role_id', 4)->values();
 
-        $parcelTpyes = Category::whereIn('name',['box','bag','barrel'])->get();
+        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        
-        return view('admin.OrderShipment.create', compact('warehouses','customers','drivers','parcelTpyes'));
+
+        return view('admin.OrderShipment.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes'));
     }
 
     /**
@@ -86,11 +97,11 @@ class OrderShipmentController extends Controller
             'warehouse_id' => $validatedData['warehouse_id'],
             'status' => 'Created',
             'parcel_status' => $validatedData['status'],
-            'description'=>collect($validatedData)
+            'description' => collect($validatedData)
         ]);
 
         return redirect()->route('admin.OrderShipment.index')
-        ->with('success', 'Order added successfully.');
+            ->with('success', 'Order added successfully.');
     }
 
 
@@ -100,12 +111,12 @@ class OrderShipmentController extends Controller
     public function show(string $id)
     {
         //
-        $ParcelHistories = ParcelHistory::where('parcel_id',$id)
-        ->with(['warehouse','customer','createdByUser'])->paginate(10);
+        $ParcelHistories = ParcelHistory::where('parcel_id', $id)
+            ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
 
-        $parcelTpyes = Category::whereIn('name',['box','bag','barrel'])->get();
+        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        return view('admin.OrderShipment.show',compact('ParcelHistories','parcelTpyes'));
+        return view('admin.OrderShipment.show', compact('ParcelHistories', 'parcelTpyes'));
     }
 
     /**
@@ -114,25 +125,25 @@ class OrderShipmentController extends Controller
     public function edit(string $id)
     {
         //
-        
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        $user = collect(User::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
 
-        $customers = $user->where('role_id',3)->values();
+        $customers = $user->where('role_id', 3)->values();
 
-        $drivers = $user->where('role_id',4)->values();
+        $drivers = $user->where('role_id', 4)->values();
 
-        $parcel = Parcel::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->where('id',$id)->first();
+        $parcel = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->where('id', $id)->first();
 
-        $parcelTpyes = Category::whereIn('name',['box','bag','barrel'])->get();
-        return view('admin.OrderShipment.edit',compact('parcel','warehouses','customers','drivers','parcelTpyes'));
+        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
+        return view('admin.OrderShipment.edit', compact('parcel', 'warehouses', 'customers', 'drivers', 'parcelTpyes'));
     }
 
     /**
@@ -140,8 +151,8 @@ class OrderShipmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-    
-        $validatedData =$request->validate([
+
+        $validatedData = $request->validate([
             'tracking_number' => 'required|string|max:255|unique:parcels,tracking_number,' . $id,
             'customer_id' => 'required|exists:users,id',
             'driver_id' => 'nullable|exists:users,id',
@@ -159,7 +170,7 @@ class OrderShipmentController extends Controller
         ]);
 
         Parcel::where([
-            'id'=>$id
+            'id' => $id
         ])->update($validatedData);
 
         ParcelHistory::create([
@@ -169,12 +180,12 @@ class OrderShipmentController extends Controller
             'warehouse_id' => $validatedData['warehouse_id'],
             'status' => 'Updated',
             'parcel_status' => $validatedData['status'],
-            'description'=>collect($validatedData)
+            'description' => collect($validatedData)
         ]);
 
 
         return redirect()->route('admin.OrderShipment.index')
-        ->with('success', 'Inventory added successfully.');
+            ->with('success', 'Inventory added successfully.');
     }
 
     /**
@@ -191,11 +202,77 @@ class OrderShipmentController extends Controller
             'warehouse_id' => $parcel['warehouse_id'],
             'status' => 'Deleted',
             'parcel_status' => 'Deleted',
-            'description'=>collect($parcel)
+            'description' => collect($parcel)
         ]);
 
         $parce->delete();
         return redirect()->route('admin.OrderShipment.index')
-                        ->with('success','Order deleted successfully');
+            ->with('success', 'Order deleted successfully');
+    }
+
+    public function status_update(Request $request)
+    {
+        try {
+            // Validate incoming request data
+            $validatedData = $request->validate([
+                'ParcelId' => 'required|string|max:255|exists:parcels,id',
+                'status' => 'required|in:Pending,Pickup Assign,Pickup Re-Schedule,Received By Pickup Man,Received Warehouse,Transfer to hub,Received by hub,Delivery Man Assign,Return to Courier,Delivered,Cancelled',
+                'driver_id' => 'nullable|exists:users,id', // Ensure driver_id is valid if provided
+                'note' => 'nullable|string',
+            ]);
+
+            // Fetch the parcel record
+            $inventory = Parcel::where('id', $validatedData['ParcelId'])->first();
+
+            if (!$inventory) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Parcel not found.'
+                ], 404);
+            }
+
+            // Update parcel status and driver_id if provided
+            $inventory->update([
+                'status' => $validatedData['status'],
+                'driver_id' => $request->driver_id ?? $inventory->driver_id, // Only update if provided
+                'pickup_date' => $request->pickup_date ?  $request->pickup_date : $inventory->pickup_date,
+            ]);
+
+            $warehouse_id = null;
+            if($validatedData['status'] == "Received Warehouse"){
+                $warehouse_id =  $request->warehouse_id;
+            }else{
+                $warehouse_id = $inventory->warehouse_id;
+            }
+
+            // Store history in ParcelHistory table
+            ParcelHistory::create([
+                'parcel_id' => $inventory->id,
+                'created_user_id' => $this->user->id, // Ensure authenticated user ID is stored
+                'customer_id' => $inventory->customer_id,
+                'warehouse_id' => $warehouse_id,
+                'status' => 'Updated',
+                'parcel_status' => $validatedData['status'],
+                'description' => collect($inventory),
+                'note' => $request->note ?? null,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Order updated successfully.',
+                'data' => [
+                    'parcel_id' => $inventory->id,
+                    'status' => $validatedData['status'],
+                    'driver_id' => $request->driver_id ?? null,
+                    'note' => $request->note ?? null
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

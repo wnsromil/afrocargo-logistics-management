@@ -29,7 +29,7 @@ Route::middleware(['auth', 'authCheck'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile', [ProfileController::class, 'uploadProfilePic'])->name('profile.upload_pic');
-
+    Route::post('/status_update', [OrderShipmentController::class, 'status_update'])->name('parcel.status_update');
 });
 
 // admin routes
