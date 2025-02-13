@@ -1,4 +1,4 @@
-<div class="header header-one nav-head ">
+<div class="header header-one nav-head">
 
     <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
         <div class="dash-logo">
@@ -19,11 +19,11 @@
 
     <!-- Sidebar Toggle -->
     <div class="dash2">
-        <h3>
+        <h5 style="color: #ffffff">
             @isset($header)
             {{ $header }}
             @endisset
-        </h3>
+        </h5>
     </div>
     <!-- /Sidebar Toggle -->
 
@@ -65,3 +65,4 @@
 
         </ul>
     </div>
+</div>

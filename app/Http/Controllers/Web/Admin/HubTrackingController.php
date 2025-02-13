@@ -53,10 +53,19 @@ class HubTrackingController extends Controller
     {
         //
 
-        $parcels = Parcel::where('hub_tracking_id',$id)->when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->paginate(10);
-        return view('admin.OrderShipment.index', compact('parcels'));
+        $parcels = Parcel::where('hub_tracking_id',$id)->when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->latest()->paginate(10);
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+        $drivers = $user->where('role_id', 4)->values();
+        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses'));
     }
 
     /**

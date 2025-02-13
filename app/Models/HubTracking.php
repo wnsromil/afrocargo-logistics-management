@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class HubTracking extends Model
 {
@@ -16,8 +17,8 @@ class HubTracking extends Model
         parent::boot();
         
         static::creating(function ($parcel) {
-            if (empty($parcel->tracking_number)) {
-                $parcel->tracking_number = 'ACE-HB_' . strtoupper(Str::random(6));
+            if (empty($parcel->tracking_id)) {
+                $parcel->tracking_id = 'ACE-HB_' . strtoupper(Str::random(6));
             }
         });
     }

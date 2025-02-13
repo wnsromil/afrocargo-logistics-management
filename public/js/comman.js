@@ -32,3 +32,76 @@ $(document).ready(function() {
         }
     });
 });
+
+
+// 
+
+function deleteAllUser(){
+    if(confirm("Are you sure you. want to delete all users?")){
+        $.get(
+            "/super/users/deleteUser",
+            {
+                action:"all"
+            },
+            function (response) {
+                let message = response?.message;
+                toastr.success(message);
+                // $("#usersTable").DataTable().ajax.reload();
+            },
+            "JSON"
+        );
+    }
+}
+
+function deleteUser(id){
+    
+    if(confirm("Are you sure you. want to delete users?")){
+        $.get(
+            "/super/users/deleteUser",
+            {
+                ids:id
+            },
+            function (response) {
+                let message = response?.message;
+                toastr.success(message);
+                // $("#usersTable").DataTable().ajax.reload();
+            },
+            "JSON"
+        );
+    }
+}
+
+// Select All Checkbox
+$('#selectAll').on('click', function () {
+
+    selectCheckbox(this.checked);
+    $('.selectCheckbox').prop('checked', this.checked);
+});
+
+// Uncheck "Select All" if any individual checkbox is unchecked
+$(document).on('click', '.selectCheckbox', function () {
+    selectCheckbox($(this).prop("checked"));
+    if (!$(this).prop("checked")) {
+        $('#selectAll').prop("checked", false);
+    }
+});
+
+$('#deleteUser').on('click',function(){
+    let selectedUsers = [];
+    $(".selectCheckbox:checked").each(function () {
+        selectedUsers.push($(this).val());
+    });
+    if(selectedUsers.length > 0){
+        deleteUser(selectedUsers);
+    }else{
+        toastr.error("Please select at least one user to delete");
+    }
+})
+
+function selectCheckbox(selectedAny,isSelected=".isSelected"){
+    if(selectedAny){
+       $(isSelected).removeClass('d-none'); 
+    }else{
+        $(isSelected).addClass('d-none'); 
+    }
+}

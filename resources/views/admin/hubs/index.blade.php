@@ -24,6 +24,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
+                                <th><input type="checkbox" id="selectAll"></th> <!-- Select All Checkbox -->
                                 <th>Sn no.</th>
                                 <th>Tracking Number</th>
                                 <th>Driver Name</th>
@@ -39,6 +40,7 @@
                         <tbody>
                             @forelse ($parcels as $index => $parcel)
                             <tr>
+                                <td><input type="checkbox" class="form-check-input selectCheckbox" value="{{ $parcel->id }}"></td>
                                 <td>{{ ++$index }}</td>
                                 <td>{{ ucfirst($parcel->tracking_id ?? '-') }}</td>
                                 <td>{{ ucfirst($parcel->driver->name ?? '-') }}</td>
@@ -53,16 +55,6 @@
                                         <a href="#" class="btn-action-icon" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
-                                                {{-- <li>
-                                                    <a class="dropdown-item" href="{{ route('admin.hubs.edit', $parcel->id) }}"><i class="far fa-edit me-2"></i>Edit</a>
-                                                </li> --}}
-                                                {{-- <li>
-                                                    <form action="{{ route('admin.OrderShipment.destroy', $parcel->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="dropdown-item" onclick="deleteData(this, 'Are you sure you want to remove this parcel? This action can’t be undone!')"><i class="far fa-trash-alt me-2"></i>Delete</button>
-                                                    </form>
-                                                </li> --}}
                                                 <li>
                                                     <a class="dropdown-item" href="{{ route('admin.hubs.show', $parcel->id) }}"><i class="far fa-eye me-2"></i>View Parcels</a>
                                                 </li>
@@ -73,15 +65,17 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="9" class="px-4 py-4 text-center text-gray-500">No data found.</td>
+                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
-                    <div class="bottom-user-page mt-3">
-                        {!! $parcels->links('pagination::bootstrap-5') !!}
-                    </div>
                 </div>
+
+                <div class="bottom-user-page mt-3">
+                    {!! $parcels->links('pagination::bootstrap-5') !!}
+                </div>
+
             </div>
         </div>
     </div>

@@ -121,3 +121,20 @@ text-align: left;
 }
 
 
+.fixed-position {
+    position: fixed; /* Fixes the element's position */
+    top: 20px; /* Distance from the top of the viewport */
+    right: 20px; /* Distance from the right of the viewport */
+    z-index: 1000; /* Ensures the element is above other content */
+    background-color: #fff; /* Background color */
+    padding: 10px; /* Padding inside the element */
+    border: 1px solid #ccc; /* Border around the element */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Optional: Add a hover effect */
+.fixed-position:hover {
+    background-color: #f0f0f0; /* Change background on hover */
+    cursor: pointer; /* Change cursor to pointer */
+}

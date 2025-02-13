@@ -12,7 +12,9 @@ use App\Models\{
     Stock,
     Inventory,
     Parcel,
-    ParcelHistory
+    Vehicle,
+    ParcelHistory,
+    HubTracking
 };
 
 class OrderShipmentController extends Controller
@@ -215,59 +217,137 @@ class OrderShipmentController extends Controller
         try {
             // Validate incoming request data
             $validatedData = $request->validate([
-                'ParcelId' => 'required|string|max:255|exists:parcels,id',
+                'ParcelId' => 'required',
                 'status' => 'required|in:Pending,Pickup Assign,Pickup Re-Schedule,Received By Pickup Man,Received Warehouse,Transfer to hub,Received by hub,Delivery Man Assign,Return to Courier,Delivered,Cancelled',
                 'driver_id' => 'nullable|exists:users,id', // Ensure driver_id is valid if provided
-                'note' => 'nullable|string',
             ]);
 
-            // Fetch the parcel record
-            $inventory = Parcel::where('id', $validatedData['ParcelId'])->first();
+            $ParcelId = $validatedData['ParcelId'];
+            unset($validatedData['ParcelId']);
 
-            if (!$inventory) {
+            // Fetch the parcel record
+            $parcel = Parcel::when($ParcelId,function($q)use($ParcelId){
+                if(is_array($ParcelId)){
+                    return $q->whereIn('id',$ParcelId);
+                }
+                return $q->where('id', $ParcelId);
+            })->get();
+
+            if (!$parcel) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Parcel not found.'
                 ], 404);
             }
-
+            
             // Update parcel status and driver_id if provided
-            $inventory->update([
-                'status' => $validatedData['status'],
-                'driver_id' => $request->driver_id ?? $inventory->driver_id, // Only update if provided
-                'pickup_date' => $request->pickup_date ?  $request->pickup_date : $inventory->pickup_date,
-            ]);
+            $objParcel = Parcel::when($ParcelId,function($q)use($ParcelId){
+                if(is_array($ParcelId)){
+                    return $q->whereIn('id',$ParcelId);
+                }
+                return $q->where('id', $ParcelId);
+            });
+
+            
+
 
             $warehouse_id = null;
             if($validatedData['status'] == "Received Warehouse"){
                 $warehouse_id =  $request->warehouse_id;
-            }else{
-                $warehouse_id = $inventory->warehouse_id;
+
+                // $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
+                //     return $q->where('warehouse_id',$this->user->warehouse_id);
+                // })->get();
+
+
+                // // ready to hub
+                // $hubTracking = collect(HubTracking::where('status','pending')
+                // ->withCount(['parcels'])
+                // ->where(['from_warehouse_id'=>$warehouse_id])
+                // ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get())
+                // ->filter(function($item){
+                //     return $item->parcels_count < $item->vehicle->capacity;
+                // })->first();
+
+                // if(empty($hubTracking)){
+                //     $hubTracking = HubTracking::create([
+                //         'vehicle_id' => $vehicles->first()->id,
+                //         'from_warehouse_id' => $warehouse_id,
+                //         'created_by' => $this->user->id
+                //     ]);
+                // }
+
+
+                // $validatedData['hub_tracking_id'] = $hubTracking->id;
             }
 
+            if($validatedData['status'] == "Received By Pickup Man"){
+
+                $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
+                    return $q->where('warehouse_id',$this->user->warehouse_id);
+                })->get();
+
+                $warehouse_id =  $vehicles->first()->warehouse_id;
+
+                // ready to hub
+                $hubTrackings = HubTracking::where('status','pending')
+                ->withCount(['parcels'])
+                ->with('vehicle')
+                ->where(['from_warehouse_id'=>$warehouse_id])
+                ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get();
+
+                $hubTracking = collect($hubTrackings)->filter(function($item){
+                    return $item->parcels_count < $item->vehicle->capacity;
+                })->first();
+                
+                // return collect($hubTrackings)->pluck('vehicle_id')->toArray();
+
+                if(empty($hubTracking)){
+                    $hubTracking = HubTracking::create([
+                        'vehicle_id' => $vehicles->whereNotIn('id',collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
+                        'from_warehouse_id' => $warehouse_id,
+                        'created_by' => $this->user->id
+                    ]);
+                }
+
+
+                $validatedData['hub_tracking_id'] = $hubTracking->id;
+            }
+
+            $objParcel->update($validatedData);
+
+
+            $history = $parcel->map(function($item) use($validatedData,$warehouse_id){
+                return [
+                    'parcel_id' => $item->id,
+                    'created_user_id' => $this->user->id,
+                    'customer_id' => $item->customer_id,
+                    'warehouse_id' => $warehouse_id ?? $item->warehouse_id,
+                    'status' => 'Updated',
+                    'parcel_status' => $validatedData['status'],
+                    'description' => collect($item),
+                    'note' => $request->note ?? null,
+                    'created_at'=> Carbon::now()
+                ];
+            });
+
+            
+
             // Store history in ParcelHistory table
-            ParcelHistory::create([
-                'parcel_id' => $inventory->id,
-                'created_user_id' => $this->user->id, // Ensure authenticated user ID is stored
-                'customer_id' => $inventory->customer_id,
-                'warehouse_id' => $warehouse_id,
-                'status' => 'Updated',
-                'parcel_status' => $validatedData['status'],
-                'description' => collect($inventory),
-                'note' => $request->note ?? null,
-            ]);
+            ParcelHistory::insert(collect($history)->toArray());
 
             return response()->json([
                 'status' => true,
                 'message' => 'Order updated successfully.',
                 'data' => [
-                    'parcel_id' => $inventory->id,
-                    'status' => $validatedData['status'],
-                    'driver_id' => $request->driver_id ?? null,
-                    'note' => $request->note ?? null
+                    // 'parcel_id' => $parcel->id,
+                    // 'status' => $validatedData['status'],
+                    // 'driver_id' => $request->driver_id ?? null,
+                    // 'note' => $request->note ?? null
                 ]
             ], 200);
         } catch (\Exception $e) {
+            return $e;
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong.',

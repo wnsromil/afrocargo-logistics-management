@@ -28,7 +28,7 @@ function activeStatusKey($statusName = 'Pending') {
     
     $parcelStatuses = collect([
         'pending'                => 'Pending',
-        'pickup_assign'          => 'Pickup Assign',
+        'pickup_assign'          => 'Pickup Assign',//admin
         'pickup_reschedule'      => 'Pickup Re-Schedule',
         'received_by_pickup_man' => 'Received By Pickup Man',
         'received_warehouse'     => 'Received Warehouse',

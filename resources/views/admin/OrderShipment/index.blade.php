@@ -5,16 +5,35 @@
 
     <x-slot name="cardTitle">
         All Parcels
-
-        <div class="d-flex align-items-center justify-content-end mb-1">
+        
+        {{-- <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="{{route('admin.OrderShipment.create')}}" class="btn btn-primary">
-                        Add Parcel
-                    </a>
+                    <p style="text-align: center;">
+                        <span class="isSelected d-none">     
+                            <button class="btn btn-primary" onclick="handlePickupAssign('selectArr', {{ json_encode($drivers) }},'{{ activeStatusKey('Pickup Assign')}}')">
+                                <i class="fas fa-truck me-2"></i>Pickup Assign
+                            </button>
+                            <button class="btn btn-danger" onclick="handlePickupCancel([],,{{ activeStatusKey('Pickup Cancel') }})">
+                                <i class="fas fa-times-circle me-2"></i>Pickup Cancel
+                            </button>
+                            
+                            <button class="btn btn-warning" onclick="handlePickupReschedule([], {{ json_encode($drivers) }},{{ activeStatusKey('Pickup Cancel') }})">
+                                <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
+                            </button>
+                            <button class="btn btn-info" onclick="handleReceivedWarehouse([], {{json_encode($warehouses)}},{{ activeStatusKey('Pickup Cancel') }})">
+                                <i class="fas fa-warehouse me-2"></i>Received Warehouse
+                            </button>
+                        </span>
+                        <a href="{{route('admin.OrderShipment.create')}}" class="btn btn-primary">
+                            Add Parcel
+                        </a>
+                    </p>
                 </div>
             </div>
-        </div>
+
+        </div> --}}
+
     </x-slot>
 
     <div>
@@ -24,6 +43,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
+                                {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
                                 <th>Tracking ID</th>
                                 <th>From</th>
@@ -41,6 +61,7 @@
                         <tbody>
                             @forelse ($parcels as $index => $parcel)
                                 <tr>
+                                    {{-- <td><input type="checkbox" class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($parcel->status) }}" value="{{ $parcel->id }}"></td> --}}
                                     <td>{{ ++$index }}</td>
                                     <td>
                                         {{ ucfirst($parcel->tracking_number ?? '-') }}
@@ -77,11 +98,11 @@
                                         <div>
                                             <p>
                                                 <span class="fw-bold">Partial:</span>
-                                                <span>${{ $parcel->total_amount ?? '-' }}</span>
+                                                <span>${{ $parcel->partial_payment ?? '-' }}</span>
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Due:</span>
-                                                <span>${{ $parcel->total_amount ?? '-' }}</span>
+                                                <span>${{ $parcel->remaining_payment ?? '-' }}</span>
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Total:</span>
@@ -127,7 +148,7 @@
                                                         </span>
                                                     </li>
                                                     <li>
-                                                        <span class="dropdown-item" onclick="handleReceivedByPickupMan()">
+                                                        <span class="dropdown-item" onclick="handleReceivedByPickupMan({{ $parcel->id }})">
                                                             <i class="fas fa-box-open me-2"></i>Received By Pickup Man
                                                         </span>
                                                     </li>
@@ -153,8 +174,14 @@
                                         </div>
                                     </td>
 
-                                    <td class="d-flex align-items-center">
-                                        <div class="dropdown dropdown-action">
+                                    <td class="align-items-center">
+                                        <span class="dropdown-icon-status">
+                                            <a href="{{ route('admin.OrderShipment.show', $parcel->id) }}">
+                                                <i class="far fa-eye my-1 text-white"></i>
+                                                
+                                            </a>
+                                        </span>
+                                        {{-- <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div>
@@ -178,11 +205,11 @@
                                                     <li>
                                                         <a class="dropdown-item"
                                                             href="{{ route('admin.OrderShipment.show', $parcel->id) }}"><i
-                                                                class="far fa-eye me-2"></i>View Details</a>
+                                                                class="far fa-eye me-2"></i>View History</a>
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </td>
                                 </tr>
                             @empty
@@ -222,6 +249,15 @@
                 required: false
             }
         ];
+
+        let selectedUsers = [];
+        $(".selectCheckbox:checked").each(function () {
+            selectedUsers.push($(this).val());
+        });
+
+        if(ParcelId=="selectArr"){
+            ParcelId =selectedUsers;
+        }
 
         const status = "Pickup Assign";
         DynmicModel(ParcelId, status, Input_Fields);
@@ -266,8 +302,9 @@
         console.log("❌ Pickup Cancel Clicked");
     }
 
-    function handleReceivedByPickupMan() {
-        console.log("📦 Received By Pickup Man Clicked");
+    function handleReceivedByPickupMan(ParcelId=false) {
+        const status = "Received By Pickup Man";
+        DynmicModel(ParcelId, status, []);
     }
 
     function handleReceivedWarehouse(ParcelId, warehouses) {
