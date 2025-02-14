@@ -12,7 +12,8 @@ use App\Http\Controllers\Web\Admin\{
     DriversController,
     InventoryController,
     OrderShipmentController,
-    HubTrackingController
+    HubTrackingController,
+    InvoiceController,
 };
 
 Route::get('/', function () {
@@ -47,6 +48,8 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('inventories', InventoryController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
         Route::resource('hubs', HubTrackingController::class);
+        Route::resource('invoices', InvoiceController::class);
+        Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
 
     });
 });

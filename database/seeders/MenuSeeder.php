@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use App\Models\Menu;
 use DB;
+
 class MenuSeeder extends Seeder
 {
     public function run()
@@ -18,45 +19,45 @@ class MenuSeeder extends Seeder
 
         $menus = [
             [
-                'title' => 'Dashboard', 
-                'icon' => 'assets/images/dashboardlogo.svg', 
-                'route' => 'admin.dashboard', 
-                'active' => 'dashboard*', 
-                'roles' => ['admin', 'warehouse_manager','driver']
+                'title' => 'Dashboard',
+                'icon' => 'assets/images/dashboardlogo.svg',
+                'route' => 'admin.dashboard',
+                'active' => 'dashboard*',
+                'roles' => ['admin', 'warehouse_manager', 'driver']
             ],
             [
-                'title' => 'Customers', 
-                'icon' => 'assets/images/Users.svg', 
-                'route' => 'admin.customer.index', 
-                'active' => 'customer*', 
-                'roles' => ['admin', 'warehouse_manager','driver']
+                'title' => 'Customers',
+                'icon' => 'assets/images/Users.svg',
+                'route' => 'admin.customer.index',
+                'active' => 'customer*',
+                'roles' => ['admin', 'warehouse_manager', 'driver']
             ],
             [
-                'title' => 'Warehouse', 
-                'icon' => 'assets/images/warehouse.svg', 
-                'route' => '#', 
-                'active' => 'warehouses*,warehouse_manager*', 
+                'title' => 'Warehouse',
+                'icon' => 'assets/images/warehouse.svg',
+                'route' => '#',
+                'active' => 'warehouses*,warehouse_manager*',
                 'roles' => ['admin']
             ],
             [
-                'title' => 'Drivers', 
-                'icon' => 'assets/images/Drivers.svg', 
-                'route' => 'admin.drivers.index', 
-                'active' => 'drivers*', 
+                'title' => 'Drivers',
+                'icon' => 'assets/images/Drivers.svg',
+                'route' => 'admin.drivers.index',
+                'active' => 'drivers*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
-                'title' => 'Vehicle Management', 
-                'icon' => 'assets/images/vehiclemangement.svg', 
-                'route' => 'admin.vehicle.index', 
-                'active' =>'vehicle*', 
+                'title' => 'Vehicle Management',
+                'icon' => 'assets/images/vehiclemangement.svg',
+                'route' => 'admin.vehicle.index',
+                'active' => 'vehicle*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
-                'title' => 'Inventory', 
-                'icon' => 'assets/images/inventory.svg', 
-                'route' => 'admin.inventories.index', 
-                'active' => 'inventories*', 
+                'title' => 'Inventory',
+                'icon' => 'assets/images/inventory.svg',
+                'route' => 'admin.inventories.index',
+                'active' => 'inventories*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -69,8 +70,8 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Invoice',
                 'icon' => 'assets/images/invoices.svg',
-                'route' => '#',
-                'active' => '',
+                'route' => 'admin.invoices.index',
+                'active' => 'invoices*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -96,28 +97,26 @@ class MenuSeeder extends Seeder
         $orderShip = Menu::where('title', 'Order/Shipment')->first();
         if ($orderShip) {
             Menu::create([
-                'title' => 'Order', 
-                'route' => 'admin.OrderShipment.index', 
-                'active' => 'OrderShipment*', 
-                'parent_id' => $orderShip->id, 
-                'roles' => ['admin','warehouse_manager']
+                'title' => 'Order',
+                'route' => 'admin.OrderShipment.index',
+                'active' => 'OrderShipment*',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager']
             ]);
             Menu::create([
-                'title' => 'Transfer To Hub', 
-                'route' => 'admin.hubs.index', 
-                'active' => 'hubs*', 
-                'parent_id' => $orderShip->id, 
-                'roles' => ['admin','warehouse_manager']
+                'title' => 'Transfer To Hub',
+                'route' => 'admin.hubs.index',
+                'active' => 'hubs*',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager']
             ]);
             Menu::create([
-                'title' => 'Received To Hub', 
-                'route' => '#', 
-                'active' => '', 
-                'parent_id' => $orderShip->id, 
-                'roles' => ['admin','warehouse_manager']
+                'title' => 'Received To Hub',
+                'route' => '#',
+                'active' => '',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager']
             ]);
         }
     }
 }
-
-
