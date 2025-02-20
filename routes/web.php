@@ -50,7 +50,7 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('hubs', HubTrackingController::class);
         Route::resource('invoices', InvoiceController::class);
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
-
+        Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
     });
 });
 

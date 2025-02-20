@@ -17,6 +17,7 @@ use App\Models\{
     HubTracking,
     Invoice
 };
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -36,6 +37,14 @@ class InvoiceController extends Controller
     {
         $getInvoice = Invoice::where('id', $id)->first();
         return view('admin.Invoices.invoicesdetails', compact('getInvoice'));
+    }
+
+    public function invoices_download($id)
+    {
+        $getInvoice = Invoice::where('id', $id)->first();
+        $pdf = Pdf::loadView('admin.Invoices.invoicepdf', ["getInvoice"=>$getInvoice]);
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->download('driver-'.$getInvoice->parcel->driver->name.'.pdf');
     }
 
     /**
