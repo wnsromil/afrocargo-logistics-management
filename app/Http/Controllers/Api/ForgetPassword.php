@@ -60,8 +60,6 @@ class ForgetPassword extends Controller
 
         return $this->sendResponse($success, 'Otp resend successfully.');
     }
-
-
     public function restPassword(Request $request)
     {
         $checkVerify = VerifyAuthIP::where([

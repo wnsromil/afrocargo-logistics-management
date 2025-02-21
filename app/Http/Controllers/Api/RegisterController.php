@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class RegisterController extends Controller
@@ -22,56 +23,101 @@ class RegisterController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        // Validation rules
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => [
-                'required',
-                'string',
-                'min:8', // Minimum of 8 characters
-                // 'regex:/[a-z]/', // Must contain at least one lowercase letter
-                // 'regex:/[A-Z]/', // Must contain at least one uppercase letter
-                // 'regex:/[0-9]/', // Must contain at least one digit
-            ],
-            'c_password' => 'required|same:password',
-            'user_type'=>'required|in:customer,driver',
-            'phone' => 'required|string|max:15|unique:users,phone',
-        ]);
-
-        // Assign default role (customer)
-        $userRole = Role::where('name',$request->user_type)->first(); // Assume role ID 3 is for customers
-        if (!$userRole) {
-            return $this->sendError('Role not found.', ['error' => 'Role with ID 3 does not exist.']);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    // 'regex:/[a-z]/',
+                    // 'regex:/[A-Z]/',
+                    // 'regex:/[0-9]/',
+                    // 'regex:/[@$!%*?&]/'
+                ],
+                'c_password' => 'required|same:password',
+                'user_type' => 'required|in:customer,driver',
+                'phone' => 'required|string|max:15|unique:users,phone',
+                'address' => 'required|string|max:255',
+                'country_id' => 'required|string|max:255',
+                'state_id' => 'required|string|max:255',
+                'city_id' => 'required|string|max:255',
+                'pincode' => 'required|numeric',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+    
+            $userRole = Role::where('name', $request->user_type)->first();
+            if (!$userRole) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Role not found',
+                    'error' => 'Role does not exist in database'
+                ], 404);
+            }
+    
+            DB::beginTransaction();
+            try {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'password' => bcrypt($request->password),
+                    'role' => $userRole->name,
+                    'role_id' => $userRole->id,
+                    'address' => $request->address,
+                    'country_id' => $request->country_id,
+                    'state_id' => $request->state_id,
+                    'city_id' => $request->city_id,
+                    'pincode' => $request->pincode,
+                ]);
+    
+                $success['token'] = $user->createToken('MyApp')->accessToken;
+    
+                VerifyAuthIP::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'ip_address' => $request->ip(),
+                    ],
+                    [
+                        'otp' => 1234,
+                        'otp_expire_at' => Carbon::now()->addMinutes(2),
+                        'otp_varify_at' => null,
+                        'verify_type' => 'auth'
+                    ]
+                );
+    
+                DB::commit();
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User registered successfully',
+                    'data' => $success
+                ], 201);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                dd($e);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User registration failed',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return [$e];
+            return response()->json([
+                'success' => false,
+                'message' => 'Unexpected error occurred',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        // Create user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => bcrypt($request->password),
-            'role' => $userRole->name,
-            'role_id' => $userRole->id,
-        ]);
-
-        // Generate token
-        $success['token'] = $user->createToken('MyApp')->accessToken;
-
-        VerifyAuthIP::updateOrCreate(
-            [
-                'user_id' => $user->id,
-                'ip_address' => $request->ip(),
-            ],
-            [
-                'otp' => 1234,
-                'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
-                'otp_varify_at' => null,
-                'verify_type'=>'auth'
-            ]
-        );
-
-        return $this->sendResponse($success, 'User registered successfully.');
     }
 
     /**
@@ -161,34 +207,31 @@ class RegisterController extends Controller
             $data = VerifyAuthIP::where([
                 'user_id' => $user->id,
                 'ip_address' => $request->ip(),
-                'otp' => $request->otp, // OTP should be dynamic
             ])->first();
     
-            // Check if OTP exists and is still valid (within 2 minutes)
-            if ($data && Carbon::now()->lte(Carbon::parse($data->otp_expire_at))) {
-                // Generate access token
-                
-                $success['userData'] = $user->load('userRole');
-
-                $data->otp = null;
-                $data->otp_expire_at = null;
-                $data->otp_varify_at = Carbon::now();
-                
-
-                $data->save();
-                
-    
-                return $this->sendResponse($success, 'OTP verified successfully.');
+            // Check if OTP exists
+            if (!$data || $data->otp !== $request->otp) {
+                return $this->sendError('Unauthorized.', ['error' => 'Invalid OTP. Please try again.']);
             }
     
-            return $this->sendError('Unauthorized.', ['error' => 'OTP expired or invalid. Please try again.']);
+            // Check if OTP is expired
+            if (Carbon::now()->gt(Carbon::parse($data->otp_expire_at))) {
+                return $this->sendError('Unauthorized.', ['error' => 'OTP expired. Please request a new one.']);
+            }
+    
+            // OTP is valid, proceed with verification
+            $success['userData'] = $user->load('userRole');
+    
+            $data->otp = null;
+            $data->otp_expire_at = null;
+            $data->otp_varify_at = Carbon::now();
+    
+            $data->save();
+            return $this->sendResponse($success, 'OTP verified successfully.');
         }
     
         return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt.']);
     }
-
-    
-
     /**
      * Logout API
      *
