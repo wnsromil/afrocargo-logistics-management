@@ -12,10 +12,12 @@ class ProfileController extends Controller
 {
     //
 
-    public function profile(){
-        $user = $this->user->load(['warehouse','vehicle','country','state','city']);
+    public function profile()
+    {
+        $user = $this->user->load(['warehouse', 'vehicle', 'country', 'state', 'city']);
         return $this->sendResponse($user, 'User updated successfully.');
     }
+    
     public function update(Request $request)
     {
         $user = $this->user;
@@ -28,29 +30,38 @@ class ProfileController extends Controller
             'license_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'nullable|date_format:Y-m-d',
             'status' => 'nullable|in:Active,Inactive',
-            'country_id'=>'nullable',
-            'state_id'=>'nullable',
-            'city_id'=>'nullable',
+            'country_id' => 'nullable',
+            'state_id' => 'nullable',
+            'city_id' => 'nullable',
         ]);
-    
+
         // Update user with validated data
-        if(!empty($request->name)){
-            $user->name =$request->name;
+        if (!empty($request->name)) {
+            $user->name = $request->name;
         }
-        if(!empty($request->address)){
-            $user->address =$request->address;
+        if (!empty($request->address)) {
+            $user->address = $request->address;
         }
-        if(!empty($request->phone)){
-            $user->phone =$request->phone;
+        if (!empty($request->country_id)) {
+            $user->country_id = $request->country_id;
         }
-        if(!empty($request->email)){
-            $user->email =$request->email;
+        if (!empty($request->state_id)) {
+            $user->state_id = $request->state_id;
         }
-        if(!empty($request->license_number)){
-            $user->license_number =$request->license_number;
+        if (!empty($request->city_id)) {
+            $user->city_id = $request->city_id;
         }
-        if(!empty($request->license_expiry_date)){
-            $user->license_expiry_date =$request->license_expiry_date;
+        if (!empty($request->phone)) {
+            $user->phone = $request->phone;
+        }
+        if (!empty($request->email)) {
+            $user->email = $request->email;
+        }
+        if (!empty($request->license_number)) {
+            $user->license_number = $request->license_number;
+        }
+        if (!empty($request->license_expiry_date)) {
+            $user->license_expiry_date = $request->license_expiry_date;
         }
 
         if ($request->hasFile('license_document')) {
@@ -58,17 +69,16 @@ class ProfileController extends Controller
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/licenses', $filename, 'public'); // Store in 'storage/app/public/uploads/licenses'
             $licenseDocumentPath = asset('storage/' . $filePath); // Get full URL
-            $user->license_document =$licenseDocumentPath;
+            $user->license_document = $licenseDocumentPath;
         }
-        if(!empty($request->status)){
-            $user->status =$request->status;
+        if (!empty($request->status)) {
+            $user->status = $request->status;
         }
-        
+
         $user->save();
 
         return $this->sendResponse($user, 'User updated successfully.');
     }
-
     public function changePassword(Request $request)
     {
         $validated = $request->validateWithBag('updatePassword', [
@@ -82,5 +92,36 @@ class ProfileController extends Controller
 
         return $this->sendResponse(false, 'Password changed successfully.');
     }
-    
+
+    public function updateProfilePicture(Request $request)
+    {
+        $user = $this->user; // Currently authenticated user
+
+        $request->validate([
+            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Only image files allowed
+        ]);
+
+        // Delete old profile picture if exists
+        if ($user->profile_pic) {
+            $oldProfilePath = public_path($user->profile_pic); // Get full path
+            if (file_exists($oldProfilePath)) {
+                unlink($oldProfilePath); // Delete old file
+            }
+        }
+
+        // Upload new profile picture
+        $file = $request->file('profile_pic');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/profile_pics'), $filename); // Move to public/uploads/profile_pics
+
+        // Store new profile picture path
+        $user->profile_pic = 'uploads/profile_pics/' . $filename;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile picture updated successfully.',
+            'profile_pic_url' => asset($user->profile_pic),
+        ]);
+    }
 }

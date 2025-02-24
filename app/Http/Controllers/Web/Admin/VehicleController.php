@@ -26,6 +26,15 @@ class VehicleController extends Controller
         return view('admin.vehicles.index',compact('vehicles'));
     }
 
+    public function container_index()
+    {
+        //
+        $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->paginate(10);
+        return view('admin.container.index',compact('vehicles'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -32,13 +32,15 @@ Route::middleware('auth:api')->group( function () {
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);
     Route::post('restPassword', [ForgetPassword::class, 'restPassword']);
 
-    Route::middleware('apiAuthCheck')->group(function(){
+    Route::middleware(['apiAuthCheck'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'profile']);
-        Route::post('profileUpdate', [ProfileController::class,'update']);
+        Route::post('profileUpdate', [ProfileController::class, 'update']);
+        Route::post('profilePictureUpdate', [ProfileController::class, 'updateProfilePicture']);
         Route::apiResource('OrderShipment', OrderShipmentController::class);
-        Route::put('OrderShipmentStatus', [OrderShipmentController::class,'OrderShipmentStatus']);
-        Route::get('OrderHistory/{id}', [OrderShipmentController::class,'OrderHistory']);
-        Route::get('inventoryOrderCategories', [OrderShipmentController::class,'inventoryOrderCategories']);
+        Route::put('OrderShipmentStatus', [OrderShipmentController::class, 'OrderShipmentStatus']);
+        Route::get('OrderHistory/{id}', [OrderShipmentController::class, 'OrderHistory']);
+        Route::get('inventoryOrderCategories', [OrderShipmentController::class, 'inventoryOrderCategories']);
         Route::post('changePassword', [ProfileController::class, 'changePassword']);
     });
+    
 });
