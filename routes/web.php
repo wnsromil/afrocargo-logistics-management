@@ -18,7 +18,7 @@ use App\Http\Controllers\Web\Admin\{
 };
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {

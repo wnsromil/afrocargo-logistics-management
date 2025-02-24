@@ -30,6 +30,7 @@
     <meta property="og:image:height" content="600">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" href="{{ asset('assets/images/AfroCargoLogo.svg') }}" type="image/svg+xml">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="">
