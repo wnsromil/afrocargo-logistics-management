@@ -9,7 +9,67 @@
   flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
 }
+body{
+  font-family: "Poppins", serif!important;
+}
+ .btn-primary {
+  border-color: #203A5F!important; 
+  color: #ffffff!important;
+}
+.btn-primary a
+{
+  color: #ffffff!important;
 
+}
+
+.btn-primary:hover, 
+.btn-primary:focus, 
+.btn-primary:active {
+  background-color: #203A5F; 
+  border-color: #203A5F; 
+  outline: none; 
+  color: #203a5f!important;
+} 
+.btn-primary:hover a
+{
+
+  color: #203a5f!important;
+}
+.thead-light th{
+   font-size:16px !important;
+}
+
+.head{
+  font-weight:500; 
+  font-size:16px;
+}
+.dposition{
+  position:relative;
+
+}
+.dmargin{
+  margin-top:20px;
+}
+.imgc{
+  position: absolute; 
+  top: 70%; 
+  left: 15px; 
+  transform: translateY(-50%); 
+  pointer-events: none;
+}
+.form-cs{
+  padding-left: 30px;font-size:12px; border:1px solid #00000042
+}
+.buttons{
+  width:162px;
+  height:37px;
+  font-size:14px;
+  font-weight:400;
+}
+.search{
+  width:241px;
+  height:40px;
+}
 .invoice-template-tab.invoices-main-tabs .invoices-tabs ul, .invoices-main-tabs .invoices-tabs ul, .date-list ul, .invoices-items-main-tabs ul, .activity .activity-list, .notifications .notification-list, .sidebar .sidebar-right ul {
   list-style: none;
   padding: 0;
@@ -3689,6 +3749,7 @@ span.select2-container.select2-container--default.select2-container--open {
 @media (min-width: 991.98px) {
   .mini-sidebar .page-wrapper {
     margin-left: 80px;
+    
   }
   .mini-sidebar .header-left #toggle_btn {
     opacity: 0;
@@ -11183,7 +11244,7 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 .page-wrapper {
   margin-left: 247px;
-  padding-top: 60px;
+  /* padding-top: 60px; */
   position: relative;
   -webkit-transition: all 0.4s ease;
   -ms-transition: all 0.4s ease;
@@ -26409,11 +26470,12 @@ td .invoice-detail i {
 
 .daterangepicker-wrap {
   padding-left: 23px;
+  border:1px solid black;
 }
 .daterangepicker-wrap.cal-icon:after {
   left: 10px;
   right: auto;
-  top: 6px;
+  top: -2px;
 }
 .daterangepicker-wrap input {
   width: 100%;
