@@ -14,7 +14,8 @@ use App\Http\Controllers\Web\Admin\{
     OrderShipmentController,
     HubTrackingController,
     InvoiceController,
-    NotificationController
+    NotificationController,
+    AdvanceReportsController
 };
 
 Route::get('/', function () {
@@ -48,6 +49,7 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('warehouse_manager', WarehouseManagerController::class);
         Route::resource('drivers', DriversController::class);
         Route::resource('inventories', InventoryController::class);
+        Route::resource('advance_reports', AdvanceReportsController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
         Route::resource('hubs', HubTrackingController::class);
         Route::resource('invoices', InvoiceController::class);

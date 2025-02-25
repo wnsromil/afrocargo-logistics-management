@@ -85,8 +85,8 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Advance Reports',
                 'icon' => 'assets/images/reports.svg',
-                'route' => '#',
-                'active' => '',
+                'route' => 'admin.advance_reports.index',
+                'active' => 'advance_reports',
                 'roles' => ['admin', 'warehouse_manager']
             ],
         ];
