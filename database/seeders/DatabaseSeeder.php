@@ -15,14 +15,18 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            RolesAndPermissionsSeeder::class,
-            AdminCredentialSeeder::class,
-            CountrySeeder::class,
-            StateSeeder::class,
-            CitySeeder::class,
+            // RolesAndPermissionsSeeder::class,
+            // AdminCredentialSeeder::class,
+            // CountrySeeder::class,
+            // StateSeeder::class,
+            // CitySeeder::class,
+            MenuSeeder::class,
+            TermsConditionSeeder::class,
+            PrivacyPolicySeeder::class,
+            AboutUsSeeder::class
         ]);
 
-        User::factory(10)->create();
+        // User::factory(10)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
