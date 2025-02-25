@@ -1,3 +1,6 @@
+<?php
+   echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
+?>
 <x-app-layout>
     <x-slot name="header">
         {{ __('Users') }}
@@ -6,17 +9,17 @@
     <x-slot name="cardTitle">
         All Users
 
-        <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="d-flex align-items-end justify-content-end mb-1">
             <div class="usersearch d-flex">
-                <div class="top-nav-search">
+                <div class="top-nav-search" >
                     <form>
-                        <input type="text" class="form-control" placeholder="Search ">
+                        <input type="text" class="form-control" style="width:250px; margin-left:60px;" placeholder="Search">
 
                     </form>
                 </div>
                 <div class="mt-2">
-                    <button type="button" class="btn btn-primary refeshuser "><img src="assets/images/refesh.svg"
-                            alt=""></button>
+                    <button type="button" class="btn btn-dark refeshuser" style="border-radius:0px; padding:5px;"><img src="assets/images/refesh.svg"
+                         style="width:25px;" alt=""></button>
                 </div>
             </div>
         </div>

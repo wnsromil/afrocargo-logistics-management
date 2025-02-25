@@ -1,0 +1,126 @@
+.dash-title h1 {
+    font-size: 20px;
+}
+
+.setStyle {
+    font-family: 'Poppins', serif;
+}
+
+.setCard {
+    border: 1px solid black;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.card.checked {
+    background-color: green;
+}
+
+.setBgColor {
+    background-color: #D3FFE6;
+}
+
+.fontSize {
+    font-family: "Poppins", serif;
+    font-size: 15px;
+    color:black;
+}
+
+.countFontSize {
+    font-family: "Poppins", serif;
+    font-size: 17px;
+}
+
+.cardFontSize{
+    font-family: "Poppins", serif;
+    font-size: 12px;
+}
+
+.cardh5Size{
+    color: black;
+    font-size:18px;
+}
+
+.cardAnalyticsSize{
+    color:black;
+    font-size:16px;
+}
+
+.buttoncolor {
+    background-color: #203f5f;
+    color: white;
+}
+
+.h5Size {
+    font-size: 30px;
+}
+
+.card.setCardSize {
+    margin-right:10px;
+    padding: 0px;
+    background-image: url('../images/TruckCard.png');
+    background-repeat: no-repeat;
+    background-position: bottom 0px right 0px;
+
+}
+
+.status-toggle .check:checked+.checktoggle {
+    background-color: #203f5f;
+    
+}
+.status-toggle .check:checked + .checktoggle:after{
+    border: 3px solid #4D82CE;
+    height:16px;
+    width:16px;
+}
+
+.checktoggle {
+    background-color: #FF7A7E;
+    /* border: 3px solid #BB1F23; */
+}
+
+.status-toggle .checktoggle:after{
+    border: 3px solid #BB1F23;
+    height:16px;
+    width:16px;
+}
+/* .checkbox-bg{
+    background-color: #FF7A7E;
+ } */
+
+.sidebar {
+    width: 250px;
+}
+
+.sidebarFont {
+    font-family: "Poppins", serif;
+    font-size: 50px;
+}
+
+.page-wrapper {
+    padding-top: 0px;
+}
+
+.logopin {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    padding-top: -80px;
+    padding-top: -80px;
+}
+
+.noticIcon {
+    height: 100px;
+    width: 100px;
+}
+
+.btnColor {
+    background: #203A5F;
+}
+
+.cardSeeBtn{
+    height:37px;
+    width:111px;
+}

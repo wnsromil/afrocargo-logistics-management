@@ -14,7 +14,12 @@ Version      : 1.0
 	var $slimScrolls = $('.slimscroll');
 	
 	// Sidebar
-	var Sidemenu = function () {
+	// var Sidemenu = function () {
+	// 	this.$menuItem = $('#sidebar-menu a');
+	// };
+
+	// Sidebar
+	var Sidemenu =  () => {
 		this.$menuItem = $('#sidebar-menu a');
 	};
 

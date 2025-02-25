@@ -1,20 +1,28 @@
-<div class="header header-one nav-head">
+<div class="header header-one nav-head shadow d-flex col-md-12 align-items-center">
 
-    <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
-        <div class="dash-logo">
+    <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none shadow col-md-6">
+        <div class="dash-logo logopin">
             <img src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt="">
         </div>
 
     </div>
     <div>
-        <a href="javascript:void(0);" class="side-toggle" id="toggle_btn">
+        <!-- <a href="javascript:void(0);" class="side-toggle" id="toggle_btn">
             <span class="toggle-bars">
                 <span class="bar-icons"></span>
                 <span class="bar-icons"></span>
                 <span class="bar-icons"></span>
                 <span class="bar-icons"></span>
             </span>
-        </a>
+        </a> -->
+        <a href="javascript:void(0);" id="toggle_btn" class="side-toggle">
+					<span class="toggle-bars">
+						<span class="bar-icons"></span>
+						<span class="bar-icons"></span>
+						<span class="bar-icons"></span>
+						<span class="bar-icons"></span>
+					</span>
+				</a>
     </div>
 
     <!-- Sidebar Toggle -->
@@ -36,12 +44,20 @@
     <!-- /Mobile Menu Toggle -->
 
     <!-- Header Menu -->
-    <div class="nav-profile">
-        <button class="btn profile dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+
+    <!-- -------------- Notification ------------------------------ -->
+    <div class="col-md-6 d-flex justify-content-end me-4">
+        
+            <a class="nav-link mt-1 mx-4" href="#">
+                <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span>
+            </a>
+            
+
+    <!-- <div class="nav-profile"> -->
+        <button class="btn profile dropdown-toggle btnColor" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
             aria-expanded="false">
-            <div class="">
-                <span><i class="fa-regular fa-user" style="color: #ffffff;"></i></span>
-            </div>
+                <span><i class="fa-regular fa-user" style="color: #ffffff; font-size:25px;"></i></span>
+         
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
@@ -64,5 +80,5 @@
             </li>
 
         </ul>
-    </div>
+</div>
 </div>
