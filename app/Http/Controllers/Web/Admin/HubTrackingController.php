@@ -20,13 +20,32 @@ class HubTrackingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function transfer_hub()
     {
         //
         $parcels = HubTracking::when($this->user->role_id!=1,function($q){
             return $q->where('warehouse_id',$this->user->warehouse_id);
         })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
-        return view('admin.hubs.index', compact('parcels'));
+        return view('admin.hubs.transfer_hub', compact('parcels'));
+    }
+
+    public function received_hub()
+    {
+        //
+        $parcels = HubTracking::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
+        return view('admin.hubs.received_hub', compact('parcels'));
+    }
+
+
+    public function received_orders()
+    {
+        //
+        $parcels = HubTracking::when($this->user->role_id!=1,function($q){
+            return $q->where('warehouse_id',$this->user->warehouse_id);
+        })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
+        return view('admin.hubs.received_orders', compact('parcels'));
     }
     
 

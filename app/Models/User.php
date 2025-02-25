@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -29,6 +30,11 @@ class User extends Authenticatable
         'role_id',
         'status',
         'phone',
+        'address',
+        'country_id',
+        'state_id',
+        'city_id',
+        'pincode',
         'is_deleted',
         'vehicle_id',
         'license_number',
@@ -79,6 +85,12 @@ class User extends Authenticatable
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
+    }
+    protected function profilePic(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => url($value),
+        );
     }
 
 }

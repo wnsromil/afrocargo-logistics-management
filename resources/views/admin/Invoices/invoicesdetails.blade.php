@@ -147,6 +147,7 @@
             color: #000000;
             font-weight: bold;
         }
+
         .total-section p {
             font-size: 17px;
         }
@@ -161,9 +162,7 @@
             justify-content: space-between;
             align-items: flex-start;
             background: #E7E9F6;
-            /* Top align */
             gap: 20px;
-            /* Space between the sections */
         }
 
         .signature-section,
@@ -180,13 +179,25 @@
             background-color: transparent;
             mix-blend-mode: multiply;
         }
+
+        @media print {
+            .download-buttons {
+                display: none;
+            }
+        }
     </style>
 
     <div class="invoice-container">
         <!-- Download Buttons -->
-        <div class="download-buttons">
-            <button class="btn-download btn-primary"><i class="fa-solid fa-download me-2"></i></i>Download PDF</button>
-            <button class="btn-download btn-primary"><i class="fa fa-print me-2"></i>Print Invoice</button>
+        <div class="download-buttons" id="downloadButtons">
+            <a href="{{ route('admin.invoices.invoicesdownload', $getInvoice['id']) }}" class="btn btn-primary me-2">
+                <i class="fa-solid fa-download me-2"></i>Download PDF
+            </a>
+
+            <a href="javascript:void(0)" class="btn btn-primary me-2" onclick="printInvoice()">
+                <i class="fa fa-print me-2"></i>Print Invoice
+            </a>
+
         </div>
 
         <!-- Header Section -->
@@ -203,7 +214,8 @@
 
         <!-- Invoice Info -->
         <div class="invoice-info">
-            <p><span class="highlight">Issue Date:</span>{{Carbon\Carbon::parse($getInvoice->issue_date)->format('d-m-Y')}}</p>
+            <p><span class="highlight">Issue
+                    Date:</span>{{Carbon\Carbon::parse($getInvoice->issue_date)->format('d-m-Y')}}</p>
             <p><span class="highlight">Driver Name:</span>{{$getInvoice->parcel->driver->name}}</p>
             <p><span class="highlight">Cont:</span> 0425</p>
             <p><span class="highlight">Invoice No:</span> {{$getInvoice->invoice_no}}</p>
@@ -241,7 +253,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Plastic Wrapped Block</td>
+                    <td>{{ implode(', ', array_map('ucfirst', $getInvoice->parcel->getCategoryNamesAttribute())) }}</td>
                     <td>1</td>
                     <td>{{$getInvoice->parcel->weight}}</td>
                     <td>${{$getInvoice->parcel->partial_payment}}</td>
@@ -254,7 +266,7 @@
         </table>
 
         <!-- Total Section -->
-        <div class="row-container">
+        <div class="row-container" style="background-color: #E7E9F6;">
             <div class="signature-section">
                 <p>I have Received the Contract and Accept the Terms and Condition.</p>
                 <p style="margin-top:20px;">Authorised Sign</p>
@@ -268,4 +280,9 @@
             </div>
         </div>
     </div>
+    <script>
+        function printInvoice() {
+            window.print();
+        }
+    </script>
 </x-app-layout>
