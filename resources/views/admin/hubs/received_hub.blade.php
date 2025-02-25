@@ -3,7 +3,7 @@
         {{ __('Parcel Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle">
+    <!-- <x-slot name="cardTitle">
         All Parcels
 
         <div class="d-flex align-items-center justify-content-end mb-1">
@@ -15,6 +15,22 @@
                 </div>
             </div>
         </div>
+    </x-slot> -->
+    <x-slot name="cardTitle" >
+     <p class="head">Transfer to Warehouse</p> 
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search ">
+
+                    </form>
+                </div>
+                <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
+                </div>
+            </div>
     </x-slot>
 
     <div>
@@ -23,7 +39,7 @@
                 <div class="table-responsive">
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr>
+                            <tr style="background-image: url('assets/images/Background.png');">
                                 <th><input type="checkbox" id="selectAll"></th> <!-- Select All Checkbox -->
                                 <th>Sn no.</th>
                                 <th>Tracking Number</th>
@@ -32,7 +48,11 @@
                                 <th>From Warehouse</th>
                                 <th>To Warehouse</th>
                                 <th>Total Quantity</th>
+                                <th>Payment Status</th>
+                                <th>Payment Mode</th>
+                                <th>Amount</th>
                                 <th>Status</th>
+                                <th>Status Update</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
