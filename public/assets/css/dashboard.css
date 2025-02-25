@@ -5,6 +5,7 @@
 .nav-head {
     color: white;
     background: #203A5F !important;
+    height:80px;
 }
 .header{
     position: sticky;
@@ -29,14 +30,15 @@
 }
 
 .header .profile {
-    position: absolute;
+    /* position: absolute;
     top: 17%;
     padding: 1%;
-    left: 95%;
-    background: rgba(255, 255, 255, 0.1); 
- box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px); 
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    left: 95%; */
+    border:none;
+    /* background: rgba(255, 255, 255, 0.1);  */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
+    /* backdrop-filter: blur(10px);  */
+    /* border: 1px solid rgba(255, 255, 255, 0.3); */
 }
 
 .btn::after{
@@ -78,9 +80,9 @@ text-align: left;
     margin: 0px 0 0px 0 !important; 
 }
 
-.inovices-card .card-body {
+/* .inovices-card .card-body {
     padding: 5px !important;
-}
+} */
 .dash-widget-header .dash-count .dash-counts p {
     font-size: 14px;
    color: var(--text-Color-252F, #252F49);
@@ -95,7 +97,7 @@ text-align: left;
     color: #000000 !important;
 }
 .card-table .card-body .table td {
-    color: #737B8B !important;
+    color: #141414 !important;
     font-weight: 400;
     border-top: 0;
     font-size: 14px;

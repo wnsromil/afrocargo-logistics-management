@@ -1,3 +1,6 @@
+<?php
+   echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
+?>
 <x-app-layout>
     <x-slot name="header">
         {{ __('Users') }}
@@ -8,7 +11,7 @@
         <x-slot name="cardTitle">
         
 
-        <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="d-flex align-items-end justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
                     <a href="#" class="btn btn-primary buttons"style="background:#203A5F">
@@ -28,7 +31,7 @@
        <div class="usersearch d-flex">
                 <div class="top-nav-search">
                     <form>
-                        <input type="text" class="form-control" placeholder="Search ">
+                        <input type="text" class="form-control" style="width:250px; margin-left:60px;" placeholder="Search">
 
                     </form>
                 </div>
