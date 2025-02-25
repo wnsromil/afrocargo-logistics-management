@@ -3,17 +3,53 @@
         {{ __('Warehouse Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle">
+    <!-- <x-slot name="cardTitle">
         All Drivers
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a class="btn btn-primary" href="{{route('admin.drivers.create')}}"><i
+                    <a class="btn btn-primary" style="background:#203A5F" href="{{route('admin.drivers.create')}}"><i
                             class="fa fa-plus-circle me-2"></i>Add Driver</a>
                 </div>
             </div>
         </div>
-    </x-slot>
+    </x-slot> -->
+
+    <x-slot name="cardTitle">
+        
+
+        <div class="d-flex align-items-center justify-content-end mb-1">
+            <div class="usersearch d-flex">
+                <div class="mt-2">
+                    <a href="#" class="btn btn-primary buttons"style="background:#203A5F">
+                    <img src="assets/images/Vector.png">  
+                    Add Driver
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+  
+  
+  
+  
+    <x-slot name="cardTitle" >
+       <p class="head">All Driver</p>
+
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search ">
+
+                    </form>
+                </div>
+                <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
+                </div>
+            </div>
+    </x-slot> 
 
     <div>
 
@@ -23,17 +59,19 @@
 
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr>
+                            <tr style="background-image: url('assets/images/Background.png');">
                                 <th>Sn no.</th>
                                 <th>Manager Name</th>
+                                <th>Driver Name</th>
                                 <th>Vehicle Info</th>
                                 <th>Warehouse Name</th>
                                 <th>E-mail</th>
                                 <th>Phone</th>
                                 <th>Address</th>
+                                <th>License Number</th>
                                 <th>Status</th>
                                 <th>Action</th>
-                            </tr>
+                              </tr>
                         </thead>
                         <tbody>
                             @forelse ($warehouses as $index => $warehouse)
