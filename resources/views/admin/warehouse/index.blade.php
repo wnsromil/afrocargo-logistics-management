@@ -2,19 +2,40 @@
     <x-slot name="header">
         {{ __('Warehouse Management') }}
     </x-slot>
-
     <x-slot name="cardTitle">
-        Create New User
+        
 
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="{{route('admin.warehouses.create')}}" class="btn btn-primary">
-                        Add Warehouse
+                    <a href="{{route('admin.warehouses.create')}}" class="btn btn-primary buttons"style="background:#203A5F">
+                    <img src="assets/images/Vector.png">  
+                    Add Warehouse
                     </a>
                 </div>
             </div>
         </div>
+    
+  
+  
+  
+  
+    <x-slot name="cardTitle" >
+       <p class="head">All Warehouse</p>
+
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search ">
+
+                    </form>
+                </div>
+                <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
+                </div>
+            </div>
     </x-slot>
 
     <div>
@@ -25,18 +46,18 @@
 
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr>
-                                <th>Sn no.</th>
-                                <th>Warehouse Name</th>
-                                <th>Warehouse Code</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Country</th>
-                                <th>Zip Code</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                            <tr style="background-image: url('assets/images/Background.png');">
+                                <th style="font-size:16px">Sn no.</th>
+                                <th style="font-size:16px">Warehouse Name</th>
+                                <th style="font-size:16px">Warehouse Code</th>
+                                <th style="font-size:16px">Address</th>
+                                <th style="font-size:16px">City</th>
+                                <th style="font-size:16px">State</th>
+                                <th style="font-size:16px">Country</th>
+                                <th style="font-size:16px">Zip Code</th>
+                                <th style="font-size:16px">Phone</th>
+                                <th style="font-size:16px">Status</th>
+                                <th style="font-size:16px">Action</th>
                             </tr>
                         </thead>
                         <tbody>

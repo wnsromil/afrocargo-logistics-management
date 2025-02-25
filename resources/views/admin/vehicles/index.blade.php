@@ -4,18 +4,39 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        All Vehicle
+        
 
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="{{route('admin.vehicle.create')}}" class="btn btn-primary">
-                        <i
-                            class="fa fa-plus-circle me-2"></i>Add Warehouse
+                    <a href="#" class="btn btn-primary buttons"style="background:#203A5F">
+                    <img src="assets/images/Vector.png">  
+                    Add Vehicle
                     </a>
                 </div>
             </div>
         </div>
+    
+  
+  
+  
+  
+    <x-slot name="cardTitle" >
+     <p class="head">All Vehicle</p>  
+
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search ">
+
+                    </form>
+                </div>
+                <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
+                </div>
+            </div>
     </x-slot>
 
     <div>
@@ -26,10 +47,11 @@
 
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr>
+                            <tr style="background-image: url('assets/images/Background.png');">
                                 <th>Sn no.</th>
                                 <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
+                                <th>Driver Name</th>
                                 <th>Vehicle Number</th>
                                 <th>Vehicle Model</th>
                                 <th>Vehicle Year</th>
