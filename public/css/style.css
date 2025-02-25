@@ -158,3 +158,8 @@ input#cb-switch {
 .textarea-swal2-input{
     height: 115px !important;
 }
+
+.cardbody{
+    border:1px solid black;
+    border-radius: 4px;
+}

@@ -4,19 +4,103 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Invoices
+      <p class="head" style="color:black">Invoices </p> 
+        <div class="d-flex align-items-center justify-content-end mb-1">
+            <div class="usersearch d-flex">
+                <div class="mt-2">
+                    <a href="#" class="btn btn-primary"style="background:#203A5F">
+                    <img src="assets/images/Vector.png">  
+                    Add Invoice
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+  
     </x-slot>
 
-    <div>
+  
+
+
+<form>
+    <div class="row">
+    <div class="col-md-3 dposition">
+    <label for="searchInput">Search</label>
+     <img class="imgc" src="assets/img/icons/search.svg" alt="img" >
+    <input type="text" id="searchInput" class="form-control form-cs" placeholder="Search" >
+     </div>
+
+     <div class="col-md-3 dposition" >
+     <label>By Invoice #ID</label> 
+     <img  class="imgc"src="assets/img/icons/search.svg" alt="img" >
+    <input type="text" class="form-control form-cs" placeholder="Enter Invoice #ID" >
+     </div>
+     <div class="col-md-3 dposition" >
+        <label>Invoice Date</label>
+        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+		<input type="text" class="btn-filters form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
+	    </div>
+		</div>
+     
+     <div class="col-md-3 dposition" >
+     <label>By Container</label> 
+     <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
+    <input type="text" class="form-control form-cs" placeholder="Enter Container Seal No." >
+    </div>
+
+   <div class="col-md-3 dmargin">
+   <!-- Moment.js (required for daterangepicker) -->
+   <label>By Warehouse</label> 
+   <select class="js-example-basic-single select2">
+		<option selected="selected" style="color:#737B8B">Select Warehouse</option>
+		<option>white</option>
+		<option>purple</option>
+		</select>
+   </div>
+
+    <div class="col-md-3 dmargin" >
+    <label>By Driver</label> 
+   <select class="js-example-basic-single select2">
+		<option selected="selected">Select Drive</option>
+		<option>white</option>
+		<option>purple</option>
+		</select>
+        </div>
+
+
+        <div class="col-md-3 dmargin" >
+        <label>By Invoice Item</label> 
+        <img  src="assets/img/icons/search.svg" alt="img" class="search-icon imgc" >
+    <input type="text" class="form-control form-cs" placeholder="Enter Invoice Item">
+    </div>
+    
+    <div class="col-md-3" style="margin-top:47px; display:flex; justify-content:end; gap:20px;">
+       <button class="btn btn-primary"style="background:#203A5F; font-weight:300; height:35px">Filter</button>
+          <button class="btn btn-outline-danger " style="font-weight:300; height:35px" >Reset</button>
+        </div>
+        </div>
+    
+</form>
+
+
+
+
+
+
+
+
+
+
+<div>
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable">
-                        <thead class="thead-light">
-                            <tr>
+                    <table class="table table-stripped table-hover datatable"style="margin-top:20px">
+                        <thead class="thead-light" >
+                            <tr style="background-image: url('assets/images/Background.png');">
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
-                                <th>Invioce No</th>
+                                <th>Invoice No</th>
                                 <th>Tracking ID</th>
                                 <th>From</th>
                                 <th>To</th>
