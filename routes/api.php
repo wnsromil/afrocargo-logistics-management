@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\{
     ForgetPassword,
     ProfileController,
     CommonController,
+    NotificationController,
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -47,6 +48,7 @@ Route::middleware('auth:api')->group( function () {
         Route::get('OrderHistory/{id}', [OrderShipmentController::class, 'OrderHistory']);
         Route::get('inventoryOrderCategories', [OrderShipmentController::class, 'inventoryOrderCategories']);
         Route::post('changePassword', [ProfileController::class, 'changePassword']);
+        Route::get('/get-notification', [NotificationController::class, 'getNotifications']);
     });
     
 });
