@@ -102,12 +102,12 @@ class ProfileController extends Controller
         ]);
 
         // Delete old profile picture if exists
-        if ($user->profile_pic) {
-            $oldProfilePath = public_path($user->profile_pic); // Get full path
-            if (file_exists($oldProfilePath)) {
-                unlink($oldProfilePath); // Delete old file
-            }
-        }
+        // if ($user->profile_pic) {
+        //     $oldProfilePath = public_path($user->profile_pic); // Get full path
+        //     if (file_exists($oldProfilePath)) {
+        //         unlink($oldProfilePath); // Delete old file
+        //     }
+        // }
 
         // Upload new profile picture
         $file = $request->file('profile_pic');

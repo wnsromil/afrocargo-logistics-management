@@ -30,7 +30,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('logout', [RegisterController::class, 'logout']);
     Route::post('verifyOtp', [RegisterController::class, 'verifyOtp']);
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);
-    Route::post('restPassword', [ForgetPassword::class, 'restPassword']);
+    Route::post('resetPassword', [ForgetPassword::class, 'resetPassword']);
 
     Route::middleware(['apiAuthCheck'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'profile']);
