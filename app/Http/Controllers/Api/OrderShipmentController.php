@@ -19,22 +19,37 @@ class OrderShipmentController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        //
+{
+    $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
+        return $q->where('warehouse_id', $this->user->warehouse_id);
+    })->when($this->user->role_id == 3, function ($q) {
+        return $q->where('customer_id', $this->user->id);
+    })->when($this->user->role_id == 4, function ($q) {
+        return $q->where('driver_id', $this->user->id);
+    })
+    ->when(!empty($request->status), function ($q) use ($request) {
+        return $q->whereIn('status', explode(',', $request->status));
+    })
+    ->when(!empty($request->order_type), function ($q) use ($request) {
+        $today = now()->format('Y-m-d'); // Aaj ki date
 
-        $parcels = Parcel::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->when($this->user->role_id==3,function($q){
-            return $q->where('customer_id',$this->user->id);
-        })->when($this->user->role_id==4,function($q){
-            return $q->where('driver_id',$this->user->id);
-        })
-        ->when(!empty($request->status),function($q)use($request){
-            return $q->whereIn('status',explode(',',$request->status));
-        })
-        ->with(['warehouse','customer','driver'])->latest()->paginate(10);
-        return $this->sendResponse($parcels, 'Parcel data fetch successfully.');
-    }
+        if ($request->order_type == 'pending') {
+            return $q->whereDate('created_at', '<', $today); // Aaj se pehle ki date ka data
+        } elseif ($request->order_type == 'today') {
+            return $q->whereDate('created_at', '=', $today); // Aaj ki date ka data
+        } elseif ($request->order_type == 'upcoming') {
+            return $q->whereDate('created_at', '>=', $today); // Aaj aur aage ki date ka data
+        } elseif ($request->order_type == 'Received By Pickup Man') {
+            return $q->where('status', 'Received By Pickup Man'); // Sirf complete status wale records
+        }
+    })
+    ->with(['warehouse', 'customer', 'driver'])
+    ->latest()
+    ->paginate(10);
+
+    return $this->sendResponse($parcels, 'Parcel data fetched successfully.');
+}
+
 
     /**
      * Store a newly created resource in storage.
