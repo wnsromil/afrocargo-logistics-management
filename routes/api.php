@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\{
     ProfileController,
     CommonController,
     NotificationController,
+    SubcategoryController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -49,6 +50,8 @@ Route::middleware('auth:api')->group( function () {
         Route::get('inventoryOrderCategories', [OrderShipmentController::class, 'inventoryOrderCategories']);
         Route::post('changePassword', [ProfileController::class, 'changePassword']);
         Route::get('/get-notification', [NotificationController::class, 'getNotifications']);
+        Route::get('/get-subcategories/{category_id}', [SubcategoryController::class, 'getSubcategoriesByCategoryId']);
+        Route::get('/categories-item/{id}', [OrderShipmentController::class, 'getParcelDetailsById']);
+
     });
-    
 });

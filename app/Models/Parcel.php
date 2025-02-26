@@ -13,8 +13,11 @@ class Parcel extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'parcel_car_ids' => 'array'
+        'parcel_car_ids' => 'array',
+        'customer_subcategories_data' => 'array',
+        'driver_subcategories_data' => 'array',
     ];
+    
 
 
     // Mutator to set a default tracking number
