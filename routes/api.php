@@ -8,7 +8,9 @@ use App\Http\Controllers\Api\{
     ProfileController,
     CommonController,
     NotificationController,
-    SubcategoryController
+    SubcategoryController,
+    CustomerController,
+    ContainerController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -52,6 +54,11 @@ Route::middleware('auth:api')->group( function () {
         Route::get('/get-notification', [NotificationController::class, 'getNotifications']);
         Route::get('/get-subcategories/{category_id}', [SubcategoryController::class, 'getSubcategoriesByCategoryId']);
         Route::get('/categories-item/{id}', [OrderShipmentController::class, 'getParcelDetailsById']);
+        Route::post('/update-driver-parcel', [OrderShipmentController::class, 'updateDriverParcel']);
+        Route::get('/customers-list', [CustomerController::class, 'getCustomers']);
+     
+        // Container Routes
+        Route::get('/container-list', [ContainerController::class, 'getActiveContainers']);
 
     });
 });

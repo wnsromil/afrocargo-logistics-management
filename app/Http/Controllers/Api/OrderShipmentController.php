@@ -189,39 +189,40 @@ class OrderShipmentController extends Controller
             'driver_subcategories_data',
             'destination_address',
             'destination_user_phone',
-            'destination_user_name'
+            'destination_user_name',
+            'id'
         )->find($id);
-    
+
         if (!$parcel) {
             return response()->json([
                 'success' => false,
                 'message' => 'Parcel not found!'
             ], 404);
         }
-    
+
         // Customer & Driver JSON data ko check karein ki already array hai ya nahi
-        $customerData = is_array($parcel->customer_subcategories_data) 
-            ? $parcel->customer_subcategories_data 
+        $customerData = is_array($parcel->customer_subcategories_data)
+            ? $parcel->customer_subcategories_data
             : json_decode($parcel->customer_subcategories_data, true);
-    
-        $driverData = is_array($parcel->driver_subcategories_data) 
-            ? $parcel->driver_subcategories_data 
+
+        $driverData = is_array($parcel->driver_subcategories_data)
+            ? $parcel->driver_subcategories_data
             : json_decode($parcel->driver_subcategories_data, true);
-    
+
         // ✅ Customer subcategories ke category_id ke liye category_name fetch karein
         if (is_array($customerData)) {
             foreach ($customerData as &$category) {
                 $category['category_name'] = Category::where('id', $category['category_id'])->value('name');
             }
         }
-    
+
         // ✅ Driver subcategories ke category_id ke liye category_name fetch karein
         if (is_array($driverData)) {
             foreach ($driverData as &$category) {
                 $category['category_name'] = Category::where('id', $category['category_id'])->value('name');
             }
         }
-    
+
         // ✅ Final Response
         return response()->json([
             'success' => true,
@@ -230,8 +231,76 @@ class OrderShipmentController extends Controller
                 'destination_address' => $parcel->destination_address,
                 'destination_user_phone' => $parcel->destination_user_phone,
                 'destination_user_name' => $parcel->destination_user_name,
+                'parcels_id' => $parcel->id,
+                'estimated_value' => $parcel->total_amount,
+                'length' => $parcel->length,
+                'width' => $parcel->width,
+                'height' => $parcel->height,
+                'weight' => $parcel->weight,
             ]
         ]);
     }
-    
+
+    public function updateDriverParcel(Request $request)
+    {
+        $request->validate([
+            'parcels_id' => 'required|integer',
+            'driver_subcategories_data' => 'required',
+            'payment_type' => 'required|string',
+            'driver_parcel_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'estimated_value' => 'required|integer',
+            'length' => 'required|numeric',
+            'width' => 'required|numeric',
+            'height' => 'required|numeric',
+            'weight' => 'required|numeric',
+        ]);
+
+        // Form-data se aane wale JSON ko array mein convert kar rahe hain
+        if (is_string($request->driver_subcategories_data)) {
+            $request->driver_subcategories_data = json_decode($request->driver_subcategories_data, true);
+        }
+
+        if (!is_array($request->driver_subcategories_data)) {
+            return response()->json(['message' => 'The driver subcategories data field must be a valid JSON array.'], 422);
+        }
+
+        // Parcel ko find kar rahe hain
+        $parcel = Parcel::find($request->parcels_id);
+
+        if (!$parcel) {
+            return response()->json(['message' => 'Parcel not found'], 404);
+        }
+
+        // JSON encode karke driver_subcategories_data ko update karenge
+        $parcel->driver_subcategories_data = json_encode($request->driver_subcategories_data);
+
+        // Payment type ko update karenge
+        $parcel->payment_type = $request->payment_type;
+        $parcel->total_amount = $request->estimated_value;
+        $parcel->length = $request->length;
+        $parcel->width = $request->width;
+        $parcel->height = $request->height;
+        $parcel->weight = $request->weight;
+        $parcel->update_role = 'driver';
+         if($request->payment_mode == "partial_payment"){
+            $parcel->partial_payment = $request->paying_amount; 
+            $parcel->remaining_payment = $request->remaining_amount; 
+         }else{
+            $parcel->partial_payment = 0; 
+            $parcel->remaining_payment = 0; 
+         }
+
+        // Image upload aur path store
+        if ($request->hasFile('driver_parcel_image')) {
+            $image = $request->file('driver_parcel_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/driver_parcel'), $imageName);
+            $parcel->driver_parcel_image = 'uploads/driver_parcel/' . $imageName;
+        }
+
+        // Save kar rahe hain
+        $parcel->save();
+
+        return response()->json(['message' => 'Parcel updated successfully', 'parcel' => $parcel]);
+    }
 }
