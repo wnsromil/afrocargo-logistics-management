@@ -87,7 +87,7 @@
                     <div class="card-body">
                         <!-- Page Header -->
                         <div class="page-header">
-                            <div class="content-page-header" style="border-bottom: 1px solid #f0f0f0;">
+                            <div class="content-page-header">
                                 @isset($cardTitle)
                                     {{$cardTitle}}
                                 @endisset
@@ -118,7 +118,7 @@
 
     <!-- /Theme Setting -->
     <!-- jQuery -->
-    <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"></>
+    <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"><script/>
 
     <!-- Bootstrap Core JS -->
     <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
@@ -137,17 +137,23 @@
     <script src="{{asset('assets/js/theme-settings.js')}}"></script>
     <script src="{{asset('assets/js/greedynav.js')}}"></script>
 
-    <!-- Custom JS -->
-    <script src="{{asset('assets/js/script.js')}}"></script>
-
     <script src="{{asset('js/comman.js')}}"></script>
     <script src="{{asset('select2-4.1/dist/js/select2.min.js')}}"></script>
     <script src="{{asset('js/admin/select2.js')}}"></script>
-       
-    <!-- Datepicker Core JS -->
-		<script src="assets/plugins/moment/moment.min.js"></script>
-		<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{{asset('assets/plugins/moment/moment.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/daterangepicker/daterangepicker.js')}}"></script>
+    
+    // <!-- Bootstrap JS (ensure this is included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{{asset('assets/js/script.js')}}"></script>
+
+    <!-- Bootstrap CSS -->
+
+
+    
 		
     <script>
         @session('success')

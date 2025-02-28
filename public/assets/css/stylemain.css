@@ -2,16 +2,38 @@
     font-size: 20px;
 }
 
+
+/* .thead-light{
+    background: #E7E9F6;
+} */
+.table thead {
+    background: #E7E9F6;
+}
+
+/* .rowMargin{
+    margin-top: 0px;
+} */
+
 .setStyle {
     font-family: 'Poppins', serif;
 }
 
 .setCard {
-    border: 1px solid black;
+    border: 1px solid #252F49;
 }
 
 .card {
+    border-radius: 4px;
+    padding: 0px;
+}
+
+.innerCards {
     border-radius: 10px;
+    padding: 0px;
+}
+
+.card .card {
+    padding: 14px;
 }
 
 .card.checked {
@@ -25,7 +47,7 @@
 .fontSize {
     font-family: "Poppins", serif;
     font-size: 15px;
-    color:black;
+    /* color:black; */
 }
 
 .countFontSize {
@@ -33,19 +55,31 @@
     font-size: 17px;
 }
 
-.cardFontSize{
+.countFontSize2 {
+    font-family: "Poppins", serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #252F49;
+}
+
+.cardFontSize {
     font-family: "Poppins", serif;
     font-size: 12px;
 }
 
-.cardh5Size{
-    color: black;
-    font-size:18px;
+.font13 {
+    font-size: 13px;
+    font-weight: medium;
 }
 
-.cardAnalyticsSize{
-    color:black;
-    font-size:16px;
+.cardh5Size {
+    color: black;
+    font-size: 18px;
+}
+
+.cardAnalyticsSize {
+    color: black;
+    font-size: 16px;
 }
 
 .buttoncolor {
@@ -58,7 +92,7 @@
 }
 
 .card.setCardSize {
-    margin-right:10px;
+    margin-right: 10px;
     padding: 0px;
     background-image: url('../images/TruckCard.png');
     background-repeat: no-repeat;
@@ -68,30 +102,41 @@
 
 .status-toggle .check:checked+.checktoggle {
     background-color: #203f5f;
-    
-}
-.status-toggle .check:checked + .checktoggle:after{
-    border: 3px solid #4D82CE;
-    height:16px;
-    width:16px;
+    border: none;
+    height: 20px;
+    width: 41px;
+
 }
 
-.checktoggle {
+.status-toggle .check:checked+.checktoggle:after {
+    border: 2px solid #4D82CE;
+    height: 16px;
+    width: 16px;
+}
+
+.status-toggle .checktoggle {
     background-color: #FF7A7E;
+    border: none;
+    height: 20px;
+    width: 41px;
     /* border: 3px solid #BB1F23; */
 }
 
-.status-toggle .checktoggle:after{
-    border: 3px solid #BB1F23;
-    height:16px;
-    width:16px;
+.status-toggle .checktoggle:after {
+    border: 2px solid #BB1F23;
+    height: 16px;
+    width: 16px;
 }
-/* .checkbox-bg{
-    background-color: #FF7A7E;
- } */
+
+.checkbox-cardBg {
+    background-color: #D3FFE6;
+}
 
 .sidebar {
-    width: 250px;
+    width: 268px;
+    position: fixed;
+    z-index: 10;
+    /* Adjust as needed */
 }
 
 .sidebarFont {
@@ -116,11 +161,58 @@
     width: 100px;
 }
 
-.btnColor {
-    background: #203A5F;
+.btnColor1 {
+    background-color: #203A5F;
 }
 
-.cardSeeBtn{
-    height:37px;
-    width:111px;
+.cardSeeBtn {
+    height: 37px;
+    width: 111px;
+}
+
+.textSize {
+    font-size: 22px;
+}
+
+.mainFontFamily {
+    font-family: "Poppins", serif;
+}
+
+.btnColor {
+    background-color: #252F49;
+    color: #ffffff;
+    /* font-size:14px; */
+}
+
+.iconSize {
+    font-size: 17px;
+}
+
+.shadow-box {
+    box-shadow: 3px 1px 15px rgba(0, 0, 0, 0.3);
+
+}
+
+/* .card .card{
+    padding: 15px 30px;
+} */
+
+.li {
+    list-style-type: disc !important;
+    color: green;
+    /* height:7.5px;
+    width:7.5px; */
+}
+
+.fixContainer {
+    padding: 83px 14px 10px 14px;
+}
+
+.innerContainer {
+    padding: 15px 109px 15px 30px;
+}
+
+.setTopBottomMargin {
+    margin: 17px 0px 17px 0px;
+
 }
