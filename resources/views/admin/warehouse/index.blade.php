@@ -2,19 +2,18 @@
     <x-slot name="header">
         {{ __('Warehouse Management') }}
     </x-slot>
-    <x-slot name="cardTitle">
-        
 
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    <a href="{{route('admin.warehouses.create')}}" class="btn btn-primary buttons"style="background:#203A5F">
-                    <img src="assets/images/Vector.png">  
-                    Add Warehouse
-                    </a>
-                </div>
+    
+    <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="usersearch d-flex">
+            <div class="mt-2">
+                <a href="{{route('admin.warehouses.create')}}" class="btn btn-primary buttons"style="background:#203A5F">
+                <img src="assets/images/Vector.png">  
+                Add Warehouse
+                </a>
             </div>
         </div>
+    </div>
     
   
   
