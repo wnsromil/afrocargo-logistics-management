@@ -700,7 +700,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Maury Cambling</span>
@@ -714,11 +714,13 @@
                                     <td>12/28/2023</td>
                                     <td>Medium</td>
                                     <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
-                                    <td>$1,54,220</td>
+                                    <td>$167.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -744,7 +746,7 @@
                                     </td>
                                 </tr>
                 <!-- 2 -->
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Torin Cavaney</span>
@@ -765,7 +767,8 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -790,7 +793,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Gwyn Axan</span>
@@ -808,7 +811,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -833,7 +838,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Charisse Pemberton</span>
@@ -852,7 +857,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -877,7 +884,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Naville Fellis</span>
@@ -896,7 +903,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -921,7 +930,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Sustte Clementi</span>
@@ -939,7 +948,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -964,7 +975,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Harriet Scougal</span>
@@ -983,7 +994,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -1008,7 +1021,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Bendix Doyie</span>
@@ -1025,7 +1038,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -1052,7 +1067,7 @@
                                 </tr>
 
 
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Jalene tailby</span>
@@ -1069,7 +1084,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -1095,7 +1112,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="opacity-50">
+                                <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Nedi Holtham</span>
@@ -1112,7 +1129,9 @@
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
