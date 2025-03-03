@@ -448,9 +448,9 @@
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>KG 2114</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
-                                    <span  class="opacity-50">Total Order :
+                                    <span class="opacity-75">Total Order :
                                     </span><strong>120</strong><br>
-                                    <span  class="opacity-50">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
                                     <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
                                     <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
@@ -479,9 +479,9 @@
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
-                                    <span  class="opacity-50">Total Order :
+                                    <span class="opacity-75">Total Order :
                                     </span><strong>120</strong><br>
-                                    <span  class="opacity-50">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
                                     <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
                                     <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
@@ -509,9 +509,9 @@
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
-                                    <span  class="opacity-50">Total Order :
+                                    <span class="opacity-75">Total Order :
                                     </span><strong>120</strong><br>
-                                    <span  class="opacity-50">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
                                     <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
                                     <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
@@ -540,9 +540,9 @@
                                         3501</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
-                                    <span  class="opacity-50">Total Order :
+                                    <span class="opacity-75">Total Order :
                                     </span><strong>120</strong><br>
-                                    <span  class="opacity-50">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
                                     <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
                                     <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
@@ -700,7 +700,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Maury Cambling</span>
@@ -744,7 +744,7 @@
                                     </td>
                                 </tr>
                 <!-- 2 -->
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Torin Cavaney</span>
@@ -790,7 +790,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Gwyn Axan</span>
@@ -833,7 +833,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Charisse Pemberton</span>
@@ -877,7 +877,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Naville Fellis</span>
@@ -921,7 +921,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Sustte Clementi</span>
@@ -964,7 +964,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Harriet Scougal</span>
@@ -1008,7 +1008,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Bendix Doyie</span>
@@ -1052,7 +1052,7 @@
                                 </tr>
 
 
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Jalene tailby</span>
@@ -1095,7 +1095,7 @@
                                     </td>
                                 </tr>
 
-                                <tr  class="opacity-50">
+                                <tr class="opacity-50">
                                     <td>
                                         <h2 class="table-avatar">
                                             <span>Nedi Holtham</span>
