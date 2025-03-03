@@ -62,7 +62,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
-                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    <a class="dropdown-item" href="{{ route('profile.index') }}">
                         <img class="mr-3" src="{{asset('assets/images/myprofile.svg')}}" alt="">
                         <span class="drop-span">{{ __('Profile') }}</span>
                     </a>

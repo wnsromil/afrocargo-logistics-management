@@ -10,7 +10,8 @@ use App\Http\Controllers\Api\{
     NotificationController,
     SubcategoryController,
     CustomerController,
-    ContainerController
+    ContainerController,
+    CartController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -59,6 +60,6 @@ Route::middleware('auth:api')->group( function () {
      
         // Container Routes
         Route::get('/container-list', [ContainerController::class, 'getActiveContainers']);
-
+        Route::apiResource('cart', CartController::class);
     });
 });
