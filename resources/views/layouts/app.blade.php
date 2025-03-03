@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/stylemain.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/style5.css')}}">
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
     
@@ -61,7 +62,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     @yield('style')
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
 
 </head>
@@ -133,28 +134,23 @@
     <script src="{{asset('assets/plugins/apexchart/apexcharts.min.js')}}"></script>
     <script src="{{asset('assets/plugins/apexchart/chart-data.js')}}"></script>
 
-    <!-- Theme Settings JS -->
-    <script src="{{asset('assets/js/theme-settings.js')}}"></script>
-    <script src="{{asset('assets/js/greedynav.js')}}"></script>
 
     <script src="{{asset('js/comman.js')}}"></script>
-    <script src="{{asset('select2-4.1/dist/js/select2.min.js')}}"></script>
-    <script src="{{asset('js/admin/select2.js')}}"></script>
     <script src="{{asset('assets/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script src="{{asset('assets/plugins/daterangepicker/daterangepicker.js')}}"></script>
-    
-    // <!-- Bootstrap JS (ensure this is included) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Theme Settings JS -->
+    <script src="{{asset('assets/js/theme-settings.js')}}"></script>
+    <script src="{{asset('assets/js/greedynav.js')}}"></script>
+    <script src="{{asset('select2-4.1/dist/js/select2.min.js')}}"></script>
+    <script src="{{asset('js/admin/select2.js')}}"></script>
 
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>
+    // <!-- Bootstrap JS (ensure this is included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap CSS -->
-
-
-    
-		
     <script>
         @session('success')
             Swal.fire({

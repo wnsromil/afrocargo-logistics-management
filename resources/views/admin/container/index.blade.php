@@ -3,19 +3,22 @@
         {{ __('Warehouse Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle">
-        All Vehicle
+    <x-slot name="cardTitle" >
+     <p class="head">All Containers</p>  
 
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control forms" placeholder="Search ">
+
+                    </form>
+                </div>
                 <div class="mt-2">
-                    <a href="{{route('admin.vehicle.create')}}" class="btn btn-primary">
-                        <i
-                            class="fa fa-plus-circle me-2"></i>Add Warehouse
-                    </a>
+                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
                 </div>
             </div>
-        </div>
     </x-slot>
 
     <div>
@@ -30,11 +33,20 @@
                                 <th>Sn no.</th>
                                 <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
-                                <th>Vehicle Number</th>
-                                <th>Vehicle Model</th>
-                                <th>Vehicle Year</th>
-                                <th>Capacity</th>
+                                <th>Seal Number</th>
+                                <th>Container 1</th>
+                                <th>Container 2</th>
+                                <th>Container 3</th>
+                                <th>Open Date</th>
+                                <th>Close Date</th>
+                                <th>Driver Name</th>
+                                <th>Transfer Date</th>
+                                <th>Total Order</th>
+                                <th>Total Amount</th>
+                                <th>Received Amount</th>
+                                <th>Due Amount</th>
                                 <th>Status</th>
+                                <th>Status Change</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

@@ -17,16 +17,16 @@
         </div>
     </x-slot> -->
     <x-slot name="cardTitle" >
-     <p class="head">Transfer to Warehouse</p> 
+     <p class="head">Received by Warehouse</p> 
        <div class="usersearch d-flex">
                 <div class="top-nav-search">
                     <form>
-                        <input type="text" class="form-control" placeholder="Search ">
+                        <input type="text" class="form-control forms" placeholder="Search ">
 
                     </form>
                 </div>
                 <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+                <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
 											data-bs-placement="bottom" title="Refresh"><span><i
 													class="fe fe-refresh-ccw"></i></span></a></button>
                 </div>
@@ -39,12 +39,16 @@
                 <div class="table-responsive">
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr style="background-image: url('assets/images/Background.png');">
-                                <th><input type="checkbox" id="selectAll"></th> <!-- Select All Checkbox -->
+                            <tr >
                                 <th>Sn no.</th>
                                 <th>Tracking Number</th>
+                                <th>Transfer Date</th>
                                 <th>Driver Name</th>
-                                <th>Vehicle</th>
+                                <th>Vehicle Type</th>
+                                <th>Seal number</th>
+                                <th>Number of orders</th>
+                                <th>Open Date</th>
+                                <th>Close Date</th>
                                 <th>From Warehouse</th>
                                 <th>To Warehouse</th>
                                 <th>Total Quantity</th>

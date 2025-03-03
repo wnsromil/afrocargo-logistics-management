@@ -3,35 +3,107 @@
         {{ __('Inventory Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle">
-        All Inventory
-
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    <a href="{{route('admin.inventories.create')}}" class="btn btn-primary">
-                        Add Inventory
-                    </a>
-                </div>
+    <x-slot name="cardTitle" >
+       <p class="head">Advance Reports</p>
+       <div class="usersearch d-flex">
+                 <div>
+                 <button class="btn btn-primary"style="background:#33B469;border-color:#203A5F!important; font-weight:300; height:37px;text-color:white;"><img style="width:10px; margin-right:5px;"src="../assets/images/Export.png">Export</button>
+                 <button class="btn btn-primary"style="background:#203A5F; font-weight:300;"><img style="margin-right:5px;"src="../assets/images/Print.png">Print</button>
+             </div> 
             </div>
-        </div>
     </x-slot>
+
+    <form>
+    <div class="row">
+    <div class="col-md-3 dposition" >
+        <label>Invoice Date</label>
+        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+		<input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
+	    </div>
+		</div>
+
+     <div class="col-md-3 dposition" >
+     <label>By warehouse</label> 
+     <select class="js-example-basic-single select2 form-cs">
+		<option selected="selected " style="color:#737B8B">Select Warehouse</option>
+		<option>white</option>
+		<option>purple</option>
+
+        
+
+		</select>
+     </div>
+     <div class="col-md-3 dposition" >
+     <label>By Tracking ID</label> 
+     <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
+    <input type="text" class="form-control form-cs" placeholder="Enter Tracking ID" >
+		</div>
+     
+     <div class="col-md-3 dposition" >
+     <label>By Customer </label> 
+     <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
+    <input type="text" class="form-control form-cs" placeholder="Enter Customer Name" >
+    </div>
+
+   <div class="col-md-3 dmargin">
+   <!-- Moment.js (required for daterangepicker) -->
+   <label>By Driver</label> 
+   <select class="js-example-basic-single select2">
+		<option selected="selected" style="color:#737B8B">Select Driver</option>
+		<option>white</option>
+		<option>purple</option>
+		</select>
+   </div>
+
+    <div class="col-md-3 dmargin" >
+    <label>By Hub</label> 
+   <select class="js-example-basic-single select2">
+		<option selected="selected">Select Hub</option>
+		<option>white</option>
+		<option>purple</option>
+		</select>
+        </div>
+
+
+        <div class="col-md-3 dmargin" >
+        <label>By Order Status</label> 
+        <select class="js-example-basic-single select2">
+		<option selected="selected">Select Order Status</option>
+		<option>white</option>
+		<option>purple</option>
+		</select>
+    </div>
+    
+    <div class="col-md-3 twobutton">
+       <button class="btn btn-primary btnf">Filter</button>
+          <button class="btn btn-outline-danger btnr ">Reset</button>
+        </div>
+        </div>
+    
+</form>
+
 
     <div>
 
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive mt-3">
 
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
                                 <th>Sn no.</th>
-                                <th>Inventory Name</th>
-                                <th>Warehouse Name</th>
-                                <th>In Stock Quantity</th>
-                                <th>Low Stock Warning</th>
-                                <th>Status</th>
+                                <th>Tracking Id</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Warehouse </th>
+                                <th>Hub</th>
+                                <th>Driver</th>
+                                <th>Order Date</th>
+                                <th>Order Status</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
+                                <th>Payment Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
