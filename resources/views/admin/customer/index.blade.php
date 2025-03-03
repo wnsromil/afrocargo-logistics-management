@@ -49,7 +49,8 @@
 
                     <table class="table table-stripped table-hover datatable ">
                         <thead class="thead-light">
-                            <tr>
+
+                            <tr >
                                 <th>Sn no.</th>
                                 <th>Photo</th>
                                 <th>Name</th>

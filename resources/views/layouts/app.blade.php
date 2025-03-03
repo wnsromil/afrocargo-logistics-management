@@ -88,7 +88,7 @@
                     <div class="card-body">
                         <!-- Page Header -->
                         <div class="page-header">
-                            <div class="content-page-header" style="border-bottom: 1px solid #f0f0f0;">
+                            <div class="content-page-header">
                                 @isset($cardTitle)
                                     {{$cardTitle}}
                                 @endisset
@@ -119,7 +119,7 @@
 
     <!-- /Theme Setting -->
     <!-- jQuery -->
-    <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"></>
+    <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"><script/>
 
     <!-- Bootstrap Core JS -->
     <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
@@ -148,7 +148,9 @@
 
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>
-		
+    // <!-- Bootstrap JS (ensure this is included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         @session('success')
             Swal.fire({
