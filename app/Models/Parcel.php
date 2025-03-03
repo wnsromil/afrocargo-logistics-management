@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\{
     Category,
 };
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Parcel extends Model
 {
@@ -13,8 +14,11 @@ class Parcel extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'parcel_car_ids' => 'array'
+        'parcel_car_ids' => 'array',
+        'customer_subcategories_data' => 'array',
+        'driver_subcategories_data' => 'array',
     ];
+    
 
 
     // Mutator to set a default tracking number
@@ -52,5 +56,12 @@ class Parcel extends Model
     public function getCategoryNamesAttribute()
     {
         return Category::whereIn('id', $this->parcel_car_ids)->pluck('name')->toArray();
+    }
+
+    protected function driverParcelImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => url($value),
+        );
     }
 }

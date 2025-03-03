@@ -2,8 +2,6 @@
     <x-slot name="header">
         {{ __('Warehouse Management') }}
     </x-slot>
-    <x-slot name="cardTitle">
-        
 
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
@@ -15,6 +13,7 @@
                 </div>
             </div>
         </div>
+    </div>
     
   
   

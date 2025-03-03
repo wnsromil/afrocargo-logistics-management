@@ -3,10 +3,7 @@
         {{ __('Warehouse Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle">
-        
 
-      
      <div class="d-flex align-items-center justify-content-end mb-1">
     <div class="usersearch d-flex">
         <div class="mt-2">
@@ -20,7 +17,6 @@
     </div>
 </div>
 
-  
   
   
     <x-slot name="cardTitle" >
@@ -40,6 +36,18 @@
                 </div>
             </div>
     </x-slot>
+
+
+    <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="usersearch d-flex">
+            <div class="mt-2">
+                <a href="{{route('admin.vehicle.create')}}" class="btn btn-primary buttons"style="background:#203A5F">
+                <img src="assets/images/Vector.png">  
+                Add Vehicle
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div>
 
