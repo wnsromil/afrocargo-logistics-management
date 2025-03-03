@@ -3,17 +3,7 @@
         {{ __('Warehouse Management') }}
     </x-slot>
 
-    <!-- <x-slot name="cardTitle">
-        All Drivers
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    <a class="btn btn-primary" style="background:#203A5F" href="{{route('admin.drivers.create')}}"><i
-                            class="fa fa-plus-circle me-2"></i>Add Driver</a>
-                </div>
-            </div>
-        </div>
-    </x-slot> -->
+    
 
     <x-slot name="cardTitle">
         
@@ -21,8 +11,9 @@
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary buttons"style="background:#203A5F">
-                    <img src="assets/images/Vector.png">  
+                    <a href="#" class="btn btn-primary buttons"
+                    >
+                    <img class="imgs" src="assets/images/Vector.png">  
                     Add Driver
                     </a>
                 </div>
@@ -39,12 +30,12 @@
        <div class="usersearch d-flex">
                 <div class="top-nav-search">
                     <form>
-                        <input type="text" class="form-control" placeholder="Search ">
+                        <input type="text" class="form-control forms" placeholder="Search ">
 
                     </form>
                 </div>
                 <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
 											data-bs-placement="bottom" title="Refresh"><span><i
 													class="fe fe-refresh-ccw"></i></span></a></button>
                 </div>
@@ -55,11 +46,11 @@
 
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive mt-3">
 
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr style="background-image: url('assets/images/Background.png');">
+                            <tr>
                                 <th>Sn no.</th>
                                 <th>Manager Name</th>
                                 <th>Driver Name</th>

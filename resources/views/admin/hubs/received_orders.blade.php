@@ -3,19 +3,23 @@
         {{ __('Parcel Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle">
-        All Parcels
+    <x-slot name="cardTitle" >
+     <p class="head">Received Orders</p> 
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control forms" placeholder="Search ">
 
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
+                    </form>
+                </div>
                 <div class="mt-2">
-                    <a href="{{route('admin.OrderShipment.create')}}" class="btn btn-primary">
-                        Add Parcel
-                    </a>
+                <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
                 </div>
             </div>
-        </div>
     </x-slot>
+
 
     <div>
         <div class="card-table">
@@ -24,14 +28,23 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th><input type="checkbox" id="selectAll"></th> <!-- Select All Checkbox -->
                                 <th>Sn no.</th>
                                 <th>Tracking Number</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Transfer Date</th>
+                                <th>Capture Image</th>
+                                <th>Amount</th>
                                 <th>Driver Name</th>
-                                <th>Vehicle</th>
+                                <th>Vehicle Number</th>
+                                <th>No. of orders</th>
+                                <th>Estimate Cost</th>
                                 <th>From Warehouse</th>
                                 <th>To Warehouse</th>
                                 <th>Total Quantity</th>
+                                <th>Payment Status</th>
+                                <th>Payment Mode</th>
+                                <th>Item List</th>
                                 <th>Status</th>
                                 <th>Date</th>
                                 <th>Action</th>

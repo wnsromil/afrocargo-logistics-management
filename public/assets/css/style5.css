@@ -1,4 +1,12 @@
-.fontstyle{
-    font-family:"Poppins";
-    font-size:"14px"
+
+.subhead{
+    font-size:20px;
+    font-weight:600px;
+    color:#3A3A3A;
+    font-family: "Poppins";
+  
 }
+
+/* .foncolor{
+  color:#737B8B;
+} */

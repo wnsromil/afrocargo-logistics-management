@@ -15,11 +15,24 @@ body{
  .btn-primary {
   border-color: #203A5F!important; 
   color: #ffffff!important;
+  background-color: #203A5F!important;
+}
+.refeshuser{background:#203A5F;
+  border-radius:0px !important;
 }
 .btn-primary a
 {
   color: #ffffff!important;
 
+}
+.daterangepicker-wrap {
+  padding-left: 23px !important;
+  border: 1px solid #00000042 !important;
+  border-Radius: 5px !important;
+}
+
+input.btn-filters.form-cs {
+  color: #737B8B !important;
 }
 
 .btn-primary:hover, 
@@ -37,15 +50,19 @@ body{
 }
 .thead-light th{
    font-size:16px !important;
+}  
+.thead-light{
+  background: #E7E9F6 !important;
 }
+
 
 .head{
   font-weight:500; 
   font-size:16px;
+
 }
 .dposition{
   position:relative;
-
 }
 .dmargin{
   margin-top:20px;
@@ -53,19 +70,80 @@ body{
 .imgc{
   position: absolute; 
   top: 70%; 
-  left: 15px; 
+  left: 20px; 
   transform: translateY(-50%); 
   pointer-events: none;
 }
-.form-cs{
-  padding-left: 30px;font-size:12px; border:1px solid #00000042
+.twobutton{
+  margin-top:47px; 
+  display:flex; 
+  justify-content:end; 
+  gap:20px;
 }
-.buttons{
-  width:162px;
+.btnf{
+  background:#203A5F; 
+  font-weight:300; 
+  height:35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.select2-container--default .select2-selection--single {
+  border: 1px solid #00000042 !important;
+}
+
+.btnr{
+  font-weight:300; 
+  height:35px;
+  display: flex;/* Target the select2 element's container wrapper */
+  justify-content: center;
+  align-items: center;
+}
+.buttons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
   height:37px;
-  font-size:14px;
-  font-weight:400;
+  background:#203A5F;
 }
+
+.imgs {
+  max-width: 20px;
+  margin-right: 10px; 
+}
+
+.form-cs{
+  padding-left: 30px;
+  font-size:14px; 
+  border:1px solid #00000042;
+  
+}
+.forms{
+  width:157px;
+   height:31px;
+   margin-left:150px;
+}
+/* .buttons{
+  
+font-size:14px;
+  font-weight:400;
+  display:flex;
+  
+} */
+
+ .select2-selection__rendered {
+  color: #595C5F !important;
+  font-size:14px; 
+  
+}
+.select2 .select2-selection {
+  height: 35px !important; /* Adjust this to the desired height */
+  
+}
+
+
 .search{
   width:241px;
   height:40px;
@@ -26725,6 +26803,10 @@ td .invoice-detail i {
   .saas-pass-box {
     flex-direction: column;
   }
+}
+.page-wrapper
+{
+  min-height: 90vh;
 }
 
 /*# sourceMappingURL=style.css.map */

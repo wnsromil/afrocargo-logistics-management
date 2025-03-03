@@ -8,8 +8,8 @@
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary"style="background:#203A5F">
-                    <img src="assets/images/Vector.png">  
+                    <a href="#" class="btn btn-primary buttons">
+                    <img  class="imgs" src="assets/images/Vector.png">  
                     Add Invoice
                     </a>
                 </div>
@@ -38,21 +38,22 @@
      <div class="col-md-3 dposition" >
         <label>Invoice Date</label>
         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-		<input type="text" class="btn-filters form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
+		<input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
 	    </div>
 		</div>
      
+
      <div class="col-md-3 dposition" >
      <label>By Container</label> 
      <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
     <input type="text" class="form-control form-cs" placeholder="Enter Container Seal No." >
     </div>
 
-   <div class="col-md-3 dmargin">
-   <!-- Moment.js (required for daterangepicker) -->
+   <div class="col-md-3 dmargin" >
+   
    <label>By Warehouse</label> 
-   <select class="js-example-basic-single select2">
-		<option selected="selected" style="color:#737B8B">Select Warehouse</option>
+   <select class="js-example-basic-single select2 ">
+		<option selected="selected form-cs ">Select Warehouse</option>
 		<option>white</option>
 		<option>purple</option>
 		</select>
@@ -60,7 +61,7 @@
 
     <div class="col-md-3 dmargin" >
     <label>By Driver</label> 
-   <select class="js-example-basic-single select2">
+   <select class="js-example-basic-single select2  form-cs">
 		<option selected="selected">Select Drive</option>
 		<option>white</option>
 		<option>purple</option>
@@ -74,30 +75,21 @@
     <input type="text" class="form-control form-cs" placeholder="Enter Invoice Item">
     </div>
     
-    <div class="col-md-3" style="margin-top:47px; display:flex; justify-content:end; gap:20px;">
-       <button class="btn btn-primary"style="background:#203A5F; font-weight:300; height:35px">Filter</button>
-          <button class="btn btn-outline-danger " style="font-weight:300; height:35px" >Reset</button>
+    <div class="col-md-3 twobutton">
+       <button class="btn btn-primary btnf">Filter</button>
+          <button class="btn btn-outline-danger btnr" >Reset</button>
         </div>
         </div>
     
 </form>
 
-
-
-
-
-
-
-
-
-
 <div>
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable"style="margin-top:20px">
+                <div class="table-responsive mt-3">
+                    <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light" >
-                            <tr style="background-image: url('assets/images/Background.png');">
+                            <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
                                 <th>Invoice No</th>
