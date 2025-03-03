@@ -49,7 +49,7 @@
 
                     <table class="table table-stripped table-hover datatable ">
                         <thead class="thead-light">
-                            <tr style="background-image: url('assets/images/Background.png');">
+                            <tr >
                                 <th>Sn no.</th>
                                 <th>Photo</th>
                                 <th>Name</th>

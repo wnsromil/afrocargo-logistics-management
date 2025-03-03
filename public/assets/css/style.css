@@ -3069,7 +3069,7 @@ div.dataTables_wrapper div.dataTables_filter label i {
 }
 .main-logo {
   height: 80px;
-  width: 250px;
+  width: 268px;
   background: #fff;
   box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
   padding: 0 24px;
@@ -11243,7 +11243,7 @@ body[data-layout-mode=dark] .alertify .ajs-header {
   }
 }
 .page-wrapper {
-  margin-left: 247px;
+  margin-left: 268px;
   /* padding-top: 60px; */
   position: relative;
   -webkit-transition: all 0.4s ease;
