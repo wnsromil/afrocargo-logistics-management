@@ -444,7 +444,7 @@
                 <div class="col-md-5 col-xl-3 col-sm-6">
                     <div class="card innerCards inovices-card w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 p-3">
+                            <div class="col-md-8 justify-content-start p-3 pe-1">
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>KG 2114</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
@@ -475,7 +475,7 @@
                     <div class="card innerCards inovices-card w-100 setCard setCardSize checkbox-cardBg">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <div class="col-md-8 justify-content-start p-3">
+                            <div class="col-md-8 justify-content-start p-3 pe-1">
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
@@ -505,7 +505,7 @@
                     <div class="card innerCards inovices-card w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <div class="col-md-8 justify-content-start p-3">
+                            <div class="col-md-8 justify-content-start p-3 pe-1">
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
                                 <div class="cardFontSize mt-2">
@@ -535,7 +535,7 @@
                     <div class="card innerCards inovices-card w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <div class="col-md-8 justify-content-start p-3 cardFontSize">
+                            <div class="col-md-8 justify-content-start p-3 pe-1 cardFontSize">
                                 <p><span class="opacity-75 font13">Seal No : </span><strong>NF
                                         3501</strong></p>
                                 <h5 class='text-black countFontSize'>Xl Container</h5>
@@ -677,30 +677,25 @@
     </div>
 
 
-    <!-- ----------------------------------------------------------------------------------------- -->
+    <!-- ----------------------------- Table ---------------------------------------- -->
 
     <div class="row">
         <div class="col-sm-12">
             <div class="dash-title">
-                <h4 class="order-title">Latest Orders</h4>
+                <h5 class="order-title cardh5Size">Latest Orders</h5>
             </div>
             <div class="card-table">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-stripped table-hover datatable">
-                            <thead class="thead-light">
+                            <thead class="thead-light backColor">
                                 <tr>
                                     <th>Customer Name</th>
-                                    <th>
-                                        Order ID
-                                    </th>
-
+                                    <th>Order ID</th>
                                     <th>Date</th>
                                     <th>Product</th>
                                     <th>Status</th>
                                     <th>Amount</th>
-
-
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
@@ -713,17 +708,60 @@
                                         </h2>
                                     </td>
                                     <td>
+                                        <a href="invoice-details.html" class="invoice-link">#40906</a>
+                                    </td>
+
+                                    <td>12/28/2023</td>
+                                    <td>Medium</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td>$1,54,220</td>
+                                    <td class="text-end">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end customer-dropdown">
+                                                <a class="dropdown-item" href="edit-invoice.html"><i
+                                                        class="far fa-edit me-2"></i>Edit</a>
+                                                <a class="dropdown-item" href="invoice-details.html"><i
+                                                        class="far fa-eye me-2"></i>View</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                    data-bs-toggle="modal" data-bs-target="#view_modal"><i
+                                                        class="far fa-eye me-2"></i>View
+                                                    Delivery Challans</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                    data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                        class="far fa-trash-alt me-2"></i>Delete</a>
+                                                <a class="dropdown-item" href=""><i class="fe fe-send me-2"></i>Send</a>
+                                                <a class="dropdown-item" href=""><i
+                                                        class="fe fe-download me-2"></i>Download</a>
+                                                <a class="dropdown-item" href="add-credit-notes.html"><i
+                                                        class="fe fe-file-text me-2"></i>Convert
+                                                    to Sales Return</a>
+                                                <a class="dropdown-item" href=""><i class="fe fe-copy me-2"></i>Clone as
+                                                    Invoice</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                <!-- 2 -->
+                                <tr>
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <span>Torin Cavaney</span>
+
+                                        </h2>
+                                    </td>
+                                    <td>
 
                                         <a href="invoice-details.html" class="invoice-link">#4987</a>
                                     </td>
 
-                                    <td>12/03/2024</td>
-                                    <td><span>Medium</span></td>
+                                    <td>03/19/2024</td>
+                                    <td><span>Short</span></td>
 
 
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:orange;"></i>Pending</td>
+                                    <td>$863.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -755,22 +793,18 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
-
+                                            <span>Gwyn Axan</span>
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#91515</a>
                                     </td>
 
-                                    <td>12/03/2024</td>
-                                    <td><span>Medium</span></td>
+                                    <td>10/27/2023</td>
+                                    <td><span>Short</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:orange;"></i>Pending</td>
 
-
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td>$617.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -802,22 +836,19 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
+                                            <span>Charisse Pemberton</span>
 
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#88163</a>
                                     </td>
 
-                                    <td>12/03/2024</td>
-                                    <td><span>Medium</span></td>
+                                    <td>08/15/2024</td>
+                                    <td><span>Large</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
 
-
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td>$751.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -849,22 +880,19 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
+                                            <span>Naville Fellis</span>
 
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#46997</a>
                                     </td>
 
-                                    <td>12/03/2024</td>
+                                    <td>12/02/2023</td>
                                     <td><span>Medium</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
 
-
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td>$356.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -896,22 +924,18 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
-
+                                            <span>Sustte Clementi</span>
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#33633</a>
                                     </td>
 
-                                    <td>12/03/2024</td>
-                                    <td><span>Medium</span></td>
+                                    <td>08/29/2023</td>
+                                    <td><span>Short</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
 
-
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td>$940.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -943,22 +967,19 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
+                                            <span>Harriet Scougal</span>
 
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#39473</a>
                                     </td>
 
-                                    <td>12/03/2024</td>
+                                    <td>04/16/2024</td>
                                     <td><span>Medium</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
 
-
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td>$125.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -990,22 +1011,17 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
-
+                                            <span>Bendix Doyie</span>
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#86451</a>
                                     </td>
+                                    <td>01/05/2024</td>
+                                    <td><span>Large</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
 
-                                    <td>12/03/2024</td>
-                                    <td><span>Medium</span></td>
-
-
-                                    <td><span class="badge bg-success-light">Paid</span>
-                                    </td>
-                                    <td>$1,54,220</td>
+                                    <td>$759.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
@@ -1034,25 +1050,65 @@
                                         </div>
                                     </td>
                                 </tr>
+
+
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <span>Maury Cambling</span>
-
+                                            <span>Jalene tailby</span>
                                         </h2>
                                     </td>
                                     <td>
-
-                                        <a href="invoice-details.html" class="invoice-link">#4987</a>
+                                        <a href="invoice-details.html" class="invoice-link">#14598</a>
                                     </td>
-
-                                    <td>12/03/2024</td>
+                                    <td>05/06/2024</td>
                                     <td><span>Medium</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
 
-
-                                    <td><span class="badge bg-success-light">Paid</span>
+                                    <td>$300.00</td>
+                                    <td class="text-end">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end customer-dropdown">
+                                                <a class="dropdown-item" href="edit-invoice.html"><i
+                                                        class="far fa-edit me-2"></i>Edit</a>
+                                                <a class="dropdown-item" href="invoice-details.html"><i
+                                                        class="far fa-eye me-2"></i>View</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                    data-bs-toggle="modal" data-bs-target="#view_modal"><i
+                                                        class="far fa-eye me-2"></i>View
+                                                    Delivery Challans</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                    data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                        class="far fa-trash-alt me-2"></i>Delete</a>
+                                                <a class="dropdown-item" href=""><i class="fe fe-send me-2"></i>Send</a>
+                                                <a class="dropdown-item" href=""><i
+                                                        class="fe fe-download me-2"></i>Download</a>
+                                                <a class="dropdown-item" href="add-credit-notes.html"><i
+                                                        class="fe fe-file-text me-2"></i>Convert
+                                                    to Sales Return</a>
+                                                <a class="dropdown-item" href=""><i class="fe fe-copy me-2"></i>Clone as
+                                                    Invoice</a>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td>$1,54,220</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <span>Nedi Holtham</span>
+                                        </h2>
+                                    </td>
+                                    <td>
+                                        <a href="invoice-details.html" class="invoice-link">#21931</a>
+                                    </td>
+                                    <td>08/09/2024</td>
+                                    <td><span>Large</span></td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:orange;"></i>Pending</td>
+
+                                    <td>$456.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
