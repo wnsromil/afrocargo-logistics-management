@@ -31,10 +31,6 @@ class RegisterController extends Controller
                     'required',
                     'string',
                     'min:8',
-                    // 'regex:/[a-z]/',
-                    // 'regex:/[A-Z]/',
-                    // 'regex:/[0-9]/',
-                    // 'regex:/[@$!%*?&]/'
                 ],
                 'c_password' => 'required|same:password',
                 'user_type' => 'required|in:customer,driver',

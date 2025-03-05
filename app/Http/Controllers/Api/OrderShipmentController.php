@@ -13,6 +13,8 @@ use App\Models\{
     Parcel,
     ParcelHistory
 };
+use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\CustomerController;
 
 class OrderShipmentController extends Controller
 {
@@ -282,13 +284,13 @@ class OrderShipmentController extends Controller
         $parcel->height = $request->height;
         $parcel->weight = $request->weight;
         $parcel->update_role = 'driver';
-         if($request->payment_mode == "partial_payment"){
-            $parcel->partial_payment = $request->paying_amount; 
-            $parcel->remaining_payment = $request->remaining_amount; 
-         }else{
-            $parcel->partial_payment = 0; 
-            $parcel->remaining_payment = 0; 
-         }
+        if ($request->payment_mode == "partial_payment") {
+            $parcel->partial_payment = $request->paying_amount;
+            $parcel->remaining_payment = $request->remaining_amount;
+        } else {
+            $parcel->partial_payment = 0;
+            $parcel->remaining_payment = 0;
+        }
 
         // Image upload aur path store
         if ($request->hasFile('driver_parcel_image')) {
@@ -303,4 +305,30 @@ class OrderShipmentController extends Controller
 
         return response()->json(['message' => 'Parcel updated successfully', 'parcel' => $parcel]);
     }
+
+    public function driverCreateOrder(Request $request)
+    {
+        if (!$request->has('customer_id') || empty($request->customer_id)) {
+            $customerController = new CustomerController();
+            $customer = $customerController->createCustomer($request);
+            if ($customer instanceof \Illuminate\Http\JsonResponse) {
+                return $customer; // Return validation errors if any
+            }
+            $request->merge(['user_id' => $customer->id]);
+            $addressController = new AddressController();
+            $addressRequest = new Request($request->only(['user_id', 'mobile_number', 'alternative_mobile_number', 'address', 'pincode', 'country_id', 'state_id', 'city_id', 'address_type']));
+            $address = $addressController->createAddress($addressRequest);
+            $request->merge(['pickup_id' => $address->id]);
+        }
+
+        if (!$request->has('delivery_id') || empty($request->delivery_id)) {
+            $addressController = new AddressController();
+            $addressRequest = new Request($request->only(['user_id', 'mobile_number', 'alternative_mobile_number', 'address', 'pincode', 'country_id', 'state_id', 'city_id', 'address_type']));
+            $address = $addressController->createAddress($addressRequest);
+            $request->merge(['delivery_id' => $address->id]);
+        }
+
+        return response()->json(['message' => 'Order creation process completed', 'customer_id' => $request->customer_id, 'ship_to' => $request->ship_to], 200);
+    }
+
 }
