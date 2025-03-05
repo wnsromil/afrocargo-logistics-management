@@ -1,4 +1,13 @@
+
+@section('content')
+<h2 class="font-semibold text-xl text-light leading-tight">
+    {{ __('Profile') }}
+</h2>
+@endsection
+
 <x-app-layout>
+
+   
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-light leading-tight">
             {{ __('Profile') }}
@@ -75,41 +84,6 @@
                     </div>
                 </div>
 
-                {{-- <div class="col-lg-12">
-                    <div class="form-title">
-                        <h5>Address Information</h5>
-                    </div>
-                </div> --}}
-                {{-- <div class="col-lg-12">
-                    <div class="input-block mb-3">
-                        <label>Address</label>
-                        <input type="text" class="form-control" placeholder="Enter your Address">
-                    </div>
-                </div> --}}
-                {{-- <div class="col-lg-6 col-12">
-                    <div class="input-block mb-3">
-                        <label>Country</label>
-                        <input type="text" class="form-control" placeholder="Enter your Country">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <div class="input-block mb-3">
-                        <label>State</label>
-                        <input type="text" class="form-control" placeholder="Enter your State">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <div class="input-block mb-3">
-                        <label>City</label>
-                        <input type="text" class="form-control" placeholder="Enter your City">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <div class="input-block mb-3">
-                        <label>Postal Code</label>
-                        <input type="text" class="form-control" placeholder="Enter Your Postal Code">
-                    </div>
-                </div> --}}
                 <div class="col-lg-12">
                     <div class="btn-path text-end">
                         {{-- <a href="javascript:void(0);" class="btn btn-cancel bg-primary-light me-3">Cancel</a> --}}

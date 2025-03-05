@@ -4,19 +4,19 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-      <p class="head" style="color:black">Invoices </p> 
+        <p class="head" style="color:black">Invoices </p>
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary"style="background:#203A5F">
-                    <img src="assets/images/Vector.png">  
+                    <a href="#" class="btn btn-primary buttons">
+                    <img  class="imgs" src="assets/images/Vector.png">  
                     Add Invoice
                     </a>
                 </div>
             </div>
         </div>
-    
-  
+
+
     </x-slot>
 
   
@@ -38,21 +38,22 @@
      <div class="col-md-3 dposition" >
         <label>Invoice Date</label>
         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-		<input type="text" class="btn-filters form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
+		<input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
 	    </div>
 		</div>
      
+
      <div class="col-md-3 dposition" >
      <label>By Container</label> 
      <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
     <input type="text" class="form-control form-cs" placeholder="Enter Container Seal No." >
     </div>
 
-   <div class="col-md-3 dmargin">
-   <!-- Moment.js (required for daterangepicker) -->
+   <div class="col-md-3 dmargin" >
+   
    <label>By Warehouse</label> 
-   <select class="js-example-basic-single select2">
-		<option selected="selected" style="color:#737B8B">Select Warehouse</option>
+   <select class="js-example-basic-single select2 ">
+		<option selected="selected form-cs ">Select Warehouse</option>
 		<option>white</option>
 		<option>purple</option>
 		</select>
@@ -60,7 +61,7 @@
 
     <div class="col-md-3 dmargin" >
     <label>By Driver</label> 
-   <select class="js-example-basic-single select2">
+   <select class="js-example-basic-single select2  form-cs">
 		<option selected="selected">Select Drive</option>
 		<option>white</option>
 		<option>purple</option>
@@ -74,30 +75,19 @@
     <input type="text" class="form-control form-cs" placeholder="Enter Invoice Item">
     </div>
     
-    <div class="col-md-3" style="margin-top:47px; display:flex; justify-content:end; gap:20px;">
-       <button class="btn btn-primary"style="background:#203A5F; font-weight:300; height:35px">Filter</button>
-          <button class="btn btn-outline-danger " style="font-weight:300; height:35px" >Reset</button>
+    <div class="col-md-3 twobutton">
+       <button class="btn btn-primary btnf">Filter</button>
+          <button class="btn btn-outline-danger btnr" >Reset</button>
         </div>
         </div>
-    
-</form>
-
-
-
-
-
-
-
-
-
 
 <div>
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable"style="margin-top:20px">
+                <div class="table-responsive mt-3">
+                    <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light" >
-                            <tr style="background-image: url('assets/images/Background.png');">
+                            <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
                                 <th>Invoice No</th>
@@ -116,168 +106,168 @@
                         </thead>
                         <tbody>
                             @forelse ($invoices as $index => $invoice)
-                                <tr>
+                            <tr>
 
-                                    {{-- <td><input type="checkbox"
-                                            class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
-                                            value="{{ $invoice->id }}"></td> --}}
-                                    <td>{{ ++$index }}</td>
-                                    <td>
-                                        {{ ucfirst($invoice->invoice_no ?? '-') }}
-                                    </td>
-                                    <td>
-                                        {{ ucfirst($invoice->parcel->tracking_number ?? '-') }}
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <i
-                                                    class="fe fe-user"></i>{{ ucfirst($invoice->parcel->customer->name ?? '-') }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-phone"></i>{{ $invoice->parcel->customer->phone ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i
-                                                    class="fe fe-map-pin"></i>{{ $invoice->parcel->customer->address ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <i
-                                                    class="fe fe-user"></i>{{ ucfirst($invoice->parcel->destination_user_name ?? '-') }}
-                                            </p>
-                                            <p>
-                                                <i
-                                                    class="fe fe-phone"></i>{{ $invoice->parcel->destination_user_phone ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i
-                                                    class="fe fe-map-pin"></i>{{ $invoice->parcel->destination_address ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    {{-- <td>{{ ucfirst($invoice->warehouse->warehouse_name ?? '-') }}</td> --}}
-                                    {{-- <td><span>{{ $invoice->weight ?? '-' }}</span></td> --}}
-                                    <td>
-                                        <span>${{ $invoice->parcel->total_amount ?? '-' }}</span>
-                                    </td>
-                                    <td>
-                                        <span>${{ $invoice->parcel->remaining_payment ?? '-' }}</span>
-                                    </td>
-                                    <td>
-                                        <span>${{ $invoice->parcel->remaining_payment ?? '-' }}</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ $invoice->parcel->payment_type ?? '-' }}</span>
-                                    </td>
-                                    <td>
+                                {{-- <td><input type="checkbox"
+                                        class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
+                                        value="{{ $invoice->id }}"></td> --}}
+                                <td>{{ ++$index }}</td>
+                                <td>
+                                    {{ ucfirst($invoice->invoice_no ?? '-') }}
+                                </td>
+                                <td>
+                                    {{ ucfirst($invoice->parcel->tracking_number ?? '-') }}
+                                </td>
+                                <td>
+                                    <div>
+                                        <p>
+                                            <i class="fe fe-user"></i>{{ ucfirst($invoice->parcel->customer->name ??
+                                            '-') }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-phone"></i>{{ $invoice->parcel->customer->phone ?? '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-map-pin"></i>{{ $invoice->parcel->customer->address ?? '-'
+                                            }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <p>
+                                            <i class="fe fe-user"></i>{{ ucfirst($invoice->parcel->destination_user_name
+                                            ?? '-') }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-phone"></i>{{ $invoice->parcel->destination_user_phone ??
+                                            '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-map-pin"></i>{{ $invoice->parcel->destination_address ?? '-'
+                                            }}
+                                        </p>
+                                    </div>
+                                </td>
+                                {{-- <td>{{ ucfirst($invoice->warehouse->warehouse_name ?? '-') }}</td> --}}
+                                {{-- <td><span>{{ $invoice->weight ?? '-' }}</span></td> --}}
+                                <td>
+                                    <span>${{ $invoice->parcel->total_amount ?? '-' }}</span>
+                                </td>
+                                <td>
+                                    <span>${{ $invoice->parcel->remaining_payment ?? '-' }}</span>
+                                </td>
+                                <td>
+                                    <span>${{ $invoice->parcel->remaining_payment ?? '-' }}</span>
+                                </td>
+                                <td>
+                                    <span>{{ $invoice->parcel->payment_type ?? '-' }}</span>
+                                </td>
+                                <td>
 
-                                        <span
-                                            class="badge-{{ activeStatusKey($invoice->parcel->payment_status) }}">{{ $invoice->parcel->payment_status ?? '-' }}</span>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <div class="dropdown">
-                                            <span class="dropdown-icon-status" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <i class="fas fa-chevron-down"></i>
-                                            </span>
+                                    <span class="badge-{{ activeStatusKey($invoice->parcel->payment_status) }}">{{
+                                        $invoice->parcel->payment_status ?? '-' }}</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <span class="dropdown-icon-status" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </span>
+                                        <ul class="dropdown-menu">
+                                            @if($invoice->status == 'Pending')
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handlePickupAssign({{ $invoice->id }}, {{ json_encode($drivers) }})">
+                                                    <i class="fas fa-truck me-2"></i>Pickup Assign
+                                                </span>
+                                            </li>
+                                            @elseif($invoice->status == 'Pickup Assign')
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handlePickupCancel({{ $invoice->id }})">
+                                                    <i class="fas fa-times-circle me-2"></i>Pickup Cancel
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handlePickupReschedule({{ $invoice->id }}, {{ json_encode($drivers) }})">
+                                                    <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handleReceivedByPickupMan({{ $invoice->id }})">
+                                                    <i class="fas fa-box-open me-2"></i>Received By Pickup Man
+                                                </span>
+                                            </li>
+                                            @elseif($invoice->status == 'Pickup Re-Schedule')
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handlePickupReschedule({{ $invoice->id }}, {{ json_encode($drivers) }})">
+                                                    <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handleReceivedWarehouse({{ $invoice->id }}, {{json_encode($warehouses)}})">
+                                                    <i class="fas fa-warehouse me-2"></i>Received Warehouse
+                                                </span>
+                                            </li>
+                                            @elseif($invoice->status == 'Received Warehouse')
+                                            <li>
+                                                <span class="dropdown-item"
+                                                    onclick="handleTransferToHub({{ $invoice->id }}, {{ json_encode($drivers) }})">
+                                                    <i class="fas fa-calendar-alt me-2"></i>Transfer To Hub
+                                                </span>
+                                            </li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </td>
+
+                                <td class="align-items-center">
+                                    <span class="dropdown-icon-status">
+                                        <a href="{{ route('admin.invoices.details', $invoice->id) }}">
+                                            <i class="far fa-eye my-1 text-white"></i>
+
+                                        </a>
+                                    </span>
+                                    {{-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div>
                                             <ul class="dropdown-menu">
-                                                @if($invoice->status == 'Pending')
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handlePickupAssign({{ $invoice->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-truck me-2"></i>Pickup Assign
-                                                        </span>
-                                                    </li>
-                                                @elseif($invoice->status == 'Pickup Assign')
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handlePickupCancel({{ $invoice->id }})">
-                                                            <i class="fas fa-times-circle me-2"></i>Pickup Cancel
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handlePickupReschedule({{ $invoice->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handleReceivedByPickupMan({{ $invoice->id }})">
-                                                            <i class="fas fa-box-open me-2"></i>Received By Pickup Man
-                                                        </span>
-                                                    </li>
-                                                @elseif($invoice->status == 'Pickup Re-Schedule')
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handlePickupReschedule({{ $invoice->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handleReceivedWarehouse({{ $invoice->id }}, {{json_encode($warehouses)}})">
-                                                            <i class="fas fa-warehouse me-2"></i>Received Warehouse
-                                                        </span>
-                                                    </li>
-                                                @elseif($invoice->status == 'Received Warehouse')
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handleTransferToHub({{ $invoice->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-calendar-alt me-2"></i>Transfer To Hub
-                                                        </span>
-                                                    </li>
-                                                @endif
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.OrderShipment.edit', $invoice->id) }}"><i
+                                                            class="far fa-edit me-2"></i>Edit</a>
+                                                </li>
+                                                <li>
+                                                    <form
+                                                        action="{{ route('admin.OrderShipment.destroy', $invoice->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this, 'Are you sure you want to remove this parcel? This action can’t be undone!')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.OrderShipment.show', $invoice->id) }}"><i
+                                                            class="far fa-eye me-2"></i>View History</a>
+                                                </li>
                                             </ul>
                                         </div>
-                                    </td>
-
-                                    <td class="align-items-center">
-                                        <span class="dropdown-icon-status">
-                                            <a href="{{ route('admin.invoices.details', $invoice->id) }}">
-                                                <i class="far fa-eye my-1 text-white"></i>
-
-                                            </a>
-                                        </span>
-                                        {{-- <div class="dropdown dropdown-action">
-                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div>
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.OrderShipment.edit', $invoice->id) }}"><i
-                                                                class="far fa-edit me-2"></i>Edit</a>
-                                                    </li>
-                                                    <li>
-                                                        <form
-                                                            action="{{ route('admin.OrderShipment.destroy', $invoice->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="dropdown-item"
-                                                                onclick="deleteData(this, 'Are you sure you want to remove this parcel? This action can’t be undone!')"><i
-                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
-                                                        </form>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.OrderShipment.show', $invoice->id) }}"><i
-                                                                class="far fa-eye me-2"></i>View History</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div> --}}
-                                    </td>
-                                </tr>
+                                    </div> --}}
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="9" class="px-4 py-4 text-center text-gray-500">No parcels found.</td>
-                                </tr>
+                            <tr>
+                                <td colspan="9" class="px-4 py-4 text-center text-gray-500">No parcels found.</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>

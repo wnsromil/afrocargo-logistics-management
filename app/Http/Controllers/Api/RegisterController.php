@@ -130,40 +130,44 @@ class RegisterController extends Controller
             'email' => 'required_if:loginWith,email|email',
             'phone' => 'required_if:loginWith,phone|numeric|min:10',
             'password' => 'required',
+            'warehouse_code' => 'nullable|string',
         ]);
 
-        $auth = ['password' => $request->password];
-        if ($request->loginWith == 'email') {
-            $auth['email'] = $request->email;
-        }
-        if ($request->loginWith == 'phone') {
-            $auth['phone'] = $request->phone;
-        }
+        // Set authentication field dynamically
+        $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
 
         // Attempt authentication
-        if (Auth::attempt($auth)) {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->accessToken;
-            // $success['userData'] = $user->load('userRole');
-            
-            VerifyAuthIP::updateOrCreate(
-                [
-                    'user_id' => $user->id,
-                    'ip_address' => $request->ip(),
-                ],
-                [
-                    'otp' => 1234,
-                    'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
-                    'otp_varify_at' => null,
-                    'verify_type'=>'auth'
-                ]
-            );
-
-            return $this->sendResponse($success, 'Otp send successfully.');
+        if (!Auth::attempt($auth)) {
+            return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
         }
 
-        return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
+        $user = Auth::user();
+
+        // Role-based warehouse validation
+        if ($user->role_id == 4) {
+            if (!$request->filled('warehouse_code') || !$user->warehouse || $user->warehouse->warehouse_code !== $request->warehouse_code) {
+                Auth::logout();
+                return $this->sendError('Unauthorized.', ['error' => 'Invalid warehouse access.']);
+            }
+        }
+
+        // Generate API token
+        $success['token'] = $user->createToken('MyApp')->accessToken;
+
+        // Save authentication verification data
+        VerifyAuthIP::updateOrCreate(
+            ['user_id' => $user->id, 'ip_address' => $request->ip()],
+            [
+                'otp' => 1234,
+                'otp_expire_at' => now()->addMinutes(2),
+                'otp_varify_at' => null,
+                'verify_type' => 'auth'
+            ]
+        );
+
+        return $this->sendResponse($success, 'OTP sent successfully.');
     }
+
 
     public function resendOtp(Request $request): JsonResponse
     {

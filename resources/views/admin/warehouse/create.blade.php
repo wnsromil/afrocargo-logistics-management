@@ -25,6 +25,9 @@
             top: 0.2rem;
             left: 0.1rem;
             width: 2rem;
+            color: #6b7381;
+            background: #bdc1c8;
+            margin-bottom: 30px;
             height: 2rem;
             border-radius: 1.875rem;
             background: #fff;
@@ -36,6 +39,9 @@
         }
 
         .btn-toggle.btn-lg.active>.switch {
+            color: #6b7381;
+            background: #bdc1c8;
+            margin-bottom: 30px;
             left: 3.75rem;
             transition: left .25s;
         }
@@ -46,6 +52,9 @@
             line-height: 2.5rem;
             width: 5rem;
             text-align: center;
+            color: #6b7381;
+            background: #bdc1c8;
+            margin-bottom: 30px;
             font-weight: 600;
             font-size: 1rem;
             letter-spacing: 2px;
@@ -56,6 +65,9 @@
         .btn-lg.btn-toggle:after {
             content: "Active";
             right: -5rem;
+            color: #6b7381;
+            background: #bdc1c8;
+            margin-bottom: 30px;
             opacity: 0.5;
             line-height: 2.5rem;
             width: 5rem;
@@ -149,7 +161,7 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Create New Warehouse
+      <p class=subhead>Add Warehouse</p>
     </x-slot>
 
     <form action="{{ route('admin.warehouses.store') }}" method="POST" enctype="multipart/form-data">
@@ -159,8 +171,8 @@
             <div class="row">
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="warehouse_name">Warehouse Name <i class="text-danger">*</i></label>
+                    <div class="input-block mb-3 ">
+                        <label for="warehouse_name"style="color:#737B8B">Warehouse Name <i class="text-danger">*</i></label>
                         <input type="text" name="warehouse_name" class="form-control" placeholder="Enter Warehouse Name"
                             value="{{ old('warehouse_name') }}">
                         @error('warehouse_name')
@@ -168,6 +180,7 @@
                         @enderror
                     </div>
                 </div>
+ 
 
                 <!-- Warehouse Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
