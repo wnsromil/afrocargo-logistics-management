@@ -46,16 +46,15 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        
         // Validate incoming request data
         $request->validate([
             'warehouse_id'      => 'required|exists:warehouses,id',
             'inventory_name'    => 'required|string',
             'in_stock_quantity' => 'required|numeric',
             'low_stock_warning' => 'required|numeric',
-            // 'status'           => 'in:Active,Inactive',
+            'status'           => 'in:Active,Inactive',
         ]);
-
+        
         $category_id = $this->getCategoryIdByName($request->inventory_name);
 
         $inventory = Inventory::firstOrCreate(
@@ -66,7 +65,12 @@ class InventoryController extends Controller
             [
                 'total_quantity'    => 0,
                 'in_stock_quantity' => 0,
-                'low_stock_warning' => $request->low_stock_warning
+                'low_stock_warning' => $request->low_stock_warning,
+                'weight' => $request->weight,
+                'width' => $request->width,
+                'height' => $request->height,
+                'price' => $request->price,
+                'status' =>$request->status ?? 'Inactive',
             ]
         );
 
@@ -83,7 +87,7 @@ class InventoryController extends Controller
             'inventory_id'    => $inventory->id,
             'user_id'         => auth()->id(),
             'in_stock_quantity' => $request->in_stock_quantity,
-            'low_stock_warning' => $request->low_stock_warning
+            'low_stock_warning' => $request->low_stock_warning,
         ]);
 
         return redirect()->route('admin.inventories.index')

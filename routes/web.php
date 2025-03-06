@@ -63,6 +63,11 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
 
+        Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
+        Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
+        
+        Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
+
     });
 });
 

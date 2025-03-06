@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Create New Drivers
+        Create New Driver
     </x-slot>
 
     <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
@@ -41,18 +41,6 @@
                     </div>
                 </div>
 
-                <!-- Email -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="email">E-mail <i class="text-danger">*</i></label>
-                        <input type="email" name="email" class="form-control" placeholder="Enter Contact Number"
-                            value="{{ old('email') }}">
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
                 <!-- Contact Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -77,32 +65,9 @@
                     </div>
                 </div>
 
-                <!-- Email -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="phone">Password <i class="text-danger">*</i></label>
-                        <input type="text" name="password" class="form-control" placeholder="Enter Contact Number"
-                            value="{{ old('password') }}">
-                        @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="phone">Confirm Password <i class="text-danger">*</i></label>
-                        <input type="text" name="confirm-password" class="form-control"
-                            placeholder="Enter Contact Number" value="{{ old('confirm-password') }}">
-                        @error('confirm-password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
+                        <label for="vehicle_type">Vehicle</label>
                         <select name="vehicle_type" class="form-control">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
@@ -116,10 +81,10 @@
                     </div>
                 </div>
 
-                <!-- Address -->
+                <!-- license Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_number">License Number<i class="text-danger">*</i></label>
+                        <label for="license_number">License Number</label>
                         <input type="text" name="license_number" class="form-control" placeholder="Enter Address"
                             value="{{ old('license_number') }}">
                         @error('license_number')
@@ -128,10 +93,10 @@
                     </div>
                 </div>
 
-                <!-- Address -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                 <!-- Address -->
+                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
+                        <label for="license_expiry_date">License Expiry Date</label>
                         <input type="date" name="license_expiry_date" class="form-control" placeholder="Enter Address"
                             value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
@@ -143,7 +108,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_document">License Document<i class="text-danger">*</i></label>
+                        <label for="license_document">License Document</label>
                         <input type="file" name="license_document" class="form-control" placeholder="Enter Address"
                             value="{{ old('license_document') }}">
                         @error('license_document')
@@ -155,7 +120,7 @@
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
+                        <label for="status">Status </label>
                         <div class="toggle-switch">
                             <label for="cb-switch">
                                 <input type="checkbox" id="cb-switch" name="status" value="Active">
@@ -164,7 +129,6 @@
                                 </span>
                             </label>
                         </div>
-
 
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
