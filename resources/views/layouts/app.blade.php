@@ -34,14 +34,20 @@
     <!-- Datatables CSS -->
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables/datatables.min.css')}}">
 
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/stylemain.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style5.css')}}">
+
+    	<!-- Intl Tell Input CSS -->
+		<link rel="stylesheet" href="assets/plugins/intlTelInput/css/intlTelInput.css">
+
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
+    <script src="{{asset('assets/js/scriptmain.js')}}"></script>
     
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
 
@@ -145,6 +151,9 @@
     <script src="{{asset('assets/js/greedynav.js')}}"></script>
     <script src="{{asset('select2-4.1/dist/js/select2.min.js')}}"></script>
     <script src="{{asset('js/admin/select2.js')}}"></script>
+
+    <!-- Intl Tell Input js -->
+    <script src="assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js"></script>
 
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>

@@ -460,7 +460,7 @@
                                 <div class="my-3">
                                     <div class="status-toggle float-end me-3">
                                         <input id="rating_1" class="check" type="checkbox">
-                                        <label for="rating_1" class="checktoggle checkbox-bg">checkbox</label>
+                                        <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
                             </div>
@@ -491,7 +491,7 @@
                                 <div class="my-3">
                                     <div class="status-toggle float-end me-3">
                                         <input id="rating_2" class="check" type="checkbox" checked="">
-                                        <label for="rating_2" class="checktoggle checkbox-bg">checkbox</label>
+                                        <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
                             </div>
@@ -521,7 +521,7 @@
                                 <div class="my-3">
                                     <div class="status-toggle float-end me-2">
                                         <input id="rating_3" class="check" type="checkbox">
-                                        <label for="rating_3" class="checktoggle checkbox-bg">checkbox</label>
+                                        <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
                             </div>
@@ -552,7 +552,7 @@
                                 <div class="my-3">
                                     <div class="status-toggle float-end me-3">
                                         <input id="rating_4" class="check" type="checkbox">
-                                        <label for="rating_4" class="checktoggle checkbox-bg">checkbox</label>
+                                        <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
                             </div>
