@@ -59,6 +59,8 @@
                                     <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
 
                                     <td>{{ $vehicle->vehicle_number ?? '-' }}</td>
+                                    <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
+                                    <td>{{ $vehicle->container_no_2 ?? '-' }}</td>
                                     <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
                                     <td>{{ $vehicle->vehicle_year ?? '-' }}</td>
                                     <td>{{ $vehicle->vehicle_capacity ?? '-' }}</td>
