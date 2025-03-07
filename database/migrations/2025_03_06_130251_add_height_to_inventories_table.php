@@ -24,8 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('inventories', function (Blueprint $table) {
-            $table->dropColumn('weight');
-            $table->dropColumn('height');
+                $table->dropColumn('weight');
+                $table->dropColumn('height');
             $table->dropColumn('width');
         });
     }

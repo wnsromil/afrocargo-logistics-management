@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,15 +49,30 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        $request->user()->save();
 
+        //  // Find the warehouse by ID
+         $profile = User::find(auth()->id());
+
+         // Update profile with validated data
+         $profile->update([
+             'name' => $request->name,
+             'last_name' => $request->last_name,
+             'email' => $request->email,
+             'phone' => $request->phone,
+             'phone_2' => $request->phone_2,
+             'country_id' => $request->country_id,
+             'state_id' => $request->state_id,
+             'city_id' => $request->city_id,
+             'pincode' => $request->pincode,
+             'address' => $request->address,
+             'address_2' => $request->address_2,
+         ]);
         return Redirect::route('profile.edit')->with('success', 'Profile updated successfully!');
     }
 
