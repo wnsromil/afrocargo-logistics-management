@@ -48,7 +48,7 @@
     <!-- -------------- Notification ------------------------------ -->
     <div class="col-md-6 d-flex align-items-center justify-content-end me-4">
 
-        <a class="nav-link mt-1 me-2" href="#">
+        <a class="nav-link mt-1 me-2" href="{{route('admin.notification.index')}}">
             <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
             <img src="../assets/images/notification BTN.svg" alt="..." />
         </a>
@@ -62,7 +62,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
-                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    <a class="dropdown-item" href="{{ route('profile.index') }}">
                         <img class="mr-3" src="{{asset('assets/images/myprofile.svg')}}" alt="">
                         <span class="drop-span">{{ __('Profile') }}</span>
                     </a>

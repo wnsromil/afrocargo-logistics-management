@@ -16,7 +16,7 @@
     </div>
     
   
-  
+    
    
   
     <x-slot name="cardTitle" >

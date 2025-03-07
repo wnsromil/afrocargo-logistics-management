@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -13,9 +14,11 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
+        $notifications = Notification::latest()->paginate(5);
+      
         $data = User::latest()->paginate(5);
   
-        return view('admin.notification.index',compact('data'))
+        return view('admin.notification.index',compact('notifications','data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     

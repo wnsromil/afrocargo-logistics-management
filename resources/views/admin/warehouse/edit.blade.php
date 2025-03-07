@@ -198,7 +198,7 @@
                     <div class="input-block mb-3">
                         <label for="country_id">Country <i class="text-danger">*</i></label>
 
-                        <select name="country_id" id="country" class="form-control">
+                        <select name="country_id" id="country" class="form-control select2">
                             <option value="">Select Country</option>
                             @foreach($countries as $country)
                             <option {{$warehouse->country_id == $country->id ? 'selected':''}} value="{{ $country->id }}">{{ $country->name }}</option>
@@ -214,7 +214,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="state_id">State <i class="text-danger">*</i></label>
-                        <select name="state_id" id="state" class="form-control">
+                        <select name="state_id" id="state" class="form-control select2">
                             <option value="">Select State</option>
                         </select>
                         @error('state_id')
@@ -227,7 +227,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="city_id">City <i class="text-danger">*</i></label>
-                        <select name="city_id" id="city" class="form-control">
+                        <select name="city_id" id="city" class="form-control select2">
                             <option value="">Select City</option>
                         </select>
                         @error('city_id')
@@ -287,4 +287,60 @@
             <button type="submit" class="btn customer-btn-save">Submit</button>
         </div>
     </form>
+
+      {{-- jqury cdn --}}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+             var selectedCountry = "{{ $warehouse->country_id }}"; 
+             var selectedState = "{{ $warehouse->state_id }}"; 
+             var selectedCity = "{{ $warehouse->city_id }}";
+ 
+ 
+             // Load States Automatically
+             if (selectedCountry) {
+                 $.ajax({
+                     url: "{{ url('api/get-states') }}/" + selectedCountry,
+                     method: "GET",
+                     success: function(response) {
+                        //  $('#state').append('<option value="">Select State</option>');
+                         $.each(response, function(key, value) {
+                             let selected = (value.id == selectedState) ? 'selected' : '';
+                             $('#state').append(
+                                 `<option value="${value.id}" ${selected}>${value.name}</option>`
+                                 );
+                         });
+ 
+                         // 🔥 Automatically Load Cities When State is Selected
+                         if (selectedState) {
+                             loadCities(selectedState);
+                         }
+                     }
+                 });
+             }
+ 
+             //  On State Change Load Cities
+             $('#state').on('change', function() {
+                 var stateId = $(this).val();
+                 loadCities(stateId);
+             });
+ 
+             function loadCities(stateId) {
+                 $.ajax({
+                     url: "{{ url('api/get-cities') }}/" + stateId,
+                     method: "GET",
+                     success: function(response) {
+                         $('#city').html('<option value="">Select City</option>');
+                         $.each(response, function(key, value) {
+                             let selected = (value.id == selectedCity) ? 'selected' : '';
+                             $('#city').append(
+                                 `<option value="${value.id}" ${selected}>${value.name}</option>`
+                                 );
+                         });
+                     }
+                 });
+             }
+         });
+     </script>
 </x-app-layout>

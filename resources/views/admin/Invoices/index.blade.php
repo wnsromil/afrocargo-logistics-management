@@ -53,7 +53,7 @@
    
    <label>By Warehouse</label> 
    <select class="js-example-basic-single select2 ">
-		<option selected="selected form-cs ">Select Warehouse</option>
+		<option selected="selected " class="form-cs">Select Warehouse</option>
 		<option>white</option>
 		<option>purple</option>
 		</select>

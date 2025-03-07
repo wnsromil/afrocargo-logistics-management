@@ -21,6 +21,7 @@
     <!-- ----------------  1  -------------------------- -->
     <div class="mainFontFamily fixContainer text-dark">
 
+        @forelse ($notifications as $notification)
         <div class="shadow-box fontSize innerCards setTopBottomMargin">
             <div class="">
                 <div class="d-flex innerContainer">
@@ -29,111 +30,24 @@
 
                     <div class="float-end ps-3 mainFontFamily">
                         <p class="fw-medium mb-1 ">
-                            Order 2 Reached
+                            {{@$notification->title ?? '--'}}
                         </p>
-                        <p class="card-text fw-regular">Your order has been reached to it's destination.</p>
-                        <p class="opacity-50">Today at 9:42AM</p>
+                        <p class="card-text fw-regular">
+                            {{@$notification->description ?? '--'}}
+                        </p>
+                        <p class="opacity-50">
+                            {{$notification->created_at->diffForHumans() ?? '--'}}
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <!-- --------------------------  2 --------------------------- -->
-        <div class="shadow-box fontSize innerCards setTopBottomMargin">
-
-            <div class="d-flex innerContainer">
-                <i class="fa fa-circle text-success float-start mt-2" data-bs-toggle="tooltip" title="fa fa-circle"
-                    style="font-size:7.46px;"></i>
-                <div class="float-end ps-3">
-
-                    <p class="fw-medium mainFontFamily mb-1">
-                        Pickup Request 1
-                    </p>
-                    <p class="card-text mainFontFamily">You have received a new pickup request from John Doe. The pickup
-                        location is 123 Main Street, Los Angeles, CA 90001, USA.</p>
-                    <p class="opacity-50 mainFontFamily">Today at 9:42AM</p>
-                </div>
-            </div>
-        </div>
-        <!-- ------------------------  3  --------------------------------- -->
-
-        <div class="shadow-box fontSize innerCards setTopBottomMargin">
-            <div class="">
-                <div class="d-flex innerContainer">
-                    <i class="fa fa-circle text-success float-start mt-2" data-bs-toggle="tooltip" title="fa fa-circle"
-                        style="font-size:7.46px;"></i>
-                    <div class="float-end ps-3">
-
-                        <p class="fw-medium mb-1">
-                            Order 4 Reached
+        @empty
+             <p class="fw-medium mb-1 ">
+                            No notification found!
                         </p>
-                        <p class="card-text">Your order has successfully reached to its destination. The delivery was
-                            made to John Doe at 123 Main Street, Los Angeles, CA 90001, USA.
-                        </p>
-                        <p class="opacity-50">Today at 9:42AM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ---------------------------  4  --------------------------- -->
-        <div class="shadow-box fontSize innerCards setTopBottomMargin">
-            <div class="">
-                <div class="d-flex innerContainer">
-                    <i class="fa fa-circle text-success float-start mt-2" data-bs-toggle="tooltip" title="fa fa-circle"
-                        style="font-size:7.46px;"></i>
-                    <div class="float-end ps-3">
+        @endforelse
 
-                        <p class="fw-medium mb-1">
-                            Pickup Request 3
-                        </p>
-                        <p class="card-text">You have received a new pickup request from John Doe. The pickup location
-                            is 123 Main Street, Los Angeles, CA 90001, USA.</p>
-                        <p class="opacity-50">Today at 9:42AM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- --------------------------  5  --------------------------------- -->
-
-        <div class="shadow-box fontSize innerCards setTopBottomMargin">
-            <div class="">
-                <div class="d-flex innerContainer">
-                    <i class="fa fa-circle text-success float-start mt-2" data-bs-toggle="tooltip" title="fa fa-circle"
-                        style="font-size:7.46px;"></i>
-                    <div class="float-end ps-3">
-
-                        <p class="fw-medium mb-1">
-                            Order 4 Reached
-                        </p>
-                        <p class="card-text">Your order has successfully reached to its destination. The delivery was
-                            made to John Doe at 123 Main Street, Los Angeles, CA 90001, USA.</p>
-                        <p class="opacity-50">Today at 9:42AM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ------------------------  6  ------------------------------------ -->
-
-        <div class="shadow-box fontSize mt-4 innerCards setTopBottomMargin">
-            <div class="">
-                <div class="d-flex innerContainer">
-                    <i class="fa fa-circle text-success float-start mt-2" data-bs-toggle="tooltip" title="fa fa-circle"
-                        style="font-size:7.46px;"></i>
-
-                    <div class="float-end ps-3">
-                        <p class="fw-medium mb-1">
-                            Pickup Request 3
-                        </p>
-                        <p class="card-text">You have received a new pickup request from John Doe. The pickup location
-                            is 123 Main Street, Los Angeles, CA 90001, USA.</p>
-                        <p class="opacity-50">Today at 9:42AM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 

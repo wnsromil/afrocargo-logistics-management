@@ -17,13 +17,28 @@ use DB;
 class DriversController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $warehouses = User::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->where('role_id', 4)->paginate(10);
+        $query = $request->search;
+
+        $warehouses = User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })
+            ->where('role_id', 4)
+            ->when($query, function ($q) use ($query) {
+                return $q->where(function ($q) use ($query) {
+                    $q->where('name', 'LIKE', "%$query%")
+                        ->orWhere('email', 'LIKE', "%$query%")
+                        ->orWhere('phone', 'LIKE', "%$query%")
+                        ->orWhere('address', 'LIKE', "%$query%")
+                        ->orWhere('status', 'LIKE', "%$query%");
+                });
+            })
+            ->latest()->paginate(10);
+
         return view('admin.drivers.index', compact('warehouses'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,11 +49,11 @@ class DriversController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->select('id', 'warehouse_name')->get();
-        $Vehicle_data = Vehicle::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+        $Vehicle_data = Vehicle::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->select('id', 'vehicle_type')->get();
         return view('admin.drivers.create', compact('roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
@@ -54,16 +69,16 @@ class DriversController extends Controller
         // Validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
-            'vehicle_type' => 'required',
-            'license_number' => 'required',
-            'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-            'license_expiry_date' => 'required',
             'driver_name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'confirm-password' => 'required',
-            'address' => 'required|string|max:500',
             'phone' => 'required|string|max:15|unique:users,phone',
+            'address' => 'required|string|max:500',
+            'vehicle_type' => 'nullable',
+            'license_number' => 'nullable',
+            'license_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+            'license_expiry_date' => 'nullable',
+            // 'email' => 'required|email|unique:users,email',
+            // 'password' => 'required|same:confirm-password',
+            // 'confirm-password' => 'required',
             'status' => 'in:Active,Inactive',
         ]);
 
@@ -91,8 +106,6 @@ class DriversController extends Controller
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
             'phone' => $request->phone,
             'status' => $status,
             'role_id' => 4,
@@ -133,13 +146,13 @@ class DriversController extends Controller
         $manager_data = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->select('id', 'warehouse_name')->get();
-        $Vehicle_data = Vehicle::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+        $Vehicle_data = Vehicle::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->select('id', 'vehicle_type')->get();
-        return view('admin.drivers.edit', compact('manager_data', 'roles', 'countries', 'warehouses','Vehicle_data'));
+        return view('admin.drivers.edit', compact('manager_data', 'roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
 
     /**
@@ -154,14 +167,14 @@ class DriversController extends Controller
         // Custom validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
-            'vehicle_type' => 'required',
             'driver_name' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
-            'address' => 'required|string|max:500',
             'phone' => 'required|string|max:15',
-            'license_number' => 'required',
+            'address' => 'required|string|max:500',
+            // 'vehicle_type' => 'required',
+            // 'email' => 'nullable|email|unique:users,email,' . $id, // Ignore current user ID
+            // 'license_number' => 'required',
             // 'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-            'license_expiry_date' => 'required',
+            // 'license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
         ]);
 
@@ -181,7 +194,6 @@ class DriversController extends Controller
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address,
-            'email' => $request->email,
             'phone' => $request->phone,
             'license_number' => $request->license_number,
             'license_expiry_date' => $request->license_expiry_date,
@@ -213,5 +225,19 @@ class DriversController extends Controller
 
         return redirect()->route('admin.drivers.index')
             ->with('error', 'Manager not found');
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = User::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
     }
 }
