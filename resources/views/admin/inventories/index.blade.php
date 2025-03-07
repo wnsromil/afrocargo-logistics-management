@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary buttons">
+                    <a href="{{route('admin.inventories.create')}}"  class="btn btn-primary buttons">
                     <img class="imgs" src="assets/images/Vector.png">  
                     Add Inventory
                     </a>
@@ -37,17 +37,6 @@
             </div>
     </x-slot>
 
-
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{route('admin.inventories.create')}}" class="btn btn-primary buttons"style="background:#203A5F">
-                <img src="assets/images/Vector.png">  
-                Add Inventory
-                </a>
-            </div>
-        </div>
-    </div>
 
     <div>
 

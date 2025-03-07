@@ -172,8 +172,8 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3 ">
-                        <label for="warehouse_name"style="color:#737B8B">Warehouse Name <i class="text-danger">*</i></label>
-                        <input type="text" name="warehouse_name" class="form-control" placeholder="Enter Warehouse Name"
+                        <label class="foncolor" for="warehouse_name">Warehouse Name <i class="text-danger">*</i></label>
+                        <input type="text" name="warehouse_name" class="form-control inp" placeholder="Enter Warehouse Name"
                             value="{{ old('warehouse_name') }}">
                         @error('warehouse_name')
                         <span class="text-danger">{{ $message }}</span>
@@ -185,8 +185,8 @@
                 <!-- Warehouse Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="warehouse_code">Warehouse Code <i class="text-danger">*</i></label>
-                        <input type="text" name="warehouse_code" class="form-control" placeholder="Enter Warehouse Code"
+                        <label class="foncolor" for="warehouse_code">Warehouse Code <i class="text-danger">*</i></label>
+                        <input type="text" name="warehouse_code" class="form-control inp" placeholder="Enter Warehouse Code"
                             value="{{ old('warehouse_code') }}">
                         @error('warehouse_code')
                         <span class="text-danger">{{ $message }}</span>
@@ -197,8 +197,8 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="address">Address <i class="text-danger">*</i></label>
-                        <input type="text" name="address" class="form-control" placeholder="Enter Address"
+                        <label class="foncolor" for="address">Address <i class="text-danger">*</i></label>
+                        <input type="text" name="address" class="form-control inp" placeholder="Enter Address"
                             value="{{ old('address') }}">
                         @error('address')
                         <span class="text-danger">{{ $message }}</span>
@@ -209,25 +209,26 @@
                 <!-- Country -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="country_id">Country <i class="text-danger">*</i></label>
-
-                        <select name="country_id" id="country" class="form-control">
-                            <option value="">Select Country</option>
-                            @foreach($countries as $country)
-                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                            @endforeach
+                        <label class="foncolor " for="country_id">Country <i class="text-danger">*</i></label>
+<select name="country_id" id="country" class="form-control  form-cs js-example-basic-single select2 ">
+                        <option value="">Select Country</option>
+                         @foreach($countries as $country)
+                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                         @endforeach
                         </select>
+
                         @error('country_id')
-                        <span class="text-danger">{{ $message }}</span>
+                          <span class="text-danger">{{ $message }}</span>
                         @enderror
+
                     </div>
                 </div>
 
                 <!-- State -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="state_id">State <i class="text-danger">*</i></label>
-                        <select name="state_id" id="state" class="form-control">
+                        <label  class="foncolor" for="state_id">State <i class="text-danger">*</i></label>
+                        <select name="state_id" id="state" class="form-control inp select2">
                             <option value="">Select State</option>
                         </select>
                         @error('state_id')
@@ -239,8 +240,8 @@
                 <!-- City -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="city_id">City <i class="text-danger">*</i></label>
-                        <select name="city_id" id="city" class="form-control">
+                        <label class="foncolor" for="city_id">City <i class="text-danger">*</i></label>
+                        <select name="city_id" id="city" class="form-control inp select2">
                             <option value="">Select City</option>
                         </select>
                         @error('city_id')
@@ -252,8 +253,8 @@
                 <!-- Zip Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="zip_code">Zip Code <i class="text-danger">*</i></label>
-                        <input type="text" name="zip_code" class="form-control" placeholder="Enter Zip Code"
+                        <label class="foncolor" for="zip_code">Zip Code <i class="text-danger">*</i></label>
+                        <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip Code"
                             value="{{ old('zip_code') }}">
                         @error('zip_code')
                         <span class="text-danger">{{ $message }}</span>
@@ -264,8 +265,8 @@
                 <!-- Contact Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control" placeholder="Enter Contact Number"
+                        <label class="foncolor" for="phone">Contact Number <i class="text-danger">*</i></label>
+                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact Number"
                             value="{{ old('phone') }}">
                         @error('phone')
                         <span class="text-danger">{{ $message }}</span>
@@ -276,9 +277,9 @@
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
+                        <label class="foncolor" for="status">Status <i class="text-danger">*</i></label>
+                        <!-- <div class="toggle-switch">
+                            <label for="cb-switch" >
                                 <input type="checkbox" id="cb-switch" name="status" value="Active">
                                 <span>
                                     <small></small>
@@ -290,14 +291,28 @@
                         @error('status')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
-                    </div>
+                    </div> -->
+                    
+                    <div class="status-toggle">
+    <span>Active</span>
+    <input id="rating_1" class="check" type="checkbox" checked>
+    <label for="rating_1" class="checktoggle checkbox-bg togc"></label>
+    <span class="">Inactive</span>
+</div>
+       @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    
                 </div>
             </div>
         </div>
 
         <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.warehouses.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save">Submit</button>
+           
+        <button type="button" onclick="{{route('admin.warehouses.index') }}" class="btn btn-outline-primary custom-btn">Cancel</button> 
+            
+             <button type="submit" class="btn btn-primary ">Submit</button>
+             
         </div>
     </form>
 </x-app-layout>

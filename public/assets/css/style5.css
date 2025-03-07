@@ -7,6 +7,104 @@
   
 }
 
-/* .foncolor{
-  color:#737B8B;
-} */
+.foncolor{
+  color:#737B8B !important;
+  font-size:14px !important;
+  font-weight:500px !important;
+}
+ .inp{
+border:1px solid #00000042 !important;
+height:40px !important;
+border-radius:4px;
+} 
+.customer-btn-save{
+    background-color:#252F49 !important;
+    border:1px #252F49 !important;
+   color: #252F49 !important;
+}
+.btn-primary{
+    background-color: #252F49 !important;
+    height: 37px;
+    justify-content: center !important;
+    align-items: center !important; 
+}
+.btnn{
+    border:1px solid #3a3a3a !important;
+    height: 37px !important;
+    text-align: center;
+    
+}
+.status-toggle .check:checked+.checktoggle {
+    background-color: #50E500;
+    border: none;
+    height: 23px !important;
+    width: 46px !important;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+
+.status-toggle .checktoggle{
+    background-color: gray;
+    border: none;
+    height: 23px !important;
+    width: 46px !important;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.status-toggle {
+    margin-top: 7px;
+}
+
+.status-toggle .checktoggle:after {
+    border: 1px  black;
+    
+    height: 23px;
+    width: 46px;
+}
+.customer-additional-form .status-toggle .checktoggle:after {
+    height: 16px;
+    width: 16px;
+    border: 1px solid #309B08;
+}
+.inactive{
+    margin-right:10px
+}
+.status-toggle span {
+    margin-left: 0px;}
+.status-toggle.checktoggle.togc:after{
+border:2px solid red
+}
+.custom-btn {
+    border-color:#3a3a3a;        
+    color:#3a3a3a ;
+    height:37px;
+    margin-right:10px;               
+}
+  .custom-btn:hover {
+    background-color:#3a3a3a ;    
+    border-color: #3a3a3a;  
+    height:37px;
+    margin-right:10px;            
+  }
+ .ah{
+    color:#3a3a3a;
+ } 
+ .input-block input.form-control {
+    color: #595C5F;
+    font-size: 14px;
+}
+.input-block .form-control {
+   
+    color: #595C5F;
+}
+.input-block input.form-control::placeholder {
+    color: #595C5F;
+    font-size: 14px;
+}
+.select2-selection__rendered::placeholder{
+    color: #595C5F !important;
+    font-size: 14px;
+}
+
+

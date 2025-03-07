@@ -11,7 +11,7 @@
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary buttons"
+                    <a href="{{route('admin.drivers.create')}}" class="btn btn-primary buttons"
                     >
                     <img class="imgs" src="assets/images/Vector.png">  
                     Add Driver
@@ -39,31 +39,12 @@
 											data-bs-placement="bottom" title="Refresh"><span><i
 													class="fe fe-refresh-ccw"></i></span></a></button>
                 </div>
-            <div class="top-nav-search">
-                <form>
-                    <input type="text" class="form-control" placeholder="Search ">
-
-                </form>
-            </div>
-            <div class="mt-2">
-            <button type="button" class="btn btn-primary refeshuser " style="background:#203A5F;border-radius:0px"><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Refresh"><span><i
-                                                class="fe fe-refresh-ccw"></i></span></a></button>
-            </div>
+           
         </div>
     </x-slot>
     
     
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{route('admin.drivers.create')}}" class="btn btn-primary buttons"style="background:#203A5F">
-                <img src="assets/images/Vector.png">  
-                Add Driver
-                </a>
-            </div>
-        </div>
-    </div>
+   
 
     <div>
 
