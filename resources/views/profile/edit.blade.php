@@ -53,27 +53,17 @@
     </x-slot>
 
     <section>
-        <h3 style="margin-top: -30px">Update Profile</h3>
-        <div class="container mt-5">
-            <div class="d-flex align-items-start">
-                <form id="profileForm" action="{{ route('profile.upload_pic') }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="image-upload me-4">
-                        @if (!empty($user->profile_pic) && is_string($user->profile_pic))
-                            <img id="blah" class="avatar" src="{{ asset(@$user->profile_pic) }}" alt="profile-img">
-                        @else
-                            <img id="blah" class="avatar" src="{{ asset('assets/img/profiles/avatar-icon.png') }}"
-                                alt="profile-img">
-                        @endif
-                        <label for="file-input">
-                            <i class="fas fa-pencil-alt" id="profile_pic"></i>
-                        </label>
-                        <span class="delete-icon" onclick="deleteImage()">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                        <input id="file-input" type="file" name="profile_pic" style="display: none;"
-                            onchange="readURL(this);">
+        <div class="content-page-header">
+            <h5 class="setting-menu">Profile</h5>
+        </div>
+        <form id="profileForm" action="{{ route('profile.upload_pic') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="profile-picture">
+                <div class="upload-profile me-2">
+                    <div class="profile-img">
+                        <img id="blah" class="avatar"
+                            src="{{ asset('assets/img/profiles/avatar-10.jpg') }}"
+                            alt="profile-img">
                     </div>
                 </form>
                 <div class="w-100">

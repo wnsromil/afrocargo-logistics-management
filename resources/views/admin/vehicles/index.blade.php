@@ -1,21 +1,41 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Vehicle List') }}
+        {{ __('Warehouse Management') }}
     </x-slot>
 
 
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{ route('admin.vehicle.create') }}" class="btn btn-primary buttons">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <img class="imgs" src="assets/images/Vector.png" alt="Icon">
-                        Add Vehicle
-                    </div>
-                </a>
-            </div>
+     <div class="d-flex align-items-center justify-content-end mb-1">
+    <div class="usersearch d-flex">
+        <div class="mt-2">
+            <a href="{{route('admin.vehicle.create')}}" class="btn btn-primary buttons" >
+                <div class="d-flex align-items-center justify-content-center">
+                    <img class="imgs" src="assets/images/Vector.png" alt="Icon" >
+                    Add Vehicle
+                </div>
+            </a>
         </div>
     </div>
+</div>
+
+  
+  
+    <x-slot name="cardTitle" >
+     <p class="head">All Vehicle</p>  
+
+       <div class="usersearch d-flex">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control forms" placeholder="Search ">
+
+                    </form>
+                </div>
+                <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+											data-bs-placement="bottom" title="Refresh"><span><i
+													class="fe fe-refresh-ccw"></i></span></a></button>
+                </div>
+            </div>
+    </x-slot>
 
     <x-slot name="cardTitle">
         <p class="head">All Vehicles</p>
