@@ -28,7 +28,9 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware(['auth', 'authCheck'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/password', [ProfileController::class, 'change'])->name('profile.password');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile', [ProfileController::class, 'uploadProfilePic'])->name('profile.upload_pic');
@@ -60,6 +62,11 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
+
+        Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
+        Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
+        
+        Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
     });
 });

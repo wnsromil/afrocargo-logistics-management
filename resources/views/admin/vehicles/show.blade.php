@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Vehicle Details - {{ $vehicle->vehicle_number }}
+        Vehicle Details - {{ $vehicle->vehicle_number ?? '--'}}
     </x-slot>
 
     <div class="card">
@@ -14,7 +14,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle Type</label>
-                        <p>{{ $vehicle->vehicle_type }}</p>
+                        <p>{{ $vehicle->vehicle_type ?? '--'}}</p>
                     </div>
                 </div>
 
@@ -22,7 +22,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_number">Vehicle Number (Plate No.)</label>
-                        <p>{{ $vehicle->vehicle_number }}</p>
+                        <p>{{ $vehicle->vehicle_number ?? '--'}}</p>
                     </div>
                 </div>
 
@@ -30,7 +30,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_model">Vehicle Model</label>
-                        <p>{{ $vehicle->vehicle_model }}</p>
+                        <p>{{ $vehicle->vehicle_model ?? '--'}}</p>
                     </div>
                 </div>
 
@@ -38,7 +38,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_year">Vehicle Manufactured Year</label>
-                        <p>{{ $vehicle->vehicle_year }}</p>
+                        <p>{{ $vehicle->vehicle_year ?? '--'}}</p>
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Vehicle Capacity</label>
-                        <p>{{ $vehicle->vehicle_capacity }}</p>
+                        <p>{{ $vehicle->vehicle_capacity ?? '--'}}</p>
                     </div>
                 </div>
 
@@ -57,8 +57,8 @@
                         <p>{{ $vehicle->warehouse ? $vehicle->warehouse->warehouse_name : 'N/A' }}</p>
                         <!-- Display additional Warehouse info -->
                         @if($vehicle->warehouse)
-                            <p><strong>Address:</strong> {{ $vehicle->warehouse->address }}</p>
-                            <p><strong>Contact:</strong> {{ $vehicle->warehouse->phone }}</p>
+                            <p><strong>Address:</strong> {{ $vehicle->warehouse->address ?? '--'}}</p>
+                            <p><strong>Contact:</strong> {{ $vehicle->warehouse->phone ?? '--'}}</p>
                         @endif
                     </div>
                 </div>
@@ -68,9 +68,9 @@
                     <div class="input-block mb-3">
                         <label for="driver_id">Driver Information</label>
                         @if($vehicle->driver)
-                            <p><strong>Name:</strong> {{ $vehicle->driver->name }}</p>
-                            <p><strong>Email:</strong> {{ $vehicle->driver->email }}</p>
-                            <p><strong>Phone:</strong> {{ $vehicle->driver->phone }}</p>
+                            <p><strong>Name:</strong> {{ $vehicle->driver->name ?? '--'}}</p>
+                            <p><strong>Email:</strong> {{ $vehicle->driver->email ?? '--'}}</p>
+                            <p><strong>Phone:</strong> {{ $vehicle->driver->phone ?? '--'}}</p>
                         @else
                             <p>No driver assigned.</p>
                         @endif

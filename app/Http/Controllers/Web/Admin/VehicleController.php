@@ -17,22 +17,35 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->paginate(10);
-        return view('admin.vehicles.index',compact('vehicles'));
+        $vehicles = Vehicle::with(['driver', 'warehouse'])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($request->search, function ($q) use ($request) {
+                $q->where('vehicle_type', 'like', '%' . $request->search . '%')
+                    ->orWhereHas('driver', function ($q) use ($request) {
+                        $q->where('name', 'like', '%' . $request->search . '%');
+                    })
+                    ->orWhereHas('warehouse', function ($q) use ($request) {
+                        $q->where('warehouse_name', 'like', '%' . $request->search . '%');
+                    });
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.vehicles.index', compact('vehicles'));
     }
+
+
 
     public function container_index()
     {
-        //
-        $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+        $vehicles = Vehicle::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->paginate(10);
-        return view('admin.container.index',compact('vehicles'));
+        return view('admin.container.index', compact('vehicles'));
     }
 
     /**
@@ -40,20 +53,22 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        //
-        $vehicle = Vehicle::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+
+        $vehicle = Vehicle::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get();
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->get();
-        return view('admin.vehicles.create',compact('vehicle','warehouses'));
+        $drivers = User::where('role_id', '=', '4')
+            ->Where('is_deleted', 'no')->select('id', 'name')->get();
+        return view('admin.vehicles.create', compact('vehicle', 'warehouses', 'drivers'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    
+
     public function store(Request $request)
     {
         // Validate incoming request data
@@ -63,10 +78,10 @@ class VehicleController extends Controller
             'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number',
             'vehicle_model'   => 'required|string|max:255',
             'vehicle_year'    => 'required|digits:4',
-            'vehicle_capacity'=> 'nullable|string|max:100',
+            'driver_id'    => 'nullable|integer',
             'status'          => 'in:Active,Inactive',
         ]);
-    
+
         // Create a new vehicle
         Vehicle::create([
             'warehouse_id'    => $request->warehouse_id,
@@ -74,23 +89,23 @@ class VehicleController extends Controller
             'vehicle_number'  => $request->vehicle_number,
             'vehicle_model'   => $request->vehicle_model,
             'vehicle_year'    => $request->vehicle_year,
-            'vehicle_capacity'=> $request->vehicle_capacity,
+            'driver_id'       => $request->driver_id,
             'status'          => $request->status ?? 'Inactive',
         ]);
-    
+
         // Redirect back with success message
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
     }
-    
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $vehicle = Vehicle::where('id',$id)->first();
+        $vehicle = Vehicle::where('id', $id)->first();
 
-        return view('admin.vehicles.show',compact('vehicle'));
+        return view('admin.vehicles.show', compact('vehicle'));
     }
 
     /**
@@ -99,13 +114,14 @@ class VehicleController extends Controller
     public function edit(string $id)
     {
         //
-        $vehicle = Vehicle::where('id',$id)->first();
-
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+        $vehicle = Vehicle::where('id', $id)->first();
+        $drivers = User::where('role_id', '=','4')->get();
+        
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->get();
-    
-        return view('admin.vehicles.edit',compact('vehicle','warehouses'));
+
+        return view('admin.vehicles.edit', compact('vehicle', 'warehouses','drivers'));
     }
 
     /**
@@ -120,7 +136,7 @@ class VehicleController extends Controller
             'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number,' . $id,  // Exclude the current record's vehicle_number
             'vehicle_model'   => 'nullable|string|max:255',
             'vehicle_year'    => 'nullable|digits:4',
-            'vehicle_capacity'=> 'nullable|string|max:100',
+            'driver_id'    => 'nullable|integer',
             'status'          => 'in:Active,Inactive',
         ]);
 
@@ -132,7 +148,7 @@ class VehicleController extends Controller
             'vehicle_number'  => $request->vehicle_number,
             'vehicle_model'   => $request->vehicle_model,
             'vehicle_year'    => $request->vehicle_year,
-            'vehicle_capacity'=> $request->vehicle_capacity,
+            'driver_id'       => $request->driver_id,
             'status'          => $request->status ?? 'Inactive',
         ]);
 
@@ -149,6 +165,20 @@ class VehicleController extends Controller
         //
         Vehicle::find($id)->delete();
         return redirect()->route('admin.vehicle.index')
-                        ->with('success','Vehicle deleted successfully');
+            ->with('success', 'Vehicle deleted successfully');
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $vehicle = Vehicle::find($id);
+
+        if ($vehicle) {
+            $vehicle->status = $request->status;
+            $vehicle->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Vehicle Not Found']);
     }
 }

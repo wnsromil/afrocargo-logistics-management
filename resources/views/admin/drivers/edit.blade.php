@@ -15,7 +15,7 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="warehouse_name">Warehouse Name <i class="text-danger">*</i></label>
+                        <label for="warehouse_name">Warehouse Name<i class="text-danger">*</i></label>
                         <select name="warehouse_name" class="form-control">
                             <option value="">Select Warehouse Name</option>
                             @foreach($warehouses as $warehouse)
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <!-- Email -->
+                {{-- <!-- Email -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="email">E-mail <i class="text-danger">*</i></label>
@@ -50,7 +50,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Contact Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -67,7 +67,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="address">Address <i class="text-danger">*</i></label>
+                        <label for="address">Address </label>
                         <input type="text" name="address" class="form-control" placeholder="Enter Address"
                         value="{{$manager_data->address ?? old('address') }}">
                         @error('address')
@@ -79,7 +79,7 @@
                 <!-- Password -->
                 {{-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="phone">Password <i class="text-danger">*</i></label>
+                        <label for="phone">Password </label>
                         <input type="text" name="password" class="form-control" placeholder="Enter Contact Number"
                             value="{{ old('password') }}">
                         @error('password')
@@ -90,7 +90,7 @@
 
                 {{-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="phone">Confirm Password <i class="text-danger">*</i></label>
+                        <label for="phone">Confirm Password </label>
                         <input type="text" name="confirm-password" class="form-control" placeholder="Enter Contact Number"
                             value="{{ old('confirm-password') }}">
                         @error('confirm-password')
@@ -101,11 +101,11 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
+                        <label for="vehicle_type">Vehicle</label>
                         <select name="vehicle_type" class="form-control">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
-                                <option {{ $manager_data->vehicle_type == $Vehicle->id ? 'selected' : '' }}
+                                <option {{ $manager_data->vehicle_id == $Vehicle->id ? 'selected' : '' }}
                                     value="{{ $Vehicle->id }}">{{ $Vehicle->vehicle_type }}</option>
                             @endforeach
                         </select>
@@ -118,7 +118,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_number">License Number<i class="text-danger">*</i></label>
+                        <label for="license_number">License Number</label>
                         <input type="text" name="license_number" class="form-control" placeholder="Enter Address"
                             value="{{ $manager_data->license_number }}">
                         @error('license_number')
@@ -130,7 +130,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
+                        <label for="license_expiry_date">License Expiry Date</label>
                         <input type="date" name="license_expiry_date" class="form-control" placeholder="Enter Address"
                             value="{{ $manager_data->license_expiry_date  }}">
                         @error('license_expiry_date')
@@ -142,7 +142,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_document">License Document<i class="text-danger">*</i></label>
+                        <label for="license_document">License Document</label>
                         <input type="file" name="license_document" class="form-control" placeholder="Enter Address"
                             value="{{ old('license_document') }}">
                         @error('license_document')
@@ -155,7 +155,7 @@
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
+                        <label for="status">Status</label>
                         <div class="toggle-switch">
                             <label for="cb-switch">
                                 <input type="checkbox" id="cb-switch" name="status" value="Active" @checked($manager_data->status === 'Active')>
@@ -175,8 +175,8 @@
         </div>
 
         <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.warehouse_manager.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save">Submit</button>
+            <a href="{{ route('admin.drivers.index') }}" class="btn customer-btn-cancel">Cancel</a>
+            <button type="submit" class="btn customer-btn-save">Update</button>
         </div>
     </form>
 </x-app-layout>

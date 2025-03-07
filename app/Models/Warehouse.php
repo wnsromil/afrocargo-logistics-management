@@ -18,4 +18,5 @@ class Warehouse extends Model
     public function city(){
         return $this->belongsTo(City::class,'city_id');
     }
+   
 }

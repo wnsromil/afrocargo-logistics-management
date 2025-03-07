@@ -70,7 +70,7 @@
     @yield('style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-
+@stack('head')
 </head>
 
 <body>
@@ -89,7 +89,7 @@
         <!-- Page Wrapper -->
         <div class="page-wrapper" style="margin-top:0px">
             <div class="content container-fluid">
-
+                @yield('content')
                 <div class="card mb-0">
                     <div class="card-body">
                         <!-- Page Header -->

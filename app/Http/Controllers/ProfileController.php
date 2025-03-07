@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\State;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +17,28 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index(): View
+    {
+        $user = auth()->user();
+        return view('profile.index', compact('user'));
+    }
+
     public function edit(Request $request): View
     {
+        $countries = Country::get();
+        $states = State::get();
+        $cities = City::get();
         return view('profile.edit', [
+            'user' => $request->user(),
+            'countries' => $countries,
+            'states' => $states,
+            'cities' => $cities
+        ]);
+    }
+
+    public function change(Request $request): View
+    {
+        return view('profile.update-password', [
             'user' => $request->user(),
         ]);
     }
@@ -62,20 +84,27 @@ class ProfileController extends Controller
     public function uploadProfilePic(Request $request)
     {
         $request->validate([
-            'profile_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
+        if ($request->has('delete_image')) {
+            if (!empty($user->profile_pic) && file_exists(public_path($request->user()->profile_pic))) {
+                unlink(public_path($request->user()->profile_pic));
+            }
+            $request->user()->profile_pic = null;
+            $request->user()->save();
+            return redirect()->back()->with('success', 'Profile image deleted successfully!');
+        }
+
         if ($request->hasFile('profile_pic')) {
             $file = $request->file('profile_pic');
             $filename = time() . '.' . $file->getClientOriginalExtension(); // Unique filename
             $file->move(public_path('uploads/profile_pics'), $filename); // Public folder me move karein
-    
+
             // Directly user ka profile_pic update karein
             $request->user()->profile_pic = 'uploads/profile_pics/' . $filename;
             $request->user()->save(); // Save user record
+            return back()->with('success', 'Profile picture updated successfully!');
         }
-    
-        return back()->with('success', 'Profile picture updated successfully!');
     }
-    
 }

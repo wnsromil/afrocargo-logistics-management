@@ -15,8 +15,8 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="inventory_name">Inventory Name <i class="text-danger">*</i></label>
-                        <select name="inventory_name" class="form-control select2Tags">
+                        <label for="inventory_name">Inventory Type <i class="text-danger">*</i></label>
+                        <select name="inventory_name" class="form-control select2Tags" >
                             <option selected value="{{ $inventory->category->name }}">{{ ucfirst($inventory->category->name) }}</option>
                         </select>
 
@@ -30,11 +30,47 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_id">Warehouse Name <i class="text-danger">*</i></label>
-                        <select name="warehouse_id" class="form-control select2" >
+                        <select name="warehouse_id" class="form-control select2"  >
                             <option selected value="{{ $inventory->warehouse->id }}">{{ $inventory->warehouse->warehouse_name }}</option>
                         </select>
 
                         @error('warehouse_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                   <!-- weight -->
+                   <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="weight">Weight(kg) <i class="text-danger">*</i></label>
+                        <input type="number" name="weight" class="form-control" placeholder="Enter weight"
+                            value="{{ $inventory->weight ?? '--'}}">
+                        @error('weight')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- width -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="width">Width(cm) </label>
+                        <input type="number" name="width" class="form-control" placeholder="Enter width"
+                            value="{{ $inventory->width ?? '--'}}">
+                        @error('width')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                  <!-- height -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="height">Height(cm) </label>
+                        <input type="number" name="height" class="form-control" placeholder="Enter height"
+                            value="{{ $inventory->height ?? '--'}}">
+                        @error('height')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -64,10 +100,22 @@
                     </div>
                 </div>
 
-                <!-- Status -->
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
+                 <!-- price -->
+                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
+                        <label for="price">Price <i class="text-danger">*</i></label>
+                        <input type="number" name="price" class="form-control" placeholder="Enter price"
+                            value="{{ $inventory->price ?? '--'}}">
+                        @error('price')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="status">Status</label>
                         <div class="toggle-switch">
                             <label for="cb-switch">
                                 <input type="checkbox" id="cb-switch" name="status" value="Active">
@@ -76,13 +124,11 @@
                                 </span>
                             </label>
                         </div>
-
-
                         @error('status')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
 

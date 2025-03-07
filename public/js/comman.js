@@ -78,6 +78,12 @@ $('#selectAll').on('click', function () {
     $('.selectCheckbox').prop('checked', this.checked);
 });
 
+$('#state').on('click', function () {
+
+    selectCheckbox(this.checked);
+    $('.selectCheckbox').prop('checked', this.checked);
+});
+
 // Uncheck "Select All" if any individual checkbox is unchecked
 $(document).on('click', '.selectCheckbox', function () {
     selectCheckbox($(this).prop("checked"));

@@ -17,21 +17,21 @@ class ApiAuthUserCheck
     public function handle(Request $request, Closure $next): Response
     {
 
-        $check = VerifyAuthIp::where([
-            'user_id' => auth()->id(),
-            'ip_address' => $request->ip(),
-            'verify_type'=>'auth'
-        ])
-        ->whereNotNull('otp_varify_at')  // OTP was verified before
-        ->whereNull('otp')               // OTP should be null
-        ->whereNull('otp_expire_at');      // OTP expiry should be null
-        // ->first();
+        // $check = VerifyAuthIp::where([
+        //     'user_id' => auth()->id(),
+        //     'ip_address' => $request->ip(),
+        //     'verify_type'=>'auth'
+        // ])
+        // ->whereNotNull('otp_varify_at')  // OTP was verified before
+        // ->whereNull('otp')               // OTP should be null
+        // ->whereNull('otp_expire_at');      // OTP expiry should be null
+        // // ->first();
     
             
-        if (!$check->exists()) {
+        // if (!$check->exists()) {
 
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
         return $next($request);
     }
 }
