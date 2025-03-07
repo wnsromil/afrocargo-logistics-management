@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{
+    Container,
     Warehouse,
     User,
     Role,
@@ -71,11 +72,12 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
+       
         // Validate incoming request data
         $request->validate([
             'warehouse_id'    => 'required|exists:warehouses,id',
             'vehicle_type'    => 'required|string|max:255',
-            'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number',
+            'vehicle_number'  => 'nullable|string|max:50|unique:vehicles,vehicle_number',
             'vehicle_model'   => 'required|string|max:255',
             'vehicle_year'    => 'required|digits:4',
             'driver_id'    => 'nullable|integer',
@@ -83,15 +85,24 @@ class VehicleController extends Controller
         ]);
 
         // Create a new vehicle
-        Vehicle::create([
-            'warehouse_id'    => $request->warehouse_id,
-            'vehicle_type'    => $request->vehicle_type,
-            'vehicle_number'  => $request->vehicle_number,
-            'vehicle_model'   => $request->vehicle_model,
-            'vehicle_year'    => $request->vehicle_year,
-            'driver_id'       => $request->driver_id,
-            'status'          => $request->status ?? 'Inactive',
-        ]);
+            $vehicle = new Vehicle();
+            $vehicle->warehouse_id   = $request->warehouse_id;
+            $vehicle->vehicle_type   = $request->vehicle_type;
+            $vehicle->vehicle_number = $request->vehicle_number;
+            $vehicle->vehicle_model  = $request->vehicle_model;
+            $vehicle->vehicle_year   = $request->vehicle_year;
+            $vehicle->driver_id      = $request->driver_id;
+            $vehicle->status         = $request->status ?? 'Inactive';
+            
+            if($request->vehicle_type == 'Container')
+            {
+                $vehicle->container_no_1  = $request->container_no_1;
+                $vehicle->container_no_2   = $request->container_no_2;
+                $vehicle->container_size      = $request->container_size;
+            }
+            
+            $vehicle->save();
+
 
         // Redirect back with success message
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
