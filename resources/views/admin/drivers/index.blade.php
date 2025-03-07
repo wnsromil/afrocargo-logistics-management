@@ -26,9 +26,9 @@
                         <div class="input-group">
                             <input type="text" class="form-control forms" placeholder="Search" id="search"
                                 name="search" value="{{ request()->search }}">
-                            <button type="submit">
+                            {{-- <button type="submit">
                                 <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
+                            </button> --}}
                         </div>
                     </form>
                 </div>
