@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Warehouse extends Model
+class Address extends Model
 {
     //
-    protected $guarded=[];
 
     public function country(){
         return $this->belongsTo(Country::class,'country_id');
@@ -18,5 +17,4 @@ class Warehouse extends Model
     public function city(){
         return $this->belongsTo(City::class,'city_id');
     }
-   
 }

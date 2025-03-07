@@ -26,6 +26,10 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'phone' => ['required', 'string', 'max:10'],
+            'country_id' => ['required', 'integer'],
+            'state_id' => ['required', 'integer'],
+            'city_id' => ['required', 'integer'],
+            'pincode' => ['required', 'integer'],
             'address' => ['required', 'string', 'max:500'],
         ];
     }

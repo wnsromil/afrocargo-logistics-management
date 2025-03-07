@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-       <p class="subhead">Add Driver</p> 
+       <p class="subhead">Add Driver</p>
     </x-slot>
 
     <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
@@ -77,33 +77,11 @@
                     </div>
                 </div>
 
-                <!-- Password -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label class="foncolor" for="phone">Password <i class="text-danger">*</i></label>
-                        <input type="text" name="password" class="form-control inp" placeholder="Enter Password"
-                            value="{{ old('password') }}">
-                        @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label  class="foncolor" for="phone">Confirm Password <i class="text-danger">*</i></label>
-                        <input type="text" name="confirm-password" class="form-control inp"
-                            placeholder="Confirm Passowrd" value="{{ old('confirm-password') }}">
-                        @error('confirm-password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label class="foncolor" for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
-                        <select name="vehicle_type" class="form-control inp select2">
+                        <label for="vehicle_type">Vehicle</label>
+                        <select name="vehicle_type" class="form-control">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
                                 <option {{ old('vehicle_type') == $Vehicle->id ? 'selected' : '' }}
@@ -116,11 +94,13 @@
                     </div>
                 </div>
 
-                <!-- Address -->
+                <!-- license Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="license_number">License Number<i class="text-danger">*</i></label>
                         <input type="text" name="license_number" class="form-control inp" placeholder="Enter Address"
+
+          
                             value="{{ old('license_number') }}">
                         @error('license_number')
                             <span class="text-danger">{{ $message }}</span>
@@ -128,8 +108,8 @@
                     </div>
                 </div>
 
-                <!-- Address -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                 <!-- Address -->
+                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label  class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
                         <input type="date" name="license_expiry_date" class="form-control inp" placeholder="Enter Address"
@@ -145,6 +125,7 @@
                     <div class="input-block mb-3">
                         <label class="foncolor" for="license_document">License Document<i class="text-danger">*</i></label>
                         <input type="file" name="license_document" class="form-control inp" placeholder="Enter Address"
+   
                             value="{{ old('license_document') }}">
                         @error('license_document')
                             <span class="text-danger">{{ $message }}</span>
@@ -158,11 +139,10 @@
                         <label class="foncolor" for="status">Status <i class="text-danger">*</i></label>
                         <div class="status-toggle">
     <span >Active</span>
-    <input id="rating_1" class="check" type="checkbox" checked>
+    <input id="rating_1" class="check" type="checkbox" value="Active">
     <label for="rating_1" class="checktoggle checkbox-bg"></label>
     <span class="inactive">Inactive</span>
 </div>
-                       
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
