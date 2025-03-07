@@ -33,6 +33,7 @@
     }
 
 
+   if(document.getElementById('rating_6')){
     const activeText = document.getElementById('activeText');
     const inactiveText = document.getElementById('inactiveText');
     const rating_6 =document.getElementById('rating_6');
@@ -40,3 +41,4 @@
         activeText.classList.toggle("faded");
         inactiveText.classList.toggle("faded");
     })
+};
