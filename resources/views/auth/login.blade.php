@@ -10,14 +10,14 @@
             background-size: cover;
         }
 
-        /* .backgroundImage{
-    background-image: url('../assets/images/Background.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-right: 10px;
-    padding: 0px;
-    background-position: absolute;
-  } */
+        .active {
+            text-decoration: underline;
+            font-weight: bold;
+            color: black;
+            opacity: 0.6;
+            transition: 0.5s;
+        }
+
 
         .backgroundImage {
             background-image: url('../assets/images/Background.svg');
@@ -163,13 +163,12 @@
     </div>
 
     <script>
-        // JavaScript to toggle between the Admin and Manager login forms
+
         function toggleLoginForm(type) {
             if (type === 'admin') {
                 document.getElementById('admin').style.display = 'block';
                 document.getElementById('manager').style.display = 'none';
                 document.getElementById('adminBtn').classList.add('active');
-                let admin = document.getElementById('adminBtn');
                 document.getElementById('managerBtn').classList.remove('active');
             } else if (type === 'manager') {
                 document.getElementById('admin').style.display = 'none';
@@ -179,10 +178,11 @@
             }
         }
 
-        // By default, show the Admin form
         window.onload = function () {
             toggleLoginForm('admin');
         };
+
+
     </script>
 
     <!-- -------------------------------------------------------------------------------------------------- -->

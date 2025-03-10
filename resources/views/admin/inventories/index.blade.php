@@ -8,7 +8,7 @@
             <div class="usersearch d-flex">
                 <div class="mt-2">
                     <a href="#" class="btn btn-primary buttons">
-                    <img class="imgs" src="assets/images/Vector.png">  
+                    <img class="imgs" src="assets/images/Vector.png">
                     Add Inventory
                     </a>
                 </div>
@@ -40,7 +40,7 @@
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
             <div class="mt-2">
-                <a href="{{route('admin.inventories.create')}}" class="btn btn-primary buttons"
+                <a href="{{ route('admin.inventories.create') }}" class="btn btn-primary buttons"
                     style="background:#203A5F">
                     <img src="assets/images/Vector.png" class="pe-3">
                     Add Inventory
@@ -74,204 +74,88 @@
                         <tbody>
 
                         </tbody>
+                        @forelse ($inventories as $inventory)
+                            <tr
+                                class=" @if ($inventory->stock_status == 'In Stock') bg-success-bg @elseif($inventory->stock_status == 'Out Of Stock')
+                                    bg-danger-bg
+                                    @else
+                                    bg-warning-bg @endif">
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
 
-                        <tr class="bg-success-bg">
-                            <td>1</td>
-                            <td>Barrel</td>
-                            <td>Location ABC</td>
-                            <td>15</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td>1200</td>
-                            <td>$25</td>
-                            <td>20</td>
-                            <td>12/5/2025</td>
-                            <td><span class="bg-light text-success px-2 py-1 stock-font fw-medium">In Stock</span></td>
-                            <td>
-                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                title="fe fe-more-vertical"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul>
-                                        <li>
-                                            <a class="dropdown-item" href="{{route('admin.inventories.edit', $inventory->id)}}" ><i class="far fa-edit me-2"></i>Edit</a>
-                                        </li>
+                                <td>{{ ucfirst($inventory->category->name ?? '') }}</td>
+                                <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
+                                <td><span>{{ $inventory->in_stock_quantity ?? '-' }}</span></td>
+                                <td><span>
+                                        @if (!empty($inventory->price))
+                                            $
+                                        @endif{{ $inventory->price ?? '-' }}
+                                    </span></td>
+                                <td><span>{{ $inventory->weight ?? '-' }}</span></td>
+                                <td><span>{{ $inventory->height ?? '-' }}</span></td>
+                                <td><span>{{ $inventory->width ?? '-' }}</span></td>
+                                <td><span>{{ $inventory->low_stock_warning ?? '-' }}</span></td>
+                                <td><span>{{ $inventory->formatted_created_at ?? '-' }}</span></td>
+                                <td><span
+                                        class=" @if ($inventory->stock_status == 'In Stock') bg-light text-success @elseif($inventory->stock_status == 'Out Of Stock')
+                                    bg-light text-danger
+                                    @else
+                                    bg-light text-warning @endif  px-2 py-1 stock-font fw-medium">{{ $inventory->stock_status ?? '-' }}</span>
+                                </td>
+                                {{-- <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
+                                        title="fe fe-more-vertical"></i></td> --}}
+                                        <td class="d-flex align-items-center">
+                                            {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i> Invoice</a>  
+                                        <a href="customers-ledger.html" class="btn btn-greys me-2"><i
+                                                class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
+                                                    title="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
+                                                                    class="far fa-edit me-2"></i>Edit</a>
+                                                        </li>
+                                                        <li>
+                                                          
+                                                            <form
+                                                                action="{{ route('admin.inventories.destroy', $inventory->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" class="dropdown-item"
+                                                                    onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
+                                                                        class="far fa-trash-alt me-2"></i>Delete</button>
+                                                            </form>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                                    class="far fa-eye me-2"></i>View History</a>
+                                                        </li>
+                                                        {{-- <li>
+                                                        <a class="dropdown-item" href="active-customers.html"><i class="fa-solid fa-power-off me-2"></i>Activate</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="deactive-customers.html"><i class="far fa-bell-slash me-2"></i>Deactivate</a>
+                                                    </li> --}}
+                                                    </ul>
+                                                </div>
+    
+                                            </div>
+                                        </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No inventories found.
+                                </td>
+                            </tr>
+                        @endforelse
 
-                                        <li>
-                                            <!-- Delete form -->
-                                            <form action="{{ route('admin.inventories.destroy', $inventory->id) }}"
-                                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="dropdown-item"
-                                                onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                    class="far fa-trash-alt me-2"></i>Delete</button>
-                                            </form>
-                                        </li>
-                                        <li>
-
-                                            <a class="dropdown-item" href="{{route('admin.inventories.show', $inventory->id)}}">
-                                                <i class="far fa-eye me-2" ></i>View History</a>
-                                        </li>
-                                        <a class="dropdown-item" href="active-customers.html"><i
-                                                class="fa-solid fa-power-off me-2"></i>Activate</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="deactive-customers.html"><i
-                                                    class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </td>
-                        </tr>
-
-                        <tr class="bg-danger-bg">
-                            <td>2</td>
-                            <td>Bag</td>
-                            <td>Location CSA</td>
-                            <td>20</td>
-                            <td>8</td>
-                            <td>15</td>
-                            <td>500</td>
-                            <td>$500</td>
-                            <td>45</td>
-                            <td>12/12/2025</td>
-                            <td><span class="bg-light text-danger px-2 py-1 stock-font fw-medium">Out Of Stock</span>
-                            </td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-warning-bg">
-                            <td>3</td>
-                            <td>Bottel</td>
-                            <td>Location QWQ</td>
-                            <td>5</td>
-                            <td>2</td>
-                            <td>5</td>
-                            <td>78555</td>
-                            <td>$120</td>
-                            <td>85</td>
-                            <td>12/5/2025</td>
-                            <td><span class="bg-light text-warning px-2 py-1 stock-font fw-medium">Low Stock</span></td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-
-                        </tr>
-                        <tr class="bg-success-bg">
-                            <td>4</td>
-                            <td>Cartel</td>
-                            <td>Location TTT</td>
-                            <td>0.5</td>
-                            <td>0.2</td>
-                            <td>1</td>
-                            <td>9855</td>
-                            <td>$75</td>
-                            <td>55</td>
-                            <td>12/12/2024</td>
-                            <td><span class="bg-light text-success px-2 py-1 stock-font fw-medium">In Stock</span></td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-danger-bg">
-                            <td>5</td>
-                            <td>Barrel</td>
-                            <td>Location GGG</td>
-                            <td>14</td>
-                            <td>6</td>
-                            <td>4</td>
-                            <td>755</td>
-                            <td>$16</td>
-                            <td>12</td>
-                            <td>12/5/2025</td>
-                            <td><span class="bg-light text-danger px-2 py-1 stock-font fw-medium">Out Of Stock</span>
-                            </td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-warning-bg">
-                            <td>6</td>
-                            <td>Bag</td>
-                            <td>Location DDD</td>
-                            <td>45</td>
-                            <td>25</td>
-                            <td>10</td>
-                            <td>2223</td>
-                            <td>$25</td>
-                            <td>1</td>
-                            <td>12/12/2024</td>
-                            <td><span class="bg-light text-warning px-2 py-1 stock-font fw-medium">Low Stock</span></td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-success-bg">
-                            <td>7</td>
-                            <td>Barrel</td>
-                            <td>Location SSSS</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>.5</td>
-                            <td>777</td>
-                            <td>$100</td>
-                            <td>22</td>
-                            <td>12/5/2025</td>
-                            <td><span class="bg-light text-success px-2 py-1 stock-font fw-medium">In Stock</span></td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-danger-bg">
-                            <td>8</td>
-                            <td>Cartel</td>
-                            <td>Location FDFDF</td>
-                            <td>0.2</td>
-                            <td>0.5</td>
-                            <td>2.5</td>
-                            <td>1000</td>
-                            <td>$65</td>
-                            <td>22</td>
-                            <td>12/12/2024</td>
-                            <td><span class="bg-light text-danger px-2 py-1 stock-font fw-medium">Out Of Stock</span>
-                            </td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-warning-bg">
-                            <td>9</td>
-                            <td>Bottel</td>
-                            <td>Location DBGD</td>
-                            <td>5</td>
-                            <td>2</td>
-                            <td>4</td>
-                            <td>5444</td>
-                            <td>$22</td>
-                            <td>55</td>
-                            <td>12/5/2025</td>
-                            <td><span class="bg-light text-warning px-2 py-1 stock-font fw-medium">Low Stock</span></td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
-
-                        <tr class="bg-danger-bg">
-                            <td>10</td>
-                            <td>Barrel</td>
-                            <td>Location WWW</td>
-                            <td>8</td>
-                            <td>7</td>
-                            <td>7</td>
-                            <td>988</td>
-                            <td>$44</td>
-                            <td>10</td>
-                            <td>12/12/2024</td>
-                            <td><span class="bg-light text-danger px-2 py-1 stock-font fw-medium">Out Of Stock</span>
-                            </td>
-                            <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                    title="fe fe-more-vertical"></i></td>
-                        </tr>
                     </table>
                 </div>
             </div>
