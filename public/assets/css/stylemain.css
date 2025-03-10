@@ -429,9 +429,8 @@
 }
 
 .bg-image-login{
-    background-image: url('../images/Loginimage.jpeg');
+    background-image: url('../assets/images/Loginimage.jpeg');
     background-repeat: no-repeat;
-
     background-size: cover;
 }
 
@@ -443,4 +442,51 @@ h1, h2, h3, h4, h5, h6 {
 .btnBorder{
     border: none;
     color: black;
+}
+
+.login-btn{
+    background: 203A5F;
+    text-align: center;
+    font-weight: 600;
+    font-size: .75rem; 
+    /* line-height: 1rem;*/
+}
+
+.font-size2{
+    font-size: 25px;
+    font-family: "Poppins", serif;
+    font-weight: 700px;
+}
+
+
+.red-rose-fontSet {
+    font-family: "Red Rose", serif;
+    font-weight: 700px;
+    font-style: normal;
+    font-size: 20px;
+  }
+
+  .backgroundImage{
+    background-image: url('../assets/images/Background.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-right: 10px;
+    padding: 0px;
+    background-position: absolute;
+  }
+
+  .setSize{
+    width: 60px;
+    height: 72px;
+  }
+  
+/* 
+.login-card{
+    height: 506px;
+    width: 582px;
+} */
+
+
+.text-indigo-600{
+    background-color: black;
 }
