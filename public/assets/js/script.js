@@ -700,6 +700,13 @@ Version      : 1.0
 		});
 	}
 
+		// Country Code Selection
+		if($('#mobile_code2').length > 0) {
+			$( '#mobile_code2' ).intlTelInput( {
+				initialCountry: "in",
+				separateDialCode: true,	
+			});
+		}
 	// Summernote
 	if($('.summernote').length > 0) {
         $('.summernote').summernote({

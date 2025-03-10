@@ -134,14 +134,19 @@
 .status-toggle .checktoggle.log {
     background-color: #50E500;
     border: none;
-    /* height: 20px;
-    width: 41px; */
-
+    height: 30px;
+    width: 60px;
 }
+/* 
 .status-toggle .checktoggle.log:after {
     border: 1px solid #3EB100;
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
+} */
+.customer-additional-form .status-toggle .checktoggle:after{
+    height: 25px;
+    width: 25px;
+
 }
 
 .status-toggle .check:checked + .checktoggle.log{
@@ -396,10 +401,10 @@
     width: 16px;
 } */
 
-#rating_6{
+/* #rating_6{
     border:0px;
     background-color: green;
-}
+} */
 
 .btn-save{
     background-color: #3a3a3a;
@@ -415,4 +420,27 @@
 .faded{
     opacity: 0.5px;
     color: gray;
+}
+
+.login-logo-font{
+    font-family: "Red Rose", serif;
+    font-size: 20px;
+    font-weight: 700px;
+}
+
+.bg-image-login{
+    background-image: url('../images/Loginimage.jpeg');
+    background-repeat: no-repeat;
+
+    background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.btnBorder{
+    border: none;
+    color: black;
 }
