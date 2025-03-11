@@ -24,7 +24,6 @@ class OrderShipmentController extends Controller
      */
     public function index()
     {
-        //
 
         $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -112,7 +111,7 @@ class OrderShipmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+
         $ParcelHistories = ParcelHistory::where('parcel_id', $id)
             ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
 
@@ -239,7 +238,7 @@ class OrderShipmentController extends Controller
                     'message' => 'Parcel not found.'
                 ], 404);
             }
-            
+
             // Update parcel status and driver_id if provided
             $objParcel = Parcel::when($ParcelId,function($q)use($ParcelId){
                 if(is_array($ParcelId)){
@@ -248,7 +247,7 @@ class OrderShipmentController extends Controller
                 return $q->where('id', $ParcelId);
             });
 
-            
+
 
 
             $warehouse_id = null;
@@ -299,7 +298,7 @@ class OrderShipmentController extends Controller
                 $hubTracking = collect($hubTrackings)->filter(function($item){
                     return $item->parcels_count < $item->vehicle->capacity;
                 })->first();
-                
+
                 // return collect($hubTrackings)->pluck('vehicle_id')->toArray();
 
                 if(empty($hubTracking)){
@@ -331,7 +330,7 @@ class OrderShipmentController extends Controller
                 ];
             });
 
-            
+
 
             // Store history in ParcelHistory table
             ParcelHistory::insert(collect($history)->toArray());
