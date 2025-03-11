@@ -77,14 +77,17 @@
 
               <div class="col-md-12">
               <label class="foncolor" for="password">Password<i class="text-danger">*</i></label>
-              <input type="text" name="password" class="form-control inp" placeholder="Enter Password"><i class="fe fe-eye" data-bs-toggle="tooltip" title="fe fe-eye"></i></input>
-              
+                <div class="d-flex" style="border: 1px solid #00000042 !important;border-radius: 4px;">
+              <input type="text" name="password" class="form-control inp" style="border:none !important" placeholder="Enter Password"><i class="fe fe-eye passeye" data-bs-toggle="tooltip" title="fe fe-eye"></i>
+</div>
             </div>
 
               <div class="col-md-12">
               <label class="foncolor" for="confirm_password">Confirm New Password<i class="text-danger">*</i></label>
-              <input type="text" name="password" class="form-control inp" placeholder="Enter Confirm New Password"><i class="fe fe-eye" data-bs-toggle="tooltip" title="fe fe-eye"></i></input>
+              <div class="d-flex" style="border: 1px solid #00000042 !important;border-radius: 4px;">
+               <input type="text" name="password" class="form-control inp" style="border:none !important"placeholder="Enter Confirm New Password"><i class="fe fe-eye passeye" data-bs-toggle="tooltip" title="fe fe-eye"></i></input>
               </div>
+            </div>
 
               <div class="col-md-6">
               <label class="foncolor" for="latitude">Latitude <i class="text-danger">*</i></label>
@@ -173,22 +176,96 @@
            <!-- second form right side closer div is next -->
      </div>
 
-     <div class="row d-flex">
-      
-        <div class="col-md-4 dheight">
+     <div class="row custodis">
+     <div class="col-md-4 d-flex ">
+     <label class="foncolor  set" for="Read_Comment">Signature</label>
+     <div class="avtarset">
+      <img class="avtars" src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+    </div>
+
+
+    <div class="col-md-4 d-flex">
+     <label class="foncolor  set" for="Read_Comment">Contract Signature</label>
+     <div class="avtarset">
+      <img class="avtars" src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+    </div>
+    <div class="col-md-4 d-flex">
+     <label class="foncolor  set" for="Read_Comment">Licence picture</label>
+     <div class="avtarset">
+      <img class="avtars" src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+    </div>
+</div>
+<!-- ------------ -->
+<!-- <div class="row custodis">
+    <div class="col-md-4">
+        <div class="d-flex">
         <label class="foncolor" for="Read_Comment">Signature</label>
-        </div>
-        <div class="col-md-4">
-        <label class="foncolor" for="Read_Comment">Contract Signature</label>
-        </div>
-        <div class="col-md-4">
-        <label class="foncolor" for="Read_Comment">License Picture</label>
-        </div>
-
-
-     
+     <div>
+      <img  src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
      </div>
         </div>
     </div>
+    <div></div>
+    <div></div>
+</div>
+
+ -->
+
+
+
+<!-- ---------- -->
+
+<div class="ptop d-flex">
+<div>
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="status">Status</label>
+             
+                        <div class="status-toggle">
+    <span>Active</span>
+    <input id="rating_1" class="check" type="checkbox" checked>
+    <label for="rating_1" class="checktoggle checkbox-bg togc"></label>
+    <span class="">Inactive</span>
+</div>
+       @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    
+                </div>
+            </div>
+
+           <div style="margin-top:22px;">
+            <div class="add-customer-btns ">
+           
+           <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button> 
+               
+                <button type="submit" class="btn btn-primary ">Submit</button>
+                
+           </div>
+           </div>
+
+
+
+
+        </div>
+
 
 </x-app-layout>
