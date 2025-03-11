@@ -15,8 +15,6 @@ class MenuSeeder extends Seeder
         if (Schema::hasTable('menus')) {
             DB::statement('TRUNCATE TABLE menus');
         }
-
-
         $menus = [
             [
                 'title' => 'Dashboard',
@@ -40,18 +38,18 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin']
             ],
             [
+                'title' => 'Vehicle Management',
+                'icon' => 'assets/images/vehiclemangement.svg',
+                //'route' => 'admin.vehicle.index',
+                'route' => '#',
+                'active' => 'vehicle*,container*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
                 'title' => 'Drivers',
                 'icon' => 'assets/images/Drivers.svg',
                 'route' => 'admin.drivers.index',
                 'active' => 'drivers*',
-                'roles' => ['admin', 'warehouse_manager']
-            ],
-            [
-                'title' => 'Vehicle Management',
-                'icon' => 'assets/images/vehiclemangement.svg',
-               //'route' => 'admin.vehicle.index',
-               'route' => '#',
-                'active' => 'vehicle*,container*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -62,10 +60,52 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
-                'title' => 'Order/Shipment',
-                'icon' => 'assets/images/ordership.svg',
-                'route' => '#',
-                'active' => 'OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
+                'title' => 'Driver Inventory',
+                'icon' => 'assets/images/driver_inventory.svg',
+                'route' => 'admin.driver_inventory.index',
+                'active' => 'driver_inventory',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Service Orders',
+                'icon' => 'assets/images/shipment.svg',
+                'route' => 'admin.service_orders.index',
+                'active' => 'service_orders',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Supply Orders',
+                'icon' => 'assets/images/supply_orders@3x.svg',
+                'route' => 'admin.supply_orders.index',
+                'active' => 'supply_orders',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Expenses List',
+                'icon' => 'assets/images/expenses.svg',
+                'route' => 'admin.expenses.index',
+                'active' => 'expenses',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Signature List',
+                'icon' => 'assets/images/signaturelist.svg',
+                'route' => 'admin.signature.index',
+                'active' => 'signature',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            // [
+            //     'title' => 'Order/Shipment',
+            //     'icon' => 'assets/images/ordership.svg',
+            //     'route' => '#',
+            //     'active' => 'OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
+            //     'roles' => ['admin', 'warehouse_manager']
+            // ],
+            [
+                'title' => 'Notifications Schedule',
+                'icon' => 'assets/images/notification.svg',
+                'route' => 'admin.notification_schedule.index',
+                'active' => 'notification_schedule',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -76,10 +116,10 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
-                'title' => 'Notification',
-                'icon' => 'assets/images/notification.svg',
-                'route' => 'admin.notification.index',
-                'active' => 'notification*',
+                'title' => 'Role Management',
+                'icon' => 'assets/images/user_role.svg',
+                'route' => 'admin.user_role.index',
+                'active' => 'user_role',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -87,6 +127,13 @@ class MenuSeeder extends Seeder
                 'icon' => 'assets/images/reports.svg',
                 'route' => 'admin.advance_reports.index',
                 'active' => 'advance_reports',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Notification',
+                'icon' => 'assets/images/notification.svg',
+                'route' => 'admin.notification.index',
+                'active' => 'notification*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
         ];

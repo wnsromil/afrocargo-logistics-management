@@ -17,7 +17,7 @@ use App\Models\{
     HubTracking
 };
 
-class OrderShipmentController extends Controller
+class SupplyOrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,7 +38,7 @@ class OrderShipmentController extends Controller
         })->get();
 
         $drivers = $user->where('role_id', 4)->values();
-        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses'));
+        return view('admin.supply_orders.index', compact('parcels', 'drivers', 'warehouses'));
     }
 
     /**
@@ -63,7 +63,7 @@ class OrderShipmentController extends Controller
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
 
-        return view('admin.OrderShipment.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes'));
+        return view('admin.supply_orders.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes'));
     }
 
     /**
@@ -102,7 +102,7 @@ class OrderShipmentController extends Controller
             'description' => collect($validatedData)
         ]);
 
-        return redirect()->route('admin.OrderShipment.index')
+        return redirect()->route('admin.supply_orders.index')
             ->with('success', 'Order added successfully.');
     }
 
@@ -118,7 +118,7 @@ class OrderShipmentController extends Controller
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        return view('admin.OrderShipment.show', compact('ParcelHistories', 'parcelTpyes'));
+        return view('admin.supply_orders.show', compact('ParcelHistories', 'parcelTpyes'));
     }
 
     /**
@@ -145,7 +145,7 @@ class OrderShipmentController extends Controller
         })->where('id', $id)->first();
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
-        return view('admin.OrderShipment.edit', compact('parcel', 'warehouses', 'customers', 'drivers', 'parcelTpyes'));
+        return view('admin.supply_orders.edit', compact('parcel', 'warehouses', 'customers', 'drivers', 'parcelTpyes'));
     }
 
     /**
@@ -186,7 +186,7 @@ class OrderShipmentController extends Controller
         ]);
 
 
-        return redirect()->route('admin.OrderShipment.index')
+        return redirect()->route('admin.supply_orders.index')
             ->with('success', 'Inventory added successfully.');
     }
 
@@ -208,7 +208,7 @@ class OrderShipmentController extends Controller
         ]);
 
         $parcel->delete();
-        return redirect()->route('admin.OrderShipment.index')
+        return redirect()->route('admin.supply_orders.index')
             ->with('success', 'Order deleted successfully');
     }
 
