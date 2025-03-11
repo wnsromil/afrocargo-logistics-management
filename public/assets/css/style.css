@@ -11718,6 +11718,7 @@ body[data-layout-mode=dark] .alertify .ajs-header {
   font-size: 14px;
   font-weight: 400;
   color: #3F4254;
+  height:40px;
 }
 .input-block .form-control ::placeholder, .input-block .form-control ::-webkit-input-placeholder, .input-block .form-control :-ms-input-placeholder {
   color: #878A99;

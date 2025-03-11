@@ -14,7 +14,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
         <div class="d-flex align-items-end justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary buttons">
+                    <a href="{{route('admin.customer.create')}}" class="btn btn-primary buttons">
                         <img class="imgs" src="assets/images/Vector.png">
                         Add Users
                     </a>
