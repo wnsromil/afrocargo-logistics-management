@@ -70,7 +70,9 @@ Route::middleware('auth:api')->group(function () {
     //invoice controller
     Route::group(['middleware' => 'apiAuthCheck','prefix' => 'invoice','as' => 'invoice.','controller' => InvoiceController::class], function () {
         Route::get('/', 'index')->name('index');
-        Route::post('/create', 'create')->name('create');
+        Route::get('/create', 'create');
+        Route::post('/store', 'store');
+        Route::get('/supply', 'inventaries');
 
     });
 });
