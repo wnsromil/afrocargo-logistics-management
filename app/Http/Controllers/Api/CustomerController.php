@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Parcel;
+use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
@@ -46,24 +48,95 @@ class CustomerController extends Controller
         return response()->json(['message' => 'ID is required'], 400);
     }
 
-    public function createCustomer($request)
+    public function createCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'user_type' => 'required|in:customer,driver',
+            'last_name' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:users,email',
+            'role' => 'nullable|in:customer,driver',
+            'role_id' => 'nullable|integer',
             'phone' => 'required|string|max:15|unique:users,phone',
+            'phone_2' => 'nullable|string|max:15',
             'address' => 'required|string|max:255',
+            'address_2' => 'nullable|string|max:255',
             'country_id' => 'required|string|max:255',
             'state_id' => 'required|string|max:255',
             'city_id' => 'required|string|max:255',
             'pincode' => 'required|numeric',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-    
-        return User::create($request->only(['name', 'email', 'user_type', 'phone', 'address', 'country_id', 'state_id', 'city_id', 'pincode']));
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->last_name = $request->last_name;
+        $user->role = 'customer';
+        $user->role_id = 3;
+        $user->phone = $request->phone;
+        $user->phone_2 = $request->phone_2;
+        $user->address = $request->address;
+        $user->address_2 = $request->address_2;
+        $user->country_id = $request->country_id;
+        $user->state_id = $request->state_id;
+        $user->city_id = $request->city_id;
+        $user->pincode = $request->pincode;
+        $user->save();
+        return response()->json(['user' => $user], 200);
     }
+
+    public function createShippingCustomer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'contact_1' => 'required|string|max:255',
+            'contact_2' => 'nullable|string|max:255',
+            'country_id' => 'required|string|max:15',
+            'state_id' => 'required|string|max:255',
+            'city_id' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
+            'address_2' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user = new ShippingUser();
+        $user->user_id = $request->user_id;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->contact_1 = $request->contact_1;
+        $user->contact_2 = $request->contact_2;
+        $user->country_id = $request->country_id;
+        $user->state_id = $request->state_id;
+        $user->city_id = $request->city_id;
+        $user->address_1 = $request->address_1;
+        $user->address_2 = $request->address_2;
+        $user->save();
+        return response()->json(['user' => $user], 200);
+    }
+
+    public function shippingCustomerList($id)
+    {
+        $customers = ShippingUser::where('user_id', $id)->get();
+
+        if ($customers->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No shipping records found for this customer.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Shipping customer details retrieved successfully.',
+            'data' => $customers
+        ], 200);
+    }
+
 }
