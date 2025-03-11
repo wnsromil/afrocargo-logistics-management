@@ -11,11 +11,10 @@ class AddressController extends Controller
     public function getAddress(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer',
             'address_type' => 'required|string',
         ]);
-
-        $addresses = Address::where('user_id', $request->user_id)
+        $user = $this->user;
+        $addresses = Address::where('user_id', $user->id)
             ->where('address_type', $request->address_type)
             ->with(['country', 'state', 'city'])
             ->get();
@@ -29,7 +28,36 @@ class AddressController extends Controller
 
     public function createAddress(Request $request)
     {
-        $address = Address::create($request->all());
-        return $address;
-    }
+        // ✅ Step 1: Validation
+        $validatedData = $request->validate([
+            'address' => 'required|string|max:255',
+            'address_type' => 'required|string|in:pickup,delivery',
+            'alternative_mobile_number' => 'nullable|string|max:15',
+            'city_id' => 'required|integer',
+            'country_id' => 'required|integer',
+            'full_name' => 'required|string|max:255',
+            'mobile_number' => 'required|string|max:15',
+            'pincode' => 'required|string|max:10',
+            'state_id' => 'required|integer',
+            'warehouse_id' => 'nullable|integer|exists:warehouses,id',
+        ]);
+    
+        // ✅ Step 2: Get Authenticated User
+        $user = $this->user; // Laravel Auth system se current user
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+    
+        // ✅ Step 3: Add User ID to Data
+        $validatedData['user_id'] = $user->id;
+    
+        // ✅ Step 4: Insert Data
+        $address = Address::create($validatedData);
+    
+        // ✅ Step 5: Return Response
+        return response()->json([
+            'message' => 'Address created successfully!',
+            'data' => $address
+        ], 201);
+    }    
 }
