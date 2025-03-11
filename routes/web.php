@@ -22,6 +22,20 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/rolemanagements', function () {
+    return view('admin.rolemanagements.index');
+});
+Route::get('/rolemanagementCreate', function () {
+    return view('admin.rolemanagementCreate.create');
+});
+Route::get('/rolemanagementUpdate', function () {
+    return view('admin.rolemanagementUpdate.edit');
+});
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'authCheck', 'verified'])->name('admin.dashboard');

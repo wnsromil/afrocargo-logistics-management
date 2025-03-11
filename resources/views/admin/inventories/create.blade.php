@@ -39,12 +39,7 @@
                         <select class="form-select fw-normal profileUpdateFont opacity-75 p-2" name="warehouse_id"
                             aria-label="Default select example">
                             <option value="">Select Warehouse Name</option>
-<<<<<<< HEAD
-                            <option value="inventory">1</option>
-                            @foreach($warehouses as $warehouse)
-=======
                             @foreach ($warehouses as $warehouse)
->>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81
                                 <option {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}
                                     value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
@@ -157,7 +152,7 @@
             <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-    </div> --}}
+    </div>
     <!-- </div>
         </div>
 
@@ -166,15 +161,8 @@
             <button type="submit" class="btn customer btn-save px-3 py-2">Submit</button>
         </div>
         </div>
-        </div>
-<<<<<<< HEAD
-    </form> -->
-
-    
-
-</x-app-layout>
-=======
-    </form>
+        </div> -->
+    </form> 
 
     {{-- jqury cdn --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -190,4 +178,3 @@
         });
     </script>
 </x-app-layout>
->>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81

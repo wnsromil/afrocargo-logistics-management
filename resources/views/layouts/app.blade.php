@@ -34,6 +34,8 @@
 
     <!-- Datatables CSS -->
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables/datatables.min.css')}}">
+    	<!-- Datatables CSS -->
+		<link rel="stylesheet" href="assets/plugins/datatables/datatables.min.css">
 
 
     <!-- Main CSS -->
@@ -48,7 +50,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/intlTelInput/css/intlTelInput.css')}}>
 
     <!-- Layout JS -->
-    <script src=" {{asset('assets/js/layout.js')}}">
+    <script src= "{{asset('assets/js/layout.js')}}">
     </script>
     <script src="{{asset('assets/js/scriptmain.js')}}"></script>
 
