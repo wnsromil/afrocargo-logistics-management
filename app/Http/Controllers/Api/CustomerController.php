@@ -24,7 +24,7 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->orderBy('name')->get(['id', 'name']);
+        $customers = $query->orderBy('name')->get(['id', 'name', 'phone', 'email', 'profile_pic']);
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
@@ -33,6 +33,7 @@ class CustomerController extends Controller
 
         return response()->json(['customers' => $customers], 200);
     }
+
     public function getCustomersDetails(Request $request)
     {
         if ($request->has('id') && !empty($request->id)) {
