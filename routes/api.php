@@ -73,6 +73,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/address-list', [AddressController::class, 'getAddress']);
         Route::post('/addresse-create', [AddressController::class, 'createAddress']);
         Route::get('/addresse-delete/{id}', [AddressController::class, 'deleteAddress']);
+        Route::post('/address-update/{id}', [AddressController::class, 'updateAddress']);
 
     });
 
