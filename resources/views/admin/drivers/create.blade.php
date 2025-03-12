@@ -80,8 +80,8 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type">Vehicle</label>
-                        <select name="vehicle_type" class="form-control">
+                        <label class="foncolor" for="vehicle_type">Vehicle</label>
+                        <select name="vehicle_type" class="form-control inp select2">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
                                 <option {{ old('vehicle_type') == $Vehicle->id ? 'selected' : '' }}
@@ -153,10 +153,12 @@
 
         <div class="add-customer-btns text-end">
            
-           <button type="button" onclick="{{ route('admin.warehouses.index') }}" class="btn btn-outline-primary custom-btn">Cancel</button> 
+           <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button> 
                
                 <button type="submit" class="btn btn-primary ">Submit</button>
                 
-           </div>
+
+    
+                
     </form>
 </x-app-layout>

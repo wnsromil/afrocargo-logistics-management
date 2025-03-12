@@ -700,6 +700,7 @@ Version      : 1.0
 		});
 	}
 
+<<<<<<< HEAD
 		// Country Code Selection
 		if($('#mobile_code2').length > 0) {
 			$( '#mobile_code2' ).intlTelInput( {
@@ -707,6 +708,15 @@ Version      : 1.0
 				separateDialCode: true,	
 			});
 		}
+=======
+	if($('#mobile').length > 0) {
+		$( '#mobile' ).intlTelInput( {
+			initialCountry: "in",
+			separateDialCode: true,	
+		});
+	}
+
+>>>>>>> 80f46751efd06ec1adc0d7becfdbd12c621f03c7
 	// Summernote
 	if($('.summernote').length > 0) {
         $('.summernote').summernote({

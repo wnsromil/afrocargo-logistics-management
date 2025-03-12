@@ -9,7 +9,7 @@ class Inventory extends Model
     //
     protected $guarded = [];
 
-    protected $appends = ['formatted_created_at'];
+    // protected $appends = ['formatted_created_at'];
 
     public function getFormattedCreatedAtAttribute()
     {

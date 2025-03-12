@@ -72,7 +72,7 @@
 .font13 {
     font-size: 13px;
     font-weight: medium;
-    color: #203A5F;
+    /* color: #203A5F; */
 }
 
 .cardh5Size {
@@ -497,4 +497,16 @@ h1, h2, h3, h4, h5, h6 {
 .bg-checkbox{
     background-color: #d6e2f1;
 }
+.form-check-input:checked{
+    background-color: #203A5F !important;
+    border: 1px solid white !important;
+    color: white !important;
+    height: 16px;
+    width: 16px;
+}
 
+.selected{
+    background-color: #203A5F !important;
+    border: #203A5F !important;
+    color: white !important;
+}
