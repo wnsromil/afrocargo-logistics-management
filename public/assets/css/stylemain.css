@@ -510,3 +510,34 @@ h1, h2, h3, h4, h5, h6 {
     border: #203A5F !important;
     color: white !important;
 }
+
+.img-size{
+    height: 55px;
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.td-color{
+    color: #3A3A3A;   
+}
+
+.bg-set{
+    background-color: rgb(240, 208, 240);
+    color: rgba(243, 8, 153, 0.74);
+}
+
+.parentDiv {
+    display: inline-block;
+    width: auto;
+}
+.table-responsive .table{
+    border: none !important;
+}
+.table-body tbody tr td{
+    border: none !important;
+}
+
+.thead-light .no-border th{
+    border: none !important;
+}

@@ -9,20 +9,6 @@
 
     <div class="border-bottom"></div>
 
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="input-block mb-3">
-            <label class="required">Role Name</label>
-            <ul class="form-group-plus css-equal-heights">
-                <li>
-                    <select class="select">
-                        <option>Select Role</option>
-                        <option>Driver</option>
-                        <option>Warehouse Manager</option>
-                    </select>
-                </li>
-            </ul>
-        </div>
-    </div> -->
     <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
         <label class="required">Role Name</label>
         <select class="form-select border-dark border-1 opacity-75 bg-checkbox" id="inputGroupSelect01">
@@ -50,6 +36,7 @@
                     New End Of The Day Reports
                 </label>
             </div> -->
+            <div class="parentDiv">
         <div class="form-checkbox border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck2">
             <label class="form-check-label  font13 fw-regular mb-0" for="exampleCheck2">New
@@ -90,15 +77,16 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
     <!-- ----------------------------------------------------------------------------------------------------------------- -->
-    <div class="col-md-8 my-4 px-2 py-1">
+    <div class="parentDiv col-md-8 mt-3 mb-2 px-2 py-1">
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck7">
             <label class="form-check-label font13 fw-regular mb-0"
                 for="exampleCheck7">Invoice Reports</label>
         </div>
-
+      
         <div class="col-md-12 d-flex my-3 ms-4">
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
@@ -132,7 +120,7 @@
 
     <!-- ------------------------------------------------------------------------------------------------------------------ -->
 
-    <div class="col-md-7 my-4 px-2 py-1 widthCheckbox">
+    <div class="parentDiv mt-3 mb-2 px-2 py-1 widthCheckbox">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck12">
@@ -146,6 +134,7 @@
                     New End Of The Day Reports
                 </label>
             </div> -->
+       
         <div class="border border-dark opacity-75 bg-checkbox rounded px-3 py-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck13">
             <label class="form-check-label font13 fw-regular mb-0"
@@ -172,13 +161,12 @@
                     <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck16">Editing role</label>
                 </div>
             </div>
-
         </div>
     </div>
 
     <!-- -------------------------------------------------------------------------------------- -->
 
-    <div class="col-md-9 my-4 px-2 py-1">
+    <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck17">
             <label class="form-check-label font13 fw-regular mb-0"
@@ -212,11 +200,12 @@
                 </div>
             </div>
         </div>
+ 
     </div>
 
     <!-- --------------------------------------------------------------------------------------- -->
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck22">
@@ -248,7 +237,7 @@
     </div>
 
     <!-- -------------------------------------------------------------- -->
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck26">
@@ -278,7 +267,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck30">
@@ -309,7 +298,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck34">
@@ -343,7 +332,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck38">
@@ -386,7 +375,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck44">
@@ -416,7 +405,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck48">
@@ -447,7 +436,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck52">
@@ -478,7 +467,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck56">
@@ -509,7 +498,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck60">
@@ -541,7 +530,7 @@
         </div>
     </div>
 
-    <div class="my-4 px-2 py-1">
+    <div class="mt-3 mb-2 px-2 py-1">
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck64">
@@ -577,7 +566,7 @@
         </div>
     </div>
 
-    <div class="col-md-9 my-4 px-2 py-1">
+    <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <!-- <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75 bg-checkbox" id="exampleCheck5">
@@ -615,7 +604,7 @@
         </div>
     </div>
 
-    <div class="col-md-6 my-4 px-2 py-1">
+    <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <!-- <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75 bg-checkbox" id="exampleCheck5">
@@ -650,7 +639,8 @@
         </div>
     </div>
 
-    <div class="col-md-8 my-4 px-2 py-1">
+<br>
+    <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <!-- <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75 bg-checkbox" id="exampleCheck5">
@@ -686,6 +676,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 <!-- 
     <script>
@@ -717,3 +708,4 @@
     </script>
 
 </x-app-layout>
+<!-- --------------------------------------------------------------------------- -->

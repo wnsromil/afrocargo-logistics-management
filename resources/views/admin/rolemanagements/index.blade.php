@@ -34,7 +34,6 @@
         <select class="form-select" aria-label="Default select example">
             <option selected>Search Permission</option>
             <option value="1">Select Option</option>
-
         </select>
     </div>
 

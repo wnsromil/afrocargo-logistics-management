@@ -32,6 +32,10 @@ Route::get('/rolemanagementUpdate', function () {
     return view('admin.rolemanagementUpdate.edit');
 });
 
+Route::get('/driversactivitylog', function () {
+    return view('admin.driversactivitylog.activitylog');
+});
+
 Route::get('/', function () {
     return view('auth.login');
 });
