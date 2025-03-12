@@ -41,23 +41,46 @@ class AddressController extends Controller
             'state_id' => 'required|integer',
             'warehouse_id' => 'nullable|integer|exists:warehouses,id',
         ]);
-    
+
         // ✅ Step 2: Get Authenticated User
         $user = $this->user; // Laravel Auth system se current user
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    
+
         // ✅ Step 3: Add User ID to Data
         $validatedData['user_id'] = $user->id;
-    
+
         // ✅ Step 4: Insert Data
         $address = Address::create($validatedData);
-    
+
         // ✅ Step 5: Return Response
         return response()->json([
             'message' => 'Address created successfully!',
             'data' => $address
         ], 201);
-    }    
+    }
+
+    public function deleteAddress($id)
+    {
+        // ✅ Step 1: Get Authenticated User
+        $user = $this->user; // Laravel Auth system se current user
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // ✅ Step 2: Find Address by ID
+        $address = Address::where('id', $id)->where('user_id', $user->id)->first();
+
+        // ✅ Step 3: Check if Address Exists
+        if (!$address) {
+            return response()->json(['message' => 'Address not found or unauthorized'], 404);
+        }
+
+        // ✅ Step 4: Delete Address
+        $address->delete();
+
+        // ✅ Step 5: Return Response
+        return response()->json(['message' => 'Address deleted successfully!'], 200);
+    }
 }
