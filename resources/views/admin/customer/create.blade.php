@@ -4,84 +4,190 @@
             {{ __('Users') }}
         </h2>
     </x-slot>
+    <x-slot name="cardTitle">
+       <p class="subhead">Add Customer</p>
+    </x-slot>
 
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <!-- start -->
-                    <div class="row">
-                        <div class="col-lg-12 margin-tb">
-                            <div class="pull-left">
-                                <h2>Create New User</h2>
-                            </div>
-                            <div class="pull-right">
-                                <a class="btn btn-primary btn-sm mb-2" href="{{ route('admin.customer.index') }}"><i class="fa fa-arrow-left"></i> Back</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {{-- @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                          <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                          <ul>
-                             @foreach ($errors->all() as $error)
-                               <li>{{ $error }}</li>
-                             @endforeach
-                          </ul>
-                        </div>
-                    @endif --}}
-                    
-                    <form method="POST" action="{{ route('admin.customer.store') }}">
-                        @csrf
-                        
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Name:</strong>
-                                    <input type="text" name="name" placeholder="Name" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Email:</strong>
-                                    <input type="email" name="email" placeholder="Email" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Password:</strong>
-                                    <input type="password" name="password" placeholder="Password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Confirm Password:</strong>
-                                    <input type="password" name="confirm-password" placeholder="Confirm Password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Role:</strong>
-                                    <select name="roles" class="form-select select2_multiple" >
-                                        @foreach ($roles as $value => $label)
-                                            <option value="{{ $value }}">
-                                                {{ $label }}
-                                            </option>
-                                         @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-sm mt-2 mb-3"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- end -->
-                </div>
+    <div class="row d-flex" style="justify-content: space-between;">
+          <div class="col-6"style="padding-right: 20px;">
+           <div class="row borderset">
+            <div class="col-md-12">
+            <label class="foncolor" for="company_name"> Company </label>
+                        <input type="text" name="first_name" class="form-control inp" placeholder="Enter Company Name">
+                           
             </div>
+            <div class="col-md-12">
+            <label class="foncolor" for="first_name">First Name <i class="text-danger">*</i></label>
+            <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name">
+            </div>
+            <div class="col-md-12">
+            <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
+            <input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Mobile Number" name="name">
+            </div>
+            <div class="col-md-12">
+            <label class="foncolor" for="contact_no1">Alternate Mobile No.</label>
+            <input type="text" id="mobile" class="form-control inp" placeholder="Enter Mobile Number " name="name">
+            </div>
+            <div class="col-md-12">
+            <label class="foncolor" for="Address.1">Address 1 <i class="text-danger">*</i></label>
+            <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 1">
+            </div>
+              <div class="col-md-12">
+              <label class="foncolor" for="Address.2">Address 2 </label>
+              <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
+              </div>
+            <div class="col-md-6">
+            <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+            <select class="js-example-basic-single select2">
+												<option selected="selected">Select Country</option>
+												<option>white</option>
+												<option>purple</option>
+											</select>
+            </div>
+            <div class="col-md-6">
+              <label class="foncolor" for="Apartment">Apartment </label>
+              <input type="text" name="Apartment" class="form-control inp" placeholder="Enter Apartment">
+              </div>
+            <div class="col-md-4">
+            <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
+            <select class="js-example-basic-single select2">
+												<option selected="selected">Select State</option>
+												<option>white</option>
+												<option>purple</option>
+											</select>
+            
+            </div>
+            <div class="col-md-4">
+                <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+            <select class="js-example-basic-single select2">
+												<option selected="selected">Select City</option>
+												<option>white</option>
+												<option>purple</option>
+											</select>
+            </div>
+            <div class="col-md-4">
+                <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                        <input type="text" name="Zip_code" class="form-control inp" placeholder="Enter Zip">
+            </div>
+           
+            <div class="col-md-12">
+              <label class="foncolor" for="username">Username <i class="text-danger">*</i></label>
+              <input type="text" name="Username" class="form-control inp" placeholder="Enter User Name">
+              </div>
+
+              <div class="col-md-12">
+              <label class="foncolor" for="password">Password<i class="text-danger">*</i></label>
+              <input type="text" name="password" class="form-control inp" placeholder="Enter Password"><i class="fe fe-eye" data-bs-toggle="tooltip" title="fe fe-eye"></i></input>
+              
+            </div>
+
+              <div class="col-md-12">
+              <label class="foncolor" for="confirm_password">Confirm New Password<i class="text-danger">*</i></label>
+              <input type="text" name="password" class="form-control inp" placeholder="Enter Confirm New Password"><i class="fe fe-eye" data-bs-toggle="tooltip" title="fe fe-eye"></i></input>
+              </div>
+
+              <div class="col-md-6">
+              <label class="foncolor" for="latitude">Latitude <i class="text-danger">*</i></label>
+              <input type="text" name="latitude" class="form-control inp" placeholder="0">
+              </div>
+              <div class="col-md-6">
+              <label class="foncolor" for="longitude">Longitude <i class="text-danger">*</i></label>
+              <input type="text" name="longitude" class="form-control inp" placeholder="0">
+              </div>
+
+
+
+
+
+
+
+
+
+
+             <!-- first left side form clouser div is next  -->
+           </div>
+          </div>
+          <div class="col-6" style="padding-left: 20px;">
+          <div class="row borderset">
+          <div class="col-md-12">
+            <label class="foncolor" for="website">Website</label>
+                        <input type="text" name="Webiste_id" class="form-control inp" placeholder="Enter Website ID">
+                           
+            </div>
+            <div class="col-md-12">
+            <label class="foncolor" for="email">Email</label>
+            <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID">
+            </div>
+
+            <div class="col-md-12">
+            <label class="foncolor" for="warehouse"> Warehouse </label>
+            <select class="js-example-basic-single select2">
+												<option selected="selected">Select Warehouse</option>
+												<option>white</option>
+												<option>purple</option>
+											</select>
+            </div>
+
+            <div class="col-md-12">
+    <label>Signature Date </label>
+    <div class="daterangepicker-wrap cal-icon cal-icon-info" >
+     <input type="text" class="btn-filters  form-cs inp " name="datetimes" placeholder="mm-dd-yy"  />
+    </div>
+</div>
+<div class="col-md-12">
+            <label class="foncolor" for="Year_to_Date">Year to Date</label>
+            <input type="text" id="Year to Date" class="form-control inp" placeholder="0" >
+            </div>
+ 
+            <div class="col-md-12">
+            <label class="foncolor" for="License_ID">License ID</label>
+            <input type="text" id="License_ID" class="form-control inp" placeholder="Enter License ID" >
+            </div>
+
+            <div class="col-md-12">
+    <label>License Expiry Date </label>
+    <div class="daterangepicker-wrap cal-icon cal-icon-info" >
+     <input type="text" class="btn-filters  form-cs inp " name="datetimes" placeholder="mm-dd-yy"  />
+    </div>
+</div>
+<div class="col-md-12">
+            <label class="foncolor" for="warehouse"> Language </label>
+            <select class="js-example-basic-single select2">
+												<option selected="selected">India-English</option>
+												<option>white</option>
+												<option>purple</option>
+											</select>
+            </div>
+
+
+            <div class="col-md-12">
+            <label class="foncolor" for="Write_Comment">Write Comment</label>
+            <input type="text" id="Write_Comment" class="form-control inp commenth" placeholder="Enter Write Comment" >
+            </div>
+
+            <div class="col-md-12">
+            <label class="foncolor" for="Read_Comment">Read Comment</label>
+            <input type="text" id="Read_Comment" class="form-control inp commenth" placeholder="Enter Read Comment" >
+            </div>
+ </div>
+           <!-- second form right side closer div is next -->
+     </div>
+
+     <div class="row d-flex">
+      
+        <div class="col-md-4 dheight">
+        <label class="foncolor" for="Read_Comment">Signature</label>
+        </div>
+        <div class="col-md-4">
+        <label class="foncolor" for="Read_Comment">Contract Signature</label>
+        </div>
+        <div class="col-md-4">
+        <label class="foncolor" for="Read_Comment">License Picture</label>
+        </div>
+
+
+     
+     </div>
         </div>
     </div>
 

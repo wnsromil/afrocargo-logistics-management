@@ -700,6 +700,13 @@ Version      : 1.0
 		});
 	}
 
+	if($('#mobile').length > 0) {
+		$( '#mobile' ).intlTelInput( {
+			initialCountry: "in",
+			separateDialCode: true,	
+		});
+	}
+
 	// Summernote
 	if($('.summernote').length > 0) {
         $('.summernote').summernote({

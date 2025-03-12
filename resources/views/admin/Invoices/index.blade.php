@@ -8,7 +8,7 @@
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="#" class="btn btn-primary buttons">
+                <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons">
                     <img  class="imgs" src="assets/images/Vector.png">  
                     Add Invoice
                     </a>
@@ -38,14 +38,14 @@
      <div class="col-md-3 dposition" >
         <label>Invoice Date</label>
         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-		<input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
+		<input type="text" class="btn-filters form-control form-cs info" name="datetimes" placeholder="From Date - To Date" style="border:none" />
 	    </div>
 		</div>
      
 
      <div class="col-md-3 dposition" >
      <label>By Container</label> 
-     <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
+     <img  class="imgi" src="assets/img/icons/search.svg" alt="img">
     <input type="text" class="form-control form-cs" placeholder="Enter Container Seal No." >
     </div>
 
