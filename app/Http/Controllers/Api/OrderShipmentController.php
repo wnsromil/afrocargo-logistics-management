@@ -16,6 +16,7 @@ use App\Models\{
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CustomerController;
 
+
 class OrderShipmentController extends Controller
 {
     /**
@@ -59,64 +60,80 @@ class OrderShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate incoming request data
-        $validatedData = $request->validate([
-            'weight' => 'required|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
-            'partial_payment' => 'required|numeric|min:0',
-            'remaining_payment' => 'required|numeric|min:0',
-            'payment_type' => 'required|in:COD,Online',
-            'descriptions' => 'nullable|string',
-            'source_address' => 'required|string|max:255',
-            'destination_address' => 'required|string|max:255',
-            'destination_user_name' => 'required|string|max:255',
-            'destination_user_phone' => 'required|numeric|min:10',
-            'parcel_card_ids' => 'required|array',
-            'source_let' => 'required|numeric|min:0',
-            'source_long' => 'required|numeric|min:0',
-            'dest_let' => 'nullable|numeric|min:0',
-            'dest_long' => 'nullable|numeric|min:0',
-            'customer_subcategories_data' => 'nullable|array', // ✅ JSON object accept karega
-            'driver_subcategories_data' => 'nullable|array',   // ✅ JSON object accept karega
-        ]);
+        try {
+            // Validate incoming request data
+            $validatedData = $request->validate([
+                'weight' => 'required|numeric|min:0',
+                'total_amount' => 'required|numeric|min:0',
+                'partial_payment' => 'required|numeric|min:0',
+                'remaining_payment' => 'required|numeric|min:0',
+                'payment_type' => 'required|in:COD,Online',
+                'descriptions' => 'nullable|string',
+                'destination_address' => 'required|string|max:255',
+                'destination_user_name' => 'required|string|max:255',
+                'destination_user_phone' => 'required|digits:10',
+                'parcel_card_ids' => 'required|array',
+                'customer_subcategories_data' => 'nullable', // JSON format required
+                'driver_subcategories_data' => 'nullable',   // JSON format required
+                'pickup_address_id' => 'required|numeric',
+                'delivery_address_id' => 'required|numeric',
+                'pickup_time' => 'required|string',
+                'pickup_date' => 'required|date',
+                'source_address' => 'required',
+            ]);
 
-        if ($request->remaining_payment && $request->remaining_payment > 0) {
-            $validatedData['payment_status'] = 'Partial';
+            // Remaining Payment Check
+            if ($request->remaining_payment > 0) {
+                $validatedData['payment_status'] = 'Partial';
+            }
+
+            // Assign customer ID
+            $validatedData['customer_id'] = $this->user->id;
+
+            // Convert parcel_card_ids to parcel_car_ids
+            $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
+            unset($validatedData['parcel_card_ids']);
+
+            // **JSON Encode Arrays Properly**
+            if (!empty($request->customer_subcategories_data)) {
+                // Ensure it's an array before encoding
+                $customerData = is_string($request->customer_subcategories_data) ? json_decode($request->customer_subcategories_data, true) : $request->customer_subcategories_data;
+                $validatedData['customer_subcategories_data'] = json_encode($customerData, JSON_UNESCAPED_UNICODE);
+            }
+
+            if (!empty($request->driver_subcategories_data)) {
+                // Ensure it's an array before encoding
+                $driverData = is_string($request->driver_subcategories_data) ? json_decode($request->driver_subcategories_data, true) : $request->driver_subcategories_data;
+                $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
+            }
+
+            // Create Parcel
+            $Parcel = Parcel::create($validatedData);
+
+            // Create Parcel History
+            ParcelHistory::create([
+                'parcel_id' => $Parcel->id,
+                'created_user_id' => $this->user->id,
+                'customer_id' => $validatedData['customer_id'],
+                'status' => 'Created',
+                'parcel_status' => 'Pending',
+                'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
+            ]);
+
+            return $this->sendResponse($Parcel, 'Order added successfully.');
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Parcel Store Error: ' . $e->getMessage());
+
+            // Return error response
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while creating the parcel.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $validatedData['customer_id'] = $this->user->id;
-        $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
-        unset($validatedData['parcel_card_ids']);
-
-        // ✅ Ensure `customer_subcategories_data` is stored in correct JSON format
-        $validatedData['customer_subcategories_data'] = $request->has('customer_subcategories_data')
-            ? json_encode([
-                "category_id" => $request->customer_subcategories_data['category_id'] ?? null,
-                "subcategories" => $request->customer_subcategories_data['subcategories'] ?? []
-            ])
-            : null;
-
-        // ✅ Ensure `driver_subcategories_data` is stored in correct JSON format
-        $validatedData['driver_subcategories_data'] = $request->has('driver_subcategories_data')
-            ? json_encode([
-                "category_id" => $request->driver_subcategories_data['category_id'] ?? null,
-                "subcategories" => $request->driver_subcategories_data['subcategories'] ?? []
-            ])
-            : null;
-
-        $Parcel = Parcel::create($validatedData);
-
-        ParcelHistory::create([
-            'parcel_id' => $Parcel->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $validatedData['customer_id'],
-            'status' => 'Created',
-            'parcel_status' => 'Pending',
-            'description' => collect($validatedData),
-        ]);
-
-        return $this->sendResponse($Parcel, 'Order added successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -330,5 +347,4 @@ class OrderShipmentController extends Controller
 
         return response()->json(['message' => 'Order creation process completed', 'customer_id' => $request->customer_id, 'ship_to' => $request->ship_to], 200);
     }
-
 }
