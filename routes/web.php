@@ -29,6 +29,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'authCheck', 'verified'])->name('admin.dashboard');
@@ -83,6 +85,9 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
+        Route::get('/orderdetails', function () {
+            return view('admin.OrderShipment.orderdetails');
+        })->name('orderdetails');
     });
 });
 

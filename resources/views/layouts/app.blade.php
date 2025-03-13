@@ -155,6 +155,16 @@
     <!-- Intl Tell Input js -->
     <script src="{{asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js')}}"></script>
 
+	<!-- Slimscroll JS -->
+		<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Timeline JS -->
+		<script src="assets/plugins/timeline/horizontal-timeline.js"></script>
+
+
+
+
+
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>
     // <!-- Bootstrap JS (ensure this is included) -->
