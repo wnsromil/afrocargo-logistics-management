@@ -507,7 +507,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 16px;
 }
 
-.selected2{
+.selected{
     background-color: #203A5F !important;
     border: #203A5F !important;
     color: white !important;
