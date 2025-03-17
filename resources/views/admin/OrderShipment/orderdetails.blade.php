@@ -77,7 +77,7 @@
           <td>Cash</td>
           <td>Books,Electronics..</td>
           <td><div><img src="../assets/img/Rectangle 25.png" alt="image"></div></td>
-          <td></td>
+          <td><img src="../assets/img/user-signature copy.png"></td>
           <td><label class="labelstatus"for="status">Self Pickup</label></td>
         </tr>
        </tbody>
