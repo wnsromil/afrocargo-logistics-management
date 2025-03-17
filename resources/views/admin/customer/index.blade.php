@@ -48,7 +48,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                 <div class="card-body">
                     <div class="table-responsive mt-3">
 
-                        <table class="table table-stripped table-hover datatable ">
+                        <table class="table tables table-stripped table-hover datatable ">
                             <thead class="thead-light">
 
                                 <tr>
@@ -56,14 +56,51 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Warehouse</th>
+                                    <th>Container No.</th>
+                                    <th>License_ID</th>
+                                    <th>phone</th>
                                     <th>present address</th>
                                     <th>Status</th>
-                                    <th>phone</th>
+                                    <th>Action</th>
+                                    
 
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($customers as $index => $customer)
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-end">
+														
+                                                        <div class="dropdown dropdown-action">
+    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-ellipsis-h"></i>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="edit-invoice.html">
+            <i class="far fa-edit me-2"></i>Update
+        </a>
+        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
+            <i class="far fa-trash-alt me-2"></i>Delete
+        </a>
+        <a class="dropdown-item" href="invoice-details.html">
+            <i class="far fa-eye me-2"></i>View
+        </a>
+    </div>
+</div>
+
+													</td>
+                                </tr>
+                                <!-- @forelse ($customers as $index => $customer)
                                     <tr class="fontstyle">
                                         <td>
                                             {{ ++$index }}
@@ -122,7 +159,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                     <td><span class="badge bg-success-light">{{$customer->status ?? '-'}}</span>
                                     </td>
 
-                                </tr>
+                                </tr> -->
 
                             </tbody>
 
@@ -135,6 +172,34 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                 </div>
             </div>
         </div>
+
+
+        <!-- Delete Items Modal -->
+			<div class="modal custom-modal fade" id="delete_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-sm">
+					<div class="modal-content">
+						<div class="modal-body confirmationpopup">
+							<div class="form-header">
+								
+								<p class="popupc">Do you want to delete customer?</p>
+							</div>
+							<div class="modal-btn delete-action">
+								<div class="row">
+									<div class="col-6">
+                                   
+									<button type="submit" data-bs-dismiss="modal" class=" w-100 btn btn-outline-primary custom-btn">Cancel</button>
+                                </div>                                               
+									<div class="col-6">
+                                    <button type="reset" data-bs-dismiss="modal" class="w-100 btn btn-primary paid-continue-btn customerpopup">Delete</button>
+                                   
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Delete Items Modal -->
         @section('script')
         @endsection
 </x-app-layout>
