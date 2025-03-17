@@ -19,7 +19,7 @@
                                 class="text-danger">*</i></label>
                         <select class="form-select fw-normal profileUpdateFont opacity-75 p-2" name="inventory_name"
                             aria-label="Default select example">
-                            <option>Select / Add Inventory</option>
+                            <option value="">Select / Add Inventory</option>
                             @foreach ($categories as $category)
                                 <option {{ old('inventory_name') == $category->name ? 'selected' : '' }}
                                     value="{{ $category->name }}">{{ ucfirst($category->name) }}</option>
@@ -56,7 +56,7 @@
                         <label for="weight" class="opacity-50">Weight (kg)<i class="text-danger">*</i></label>
                         <input class="form-control input-padding" type="number" name="weight"
                             value="{{ old('weight') }}" placeholder="Enter Weight" aria-label="default input example"
-                            required>
+                            >
 
                         @error('weight')
                             <span class="text-danger">{{ $message }}</span>
@@ -94,7 +94,7 @@
                                 class="text-danger">*</i></label>
                         <input class="form-control input-padding" type="number" name="in_stock_quantity"
                             value="{{ old('in_stock_quantity') }}" placeholder="Enter quantity"
-                            aria-label="default input example" required>
+                            aria-label="default input example" >
                         @error('in_stock_quantity')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -107,7 +107,7 @@
                                 class="text-danger">*</i></label>
                         <input class="form-control" type="number" name="low_stock_warning"
                             value="{{ old('low_stock_warning') }}" placeholder="Enter Low Stock Warning"
-                            aria-label="default input example" required>
+                            aria-label="default input example" >
                         @error('low_stock_warning')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -119,7 +119,7 @@
                         <label for="in_price">Price<i class="text-danger">*</i></label>
                         <div class="d-flex align-items-center justify-content-between form-control">
                             <input class="no-border" type="number" name="price" value="{{ old('price') }}"
-                                placeholder="Enter price" required>
+                                placeholder="Enter price" >
                             <h6><i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i></h6>
                         </div>
 
@@ -140,6 +140,18 @@
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="width" class="opacity-50">Img<i class="text-danger">*</i></label>
+                        <input class="form-control input-padding" name="img" type="file" value=""
+                             aria-label="default input example">
+
+                        @error('img')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
