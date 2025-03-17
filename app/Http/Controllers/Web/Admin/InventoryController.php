@@ -57,7 +57,16 @@ class InventoryController extends Controller
             'width' => 'nullable|numeric',
             'height' => 'nullable|numeric',
             'price' => 'required|numeric',
+            'img' => 'required|image|mimes:jpg,png|max:2048',
         ]);
+
+        $imageName = null;
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = 'uploads/inventory/'. $image->getClientOriginalName(); // Generate unique name
+            $image->move(public_path('uploads/inventory'), $imageName); // Move image to the desired folder
+        }
+    
 
         $category_id = $this->getCategoryIdByName($request->inventory_name);
 
@@ -75,6 +84,7 @@ class InventoryController extends Controller
                 'height' => $request->height,
                 'price' => $request->price,
                 'status' => $request->status ?? 'Inactive',
+                'img'    => $imageName,
             ]
         );
 

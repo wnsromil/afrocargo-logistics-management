@@ -109,6 +109,7 @@ class CustomerController extends Controller
                 'signature_img' => $imagePaths['signature'] ?? null,
                 'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
                 'license_document' => $imagePaths['license_picture'] ?? null,
+                'signup_type' => 'for_admin'
             ];
             if (!empty($request->license_expiry_date)) {
                 $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
