@@ -51,7 +51,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        // try {
             $validated = $request->validate([
                 'first_name' => 'required|string|max:255',
                 'contact_no1' => 'required|digits:10',
@@ -123,10 +123,10 @@ class CustomerController extends Controller
 
             return redirect()->route('admin.customer.index')
                 ->with('success', 'User created successfully');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Validation Errors dikhane ke liye
-            return response()->json(['errors' => $e->errors()], 422);
-        }
+        // } catch (\Illuminate\Validation\ValidationException $e) {
+        //     // Validation Errors dikhane ke liye
+        //     return response()->json(['errors' => $e->errors()], 422);
+        // }
     }
 
     /**

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        Inventory Menagement
+        Add Inventory
     </x-slot>
 
     <x-slot name="cardTitle">
@@ -44,6 +44,7 @@
                                     value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
+
                         @error('warehouse_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -146,14 +147,6 @@
                 <input id="status" class="check" name="status" type="hidden" value="Active">
 
             </div>
-
-
-            @error('status')
-            <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-    </div>
-    <!-- </div>
         </div>
 
         <div class="add-customer-btns text-end">
@@ -161,8 +154,8 @@
             <button type="submit" class="btn customer btn-save px-3 py-2">Submit</button>
         </div>
         </div>
-        </div> -->
-    </form> 
+        </div>
+    </form>
 
     {{-- jqury cdn --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
