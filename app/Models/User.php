@@ -43,7 +43,21 @@ class User extends Authenticatable
         'license_number',
         'license_document',
         'license_expiry_date',
+        'company_name',
+        'apartment',
+        'username',
+        'latitude',
+        'longitude',
+        'website_url',
+        'write_comment',
+        'read_comment',
+        'language',
+        'year_to_date',
+        'signature_date',
+        'signature_img',
+        'contract_signature_img',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -68,18 +82,22 @@ class User extends Authenticatable
         ];
     }
 
-    public function userRole(){
-        return $this->belongsTo(Role::class,'role_id');
+    public function userRole()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
-    public function country(){
-        return $this->belongsTo(Country::class,'country_id');
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
-    public function state(){
-        return $this->belongsTo(State::class,'state_id');
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id');
     }
-    public function city(){
-        return $this->belongsTo(City::class,'city_id');
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
     public function warehouse()
     {
@@ -92,8 +110,7 @@ class User extends Authenticatable
     protected function profilePic(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => url($value),
+            get: fn($value) => url($value),
         );
     }
-
 }
