@@ -837,16 +837,35 @@ Version      : 1.0
             separateDialCode: true,
         });
     }
+<<<<<<< HEAD
+		// Country Code Selection
+		if($('#mobile_code2').length > 0) {
+			$( '#mobile_code2' ).intlTelInput( {
+				initialCountry: "in",
+				separateDialCode: true,	
+			});
+		}
+=======
+	if($('#mobile').length > 0) {
+		$( '#mobile' ).intlTelInput( {
+			initialCountry: "in",
+			separateDialCode: true,	
+		});
+	}
 
-    // Summernote
-    if ($(".summernote").length > 0) {
-        $(".summernote").summernote({
-            placeholder: "Description",
-            focus: true,
-            minHeight: 80,
-            disableResizeEditor: false,
-            toolbar: [["fontname", ["fontname"]], ["undo"], ["redo"]],
-        });
+	// Summernote
+	if($('.summernote').length > 0) {
+        $('.summernote').summernote({
+			placeholder: 'Description',
+		    focus: true,
+			minHeight: 80,
+			disableResizeEditor: false,
+			toolbar: [
+				['fontname', ['fontname']],
+				['undo'],
+				['redo'],
+			  ],
+		});
     }
     // Toggle
     if ($(".toggle-password").length > 0) {

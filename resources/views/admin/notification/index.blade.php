@@ -6,7 +6,7 @@
     <div class="nav">
         <nav class="navbar navbar-expand-lg">
             <div>
-                <h4 class="text-dark textSize mainFontFamily">Notifications</h4>
+                <h4 class="text-dark textSize mainFontFamily fw-semi">Notifications</h4>
             </div>
         </nav>
 
