@@ -157,10 +157,20 @@ class InventoryController extends Controller
             'id' => $id
         ])->first();
 
+        if ($request->in_stock_quantity == 0) {
+            $stock_status = 'Out of Stock';
+        } elseif ($request->in_stock_quantity > $request->low_stock_warning) {
+            $stock_status = 'In Stock';
+        } else {
+            $stock_status = 'Low Stock';
+        }
+
+        
         $inventory->update([
             'total_quantity'      => $request->in_stock_quantity,
             'in_stock_quantity'   => $request->in_stock_quantity,
-            'low_stock_warning'   => $request->low_stock_warning
+            'low_stock_warning'   => $request->low_stock_warning,
+            'stock_status'        => $stock_status
         ]);
 
         // Create a new stock entry
@@ -175,7 +185,7 @@ class InventoryController extends Controller
         ]);
 
         return redirect()->route('admin.inventories.index')
-            ->with('success', 'Inventory added successfully.');
+            ->with('success', 'Inventory update successfully.');
     }
 
     /**
