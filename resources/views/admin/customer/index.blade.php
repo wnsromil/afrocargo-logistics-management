@@ -178,7 +178,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
 			<div class="modal custom-modal fade" id="delete_modal" role="dialog">
 				<div class="modal-dialog modal-dialog-centered modal-sm">
 					<div class="modal-content">
-						<div class="modal-body">
+						<div class="modal-body confirmationpopup">
 							<div class="form-header">
 								
 								<p class="popupc">Do you want to delete customer?</p>
