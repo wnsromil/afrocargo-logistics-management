@@ -62,7 +62,7 @@
                         <thead class="thead-light">
                             <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
-                                <th>Sn no.</th>
+                                <th>S.No</th>
                                 <th>Tracking ID</th>
                                 <th>From</th>
                                 <th>To</th>
@@ -127,9 +127,65 @@
                               </td>
                               <td><div>Cash</div></td>
                               <td><label class="labelstatus"for="status">Pending</label></td>
-                              <td><select class="form-select">
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select></td>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+                            </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
@@ -179,9 +235,37 @@
                               </td>
                               <td><div>Online/Card</div></td>
                               <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
-                              <td><select class="form-select">
-                              <option value="1">Schedule Pickup</option>                
-                             </select></td>
+                              <td>
+                              <li class="nav-item dropdown">
+                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        <li>
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#cancel_modal">Schedule Pickup Cancel</a>
+                                           
+                      
+                                        </li>
+                                        <li>
+                                        <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#reschedule_modal"> Pickup Re-schedule</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#recieved_modal">Recieved by Pickup Man</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+                              </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
@@ -232,9 +316,65 @@
                               </td>
                               <td><div>Cheque</div></td>
                               <td><label class="labelstatusp"for="status">Pickup  Re-Schedule</label></td>
-                              <td><select class="form-select">
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select></td>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+                            </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
@@ -336,9 +476,64 @@
                               </td>
                               <td><div>Cash</div></td>
                               <td><label class="labelstatusp"for="status">Pickup  Re-Schedule</label></td>
-                              <td><select class="form-select">
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
                             </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
@@ -390,9 +585,64 @@
                               </td>
                               <td><div>Online/Card</div></td>
                               <td><label class="labelstatuspi"for="status">Received By Pickup Man</label></td>
-                              <td><select class="form-select">
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
                             </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
@@ -443,9 +693,64 @@
                               </td>
                               <td><div>Cheque</div></td>
                               <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
-                              <td><select class="form-select">
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
                             </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
@@ -455,7 +760,7 @@
                              <!-- eight line -->
                              <tr>
                              <td>8</td>
-                        <td>WE97078900</td>
+                        <td>WE97078901</td>
                         <td>
                                 <div>
                                     <div class="col">
@@ -475,12 +780,12 @@
                                 </div>
                               </td> 
                               <td><div>12-12-24</div></td>
-                              <td><div><img src="../assets/img/Rectangle 25.png" alt="image"></div></td>
-                              <td><div>Books</div></td>
-                              <td><div>$8</div></td>
-                              <td><div>Gar Delagnes</div></td>
-                              <td><div>Two Wheeler</div></td> 
-                              <td><label  class="labelstatusw"for="partial_status"> paid</label></td>
+                              <td><div><img src="../assets/img/Rectangle 2.png" alt="image"></div></td>
+                              <td><div>Household set,card..</div></td>
+                              <td><div>$34</div></td>
+                              <td><div>Bartlet Rayworth</div></td>
+                              <td><div>Van</div></td> 
+                              <td><label  class="labelstatusy"for="partial_status"> Partial paid</label></td>
                               <td>
                                 <div class="row">
                                 <div class="col-6">
@@ -489,17 +794,15 @@
                                     <div class="row">Total:</div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="row">$350</div>
-                                    <div class="row">$100</div>
-                                    <div class="row">$450</div>
+                                    <div class="row">$200</div>
+                                    <div class="row">$50</div>
+                                    <div class="row">$250</div>
                                 </div>
                                 </div>
                               </td>
                               <td><div>Cheque</div></td>
-                              <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
-                              <td><select class="form-select">
-                              <option value="1">Schedule Pickup</option>                
-                             </select>
+                              <td><label class="labelstatusp"for="status">Recieved by PickupMan</label></td>
+                              <td>
                             </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
@@ -508,7 +811,7 @@
                              <!-- nine line -->
                              <tr>
                              <td>9</td>
-                        <td>WE97078900</td>
+                        <td>WE97078894</td>
                         <td>
                                 <div>
                                     <div class="col">
@@ -528,12 +831,12 @@
                                 </div>
                               </td> 
                               <td><div>12-12-24</div></td>
-                              <td><div><img src="../assets/img/Rectangle 25.png" alt="image"></div></td>
-                              <td><div>Books</div></td>
-                              <td><div>$8</div></td>
-                              <td><div>Gar Delagnes</div></td>
-                              <td><div>Two Wheeler</div></td> 
-                              <td><label  class="labelstatusw"for="partial_status"> paid</label></td>
+                              <td><div><img src="../assets/img/Rectangle 3.png" alt="image"></div></td>
+                              <td><div>Electronics</div></td>
+                              <td><div>$21</div></td>
+                              <td><div>Saxe Fegres</div></td>
+                              <td><div>Van</div></td> 
+                              <td><label  class="labelstatus"for="partial_status"> Unpaid</label></td>
                               <td>
                                 <div class="row">
                                 <div class="col-6">
@@ -548,11 +851,67 @@
                                 </div>
                                 </div>
                               </td>
-                              <td><div>Cheque</div></td>
-                              <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
-                              <td><select class="form-select">
+                              <td><div>Cash</div></td>
+                              <td><label class="labelstatus"for="status">Pending</label></td>
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+                            
                             </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
@@ -562,7 +921,7 @@
                              <!-- ten line -->
                              <tr>
                              <td>10</td>
-                        <td>WE97078900</td>
+                        <td>WE97078901</td>
                         <td>
                                 <div>
                                     <div class="col">
@@ -583,11 +942,11 @@
                               </td> 
                               <td><div>12-12-24</div></td>
                               <td><div><img src="../assets/img/Rectangle 25.png" alt="image"></div></td>
-                              <td><div>Books</div></td>
-                              <td><div>$8</div></td>
-                              <td><div>Gar Delagnes</div></td>
-                              <td><div>Two Wheeler</div></td> 
-                              <td><label  class="labelstatusw"for="partial_status"> paid</label></td>
+                              <td><div>Household</div></td>
+                              <td><div>$25</div></td>
+                              <td><div>Lock Gillbanks</div></td>
+                              <td><div>Container</div></td> 
+                              <td><label  class="labelstatusy"for="partial_status"> Partially paid</label></td>
                               <td>
                                 <div class="row">
                                 <div class="col-6">
@@ -596,27 +955,78 @@
                                     <div class="row">Total:</div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="row">$350</div>
-                                    <div class="row">$100</div>
-                                    <div class="row">$450</div>
+                                    <div class="row">$200</div>
+                                    <div class="row">$50</div>
+                                    <div class="row">$250</div>
                                 </div>
                                 </div>
                               </td>
-                              <td><div>Cheque</div></td>
+                              <td><div>Online/Card</div></td>
                               <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
-                              <td><select class="form-select">
+                              <td>
+                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
                               <option value="1">Schedule Pickup</option>                
-                             </select>
+                             </select></a> 
+                             
+                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
                             </td>
                                <td>
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
                         </tbody>
-
-
-
-
 
 
 
@@ -1013,3 +1423,172 @@
     }
 
 </script> -->
+<!-- cancel model -->
+<div class="modal custom-modal signature-add-modal fade" id="cancel_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<!-- <div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<p>Do you want to cancel the schedule pickup</p>
+                                </div>
+							</div> -->
+							
+								
+							
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            
+                                            <!-- <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div> -->
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                       <p>Do you want cancel the schedule pickup</p>
+                                        </div>
+                                        <button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+                                        <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button> 
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+
+<!-- recieved_modal -->
+            <div class="modal custom-modal signature-add-modal fade" id="recieved_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+            <!-- re-schedule -->
+
+            <div class="modal custom-modal signature-add-modal fade" id="reschedule_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Pickup Man Assign</h4>
+                                </div>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								
+							</button>
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+                                            <div class="col-12">
+    <label> Date <i class="text-danger">*</i></label>
+    <div class="daterangepicker-wrap cal-icon cal-icon-info popdate">
+     <input type="text" class="btn-filters form-control form-cs inp " name="datetimes" placeholder="From Date - To Date" />
+    </div>
+</div>
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>

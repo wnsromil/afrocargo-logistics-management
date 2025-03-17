@@ -22,6 +22,9 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/customeruser', function () {
+    return view('admin.customeruser.user');
+});
 
 
 Route::get('/dashboard', function () {

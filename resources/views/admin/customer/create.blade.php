@@ -36,6 +36,10 @@
               <label class="foncolor" for="Address.2">Address 2 </label>
               <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
               </div>
+              <div class="col-md-6">
+              <label class="foncolor" for="Apartment">Apartment </label>
+              <input type="text" name="Apartment" class="form-control inp" placeholder="Enter Apartment">
+              </div>
             <div class="col-md-6">
             <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
             <select class="js-example-basic-single select2">
@@ -44,10 +48,7 @@
 												<option>purple</option>
 											</select>
             </div>
-            <div class="col-md-6">
-              <label class="foncolor" for="Apartment">Apartment </label>
-              <input type="text" name="Apartment" class="form-control inp" placeholder="Enter Apartment">
-              </div>
+           
             <div class="col-md-4">
             <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
             <select class="js-example-basic-single select2">
@@ -126,6 +127,14 @@
             <label class="foncolor" for="warehouse"> Warehouse </label>
             <select class="js-example-basic-single select2">
 												<option selected="selected">Select Warehouse</option>
+												<option>white</option>
+												<option>purple</option>
+											</select>
+            </div>
+            <div class="col-md-12">
+            <label class="foncolor" for="warehouse"> Container </label>
+            <select class="js-example-basic-single select2">
+												<option selected="selected">Select Container</option>
 												<option>white</option>
 												<option>purple</option>
 											</select>
