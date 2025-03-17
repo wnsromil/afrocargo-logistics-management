@@ -15,7 +15,14 @@ use App\Http\Controllers\Web\Admin\{
     HubTrackingController,
     InvoiceController,
     NotificationController,
-    AdvanceReportsController
+    AdvanceReportsController,
+    DriverInventoryController,
+    ServiceOrdersController,
+    SupplyOrdersController,
+    ExpensesController,
+    SignatureController,
+    NotificationScheduleController,
+    RoleManagementController
 };
 
 Route::get('/', function () {
@@ -26,6 +33,23 @@ Route::get('/customeruser', function () {
     return view('admin.customeruser.user');
 });
 
+Route::get('/rolemanagements', function () {
+    return view('admin.rolemanagements.index');
+});
+Route::get('/rolemanagementCreate', function () {
+    return view('admin.rolemanagementCreate.create');
+});
+Route::get('/rolemanagementUpdate', function () {
+    return view('admin.rolemanagementUpdate.edit');
+});
+
+Route::get('/driversactivitylog', function () {
+    return view('admin.driversactivitylog.activitylog');
+});
+
+Route::get('/', function () {
+    return view('auth.login');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -60,6 +84,14 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('OrderShipment', OrderShipmentController::class);
         Route::resource('hubs', HubTrackingController::class);
         Route::resource('invoices', InvoiceController::class);
+        Route::resource('driver_inventory', DriverInventoryController::class);
+        Route::resource('service_orders', ServiceOrdersController::class);
+        Route::resource('supply_orders', SupplyOrdersController::class);
+        Route::resource('expenses', ExpensesController::class);
+        Route::resource('signature', SignatureController::class);
+        Route::resource('notification_schedule', NotificationScheduleController::class);
+        Route::resource('user_role', RoleManagementController::class);
+
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
         Route::get('container', [VehicleController::class, 'container_index'])->name('container.list');

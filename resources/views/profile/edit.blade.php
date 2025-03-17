@@ -29,6 +29,24 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="upload-profile me-2 align-items-center mt-4">
+<<<<<<< HEAD
+                            <div class="profile-img avatar avatar-xxl profileImg profile-cover-avatar">
+                                <img class="avatar-img" src="{{ asset('assets/img/profiles/Ellipse 14.png') }}"
+                                    alt="Profile Image" id="blah">
+                                <label name="profile_pic">
+                                    <input type="file" id="profile_pic">
+                                    <span class="avatar-edit iconResize">
+                                        <i class="fe fe-edit avatar-uploader-icon shadow-soft"></i>
+                                    </span>
+                                </label>
+                                <label name="deletePhotoBtn" >
+                                    <input id="deletePhotoBtn">
+                                    <span class="avatar-trash iconResize bg-danger">
+                                        <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
+                                    </span>
+                                </label>
+                            </div>
+=======
                             <label class="profile-img avatar avatar-xxl profileImg profile-cover-avatar"
                                 for="file-input">
                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
@@ -46,6 +64,7 @@
                                         <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
                                     </span>
                             </label>
+>>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81
                         </div>
                         {{-- input --}}
                         <input id="file-input" type="file" name="profile_pic" style="display:none;"
@@ -90,21 +109,92 @@
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
+<<<<<<< HEAD
+                                    <p class="profileUpdateFont required">Last Name</p>
+                                    <input type="text" name="email" value="{{ old('email', $user->email) }}"
+                                        class="form-control" readonly placeholder="Enter Last Name" required>
+                                    <span class="error text-danger">@error('email') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+
+                            <!--   <div class="col-lg-6 col-12">
+                    <div class="input-block mb-3">
+                        <label>contact No 1</label>
+                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control"
+                            placeholder="Enter Mobile Number">
+                        <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+                    </div>
+                </div>
+
+               <div class="col-lg-6 col-12">
+                    <div class="input-block mb-3">
+                        <label>contact No 2</label>
+                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control"
+                            placeholder="Enter Mobile Number">
+                        <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+                    </div>
+                </div> -->
+
+                            <!-- <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+=======
+>>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81
                                     <p class="profileUpdateFont required">Contact No. 1</p>
                                     <input type="number" id="mobile_code" name="phone"
                                         value="{{ old('phone', $user->phone) }}" class="form-control" placeholder=""
                                         required>
+<<<<<<< HEAD
+                                    <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+                                </div>
+                            </div> -->
+
+                            <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+                                    <p class="profileUpdateFont required">Contact No. 1</p>
+                                    <input type="text" id="mobile_code" name="phone"
+                                        value="{{ old('phone', $user->phone) }}" class="form-control" placeholder=""
+                                        required>
+                                    <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+=======
                                     <span class="error text-danger">
                                         @error('phone')
                                             {{ $message }}
                                         @enderror
                                     </span>
+>>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81
                                 </div>
                             </div>
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Contact No. 2</p>
+<<<<<<< HEAD
+                                    <input type="text" id="mobile_code2" name="phone2" class="form-control"
+                                        placeholder="9876543210">
+                                    <span class="error text-danger">@error('phone2') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+
+
+                            <!-- <div class="input-block mb-3">
+                                <p class="profileUpdateFont required">Contact No. 1</p>
+                                <div class="input-group mb-3">
+                                    <select class="dropdown-toggle opacity-75 setBorder rounded-start" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <option selected class="dropdown-item" href="#">
+                                            <i class="flag flag-lr" data-bs-toggle="tooltip" title="flag flag-lr"></i>
+                                            +1</a>
+                                        </option>
+                                        <option class="dropdown-item" href="#">+91</option>
+                                        <option class="dropdown-item" href="#">+44</option>
+                                        <option class="dropdown-item" href="#">+94</option>
+                                    </select>
+                                    <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                                        class="form-control border-start-0 rounded-end" placeholder="" required>
+                                    <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+=======
                                     <input type="number" id="mobile_code2" name="phone_2"
                                         value="{{ old('phone_2', $user->phone_2 ) }}" class="form-control" placeholder="">
                                     <span class="error text-danger">
@@ -112,8 +202,27 @@
                                             {{ $message }}
                                         @enderror
                                     </span>
+>>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81
                                 </div>
                             </div>
+                        </div> -->
+                            <!-- <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+                                    <p class="profileUpdateFont">Contact No. 2</p>
+                                    <div class="input-group mb-3">
+                                        <select class="dropdown-toggle opacity-75 setBorder rounded-start" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <option selected class="dropdown-item" href="#">+1</a></option>
+                                            <option class="dropdown-item" href="#">+91</option>
+                                            <option class="dropdown-item" href="#">+44</option>
+                                            <option class="dropdown-item" href="#">+94</option>
+                                        </select>
+                                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                                            class="form-control border-start-0 rounded-end" placeholder="">
+                                        <span class="error text-danger">@error('phone') {{ $message }}               @enderror</span>
+                                    </div>
+                                </div>
+                            </div> -->
 
                             {{-- <div class="col-md-6">
                                 <label>Email</label> <span class="text-danger">*</span>
@@ -228,6 +337,291 @@
     {{-- jqury cdn --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+<<<<<<< HEAD
+        // document.getElementById('profile_pic').addEventListener('change', function (event) {
+        //     let file = event.target.files[0];
+
+        //     if (file) {
+        //         let reader = new FileReader();
+        //         reader.onload = function (e) {
+        //             document.getElementById('blah').src = e.target.result; // Image preview
+        //         };
+        //         reader.readAsDataURL(file);
+
+        //         // Form automatically submit kare
+        //         document.getElementById('profileForm').submit();
+        //     }
+        // });
+
+        document.getElementById('deletePhotoBtn').addEventListener('click', function () {
+            // Remove the current profile picture
+            document.getElementById('blah').src = 'assets/img/category/category-05.jpg';
+
+            // Optionally, hide the delete button after deletion
+            this.style.display = 'none';
+        });
+
+    </script>
+
+    <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+    <!-- <section>
+    <div class="content-page-header">
+            <h5 class="setting-menu textSize fw-semibold">Update Profile</h5>
+        </div>
+        <div class="col-md-12 d-flex justify-content-between">
+            <div class="col-md-4">
+                
+                <form id="profileForm" action="{{ route('profile.upload_pic') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="upload-profile me-2 align-items-center">
+              
+                        <label class="profile-img avatar avatar-xxl profileImg profile-cover-avatar"
+                            for="avatar_upload">
+                            <img class="avatar-img" src="{{ asset('assets/img/profiles/Ellipse 14.png') }}"
+                                alt="Profile Image" id="blah">
+                            <input type="file" id="avatar_upload">
+                            <span class="avatar-edit iconResize bg-dark">
+                                <i class="fe fe-edit avatar-uploader-icon shadow-soft"></i>
+                            </span>
+                        
+                        </label>
+                    </div> -->
+
+    <!-- <div class="img-upload">
+                    <label class="btn btn-primary">
+                        Upload new picture <input type="file" name="profile_pic" id="profile_pic" hidden>
+                    </label>
+                    <p class="mt-1">Logo Should be minimum 152 * 152 Supported File format JPG, PNG, SVG</p>
+                </div> -->
+    <!-- 
+                </form>
+            </div>
+
+            <div class="col-md-8">
+                <form method="post" action="{{ route('profile.update') }}">
+                    @csrf
+                    @method('patch')
+                    <div class="row"> -->
+
+    <!-- <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>First Name</label>
+                                <input type="text" name="name" value="{{ old('name', $user->fname) }}"
+                                    class="form-control" placeholder="Enter First Name">
+                                <span class="error text-danger">@error('name') {{ $message }} @enderror</span>
+                            </div>
+                        </div> -->
+    <!-- <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                            <label>First Name</label>
+                                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control"
+                                    placeholder="Enter First Name">
+                                <span class="error text-danger">@error('name') {{ $message }} @enderror</span>
+                            </div>
+                        </div> -->
+
+
+    <!-- <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>Last Name</label>
+                                <input type="text" name="name" value="{{ old('name', $user->lname) }}"
+                                    class="form-control" placeholder="Enter Last Name">
+                                <span class="error text-danger">@error('name') {{ $message }} @enderror</span>
+                            </div>
+                        </div> -->
+    <!-- <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>Name</label>
+                                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control"
+                                    placeholder="Enter First Name">
+                                <span class="error text-danger">@error('name') {{ $message }} @enderror</span>
+                            </div>
+                        </div> -->
+    <!-- 
+                        <div class="col-lg-6 col-12">
+                    <div class="input-block mb-3">
+                        <label>Phone No</label>
+                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control"
+                            placeholder="Enter Mobile Number">
+                        <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+                    </div>
+                </div> -->
+
+    <!-- <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>Contact No. 1</label>
+                                <div class="input-group mb-3">
+                                        <select class="dropdown-toggle opacity-75 setBorder rounded-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <option selected class="dropdown-item" href="#">+1</a></option>
+                                            <option class="dropdown-item" href="#">+91</option>
+                                            <option class="dropdown-item" href="#">+44</option>
+                                            <option class="dropdown-item" href="#">+94</option>
+                                        </select>
+                                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                                    class="form-control border-start-0 rounded-end" placeholder="Contact">
+                                <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>Contact No. 2</label>
+                                    <div class="input-group mb-3">
+                                        <select class="dropdown-toggle opacity-75 setBorder rounded-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <option selected class="dropdown-item" href="#">+1</a></option>
+                                            <option class="dropdown-item" href="#">+91</option>
+                                            <option class="dropdown-item" href="#">+44</option>
+                                            <option class="dropdown-item" href="#">+94</option>
+                                        </select>
+                                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                                    class="form-control border-start-0 rounded-end" placeholder="">
+                                <span class="error text-danger">@error('phone') {{ $message }} @enderror</span>
+                                </div>
+                             </div>
+                        </div> -->
+
+    <!-- 
+                        <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>Country</label>
+                                <input type="text" name="address" value="{{ old('address', $user->address) }}"
+                                    class="form-control" placeholder="Enter your Address">
+                                <span class="error text-danger">@error('address') {{ $message }} @enderror</span>
+                            </div>
+                        </div> -->
+
+    <!-- <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+                                <label>Country</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>USA</option>
+                                <option value="1">Australia</option>
+                                <option value="2">India</option>
+                                <option value="3">China</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+							<label>State</label>
+								<select class="form-select">
+                                <option selected>Alabama</option>
+									<option>Washington</option>
+									<option>Washington</option>
+									<option>Washington</option>
+									<option>Washington</option>
+							    </select>
+							</div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+							<label>City</label>
+								<select class="form-select">
+                                <option selected>Huntsville</option>
+									<option>City 1</option>
+									<option>City 2</option>
+									<option>City 3</option>
+									<option>City 4</option>
+							    </select>
+							</div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                            <div class="input-block mb-3">
+							<label>Zip Code</label>
+                            <input type="text" class="form-control" placeholder="Enter Your Zip Code">
+							</div>
+                        </div>
+
+                        <div class="col-lg-6 col-12">
+                    <div class="input-block mb-3">
+                        <label>Address 1</label>
+                        <input type="text" name="address" value="{{ old('address', $user->address) }}"
+                            class="form-control" placeholder="Enter your Address">
+                        <span class="error text-danger">@error('address') {{ $message }} @enderror</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-12">
+                    <div class="input-block mb-3">
+                        <label>Address 2</label>
+                        <input type="text" name="address" value="{{ old('address', $user->address) }}"
+                            class="form-control" placeholder="Enter your Address">
+                        <span class="error text-danger">@error('address') {{ $message }} @enderror</span>
+                    </div>
+                </div> -->
+    <!-- </div> -->
+
+    {{-- <div class="col-lg-12">
+        <div class="form-title">
+            <h5>Address Information</h5>
+        </div>
+    </div> --}}
+    {{-- <div class="col-lg-12">
+        <div class="input-block mb-3">
+            <label>Address</label>
+            <input type="text" class="form-control" placeholder="Enter your Address">
+        </div>
+    </div> --}}
+    {{-- <div class="col-lg-6 col-12">
+        <div class="input-block mb-3">
+            <label>Country</label>
+            <input type="text" class="form-control" placeholder="Enter your Country">
+        </div>
+    </div>
+    <div class="col-lg-6 col-12">
+        <div class="input-block mb-3">
+            <label>State</label>
+            <input type="text" class="form-control" placeholder="Enter your State">
+        </div>
+    </div>
+    <div class="col-lg-6 col-12">
+        <div class="input-block mb-3">
+            <label>City</label>
+            <input type="text" class="form-control" placeholder="Enter your City">
+        </div>
+    </div>
+    <div class="col-lg-6 col-12">
+        <div class="input-block mb-3">
+            <label>Postal Code</label>
+            <input type="text" class="form-control" placeholder="Enter Your Postal Code">
+        </div>
+    </div> --}}
+    <!-- <div class="col-lg-12">
+                            <div class="btn-path text-end">
+                                {{-- <a href="javascript:void(0);"
+                                    class="btn btn-cancel bg-primary-light me-3">Cancel</a>
+                                --}}
+                                <button class="btn btn-primary" type="submit">Update</button>
+                            </div>
+                        </div> -->
+
+    <!-- <div class="col-lg-12">
+							<div class="btn-path text-end">
+								<a href="javascript:void(0);" class="btn btn-cancel btn-outline-dark me-3">Cancel</a>
+                                <a href="javascript:void(0);" class="btn btn-dark" type="submit">Update</a>
+                            </div>
+						</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('profile_pic').addEventListener('change', function (event) {
+            let file = event.target.files[0];
+
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('blah').src = e.target.result; // Image preview
+=======
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -236,6 +630,7 @@
                     setTimeout(() => {
                         document.getElementById('profileForm').submit();
                     }, 1000);
+>>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -303,6 +698,11 @@
                 });
             }
         });
+<<<<<<< HEAD
+    </script> -->
+</x-app-layout>
+=======
     </script>
 
 </x-app-layout>
+>>>>>>> 805d436227048e51d6d609dd7a581e2be26f8d81

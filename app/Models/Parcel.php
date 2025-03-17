@@ -7,6 +7,7 @@ use App\Models\{
     Category,
 };
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
 
 class Parcel extends Model
 {
@@ -17,6 +18,10 @@ class Parcel extends Model
         'parcel_car_ids' => 'array',
         'customer_subcategories_data' => 'array',
         'driver_subcategories_data' => 'array',
+        'pickup_address_id' => 'integer',
+        'delivery_address_id' => 'integer',
+        'pickup_time' => 'string',
+        'pickup_date' => 'date',
     ];
     
 

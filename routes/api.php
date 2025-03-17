@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\{
     SubcategoryController,
     CustomerController,
     ContainerController,
+    AddressController,
+    CartController,
     InvoiceController
 };
 use App\Http\Controllers\Api\{
@@ -59,11 +61,19 @@ Route::middleware('auth:api')->group(function () {
 
         Route::get('/customers-details/{id}', [CustomerController::class, 'getCustomersDetails']);
         Route::get('/customers-list', [CustomerController::class, 'getCustomers']);
+       
         Route::post('/create-customer', [CustomerController::class, 'createCustomer']);
         Route::post('/create-shipping-customer', [CustomerController::class, 'createShippingCustomer']);
         Route::get('/shipping-customer-list/{id}', [CustomerController::class, 'ShippingCustomerList']);
         // Container Routes
         Route::get('/container-list', [ContainerController::class, 'getActiveContainers']);
+        Route::apiResource('cart', CartController::class);
+       
+        // Addresse Routes
+        Route::post('/address-list', [AddressController::class, 'getAddress']);
+        Route::post('/addresse-create', [AddressController::class, 'createAddress']);
+        Route::get('/addresse-delete/{id}', [AddressController::class, 'deleteAddress']);
+        Route::post('/address-update/{id}', [AddressController::class, 'updateAddress']);
 
     });
 

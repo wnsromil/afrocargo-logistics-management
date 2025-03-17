@@ -11,6 +11,8 @@ class AddressSeeder extends Seeder
     {
         DB::table('addresses')->insert([
             [
+                'full_name' => "Deepak kumar",
+                'warehouse_id' => null,
                 'user_id' => 1,
                 'mobile_number' => '9876543210',
                 'alternative_mobile_number' => '9876543211',
@@ -22,8 +24,11 @@ class AddressSeeder extends Seeder
                 'address_type' => 'pickup',
                 'created_at' => now(),
                 'updated_at' => now(),
+              
             ],
             [
+                'full_name' => "chandan kumar",
+                'warehouse_id' => 3,
                 'user_id' => 2,
                 'mobile_number' => '9876543212',
                 'alternative_mobile_number' => '9876543213',
@@ -35,8 +40,11 @@ class AddressSeeder extends Seeder
                 'address_type' => 'delivery',
                 'created_at' => now(),
                 'updated_at' => now(),
+                
             ],
             [
+                'full_name' => "vebhav kumar",
+                'warehouse_id' => null,
                 'user_id' => 3,
                 'mobile_number' => '9876543214',
                 'alternative_mobile_number' => '9876543215',
@@ -48,8 +56,11 @@ class AddressSeeder extends Seeder
                 'address_type' => 'pickup',
                 'created_at' => now(),
                 'updated_at' => now(),
+                
             ],
             [
+                'full_name' => "ram kumar",
+                'warehouse_id' => 1,
                 'user_id' => 4,
                 'mobile_number' => '9876543216',
                 'alternative_mobile_number' => '9876543217',
@@ -61,8 +72,11 @@ class AddressSeeder extends Seeder
                 'address_type' => 'delivery',
                 'created_at' => now(),
                 'updated_at' => now(),
+              
             ],
             [
+                'full_name' => "ayush sharma",
+                'warehouse_id' => null,
                 'user_id' => 5,
                 'mobile_number' => '9876543218',
                 'alternative_mobile_number' => '9876543219',
@@ -74,6 +88,7 @@ class AddressSeeder extends Seeder
                 'address_type' => 'pickup',
                 'created_at' => now(),
                 'updated_at' => now(),
+                
             ],
         ]);
     }

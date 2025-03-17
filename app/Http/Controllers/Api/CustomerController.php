@@ -24,7 +24,7 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->orderBy('name')->get(['id', 'name']);
+        $customers = $query->orderBy('name')->get(['id', 'name', 'phone', 'email', 'profile_pic']);
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
@@ -33,6 +33,7 @@ class CustomerController extends Controller
 
         return response()->json(['customers' => $customers], 200);
     }
+
     public function getCustomersDetails(Request $request)
     {
         if ($request->has('id') && !empty($request->id)) {
@@ -61,8 +62,8 @@ class CustomerController extends Controller
             'address' => 'required|string|max:255',
             'address_2' => 'nullable|string|max:255',
             'country_id' => 'required|string|max:255',
-            'state_id' => 'required|string|max:255',
-            'city_id' => 'required|string|max:255',
+            // 'state_id' => 'required|string|max:255',
+            // 'city_id' => 'required|string|max:255',
             'pincode' => 'required|numeric',
         ]);
 
@@ -90,35 +91,67 @@ class CustomerController extends Controller
     public function createShippingCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|integer|max:255',
+            'customer_id' => 'required|integer|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'contact_1' => 'required|string|max:255',
-            'contact_2' => 'nullable|string|max:255',
+            'phone' => 'required|string|max:255',
+            'phone_2' => 'nullable|string|max:255',
             'country_id' => 'required|string|max:15',
-            'state_id' => 'required|string|max:255',
-            'city_id' => 'required|string|max:255',
+            // 'state_id' => 'required|string|max:255',
+            // 'city_id' => 'required|string|max:255',
             'address_1' => 'required|string|max:255',
             'address_2' => 'nullable|string|max:255',
+            'ship_to_id' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
+            'apartment' => 'nullable|string|max:255',
+            'latitude' => 'nullable|string',
+            'longitude' => 'nullable|string',
+            'lookup_name' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'municipal' => 'nullable|string|max:255',
+            'sector' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $user = new ShippingUser();
-        $user->user_id = $request->user_id;
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->contact_1 = $request->contact_1;
-        $user->contact_2 = $request->contact_2;
-        $user->country_id = $request->country_id;
-        $user->state_id = $request->state_id;
-        $user->city_id = $request->city_id;
-        $user->address_1 = $request->address_1;
-        $user->address_2 = $request->address_2;
-        $user->save();
-        return response()->json(['user' => $user], 200);
+        // Check if user exists based on phone or phone_2
+        $existingUser = User::where('phone', $request->phone)
+            ->orWhere('phone_2', $request->phone)
+            ->first();
+
+        if (!$existingUser) {
+            dd($existingUser);
+            // Call createCustomer if user does not exist
+            $newUser = $this->createCustomer($request->all());
+            $customer_id = $newUser->id;
+        } else {
+            $customer_id = $existingUser->id;
+        }
+
+        // Create new ShippingUser entry
+        $shippingUser = new ShippingUser();
+        $shippingUser->shipping_user_id = $customer_id;
+        $shippingUser->customer_id = $customer_id;
+        $shippingUser->created_id = $this->user->id;
+        $shippingUser->country_id = $request->country_id;
+        $shippingUser->address_1 = $request->address_1;
+        $shippingUser->address_2 = $request->address_2;
+        $shippingUser->ship_to_id = $request->ship_to_id ?? 'Done';
+        $shippingUser->company_name = $request->company_name;
+        $shippingUser->apartment = $request->apartment;
+        $shippingUser->latitude = $request->latitude;
+        $shippingUser->longitude = $request->longitude;
+        $shippingUser->lookup_name = $request->lookup_name;
+        $shippingUser->province = $request->province;
+        $shippingUser->municipal = $request->municipal;
+        $shippingUser->sector = $request->sector;
+        $shippingUser->language = $request->language;
+        $shippingUser->save();
+
+        return response()->json(['shipping_user' => $shippingUser], 200);
     }
 
     public function shippingCustomerList($id)
@@ -138,5 +171,4 @@ class CustomerController extends Controller
             'data' => $customers
         ], 200);
     }
-
 }

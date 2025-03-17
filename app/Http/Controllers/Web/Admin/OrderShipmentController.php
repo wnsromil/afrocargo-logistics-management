@@ -197,7 +197,7 @@ class OrderShipmentController extends Controller
         $parcel = Parcel::find($id);
 
         ParcelHistory::create([
-            'parcel_id' => $inventory->id,
+            'parcel_id' => $parcel->id,
             'created_user_id' => $this->user->id,
             'customer_id' => $parcel['customer_id'],
             'warehouse_id' => $parcel['warehouse_id'],
@@ -206,7 +206,7 @@ class OrderShipmentController extends Controller
             'description' => collect($parcel)
         ]);
 
-        $parce->delete();
+        $parcel->delete();
         return redirect()->route('admin.OrderShipment.index')
             ->with('success', 'Order deleted successfully');
     }
