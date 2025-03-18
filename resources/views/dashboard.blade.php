@@ -24,7 +24,7 @@
                                 <!-- <div class="dash-widget-header col-md-12 "> -->
                                 <div class="col-md-8">
                                     <div class="dash-count">
-                                        <p class="fontSize fw-medium">Today’s Order</p>
+                                        <p class="fontSize fw-medium">Today’s Orders</p>
                                         <div class="dash-counts countFontSize2">
                                             254
                                         </div>
@@ -368,7 +368,7 @@
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
-                                        <p class="fontSize fw-medium">Total Earning</p>
+                                        <p class="fontSize fw-medium">Total Earnings</p>
                                         <div class="dash-counts countFontSize2">
                                             $125650
                                         </div>
@@ -397,7 +397,7 @@
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
-                                        <p class="fontSize fw-medium">Today’s Earning</p>
+                                        <p class="fontSize fw-medium">Today Earnings</p>
                                         <div class="dash-counts countFontSize2">
                                             4500
                                         </div>
@@ -419,6 +419,75 @@
                             </div>
                         </div>
                     </div>
+
+                </div>
+            </div>
+
+            <!-- ------------------- Row 4th ------------------------ -->
+            <div class="col-md-12">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                    <!-- ------------------------- 13th card --------------------------->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card innerCards inovices-card w-100 setCard h-75">
+                            <div class="d-flex flex-row justify-content-between">
+                                <!-- <div class="dash-widget-header col-md-12"> -->
+                                <div class="col-md-8 float-left">
+                                    <div class="dash-count">
+                                        <p class="fontSize fw-medium">Total Supply</p>
+                                        <div class="dash-counts countFontSize2">
+                                            450
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="dash-widget-icon col-md-6 float-end">
+                                        <svg width="50" height="50" viewBox="0 0 52 52" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1 29.75L13.5 37.25V51M1 29.75L13.5 22.25L26 29.75M1 29.75V43.5L13.5 51M26 29.75V43.5M26 29.75L38.5 37.25M26 29.75L38.5 22.25M26 29.75V16M26 43.5L13.5 51M26 43.5L38.5 51M13.5 37.3625L26 29.7875M38.5 37.25V51M38.5 37.25L51 29.75M38.5 22.25L51 29.75M38.5 22.25V8.5M51 29.75V43.5L38.5 51M26 16L13.5 8.5L26 1L38.5 8.5M26 16L38.5 8.5M13.5 8.57507V22.2126"
+                                                stroke="#203A5F" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+
+                                    </span>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- -------------------------14th --------------------------- -->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card innerCards inovices-card w-100 setCard h-75">
+                            <div class="d-flex flex-row justify-content-between">
+                                <!-- <div class="dash-widget-header col-md-12"> -->
+                                <div class="col-md-8 float-left">
+                                    <div class="dash-count">
+                                        <p class="fontSize fw-medium">New Supply</p>
+                                        <div class="dash-counts countFontSize2">
+                                            30
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="dash-widget-icon col-md-6 float-end">
+                                        <svg width="44" height="49" viewBox="0 0 44 49" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M43 12.75L22 1L1 12.75M43 12.75V36.25L22 48M43 12.75L22 24.5M22 48L1 36.25V12.75M22 48V24.5M1 12.75L22 24.5M12.0255 18.7556L31.9755 6.74448"
+                                                stroke="#203A5F" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+
+
+                                    </span>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -713,13 +782,15 @@
 
                                     <td>12/28/2023</td>
                                     <td>Medium</td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
                                     <td>$167.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -745,7 +816,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                <!-- 2 -->
+                                <!-- 2 -->
                                 <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
@@ -762,13 +833,15 @@
                                     <td><span>Short</span></td>
 
 
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:orange;"></i>Pending</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:orange;"></i>Pending</td>
                                     <td>$863.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i></a>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -805,14 +878,16 @@
 
                                     <td>10/27/2023</td>
                                     <td><span>Short</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:orange;"></i>Pending</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:orange;"></i>Pending</td>
 
                                     <td>$617.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -851,15 +926,17 @@
 
                                     <td>08/15/2024</td>
                                     <td><span>Large</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
 
                                     <td>$751.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
-                                                </a>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
+                                            </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
@@ -897,14 +974,16 @@
 
                                     <td>12/02/2023</td>
                                     <td><span>Medium</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
 
                                     <td>$356.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -942,14 +1021,16 @@
 
                                     <td>08/29/2023</td>
                                     <td><span>Short</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
 
                                     <td>$940.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -988,14 +1069,16 @@
 
                                     <td>04/16/2024</td>
                                     <td><span>Medium</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
 
                                     <td>$125.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -1032,14 +1115,16 @@
                                     </td>
                                     <td>01/05/2024</td>
                                     <td><span>Large</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
 
                                     <td>$759.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -1078,14 +1163,16 @@
                                     </td>
                                     <td>05/06/2024</td>
                                     <td><span>Medium</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:red;"></i>Canceled</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td>
 
                                     <td>$300.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
@@ -1123,14 +1210,16 @@
                                     </td>
                                     <td>08/09/2024</td>
                                     <td><span>Large</span></td>
-                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop" style="color:orange;"></i>Pending</td>
+                                    <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:orange;"></i>Pending</td>
 
                                     <td>$456.00</td>
                                     <td class="text-end">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top" data-tooltip="fa fa-ellipsis-h"></i>
+                                                <i class="fa fa-ellipsis-h tooltipped" data-position="top"
+                                                    data-tooltip="fa fa-ellipsis-h"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end customer-dropdown">
                                                 <a class="dropdown-item" href="edit-invoice.html"><i
