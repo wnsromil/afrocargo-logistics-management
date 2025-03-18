@@ -33,6 +33,22 @@ Route::get('/customeruser', function () {
     return view('admin.customeruser.user');
 });
 
+<<<<<<< HEAD
+Route::get('/driversactivitylog', function () {
+    return view('admin.driversactivitylog.activitylog');
+});
+
+Route::get('/driverschedule', function () {
+    return view('admin.driverschedule.schedule');
+});
+
+
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+=======
+>>>>>>> c227effb695296fe7784d65760c8a3a23271b2f4
 
 Route::get('/dashboard', function () {
     return view('dashboard');
