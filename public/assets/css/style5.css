@@ -144,15 +144,49 @@ border:2px solid red
 
     .table thead tr th {
         font-weight: 500;
-        border-color: 1px solid #00000042 !important;
+        /* border-color: 1px solid #00000042 !important;
         border-bottom: 1px solid #00000042 !important;
-        border: 1px solid #00000042 !important;
+        border: 1px solid #00000042 !important; */
+        border:none
+    }
+    .customerr{
+        padding-bottom: 30px;
+    }
+    .phead{
+      font-size:18px;
+      font-weight:600;
+      color:#000000;
+      padding-bottom: 3px !important;
+    }
+    .pdata{
+      font-size:14px;
+      font-weight: 500;
+      color:#3A3A3A;
+      padding-bottom: 2px !important;
     }
     td{
         border: 1px solid #00000042 !important;
         height:45px !important;
         /* width:96px !important; */
     }
+    .customerhead{
+      height:125px;
+      padding-left: 1px;
+      padding-right: 1px;
+      padding-bottom: 15px;
+    }
+    
+    .table tbody td a:hover {
+      color:#3A3A3A;
+  }
+    
+
+    /* .customerbody{
+      height:446px;
+      padding-top: 5px;
+      padding-bottom:5px;
+      gap:20px;
+    } */
     .imgin{
        width:20px;
     }
@@ -204,16 +238,191 @@ border:2px solid red
           .table-responsive{
             border-radius:8px !important;
           }
+          
+
+        
+      table, th, td {
+        border: none !important;
+        border-collapse: collapse !important;
+        outline: none !important;
+    }
+    
+    table thead {
+        border: none !important;
+    }
+    
+    table tbody {
+        border: none !important;
+    }
+    
+      
           .inputcolor{
             background-color: #F2F2F2;
             border:1px solid #0000001A;
           }
           .commenth{
-           height:122px !important;
+           height:75px !important;
           }
           .dheight{
             height:205px !important;
           }
+          .avtars{
+            border-radius: 150px;
+            width: 156px;
+          }
+          .custodis{
+            border:1px solid #00000042;
+            margin-top:20px !important;
+            height:205px;
+            border-radius: 8px;
+            margin-left:1px !important;
+          }
+          .avtarset{
+            position: relative;
+          display: flex;
+          height: 156px;
+           margin-block: auto;
+          }
+          .set{
+            margin-block: auto;
+          }
+          .ptop{
+            padding-top:20px;
+            justify-content: space-between;
+          }
+          .labelstatus{
+            background: #FFDADA;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            height: 28px;
+            border-radius: 4px;
+            color:#FF0000;
+            font-size: 13px;
+            font-weight: 500;
+           }
+           .labelstatusy{
+            background:#FFEDD9;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            height: 28px;
+            border-radius: 4px;
+            color:#EC8000;
+            font-size: 13px;
+            font-weight: 500;
+           }
+           .labelstatusw{
+            background:#DAFFE9;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            height: 28px;
+            border-radius: 4px;
+            color:#33B469;
+            font-size: 13px;
+            font-weight: 500;
+           }
+           .labelstatusp{
+            background:#E7D9FF;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            height: 28px;
+            border-radius: 4px;
+            color:#600AF3;
+            font-size: 13px;
+            font-weight: 500;
+           }
+
+           .labelstatuspi{
+            background:#F9DAFF;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            height: 28px;
+            border-radius: 4px;
+            color:#BD14DF;
+            font-size: 13px;
+            font-weight: 500;
+           }
+           .orderbutton{
+            background-color: #203A5F;
+            height: 26px;
+            border-radius: 4px;
+           }
+           .customerpopup{
+            background-color: #203A5F !important;
+            height:37px;
+            border-radius:8px;
+            font-size: 14px;
+            font-weight: 400;
+           }
+           
+           .paid-cancel-btn {
+            background-color: #fff;
+            border: 1px solid  #203A5F ;
+            border-radius: 8px;
+            color:  #203A5F ;
+            
+            font-size: 14px;
+            font-weight: 400;
+           
+           }
+          .popupc{
+            font-size:16px !important;
+            font-weight:500 !important;
+            font-style: "Poppins" !important;
+            color:#3A3A3A !important;
+            gap:17px;
+          }
+          .form-header h4 {
+            color:#3A3A3A;
+            font-size: 18px;
+            font-weight: 500px;
+            margin-bottom: 20px;
+        }
+          .custom-modal .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #000000;
+        }
+        .Note{
+          height:115px !important;
+        }
+        .service-upload {
+          border: 2px dashed #E5E5E5;
+          text-align: center;
+          background-color: #fff;
+          position: relative;
+           padding:  0px !important;
+          min-height: 180px;
+      }
+      .modal-content {
+        
+        border-radius: 8px;
+    }
+
+    .table .dropdown-item {
+      font-weight: 500;
+      font-size: 13px;
+      color: #3A3A3A;
+      padding: 10px 20px 10px;
+  }
+  .confirmationpopup{
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+  .nav-item {
+    list-style-type: none;  
+  }
+  .popdate{
+    margin-left:auto !important;
+  }
   /* .infos{
     border: 1px solid #00000042 !important;
   } */
@@ -233,13 +442,21 @@ border:2px solid red
   .table {
  border: 1px solid #00000042 !important;
 }
-  
+.tables {
+  border: none !important;
+ }
+  .passeye{
+    margin-top: 10px;
+    margin-right: 5px;
+  }
   .custom-btn:active {
     background-color: #fff !important;    
     border-color: #3A3A3A !important;     
     color: #3A3A3A !important;            
   }
-  
+  .input::placeholder {
+    text-align: left !important; 
+}
   
   .custom-btn:focus {
     background-color: #fff !important;    

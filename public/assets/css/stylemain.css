@@ -72,7 +72,6 @@
 .font13 {
     font-size: 13px;
     font-weight: medium;
-    /* color: #203A5F; */
 }
 
 .cardh5Size {
@@ -135,9 +134,11 @@
 .status-toggle .checktoggle.log {
     background-color: #50E500;
     border: none;
-    height: 30px;
-    width: 60px;
+    /* height: 20px;
+    width: 41px; */
+
 }
+<<<<<<< HEAD
 
 .height-38{
     height: 38;
@@ -151,6 +152,12 @@
 .customer-additional-form .status-toggle .checktoggle:after{
     height: 25px;
     width: 25px;
+=======
+.status-toggle .checktoggle.log:after {
+    border: 1px solid #3EB100;
+    height: 20px;
+    width: 20px;
+>>>>>>> c227effb695296fe7784d65760c8a3a23271b2f4
 }
 
 .status-toggle .check:checked + .checktoggle.log{
@@ -191,7 +198,7 @@
 }
 
 .sidebar {
-    width: 268px;
+    width: 316px;
     position: fixed;
     z-index: 10;
     /* Adjust as needed */
@@ -248,6 +255,7 @@
 
 .shadow-box {
     box-shadow: 3px 1px 15px rgba(0, 0, 0, 0.3);
+
 }
 
 .marginTopBottom{
@@ -417,7 +425,7 @@
 }
 
 .no-border{
-    border:none;
+    border:0px;
 }
 
 .service-upload {
@@ -430,10 +438,10 @@
     width: 16px;
 } */
 
-/* #rating_6{
+#rating_6{
     border:0px;
     background-color: green;
-} */
+}
 
 .btn-save{
     background-color: #3a3a3a;
@@ -449,6 +457,7 @@
 .faded{
     opacity: 0.5px;
     color: gray;
+<<<<<<< HEAD
 }
 
 .login-logo-font{
@@ -724,4 +733,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .margin-margin{
     margin-top: 35px;
+=======
+>>>>>>> c227effb695296fe7784d65760c8a3a23271b2f4
 }

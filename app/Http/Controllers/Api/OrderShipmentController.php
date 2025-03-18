@@ -24,7 +24,7 @@ class OrderShipmentController extends Controller
      */
     public function index(Request $request)
     {
-        $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
+        $parcels = Parcel::select('id', 'tracking_number')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->when($this->user->role_id == 3, function ($q) {
             return $q->where('customer_id', $this->user->id);
