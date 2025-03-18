@@ -36,57 +36,56 @@
                     New End Of The Day Reports
                 </label>
             </div> -->
-            <div class="parentDiv">
-        <div class="form-checkbox border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck2">
-            <label class="form-check-label  font13 fw-regular mb-0" for="exampleCheck2">New
-                End Of The Day Reports</label>
-        </div>
-
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck3">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck3">Invoice</label>
-                </div>
+        <div class="parentDiv">
+            <div class="form-checkbox border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
+                <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck2">
+                <label class="form-check-label  font13 fw-regular mb-0" for="exampleCheck2">New
+                    End Of The Day Reports</label>
             </div>
-            <!-- -------------------------------- -->
-            <!-- <div class="px-1">
+
+            <div class="col-md-12 d-flex my-3 ms-4">
+                <div class="px-1">
+                    <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
+                        <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck3">
+                        <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck3">Invoice</label>
+                    </div>
+                </div>
+                <!-- -------------------------------- -->
+                <!-- <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
                     <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck14">
                     <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck14">Invoice</label>
                 </div>
             </div> -->
 
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck4">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck4">Payment</label>
+                <div class="px-1">
+                    <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
+                        <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck4">
+                        <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck4">Payment</label>
+                    </div>
+                </div>
+                <div class="px-1">
+                    <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
+                        <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck5">
+                        <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck5">Excpenses</label>
+                    </div>
+                </div>
+                <div class="px-1">
+                    <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
+                        <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck6">
+                        <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck6">Print Report</label>
+                    </div>
                 </div>
             </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck5">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck5">Excpenses</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck6">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck6">Print Report</label>
-                </div>
-            </div>
-        </div>
         </div>
     </div>
     <!-- ----------------------------------------------------------------------------------------------------------------- -->
     <div class="parentDiv col-md-8 mt-3 mb-2 px-2 py-1">
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck7">
-            <label class="form-check-label font13 fw-regular mb-0"
-                for="exampleCheck7">Invoice Reports</label>
+            <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck7">Invoice Reports</label>
         </div>
-      
+
         <div class="col-md-12 d-flex my-3 ms-4">
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
@@ -116,7 +115,7 @@
             </div>
         </div>
     </div>
-
+    <br>
 
     <!-- ------------------------------------------------------------------------------------------------------------------ -->
 
@@ -124,8 +123,7 @@
         <div class="input-group">
             <div class="form-check text-checkbox">
                 <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck12">
-                <label class="form-check-label fw-medium mb-0"
-                    for="exampleCheck12">Administration</label>
+                <label class="form-check-label fw-medium mb-0" for="exampleCheck12">Administration</label>
             </div>
         </div>
         <!-- <div class="form-check border rounded ms-2 px-3">
@@ -134,11 +132,11 @@
                     New End Of The Day Reports
                 </label>
             </div> -->
-       
-        <div class="border border-dark opacity-75 bg-checkbox rounded px-3 py-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck13">
-            <label class="form-check-label font13 fw-regular mb-0"
-                for="exampleCheck13">Roles</label>
+        <div>
+            <div class="border border-dark opacity-75 bg-checkbox rounded px-3 py-1 my-2">
+                <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck13">
+                <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck13">Roles</label>
+            </div>
         </div>
 
         <div class="d-flex my-3 ms-4">
@@ -163,14 +161,14 @@
             </div>
         </div>
     </div>
+    <br>
 
     <!-- -------------------------------------------------------------------------------------- -->
 
     <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck17">
-            <label class="form-check-label font13 fw-regular mb-0"
-                for="exampleCheck17">Users</label>
+            <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck17">Users</label>
         </div>
 
         <div class="col-md-12 d-flex my-3 ms-4">
@@ -184,7 +182,8 @@
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded ps-3 pe-2 py-1">
                     <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck19">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck19">Creating New User</label>
+                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck19">Creating New
+                        User</label>
                 </div>
             </div>
             <div class="px-1">
@@ -200,7 +199,7 @@
                 </div>
             </div>
         </div>
- 
+
     </div>
 
     <!-- --------------------------------------------------------------------------------------- -->
@@ -387,7 +386,8 @@
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
                     <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck45">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck45">Create New Driver</label>
+                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck45">Create New
+                        Driver</label>
                 </div>
             </div>
             <div class="px-1">
@@ -524,7 +524,8 @@
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
                     <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck63">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck63">Edit Payment Type</label>
+                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck63">Edit Payment
+                        Type</label>
                 </div>
             </div>
         </div>
@@ -542,7 +543,8 @@
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
                     <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck65">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck65">Create New Pickup</label>
+                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck65">Create New
+                        Pickup</label>
                 </div>
             </div>
             <div class="px-1">
@@ -560,7 +562,8 @@
             <div class="px-1">
                 <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
                     <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck68">
-                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck68">Pickup Management</label>
+                    <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck68">Pickup
+                        Management</label>
                 </div>
             </div>
         </div>
@@ -575,8 +578,7 @@
         </div> -->
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck69">
-            <label class="form-check-label font13 fw-regular mb-0"
-                for="exampleCheck69">Pickup Address</label>
+            <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck69">Pickup Address</label>
         </div>
 
         <div class="col-md-12 d-flex my-3 ms-4">
@@ -603,7 +605,7 @@
             </div>
         </div>
     </div>
-
+    <br>
     <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <!-- <div class="input-group">
             <div class="form-check text-checkbox">
@@ -613,8 +615,7 @@
         </div> -->
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck73">
-            <label class="form-check-label font13 fw-regular mb-0"
-                for="exampleCheck73">Roles & Permission</label>
+            <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck73">Roles & Permission</label>
         </div>
 
         <div class="col-md-12 d-flex my-3 ms-4">
@@ -639,7 +640,7 @@
         </div>
     </div>
 
-<br>
+    <br>
     <div class="parentDiv mt-3 mb-2 px-2 py-1">
         <!-- <div class="input-group">
             <div class="form-check text-checkbox">
@@ -649,8 +650,7 @@
         </div> -->
         <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
             <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck77">
-            <label class="form-check-label font13 fw-regular mb-0"
-                for="exampleCheck77">Driver Inventory</label>
+            <label class="form-check-label font13 fw-regular mb-0" for="exampleCheck77">Driver Inventory</label>
         </div>
 
         <div class="col-md-12 d-flex my-3 ms-4">
@@ -676,9 +676,9 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
-<!-- 
+    <!-- 
     <script>
         const checkbox = document.querySelector('#exampleCheck14');
 
@@ -695,12 +695,12 @@
     </script> -->
 
     <script>
-        document.querySelectorAll('.form-check-input').forEach(input =>{
-            input.addEventListener("change", function(){
+        document.querySelectorAll('.form-check-input').forEach(input => {
+            input.addEventListener("change", function () {
                 const parentDiv = this.closest(".border");
-                if(this.checked){
+                if (this.checked) {
                     parentDiv.classList.add('selected2');
-                }else{
+                } else {
                     parentDiv.classList.remove('selected2');
                 }
             })
