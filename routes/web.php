@@ -33,6 +33,16 @@ Route::get('/customeruser', function () {
     return view('admin.customeruser.user');
 });
 
+Route::get('/rolemanagements', function () {
+    return view('admin.rolemanagements.index');
+});
+Route::get('/rolemanagementCreate', function () {
+    return view('admin.rolemanagementCreate.create');
+});
+
+Route::get('/rolemanagementUpdate', function () {
+    return view('admin.rolemanagementUpdate.edit');
+});
 Route::get('/driversactivitylog', function () {
     return view('admin.driversactivitylog.activitylog');
 });

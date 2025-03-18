@@ -62,8 +62,10 @@
 
 
 
-
-
+<!-- Red Rose Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@300..700&display=swap" rel="stylesheet">
 
 
 
@@ -96,7 +98,7 @@
 
         <!-- Page Wrapper -->
         <div class="page-wrapper" style="margin-top:0px">
-            <div class="content container-fluid">
+            <div class="content container-fluid screen-width">
                 @yield('content')
                 <div class="card mb-0">
                     <div class="card-body">
@@ -178,6 +180,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
 
 
+    
 
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>
