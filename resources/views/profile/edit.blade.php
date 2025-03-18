@@ -212,7 +212,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="btn-path text-end">
-                                    <a href="javascript:void(0);"
+                                    <a href="{{ route('profile.index') }}"
                                         class="btn btn-cancel btn-outline-dark me-3">Cancel</a>
                                     <button class="btn btn-primary" type="submit">Update</button>
                                 </div>

@@ -56,6 +56,7 @@ class User extends Authenticatable
         'signature_date',
         'signature_img',
         'contract_signature_img',
+        'profile_pic'
     ];
 
 
@@ -103,14 +104,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
     }
+
     protected function profilePic(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => url($value),
+            get: fn($value) => !empty($value) ? url($value):null,
         );
     }
 }

@@ -73,7 +73,7 @@ class ProfileController extends Controller
              'address' => $request->address,
              'address_2' => $request->address_2,
          ]);
-        return Redirect::route('profile.edit')->with('success', 'Profile updated successfully!');
+        return Redirect::route('profile.index')->with('success', 'Profile updated successfully!');
     }
 
     /**

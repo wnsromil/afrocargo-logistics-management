@@ -87,23 +87,23 @@
                                                 <li>
                                                     <a class="dropdown-item" href="{{route('admin.warehouses.edit',$warehouse->id)}}"><i class="far fa-edit me-2"></i>Edit</a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
                                                     <!-- Delete form -->
                                                     <form action="{{ route('admin.warehouses.destroy', $warehouse->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this warehouse? This action can’t be undone! 🚀')"><i class="far fa-trash-alt me-2"></i>Delete</button>
                                                     </form>
-                                                </li>
+                                                </li> --}}
                                                 <li>
                                                     <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
                                                     <a class="dropdown-item" href="active-customers.html"><i class="fa-solid fa-power-off me-2"></i>Activate</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="deactive-customers.html"><i class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                                </li>
+                                                </li> --}}
                                             </ul>
                                         </div>
                                     </div>
