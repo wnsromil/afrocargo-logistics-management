@@ -217,7 +217,7 @@
                         <label>License Expiry Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
                             <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
-                                name="expire_date" value="{{ old('license_expiry_date') }}"
+                               value="{{ old('license_expiry_date') }}"
                                 placeholder="mm-dd-yy" />
                         </div>
                     </div>
@@ -359,6 +359,7 @@
       document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
       document.getElementById('file_' + imageType).value = "";
   }
+
 </script>
 <script>
     $(document).ready(function() {

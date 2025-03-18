@@ -291,6 +291,9 @@ Version      : 1.0
             },
         });
     }
+    console.log("jQuery Version: ", $.fn.jquery);
+    console.log("Moment Loaded: ", typeof moment);
+    console.log("Daterangepicker Loaded: ", typeof $.fn.daterangepicker);
 
     // Expire Date Picker
     if ($('input[name="expire_date"]').length > 0) {
