@@ -22,12 +22,10 @@
             <div class="col-md-12">
                 <div class="d-flex">
                     <div class="col-md-4">
-
-                        <!-- ------------------------------------------------------------------- -->
+<!-- ------------------------------------------------------------------- -->
                         <div id="calendar">
-
                         </div>
-                        <!-- ------------------------------------------------------------------- -->
+<!-- ------------------------------------------------------------------- -->
 
                     </div>
                     <div class="col-md-8">
@@ -314,22 +312,6 @@
     </script>
 
     <script>
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const mondayToggle = document.getElementById('monday');
-        //     const selectedSchedule = document.getElementById('selected-schedule');
-
-        //     mondayToggle.addEventListener('change', function () {
-        //         if (mondayToggle.checked) {
-        //             selectedSchedule.classList.remove('opacity-25');
-        //             selectedSchedule.classList.add('opacity-100');
-        //         } else {
-        //             selectedSchedule.classList.remove('opacity-100');
-        //             selectedSchedule.classList.add('opacity-25');
-        //         }
-        //     });
-        // });
-    </script>
-    <script>
         document.addEventListener("DOMContentLoaded", function () {
             const toggles = document.querySelectorAll('.check');
             toggles.forEach(function (toggle) {
@@ -351,24 +333,6 @@
 
 
     <script>
-        // document.getElementById('calendar')
-        // $(document).ready(function () {
-        //     $('#calendar').fullCalendar({
-        //         header: {
-        //             left: 'prev,next today',
-        //             center: 'title',
-        //             right: 'month,agendaWeek,agendaDay'
-        //         },
-        //         events: [
-        //             {
-        //                 title: 'Sample Event',
-        //                 start: '2025-03-17',
-        //                 description: 'This is a sample event.'
-        //             }
-        //         ]
-        //     });
-        // });
-
         function generateCalender(year, month) {
             const daysContainer = document.getElementById('calendar-body');
             const header = document.getElementById("calendar-header");
