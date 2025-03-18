@@ -155,6 +155,28 @@
     width: 20px;
 }
 
+
+.status-toggle .check:checked+.checktoggle.gle {
+    background-color: #50E500;
+    border: none;
+    height: 20px;
+    width: 41px;
+}
+.checktoggle {
+    margin-left: 0px;
+}
+
+
+.status-toggle .checktoggle.gle:after {
+   height: 20px;
+   width: 20px;
+   margin-left: 0px;
+   color: #D9D9D9;
+}
+
+
+
+
 .checkbox-cardBg {
     background-color: #D3FFE6;
 }
@@ -220,9 +242,9 @@
 
 }
 
-/* .card .card{
-    padding: 15px 30px;
-} */
+.marginTopBottom{
+    margin: 30px 0px 30px 0px;
+}
 
 .li {
     list-style-type: disc !important;
@@ -367,7 +389,7 @@
 .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
     background-color: #1983FE;
     color: white;
-    border: none;
+    border-bottom: 1px solid black;
 }
 
 .button {
@@ -388,6 +410,10 @@
 
 .no-border{
     border:0px;
+}
+
+.service-upload {
+    min-height: auto;
 }
 
 /* .status-toggle .no-circle{
@@ -415,4 +441,279 @@
 .faded{
     opacity: 0.5px;
     color: gray;
+}
+
+.login-logo-font{
+    font-family: "Red Rose", serif;
+    font-size: 20px;
+    font-weight: 700px;
+}
+
+.bg-image-login{
+    background-image: url('../assets/images/Loginimage.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.btnBorder{
+    border: none;
+    color: black;
+}
+.setColor{
+    color: black;
+}
+
+.login-btn{
+    background: 203A5F;
+    text-align: center;
+    font-weight: 600;
+    font-size: .75rem; 
+    /* line-height: 1rem;*/
+}
+
+.font-size2{
+    font-size: 25px;
+    font-family: "Poppins", serif;
+    font-weight: 700px;
+}
+
+
+.red-rose-fontSet {
+    font-family: "Red Rose", serif;
+    font-weight: 700px;
+    font-style: normal;
+    font-size: 20px;
+  }
+
+  .backgroundImage{
+    background-image: url('../assets/images/Background.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-right: 10px;
+    padding: 0px;
+    background-position: absolute;
+  }
+
+  .setSize{
+    width: 60px;
+    height: 72px;
+  }
+  
+.permission-font{
+    color: #3A3A3A;
+    font-size: 14px;
+  
+}
+
+.text-indigo-600{
+    background-color: black;
+}
+.text-checkbox{
+    color: #203A5F;
+}
+
+.bg-checkbox{
+    background-color: #d6e2f1;
+}
+.form-check-input:checked{
+    background-color: #203A5F !important;
+    border: 1px solid white !important;
+    color: white !important;
+    height: 16px;
+    width: 16px;
+}
+
+.selected2{
+    background-color: #203A5F !important;
+    border: #203A5F !important;
+    color: white !important;
+}
+
+.selected{
+    color: white !important;
+}
+.img-size{
+    height: 55px;
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.td-color{
+    color: #3A3A3A;   
+}
+
+.bg-set{
+    background-color: rgb(240, 208, 240);
+    color: rgba(243, 8, 153, 0.74);
+}
+
+.parentDiv {
+    display: inline-block;
+    width: auto;
+}
+.table-responsive .table{
+    border: none !important;
+}
+.table-body tbody tr td{
+    border: none !important;
+}
+
+.thead-light .no-border th{
+    border: none !important;
+}
+
+.cd-horizontal-timeline .timeline.tl1{
+    max-width: 100%;
+    width: 100%;
+    margin-top: 70px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.cd-horizontal-timeline .events a {
+    color: black;
+}
+
+.card.widthautoset{
+    width: auto;
+    box-shadow: 3px 5px 15px rgba(44, 44, 44, 0.3);
+    border-radius: 13px;
+    background-color: #F7F8F9;
+    padding: 0px;
+}
+
+.icon-size-22{
+    height: 22px;
+    width: 22px;
+    margin: 6px 0px 0px 6px;
+}
+
+.d-display{
+    display: inline-block;
+}
+
+.events-content li{
+    width: auto;
+}
+
+.cd-horizontal-timeline .filling-line, .cd-horizontal-timeline .events a.selected::after {
+    background: black;
+}
+.cd-horizontal-timeline .filling-line{
+    background-color: black;
+}
+.cd-horizontal-timeline .events a.selected::after {
+    background-color: black;
+    border: 2px solid black;
+}
+
+.cd-horizontal-timeline .events{
+    height: 3px;
+    background: black;
+}
+.cd-horizontal-timeline .events a::after {
+    border: 3px solid black;
+   height: 25px;
+   width: 25px;
+   bottom: -10px;
+
+}
+
+.cd-horizontal-timeline .events a.older-event::after {
+    border-color: black;
+}
+
+.company-booking-address.company-five-address, .invoice-address-details.invoice-five-group, .inovices-card .inovices-widget-header, .multipleSelection .selectbox, .multipleSelection .selectboxes, .app-listing, .error-page, .toggle-sidebar .sidebar-header, .form-group-add .booking-option, .content-invoice-header, .content-page-header, .inovices-widget-header {
+    justify-content: left;
+}
+
+.btn-size{
+    background-color: #BB1F23;
+    color: white;
+}
+
+/* .calendar-body{
+    background-color: #1e2a38;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+} */
+
+.bold {
+    color: black;
+}
+
+.faded {
+    color: #a0a0a0;
+}
+
+
+.calemdar-contaner{
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    width: 280px;
+    box-shadow: 2px 2px 15px rgba(0,0,0.2);
+    text-align: center;
+    position: relative;
+}
+
+.calemdar-header{
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 10px;
+}
+.calender-days{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+.day{
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font: 14px;
+}
+.day:hover{
+    background-color: #d0d0d0;
+}
+.selected3{
+    background-color: skyblue;
+    color: white;
+}
+.inactive{
+    color: #b5b5b5;
+    pointer-events: none;
+}
+
+.selected-schedule-color{
+    color: #595C5F;
+    border-color: #595C5F;
+}
+
+.opacity-25 {
+    opacity: 0.25;
+}
+
+.opacity-100 {
+    opacity: .50;
+}
+
+.bg-dark {
+    background-color: #343a40;
+}
+
+.margin-margin{
+    margin-top: 35px;
 }

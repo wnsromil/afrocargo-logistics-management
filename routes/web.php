@@ -36,6 +36,20 @@ Route::get('/driverschedule', function () {
     return view('admin.driverschedule.schedule');
 });
 
+Route::get('/driversactivitylog', function () {
+    return view('admin.driversactivitylog.activitylog');
+});
+
+Route::get('/driverschedule', function () {
+    return view('admin.driverschedule.schedule');
+});
+
+
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'authCheck', 'verified'])->name('admin.dashboard');

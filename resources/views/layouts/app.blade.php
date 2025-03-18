@@ -42,8 +42,8 @@
     <link rel="stylesheet" href="{{asset('assets/css/stylemain.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style5.css')}}">
 
-    	<!-- Intl Tell Input CSS -->
-		<link rel="stylesheet" href="{{asset('assets/plugins/intlTelInput/css/intlTelInput.css')}}">
+    <!-- Intl Tell Input CSS -->
+    <link rel="stylesheet" href="{{asset('assets/plugins/intlTelInput/css/intlTelInput.css')}}">
 
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
@@ -64,13 +64,21 @@
 
 
 
+
+
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     @yield('style')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-@stack('head')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css"
+        integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    @stack('head')
 </head>
 
 <body>
@@ -101,7 +109,7 @@
                             </div>
                             @isset($cardHeader)
                                 {{$cardHeader}}
-                            @endisset	
+                            @endisset
                         </div>
                         <!-- /Page Header -->				
                         <div class="row">
@@ -155,13 +163,19 @@
     <!-- Intl Tell Input js -->
     <script src="{{asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js')}}"></script>
 
-	<!-- Slimscroll JS -->
-		<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-		
-		<!-- Timeline JS -->
-		<script src="assets/plugins/timeline/horizontal-timeline.js"></script>
+    <!-- Slimscroll JS -->
+    <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Timeline JS -->
+    <script src="assets/plugins/timeline/horizontal-timeline.js"></script>
 
 
+    <!-- jQuery (required by FullCalendar) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Moment.js (required by FullCalendar) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
 
 
 
