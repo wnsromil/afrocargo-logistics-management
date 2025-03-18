@@ -25,6 +25,7 @@ use App\Http\Controllers\Web\Admin\{
     RoleManagementController
 };
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -53,7 +54,7 @@ Route::middleware(['auth', 'authCheck'])->group(function () {
 Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
 
     Route::middleware('authCheck')->group(function(){
-
+        Route::get('/delete-customers/{id}', [CustomerController::class, 'deleteCustomer']);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
         Route::resource('notification', NotificationController::class);
