@@ -138,26 +138,10 @@
     width: 41px; */
 
 }
-<<<<<<< HEAD
-
-.height-38{
-    height: 38;
-}
-/* 
-.status-toggle .checktoggle.log:after {
-    border: 1px solid #3EB100;
-    height: 25px;
-    width: 25px;
-} */
-.customer-additional-form .status-toggle .checktoggle:after{
-    height: 25px;
-    width: 25px;
-=======
 .status-toggle .checktoggle.log:after {
     border: 1px solid #3EB100;
     height: 20px;
     width: 20px;
->>>>>>> c227effb695296fe7784d65760c8a3a23271b2f4
 }
 
 .status-toggle .check:checked + .checktoggle.log{
@@ -457,7 +441,6 @@
 .faded{
     opacity: 0.5px;
     color: gray;
-<<<<<<< HEAD
 }
 
 .login-logo-font{
@@ -733,6 +716,4 @@ h1, h2, h3, h4, h5, h6 {
 
 .margin-margin{
     margin-top: 35px;
-=======
->>>>>>> c227effb695296fe7784d65760c8a3a23271b2f4
 }
