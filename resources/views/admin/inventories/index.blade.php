@@ -59,6 +59,7 @@
                             <tr>
                                 <th>Sn no.</th>
                                 <th>Inventory Name</th>
+                                <th>Image</th>
                                 <th>Warehouse Name</th>
                                 <th>Weight (kg)</th>
                                 <th>Width(m)</th>
@@ -75,26 +76,36 @@
 
                         </tbody>
                         @forelse ($inventories as $inventory)
-                            <tr
-                                class=" @if ($inventory->stock_status == 'In Stock') bg-success-bg @elseif($inventory->stock_status == 'Out Of Stock')
-                                    bg-danger-bg
-                                    @else
-                                    bg-warning-bg @endif">
+                        <tr style="
+                            @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                            @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                            @else background-color: #FFD6A5;
+                            @endif
+                          ">
                                 <td>
                                     {{ $loop->iteration }}
                                 </td>
 
                                 <td>{{ ucfirst($inventory->category->name ?? '') }}</td>
+                                <td>
+                                    @if (!empty($inventory->img))
+                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
+                                            height="50">
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                </td>
                                 <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
+                                <td><span>{{ $inventory->weight ?? '-' }}</span></td>
+                                <td><span>{{ $inventory->width ?? '-' }}</span></td>
+                                <td><span>{{ $inventory->height ?? '-' }}</span></td>
                                 <td><span>{{ $inventory->in_stock_quantity ?? '-' }}</span></td>
                                 <td><span>
                                         @if (!empty($inventory->price))
                                             $
                                         @endif{{ $inventory->price ?? '-' }}
                                     </span></td>
-                                <td><span>{{ $inventory->weight ?? '-' }}</span></td>
-                                <td><span>{{ $inventory->height ?? '-' }}</span></td>
-                                <td><span>{{ $inventory->width ?? '-' }}</span></td>
+
                                 <td><span>{{ $inventory->low_stock_warning ?? '-' }}</span></td>
                                 <td><span>{{ $inventory->formatted_created_at ?? '-' }}</span></td>
                                 <td><span
@@ -105,49 +116,49 @@
                                 </td>
                                 {{-- <td><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
                                         title="fe fe-more-vertical"></i></td> --}}
-                                        <td class="d-flex align-items-center">
-                                            {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i> Invoice</a>  
+                                <td class="d-flex align-items-center">
+                                    {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i> Invoice</a>  
                                         <a href="customers-ledger.html" class="btn btn-greys me-2"><i
                                                 class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                    aria-expanded="false"><i class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
-                                                    title="fe fe-more-vertical"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
-                                                                    class="far fa-edit me-2"></i>Edit</a>
-                                                        </li>
-                                                        <li>
-                                                          
-                                                            <form
-                                                                action="{{ route('admin.inventories.destroy', $inventory->id) }}"
-                                                                method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="dropdown-item"
-                                                                    onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                                        class="far fa-trash-alt me-2"></i>Delete</button>
-                                                            </form>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.inventories.show', $inventory->id) }}"><i
-                                                                    class="far fa-eye me-2"></i>View History</a>
-                                                        </li>
-                                                        {{-- <li>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fe fe-more-vertical fs-4"
+                                                data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
+                                                            class="far fa-edit me-2"></i>Edit</a>
+                                                </li>
+                                                <li>
+
+                                                    <form
+                                                        action="{{ route('admin.inventories.destroy', $inventory->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                            class="far fa-eye me-2"></i>View History</a>
+                                                </li>
+                                                {{-- <li>
                                                         <a class="dropdown-item" href="active-customers.html"><i class="fa-solid fa-power-off me-2"></i>Activate</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="deactive-customers.html"><i class="far fa-bell-slash me-2"></i>Deactivate</a>
                                                     </li> --}}
-                                                    </ul>
-                                                </div>
-    
-                                            </div>
-                                        </td>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -161,18 +172,6 @@
             </div>
         </div>
 
-        <!-- <div class="row col-md-12 d-flex flex-wrap border mt-4 ms-2">
-            <div class="col-md-6 d-flex p-2">
-                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-       <select class="form-select input-width form-select-sm mx-2" aria-label="Small select example">
-                <option selected>10</option>
-                <option value="1">5</option>
-                <option value="2">10</option>
-                <option value="3">15</option>
-            </select>
-                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
-            </div>
-        </div> -->
 
         <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
 
@@ -187,18 +186,6 @@
                 <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
             </div>
 
-            <!-- <div class="dataTables_length" id="DataTables_Table_0_length">
-                <label>
-                    <select name="DataTables_Table_0_length input-box" aria-controls="DataTables_Table_0"
-                        class="custom-select custom-select-sm form-control-sm">
-                        <option value="5">10</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
-                </label>
-            </div> -->
-
             <div class="col-md-6">
                 <div class="float-end">
                     <button class="btn button-border">
@@ -211,11 +198,6 @@
                     <button class="btn button-border" type="button">4</button>
                     <button class="btn button-border" type="button">5</button>
 
-                    <!-- <button class="button" onclick="setActive(this)">1</button>
-                    <button class="button" onclick="setActive(this)">2</button>
-                    <button class="button" onclick="setActive(this)">3</button>
-                    <button class="button" onclick="setActive(this)">4</button>
-                    <button class="button" onclick="setActive(this)">5</button> -->
 
                     <button class="btn button-border">
                         <i class="fa fa-angle-right tooltipped" data-position="top"
@@ -231,127 +213,4 @@
 
 
 
-    <!-- ---------------------------------------------------------------------------------------------- -->
-
-
-    <!--    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{route('admin.inventories.create')}}" class="btn btn-primary buttons"
-                    style="background:#203A5F">
-                    <img src="assets/images/Vector.png">
-                    Add Inventory
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <div class="card-table">
-            <div class="card-body">
-                <div class="table-responsive mt-3">
-
-                    <table class="table table-stripped table-hover datatable">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Sn no.</th>
-                                <th>Inventory Name</th>
-                                <th>Warehouse Name</th>
-                                <th>In Stock Quantity</th>
-                                <th>Price</th>
-                                <th>Weight(kg)</th>
-                                <th>Height(m)</th>
-                                <th>Width(m)</th>
-                                <th>Low Stock Warning</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($inventories as $index => $inventory)
-                                <tr>
-                                    <td>
-                                        {{ ++$index }}
-                                    </td>
-
-                                    <td>{{ ucfirst($inventory->category->name ?? '')}}</td>
-                                    <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '')}}</td>
-                                    <td><span>{{$inventory->in_stock_quantity ?? '-'}}</span></td>
-                                    <td><span>{{$inventory->low_stock_warning ?? '-'}}</span></td>
-                                    <td><span
-                                            class="badge {{$inventory->in_stock_quantity >= $inventory->low_stock_warning ? 'bg-success-light' : 'bg-danger-light'}}">{{$inventory->stock_status ?? '-'}}</span>
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
-                                                class="fa fa-plus-circle me-1"></i> Invoice</a>
-                                        <a href="customers-ledger.html" class="btn btn-greys me-2"><i
-                                                class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{route('admin.inventories.edit', $inventory->id)}}"><i
-                                                                class="far fa-edit me-2"></i>Edit</a>
-                                                    </li>
-                                                    <li>-->
-    <!-- Delete form -->
-    <!--     <form
-                                                            action="{{ route('admin.inventories.destroy', $inventory->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="dropdown-item"
-                                                                onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
-                                                        </form>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{route('admin.inventories.show', $inventory->id)}}"><i
-                                                                class="far fa-eye me-2"></i>View History</a>
-                                                    </li>
-                                                    <a class="dropdown-item" href="active-customers.html"><i
-                                                            class="fa-solid fa-power-off me-2"></i>Activate</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="deactive-customers.html"><i
-                                                                class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No users found.</td>
-                                </tr>
-                            @endforelse
-
-                        </tbody>
-
-                    </table>
-
-                    <div class="bottom-user-page mt-3">
-                        {!! $inventories->links('pagination::bootstrap-5') !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
--->
-
-    <script>
-        function setActive(element) {
-            const buttons = document.querySelectorAll('.button');
-            buttons.forEach(button => button.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-    </script>
 </x-app-layout>
