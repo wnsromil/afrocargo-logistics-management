@@ -41,110 +41,159 @@
 
     <!-- --------------------------------------------------------------------- -->
 
-    <div class="col-md-12">	
-							<div class="card">
-								<div class="card-body">
-									<div class="cd-horizontal-timeline">
-                                    <div class="timeline">
-                                        <div class="events-wrapper">
-                                            <div class="events">
-                                                <ol>
-                                                    <li><a href="#0" data-date="16/01/2014" class="selected">16 Jan</a></li>
-                                                    <li><a href="#0" data-date="28/02/2014">28 Feb</a></li>
-                                                    <li><a href="#0" data-date="20/04/2014">20 Mar</a></li>
-                                                    <li><a href="#0" data-date="20/05/2014">20 May</a></li>
-                                                    <li><a href="#0" data-date="09/07/2014">09 Jul</a></li>
-                                                    <li><a href="#0" data-date="30/08/2014">30 Aug</a></li>
-                                                    <li><a href="#0" data-date="15/09/2014">15 Sep</a></li>
-                                                    <li><a href="#0" data-date="01/11/2014">01 Nov</a></li>
-                                                    <li><a href="#0" data-date="10/12/2014">10 Dec</a></li>
-                                                    <li><a href="#0" data-date="19/01/2015">29 Jan</a></li>
-                                                    <li><a href="#0" data-date="03/03/2015">3 Mar</a></li>
-                                                </ol>
-                                                <span class="filling-line" aria-hidden="true"></span>
-                                            </div>
-                                            <!-- events -->
+    <div class="col-md-12">
+
+        <div class="cd-horizontal-timeline">
+            <div class="timeline tl1">
+                <div class="events-wrapper">
+                    <div class="events">
+                        <ol class="text-dark">
+                            <li><a href="#0" data-date="16/01/2014" class="selected">02-15-2025</a></li>
+                            <li><a href="#0" data-date="28/02/2014">02-16-2025</a></li>
+                            <li><a href="#0" data-date="20/04/2014">02-17-2025</a></li>
+                            <li><a href="#0" data-date="20/05/2014">02-18-2025</a></li>
+                            <li><a href="#0" data-date="09/07/2014">03-19-2025</a></li>
+                            <li><a href="#0" data-date="30/08/2014">05-19-2025</a></li>
+                            <li><a href="#0" data-date="15/09/2014">06-19-2025</a></li>
+                            <li><a href="#0" data-date="01/11/2014">07-19-2025</a></li>
+                            <li><a href="#0" data-date="10/12/2014">10-11-2025</a></li>
+                            <li><a href="#0" data-date="19/01/2015">02-19-2025</a></li>
+                            <li><a href="#0" data-date="03/03/2015">02-19-2025</a></li>
+                        </ol>
+                        <span class="filling-line" aria-hidden="true"></span>
+                    </div>
+                    <!-- events -->
+                </div>
+                <ul class="cd-timeline-navigation setColor">
+                    <li><a href="#0" class="prev setColor">Prev</a></li>
+                    <li><a href="#0" class="next setColor">Next</a></li>
+                </ul>
+                <!-- cd-timeline-navigation -->
+            </div>
+
+
+            
+            <!-- timeline -->
+            <div class="events-content">
+                <ol>
+                    <li class="selected dispaly-content" data-date="16/01/2014">
+                        <div>
+                            <div class="d-display">
+                                <div class="card widthautoset border border-2 mb-3">
+                                    <div class="card-body d-flex">
+                                        <i class="fa-solid fa-clock icon-size-22" style="color: #FFD43B;"></i>
+                                        <div class="cardh5Size fw-medium">
+                                            <span class="opacity-50">08:45 AM —</span> Login
+                                            <br>
+                                            <span class="opacity-50">Amount :</span> $500
+
                                         </div>
-                                        <ul class="cd-timeline-navigation">
-                                            <li><a href="#0" class="prev inactive">Prev</a></li>
-                                            <li><a href="#0" class="next">Next</a></li>
-                                        </ul>
-                                        <!-- cd-timeline-navigation -->
                                     </div>
-                                    <!-- timeline -->
-                                    <div class="events-content">
-                                        <ol>
-                                            <li class="selected" data-date="16/01/2014">
-                                                <h3><small>Title 01</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="28/02/2014">
-                                                <h3> <small>Title 02</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="20/04/2014">
-                                                <h3><small>Title 03</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="20/05/2014">
-                                                <h3><small>Title 04</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="09/07/2014">
-                                                <h3><small>Title 05</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="30/08/2014">
-                                                <h3> <small>Title 06</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="15/09/2014">
-                                                <h3><small>Title 07</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="01/11/2014">
-                                                <h3> <small>Event List</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="10/12/2014">
-                                                <h3><small>Event Item</small></h3>
-                                                <p class="m-t-40">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="19/01/2015">
-                                                <h3><small>Event title</small></h3>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                            <li data-date="03/03/2015">
-                                                <h3><small>Event title</small></h3>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                                </p>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                    <!-- .events-content -->
                                 </div>
-								</div>
-							</div>
-						</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-display">
+                                <div class="card widthautoset border border-2 mb-3">
+                                    <div class="card-body d-flex">
+                                        <i class="fa-solid fa-clock icon-size-22" style="color: #FFD43B;"></i>
+                                        <div class="cardh5Size fw-medium">
+                                            <span class="opacity-50">10:15 AM —</span> Customer Added
+                                            <br>
+                                            <span class="opacity-50">Customer Name:</span> Acme Corp
+                                            <br>
+                                            <button type="button"
+                                                class="btn btn-outline-dark mt-3 bg-secondary-subtle">View</button>
+
+                                            <button type="button"
+                                                class="btn btn-outline-danger mt-3 bg-danger-subtle">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-display">
+                                <div class="card widthautoset border border-2 mb-3">
+                                    <div class="card-body d-flex">
+                                        <i class="fa-solid fa-clock icon-size-22" style="color: #FFD43B;"></i>
+                                        <div class="cardh5Size fw-medium">
+                                            <span class="opacity-50">12:30 PM —</span> Order Pickup Scheduled
+                                            <br>
+                                            <span class="opacity-50">Tracking ID:</span> WE97078893
+                                            <br>
+                                            <span class="opacity-50">Pickup Date:</span> 02-15-2025
+                                            <br>
+                                            <button type="button"
+                                                class="btn btn-outline-dark mt-3 bg-secondary-subtle">View</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dispaly-content" data-date="28/02/2014">
+                        <div>
+                            <div class="d-display">
+                                <div class="card widthautoset border border-2 mb-3">
+                                    <div class="card-body d-flex">
+                                        <i class="fa-solid fa-clock icon-size-22" style="color: #FFD43B;"></i>
+                                        <div class="cardh5Size fw-medium">
+                                            <span class="opacity-50">02:00 PM —</span> Payment Collected
+                                            <br>
+                                            <span class="opacity-50">Amount :</span> $500
+                                            <br>
+                                            <span class="opacity-50">Mode :</span> Cash
+                                            <br>
+                                            <button type="button"
+                                                class="btn btn-outline-dark mt-3 bg-secondary-subtle">View</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-display">
+                                <div class="card widthautoset border border-2 mb-3">
+                                    <div class="card-body d-flex">
+                                        <i class="fa-solid fa-clock icon-size-22" style="color: #FFD43B;"></i>
+                                        <div class="cardh5Size fw-medium">
+                                            <span class="opacity-50">03:45 PM —</span> Customer Deleted
+                                            <br>
+                                            <span class="opacity-50">Customer Name :</span> Acme Corp
+                                            <br>
+                                            <button type="button"
+                                                class="btn btn-outline-danger mt-3 bg-danger-subtle">Delete</button>
+                                            <button type="button"
+                                                class="btn btn-outline-success mt-3 bg-success-subtle">Restore</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-display">
+                                <div class="card widthautoset border border-2 mb-3">
+                                    <div class="card-body d-flex">
+                                        <i class="fa-solid fa-clock icon-size-22" style="color: #FFD43B;"></i>
+                                        <div class="cardh5Size fw-medium">
+                                            <span class="opacity-50">04:30 PM —</span>0 Invoice Deleted
+                                            <br>
+                                            <span class="opacity-50">Invoice ID:</span> INV-12345
+                                            <br>
+                                            <button type="button"
+                                                class="btn btn-outline-dark mt-3 bg-secondary-subtle">View</button>
+                                            <button type="button"
+                                                class="btn btn-outline-success mt-3 bg-success-subtle">Restore</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
 </x-app-layout>

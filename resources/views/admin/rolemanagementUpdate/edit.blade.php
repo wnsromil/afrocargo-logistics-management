@@ -699,9 +699,9 @@
             input.addEventListener("change", function(){
                 const parentDiv = this.closest(".border");
                 if(this.checked){
-                    parentDiv.classList.add('selected');
+                    parentDiv.classList.add('selected2');
                 }else{
-                    parentDiv.classList.remove('selected');
+                    parentDiv.classList.remove('selected2');
                 }
             })
         })

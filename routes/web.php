@@ -44,6 +44,12 @@ Route::get('/driversactivitylog', function () {
     return view('admin.driversactivitylog.activitylog');
 });
 
+Route::get('/driverschedule', function () {
+    return view('admin.driverschedule.schedule');
+});
+
+
+
 Route::get('/', function () {
     return view('auth.login');
 });
