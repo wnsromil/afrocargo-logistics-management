@@ -37,9 +37,10 @@
     </x-slot> -->
 
     <x-slot name="cardTitle" >
-       <p class="head">Order Management</p>
+       <p class="head">Order/Shipment Management</p>
 
-       <div class="usersearch d-flex">
+       <div class="usersearch d-flex usersserach">
+        
                 <div class="top-nav-search">
                     <form>
                         <input type="text" class="form-control forms" placeholder="Search ">
@@ -60,30 +61,30 @@
                 <div class="table-responsive">
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
-                            <tr>
+                            <tr >
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
-                                <th>S.No</th>
-                                <th>Tracking ID</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Pickup Date</th>
-                                <th>Capture Image</th>
-                                <th>Item List</th>
-                                <th>Estimate cost</th>
-                                <th>Driver Name</th>
-                                <th>Vehicle Type</th>
-                                <th>Payment Status</th>
-                                <th>Amount</th>
-                                <th>Payment Mode</th>
-                                {{-- <th>Warehouse</th> --}}
-                               <th>Status</th>
-                                <th>Status update</th>
-                              <th>Action</th>
+                                <th  >S.No</th>
+                                <th >Tracking ID</th>
+                                <th  >From</th>
+                                <th >To</th>
+                                <th  >Pickup Date</th>
+                                <th >Capture Image</th>
+                                <th  >Item List</th>
+                                <th  >Estimate cost</th>
+                                <th >Driver Name</th>
+                                <th >Vehicle Type</th>
+                                <th >Payment Status</th>
+                                <th >Amount</th>
+                                <th >Payment Mode</th>
+                                {{-- <th >Warehouse</th> --}}
+                               <th >Status</th>
+                                <th >Status update</th>
+                              <th >Action</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                        <tr>
+                        <tr style="border:none">
                         <td>1</td>
                         <td>WE97078893</td>
                         <td>
@@ -91,7 +92,7 @@
                                     <div class="col">
                                      <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
                                      <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div>
                               </td>
@@ -128,65 +129,31 @@
                               <td><div>Cash</div></td>
                               <td><label class="labelstatus"for="status">Pending</label></td>
                               <td>
-                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_modal"><select class="form-select">
-                              <option value="1">Schedule Pickup</option>                
-                             </select></a> 
-                             
-                             <div class="modal custom-modal signature-add-modal fade" id="add_modal" role="dialog">
-				<div class="modal-dialog modal-dialog-centered modal-md">
-					<div class="modal-content">
-						<div class="modal-header pb-0">
-							<div class="form-header  text-start mb-0">
-                                <div class="popuph">
-								<h4>Pickup Man Assign</h4>
-                                </div>
-							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								
-							</button>
-						</div>
-						<form action="#">
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-lg-12 col-md-12">
-										<div class="input-block mb-3">
-                                            <div class="col-12">
-                                            <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
-                                           </div>
-                                           <div class="col-12">
-											<select class="js-example-basic-single select2">
-												<option selected="selected">Select Delivery Man</option>
-												<option></option>
-												<option></option>
-											</select>
-                                            </div>
-											
-										</div>
-									</div>
-									<div class="col-lg-12 col-md-12">
-										<div class="input-block ">
-	                                        <label  class="foncolor">Note</label>
-	                                        <div class="input-block service-upload service-upload-info mb-0">
-	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
-	                                    
-                                        </div>
-	                                        
-	                                    </div>
-									</div>
-									
-								</div>
-							</div>
-							<div class="modal-footer">
+                              <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
-								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
-								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
-							</div>
-						</form>
-					</div>
-				</div>
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#recieved_modal">Schedule Pickup</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
 			</div>
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -237,7 +204,7 @@
                               <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
                               <td>
                               <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
@@ -266,7 +233,7 @@
                         </div>
                     </li>
                               </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -318,7 +285,7 @@
                               <td><label class="labelstatusp"for="status">Pickup  Re-Schedule</label></td>
                               <td>
                               <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
@@ -344,7 +311,7 @@
                         </div>
                     </li>
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -395,7 +362,7 @@
                               <td><div>Online/Card</div></td>
                               <td><label class="labelstatuspi"for="status">Received By Pickup Man</label></td>
                               <td></td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -447,7 +414,7 @@
                               <td><label class="labelstatusp"for="status">Pickup  Re-Schedule</label></td>
                               <td>
                               <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
@@ -473,7 +440,7 @@
                         </div>
                     </li>
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -526,7 +493,7 @@
                               <td>
                                
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -577,7 +544,7 @@
                               <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
                               <td>
                               <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
@@ -610,7 +577,7 @@
                     </li>
 									
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -662,7 +629,7 @@
                               <td><label class="labelstatuspi"for="status">Recieved by PickupMan</label></td>
                               <td>
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -713,7 +680,7 @@
                               <td><label class="labelstatus"for="status">Pending</label></td>
                               <td>
                               <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
@@ -736,7 +703,7 @@
                     </li>
                             
                             </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -788,7 +755,7 @@
                               <td><label class="labelstatusy"for="status">Schedule Pickup</label></td>
                               <td>
                               <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                        <a class ="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
@@ -811,14 +778,14 @@
                                             <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#returncourier_modal">Return to Courier</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveredcourier_modal">Delivered</a>
+                                            <a class="dropdown-item " href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveredcourier_modal">Delivered</a>
                                         </li>
                                     </ul>
                                 </div>
                                
                             </div>
                         </div>         </td>
-                               <td>
+                               <td class="btntext">
                              <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
@@ -1260,9 +1227,9 @@
 								<h4>Pickup Man Assign</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								
-							</button>
+							
+								<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 						</div>
 						<form action="#">
 							<div class="modal-body">
@@ -1316,9 +1283,8 @@
 								<h4>Pickup Re-Schedule</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								
-							</button>
+							<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 						</div>
 						<form action="#">
 							<div class="modal-body">
@@ -1336,7 +1302,7 @@
 											</select>
                                             </div>
                                             <div class="col-12">
-    <label> Date <i class="text-danger">*</i></label>
+    <label class="colordate"> Date <i class="text-danger">*</i></label>
     <div class="daterangepicker-wrap cal-icon cal-icon-info popdate">
      <input type="text" class="btn-filters form-control form-cs inp " name="datetimes" placeholder="From Date - To Date" />
     </div>
@@ -1378,9 +1344,8 @@
 								<h4>Reason for Action</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								
-							</button>
+							<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 						</div>
 						<form action="#">
 							<div class="modal-body">
@@ -1434,7 +1399,8 @@
 								<h4>Recieved Warehouse</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+							<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 								
 							</button>
 						</div>
@@ -1498,7 +1464,7 @@
 									<button type="submit" data-bs-dismiss="modal" class=" w-100 btn btn-outline-primary custom-btn">No</button>
                                 </div>                                               
 									<div class="col-6">
-                                    <button  data-bs-dismiss="modal" class="w-100 btn btn-primary paid-continue-btn customerpopup"><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reason_modal">Yes</a>
+                                    <button  data-bs-dismiss="modal" class="w-100 btn btn-primary paid-continue-btn customerpopup"><a class="dropdown-items" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reason_modal">Yes</a>
                                     </button>
                                    
 									</div>
@@ -1520,9 +1486,10 @@
 								<h4>Delivery Re-Schedule</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 								
-							</button>
+						
 						</div>
 						<form action="#">
 							<div class="modal-body">
@@ -1540,7 +1507,7 @@
 											</select>
                                             </div>
                                             <div class="col-12">
-    <label> Date <i class="text-danger">*</i></label>
+    <label class="colordate"> Date <i class="text-danger">*</i></label>
     <div class="daterangepicker-wrap cal-icon cal-icon-info popdate">
      <input type="text" class="btn-filters form-control form-cs inp " name="datetimes" placeholder="From Date - To Date" />
     </div>
@@ -1582,9 +1549,8 @@
 								<h4>Return to Courier</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								
-							</button>
+							<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 						</div>
 						<form action="#">
 							<div class="modal-body">
@@ -1627,9 +1593,8 @@
 								<h4>Delivered</h4>
                                 </div>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-								
-							</button>
+							<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
 						</div>
 						<form action="#">
 							<div class="modal-body">
