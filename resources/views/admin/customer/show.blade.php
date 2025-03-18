@@ -7,7 +7,20 @@
     </x-slot>
     <div class="customerhead">
         <div class="d-flex">
-            <div><img src="../assets/img/profile circle.png"></div>
+            <div>
+              
+                @if ($user->profile_pic)
+                <img src="{{ ($user->profile_pic) }}" alt="license"
+                style="margin-left: 15px; max-width: 150px; 
+                       border-top-left-radius: 50% 50%; 
+                       border-top-right-radius: 50% 50%; 
+                       border-bottom-right-radius: 50% 50%; 
+                       border-bottom-left-radius: 50% 50%;">
+            
+            @else
+                <p> - No Image</p>
+            @endif
+            </div>
             <div>
                 <div style="margin-left: 30px !important;margin-top: 20px;">
                     <p style="font-size=22px;font-weight:600px;color:#000000">{{ $user->name }}</p>

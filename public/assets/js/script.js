@@ -356,6 +356,48 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="edit_signature_date"]').length > 0) {
+        $('input[name="edit_signature_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="edit_signature_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="edit_license_expiry_date"]').length > 0) {
+        $('input[name="edit_license_expiry_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            // startDate: moment().startOf("day"), // Default Today Selected (COMMENTED)
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+    
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="edit_license_expiry_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
     if ($(".datatable").length > 0) {
         $(".datatable").DataTable({
             bFilter: false,

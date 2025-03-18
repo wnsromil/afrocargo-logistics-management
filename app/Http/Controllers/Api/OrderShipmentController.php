@@ -142,7 +142,7 @@ class OrderShipmentController extends Controller
     {
         //
         $ParcelHistories = Parcel::where('id', $id)
-            ->with(['warehouse', 'customer', 'driver'])->first();
+            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress'])->first();
 
         return $this->sendResponse($ParcelHistories, 'Order data fetch  successfully.');
     }
