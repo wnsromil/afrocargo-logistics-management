@@ -32,7 +32,9 @@ Route::get('/', function () {
 Route::get('/customeruser', function () {
     return view('admin.customeruser.user');
 });
-
+Route::get('/driverschedule', function () {
+    return view('admin.driverschedule.schedule');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
