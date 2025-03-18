@@ -78,8 +78,9 @@
             @csrf
 
             <div class="input-group mb-4 border rounded mt-4">
-                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0"
-                    required autofocus autocomplete="username" placeholder="Username or email address">
+                <input id="email" type="email" name="email" :value="old('email')"
+                    class="form-control rounded border-0" required autofocus autocomplete="username"
+                    placeholder="Username or email address">
                 <span class="input-group-text">
                     <i class="fa-regular fa-user border-start"></i>
                 </span>
@@ -117,13 +118,17 @@
         <form method="POST" action="{{ route('login') }}" id="manager" style="display:none;">
             @csrf
 
-            <div class="input-group mb-3 border rounded mt-4">
-                <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
-                    class="form-control rounded border-0" required autofocus autocomplete="warehouse_code"
-                    placeholder="Enter warehouse code">
+            <div class="input-group mb-3 border rounded mt-4 position-relative">
+                <input id="warehouse_code" type="text" name="warehouse_code" class="form-control rounded border-0"
+                    required autofocus autocomplete="off" placeholder="Enter warehouse code">
                 <span class="input-group-text bg-color border-start">
                     <img src="../assets/images/warehouse.svg" alt="#">
                 </span>
+
+                <!-- ✅ Dropdown Jo Input Ke Niche Dikhe -->
+                <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100"
+                    style="display: none; z-index: 1000; top: 42px;">
+                </ul>
             </div>
 
             <div class="input-group mb-3 border rounded my-4">
@@ -148,7 +153,8 @@
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
                     <input id="remember_me" type="checkbox"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                        name="remember">
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
@@ -163,9 +169,53 @@
             </div>
         </form>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $("#warehouse_code").on("keyup", function() {
+                let query = $(this).val();
 
+                if (query.length >= 3) { // 🔹 Jab 3 letters type karega
+                    $.ajax({
+                        url: "/api/warehouse-list",
+                        method: "POST",
+                        data: {
+                            warehouse_code: query,
+                            _token: "{{ csrf_token() }}" // 🔹 Laravel CSRF Protection
+                        },
+                        success: function(response) {
+                            console.log(response.data);
+                            let dropdown = $("#warehouseDropdown");
+                            dropdown.empty(); // 🔹 Pehle ka data clear karo
+
+                            if (response.data.length > 0) { // ✅ Sahi tarike se length check
+                                response.data.forEach(warehouse => {
+                                    dropdown.append(
+                                        `<li class="dropdown-item warehouse-option" data-code="${warehouse.warehouse_code}">${warehouse.warehouse_code}</li>`
+                                        );
+                                });
+
+                                // ✅ Dropdown Show + Position Fix
+                                dropdown.show();
+                            } else {
+                                dropdown.hide();
+                            }
+                        }
+                    });
+                } else {
+                    $("#warehouseDropdown").hide();
+                }
+
+            });
+
+            // 🔹 Select Option Click Kare To Input Me Set Ho Jaye
+            $(document).on("click", ".warehouse-option", function() {
+                $("#warehouse_code").val($(this).data("code"));
+                $("#warehouseDropdown").hide();
+            });
+        });
+    </script>
+    <script>
         function toggleLoginForm(type) {
             if (type === 'admin') {
                 document.getElementById('admin').style.display = 'block';
@@ -181,11 +231,9 @@
             }
         }
 
-        window.onload = function () {
+        window.onload = function() {
             toggleLoginForm('admin');
         };
-
-
     </script>
 
     <!-- -------------------------------------------------------------------------------------------------- -->
@@ -225,10 +273,10 @@
 
     <!-- <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+<a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
-            @endif -->
+@endif -->
 
     <!-- <x-primary-button class="ms-3">
                 {{ __('Log in') }}
