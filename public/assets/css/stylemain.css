@@ -522,11 +522,7 @@
     background-size: cover;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
+
 h6 {
     font-size: 30px;
     font-weight: 500;
@@ -535,7 +531,9 @@ h6 {
 .btnBorder {
     border: none;
     color: black;
+    margin-bottom: -2px;
 }
+
 
 .setColor {
     color: black;
@@ -946,4 +944,26 @@ h6 {
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events 
 {
     min-height: 0px;
+}
+.dash2 {
+    width: max-content;
+}
+.dash2 h2 
+{
+    font-size: 24px;
+}
+[data-topbar=light] body .header .toggle-bars .bar-icons {
+    background: #ffffff;
+}
+
+
+
+
+
+@media (min-width: 992px) {
+    #toggle_btn {
+        width: 40px;
+        margin: 0;
+        padding: 5px;
+    }
 }
