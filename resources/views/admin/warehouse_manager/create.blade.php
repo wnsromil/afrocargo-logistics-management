@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        Warehouse Manager
+       Add Warehouse Manager
     </x-slot>
 
     <x-slot name="cardTitle">
@@ -17,12 +17,17 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name" class="foncolor">Warehouse Name <i class="text-danger">*</i></label>
-                        <select name="warehouse_name" class="form-control inp select2">
-                            <option value="">Select Warehouse Name</option>
+                        <!-- <select name="warehouse_name" class="form-control inp select2">
+                            <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
                                 <option {{ old('warehouse_name') == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
-                        </select>
+                        </select> -->
+                        <select class="js-example-basic-single select2">
+												<option selected="selected">Select Warehouse</option>
+												<option></option>
+												<option></option>
+											</select>
 
                         @error('warehouse_name')
                             <span class="text-danger">{{ $message }}</span>
@@ -41,30 +46,6 @@
                     </div>
                 </div>
 
-                <!-- Email -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="email" class="foncolor">E-mail <i class="text-danger">*</i></label>
-                        <input type="email" name="email" class="form-control inp" placeholder="Enter Contact Number"
-                            value="{{ old('email') }}">
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- Contact Number -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="phone" class="foncolor">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact Number"
-                            value="{{ old('phone') }}">
-                        @error('phone')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -77,28 +58,35 @@
                     </div>
                 </div>
 
+
                 <!-- Email -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="phone" class="foncolor">Password <i class="text-danger">*</i></label>
-                        <input type="text" name="password" class="form-control inp" placeholder="Enter Password"
-                            value="{{ old('password') }}">
-                        @error('password')
+                        <label for="email" class="foncolor">Email ID<i class="text-danger">*</i></label>
+                        <input type="email" name="email" class="form-control inp" placeholder="Enter Email Id"
+                            value="{{ old('email') }}">
+                        @error('email')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
+                <!-- Contact Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="phone" class="foncolor">Confirm Password <i class="text-danger">*</i></label>
-                        <input type="text" name="confirm-password" class="form-control inp" placeholder="Confirm Passowrd"
-                            value="{{ old('confirm-password') }}">
-                        @error('confirm-password')
+                        <label for="phone" class="foncolor">Contact Number <i class="text-danger">*</i></label>
+                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact No."
+                            value="{{ old('phone') }}">
+                        @error('phone')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+
+               
+               
+
+               
 
 
                 <!-- Status -->

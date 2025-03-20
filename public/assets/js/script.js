@@ -404,40 +404,7 @@ Version      : 1.0
         );
     }
 
-    if ($(".datatable").length > 0) {
-        $(".datatable").DataTable({
-            bFilter: false,
-            // "scrollX": true,
-            autoWidth: false,
-            sDom: "fBtlpi",
-            ordering: true,
-            columnDefs: [
-                {
-                    targets: "no-sort",
-                    orderable: false,
-                },
-            ],
-            language: {
-                search: " ",
-                sLengthMenu: "_MENU_",
-                paginate: {
-                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
-                    previous:
-                        '<i class="fa fa-angle-double-left me-2"></i> Previous',
-                },
-            },
-            initComplete: (settings, json) => {
-                $(".dataTables_filter").appendTo("#tableSearch");
-                $(".dataTables_filter").appendTo(".search-input");
-            },
-        });
-
-        $(".modal").on("shown.bs.modal", function (e) {
-            $.fn.dataTable
-                .tables({ visible: true, api: true })
-                .columns.adjust();
-        });
-    }
+   
 
     // Sidebar Slimscroll
 
@@ -515,6 +482,7 @@ Version      : 1.0
 
     // Small Sidebar
     $(document).on("click", "#toggle_btn", function () {
+        console.log('check check')
         if ($("body").hasClass("mini-sidebar")) {
             $("body").removeClass("mini-sidebar");
             $(".subdrop + ul").slideDown();
@@ -1094,4 +1062,40 @@ Version      : 1.0
     $(".search-dropdown-item").click(function (event) {
         event.stopPropagation();
     });
+    if ($(".datatable").length > 0) {
+        $(".datatable").DataTable({
+            bFilter: false,
+            // "scrollX": true,
+            autoWidth: false,
+            sDom: "fBtlpi",
+            ordering: true,
+            columnDefs: [
+                {
+                    targets: "no-sort",
+                    orderable: false,
+                },
+            ],
+            language: {
+                search: " ",
+                sLengthMenu: "_MENU_",
+                paginate: {
+                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+                    previous:
+                        '<i class="fa fa-angle-double-left me-2"></i> Previous',
+                },
+            },
+            initComplete: (settings, json) => {
+                $(".dataTables_filter").appendTo("#tableSearch");
+                $(".dataTables_filter").appendTo(".search-input");
+            },
+        });
+
+        $(".modal").on("shown.bs.modal", function (e) {
+            $.fn.dataTable
+                .tables({ visible: true, api: true })
+                .columns.adjust();
+        });
+    }
+    
 })(jQuery);
+

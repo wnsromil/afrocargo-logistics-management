@@ -313,6 +313,7 @@ border:2px solid red
             height:205px;
             border-radius: 8px;
             margin-left:1px !important;
+            align-items: center;
           }
           .avtarset{
             position: relative;
@@ -612,4 +613,29 @@ input[type="radio"] {
 .bgcolorcustomer{
   background-color:#EDEDED;
 
+}
+
+.container {
+  display: flex;
+  align-items: center; /* Aligns text and image vertically */
+}
+.container img {
+  height: 100%; /* Image will take the full height of the line */
+  width: auto; /* Maintains the image's aspect ratio */
+  margin-right: 10px; /* Adds space between image and text */
+  vertical-align: middle; /* Ensures the image aligns with the middle of the text */
+}
+.container p {
+  line-height: 1.5; /* Sets the line height for text */
+  font-size: 16px; /* Sets font size for the text */
+}
+.fas {
+  font-weight: 900;
+  margin: auto;
+}
+h2{
+  color:white;
+}
+.inputbackground{
+background-color:#EDEDED;
 }
