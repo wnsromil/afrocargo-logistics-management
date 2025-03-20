@@ -78,7 +78,7 @@ class DriversController extends Controller
             'vehicle_type' => 'nullable',
             'license_number' => 'nullable',
             'license_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-            'license_expiry_date' => 'nullable',
+            'license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
         ]);
 
