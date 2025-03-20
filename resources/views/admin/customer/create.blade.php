@@ -55,6 +55,14 @@
                         <input type="text" name="Address_2" value="{{ old('Address_2') }}" class="form-control inp"
                             placeholder="Enter Address 2">
                     </div>
+                    
+
+                    <div class="col-md-6">
+                        <label class="foncolor" for="Apartment">Apartment </label>
+                        <input type="text" name="Apartment" value="{{ old('Apartment') }}" class="form-control inp"
+                            placeholder="Enter Apartment">
+                    </div>
+
                     <div class="col-md-6">
                         <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                         <select id="country" name="country" class="js-example-basic-single select2">
@@ -71,13 +79,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="foncolor" for="Apartment">Apartment </label>
-                        <input type="text" name="Apartment" value="{{ old('Apartment') }}" class="form-control inp"
-                            placeholder="Enter Apartment">
-                    </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
                         <select id="state" name="state" class="js-example-basic-single select2">
                             <option value="">Select State</option>
@@ -90,7 +92,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
                         <select id="city" name="city" class="js-example-basic-single select2">
                             <option value="">Select City</option>
@@ -103,8 +105,8 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-12">
-                        <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                    <div class="col-md-4">
+                        <label class="foncolor" for="Zip_code">Zipcode <i class="text-danger">*</i></label>
                         <input type="text" name="Zip_code" value="{{ old('Zip_code') }}"
                             class="form-control inp" placeholder="Enter Zip">
                         @error('Zip_code')
@@ -194,6 +196,16 @@
                         </select>
                     </div>
 
+
+                    <div class="col-md-12">
+                        <label class="foncolor" for="container"> Container </label>
+                        <select class="js-example-basic-single select2" name="warehouse_id"
+                            value="{{ old('warehouse_id') }}">
+                            <option selected="selected" value="">Select Container</option>
+                            <option></option>
+                        </select>
+                    </div>
+
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -203,7 +215,7 @@
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="Year_to_Date">Year to Date</label>
-                        <input type="text" name="year_to_date" id="Year to Date" class="form-control inp"
+                        <input type="text" name="year_to_date" id="Year to Date" class="form-control inp bgcolorcustomer"
                             placeholder="0" value="{{ old('year_to_date') }}">
                     </div>
 
@@ -224,7 +236,7 @@
                         <label class="foncolor" for="warehouse"> Language </label>
                         <select class="js-example-basic-single select2" name="language"
                             value="{{ old('language') }}">
-                            <option selected="selected">English</option>
+                            <option selected="selected">India - English</option>
                             <option>Hindi</option>
                         </select>
                     </div>
@@ -238,8 +250,8 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label class="foncolor" for="Read_Comment">Read Comment</label>
-                        <input type="text" id="Read_Comment" name="read_comment"
+                        <label class="foncolor " for="Read_Comment">Read Comment</label>
+                        <input type="text" class="bgcolorcustomer" id="Read_Comment" name="read_comment"
                             class="form-control inp commenth" value="{{ old('read_comment') }}"
                             placeholder="Enter Read Comment">
                     </div>

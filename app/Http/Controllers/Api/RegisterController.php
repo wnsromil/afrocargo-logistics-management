@@ -154,6 +154,8 @@ class RegisterController extends Controller
         // Generate API token
         $success['token'] = $user->createToken('MyApp')->accessToken;
 
+        $success['userData'] = $user->load('userRole');
+
         // Save authentication verification data
         VerifyAuthIP::updateOrCreate(
             ['user_id' => $user->id, 'ip_address' => $request->ip()],
@@ -165,7 +167,7 @@ class RegisterController extends Controller
             ]
         );
 
-        return $this->sendResponse($success, 'OTP sent successfully.');
+        return $this->sendResponse($success, 'User loged in successfully.');
     }
 
 
