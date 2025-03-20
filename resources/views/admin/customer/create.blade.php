@@ -201,7 +201,7 @@
                         <label class="foncolor" for="container"> Container </label>
                         <select class="js-example-basic-single select2" name="warehouse_id"
                             value="{{ old('warehouse_id') }}">
-                            <option selected="selected">Select Container</option>
+                            <option selected="selected" value="">Select Container</option>
                             <option></option>
                         </select>
                     </div>
