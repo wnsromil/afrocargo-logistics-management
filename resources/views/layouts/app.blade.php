@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/style5.css')}}">
 
     <!-- Intl Tell Input CSS -->
-    <link rel="stylesheet" href="{{asset('assets/plugins/intlTelInput/css/intlTelInput.css')}}">
+		<link rel="stylesheet" href="assets/plugins/intlTelInput/css/intlTelInput.css">
 
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
@@ -162,8 +162,9 @@
     <script src="{{asset('select2-4.1/dist/js/select2.min.js')}}"></script>
     <script src="{{asset('js/admin/select2.js')}}"></script>
 
-    <!-- Intl Tell Input js -->
-    <script src="{{asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js')}}"></script>
+    
+		<!-- Intl Tell Input js -->
+		<script src="assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js"></script>
 
     <!-- Slimscroll JS -->
     <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>

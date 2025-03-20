@@ -157,7 +157,7 @@
 
     @endsection
     <x-slot name="header">
-        Warehouse
+     Add Warehouse
     </x-slot>
 
     <x-slot name="cardTitle">
@@ -210,12 +210,19 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor " for="country_id">Country <i class="text-danger">*</i></label>
-<select name="country_id" id="country" class="form-control  form-cs js-example-basic-single select2 ">
+<!-- <select name="country_id" id="country" class="form-control  form-cs js-example-basic-single select2 ">
                         <option value="">Select Country</option>
                          @foreach($countries as $country)
                         <option value="{{ $country->id }}">{{ $country->name }}</option>
                          @endforeach
-                        </select>
+                        </select> -->
+                        <select class="js-example-basic-single select2">
+												<option selected="selected">Select Country</option>
+												<option></option>
+												<option></option>
+											</select>
+
+
 
                         @error('country_id')
                           <span class="text-danger">{{ $message }}</span>
@@ -228,9 +235,14 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label  class="foncolor" for="state_id">State <i class="text-danger">*</i></label>
-                        <select name="state_id" id="state" class="form-control inp select2">
+                        <!-- <select name="state_id" id="state" class="form-control inp select2">
                             <option value="">Select State</option>
-                        </select>
+                        </select> -->
+                        <select class="js-example-basic-single select2">
+												<option selected="selected">Select State</option>
+												<option></option>
+												<option></option>
+											</select>
                         @error('state_id')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -241,9 +253,14 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="city_id">City <i class="text-danger">*</i></label>
-                        <select name="city_id" id="city" class="form-control inp select2">
+                        <!-- <select name="city_id" id="city" class="form-control inp select2">
                             <option value="">Select City</option>
-                        </select>
+                        </select> -->
+                        <select class="js-example-basic-single select2">
+												<option selected="selected">Select City</option>
+												<option></option>
+												<option></option>
+											</select>
                         @error('city_id')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -266,7 +283,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact Number"
+                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact No."
                             value="{{ old('phone') }}">
                         @error('phone')
                         <span class="text-danger">{{ $message }}</span>
