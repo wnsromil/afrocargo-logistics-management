@@ -112,7 +112,7 @@
                  <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label  class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                        <input type="text" name="license_expiry_date" class="form-control inp" placeholder="Enter Address"
+                        <input type="text" name="license_expiry_date" class="form-control inp" placeholder="Select Expiry Date"
                             value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
