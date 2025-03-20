@@ -57,14 +57,14 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact Number"
-                            value="{{ old('phone') }}">
+                        <input type="tel" name="phone" class="form-control inp" placeholder="Enter Contact Number"
+                            value="{{ old('phone') }}" maxlength="10" pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
                         @error('phone')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-
+                
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -112,7 +112,7 @@
                  <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label  class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                        <input type="date" name="license_expiry_date" class="form-control inp" placeholder="Enter Address"
+                        <input type="text" name="license_expiry_date" class="form-control inp" placeholder="Enter Address"
                             value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>

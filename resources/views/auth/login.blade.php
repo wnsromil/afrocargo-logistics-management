@@ -84,15 +84,25 @@
                 <span class="input-group-text">
                     <i class="fa-regular fa-user border-start"></i>
                 </span>
+                @if ($errors->has('email'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </div>
+                @endif
             </div>
 
             <div class="input-group mb-4 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('email')"
+                <input id="password" type="password" name="password" :value="old('password')"
                     class="form-control rounded border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
                     <i class="fe fe-unlock border-start" data-bs-toggle="tooltip" title="fe fe-unlock"></i>
                 </span>
+                @if ($errors->has('password'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </div>
+                @endif
             </div>
 
             <!-- Remember Me -->
@@ -119,8 +129,9 @@
             @csrf
 
             <div class="input-group mb-3 border rounded mt-4 position-relative">
-                <input id="warehouse_code" type="text" name="warehouse_code" class="form-control rounded border-0"
-                    required autofocus autocomplete="off" placeholder="Enter warehouse code">
+                <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
+                    class="form-control rounded border-0" required autofocus autocomplete="off"
+                    placeholder="Enter warehouse code">
                 <span class="input-group-text bg-color border-start">
                     <img src="../assets/images/warehouse.svg" alt="#">
                 </span>
@@ -129,6 +140,12 @@
                 <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100"
                     style="display: none; z-index: 1000; top: 42px;">
                 </ul>
+                @if ($errors->has('warehouse_code'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('warehouse_code') }}</strong>
+                    </div>
+                @endif
+
             </div>
 
             <div class="input-group mb-3 border rounded my-4">
@@ -138,10 +155,15 @@
                 <span class="input-group-text">
                     <i class="fa-regular fa-user border-start"></i>
                 </span>
+                @if ($errors->has('email'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </div>
+                @endif
             </div>
 
             <div class="input-group mb-3 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('email')"
+                <input id="password" type="password" name="password" :value="old('password')"
                     class="form-control rounded bg-color border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
@@ -192,7 +214,7 @@
                                 response.data.forEach(warehouse => {
                                     dropdown.append(
                                         `<li class="dropdown-item warehouse-option" data-code="${warehouse.warehouse_code}">${warehouse.warehouse_code}</li>`
-                                        );
+                                    );
                                 });
 
                                 // ✅ Dropdown Show + Position Fix
@@ -222,17 +244,29 @@
                 document.getElementById('manager').style.display = 'none';
                 document.getElementById('adminBtn').classList.add('active1');
                 document.getElementById('managerBtn').classList.remove('active1');
-
+                updateURL('admin');
             } else if (type === 'manager') {
                 document.getElementById('admin').style.display = 'none';
                 document.getElementById('manager').style.display = 'block';
                 document.getElementById('adminBtn').classList.remove('active1');
                 document.getElementById('managerBtn').classList.add('active1');
+                updateURL('manager');
             }
         }
 
+        // Function to update URL without reloading the page
+        function updateURL(type) {
+            let newUrl = window.location.pathname + "?id=" + type;
+            window.history.pushState({
+                path: newUrl
+            }, "", newUrl);
+        }
+
+        // Function to check URL parameters on page load
         window.onload = function() {
-            toggleLoginForm('admin');
+            const urlParams = new URLSearchParams(window.location.search);
+            const formType = urlParams.get('id') || 'admin'; // Default 'admin'
+            toggleLoginForm(formType);
         };
     </script>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\{
     Warehouse,
@@ -111,7 +112,7 @@ class DriversController extends Controller
             'role_id' => 4,
             'role' => "driver",
             'license_number' => $request->license_number,
-            'license_expiry_date' => $request->license_expiry_date,
+            'license_expiry_date' => Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d'),
             'license_document' => $licenseDocumentPath, // Store Image URL
         ]);
 
