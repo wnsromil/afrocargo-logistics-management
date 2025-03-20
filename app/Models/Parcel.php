@@ -57,6 +57,15 @@ class Parcel extends Model
     {
         return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
     }
+   
+    public function pickupaddress()
+    {
+        return $this->belongsTo(Address::class, 'pickup_address_id');
+    }
+    public function deliveryaddress()
+    {
+        return $this->belongsTo(Address::class,'delivery_address_id');
+    }
 
     public function getCategoryNamesAttribute()
     {

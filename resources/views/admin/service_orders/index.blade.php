@@ -84,7 +84,7 @@
                         </thead>
                         <tbody>
 
-                        <tr style="border:none">
+                        <tr >
                         <td>1</td>
                         <td>WE97078893</td>
                         <td>
@@ -115,9 +115,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$350</div>
@@ -189,9 +189,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$200</div>
@@ -270,9 +270,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$350</div>
@@ -348,9 +348,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$200</div>
@@ -399,9 +399,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$200</div>
@@ -477,9 +477,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$200</div>
@@ -529,9 +529,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$350</div>
@@ -614,9 +614,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$200</div>
@@ -665,9 +665,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$350</div>
@@ -740,9 +740,9 @@
                               <td>
                                 <div class="row">
                                 <div class="col-6">
-                                    <div class="row">Partial:</div>
-                                    <div class="row">Due:</div>
-                                    <div class="row">Total:</div>
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row">$200</div>

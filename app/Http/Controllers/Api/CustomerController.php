@@ -171,4 +171,25 @@ class CustomerController extends Controller
             'data' => $customers
         ], 200);
     }
+
+    public function deleteCustomer(Request $request)
+    {
+        $user = User::find($request->id);
+    
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+    
+        $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'User marked as deleted successfully',
+            'user' => $user
+        ], 200);
+    }
+    
 }

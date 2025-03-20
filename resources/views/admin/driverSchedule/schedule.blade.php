@@ -7,11 +7,16 @@
         <p class="subhead login-logo-font fw-semibold">Add Schedule</p>
 
         <div class="row mt-3 mb-2">
-            <div class="col-md-12 d-flex text-center">
-                <button id="availabilitybtn" type="button" class="btnBorder th-font fw-semiBold p-1 activity-feed mx-4"
-                    onclick="driverscheduleform('availability')">Availability</button>
-                <button id="weeklybtn" type="button" class="btnBorder th-font fw-semiBold p-1 faded"
-                    onclick="driverscheduleform('weekly')">Weekly Schedule</button>
+            <div class="d-block">
+                <div class="col-md-12 d-flex text-center">
+                    <button id="availabilitybtn" type="button"
+                        class="btnBorder p-1 pe-2  th-font fw-semiBold p-1 mx-4 bg-light faded"
+                        onclick="driverscheduleform('availability')">Availability</button>
+                    <button id="weeklybtn" type="button" class="btnBorder th-font fw-semiBold p-1 bg-light faded"
+                        onclick="driverscheduleform('weekly')">Weekly Schedule</button>
+                </div>
+                <div class="border-bottom border-dark border-opacity-50 mb-4 ms-3 w-100"></div>
+
             </div>
     </x-slot>
     <div class="border border-1 mb-5"></div>
@@ -22,10 +27,10 @@
             <div class="col-md-12">
                 <div class="d-flex">
                     <div class="col-md-4">
-<!-- ------------------------------------------------------------------- -->
+                        <!-- ------------------------------------------------------------------- -->
                         <div id="calendar">
                         </div>
-<!-- ------------------------------------------------------------------- -->
+                        <!-- ------------------------------------------------------------------- -->
 
                     </div>
                     <div class="col-md-8">
@@ -123,7 +128,7 @@
         </div>
         <div>
             <div class="col-md-12 d-flex flax-wrap">
-                <div class="col-md-3 text-dark"><span class="align-items-center">Monday</span>
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Monday</span>
                     <div class="float-end me-3">
                         <div class="status-toggle">
                             <input id="monday" class="check" type="checkbox" value="Inactive">
@@ -149,8 +154,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 d-flex flax-wrap margin-margin">
-                <div class="col-md-3 text-dark"><span class="align-items-center">Tuesday</span>
+            <div class="col-md-12 d-flex flax-wrap margin-margin" id="selected-schedule">
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Tuesday</span>
                     <div class="float-end me-3">
                         <div class="status-toggle">
                             <input id="tuesday" class="check" type="checkbox" value="Inactive">
@@ -177,7 +182,7 @@
                 </div>
             </div>
             <div class="col-md-12 d-flex flax-wrap margin-margin">
-                <div class="col-md-3 text-dark"><span class="align-items-center">Wednesday</span>
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Wednesday</span>
                     <div class="float-end me-3">
                         <div class="status-toggle">
                             <input id="wednesday" class="check" type="checkbox" value="Inactive">
@@ -204,7 +209,7 @@
                 </div>
             </div>
             <div class="col-md-12 d-flex flax-wrap margin-margin">
-                <div class="col-md-3 text-dark"><span class="align-items-center">Thursday</span>
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Thursday</span>
                     <div class="float-end me-3">
                         <div class="status-toggle">
                             <input id="thursday" class="check" type="checkbox" value="Inactive">
@@ -231,7 +236,7 @@
                 </div>
             </div>
             <div class="col-md-12 d-flex flax-wrap margin-margin">
-                <div class="col-md-3 text-dark"><span class="align-items-center">Friday</span>
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Friday</span>
                     <div class="float-end me-3">
                         <div class="status-toggle">
                             <input id="friday" class="check" type="checkbox" value="Inactive">
@@ -258,11 +263,38 @@
                 </div>
             </div>
             <div class="col-md-12 d-flex flax-wrap margin-margin">
-                <div class="col-md-3 text-dark"><span class="align-items-center">Saturday</span>
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Saturday</span>
                     <div class="float-end me-3">
                         <div class="status-toggle">
                             <input id="saturday" class="check" type="checkbox" value="Inactive">
                             <label for="saturday" class="checktoggle gle checkbox-bg">checkbox</label>
+                            <p class="profileUpdateFont text-dark">On</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 opacity-25" id="selected-schedule">
+                    <div class="d-flex">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-dark rounded-1">Opening Time</button>
+                            <button type="button" class="btn btn-outline-dark rounded-1">Closing Time</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-dark rounded-1">Opening Time</button>
+                            <button type="button" class="btn btn-outline-dark rounded-1">Closing Time</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-dark rounded-1">Opening Time</button>
+                            <button type="button" class="btn btn-outline-dark rounded-1">Closing Time</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 d-flex flax-wrap margin-margin">
+                <div class="col-md-3 text-dark"><span class="align-items-center profileUpdateFont">Sunday</span>
+                    <div class="float-end me-3">
+                        <div class="status-toggle">
+                            <input id="sunday" class="check" type="checkbox" value="Inactive">
+                            <label for="sunday" class="checktoggle gle checkbox-bg">checkbox</label>
                             <p class="profileUpdateFont text-dark">On</p>
                         </div>
                     </div>
@@ -296,13 +328,13 @@
             if (type === 'availability') {
                 document.getElementById('availability').style.display = 'block';
                 document.getElementById('weekly').style.display = 'none';
-                document.getElementById('availabilitybtn').classList.add('active');
-                document.getElementById('weeklybtn').classList.remove('active');
+                document.getElementById('availabilitybtn').classList.add('active2');
+                document.getElementById('weeklybtn').classList.remove('active2');
             } else if (type === 'weekly') {
                 document.getElementById('availability').style.display = 'none';
                 document.getElementById('weekly').style.display = 'block';
-                document.getElementById('availabilitybtn').classList.remove('active');
-                document.getElementById('weeklybtn').classList.add('active');
+                document.getElementById('availabilitybtn').classList.remove('active2');
+                document.getElementById('weeklybtn').classList.add('active2');
             }
         }
 
@@ -311,24 +343,35 @@
         };
     </script>
 
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const toggles = document.querySelectorAll('.check');
-            toggles.forEach(function (toggle) {
-                const scheduleId = `schedule-${toggle.id}`;
-                const schedule = document.getElementById(scheduleId);
+            document.querySelectorAll('.toggle-switch').forEach(switchBtn => {
 
-                toggle.addEventListener('change', function () {
-                    if (toggle.checked) {
-                        schedule.classList.remove('opacity-25');
-                        schedule.classList.add('opacity-100');
-                    } else {
-                        schedule.classList.remove('opacity-100');
-                        schedule.classList.add('opacity-25');
-                    }
-                });
-            });
+                switchBtn.addEventListener("change", function () {
+                    let buttonsContainer = this.closest('.form-check').querySelector('.schedule-buttons');
+                    let buttons = buttonsContainer.querySelectorAll('button');
+                    buttons.forEach(button => {
+                        button.classList.toggle('.text-dark', this.checked);
+                    })
+                })
+            })
+
         });
+
+        // ------------------------------------------------------
+
+        // document.querySelectorAll('.selected-schedule').forEach(input =>{
+        //     input.addEventListener('change', function () {
+        //             if (toggle.checked) {
+        //                 schedule.classList.remove('opacity-25');
+        //                 schedule.classList.add('opacity-100');
+        //             } else {
+        //                 schedule.classList.remove('opacity-100');
+        //                 schedule.classList.add('opacity-25');
+        //             }
+        //         });
+        // })
     </script>
 
 

@@ -70,7 +70,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Service Orders',
                 'icon' => 'assets/images/shipment.svg',
                 'route' => 'admin.service_orders.index',
-                'active' => 'service_orders*',
+                'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -149,7 +149,7 @@ class MenuSeeder extends Seeder
             Menu::create(['title' => 'Warehouse Manager', 'route' => 'admin.warehouse_manager.index', 'active' => 'warehouse_manager*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
         }
         // Add submenus
-        $orderShip = Menu::where('title', 'Order/Shipment')->first();
+        $orderShip = Menu::where('title', 'Service Orders')->first();
         if ($orderShip) {
             Menu::create([
                 'title' => 'Order',
