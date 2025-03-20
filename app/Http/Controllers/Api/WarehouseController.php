@@ -4,15 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\{
+    Warehouse,
+    User,
+    Role,
+    Country
+};
 
 class WarehouseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+
+        $warehouses = Warehouse::where('warehouse_code',"like","%".$request->warehouse_code."%")->get();
+        return $this->sendResponse($warehouses, 'Warehouses fetch successfully.');
     }
 
     /**

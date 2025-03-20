@@ -118,7 +118,7 @@
                         <label for="status">Status</label>
                         <div class="toggle-switch">
                             <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active">
+                                <input type="checkbox" id="cb-switch" name="status" value="Active" @checked($inventory->status === 'Active')>
                                 <span>
                                     <small></small>
                                 </span>
@@ -133,7 +133,7 @@
         </div>
 
         <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.warehouses.index') }}" class="btn customer-btn-cancel">Cancel</a>
+            <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel">Cancel</a>
             <button type="submit" class="btn customer-btn-save">Submit</button>
         </div>
     </form>

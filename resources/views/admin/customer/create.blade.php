@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <label class="foncolor" for="company_name"> Company </label>
                         <input type="text" name="company_name" class="form-control inp"
-                            placeholder="Enter Company Name">
+                            placeholder="Enter Company Name" value="{{ old('company_name')}}">
 
                     </div>
                     <div class="col-md-12">
@@ -261,8 +261,8 @@
             </div>
 
             <div class="row custodis">
-              @foreach (['signature', 'contract_signature', 'license_picture'] as $imageType)
-                  <div class="col-md-4 d-flex">
+              @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
+                  <div class="col-md-3 d-flex">
                       <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
                       <div class="avtarset">
                           <!-- Image Preview -->

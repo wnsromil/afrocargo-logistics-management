@@ -25,6 +25,7 @@ use App\Http\Controllers\Web\Admin\{
     RoleManagementController
 };
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -33,6 +34,29 @@ Route::get('/customeruser', function () {
     return view('admin.customeruser.user');
 });
 
+Route::get('/rolemanagements', function () {
+    return view('admin.rolemanagements.index');
+});
+Route::get('/rolemanagementCreate', function () {
+    return view('admin.rolemanagementCreate.create');
+});
+
+Route::get('/rolemanagementUpdate', function () {
+    return view('admin.rolemanagementUpdate.edit');
+});
+Route::get('/driversactivitylog', function () {
+    return view('admin.driversactivitylog.activitylog');
+});
+
+Route::get('/driverschedule', function () {
+    return view('admin.driverschedule.schedule');
+});
+
+
+
+Route::get('/', function () {
+    return view('auth.login');
+});
 
 
 Route::get('/dashboard', function () {
@@ -54,7 +78,7 @@ Route::middleware(['auth', 'authCheck'])->group(function () {
 Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
 
     Route::middleware('authCheck')->group(function(){
-
+        Route::get('/delete-customers/{id}', [CustomerController::class, 'deleteCustomer']);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
         Route::resource('notification', NotificationController::class);

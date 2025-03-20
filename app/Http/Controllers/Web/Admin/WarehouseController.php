@@ -138,36 +138,40 @@ class WarehouseController extends Controller
             'city_id' => 'integer|exists:cities,id',
             'zip_code' => 'string|max:20',
             'phone' => 'string|max:15',
-            'status' => 'in:Active,Inactive',
+            'status' => 'nullable|in:Active,Inactive',  // Nullable kiya
         ]);
-        
+    
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()
-                ->withErrors($validator)  // Send errors to the session
-                ->withInput();  // Keep old input data
+                ->withErrors($validator)
+                ->withInput();
         }
-
+    
         // Find the warehouse by ID
         $warehouse = Warehouse::find($id);
-
+    
+        // 🛑 Agar status nahi aaya request me, to default 'Inactive' set karein
+        $status = $request->has('status') ? $request->status : 'Inactive';
+    
         // Update warehouse with validated data
-        $warehouse->update($request->only([
-            'warehouse_name',
-            'warehouse_code',
-            'address',
-            'country_id',
-            'state_id',
-            'city_id',
-            'zip_code',
-            'phone',
-            'status'
-        ]));
-
+        $warehouse->update([
+            'warehouse_name' => $request->warehouse_name,
+            'warehouse_code' => $request->warehouse_code,
+            'address' => $request->address,
+            'country_id' => $request->country_id,
+            'state_id' => $request->state_id,
+            'city_id' => $request->city_id,
+            'zip_code' => $request->zip_code,
+            'phone' => $request->phone,
+            'status' => $status, // Default 'Inactive' agar request me na ho
+        ]);
+    
         // Redirect to the warehouse index page with a success message
         return redirect()->route('admin.warehouses.index')
                         ->with('success', 'Warehouse updated successfully');
     }
+    
 
     
     /**

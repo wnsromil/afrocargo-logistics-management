@@ -13,7 +13,8 @@ use App\Http\Controllers\Api\{
     ContainerController,
     AddressController,
     CartController,
-    InvoiceController
+    InvoiceController,
+    WarehouseController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -37,6 +38,7 @@ Route::get('/get-about-us', [CommonController::class, 'getAboutUs']);
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgetPassword', [ForgetPassword::class, 'forgetPassword']);
+Route::post('/warehouse-list', [WarehouseController::class, 'index']);
 
 
 Route::middleware('auth:api')->group(function () {
@@ -74,6 +76,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/addresse-create', [AddressController::class, 'createAddress']);
         Route::get('/addresse-delete/{id}', [AddressController::class, 'deleteAddress']);
         Route::post('/address-update/{id}', [AddressController::class, 'updateAddress']);
+        
 
     });
 
