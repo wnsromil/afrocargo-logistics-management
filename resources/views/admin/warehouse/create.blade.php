@@ -267,13 +267,12 @@
                     <div class="input-block mb-3">
                         <label class="foncolor" for="phone">Contact Number <i class="text-danger">*</i></label>
                         <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact Number"
-                            value="{{ old('phone') }}">
+                            value="{{ old('phone') }}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         @error('phone')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">

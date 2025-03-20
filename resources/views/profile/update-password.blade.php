@@ -17,64 +17,61 @@
             @csrf
             @method('put')
 
+            <!-- Current Password Field -->
             <div class="form-group row mb-4">
-                <label class="col-md-3 foncolor">Current Password <span class="text-danger">*</span> </label>
+                <label class="col-md-3 foncolor">Current Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
-                        <input type="password" class="form-control inp" id="current-password" name="current_password" placeholder="Enter Current Password">
+                        <input type="password" class="form-control inp" id="current-password" name="current_password"
+                            placeholder="Enter Current Password">
                         <span toggle="#current-password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
+                    @error('current_password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
+
+            <!-- New Password Field -->
             <div class="form-group row mb-4">
-                <label class="col-md-3 foncolor">New Password <span class="text-danger">*</span> </label>
+                <label class="col-md-3 foncolor">New Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
-                        <input type="password" class="form-control inp" id="new_password" name="password" placeholder="Enter New Password">
+                        <input type="password" class="form-control inp" id="new_password" name="password"
+                            placeholder="Enter New Password">
                         <span toggle="#new_password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
+                    @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
+
+            <!-- Confirm New Password Field -->
             <div class="form-group row mb-4">
-                <label class="col-md-3 foncolor">Confirm New Password <span class="text-danger">*</span> </label>
+                <label class="col-md-3 foncolor">Confirm New Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
-                        <input type="password" class="form-control inp" id="confirm_password" name="password_confirmation" placeholder="Enter Confirm New Password">
+                        <input type="password" class="form-control inp" id="confirm_password"
+                            name="password_confirmation" placeholder="Enter Confirm New Password">
                         <span toggle="#confirm_password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
+                    @error('password_confirmation')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
+            <!-- Submit Button -->
             <div class="btn-path text-staart mt-5">
                 <button class="btn btn-primary me-2" type="submit">Update</button>
-                <a href="#" class="btn btn-cancel btn-outline-dark ">Cancel</a>
-            </div>
-            {{-- <div>
-                <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-                <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-                <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+                <a href="{{ route('profile.index') }}" class="btn btn-cancel btn-outline-dark">Cancel</a>
             </div>
 
-            <div>
-                <x-input-label for="update_password_password" :value="__('New Password')" />
-                <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-                <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-            </div>
-
-            <div>
-                <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-                <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-                <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-            </div> --}}
-
-            {{-- <div class="flex items-center gap-4">
-                <x-primary-button>{{ __('Save') }}</x-primary-button>
-
+            <!-- Success Message -->
             @if (session('status') === 'password-updated')
-            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-sm text-gray-600">{{ __('Saved.') }}</p>
+                <p class="text-success mt-3">Password updated successfully.</p>
             @endif
-            </div> --}}
-
         </form>
     </section>
 </x-app-layout>
@@ -89,5 +86,4 @@
             input.attr("type", "password");
         }
     });
-
 </script>

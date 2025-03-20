@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <label class="foncolor" for="company_name"> Company </label>
                         <input type="text" name="company_name" class="form-control inp"
-                            placeholder="Enter Company Name" value="{{ old('company_name')}}">
+                            placeholder="Enter Company Name" value="{{ old('company_name') }}">
 
                     </div>
                     <div class="col-md-12">
@@ -228,9 +228,8 @@
                     <div class="col-md-12">
                         <label>License Expiry Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp bgcolorcustomer"
-                                name="expire_date" value="{{ old('license_expiry_date') }}"
-                                placeholder="mm-dd-yy" />
+                            <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
+                                value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -261,55 +260,34 @@
             </div>
 
             <div class="row custodis">
-              @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
-                  <div class="col-md-3 d-flex">
-                      <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
-                      <div class="avtarset">
-                          <!-- Image Preview -->
-                          <img id="preview_{{ $imageType }}" class="avtars" src="{{ asset('../assets/img.png') }}" alt="avatar">
-                          
-                          <!-- File Input (Hidden by Default) -->
-                          <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
-                              style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
-          
-                          <div style="position: absolute; left: 120px; display: flex; flex-direction: row;">
-                              <!-- Edit Button -->
-                              <img src="{{ asset('assets/img/edit (1).png') }}" alt="edit" style="margin-bottom: 5px; cursor: pointer;"
-                                  onclick="document.getElementById('file_{{ $imageType }}').click();">
-                              
-                              <!-- Delete Button -->
-                              <img src="{{ asset('assets/img/dlt (1).png') }}" alt="delete" style="cursor: pointer;"
-                                  onclick="removeImage('{{ $imageType }}')">
-                          </div>
-                      </div>
-                  </div>
-              @endforeach
-          </div>
+                @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
+                    <div class="col-md-3 d-flex">
+                        <label class="foncolor set"
+                            for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
+                        <div class="avtarset">
+                            <!-- Image Preview -->
+                            <img id="preview_{{ $imageType }}" class="avtars"
+                                src="{{ asset('../assets/img.png') }}" alt="avatar">
 
+                            <!-- File Input (Hidden by Default) -->
+                            <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
+                                accept="image/png, image/jpeg" style="display: none;"
+                                onchange="previewImage(this, '{{ $imageType }}')">
 
-            <!-- ------------ --> l
-            <!-- <div class="row custodis">
-    <div class="col-md-4">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">Signature</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
-        </div>
-    </div>
-    <div></div>
-    <div></div>
-</div>
+                            <div style="position: absolute; left: 120px; display: flex; flex-direction: row;">
+                                <!-- Edit Button -->
+                                <img src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
+                                    style="margin-bottom: 5px; cursor: pointer;"
+                                    onclick="document.getElementById('file_{{ $imageType }}').click();">
 
- -->
-
-
-
-            <!-- ---------- -->
+                                <!-- Delete Button -->
+                                <img src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
+                                    style="cursor: pointer;" onclick="removeImage('{{ $imageType }}')">
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
 
             <div class="ptop d-flex">
                 <div>
@@ -347,30 +325,30 @@
 
 </x-app-layout>
 <script>
-  // 🖼 Image Preview Function
-  function previewImage(input, imageType) {
-      if (input.files && input.files[0]) {
-          let file = input.files[0];
+    // 🖼 Image Preview Function
+    function previewImage(input, imageType) {
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
 
-          // ✅ Sirf PNG ya JPG Allow Hai
-          if (file.type === "image/png" || file.type === "image/jpeg") {
-              let reader = new FileReader();
-              reader.onload = function (e) {
-                  document.getElementById('preview_' + imageType).src = e.target.result;
-              };
-              reader.readAsDataURL(file);
-          } else {
-              alert("Only PNG & JPG images are allowed!");
-              input.value = ""; // Invalid file ko remove karna
-          }
-      }
-  }
+            // ✅ Sirf PNG ya JPG Allow Hai
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview_' + imageType).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only PNG & JPG images are allowed!");
+                input.value = ""; // Invalid file ko remove karna
+            }
+        }
+    }
 
-  // ❌ Remove Image Function
-  function removeImage(imageType) {
-      document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
-      document.getElementById('file_' + imageType).value = "";
-  }
+    // ❌ Remove Image Function
+    function removeImage(imageType) {
+        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+        document.getElementById('file_' + imageType).value = "";
+    }
 </script>
 <script>
     $(document).ready(function() {
