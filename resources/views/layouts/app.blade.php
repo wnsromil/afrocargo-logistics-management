@@ -134,14 +134,8 @@
 
     <!-- /Theme Setting -->
     <!-- jQuery -->
-    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}">
-        < script / >
-
-            <
-            !--Bootstrap Core JS-- >
-            <
-            script src = "{{ asset('assets/js/bootstrap.bundle.min.js') }}" >
-    </script>
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+     <script src = "{{ asset('assets/js/bootstrap.bundle.min.js') }}" ></script>
 
     <!-- Feather Icon JS -->
     <script src="{{ asset('assets/js/feather.min.js') }}"></script>
@@ -156,7 +150,7 @@
 
     <script src="{{ asset('js/comman.js') }}"></script>
     <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
+    // <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
 
     <!-- Theme Settings JS -->
@@ -167,29 +161,9 @@
 
     <!-- Intl Tell Input js -->
     <script src="{{ asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>
-
-    <!-- Slimscroll JS -->
-    <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Timeline JS -->
-    <script src="assets/plugins/timeline/horizontal-timeline.js"></script>
-
-
-    <!-- jQuery (required by FullCalendar) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Moment.js (required by FullCalendar) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <!-- FullCalendar JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
-
-
-
-
-    <!-- Custom JS -->
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    // <!-- Bootstrap JS (ensure this is included) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{{ asset('assets/plugins/timeline/horizontal-timeline.js') }}"></script>
+<!-- Custom JS -->
+<script src="{{ asset('assets/js/script.js') }}"></script>
     <script>
         @session('success')
         Swal.fire({
