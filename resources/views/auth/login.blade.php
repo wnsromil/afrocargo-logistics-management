@@ -1,4 +1,5 @@
 <x-guest-layout class="bg-image-login">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
     <style>
         .w-100 {
             width: 100%;
@@ -35,9 +36,12 @@
             /* font-family: "Poppins", serif; */
             font-weight: 700px;
         }
+
+        
+
     </style>
 
-    <div class="backgroundImage align-items-center login-card p-5">
+    <div class="backgroundImage align-items-center login-card p-5 br_10">
         <div class="container row">
             <div class="container col col-lg-12 d-flex red-rose align-items-center bg-white">
                 <div class="col col-md-2">
@@ -55,18 +59,15 @@
 
         <div class="row mt-3 mb-2">
             <div class="d-block">
-                <div class="col-md-12 d-flex text-center ps-4 ms-5">
+                <div class="d-flex text-center authTabDiv">
 
                     <div id="click"></div>
 
-                    <button id="adminBtn" type="button" class="btnBorder th-font fw-semiBold p-1 pe-2 activity-feed"
-                        onclick="toggleLoginForm('admin')">Admin</button>
+                    <button id="adminBtn" type="button" class="btnBorder th-font fw-semiBold col737 me-3 activity-feed" onclick="toggleLoginForm('admin')">Admin</button>
 
-                    <button id="managerBtn" type="button" class="btnBorder th-font fw-semiBold p-1 ps-2"
-                        onclick="toggleLoginForm('manager')">Warehouse Manager</button>
+                    <button id="managerBtn" type="button" class="btnBorder th-font fw-semiBold col737" onclick="toggleLoginForm('manager')">Warehouse Manager</button>
 
                 </div>
-                <div class="border-bottom border-dark border-opacity-50 mb-4 ms-5 ps-5 login-border-width"></div>
             </div>
         </div>
 
@@ -78,28 +79,35 @@
             @csrf
 
             <div class="input-group mb-4 border rounded mt-4">
-                <input id="email" type="email" name="email" :value="old('email')"
-                    class="form-control rounded border-0" required autofocus autocomplete="username"
-                    placeholder="Username or email address">
+                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0" required autofocus autocomplete="username" placeholder="Username or email address">
                 <span class="input-group-text">
-                    <i class="fa-regular fa-user border-start"></i>
+                    <i class="ti ti-user"></i>
                 </span>
+                @if ($errors->has('email'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </div>
+                @endif
             </div>
 
             <div class="input-group mb-4 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('email')"
+                <input id="password" type="password" name="password" :value="old('password')"
                     class="form-control rounded border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
-                    <i class="fe fe-unlock border-start" data-bs-toggle="tooltip" title="fe fe-unlock"></i>
+                    <span toggle="#password" class="ti ti-eye field-icon toggle-password1"></span>
                 </span>
+                @if ($errors->has('password'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </div>
+                @endif
             </div>
 
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
@@ -108,8 +116,8 @@
                 @if (Route::has('password.request'))
                 @endif
 
-                <x-primary-button class="btn w-100 justify-content-center login-btn">
-                    {{ __('Log in') }}
+                <x-primary-button class="btn w-100 btn-primary authBTN">
+                    {{ __('Login') }}
                 </x-primary-button>
             </div>
         </form>
@@ -119,42 +127,49 @@
             @csrf
 
             <div class="input-group mb-3 border rounded mt-4 position-relative">
-                <input id="warehouse_code" type="text" name="warehouse_code" class="form-control rounded border-0"
-                    required autofocus autocomplete="off" placeholder="Enter warehouse code">
+                <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
+                    class="form-control rounded border-0" required autofocus autocomplete="off"
+                    placeholder="Enter warehouse code">
                 <span class="input-group-text bg-color border-start">
-                    <img src="../assets/images/warehouse.svg" alt="#">
+                    <i class="ti ti-building-warehouse"></i>
                 </span>
 
                 <!-- ✅ Dropdown Jo Input Ke Niche Dikhe -->
-                <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100"
-                    style="display: none; z-index: 1000; top: 42px;">
+                <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100" style="display: none; z-index: 1000; top: 42px;">
                 </ul>
+                @if ($errors->has('warehouse_code'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('warehouse_code') }}</strong>
+                    </div>
+                @endif
+
             </div>
 
             <div class="input-group mb-3 border rounded my-4">
-                <input id="email" type="email" name="email" :value="old('email')"
-                    class="form-control rounded border-0 bg-light" required autofocus autocomplete="username"
-                    placeholder="Username or email address">
+                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0 bg-light" required autofocus autocomplete="username" placeholder="Username or email address">
                 <span class="input-group-text">
-                    <i class="fa-regular fa-user border-start"></i>
+                    <i class="ti ti-user"></i>
                 </span>
+                @if ($errors->has('email'))
+                    <div class="text-danger mt-2">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </div>
+                @endif
             </div>
 
             <div class="input-group mb-3 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('email')"
+                <input id="password1" type="password" name="password" :value="old('password')"
                     class="form-control rounded bg-color border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
-                    <i class="fe fe-eye border-start" data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                    <span toggle="#password1" class="ti ti-eye field-icon toggle-password1"></span>
                 </span>
             </div>
 
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                        name="remember">
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
@@ -163,8 +178,8 @@
                 @if (Route::has('password.request'))
                 @endif
 
-                <x-primary-button class="btn w-100 justify-content-center login-btn">
-                    {{ __('Log in') }}
+                <x-primary-button class="btn w-100 btn-primary authBTN">
+                    {{ __('Login') }}
                 </x-primary-button>
             </div>
         </form>
@@ -177,13 +192,13 @@
 
                 if (query.length >= 3) { // 🔹 Jab 3 letters type karega
                     $.ajax({
-                        url: "/api/warehouse-list",
-                        method: "POST",
-                        data: {
-                            warehouse_code: query,
-                            _token: "{{ csrf_token() }}" // 🔹 Laravel CSRF Protection
-                        },
-                        success: function(response) {
+                        url: "/api/warehouse-list"
+                        , method: "POST"
+                        , data: {
+                            warehouse_code: query
+                            , _token: "{{ csrf_token() }}" // 🔹 Laravel CSRF Protection
+                        }
+                        , success: function(response) {
                             console.log(response.data);
                             let dropdown = $("#warehouseDropdown");
                             dropdown.empty(); // 🔹 Pehle ka data clear karo
@@ -192,7 +207,7 @@
                                 response.data.forEach(warehouse => {
                                     dropdown.append(
                                         `<li class="dropdown-item warehouse-option" data-code="${warehouse.warehouse_code}">${warehouse.warehouse_code}</li>`
-                                        );
+                                    );
                                 });
 
                                 // ✅ Dropdown Show + Position Fix
@@ -214,6 +229,7 @@
                 $("#warehouseDropdown").hide();
             });
         });
+
     </script>
     <script>
         function toggleLoginForm(type) {
@@ -222,19 +238,45 @@
                 document.getElementById('manager').style.display = 'none';
                 document.getElementById('adminBtn').classList.add('active1');
                 document.getElementById('managerBtn').classList.remove('active1');
-
+                updateURL('admin');
             } else if (type === 'manager') {
                 document.getElementById('admin').style.display = 'none';
                 document.getElementById('manager').style.display = 'block';
                 document.getElementById('adminBtn').classList.remove('active1');
                 document.getElementById('managerBtn').classList.add('active1');
+                updateURL('manager');
             }
         }
 
+        // Function to update URL without reloading the page
+        function updateURL(type) {
+            let newUrl = window.location.pathname + "?id=" + type;
+            window.history.pushState({
+                path: newUrl
+            }, "", newUrl);
+        }
+
+        // Function to check URL parameters on page load
         window.onload = function() {
-            toggleLoginForm('admin');
+            const urlParams = new URLSearchParams(window.location.search);
+            const formType = urlParams.get('id') || 'admin'; // Default 'admin'
+            toggleLoginForm(formType);
         };
+
     </script>
+    <script>
+    $(".toggle-password1").click(function() {
+
+        $(this).toggleClass("ti-eye-off");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+
+</script>
 
     <!-- -------------------------------------------------------------------------------------------------- -->
 

@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <label class="foncolor" for="company_name"> Company </label>
                         <input type="text" name="company_name" class="form-control inp"
-                            placeholder="Enter Company Name" value="{{ old('company_name')}}">
+                            placeholder="Enter Company Name" value="{{ old('company_name') }}">
 
                     </div>
                     <div class="col-md-12">
@@ -204,7 +204,7 @@
                         <label class="foncolor" for="container"> Container </label>
                         <select class="js-example-basic-single select2" name="warehouse_id"
                             value="{{ old('warehouse_id') }}">
-                            <option selected="selected">Select Container</option>
+                            <option selected="selected" value="">Select Container</option>
                             <option></option>
                         </select>
                     </div>
@@ -231,9 +231,8 @@
                     <div class="col-md-12">
                         <label>License Expiry Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp bgcolorcustomer"
-                                name="expire_date" value="{{ old('license_expiry_date') }}"
-                                placeholder="mm-dd-yy" />
+                            <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
+                                value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -423,30 +422,30 @@
 
 </x-app-layout>
 <script>
-  // 🖼 Image Preview Function
-  function previewImage(input, imageType) {
-      if (input.files && input.files[0]) {
-          let file = input.files[0];
+    // 🖼 Image Preview Function
+    function previewImage(input, imageType) {
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
 
-          // ✅ Sirf PNG ya JPG Allow Hai
-          if (file.type === "image/png" || file.type === "image/jpeg") {
-              let reader = new FileReader();
-              reader.onload = function (e) {
-                  document.getElementById('preview_' + imageType).src = e.target.result;
-              };
-              reader.readAsDataURL(file);
-          } else {
-              alert("Only PNG & JPG images are allowed!");
-              input.value = ""; // Invalid file ko remove karna
-          }
-      }
-  }
+            // ✅ Sirf PNG ya JPG Allow Hai
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview_' + imageType).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only PNG & JPG images are allowed!");
+                input.value = ""; // Invalid file ko remove karna
+            }
+        }
+    }
 
-  // ❌ Remove Image Function
-  function removeImage(imageType) {
-      document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
-      document.getElementById('file_' + imageType).value = "";
-  }
+    // ❌ Remove Image Function
+    function removeImage(imageType) {
+        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+        document.getElementById('file_' + imageType).value = "";
+    }
 </script>
 <script>
     $(document).ready(function() {

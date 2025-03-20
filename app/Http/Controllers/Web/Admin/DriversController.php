@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Models\{
     Warehouse,
@@ -76,9 +79,6 @@ class DriversController extends Controller
             'license_number' => 'nullable',
             'license_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'nullable',
-            // 'email' => 'required|email|unique:users,email',
-            // 'password' => 'required|same:confirm-password',
-            // 'confirm-password' => 'required',
             'status' => 'in:Active,Inactive',
         ]);
 
@@ -97,8 +97,11 @@ class DriversController extends Controller
             $file = $request->file('license_document');
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/licenses', $filename, 'public'); // Store in 'storage/app/public/uploads/licenses'
-            $licenseDocumentPath = asset('storage/' . $filePath); // Get full URL
+            $licenseDocumentPath = 'storage/' . $filePath; // Get full URL
         }
+  
+        $randomPassword = Str::random(8); // Random password of 8 characters
+        $hashedPassword = Hash::make($randomPassword); // Hashing password
 
         // Store validated data
         User::create([
@@ -110,8 +113,9 @@ class DriversController extends Controller
             'status' => $status,
             'role_id' => 4,
             'role' => "driver",
+            'password' => $hashedPassword,
             'license_number' => $request->license_number,
-            'license_expiry_date' => $request->license_expiry_date,
+            'license_expiry_date' => Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d'),
             'license_document' => $licenseDocumentPath, // Store Image URL
         ]);
 

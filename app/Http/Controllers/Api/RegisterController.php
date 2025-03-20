@@ -167,7 +167,7 @@ class RegisterController extends Controller
             ]
         );
 
-        return $this->sendResponse($success, 'OTP sent successfully.');
+        return $this->sendResponse($success, 'User loged in successfully.');
     }
 
 

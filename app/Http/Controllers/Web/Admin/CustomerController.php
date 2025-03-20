@@ -65,8 +65,8 @@ class CustomerController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string',
-            'latitude' => 'nullable|numeric', // Optional
-            'longitude' => 'nullable|numeric' // Optional
+            'latitude' => 'required|numeric', // Optional
+            'longitude' => 'required|numeric' // Optional
         ]);
 
         $imagePaths = [];
