@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg"
-    data-sidebar-image="none">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
 
-    
+
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="icon" href="{{ asset('assets/images/AfroCargoLogo.svg') }}" type="image/svg+xml">
@@ -18,8 +17,9 @@
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 
     <!-- Font family -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
 
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="{{asset('assets/plugins/fontawesome/css/fontawesome.min.css')}}">
@@ -48,18 +48,17 @@
     <!-- Layout JS -->
     <script src="{{asset('assets/js/layout.js')}}"></script>
     <script src="{{asset('assets/js/scriptmain.js')}}"></script>
-    
+
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 
 <!-- Red Rose Font -->
@@ -72,13 +71,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     @yield('style')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css"
-        integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @stack('head')
 </head>
@@ -106,18 +101,18 @@
                         <div class="page-header">
                             <div class="content-page-header">
                                 @isset($cardTitle)
-                                    {{$cardTitle}}
+                                {{$cardTitle}}
                                 @endisset
                             </div>
                             @isset($cardHeader)
-                                {{$cardHeader}}
+                            {{$cardHeader}}
                             @endisset
                         </div>
-                        <!-- /Page Header -->				
+                        <!-- /Page Header -->
                         <div class="row">
                             <div class="col-md-12">
                                 @isset($slot)
-                                    {{ $slot }}
+                                {{ $slot }}
                                 @endisset
                             </div>
                         </div>
@@ -135,10 +130,14 @@
 
     <!-- /Theme Setting -->
     <!-- jQuery -->
-    <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"><script/>
+    <script src="{{asset('assets/js/jquery-3.7.1.min.js')}}">
+        <script/>
 
-    <!-- Bootstrap Core JS -->
-    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+        <
+        !--Bootstrap Core JS-- >
+        <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}">
+
+    </script>
 
     <!-- Feather Icon JS -->
     <script src="{{asset('assets/js/feather.min.js')}}"></script>
@@ -184,33 +183,34 @@
 
     <!-- Custom JS -->
     <script src="{{asset('assets/js/script.js')}}"></script>
-    // <!-- Bootstrap JS (ensure this is included) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    //
+    <!-- Bootstrap JS (ensure this is included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         @session('success')
-            Swal.fire({
-                title: "Good job!",
-                text: "{{ $value }}",
-                icon: "success"
-            });
+        Swal.fire({
+            title: "Good job!"
+            , text: "{{ $value }}"
+            , icon: "success"
+        });
         @endsession
         @session('error')
-            Swal.fire({
-                title: "Oops...",
-                text: "{{ $value }}",
-                icon: "error"
-            });
+        Swal.fire({
+            title: "Oops..."
+            , text: "{{ $value }}"
+            , icon: "error"
+        });
         @endsession
 
         function deleteData(self, msg) {
             Swal.fire({
-                title: msg,
-                icon: "question",
-                showCancelButton: true,
-                showCloseButton: true,
-                confirmButtonText: "Delete",
-                cancelButtonText: "Cancel"
+                title: msg
+                , icon: "question"
+                , showCancelButton: true
+                , showCloseButton: true
+                , confirmButtonText: "Delete"
+                , cancelButtonText: "Cancel"
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Assuming the button that calls deleteData is inside a form
@@ -219,9 +219,10 @@
             });
         }
 
-        function redirectTo(url){
-            window.location.href= url;
+        function redirectTo(url) {
+            window.location.href = url;
         }
+
     </script>
 
     @yield('script')
