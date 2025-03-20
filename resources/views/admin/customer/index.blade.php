@@ -52,15 +52,15 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                             <thead class="thead-light">
 
                                 <tr>
-                                    <th>Sn no.</th>
+                                    <th>S. No.</th>
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Warehouse</th>
                                     <th>Container No.</th>
                                     <th>License_ID</th>
-                                    <th>phone</th>
-                                    <th>present address</th>
+                                    <th>Phone</th>
+                                    <th>Present Address</th>
                                     <th>Status</th>
                                     <th>Action</th>
 

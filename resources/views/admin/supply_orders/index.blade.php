@@ -37,7 +37,7 @@
     </x-slot> -->
 
     <x-slot name="cardTitle" >
-       <p class="head">Order Management</p>
+       <p class="head">Supply Order Management</p>
 
        <div class="usersearch d-flex">
                 <div class="top-nav-search">
@@ -58,32 +58,609 @@
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable">
+                    <table class="table table-stripped table-hover datatable datatable">
                         <thead class="thead-light">
                             <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
                                 <th>Tracking ID</th>
                                 <th>From</th>
-                                <th>To</th>
-                                <th>Amount</th>
-                                <th>Payment Mode</th>
-                                {{-- <th>Warehouse</th> --}}
-                                <th>Pickup Date</th>
-                                <th>Capture Image</th>
-                                <th>Item List</th>
+                                <th>Warehouse Name</th> 
+                                <th>Order Date</th>
+                                <th>Supply Image</th>
+                                <th>Supply Details</th>
+                                <th>Quantity</th>
                                 <th>Estimate cost</th>
                                 <th>Driver Name</th>
                                 <th>Vehicle Type</th>
                                 <th>Payment Status</th>
-                                <th>Delivery Date</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
                                 <th>Status</th>
                                 <th>Status update</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($parcels as $index => $parcel)
+                            <tr>
+                                <td>1</td>
+                        <td>WE97078893</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location ABC</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img1.png" alt="image"></div></td></td>
+                            <td>Boxes</td>
+                            <td>4</td>
+                            <td>$40</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><label  class="labelstatus"for="unpaid_status">unpaid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$350</div>
+                                    <div class="row">$100</div>
+                                    <div class="row">$450</div>
+                                </div>
+                                </div></td>
+                                <td>Cash</td>
+                                <td><label class="labelstatus"for="status">Pending</label></td>
+                               <td>
+                               <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveryman_modal">Assign delivery Boy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+			</div>
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+                        <!-- second line started -->
+                        <tr >
+                                <td>2</td>
+                        <td>WE97078891</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location CSA</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img2.png" alt="image"></div></td></td>
+                            <td>Barrels</td>
+                            <td>3</td>
+                            <td>$150</td>
+                            <td>Alysig Tremblett</td>
+                            <td>Van</td>
+                            <td><label  class="labelstatusy"for="partial_status">Partialy Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$200</div>
+                                    <div class="row">$50</div>
+                                    <div class="row">$250</div>
+                                </div>
+                                </div></td>
+                                <td>Online/Card</td>
+                                <td><label class="labelstatuspi"for="status">Assign Delivery Boy</label></td>
+                               <td>
+                            
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+                            <!-- third line started -->
+
+                            <tr >
+                                <td>3</td>
+                        <td>WE97078896</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location QWQ</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img3.png" alt="image"></div></td></td>
+                            <td>Brown tap</td>
+                            <td>2</td>
+                            <td>$40</td>
+                            <td>Amalie McLachlan</td>
+                            <td>Two Wheeler</td>
+                            <td><label  class="labelstatusw"for="partial_status"> Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row ">$350</div>
+                                    <div class="row ">$100</div>
+                                    <div class="row ">$450</div>
+                                </div>
+                                </div></td>
+                                <td>Cheque</td>
+                                <td><label class="labelstatuspi"for="status">Assign Delivery Boy</label></td>
+                               <td>
+                            
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+
+                            <!-- fourth line started -->
+                             <tr>
+                            <td>4</td>
+                        <td>WE97078897</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location TTT</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img4.png" alt="image"></div></td></td>
+                            <td>Clear Tap</td>
+                            <td>5</td>
+                            <td>$125</td>
+                            <td>Berting Dominico</td>
+                            <td>Two Wheeler</td>
+                            <td><label  class="labelstatusy"for="partial_status">Partialy Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row ">$200</div>
+                                    <div class="row ">$50</div>
+                                    <div class="row ">$250</div>
+                                </div>
+                                </div></td>
+                                <td>Online/Card</td>
+                                <td><label class="labelstatuspi"for="status">Assign Delivery Boy</label></td>
+                               <td>
+                            
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+                            
+                            <!-- fifth line started -->
+
+
+                            <tr >
+                                <td>5</td>
+                        <td>WE97078898</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location GGG </td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img5.png" alt="image"></div></td></td>
+                            <td>Shrink Wrap</td>
+                            <td>20</td>
+                            <td>$600</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><label  class="labelstatus"for="unpaid_status">unpaid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row ">$350</div>
+                                    <div class="row">$100</div>
+                                    <div class="row">$450</div>
+                                </div>
+                                </div></td>
+                                <td>Cash</td>
+                                <td><label class="labelstatus"for="status">Pending</label></td>
+                               <td>
+                               <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveryman_modal">Assign delivery Boy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+			</div>
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+
+                            <!-- sixth line -->
+
+
+
+                            <tr>
+                                <td>6</td>
+                        <td>WE97078899</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location DDD</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img1.png" alt="image"></div></td></td>
+                            <td>Boxes</td>
+                            <td>2</td>
+                            <td>$40</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><label  class="labelstatusy"for="partial_status">Partialy Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$200</div>
+                                    <div class="row">$50</div>
+                                    <div class="row">$250</div>
+                                </div>
+                                </div></td>
+                                <td>Online/Card</td>
+                                <td><label class="labelstatus"for="status">Pending</label></td>
+                               <td>
+                               <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveryman_modal">Assign delivery Boy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+			</div>
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+
+
+                         <!-- seven line  -->
+                          
+
+                         <tr >
+                                <td>7</td>
+                        <td>WE97078900</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location SSSS</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img2.png" alt="image"></div></td></td>
+                            <td>Barrels</td>
+                            <td>1</td>
+                            <td>$50</td>
+                            <td>Gar Delagnes</td>
+                            <td>Van</td>
+                            <td><label  class="labelstatusw"for="partial_status"> Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$350</div>
+                                    <div class="row">$100</div>
+                                    <div class="row">$450</div>
+                                </div>
+                                </div></td>
+                                <td>Cheque</td>
+                                <td><label class="labelstatuspi"for="status">Assign Delivery Boy</label></td>
+                               <td>
+                            
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+<!-- eight line started -->
+
+
+
+                                  <tr>
+                                <td>8</td>
+                        <td>WE97078901</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location FDFDF</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img3.png" alt="image"></div></td></td>
+                            <td>Brown tap</td>
+                            <td>5</td>
+                            <td>$100</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><label  class="labelstatusy"for="partial_status">Partialy Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$200</div>
+                                    <div class="row">$50</div>
+                                    <div class="row">$250</div>
+                                </div>
+                                </div></td>
+                                <td>Cheque</td>
+                                <td><label class="labelstatus"for="status">Pending</label></td>
+                               <td>
+                               <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveryman_modal">Assign delivery Boy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+			</div>
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+<!-- nine line started -->
+
+
+<tr>
+                                <td>9</td>
+                        <td>WE97078894</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location DBGD</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img4.png" alt="image"></div></td></td>
+                            <td>Clear Tap</td>
+                            <td>10</td>
+                            <td>$250</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><label  class="labelstatus"for="unpaid_status">unpaid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$350</div>
+                                    <div class="row">$100</div>
+                                    <div class="row">$450</div>
+                                </div>
+                                </div></td>
+                                <td>Cash</td>
+                                <td><label class="labelstatus"for="status">Pending</label></td>
+                               <td>
+                               <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveryman_modal">Assign delivery Boy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+			</div>
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+
+<!-- ten line started -->
+
+
+<tr>
+                                <td>10</td>
+                        <td>WE97078901</td>
+                        <td><div>
+                                    <div class="col">
+                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Location WWW</td>
+                            <td>12-12-24</td>
+                            <td><div><img src="../assets/img/img5.png" alt="image"></div></td></td>
+                            <td>Shrink Wrap</td>
+                            <td>10</td>
+                            <td>$300</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><label  class="labelstatusy"for="partial_status">Partialy Paid</label></td>
+                            <td><div class="row">
+                                <div class="col-6">
+                                    <div class="row amountfont">Partial:</div>
+                                    <div class="row amountfont">Due:</div>
+                                    <div class="row amountfont">Total:</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">$200</div>
+                                    <div class="row">$50</div>
+                                    <div class="row">$250</div>
+                                </div>
+                                </div></td>
+                                <td>Online/Card</td>
+                                <td><label class="labelstatus"for="status">Pending</label></td>
+                               <td>
+                               <li class="nav-item dropdown">
+                        <a class="amargin"href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
+                            
+                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
+    height: 26px;align-content: center;">
+                                <div ><img src="../assets/img/downarrow.png"></div>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu menu-drop-user">
+                            <div class="profilemenu">
+                                <div class="subscription-menu">
+                                    <ul>
+                                        
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"data-bs-toggle="modal" data-bs-target="#deliveryman_modal">Assign delivery Boy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </li>
+			</div>
+                               </td>
+                               <td class="btntext">
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>
+                            </tr>
+                            <!-- @forelse ($parcels as $index => $parcel)
                                 <tr>
                                     {{-- <td><input type="checkbox" class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($parcel->status) }}" value="{{ $parcel->id }}"></td> --}}
                                     <td>{{ ++$index }}</td>
@@ -240,7 +817,7 @@
                                 <tr>
                                     <td colspan="9" class="px-4 py-4 text-center text-gray-500">No parcels found.</td>
                                 </tr>
-                            @endforelse
+                            @endforelse -->
                         </tbody>
                     </table>
                 </div>
@@ -436,3 +1013,86 @@
     }
 
 </script>
+<!-- deliveryman_modal -->
+<div class="modal custom-modal signature-add-modal fade" id="deliveryman_modal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header pb-0">
+							<div class="form-header  text-start mb-0">
+                                <div class="popuph">
+								<h4>Delivery Man Assign</h4>
+                                </div>
+							</div>
+							
+								<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+							
+						</div>
+						<form action="#">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">From Warehouse<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Warehouse</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+
+                                        <div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">To Warehouse<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Warehouse</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+
+                                        <div class="input-block mb-3">
+                                            <div class="col-12">
+                                            <label class="foncolor">Delivery Man<i class="text-danger">*</i></label>
+                                           </div>
+                                           <div class="col-12">
+											<select class="js-example-basic-single select2">
+												<option selected="selected">Select Delivery Man</option>
+												<option></option>
+												<option></option>
+											</select>
+                                            </div>
+											
+										</div>
+
+									</div>
+									<div class="col-lg-12 col-md-12">
+										<div class="input-block ">
+	                                        <label  class="foncolor">Note</label>
+	                                        <div class="input-block service-upload service-upload-info mb-0">
+	                                        <input type="Note" name="Note" class="form-control inp Note" placeholder="">    
+	                                    
+                                        </div>
+	                                        
+	                                    </div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="modal-footer">
+                            
+								<button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn">Cancel</button>
+								<button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
