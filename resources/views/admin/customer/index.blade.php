@@ -3,7 +3,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
 ?>
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Users') }}
+        {{ __('Customer List') }}
     </x-slot>
 
 
@@ -16,7 +16,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                 <div class="mt-2">
                     <a href="{{ route('admin.customer.create') }}" class="btn btn-primary buttons">
                         <img class="imgs" src="assets/images/Vector.png">
-                        Add Users
+                        Add Customer
                     </a>
                 </div>
             </div>
@@ -27,21 +27,21 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
 
 
         <x-slot name="cardTitle">
-            <p class="head">All Users</p>
-            <div class="usersearch d-flex">
-                <div class="top-nav-search" style="width:191px; height:33px">
-                    <form>
-                        <input type="text" class="form-control" style="width:157px; height:31px;margin-left:30px;"
-                            placeholder="Search">
+            <p class="head">All Customers</p>
+            <div class="usersearch d-flex usersserach">
+        
+        <div class="top-nav-search">
+            <form>
+                <input type="text" class="form-control forms" placeholder="Search ">
 
-                    </form>
-                </div>
-                <div class="mt-2">
-                    <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                            href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
-                </div>
-            </div>
+            </form>
+        </div>
+        <div class="mt-2">
+        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" title="Refresh"><span><i
+                                            class="fe fe-refresh-ccw"></i></span></a></button>
+        </div>
+    </div>
         </x-slot>
         <div>
             <div class="card-table">
@@ -55,12 +55,13 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                     <th>S. No.</th>
                                     <th>Photo</th>
                                     <th>Name</th>
+                                    <th>Username</th>
                                     <th>Email</th>
                                     <th>Warehouse</th>
                                     <th>Container No.</th>
-                                    <th>License_ID</th>
+                                    <th>License ID</th>
                                     <th>Phone</th>
-                                    <th>Present Address</th>
+                                    <th>Address</th>
                                     <th>Status</th>
                                     <th>Action</th>
 
@@ -68,7 +69,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($customers as $index => $customer)
+                                <!-- @forelse ($customers as $index => $customer)
                                     <tr>
                                         <td>{{ ++$index }}</td>
                                         <td>
@@ -123,7 +124,613 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                         <td colspan="7" class="px-4 py-4 text-center text-gray-500">No users found.
                                         </td>
                                     </tr>
-                                    @endforelse
+                                    @endforelse -->
+                                    <tr>
+                                        <td>1</td>
+                                        <td><img src="../assets/img/Image (1).png" alt="userimage"></td>
+                                        <td>Jelene Largan</td>
+                                        <td>Jelenelargan</td>
+                                        <td>jeleneLargan@gmail.com</td>
+                                        <td>Cargo NYC</td>
+                                        <td>001-0825</td>
+                                        <td>C9876543</td>
+                                        <td><p>228-134-8273 </p>
+                                            <p>148-434-8773</p>
+                                        </td>
+                                        <td>
+                                           <p>8 Service JunctionL...</p>
+                                            <p>8 Service JunctionL..</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                             <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>2</td>
+                                        <td><img src="../assets/img/Image (2).png" alt="userimage"></td>
+                                        <td>Alysig Tremblett</td>
+                                        <td>TremblettAlysig</td>
+                                        <td>alysing@@gmail.com</td>
+                                        <td>Shipper LA</td>
+                                        <td>001-0725</td>
+                                        <td>F1254514</td>
+                                        <td>
+                                            <p>854-187-6524</p>
+                                            <p>845-226-4714</p>
+                                        </td>
+                                        <td>
+                                            <p>575 Hanson PlaeL...</p>
+                                            <p>21 westside NYC 12...</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>3</td>
+                                        <td><img src="../assets/img/Image (3).png" alt="userimage"></td>
+                                        <td>Norma McLarens</td>
+                                        <td>McLarensNor</td>
+                                        <td>normaMcla@gmail.com</td>
+                                        <td>Packers AR</td>
+                                        <td>001-0625</td>
+                                        <td>ZS4582146</td>
+                                        <td><p>555-969-8745</p>
+                                          <p>652-414-7454</p>
+                                </td>
+                                        <td>
+                                            <p>2A st.clock johnson</p>
+                                           <p>331, Luxe arena LA ari..</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>4</td>
+                                        <td><img src="../assets/img/Image (4).png" alt="userimage"></td>
+                                        <td>Berting Dominico</td>
+                                        <td>BertingDom</td>
+                                        <td>bertingDomin@gmail.com</td>
+                                        <td>Movers & SA</td>
+                                        <td>001-0725</td>
+                                        <td>D1234567</td>
+                                        <td>
+                                            <p>124-187-6524</p>
+                                            <p>145-226-4714</p>
+                                        </td>
+                                        <td>
+                                            <p>175 Hanson Placel..</p>      
+                                           <p>231 westside NYC 12..</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>5</td>
+                                        <td><img src="../assets/img/Image (5).png" alt="userimage"></td>
+                                        <td>Amalie McLachlan</td>
+                                        <td>McLachlanAmalie</td>
+                                        <td>amaileMc@gmail.com</td>
+                                        <td>NYC Kargo</td>
+                                        <td>001-0625</td>
+                                        <td>X3698542</td>
+                                        <td>
+                                            <p>566-134-8271</p>
+                                             <p>125-434-7854</p> 
+                                        </td>
+                                        <td>
+                                           <p>88 xmas JunctionL...</p>
+                                           <p>12 Service Nueway...</p>     
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>6</td>
+                                        <td><img src="../assets/img/Image (1).png" alt="userimage"></td>
+                                        <td>Peterus Simondson</td>
+                                        <td>PetSimondson</td>
+                                        <td>peterusSimondson@gmail.com</td>
+                                        <td>Mahim Ships</td>
+                                        <td>001-0725</td>
+                                        <td>Y41586524</td>
+                                        <td>
+                                            <p>665-187-6525</p>
+                                            <p>255-226-4762</p>
+                                    </td>
+                                        <td>
+                                            <p>10B luke green Arizo...</p>
+                                            <p>21 westside NYC 12...</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                        <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td><img src="../assets/img/Image (2).png" alt="userimage"></td>
+                                        <td>Gar Delagnes</td>
+                                        <td>DelagneGar </td>
+                                        <td>garDelanes@gmail.com</td>
+                                        <td>Port LA </td>
+                                        <td>001-0825</td>
+                                        <td>G5214585</td>
+                                        <td>
+                                          <p>115-969-8525</p>          
+                                         <p>312-414-7312</p>
+                                        </td>
+                                        <td>
+                                            <p>223 Dgrwin wolf Street..</p>
+                                            <p>211,Luxe arena LA ari...</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>8</td>
+                                        <td><img src="../assets/img/Image (3).png" alt="userimage"></td>
+                                        <td>Bartlet Rayworth</td>
+                                        <td>RayworthBartlet</td>
+                                        <td>bartletRay@gmail.com</td>
+                                        <td>Stocks Vice</td>
+                                        <td>001-0825</td>
+                                        <td>Q1452846</td>
+                                        <td>
+                                            <p>724-187-6520</p>
+                                            <p>945-226-4710</p>
+                                        </td>
+                                        <td>
+                                            <p>81971 Cambeidge Cro...</p>
+                                            <p>965 westside NYC 12...</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>9</td>
+                                        <td><img src="../assets/img/Image (4).png" alt="userimage"></td>
+                                        <td>Sathe Fegres</td>
+                                        <td>FegSareth</td>
+                                        <td>satheFegres@gmail.com</td>
+                                        <td>Omni Arixo</td>
+                                        <td>001-0525</td>
+                                        <td>E1522224</td>
+                                        <td>
+                                            <p>115-969-8525</p>
+                                            <p>312-414-7312</p>
+                                        </td>
+                                        <td>
+                                            <p>20 st.clock johnson...</p>
+                                            <p>684 Lillign Street jx...</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>10</td>
+                                        <td><img src="../assets/img/Image (5).png" alt="userimage"></td>
+                                        <td>Lock Gillbanks</td>
+                                        <td>GillbanksLock</td>
+                                        <td>lockgillbank@gmail.com</td>
+                                        <td>NYC Kargo</td>
+                                        <td>001-0625</td>
+                                        <td>K6665884</td>
+                                        <td>
+                                           <p>724-187-6520</p>
+                                            <p>945-226-4710</p>
+                                        </td>
+                                        <td>
+                                        <p>64302 Artisan Way LA...</p>
+                                        <p>1839 Rieder Circle NYC..</p>
+                                        </td>
+                                        <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p>
+    </div></td>
+                                        <td>
+                                            <!-- <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.edit', $customer->id).'?page='.request()->page ?? 1 }}">
+                                                <i class="far fa-edit me-2"></i>Update
+                                            </a>
+                                            {{-- <a class="dropdown-item" href="javascript:void(0);"
+                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"
+                                                        data-id="{{ $customer->id }}">
+                                                        <i class="far fa-trash-alt me-2"></i>Delete
+                                                    </a> --}}
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.customer.show', $customer->id) }}">
+                                                <i class="far fa-eye me-2"></i>View
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+</td>
+                                    </tr>
                                 </tbody>
 
                             </table>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
+            {{ __('Add Customer') }}
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
@@ -27,20 +27,23 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
+                        <!-- <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
                         <input type="number" id="contact_no1" value="{{ old('contact_no1') }}" class="form-control inp"
                             placeholder="Enter Mobile Number" name="contact_no1"
                             oninput="this.value = this.value.slice(0, 10)">
                         @error('contact_no1')
                             <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                        @enderror -->
+                        <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
+														<input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Mobile No." name="name">
                     </div>
+
 
                     <div class="col-md-12">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                         <input type="number" id="alternate_mobile_no" name="alternate_mobile_no"
                             value="{{ old('alternate_mobile_no') }}" class="form-control inp"
-                            placeholder="Enter Mobile Number" oninput="this.value = this.value.slice(0, 10)">
+                            placeholder="Enter Mobile No." oninput="this.value = this.value.slice(0, 10)">
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
@@ -114,9 +117,9 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="username">Username <i class="text-danger">*</i></label>
+                        <label class="foncolor " for="username">Username <i class="text-danger">*</i></label>
                         <input type="text" name="username" value="{{ old('Username') }}"
-                            class="form-control inp" placeholder="Enter User Name">
+                            class="form-control inp inputbackground" placeholder="Enter User Name">
                         @error('username')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -149,17 +152,17 @@
 
 
                     <div class="col-md-6">
-                        <label class="foncolor" for="latitude">Latitude <i class="text-danger">*</i></label>
+                        <label class="foncolor " for="latitude">Latitude <i class="text-danger">*</i></label>
                         <input type="number" name="latitude" value="{{ old('latitude') }}"
-                            class="form-control inp" placeholder="0">
+                            class="form-control inp inputbackground" placeholder="0">
                         @error('latitude')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="foncolor" for="longitude">Longitude <i class="text-danger">*</i></label>
+                        <label class="foncolor " for="longitude">Longitude <i class="text-danger">*</i></label>
                         <input type="number" name="longitude" value="{{ old('longitude') }}"
-                            class="form-control inp" placeholder="0">
+                            class="form-control inp inputbackground" placeholder="0">
                         @error('longitude')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -209,19 +212,19 @@
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" name="signature_date" class="btn-filters  form-cs inp "
+                            <input type="text" name="signature_date" class="btn-filters  form-cs inp  inputbackground"
                                 value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="Year_to_Date">Year to Date</label>
-                        <input type="text" name="year_to_date" id="Year to Date" class="form-control inp bgcolorcustomer"
+                        <label class="foncolor " for="Year_to_Date">Year to Date</label>
+                        <input type="text" name="year_to_date" id="Year to Date" class="form-control inp inputbackground"
                             placeholder="0" value="{{ old('year_to_date') }}">
                     </div>
 
                     <div class="col-md-12">
-                        <label class="foncolor" for="License_ID">License ID</label>
-                        <input type="text" id="License_ID" name="license_number" class="form-control inp"
+                        <label class="foncolor " for="License_ID">License ID</label>
+                        <input type="text" id="License_ID" name="license_number" class="form-control inp inputbackground"
                             value="{{ old('license_number') }}" placeholder="Enter License ID">
                     </div>
 
@@ -250,44 +253,138 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label class="foncolor " for="Read_Comment">Read Comment</label>
-                        <input type="text" class="bgcolorcustomer" id="Read_Comment" name="read_comment"
-                            class="form-control inp commenth" value="{{ old('read_comment') }}"
+                        <label class="foncolor" for="Read_Comment">Read Comment</label>
+                        <input type="text" id="Read_Comment" name="read_comment"
+                            class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
                             placeholder="Enter Read Comment">
                     </div>
+                </div>
                 </div>
                 <!-- second form right side closer div is next -->
             </div>
 
-            <div class="row custodis">
-                @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
-                    <div class="col-md-3 d-flex">
-                        <label class="foncolor set"
-                            for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
-                        <div class="avtarset">
-                            <!-- Image Preview -->
-                            <img id="preview_{{ $imageType }}" class="avtars"
-                                src="{{ asset('../assets/img.png') }}" alt="avatar">
+          
 
-                            <!-- File Input (Hidden by Default) -->
-                            <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
-                                accept="image/png, image/jpeg" style="display: none;"
-                                onchange="previewImage(this, '{{ $imageType }}')">
 
-                            <div style="position: absolute; left: 120px; display: flex; flex-direction: row;">
-                                <!-- Edit Button -->
-                                <img src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
-                                    style="margin-bottom: 5px; cursor: pointer;"
-                                    onclick="document.getElementById('file_{{ $imageType }}').click();">
-
-                                <!-- Delete Button -->
-                                <img src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
-                                    style="cursor: pointer;" onclick="removeImage('{{ $imageType }}')">
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+           
+    
+<div class="row custodis">
+  
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Profile Picture</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+               
+                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
+                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                </div>
             </div>
+        </div>
+    </div>
+
+   
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Signature</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+               
+                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
+                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Contract Signature</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+               
+                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
+                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">License Picture</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+               
+                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
+                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    
+
+
+
+
+
+    
+
+    <!-- <div class="col-md-3">
+        <div class="d-flex">
+        <label class="foncolor" for="Read_Comment">Signature</label>
+     <div>
+      <img  src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+        </div>
+    </div> -->
+    <!-- <div class="col-md-3">
+        <div class="d-flex">
+        <label class="foncolor" for="Read_Comment">Contract Signature</label>
+     <div>
+      <img  src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 300px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="col-md-3">
+        <div class="d-flex">
+        <label class="foncolor" for="Read_Comment">License Picture</label>
+     <div>
+      <img  src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+        </div>
+    </div> -->
+
+   
+
+
+
+
+
+
+            <!-- ---------- -->
 
             <div class="ptop d-flex">
                 <div>
