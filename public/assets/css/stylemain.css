@@ -956,8 +956,15 @@ h6 {
     background: #ffffff;
 }
 
-
-
+body.mini-sidebar.expand-menu .sidebar {
+    width: 245px;
+}
+.page-wrapper .content {
+    padding: 20px;
+}
+.page-wrapper .content > .card {
+    border-radius: 0;
+}
 
 
 @media (min-width: 992px) {
@@ -965,5 +972,11 @@ h6 {
         width: 40px;
         margin: 0;
         padding: 5px;
+    }
+}
+@media (min-width: 991.98px) {
+    .mini-sidebar .sidebar .sidebar-menu ul li a {
+        padding: 10px;
+        justify-content: center;
     }
 }

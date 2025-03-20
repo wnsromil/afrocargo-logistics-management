@@ -15,7 +15,14 @@
                 <span class="bar-icons"></span>
             </span>
         </a> -->
-        
+        <a href="javascript:void(0);" id="toggle_btn" class="side-toggle">
+            <span class="toggle-bars">
+                <span class="bar-icons"></span>
+                <span class="bar-icons"></span>
+                <span class="bar-icons"></span>
+                <span class="bar-icons"></span>
+            </span>
+        </a>
     </div>
 
     <!-- Sidebar Toggle -->

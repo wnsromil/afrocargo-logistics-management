@@ -1,24 +1,17 @@
-<a href="javascript:void(0);" id="toggle_btn" class="side-toggle">
-    <span class="toggle-bars">
-        <span class="bar-icons"></span>
-        <span class="bar-icons"></span>
-        <span class="bar-icons"></span>
-        <span class="bar-icons"></span>
-    </span>
-</a>
-
 <div class="sidebar" id="sidebar">
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <nav class="greedys sidebar-horizantal">
                 <ul class="list-inline-item list-unstyled links">
 
-                    <li class="submenu">
-                        <a href="#"><i class="fe fe-home"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+                <li class="submenu">
+                        <a href="#"><i class="fe fe-home"></i> <span> Dashboard</span> <span
+                                class="menu-arrow"></span></a>
 
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-grid"></i> <span> Applications</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-grid"></i> <span> Applications</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="chat.html">Chat</a></li>
                             <li><a href="calendar.html">Calendar</a></li>
@@ -26,7 +19,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-user"></i> <span> Super Admin</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-user"></i> <span> Super Admin</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="dashboard.html">Dashboard</a></li>
                             <li><a href="companies.html">Companies</a></li>
@@ -38,7 +32,8 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-users"></i><span>Customers</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-users"></i><span>Customers</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="customers.html"><i class="fe fe-users"></i> <span>Customers</span></a>
                             </li>
@@ -54,7 +49,8 @@
 
                     <li class="menu-title"><span>Inventory</span></li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-package"></i> <span> Products / Services</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-package"></i> <span> Products / Services</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="product-list.html">Product List</a></li>
                             <li><a href="category.html">Category</a></li>
@@ -67,7 +63,8 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-file-plus"></i><span>Signature</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-file-plus"></i><span>Signature</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="signature-list.html"><i class="fe fe-clipboard"></i> <span>List of
                                         Signature</span></a></li>
@@ -79,7 +76,8 @@
 
                     <li class="menu-title"><span>Sales</span></li>
                     <li class="submenu">
-                        <a href="invoices.html"><i class="fe fe-file"></i> <span>Invoices</span><span class="menu-arrow"></span></a>
+                        <a href="invoices.html"><i class="fe fe-file"></i> <span>Invoices</span><span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="invoices.html">Invoices List</a></li>
                             <li><a href="invoice-details-admin.html">Invoice Details (Admin)</a></li>
@@ -164,7 +162,8 @@
 
                     <li class="menu-title"><span>Membership</span></li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-book"></i> <span> Membership</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-book"></i> <span> Membership</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="membership-plans.html">Membership Plans</a></li>
                             <li><a href="membership-addons.html">Membership Addons</a></li>
@@ -186,7 +185,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-map-pin"></i> <span> Location</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-map-pin"></i> <span> Location</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="countries.html">Countries</a></li>
                             <li><a href="states.html">States</a></li>
@@ -207,7 +207,8 @@
                                 Messages</span></a>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-save"></i> <span> Tickets</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-save"></i> <span> Tickets</span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="tickets.html">Tickets</a></li>
                             <li><a href="tickets-list.html">Tickets List</a></li>
@@ -221,7 +222,8 @@
                         <a href="profile.html"><i class="fe fe-user"></i> <span>Profile</span></a>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-lock"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-lock"></i> <span> Authentication </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="login.html"> Login </a></li>
                             <li><a href="register.html"> Register </a></li>
@@ -243,7 +245,8 @@
                         <span>UI Interface</span>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-pocket"></i> <span>Base UI </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-pocket"></i> <span>Base UI </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="alerts.html">Alerts</a></li>
                             <li><a href="accordions.html">Accordions</a></li>
@@ -276,7 +279,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-box"></i> <span>Elements </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-box"></i> <span>Elements </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="ribbon.html">Ribbon</a></li>
                             <li><a href="clipboard.html">Clipboard</a></li>
@@ -293,7 +297,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-bar-chart"></i> <span> Charts </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-bar-chart"></i> <span> Charts </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="chart-apex.html">Apex Charts</a></li>
                             <li><a href="chart-js.html">Chart Js</a></li>
@@ -304,7 +309,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-award"></i> <span> Icons </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-award"></i> <span> Icons </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
                             <li><a href="icon-feather.html">Feather Icons</a></li>
@@ -319,7 +325,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-sidebar"></i> <span> Forms </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-sidebar"></i> <span> Forms </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="form-basic-inputs.html">Basic Inputs </a></li>
                             <li><a href="form-input-groups.html">Input Groups </a></li>
@@ -332,7 +339,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fe fe-layout"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fe fe-layout"></i> <span> Tables </span> <span
+                                class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="tables-basic.html">Basic Tables </a></li>
                             <li><a href="data-tables.html">Data Table </a></li>
@@ -350,17 +358,20 @@
                         <a href="#"><i class="fe fe-file-text"></i> <span>Documentation</span></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);"><i class="fe fe-lock"></i> <span>Change Log</span> <span class="badge badge-primary ms-auto">v2.0.4</span></a>
+                        <a href="javascript:void(0);"><i class="fe fe-lock"></i> <span>Change Log</span> <span
+                                class="badge badge-primary ms-auto">v2.0.4</span></a>
                     </li>
                     <li class="submenu">
-                        <a href="javascript:void(0);"><i class="fa fa-list"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
+                        <a href="javascript:void(0);"><i class="fa fa-list"></i> <span>Multi Level</span> <span
+                                class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li class="submenu">
                                 <a href="javascript:void(0);"> <span>Level 1</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;" class="level2">
                                     <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
                                     <li class="submenu">
-                                        <a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
+                                        <a href="javascript:void(0);"> <span> Level 2</span> <span
+                                                class="menu-arrow"></span></a>
                                         <ul style="display: none;" class="level3">
                                             <li><a href="javascript:void(0);">Level 3</a></li>
                                             <li><a href="javascript:void(0);">Level 3</a></li>
