@@ -128,7 +128,7 @@
                                                         href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
                                                             class="far fa-edit me-2"></i>Edit</a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
 
                                                     <form
                                                         action="{{ route('admin.inventories.destroy', $inventory->id) }}"
@@ -139,7 +139,7 @@
                                                             onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</button>
                                                     </form>
-                                                </li>
+                                                </li> --}}
                                                 <li>
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.inventories.show', $inventory->id) }}"><i
