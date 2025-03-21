@@ -271,14 +271,14 @@
 <div class="row custodis">
   
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center avtard" >
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Profile Picture</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit">
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" >
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" >
                 </div>
             </div>
         </div>
@@ -286,14 +286,14 @@
 
    
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center  avtard" >
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Signature</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit">
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
                 </div>
             </div>
         </div>
@@ -301,28 +301,28 @@
 
    
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center  avtard" >
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Contract Signature</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc" >
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit">
+                    <img class="editstyle"src="../assets/img/edit (1).png" alt="edit" >
+                    <img class="editstyle"src="../assets/img/dlt (1).png" alt="delete" >
                 </div>
             </div>
         </div>
     </div>
 
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center avtard">
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">License Picture</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit" >
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
                 </div>
             </div>
         </div>
