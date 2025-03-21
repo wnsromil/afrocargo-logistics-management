@@ -26,7 +26,7 @@ class RegisterController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
+                // 'email' => 'required|email|unique:users,email',
                 'password' => [
                     'required',
                     'string',
@@ -63,7 +63,7 @@ class RegisterController extends Controller
             try {
                 $user = User::create([
                     'name' => $request->name,
-                    'email' => $request->email,
+                    'email' => $request->email ?? null,
                     'phone' => $request->phone,
                     'password' => bcrypt($request->password),
                     'role' => $userRole->name,
