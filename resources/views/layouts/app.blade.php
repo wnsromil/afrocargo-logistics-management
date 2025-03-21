@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -15,13 +12,7 @@
     <link rel="shortcut icon" href="">
 
     <!-- Bootstrap CSS -->
-
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-
 
     <!-- Font family -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -53,12 +44,10 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/intlTelInput/css/intlTelInput.css') }}">
 
     <!-- Layout JS -->
+    <script src="{{ asset('assets/js/layout.js') }}"></script>
+    <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
 
-    <script src="{{asset('assets/js/layout.js')}}"></script>
-    <script src="{{asset('assets/js/scriptmain.js')}}"></script>
-
-    <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
-
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
@@ -164,40 +153,10 @@
     <script src="{{ asset('js/admin/select2.js') }}"></script>
 
     <!-- Intl Tell Input js -->
-
-    <script src="{{asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js')}}"></script>
-
-    <!-- Slimscroll JS -->
-    <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Timeline JS -->
-    <script src="assets/plugins/timeline/horizontal-timeline.js"></script>
-
-
-    <!-- jQuery (required by FullCalendar) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Moment.js (required by FullCalendar) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <!-- FullCalendar JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
-
-
-
-
-    <!-- Custom JS -->
-    <script src="{{asset('assets/js/script.js')}}"></script>
-    <!-- Bootstrap JS (ensure this is included) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
-
-
     <script src="{{ asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/timeline/horizontal-timeline.js') }}"></script>
 <!-- Custom JS -->
 <script src="{{ asset('assets/js/script.js') }}"></script>
-
     <script>
         @session('success')
         Swal.fire({

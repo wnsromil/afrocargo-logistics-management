@@ -1,6 +1,4 @@
-<x-guest-layout class="bg-image-login">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-
+<x-guest-layout>
     <style>
         .w-100 {
             width: 100%;
@@ -47,13 +45,9 @@
             /* font-family: "Poppins", serif; */
             font-weight: 700px;
         }
-
-        
-
     </style>
 
     <div class="backgroundImage align-items-center login-card login-container p-5">
-
         <div class="container row">
             <div class="container col col-lg-12 d-flex red-rose align-items-center bg-white">
                 <div class="col col-md-2">
@@ -71,7 +65,6 @@
 
         <div class="row mt-3 mb-2">
             <div class="d-block">
-
                 <div class="col-md-12 d-flex text-center ps-4 ms-5">
                     <div id="click"></div>
                     <button id="adminBtn" type="button" class="border-0 th-font fw-semiBold p-1 pe-2 faded"
@@ -96,13 +89,11 @@
         <form method="POST" action="{{ route('login') }}" id="admin" style="display:none;">
             @csrf
 
-
             <!-- <div class="input-group mb-4 border rounded mt-4">
                 <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0"
                     required autofocus autocomplete="username" placeholder="Username or email address">
-
                 <span class="input-group-text">
-                    <i class="ti ti-user"></i>
+                    <i class="fa-regular fa-user border-start"></i>
                 </span>
             </div> -->
 
@@ -120,22 +111,11 @@
 
             <!--     <div class="input-group mb-4 border rounded my-4">
                 <input id="password" type="password" name="password" :value="old('email')"
-
-                @if ($errors->has('email'))
-                    <div class="text-danger mt-2">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </div>
-                @endif
-            </div>
-
-            <div class="input-group mb-4 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('password')"
                     class="form-control rounded border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
-                    <span toggle="#password" class="ti ti-eye field-icon toggle-password1"></span>
+                    <i class="fe fe-unlock border-start" data-bs-toggle="tooltip" title="fe fe-unlock"></i>
                 </span>
-
             </div> -->
             <div class="input-group input-group-lg bg-color2">
                 <input id="password" type="password" name="password" :value="old('email')" required
@@ -147,18 +127,13 @@
                     <i class="fe fe-unlock border-start" style="color: #595C5F" data-bs-toggle="tooltip"
                         title="fe fe-unlock"></i>
                 </span>
-
-                @if ($errors->has('password'))
-                    <div class="text-danger mt-2">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </div>
-                @endif
             </div>
 
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                    <input id="remember_me" type="checkbox"
+                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
@@ -167,9 +142,7 @@
                 @if (Route::has('password.request'))
                 @endif
 
-
                 <x-primary-button class="btn w-100 justify-content-center border rounded-0 text-capitalize login-btn">
-
                     {{ __('Login') }}
                 </x-primary-button>
             </div>
@@ -178,37 +151,17 @@
         <!-- -------------------------------------- manager login page ---------------------------------------- -->
         <form method="POST" action="{{ route('login') }}" id="manager" style="display:none;">
             @csrf
-
-            <div class="input-group mb-3 border rounded mt-4">
-
+            <div class="input-group mb-3 border rounded mt-4 position-relative">
                 <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
                     class="form-control rounded border-0" required autofocus autocomplete="off"
                     placeholder="Enter warehouse code">
                 <span class="input-group-text bg-color border-start">
-                    <i class="ti ti-building-warehouse"></i>
-                </span>
-
-            </div>
-
-            <div class="input-group input-group-lg bg-color2 my-4">
-                <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')" required
-                    autofocus autocomplete="username"
-                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
-                    placeholder="Enter warehouse code" aria-label=".form-control-lg example">
-                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
-                    id="inputGroup-sizing-lg">
                     <img src="../assets/images/warehouse.svg" alt="#">
                 </span>
-            </div>
-
-            <!-- <div class="input-group mb-3 border rounded my-4">
-                <input id="email" type="email" name="email" :value="old('email')"
-                    class="form-control rounded border-0 bg-light" required autofocus autocomplete="username"
-                    placeholder="Username or email address">
-
 
                 <!-- ✅ Dropdown Jo Input Ke Niche Dikhe -->
-                <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100" style="display: none; z-index: 1000; top: 42px;">
+                <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100"
+                    style="display: none; z-index: 1000; top: 42px;">
                 </ul>
                 @if ($errors->has('warehouse_code'))
                     <div class="text-danger mt-2">
@@ -218,13 +171,13 @@
 
             </div>
 
-            <div class="input-group mb-3 border rounded my-4">
-                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0 bg-light" required autofocus autocomplete="username" placeholder="Username or email address">
-
+            <!-- <div class="input-group mb-3 border rounded my-4">
+                <input id="email" type="email" name="email" :value="old('email')"
+                    class="form-control rounded border-0 bg-light" required autofocus autocomplete="username"
+                    placeholder="Username or email address">
                 <span class="input-group-text">
-                    <i class="ti ti-user"></i>
+                    <i class="fa-regular fa-user border-start"></i>
                 </span>
-
             </div> -->
             <div class="input-group input-group-lg bg-color2 my-4">
                 <input id="email" type="email" name="email" :value="old('email')" required autofocus
@@ -240,21 +193,10 @@
 
             <!-- <div class="input-group mb-3 border rounded my-4">
                 <input id="password" type="password" name="password" :value="old('email')"
-
-                @if ($errors->has('email'))
-                    <div class="text-danger mt-2">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </div>
-                @endif
-            </div>
-
-            <div class="input-group mb-3 border rounded my-4">
-                <input id="password1" type="password" name="password" :value="old('password')"
-
                     class="form-control rounded bg-color border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
-                    <span toggle="#password1" class="ti ti-eye field-icon toggle-password1"></span>
+                    <i class="fe fe-eye border-start" data-bs-toggle="tooltip" title="fe fe-eye"></i>
                 </span>
             </div> -->
 
@@ -273,7 +215,8 @@
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                    <input id="remember_me" type="checkbox"
+                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
@@ -282,9 +225,7 @@
                 @if (Route::has('password.request'))
                 @endif
 
-
                 <x-primary-button class="btn w-100 justify-content-center border rounded-0 text-capitalize login-btn">
-
                     {{ __('Login') }}
                 </x-primary-button>
             </div>
@@ -298,13 +239,13 @@
 
                 if (query.length >= 3) { // 🔹 Jab 3 letters type karega
                     $.ajax({
-                        url: "/api/warehouse-list"
-                        , method: "POST"
-                        , data: {
-                            warehouse_code: query
-                            , _token: "{{ csrf_token() }}" // 🔹 Laravel CSRF Protection
-                        }
-                        , success: function(response) {
+                        url: "/api/warehouse-list",
+                        method: "POST",
+                        data: {
+                            warehouse_code: query,
+                            _token: "{{ csrf_token() }}" // 🔹 Laravel CSRF Protection
+                        },
+                        success: function(response) {
                             console.log(response.data);
                             let dropdown = $("#warehouseDropdown");
                             dropdown.empty(); // 🔹 Pehle ka data clear karo
@@ -335,7 +276,6 @@
                 $("#warehouseDropdown").hide();
             });
         });
-
     </script>
     <script>
         function toggleLoginForm(type) {
@@ -368,67 +308,6 @@
             const formType = urlParams.get('id') || 'admin'; // Default 'admin'
             toggleLoginForm(formType);
         };
-
     </script>
-    <script>
-    $(".toggle-password1").click(function() {
-
-        $(this).toggleClass("ti-eye-off");
-        var input = $($(this).attr("toggle"));
-        if (input.attr("type") == "password") {
-            input.attr("type", "text");
-        } else {
-            input.attr("type", "password");
-        }
-    });
-
-</script>
-
     <!-- -------------------------------------------------------------------------------------------------- -->
-
-    <!-- Session Status -->
-    <!-- <x-auth-session-status class="mb-4" :status="session('status')" /> -->
-
-    <!-- <form method="POST" action="{{ route('login') }}">
-        @csrf -->
-
-    <!-- Email Address -->
-    <!-- <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div> -->
-
-    <!-- Password -->
-    <!-- <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div> -->
-
-    <!-- Remember Me -->
-    <!-- <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div> -->
-
-    <!-- <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-<a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-@endif -->
-
-    <!-- <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form> -->
 </x-guest-layout>

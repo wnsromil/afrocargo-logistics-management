@@ -27,18 +27,11 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <!-- <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
-                        <input type="number" id="contact_no1" value="{{ old('contact_no1') }}" class="form-control inp"
-                            placeholder="Enter Mobile Number" name="contact_no1"
-                            oninput="this.value = this.value.slice(0, 10)">
-                        @error('contact_no1')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror -->
                         <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
-														<input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Mobile No." name="name">
+						<input type="number" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
                     </div>
 
-
+                    <input type="hidden" id="country_code" name="country_code">
                     <div class="col-md-12">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                         <input type="number" id="alternate_mobile_no" name="alternate_mobile_no"
@@ -446,6 +439,11 @@
         document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
         document.getElementById('file_' + imageType).value = "";
     }
+    $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+    $('.col-md-12').on('click',()=>{
+        $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+    })
+
 </script>
 <script>
     $(document).ready(function() {

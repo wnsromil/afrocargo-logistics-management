@@ -35,21 +35,21 @@
                                     <img class="avatar-img" src="{{ asset($user->profile_pic) }}" alt="Profile Image"
                                         id="blah">
                                 @else
-                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/Ellipse 14.png') }}"
+                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-14.jpg') }}"
                                         alt="Profile Image" id="blah">
                                 @endif
 
                                 <span class="avatar-edit iconResize">
                                     <i class="fe fe-edit avatar-uploader-icon shadow-soft" id="profile_pic"></i>
                                 </span>
-                                    <span class="avatar-trash iconResize bg-danger" onclick="deleteImage()">
-                                        <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
-                                    </span>
+                                <span class="avatar-trash iconResize bg-danger" onclick="deleteImage()">
+                                    <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
+                                </span>
                             </label>
                         </div>
                         {{-- input --}}
                         <input id="file-input" type="file" name="profile_pic" style="display:none;"
-                            onchange="readURL(this);">
+                            onchange="readURL(this);" accept="image/png, image/jpeg">
                     </form>
                 </div>
 
@@ -57,8 +57,8 @@
                     <form method="post" action="{{ route('profile.update') }}">
                         @csrf
                         @method('patch')
-                        <input type="hidden" name="email" value="{{$user->email}}"
-                                    class="form-control" readonly placeholder="Enter Email Address">
+                        <input type="hidden" name="email" value="{{ $user->email }}" class="form-control" readonly
+                            placeholder="Enter Email Address">
                         <div class="row ">
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3 profileUpdateFont">
@@ -77,8 +77,9 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3 profileUpdateFont">
                                     <p class="profileUpdateFont required">Last Name</p>
-                                    <input type="text" name="last_name" value="{{ old('last_name', $user->last_name ) }}"
-                                        class="form-control" placeholder="Enter Last Name" required>
+                                    <input type="text" name="last_name"
+                                        value="{{ old('last_name', $user->last_name) }}" class="form-control"
+                                        placeholder="Enter Last Name" required>
                                     <span class="error text-danger">
                                         @error('last_name')
                                             {{ $message }}
@@ -91,9 +92,9 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont required">Contact No. 1</p>
-                                    <input type="number" id="mobile_code" name="phone"
+                                    <input type="text" id="mobile_code" name="phone"
                                         value="{{ old('phone', $user->phone) }}" class="form-control" placeholder=""
-                                        required>
+                                        required maxlength="10" oninput="validatePhone(this)">
                                     <span class="error text-danger">
                                         @error('phone')
                                             {{ $message }}
@@ -106,7 +107,8 @@
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Contact No. 2</p>
                                     <input type="number" id="mobile_code2" name="phone_2"
-                                        value="{{ old('phone_2', $user->phone_2 ) }}" class="form-control" placeholder="">
+                                        value="{{ old('phone_2', $user->phone_2) }}" class="form-control"
+                                        placeholder="">
                                     <span class="error text-danger">
                                         @error('phone_2')
                                             {{ $message }}
@@ -134,7 +136,7 @@
                                         @foreach ($countries as $country)
                                             <option value="{{ $country->id }}"
                                                 {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
-                                                {{ $country->name  }}</option>
+                                                {{ $country->name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="error text-danger">
@@ -177,7 +179,8 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont required">Zip Code</p>
-                                    <input type="text" name="pincode" value="{{ old('pincode', $user->pincode) }}" class="form-control"
+                                    <input type="text" name="pincode"
+                                        value="{{ old('pincode', $user->pincode) }}" class="form-control"
                                         placeholder="Enter Your Zip Code">
                                 </div>
                             </div>
@@ -201,7 +204,7 @@
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Address 2</p>
                                     <input type="text" name="address_2"
-                                        value="{{ old('address_2', $user->address_2 ) }}" class="form-control"
+                                        value="{{ old('address_2', $user->address_2) }}" class="form-control"
                                         placeholder="Enter your Address">
                                     <span class="error text-danger">
                                         @error('address_2')
@@ -228,6 +231,11 @@
     {{-- jqury cdn --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function validatePhone(input) {
+            // Sirf numbers allow kare aur max length 10 ho
+            input.value = input.value.replace(/\D/g, '').slice(0, 10);
+        }
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
