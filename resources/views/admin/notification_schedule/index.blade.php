@@ -37,22 +37,36 @@
     </x-slot> -->
 
     <x-slot name="cardTitle" >
-       <p class="head">Order Management</p>
+       <p class="head">Send Notification List</p>
 
-       <div class="usersearch d-flex">
-                <div class="top-nav-search">
-                    <form>
-                        <input type="text" class="form-control forms" placeholder="Search ">
+       <div class="usersearch d-flex usersserach">
+        
+        <div class="top-nav-search">
+            <form>
+                <input type="text" class="form-control forms" placeholder="Search ">
 
-                    </form>
-                </div>
+            </form>
+        </div>
+        <div class="mt-2">
+        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" title="Refresh"><span><i
+                                            class="fe fe-refresh-ccw"></i></span></a></button>
+        </div>
+    </div>
+    </x-slot>
+
+
+    <div class="d-flex align-items-end justify-content-end mb-1">
+            <div class="usersearch d-flex">
                 <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-											data-bs-placement="bottom" title="Refresh"><span><i
-													class="fe fe-refresh-ccw"></i></span></a></button>
+                    <a href="{{ route('admin.notification.create') }}" class="btn btn-primary buttons">
+                        <img class="imgs" src="assets/images/Vector.png">
+                        Add Notification
+                    </a>
                 </div>
             </div>
-    </x-slot>
+        </div>
+
 
     <div>
         <div class="card-table">
@@ -63,27 +77,208 @@
                             <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
-                                <th>Tracking ID</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Amount</th>
-                                <th>Payment Mode</th>
-                                {{-- <th>Warehouse</th> --}}
-                                <th>Pickup Date</th>
-                                <th>Capture Image</th>
-                                <th>Item List</th>
-                                <th>Estimate cost</th>
-                                <th>Driver Name</th>
-                                <th>Vehicle Type</th>
-                                <th>Payment Status</th>
-                                <th>Delivery Date</th>
+                                <th>Title</th>
+                                <th>Message</th>
+                                <th>Notification For</th>
+                                <th>Date/Time</th>
                                 <th>Status</th>
-                                <th>Status update</th>
-                                <th>Action</th>
+                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($parcels as $index => $parcel)
+                            <tr class="alignt">
+                                <td>1</td>
+                                <td>Notification #41</td>
+                                <td>Message Notification #41</td>
+                                <td>All</td>
+                                <td>02-12-2025 11:40 AM</td>
+                                <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                                <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                            </tr>
+                            <tr class="alignt">
+                                <td>2</td>
+                                <td>Notification #42</td>
+                                <td>Message Notification #42</td>
+                                <td>Warehouse</td>
+                                <td>02-11-2025 11:50 AM</td>
+                                <td><div class="container"><img src="../assets/img/checkbox.png"><p>Active</p></div></td>
+                                <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                                
+                            </tr>
+                            <tr class="alignt">
+                            <td>3</td>
+                            <td>Notification #43</td>
+                            <td>Message Notification #43</td>
+                            <td>Users</td>
+                            <td>02-10-2025 10:40 AM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                            
+                        </tr>
+                        <tr class="alignt">
+                            <td>4</td>
+                            <td>Notification #44</td>
+                            <td>Message Notification #44</td>
+                            <td>Drivers</td>
+                            <td>02-09-2025 10:40 AM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                           
+                        </tr>
+                        <tr class="alignt">
+                            <td>5</td>
+                            <td>Notification #45</td>
+                            <td>Message Notification #45</td>
+                            <td>Drivers</td>
+                            <td>02-15-2025 11:40 AM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                           
+                        </tr>
+                        <tr class="alignt">
+                            <td>6</td>
+                            <td>Notification #46</td>
+                            <td>Message Notification #46</td>
+                            <td>Warehouse</td>
+                            <td>02-14-2025 11:40 AM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                           
+                        </tr>
+                        <tr class="alignt">
+                            <td>7</td>
+                            <td>Notification #47</td>
+                            <td>Message Notification #47</td>
+                            <td>User</td>
+                            <td>02-02-2025 11:40 AM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                            
+                        </tr>
+                        <tr class="alignt">
+                            <td>8</td>
+                            <td>Notification #48</td>
+                            <td>Message Notification #48</td>
+                            <td>Drivers</td>
+                            <td>02-03-2025 11:40 AM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>  <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div></td>
+                            
+                        </tr>
+                        <tr class="alignt">
+                            <td>9</td>
+                            <td>Notification #49</td>
+                            <td>Message Notification #40</td>
+                            <td>Drivers</td>
+                            <td>02-14-2025 11:40 PM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>
+                            <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div>
+                            </td>
+                            
+                        </tr>
+                        <tr class="alignt">
+                            <td>10</td>
+                            <td>Notification #50</td>
+                            <td>Message Notification #50</td>
+                            <td>All</td>
+                            <td>02-22-2025 10:10 PM</td>
+                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td>
+                            <div class="dropdown dropdown-action container">
+															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																</ul>
+															</div>
+														</div>
+                            </td>
+                        </tr>
+                            <!-- @forelse ($parcels as $index => $parcel)
                                 <tr>
                                     {{-- <td><input type="checkbox" class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($parcel->status) }}" value="{{ $parcel->id }}"></td> --}}
                                     <td>{{ ++$index }}</td>
@@ -240,7 +435,7 @@
                                 <tr>
                                     <td colspan="9" class="px-4 py-4 text-center text-gray-500">No parcels found.</td>
                                 </tr>
-                            @endforelse
+                            @endforelse -->
                         </tbody>
                     </table>
                 </div>

@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div>
+    <div class="dashboardContent">
         <div class="row">
 
             <!-- <div class="d-flex justify-content-between align-items-center">

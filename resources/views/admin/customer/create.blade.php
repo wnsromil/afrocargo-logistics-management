@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
+            {{ __('Add Customer') }}
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <label class="foncolor" for="company_name"> Company </label>
                         <input type="text" name="company_name" class="form-control inp"
-                            placeholder="Enter Company Name">
+                            placeholder="Enter Company Name" value="{{ old('company_name') }}">
 
                     </div>
                     <div class="col-md-12">
@@ -27,20 +27,23 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
+                        <!-- <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
                         <input type="number" id="contact_no1" value="{{ old('contact_no1') }}" class="form-control inp"
                             placeholder="Enter Mobile Number" name="contact_no1"
                             oninput="this.value = this.value.slice(0, 10)">
                         @error('contact_no1')
                             <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                        @enderror -->
+                        <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
+														<input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Mobile No." name="name">
                     </div>
+
 
                     <div class="col-md-12">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                         <input type="number" id="alternate_mobile_no" name="alternate_mobile_no"
                             value="{{ old('alternate_mobile_no') }}" class="form-control inp"
-                            placeholder="Enter Mobile Number" oninput="this.value = this.value.slice(0, 10)">
+                            placeholder="Enter Mobile No." oninput="this.value = this.value.slice(0, 10)">
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
@@ -55,6 +58,14 @@
                         <input type="text" name="Address_2" value="{{ old('Address_2') }}" class="form-control inp"
                             placeholder="Enter Address 2">
                     </div>
+                    
+
+                    <div class="col-md-6">
+                        <label class="foncolor" for="Apartment">Apartment </label>
+                        <input type="text" name="Apartment" value="{{ old('Apartment') }}" class="form-control inp"
+                            placeholder="Enter Apartment">
+                    </div>
+
                     <div class="col-md-6">
                         <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                         <select id="country" name="country" class="js-example-basic-single select2">
@@ -71,13 +82,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="foncolor" for="Apartment">Apartment </label>
-                        <input type="text" name="Apartment" value="{{ old('Apartment') }}" class="form-control inp"
-                            placeholder="Enter Apartment">
-                    </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
                         <select id="state" name="state" class="js-example-basic-single select2">
                             <option value="">Select State</option>
@@ -90,7 +95,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
                         <select id="city" name="city" class="js-example-basic-single select2">
                             <option value="">Select City</option>
@@ -103,8 +108,8 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-12">
-                        <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                    <div class="col-md-4">
+                        <label class="foncolor" for="Zip_code">Zipcode <i class="text-danger">*</i></label>
                         <input type="text" name="Zip_code" value="{{ old('Zip_code') }}"
                             class="form-control inp" placeholder="Enter Zip">
                         @error('Zip_code')
@@ -112,9 +117,9 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="username">Username <i class="text-danger">*</i></label>
+                        <label class="foncolor " for="username">Username <i class="text-danger">*</i></label>
                         <input type="text" name="username" value="{{ old('Username') }}"
-                            class="form-control inp" placeholder="Enter User Name">
+                            class="form-control inp inputbackground" placeholder="Enter User Name">
                         @error('username')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -147,17 +152,17 @@
 
 
                     <div class="col-md-6">
-                        <label class="foncolor" for="latitude">Latitude <i class="text-danger">*</i></label>
+                        <label class="foncolor " for="latitude">Latitude <i class="text-danger">*</i></label>
                         <input type="number" name="latitude" value="{{ old('latitude') }}"
-                            class="form-control inp" placeholder="0">
+                            class="form-control inp inputbackground" placeholder="0">
                         @error('latitude')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="foncolor" for="longitude">Longitude <i class="text-danger">*</i></label>
+                        <label class="foncolor " for="longitude">Longitude <i class="text-danger">*</i></label>
                         <input type="number" name="longitude" value="{{ old('longitude') }}"
-                            class="form-control inp" placeholder="0">
+                            class="form-control inp inputbackground" placeholder="0">
                         @error('longitude')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -194,22 +199,32 @@
                         </select>
                     </div>
 
+
+                    <div class="col-md-12">
+                        <label class="foncolor" for="container"> Container </label>
+                        <select class="js-example-basic-single select2" name="warehouse_id"
+                            value="{{ old('warehouse_id') }}">
+                            <option selected="selected" value="">Select Container</option>
+                            <option></option>
+                        </select>
+                    </div>
+
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" name="signature_date" class="btn-filters  form-cs inp "
+                            <input type="text" name="signature_date" class="btn-filters  form-cs inp  inputbackground"
                                 value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="Year_to_Date">Year to Date</label>
-                        <input type="text" name="year_to_date" id="Year to Date" class="form-control inp"
+                        <label class="foncolor " for="Year_to_Date">Year to Date</label>
+                        <input type="text" name="year_to_date" id="Year to Date" class="form-control inp inputbackground"
                             placeholder="0" value="{{ old('year_to_date') }}">
                     </div>
 
                     <div class="col-md-12">
-                        <label class="foncolor" for="License_ID">License ID</label>
-                        <input type="text" id="License_ID" name="license_number" class="form-control inp"
+                        <label class="foncolor " for="License_ID">License ID</label>
+                        <input type="text" id="License_ID" name="license_number" class="form-control inp inputbackground"
                             value="{{ old('license_number') }}" placeholder="Enter License ID">
                     </div>
 
@@ -217,15 +232,14 @@
                         <label>License Expiry Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
                             <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
-                                name="expire_date" value="{{ old('license_expiry_date') }}"
-                                placeholder="mm-dd-yy" />
+                                value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
                         </div>
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="warehouse"> Language </label>
                         <select class="js-example-basic-single select2" name="language"
                             value="{{ old('language') }}">
-                            <option selected="selected">English</option>
+                            <option selected="selected">India - English</option>
                             <option>Hindi</option>
                         </select>
                     </div>
@@ -241,43 +255,91 @@
                     <div class="col-md-12">
                         <label class="foncolor" for="Read_Comment">Read Comment</label>
                         <input type="text" id="Read_Comment" name="read_comment"
-                            class="form-control inp commenth" value="{{ old('read_comment') }}"
+                            class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
                             placeholder="Enter Read Comment">
                     </div>
+                </div>
                 </div>
                 <!-- second form right side closer div is next -->
             </div>
 
-            <div class="row custodis">
-              @foreach (['signature', 'contract_signature', 'license_picture'] as $imageType)
-                  <div class="col-md-4 d-flex">
-                      <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
-                      <div class="avtarset">
-                          <!-- Image Preview -->
-                          <img id="preview_{{ $imageType }}" class="avtars" src="{{ asset('../assets/img.png') }}" alt="avatar">
-                          
-                          <!-- File Input (Hidden by Default) -->
-                          <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
-                              style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
           
-                          <div style="position: absolute; left: 120px; display: flex; flex-direction: row;">
-                              <!-- Edit Button -->
-                              <img src="{{ asset('assets/img/edit (1).png') }}" alt="edit" style="margin-bottom: 5px; cursor: pointer;"
-                                  onclick="document.getElementById('file_{{ $imageType }}').click();">
-                              
-                              <!-- Delete Button -->
-                              <img src="{{ asset('assets/img/dlt (1).png') }}" alt="delete" style="cursor: pointer;"
-                                  onclick="removeImage('{{ $imageType }}')">
-                          </div>
-                      </div>
-                  </div>
-              @endforeach
-          </div>
 
 
-            <!-- ------------ --> l
-            <!-- <div class="row custodis">
-    <div class="col-md-4">
+           
+    
+<div class="row custodis">
+  
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center avtard" >
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Profile Picture</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
+               
+                <div class="divedit">
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" >
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center  avtard" >
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Signature</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
+               
+                <div class="divedit">
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center  avtard" >
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Contract Signature</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc" >
+               
+                <div class="divedit">
+                    <img class="editstyle"src="../assets/img/edit (1).png" alt="edit" >
+                    <img class="editstyle"src="../assets/img/dlt (1).png" alt="delete" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="d-flex align-items-center justify-content-center avtard">
+            <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">License Picture</label>
+            <div style="position: relative;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
+               
+                <div class="divedit" >
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    
+
+
+
+
+
+    
+
+    <!-- <div class="col-md-3">
         <div class="d-flex">
         <label class="foncolor" for="Read_Comment">Signature</label>
      <div>
@@ -288,12 +350,37 @@
       </div>
      </div>
         </div>
-    </div>
-    <div></div>
-    <div></div>
-</div>
+    </div> -->
+    <!-- <div class="col-md-3">
+        <div class="d-flex">
+        <label class="foncolor" for="Read_Comment">Contract Signature</label>
+     <div>
+      <img  src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 300px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+        </div>
+    </div> -->
 
- -->
+    <!-- <div class="col-md-3">
+        <div class="d-flex">
+        <label class="foncolor" for="Read_Comment">License Picture</label>
+     <div>
+      <img  src="../assets/img.png" alt="avtar">
+      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
+        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
+        <img src="../assets/img/dlt (1).png" alt="delete">
+      </div>
+     </div>
+        </div>
+    </div> -->
+
+   
+
+
+
 
 
 
@@ -335,30 +422,30 @@
 
 </x-app-layout>
 <script>
-  // 🖼 Image Preview Function
-  function previewImage(input, imageType) {
-      if (input.files && input.files[0]) {
-          let file = input.files[0];
+    // 🖼 Image Preview Function
+    function previewImage(input, imageType) {
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
 
-          // ✅ Sirf PNG ya JPG Allow Hai
-          if (file.type === "image/png" || file.type === "image/jpeg") {
-              let reader = new FileReader();
-              reader.onload = function (e) {
-                  document.getElementById('preview_' + imageType).src = e.target.result;
-              };
-              reader.readAsDataURL(file);
-          } else {
-              alert("Only PNG & JPG images are allowed!");
-              input.value = ""; // Invalid file ko remove karna
-          }
-      }
-  }
+            // ✅ Sirf PNG ya JPG Allow Hai
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview_' + imageType).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only PNG & JPG images are allowed!");
+                input.value = ""; // Invalid file ko remove karna
+            }
+        }
+    }
 
-  // ❌ Remove Image Function
-  function removeImage(imageType) {
-      document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
-      document.getElementById('file_' + imageType).value = "";
-  }
+    // ❌ Remove Image Function
+    function removeImage(imageType) {
+        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+        document.getElementById('file_' + imageType).value = "";
+    }
 </script>
 <script>
     $(document).ready(function() {

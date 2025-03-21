@@ -185,6 +185,7 @@
     /* Adjust as needed */
 }
 
+
 .sidebarFont {
     font-family: "Poppins", serif;
     font-size: 50px;
@@ -384,8 +385,6 @@
     border-radius: 0px;
     margin: 0px 5px 0px 5px;
 }
-
-
 
 .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
     background-color: #1983FE;
@@ -650,3 +649,118 @@ h1, h2, h3, h4, h5, h6 {
 
     justify-content: left;
 }
+
+
+/* Mannual CSS  */
+.authTabDiv {
+    border-bottom: 2px solid #737B8B;
+    width: max-content;
+    margin: auto;
+}
+
+.btnBorder {
+    border: none;
+    color: black;
+    margin-bottom: -3px;
+    border-bottom: 5px solid #00000000 !important;
+    padding: 5px 10px !important;
+}
+.btnBorder.active1 {
+    text-decoration: none !important;
+    border-bottom: 5px solid #203A5F !important;
+    color: #203A5F !important;
+    font-weight: 600;
+}
+.btn-primary
+{
+    background-color: #203A5F!important;
+}
+.fs_18 
+{
+    font-size: 18px;
+}
+.fs_20 
+{
+    font-size: 20px;
+}
+.fs_22
+{
+    font-size: 22px;
+}
+.fs_24
+{
+    font-size: 24px;
+}
+.fs_26
+{
+    font-size: 26px;
+}
+.fw_600
+{
+    font-weight: 600!important;
+}
+.fw_500
+{
+    font-weight: 500!important;
+}
+.col00
+{
+    color: #000000;
+}
+.col3A
+{
+    color: #3A3A3A;
+}
+.col737
+{
+    color: #737B8B;
+}
+.coldarkblue
+{
+    color: #203A5F;
+}
+.authBTN {
+    border-radius: 0 !important;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    justify-content: center;
+    text-transform: capitalize !important;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+}
+.text-danger, .dropdown-menu > li > a.text-danger {
+    color: #BB1F23 !important;
+}
+.toggle-password1 {
+    cursor: pointer;
+    font-size: 20px;
+    color: #595C5F;
+}
+.login-card i.ti 
+{
+    font-size: 20px;
+    color: #595C5F;
+}
+input::placeholder,
+select::placeholder,
+textarea::placeholder
+{
+    color: #595C5F!important;
+}
+input,
+select,
+textarea,
+[type=text], input:where(:not([type])), [type=email], [type=url], [type=password], [type=number], [type=date], [type=datetime-local], [type=month], [type=search], [type=tel], [type=time], [type=week], [multiple], textarea, select
+{
+    color: #3a3a3a!important;
+    font-family: 'Poppins', serif!important;
+    font-size: 14px!important;
+}
+.br_12,
+.bg-image-login .w-full.sm\:max-w-md.mt-6.bg-white.shadow-md.overflow-hidden.sm\:rounded-lg
+{
+    border-radius: 12px!important;
+}
+
+

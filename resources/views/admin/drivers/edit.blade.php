@@ -144,7 +144,7 @@
                     <div class="input-block mb-3">
                         <label for="license_document">License Document</label>
                         <input type="file" name="license_document" class="form-control" placeholder="Enter Address"
-                            value="{{ old('license_document') }}">
+                            value="{{ old('license_document') }}" accept=".png, .jpg, .jpeg">
                         @error('license_document')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
