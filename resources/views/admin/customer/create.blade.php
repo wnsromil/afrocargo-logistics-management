@@ -27,18 +27,11 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <!-- <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
-                        <input type="number" id="contact_no1" value="{{ old('contact_no1') }}" class="form-control inp"
-                            placeholder="Enter Mobile Number" name="contact_no1"
-                            oninput="this.value = this.value.slice(0, 10)">
-                        @error('contact_no1')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror -->
                         <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
-														<input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Mobile No." name="name">
+						<input type="number" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
                     </div>
 
-
+                    <input type="hidden" id="country_code" name="country_code">
                     <div class="col-md-12">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                         <input type="number" id="alternate_mobile_no" name="alternate_mobile_no"
@@ -271,14 +264,14 @@
 <div class="row custodis">
   
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center avtard" >
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Profile Picture</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit">
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" >
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" >
                 </div>
             </div>
         </div>
@@ -286,14 +279,14 @@
 
    
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center  avtard" >
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Signature</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit">
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
                 </div>
             </div>
         </div>
@@ -301,28 +294,28 @@
 
    
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center  avtard" >
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Contract Signature</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc" >
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit">
+                    <img class="editstyle"src="../assets/img/edit (1).png" alt="edit" >
+                    <img class="editstyle"src="../assets/img/dlt (1).png" alt="delete" >
                 </div>
             </div>
         </div>
     </div>
 
     <div class="col-md-3">
-        <div class="d-flex align-items-center justify-content-center" style="position: relative; height: 150px;">
+        <div class="d-flex align-items-center justify-content-center avtard">
             <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">License Picture</label>
             <div style="position: relative;">
-                <img src="../assets/img.png" alt="avatar" style="border-radius: 50%; width: 100px; height: 100px;">
+                <img src="../assets/img.png" alt="avatar" class="avtarc">
                
-                <div style="position: absolute; top: -10px; right: -10px; display: flex; flex-direction: row; gap: 5px;">
-                    <img src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
-                    <img src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
+                <div class="divedit" >
+                    <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
+                    <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
                 </div>
             </div>
         </div>
@@ -446,6 +439,11 @@
         document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
         document.getElementById('file_' + imageType).value = "";
     }
+    $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+    $('.col-md-12').on('click',()=>{
+        $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+    })
+
 </script>
 <script>
     $(document).ready(function() {

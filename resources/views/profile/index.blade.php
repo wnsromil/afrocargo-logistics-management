@@ -32,8 +32,8 @@
                             </div>
                         </span>
                         <div class="customer-details-cont">
-                            <h6 class="fs_20 fw_600 col00 mb-3">{{ @$user->name ?? '--'}}</h6>
-                            <p class="col3A fw_mid">Cl-12345</p>
+                            <h6 class="fs_20 fw_600 col00 mb-3">
+                                {{ @$user->name ?? '--'}} {{ @$user->last_name ?? ''}}</h6>
                         </div>
                     </div>
                 </div>
@@ -68,8 +68,8 @@
                         </span>
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-3">Phone Number</h6>
-                            <p class="col3A fw_mid">{{ $user->phone ?? '+1 433 556 4443' }}</p>
-                            <p class="col3A fw_mid">+1 525 564 7447</p>
+                            <p class="col3A fw_mid">{{ $user->phone ?? '--' }}</p>
+                            <p class="col3A fw_mid">{{ $user->phone_2 ?? '--'}}</p>
                         </div>
                     </div>
                 </div>
@@ -89,8 +89,9 @@
                         </span>
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-3">Address</h6>
-                            <p class="col3A fw_mid">{{ $user->address ?? '4712 Cherry Ridge Drive Rochester, NY 14620.' }}</p>
-                            <p class="col3A fw_mid">B2 Luxe Hotel, San Tiago NY 14620.</p>
+                            <p class="col3A fw_mid">{{ $user->address ?? '--' }}</p>
+                            <br>
+                            <p class="col3A fw_mid">{{ $user->address_2 ?? '--'}}</p>
                         </div>
                     </div>
                 </div>

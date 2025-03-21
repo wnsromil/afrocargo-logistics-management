@@ -51,10 +51,10 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // try {
+         try {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'contact_no1' => 'required|digits:10',
+            'mobile_code' => 'required|digits:10',
             'email' => 'required|string|max:255|unique:users,email',
             'alternate_mobile_no' => 'nullable|digits:10',
             'address_1' => 'required|string|max:255',
@@ -94,7 +94,7 @@ class CustomerController extends Controller
         $userData = [
             'name'          => $validated['first_name'],
             'email'          => $validated['email'],
-            'phone'   => $validated['contact_no1'],
+            'phone'   => $validated['mobile_code'],
             'phone_2'      => $validated['alternate_mobile_no'] ?? null, // Optional Field
             'address'        => $validated['address_1'],
             'address_2'        => $request->Address_2,
@@ -120,7 +120,8 @@ class CustomerController extends Controller
             'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
             'license_document' => $imagePaths['license_picture'] ?? null,
             'profile_pic' => $imagePaths['profile_pics'] ?? null,
-            'signup_type' => 'for_admin'
+            'signup_type' => 'for_admin',
+            'country_code'        => $request->country_code,
         ];
         if (!empty($request->license_expiry_date)) {
             $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -135,10 +136,10 @@ class CustomerController extends Controller
 
         return redirect()->route('admin.customer.index')
             ->with('success', 'User created successfully');
-        // } catch (\Illuminate\Validation\ValidationException $e) {
-        //     // Validation Errors dikhane ke liye
-        //     return response()->json(['errors' => $e->errors()], 422);
-        // }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Validation Errors dikhane ke liye
+            return response()->json(['errors' => $e->errors()], 422);
+        }
     }
 
     /**

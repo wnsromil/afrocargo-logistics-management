@@ -39,7 +39,26 @@
 
     <x-slot name="cardTitle">
         <p class="head">All Vehicles</p>
-        <div class="usersearch d-flex">
+        <div class="usersearch d-flex usersserach">
+        
+        <div class="top-nav-search">
+        <form action="{{ url()->current() }}" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control forms" placeholder="Search" id="search"
+                            name="search" value="{{ request()->search }}">
+                        {{-- <button type="submit">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button> --}}
+                    </div>
+                </form>
+        </div>
+        <div class="mt-2">
+        <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
+                        href="{{ route('admin.vehicle.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+        </div>
+    </div>
+        <!-- <div class="usersearch d-flex">
             <div class="top-nav-search">
                 <form action="{{ url()->current() }}" method="get">
                     <div class="input-group">
@@ -56,7 +75,7 @@
                         href="{{ route('admin.vehicle.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
             </div>
-        </div>
+        </div> -->
     </x-slot>
 
 

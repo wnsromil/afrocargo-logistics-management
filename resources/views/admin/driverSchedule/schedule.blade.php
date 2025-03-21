@@ -28,7 +28,11 @@
                 <div class="d-flex">
                     <div class="col-md-4">
                         <!-- ------------------------------------------------------------------- -->
-                        <div id="calendar">
+
+                        <div id="calendar-container">
+                            <div id="calendar"></div>
+
+             
                         </div>
                         <!-- ------------------------------------------------------------------- -->
 
@@ -373,9 +377,29 @@
         //         });
         // })
     </script>
+        
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var calendarEI = document.getElementById("calendar");
+            var calendar = new FullCalendar.Calendar(calendarEI, {
+                initialView: 'dayGridMonth',
+                themeSystem: 'bootstrap',
+                selectable: true,
+                editable: false,
+                height: 300,
+                headerToolbar: {
+                    left: 'prev',
+                    center: 'title',
+                    right: 'next'
+                }
+            });
+            calendar.render();
+        });
+    </script>
 
 
-    <script>
+    <!-- <script>
         function generateCalender(year, month) {
             const daysContainer = document.getElementById('calendar-body');
             const header = document.getElementById("calendar-header");
@@ -395,7 +419,7 @@
         }
 
         function selectDate(element)
-    </script>
+    </script> -->
 
 
 </x-app-layout>

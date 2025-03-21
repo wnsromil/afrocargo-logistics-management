@@ -6,18 +6,20 @@
     <x-slot name="cardTitle">
         <p class="head">All Containers</p>
 
-        <div class="usersearch d-flex">
-            <div class="top-nav-search">
-                <form>
-                    <input type="text" class="form-control forms" placeholder="Search ">
-                </form>
-            </div>
-            <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
-            </div>
+        <div class="usersearch d-flex usersserach">
+        
+        <div class="top-nav-search">
+            <form>
+                <input type="text" class="form-control forms" placeholder="Search ">
+
+            </form>
         </div>
+        <div class="mt-2">
+        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" title="Refresh"><span><i
+                                            class="fe fe-refresh-ccw"></i></span></a></button>
+        </div>
+    </div>
     </x-slot>
 
     <div>
