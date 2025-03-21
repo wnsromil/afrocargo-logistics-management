@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-       <p class="subhead">Add Driver</p>
+        <p class="subhead">Add Driver</p>
     </x-slot>
 
     <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
@@ -99,8 +99,6 @@
                     <div class="input-block mb-3">
                         <label class="foncolor" for="license_number">License Number<i class="text-danger">*</i></label>
                         <input type="text" name="license_number" class="form-control inp" placeholder="Enter Address"
-
-          
                             value="{{ old('license_number') }}">
                         @error('license_number')
                             <span class="text-danger">{{ $message }}</span>
@@ -108,12 +106,13 @@
                     </div>
                 </div>
 
-                 <!-- Address -->
-                 <div class="col-lg-4 col-md-6 col-sm-12">
+                <!-- Address -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label  class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                        <input type="date" name="license_expiry_date" class="form-control inp" placeholder="Enter Address"
-                            value="{{ old('license_expiry_date') }}">
+                        <label class="foncolor" for="license_expiry_date">License Expiry Date<i
+                                class="text-danger">*</i></label>
+                        <input type="date" name="license_expiry_date" class="form-control inp"
+                            placeholder="Enter Address" value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -123,9 +122,9 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor" for="license_document">License Document<i class="text-danger">*</i></label>
+                        <label class="foncolor" for="license_document">License Document<i
+                                class="text-danger">*</i></label>
                         <input type="file" name="license_document" class="form-control inp" placeholder="Enter Address"
-   
                             value="{{ old('license_document') }}">
                         @error('license_document')
                             <span class="text-danger">{{ $message }}</span>
@@ -138,11 +137,11 @@
                     <div class="input-block mb-3">
                         <label class="foncolor" for="status">Status <i class="text-danger">*</i></label>
                         <div class="status-toggle">
-    <span >Active</span>
-    <input id="rating_1" class="check" type="checkbox" value="Active">
-    <label for="rating_1" class="checktoggle checkbox-bg"></label>
-    <span class="inactive">Inactive</span>
-</div>
+                            <span>Active</span>
+                            <input id="rating_1" class="check" type="checkbox" value="Active">
+                            <label for="rating_1" class="checktoggle checkbox-bg"></label>
+                            <span class="inactive">Inactive</span>
+                        </div>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -152,13 +151,14 @@
         </div>
 
         <div class="add-customer-btns text-end">
-           
-           <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button> 
-               
-                <button type="submit" class="btn btn-primary ">Submit</button>
-                
 
-    
-                
+            <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary ">Submit</button>
+
+        </div>
+
+
     </form>
 </x-app-layout>

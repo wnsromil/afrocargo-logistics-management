@@ -11,15 +11,15 @@
             <!-- <div class="d-flex justify-content-between align-items-center">
                         <div class="row"> -->
             <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4 ">
+                <div class="row row-cols-1 row-cols-md-3 g-4 dash-gap">
 
                     <!-- <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4"> -->
 
 
                     <!-- First Row (4 Columns) -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
 
                                 <!-- <div class="dash-widget-header col-md-12 "> -->
                                 <div class="col-md-8">
@@ -48,8 +48,8 @@
 
                     <!-- --------- 2nd -------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8">
                                     <div class="dash-count">
@@ -77,8 +77,8 @@
 
                     <!--  ---------- 3rd --------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -106,8 +106,8 @@
 
                     <!-- -------------- 4th -------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-3 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -161,11 +161,11 @@
             <!-- Second Row (4 Columns) -->
             <!-- ----------------- 5th -------------------- -->
             <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4 ">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -195,8 +195,8 @@
                     <!-- -------------- 6th-------------------- -->
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -225,8 +225,8 @@
 
                     <!-- ---------------- 7th ------------ -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -256,8 +256,8 @@
 
                     <!-- --------------------- 8th ----------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -303,8 +303,8 @@
 
                     <!-- ------------------------- 9th card --------------------------->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -333,8 +333,8 @@
 
                     <!-- -------------------------10th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -363,8 +363,8 @@
 
                     <!-- ------------------------- 11th ------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -392,8 +392,8 @@
                     </div>
                     <!-- ------------------------- 12th -------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -429,8 +429,8 @@
 
                     <!-- ------------------------- 13th card --------------------------->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -459,8 +459,8 @@
 
                     <!-- -------------------------14th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75">
-                            <div class="d-flex flex-row justify-content-between">
+                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
+                            <div class="d-flex flex-row justify-content-between py-3">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-8 float-left">
                                     <div class="dash-count">
@@ -502,7 +502,7 @@
 
         <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
             <h5 class='cardh5Size'>Latest Container</h5>
-            <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size" type="button">See All</bitton>
+            <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button>
         </div>
 
 
@@ -511,27 +511,27 @@
                 <!-- --------------------------- 1st -------------------------------- -->
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards inovices-card w-100 setCard setCardSize">
+                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-3 pe-1">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>KG 2114</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>KG 2114</p>
+                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-normal">
+                                    Total Order : <span class="fw-medium">120</span><br>
+                                    Total Amt : <span class="fw-medium">$2220</span><br>
+                                    <span class=" text-success">Received Amt : </span><span
+                                        class="fw-medium">$1520</span><br>
+                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
                                 </div>
                             </div>
 
                             <div class="col-4">
-                                <div class="my-3">
-                                    <div class="status-toggle float-end me-3">
-                                        <input id="rating_1" class="check" type="checkbox">
-                                        <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
+                                <!-- <div class="my-3"> -->
+                                <div class="status-toggle float-end">
+                                    <input id="rating_1" class="toggle-btn1 check" type="checkbox">
+                                    <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
                                 </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -541,28 +541,27 @@
 
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards inovices-card w-100 setCard setCardSize checkbox-cardBg">
-                        <div class="d-flex flex-row justify-content-between">
-
-                            <div class="col-md-8 justify-content-start p-3 pe-1">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize bg-selected">
+                    <div class="d-flex flex-row justify-content-between">
+                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
+                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-normal">
+                                    Total Order : <span class="fw-medium">120</span><br>
+                                    Total Amt : <span class="fw-medium">$2220</span><br>
+                                    <span class=" text-success">Received Amt : </span><span
+                                        class="fw-medium">$1520</span><br>
+                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
                                 </div>
                             </div>
 
                             <div class="col-4 justify-content-end">
-                                <div class="my-3">
-                                    <div class="status-toggle float-end me-3">
-                                        <input id="rating_2" class="check" type="checkbox" checked="">
-                                        <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
+                                <!-- <div class="my-3"> -->
+                                <div class="status-toggle float-end">
+                                    <input id="rating_2" class="toggle-btn1 check" type="checkbox" checked="">
+                                    <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
                                 </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -571,28 +570,26 @@
 
                 <!-- --------------------------------- 3rd ------------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards inovices-card w-100 setCard setCardSize">
-                        <div class="d-flex flex-row justify-content-between">
-
-                            <div class="col-md-8 justify-content-start p-3 pe-1">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
+                    <div class="d-flex flex-row justify-content-between">
+                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
+                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-normal">
+                                    Total Order : <span class="fw-medium">120</span><br>
+                                    Total Amt : <span class="fw-medium">$2220</span><br>
+                                    <span class=" text-success">Received Amt : </span><span class="fw-medium">$1520</span><br>
+                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
                                 </div>
                             </div>
 
                             <div class="col-4 justify-content-end">
-                                <div class="my-3">
-                                    <div class="status-toggle float-end me-2">
-                                        <input id="rating_3" class="check" type="checkbox">
-                                        <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
+                                <!-- <div class="my-3"> -->
+                                <div class="status-toggle float-end">
+                                    <input id="rating_3" class="toggle-btn1 check" type="checkbox">
+                                    <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
                                 </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -601,29 +598,27 @@
 
                 <!-- --------------------------------------- 4th ---------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards inovices-card w-100 setCard setCardSize">
-                        <div class="d-flex flex-row justify-content-between">
-
-                            <div class="col-md-8 justify-content-start p-3 pe-1 cardFontSize">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>NF
-                                        3501</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
+                    <div class="d-flex flex-row justify-content-between">
+                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>NF 3501</p>
+                            
+                                        <h5 class='countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-normal">
+                                    Total Order : <span class="fw-medium">120</span><br>
+                                    Total Amt : <span class="fw-medium">$2220</span><br>
+                                    <span class=" text-success">Received Amt : </span><span class="fw-medium">$1520</span><br>
+                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
                                 </div>
                             </div>
 
                             <div class="col-4 justify-content-end">
-                                <div class="my-3">
-                                    <div class="status-toggle float-end me-3">
-                                        <input id="rating_4" class="check" type="checkbox">
-                                        <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
+                                <!-- <div class="my-3"> -->
+                                <div class="status-toggle float-end">
+                                    <input id="rating_4" class="toggle-btn1 check" type="checkbox">
+                                    <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
                                 </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -649,7 +644,7 @@
                         <h5 class='cardAnalyticsSize'>Customers and Drivers Analytics</h5>
                     </div>
                 </div>
-                <hr class="border border-dark border-2 opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-opacity-25 mt-0">
                 </hr>
 
 
@@ -694,7 +689,7 @@
                         <h5 class='cardAnalyticsSize'>Earning Analytics</h5>
                     </div>
                 </div>
-                <hr class="border border-dark border-2 opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-opacity-25 mt-0">
                 </hr>
 
                 <div class="card-body">
@@ -1289,7 +1284,18 @@
 
 
 
-
+    <script>
+        document.querySelectorAll('.toggle-btn1').forEach(input => {
+            input.addEventListener("change", function () {
+                const parentDiv = this.closest(".card");
+                if (this.checked) {
+                    parentDiv.classList.add('bg-selected');
+                } else {
+                    parentDiv.classList.remove('bg-selected');
+                }
+            })
+        })
+    </script>
 
 
     <!-- <script>

@@ -70,6 +70,7 @@
     font-size: 12px;
 }
 
+
 .font13 {
     font-size: 13px;
     font-weight: medium;
@@ -176,9 +177,6 @@
     margin-left: 0px;
     color: #D9D9D9;
 }
-
-
-
 
 .checkbox-cardBg {
     background-color: #D3FFE6;
@@ -560,9 +558,13 @@ h6 {
 }
 
 .selected {
+    background: #203A5F;
     color: white !important;
 }
-
+.bg-selected{
+    background-color: #D3FFE6;
+    border-color: green;
+}
 .img-size {
     height: 55px;
     width: 60px;
@@ -697,18 +699,20 @@ h6 {
     color: #a0a0a0;
 }
 
-
-.calemdar-contaner {
+/* --- Calendar --- */
+.calemdar-container {
     background: #f9f9f9;
     border-radius: 10px;
     padding: 15px;
     width: 280px;
+    border: 1px solid black !important;
+    border-radius: 4px ;
     box-shadow: 2px 2px 15px rgba(0, 0, 0.2);
     text-align: center;
     position: relative;
 }
 
-.calemdar-header {
+.calendar-header {
     font-weight: bold;
     font-size: 18px;
     padding-bottom: 10px;
@@ -757,10 +761,10 @@ h6 {
 .opacity-100 {
     opacity: .50;
 }
-
+/* 
 .bg-dark {
     background-color: #343a40;
-}
+} */
 
 .margin-margin {
     margin-top: 35px;
@@ -779,16 +783,16 @@ h6 {
 }
 
 .fc-toolbar {
-    background: #00AEEF;
+    background: transparent;
     text-align: center;
     border-radius: 8px;
     padding: 10px 0px;
 }
 
 .fc-toolbar-title {
-    color: white !important;
-    font-size: 18px;
-    font-weight: bold;
+    color: black !important;
+    font-size: 14px !important;
+    font-weight: 400px !important;
 }
 
 .fc-daygrid {
@@ -806,13 +810,6 @@ h6 {
     font-size: 14px;
 }
 
-.fc-day-today {
-    background: #00AEEF;
-    color: white !important;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
 .fc-button {
     background: transparent;
     color: white !important;
@@ -824,24 +821,21 @@ h6 {
     color: #fff !important;
 }
 
-.fc-prev-button,
-.fc-next-button {
-    font-size: 18px !important;
-    color: white !important;
-    background: none !important;
-    border: none !important;
-}
 
 .fc-prev-button::before {
-    content: "<";
+   background: white !important;
+   border: none !important;
     font-size: 20px;
     font-weight: bold;
+    background-color: black !important;
 }
 
 .fc-next-button::before {
-    content: ">";
-    font-size: 20px;
-    font-weight: bold;
+    background: white !important;
+    border: none !important;
+     font-size: 20px;
+     font-weight: bold;
+     background-color: black !important;
 }
 
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {

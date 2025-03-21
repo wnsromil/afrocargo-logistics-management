@@ -51,6 +51,9 @@ Route::get('/driverschedule', function () {
     return view('admin.driverschedule.schedule');
 });
 
+Route::get('/driverinventory', function () {
+    return view('admin.driverinventory.index');
+});
 
 
 Route::get('/', function () {
