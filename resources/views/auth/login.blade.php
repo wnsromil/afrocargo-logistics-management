@@ -1,5 +1,6 @@
 <x-guest-layout class="bg-image-login">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
+
     <style>
         .w-100 {
             width: 100%;
@@ -11,14 +12,24 @@
             background-size: cover;
         }
 
-        .active {
-            text-decoration: underline;
-            font-weight: bold;
-            color: black;
-            opacity: 0.6;
-            transition: 0.5s;
+        .login-border-width {
+            width: 243px;
+            margin-left: 72px;
+            position: absolute;
         }
 
+        .active1 {
+            text-decoration: none;
+            border-bottom: 4px solid #203A5F !important;
+            font-weight: 800px !important;
+            color: #203A5F !important;
+            position: relative !important;
+        }
+
+        /* .active1.active-border{
+            border-bottom: 4px solid #203A5F !important;
+            position: relative !important;
+        } */
 
         .backgroundImage {
             background-image: url('../assets/images/Background.svg');
@@ -41,7 +52,8 @@
 
     </style>
 
-    <div class="backgroundImage align-items-center login-card p-5 br_10">
+    <div class="backgroundImage align-items-center login-card login-container p-5">
+
         <div class="container row">
             <div class="container col col-lg-12 d-flex red-rose align-items-center bg-white">
                 <div class="col col-md-2">
@@ -59,30 +71,56 @@
 
         <div class="row mt-3 mb-2">
             <div class="d-block">
-                <div class="d-flex text-center authTabDiv">
 
+                <div class="col-md-12 d-flex text-center ps-4 ms-5">
                     <div id="click"></div>
+                    <button id="adminBtn" type="button" class="border-0 th-font fw-semiBold p-1 pe-2 faded"
+                        onclick="toggleLoginForm('admin')">Admin</button>
 
-                    <button id="adminBtn" type="button" class="btnBorder th-font fw-semiBold col737 me-3 activity-feed" onclick="toggleLoginForm('admin')">Admin</button>
-
-                    <button id="managerBtn" type="button" class="btnBorder th-font fw-semiBold col737" onclick="toggleLoginForm('manager')">Warehouse Manager</button>
-
+                    <button id="managerBtn" type="button" class="border-0 th-font fw-semiBold p-1 ps-2 faded"
+                        onclick="toggleLoginForm('manager')">Warehouse Manager</button>
                 </div>
+
+                <!-- <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div> -->
+                <!-- First Border -->
+                <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div>
+
+
             </div>
         </div>
 
         <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+        <x-auth-session-status :status="session('status')" />
 
         <!-- ----------------------------------- admin login page ------------------------------------------ -->
         <form method="POST" action="{{ route('login') }}" id="admin" style="display:none;">
             @csrf
 
-            <div class="input-group mb-4 border rounded mt-4">
-                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0" required autofocus autocomplete="username" placeholder="Username or email address">
+
+            <!-- <div class="input-group mb-4 border rounded mt-4">
+                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0"
+                    required autofocus autocomplete="username" placeholder="Username or email address">
+
                 <span class="input-group-text">
                     <i class="ti ti-user"></i>
                 </span>
+            </div> -->
+
+
+            <div class="input-group input-group-lg bg-color2 my-4">
+                <input id="email" type="email" name="email" :value="old('email')" required autofocus
+                    autocomplete="username"
+                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
+                    placeholder="Username or email address" aria-label=".form-control-lg example">
+                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                    id="inputGroup-sizing-lg">
+                    <i class="fa-regular fa-user" style="color: #595C5F"></i>
+                </span>
+            </div>
+
+            <!--     <div class="input-group mb-4 border rounded my-4">
+                <input id="password" type="password" name="password" :value="old('email')"
+
                 @if ($errors->has('email'))
                     <div class="text-danger mt-2">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -97,6 +135,19 @@
                 <span class="input-group-text">
                     <span toggle="#password" class="ti ti-eye field-icon toggle-password1"></span>
                 </span>
+
+            </div> -->
+            <div class="input-group input-group-lg bg-color2">
+                <input id="password" type="password" name="password" :value="old('email')" required
+                    autocomplete="current-password" placeholder="Password"
+                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
+                    aria-label=".form-control-lg example">
+                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                    id="inputGroup-sizing-lg">
+                    <i class="fe fe-unlock border-start" style="color: #595C5F" data-bs-toggle="tooltip"
+                        title="fe fe-unlock"></i>
+                </span>
+
                 @if ($errors->has('password'))
                     <div class="text-danger mt-2">
                         <strong>{{ $errors->first('password') }}</strong>
@@ -116,7 +167,9 @@
                 @if (Route::has('password.request'))
                 @endif
 
-                <x-primary-button class="btn w-100 btn-primary authBTN">
+
+                <x-primary-button class="btn w-100 justify-content-center border rounded-0 text-capitalize login-btn">
+
                     {{ __('Login') }}
                 </x-primary-button>
             </div>
@@ -126,13 +179,33 @@
         <form method="POST" action="{{ route('login') }}" id="manager" style="display:none;">
             @csrf
 
-            <div class="input-group mb-3 border rounded mt-4 position-relative">
+            <div class="input-group mb-3 border rounded mt-4">
+
                 <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
                     class="form-control rounded border-0" required autofocus autocomplete="off"
                     placeholder="Enter warehouse code">
                 <span class="input-group-text bg-color border-start">
                     <i class="ti ti-building-warehouse"></i>
                 </span>
+
+            </div>
+
+            <div class="input-group input-group-lg bg-color2 my-4">
+                <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')" required
+                    autofocus autocomplete="username"
+                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
+                    placeholder="Enter warehouse code" aria-label=".form-control-lg example">
+                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                    id="inputGroup-sizing-lg">
+                    <img src="../assets/images/warehouse.svg" alt="#">
+                </span>
+            </div>
+
+            <!-- <div class="input-group mb-3 border rounded my-4">
+                <input id="email" type="email" name="email" :value="old('email')"
+                    class="form-control rounded border-0 bg-light" required autofocus autocomplete="username"
+                    placeholder="Username or email address">
+
 
                 <!-- ✅ Dropdown Jo Input Ke Niche Dikhe -->
                 <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100" style="display: none; z-index: 1000; top: 42px;">
@@ -147,9 +220,27 @@
 
             <div class="input-group mb-3 border rounded my-4">
                 <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0 bg-light" required autofocus autocomplete="username" placeholder="Username or email address">
+
                 <span class="input-group-text">
                     <i class="ti ti-user"></i>
                 </span>
+
+            </div> -->
+            <div class="input-group input-group-lg bg-color2 my-4">
+                <input id="email" type="email" name="email" :value="old('email')" required autofocus
+                    autocomplete="username"
+                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
+                    placeholder="Username or email address" aria-label=".form-control-lg example">
+                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                    id="inputGroup-sizing-lg">
+                    <!-- <i class="fa-regular fa-user" style="color: #595C5F"></i> -->
+                    <i class="fe fe-user" style="color: #595C5F"></i>
+                </span>
+            </div>
+
+            <!-- <div class="input-group mb-3 border rounded my-4">
+                <input id="password" type="password" name="password" :value="old('email')"
+
                 @if ($errors->has('email'))
                     <div class="text-danger mt-2">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -159,10 +250,23 @@
 
             <div class="input-group mb-3 border rounded my-4">
                 <input id="password1" type="password" name="password" :value="old('password')"
+
                     class="form-control rounded bg-color border-0" required autocomplete="current-password"
                     placeholder="Password">
                 <span class="input-group-text">
                     <span toggle="#password1" class="ti ti-eye field-icon toggle-password1"></span>
+                </span>
+            </div> -->
+
+            <div class="input-group input-group-lg bg-color2">
+                <input id="password" type="password" name="password" :value="old('email')" required
+                    autocomplete="current-password" placeholder="Password"
+                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
+                    aria-label=".form-control-lg example">
+                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                    id="inputGroup-sizing-lg">
+                    <i class="fe fe-eye border-start" style="color: #595C5F" data-bs-toggle="tooltip"
+                        title="fe fe-eye"></i>
                 </span>
             </div>
 
@@ -178,7 +282,9 @@
                 @if (Route::has('password.request'))
                 @endif
 
-                <x-primary-button class="btn w-100 btn-primary authBTN">
+
+                <x-primary-button class="btn w-100 justify-content-center border rounded-0 text-capitalize login-btn">
+
                     {{ __('Login') }}
                 </x-primary-button>
             </div>

@@ -15,10 +15,6 @@
             </div>
         </div>
      -->
-
-
-
-
     <x-slot name="cardTitle">
         <p class="head">All Inventory</p>
 
