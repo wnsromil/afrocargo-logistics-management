@@ -23,7 +23,7 @@
                 <div class="col-md-5">
                     <div class="position-relative">
                         <input type="password" class="form-control inp" id="current-password" name="current_password"
-                            placeholder="Enter Current Password">
+                        value="{{ old('current_password') }}" placeholder="Enter Current Password">
                         <span toggle="#current-password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
                     @error('current_password')
@@ -38,7 +38,7 @@
                 <div class="col-md-5">
                     <div class="position-relative">
                         <input type="password" class="form-control inp" id="new_password" name="password"
-                            placeholder="Enter New Password">
+                            placeholder="Enter New Password" value="{{ old('password') }}">
                         <span toggle="#new_password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
                     @error('password')
@@ -52,7 +52,7 @@
                 <label class="col-md-3 foncolor">Confirm New Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
-                        <input type="password" class="form-control inp" id="confirm_password"
+                        <input type="password" class="form-control inp" id="confirm_password" value="{{ old('confirm_password') }}"
                             name="password_confirmation" placeholder="Enter Confirm New Password">
                         <span toggle="#confirm_password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
