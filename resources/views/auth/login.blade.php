@@ -98,10 +98,10 @@
             </div> -->
 
 
-            <div class="input-group input-group-lg bg-color2 my-4">
+            <div class="input-group input-group-lg bg-color2 my-4 border  border-opacity-25">
                 <input id="email" type="email" name="email" :value="old('email')" required autofocus
                     autocomplete="username"
-                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
+                    class="form-control border-1 form-control-lg profileUpdateFont" type="text"
                     placeholder="Username or email address" aria-label=".form-control-lg example">
                 <span class="input-group-text border border-dark border-opacity-25 border-start-0"
                     id="inputGroup-sizing-lg">
@@ -153,9 +153,10 @@
             @csrf
             <div class="input-group mb-3 border rounded mt-4 position-relative">
                 <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
-                    class="form-control rounded border-0" required autofocus autocomplete="off"
+                    class="form-control border-1 form-control-lg profileUpdateFont input-placeholder"
+                     required autofocus autocomplete="off"
                     placeholder="Enter warehouse code">
-                <span class="input-group-text bg-color border-start">
+                <span class="input-group-text border border-dark border-opacity-25 border-start-0">
                     <img src="../assets/images/warehouse.svg" alt="#">
                 </span>
 

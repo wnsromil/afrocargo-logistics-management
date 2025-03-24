@@ -542,7 +542,7 @@
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
                     <div class="card innerCards rounded inovices-card w-100 setCard setCardSize bg-selected">
-                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row justify-content-between">
                             <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
                                 <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
                                 <h5 class='countFontSize fw-medium'>Xl Container</h5>
@@ -571,14 +571,15 @@
                 <!-- --------------------------------- 3rd ------------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
                     <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
-                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row justify-content-between">
                             <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
                                 <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
                                 <h5 class='countFontSize fw-medium'>Xl Container</h5>
                                 <div class="cardFontSize mt-2 fw-normal">
                                     Total Order : <span class="fw-medium">120</span><br>
                                     Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span class="fw-medium">$1520</span><br>
+                                    <span class=" text-success">Received Amt : </span><span
+                                        class="fw-medium">$1520</span><br>
                                     <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
                                 </div>
                             </div>
@@ -599,15 +600,16 @@
                 <!-- --------------------------------------- 4th ---------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
                     <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
-                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row justify-content-between">
                             <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
                                 <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>NF 3501</p>
-                            
-                                        <h5 class='countFontSize fw-medium'>Xl Container</h5>
+
+                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
                                 <div class="cardFontSize mt-2 fw-normal">
                                     Total Order : <span class="fw-medium">120</span><br>
                                     Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span class="fw-medium">$1520</span><br>
+                                    <span class=" text-success">Received Amt : </span><span
+                                        class="fw-medium">$1520</span><br>
                                     <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
                                 </div>
                             </div>
@@ -743,27 +745,472 @@
 
     <!-- ----------------------------- Table ---------------------------------------- -->
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-sm-12">
             <div class="dash-title">
-                <h5 class="order-title cardh5Size">Latest Orders</h5>
+                <h5 class='cardh5Size mb-4'>Latest Container</h5>
             </div>
             <div class="card-table">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-stripped table-hover datatable">
-                            <thead class="thead-light backColor">
+                            <thead class="thead-light backColor set">
                                 <tr>
-                                    <th>Customer Name</th>
-                                    <th>Order ID</th>
-                                    <th>Date</th>
-                                    <th>Product</th>
-                                    <th>Status</th>
+                                    <th>S. No.</th>
+                                    <th>Tracking ID</th>
+                                    <th>Customer</th>
+                                    <th>Pickup Date</th>
+                                    <th>Item Limit</th>
                                     <th>Amount</th>
+                                    <th>Status</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
+
                             <tbody>
+                                <tr>
+                                    <td class="table-content text-center">1</td>
+                                    <td class="table-contenttable-content">WE97078893</td>
+                                    <td class="table-contenttable-content">Andrew B S</td>
+                                    <td class="table-contenttable-content">12-12-2024</td>
+                                    <td class="table-contenttable-content">Books, Electronics...</td>
+                                    <td class="table-contenttable-content">$167.00</td>
+                                    <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td> -->
+                                    <td><span
+                                            class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Pending</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ----------------- 2 ------------------ -->
+
+                                <tr>
+                                    <td class="text-center">2</td>
+                                    <td class="profileUpdateFont">WE97078891</td>
+                                    <td>Patrick Wilson</td>
+                                    <td>12-12-2024</td>
+                                    <td>Household Set, Card... </td>
+                                    <td>$863.00</td>
+                                    <td><span
+                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
+                                            Pickup</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ------------------------ 3 ------------------------------ -->
+                                <tr>
+                                    <td class="table-content text-center">3</td>
+                                    <td class="table-content">WE97078896</td>
+                                    <td class="table-content">Kotlin Drwight</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Books</td>
+                                    <td class="table-content">$617.00</td>
+
+                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Pickup
+                                            Re-Schedule</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- ------------------ 4 ------------------------ -->
+                                <tr>
+                                    <td class="text-center">4</td>
+                                    <td class="profileUpdateFont">WE97078897</td>
+                                    <td>Aron Finch</td>
+                                    <td>12-12-2024</td>
+                                    <td>Household Set, Card...</td>
+                                    <td>$751.00</td>
+
+                                    <td><span class="bg-text-color2 px-2 py-1 rounded fw-medium">Received By Pickup
+                                            Man</span>
+                                    </td>
+                                    <td class="d-flextext-dark">
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ----------------- 5 -------------------------- -->
+
+                                <tr>
+                                    <td class="table-content text-center">5</td>
+                                    <td class="table-content">WE97078898</td>
+                                    <td class="table-content">Michele Saint</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Books</td>
+                                    <td class="table-content">$356.00</td>
+
+                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Pickup
+                                            Re-Schedule</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ---------------- 6 ------------------------------- -->
+                                <tr>
+                                    <td>6</td>
+                                    <td class="profileUpdateFont">WE97078899</td>
+                                    <td>Ruphel Soden</td>
+                                    <td>12-12-2024</td>
+                                    <td>Cards</td>
+                                    <td>$940.00</td>
+
+                                    <td><span class="bg-text-color2 px-2 py-1 rounded fw-medium">Received By Pickup
+                                            Man</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- -------------------- 7 ------------------------------- -->
+
+                                <tr>
+                                    <td class="table-content">7</td>
+                                    <td class="table-content">WE97078900</td>
+                                    <td class="table-content">Kristiean Salt</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Books</td>
+                                    <td class="table-content">$125.00</td>
+
+                                    <td><span
+                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
+                                            Pickup</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- ----------------- 8 ----------------------------------- -->
+                                <tr>
+                                    <td>8</td>
+                                    <td class="profileUpdateFont">WE97078901</td>
+                                    <td>Benjamin</td>
+                                    <td>12-12-2024</td>
+                                    <td>Received By Pickup Man</td>
+                                    <td>$759.00</td>
+                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Received By Pickup
+                                            Man</span>
+                                        </d>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- --------------- 9 -------------------------- -->
+                                <tr>
+                                    <td class="table-content">9</td>
+                                    <td class="table-content">WE97078894</td>
+                                    <td class="table-content">Abistanial</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Electronics</td>
+                                    <td class="table-content">$300.00</td>
+
+                                    <td><span
+                                            class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Pending</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- ------------------------------- 10 --------------------------------- -->
+                                <tr>
+                                    <td>10</td>
+                                    <td class="profileUpdateFont">WE97078898</td>
+                                    <td>Manny Operans</td>
+                                    <td>12-12-2024</td>
+                                    <td>Household</td>
+                                    <td>$456.00</td>
+
+                                    <td><span
+                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
+                                            Pickup</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- <tbody>
                                 <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
@@ -811,7 +1258,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <!-- 2 -->
+                             
                                 <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
@@ -1241,10 +1688,10 @@
                                     </td>
                                 </tr>
 
-                            </tbody>
+                            </tbody> -->
 
                         </table>
-                        <nav aria-label="Page navigation example">
+                        <!-- <nav aria-label="Page navigation example">
                             <ul class="pagination pagi-dash">
                                 <li class="page-item">
                                     <a class="page-link" href="#" aria-label="Previous">
@@ -1263,16 +1710,15 @@
                                     </a>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> -->
                     </div>
-
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- </div> -->
+
 
     </div>
     </div>
@@ -1296,6 +1742,7 @@
             })
         })
     </script>
+
 
 
     <!-- <script>
