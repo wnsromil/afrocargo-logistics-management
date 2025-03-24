@@ -891,6 +891,11 @@ h6 {
     align-content: center !important;
  }
 
+.background-instock{
+    background-color: #B6FFD3;
+}
+
+
 /* - Calendar     */
 
 #calendar-container {
