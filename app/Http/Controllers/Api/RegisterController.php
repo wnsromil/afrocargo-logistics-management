@@ -26,7 +26,7 @@ class RegisterController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
+                // 'email' => 'required|email|unique:users,email',
                 'password' => [
                     'required',
                     'string',
@@ -63,7 +63,7 @@ class RegisterController extends Controller
             try {
                 $user = User::create([
                     'name' => $request->name,
-                    'email' => $request->email,
+                    'email' => $request->email ?? null,
                     'phone' => $request->phone,
                     'password' => bcrypt($request->password),
                     'role' => $userRole->name,
@@ -142,6 +142,11 @@ class RegisterController extends Controller
         }
 
         $user = Auth::user();
+
+        if(!empty($request->warehouse_code) && !in_array($user->role_id,[4]) ){
+            Auth::logout();
+            return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
+        }
 
         // Role-based warehouse validation
         if ($user->role_id == 4) {

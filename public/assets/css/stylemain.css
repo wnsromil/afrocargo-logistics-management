@@ -1,3 +1,6 @@
+h2 {
+    color: unset;
+}
 .fs_18 
 {
     font-size: 18px;
@@ -62,6 +65,12 @@
     margin-top: 0px;
 } */
 
+table thead.set{
+    text-align: left;
+}
+.table-content{
+    color: #737B8B;
+}
 .setStyle {
     font-family: 'Poppins', serif;
 }
@@ -114,7 +123,6 @@
     font-family: "Poppins", serif;
     font-size: 12px;
 }
-
 
 .font13 {
     font-size: 13px;
@@ -223,6 +231,9 @@
     color: #D9D9D9;
 }
 
+
+
+
 .checkbox-cardBg {
     background-color: #D3FFE6;
 }
@@ -246,14 +257,6 @@
 
 .page-wrapper {
     padding-top: 0px;
-}
-
-.logopin {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    padding-top: -80px;
-    padding-top: -80px;
 }
 
 .noticIcon {
@@ -524,6 +527,7 @@
 h6 {
     font-size: 30px;
     font-weight: 500;
+    color: #3a3a3a;
 }
 
 .btnBorder {
@@ -606,13 +610,9 @@ h6 {
 }
 
 .selected {
-    background: #203A5F;
     color: white !important;
 }
-.bg-selected{
-    background-color: #D3FFE6;
-    border-color: green;
-}
+
 .img-size {
     height: 55px;
     width: 60px;
@@ -747,20 +747,18 @@ h6 {
     color: #a0a0a0;
 }
 
-/* --- Calendar --- */
-.calemdar-container {
+
+.calemdar-contaner {
     background: #f9f9f9;
     border-radius: 10px;
     padding: 15px;
     width: 280px;
-    border: 1px solid black !important;
-    border-radius: 4px ;
     box-shadow: 2px 2px 15px rgba(0, 0, 0.2);
     text-align: center;
     position: relative;
 }
 
-.calendar-header {
+.calemdar-header {
     font-weight: bold;
     font-size: 18px;
     padding-bottom: 10px;
@@ -793,7 +791,7 @@ h6 {
 }
 
 .inactive {
-    color: #b5b5b5;
+    color: #d1cbcb;
     pointer-events: none;
 }
 
@@ -809,10 +807,13 @@ h6 {
 .opacity-100 {
     opacity: .50;
 }
-/* 
+
+.dash-logo img {
+    max-width: 100%;
+}
 .bg-dark {
     background-color: #343a40;
-} */
+}
 
 .margin-margin {
     margin-top: 35px;
@@ -839,6 +840,7 @@ h6 {
     font-weight: 400;
     border-radius: 8px;
     height: 37px;
+    line-height: 18px;
 }
 .btn-path .btn
 {
@@ -866,6 +868,38 @@ h6 {
     color: #595C5F;
 }
 
+.btn-size{
+    width: 36px;
+    height: 26px;
+    font-weight: 2px;
+    border-radius: 4px;
+    padding: 0px;
+}
+.icon-size{
+    font-weight: 2px;
+    padding: 0px;
+}
+.tr-size{
+    color: #c0c1c4;
+ }
+ .bg-text-color1{
+    background-color: #E7D9FF;
+    color:#600AF3;
+ }
+ .bg-text-color2{
+    background-color: #F9DAFF;
+    color:#BD14DF;
+ }
+ .service-upload.img-size2{
+    min-height: 85px;
+    /* padding: 10px !important; */
+    align-content: center !important;
+ }
+
+.background-instock{
+    background-color: #B6FFD3;
+}
+
 
 /* - Calendar     */
 
@@ -880,16 +914,16 @@ h6 {
 }
 
 .fc-toolbar {
-    background: transparent;
+    background: #00AEEF;
     text-align: center;
     border-radius: 8px;
     padding: 10px 0px;
 }
 
 .fc-toolbar-title {
-    color: black !important;
-    font-size: 14px !important;
-    font-weight: 400px !important;
+    color: white !important;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .fc-daygrid {
@@ -907,6 +941,13 @@ h6 {
     font-size: 14px;
 }
 
+.fc-day-today {
+    background: #00AEEF;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
 .fc-button {
     background: transparent;
     color: white !important;
@@ -918,21 +959,24 @@ h6 {
     color: #fff !important;
 }
 
+.fc-prev-button,
+.fc-next-button {
+    font-size: 18px !important;
+    color: white !important;
+    background: none !important;
+    border: none !important;
+}
 
 .fc-prev-button::before {
-   background: white !important;
-   border: none !important;
+    content: "<";
     font-size: 20px;
     font-weight: bold;
-    background-color: black !important;
 }
 
 .fc-next-button::before {
-    background: white !important;
-    border: none !important;
-     font-size: 20px;
-     font-weight: bold;
-     background-color: black !important;
+    content: ">";
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events 
@@ -950,6 +994,86 @@ h6 {
     background: #ffffff;
 }
 
+
+/* WNSshubham */
+.card.mainCardGlobal:before {
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-bottom: 1px dashed #dededecc;
+    top: 62px;
+}
+.btn-primary
+{
+    background-color: #203A5F!important;
+}
+.fs_18 
+{
+    font-size: 18px;
+}
+.fs_20 
+{
+    font-size: 20px;
+}
+.fs_22
+{
+    font-size: 22px;
+}
+.fs_24
+{
+    font-size: 24px;
+}
+.fs_26
+{
+    font-size: 26px;
+}
+.fw_600
+{
+    font-weight: 600!important;
+}
+.fw_500
+{
+    font-weight: 500!important;
+}
+.col00
+{
+    color: #000000;
+}
+.col3A
+{
+    color: #3A3A3A;
+}
+.col737
+{
+    color: #737B8B;
+}
+.coldarkblue
+{
+    color: #203A5F;
+}
+
+/* input::placeholder,
+select::placeholder,
+textarea::placeholder
+{
+    color: #595C5F!important;
+} */
+input::placeholder,
+select::placeholder,
+textarea::placeholder
+{
+    color: #737B8B;
+}
+input,
+select,
+textarea,
+[type=text], input:where(:not([type])), [type=email], [type=url], [type=password], [type=number], [type=date], [type=datetime-local], [type=month], [type=search], [type=tel], [type=time], [type=week], [multiple], textarea, select
+{
+    color: #3a3a3a!important;
+    font-family: 'Poppins', serif!important;
+    font-size: 14px!important;
+}
 body.mini-sidebar.expand-menu .sidebar {
     width: 245px;
 }
@@ -959,6 +1083,61 @@ body.mini-sidebar.expand-menu .sidebar {
 .page-wrapper .content > .card {
     border-radius: 0;
 }
+.dropdown-menu {
+    border-radius: 4px;
+}
+.content-page-header h6, .content-page-header p {
+    font-size: 22px;
+    color: #3a3a3a;
+    font-weight: 500;
+    margin: 0;
+}
+.basic-info-detail h6 {
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 5px;
+}
+.basic-info-detail p { 
+    color: #3a3a3a;
+}
+.sidebar .sidebar-menu ul li.active a span {
+    color: #203A5F;
+    background: #d3d3d3;
+    margin-left: 0%;
+    margin-right: 0;
+}
+.page-wrapper
+{
+    min-height: 100%;
+}
+.iti.iti--allow-dropdown.iti--separate-dial-code
+{
+    display: block;
+}
+.iti--separate-dial-code .iti__selected-flag {
+    background-color: #ffffff!important;
+    color: #3a3a3a;
+}
+.daterangepicker-wrap {
+    padding-left: 0px !important;
+}
+.daterangepicker-wrap input {
+    padding-left: 50px;
+}
+.daterangepicker-wrap.cal-icon:after {
+    top: 6px;
+}
+.toggle-password1 {
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    align-content: center;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* WNSshubham */
+
 
 
 @media (min-width: 992px) {
