@@ -5,15 +5,17 @@
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-        <p class="subhead">Add Customer</p>
+    <div class="d-flex innertopnav">
+        <p class="subhead pheads" >Add Customer</p>
+        </div>
     </x-slot>
     <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row d-flex" style="justify-content: space-between;">
-            <div class="col-6"style="padding-right: 20px;">
+            <div class="col-6"style="padding-right: 20px; margin-top: -58px;">
                 <div class="row borderset">
                     <div class="col-md-12">
-                        <label class="foncolor" for="company_name"> Company </label>
+                        <label class="foninput" for="company_name"> Company </label>
                         <input type="text" name="company_name" class="form-control inp"
                             placeholder="Enter Company Name" value="{{ old('company_name') }}">
 
@@ -27,11 +29,12 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
+                        <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
 						<input type="number" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
                     </div>
 
                     <input type="hidden" id="country_code" name="country_code">
+
                     <div class="col-md-12">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                         <input type="number" id="alternate_mobile_no" name="alternate_mobile_no"
@@ -144,15 +147,15 @@
                     </div>
 
 
-                    <div class="col-md-6">
-                        <label class="foncolor " for="latitude">Latitude <i class="text-danger">*</i></label>
+                    <div class="col-md-6 marginb">
+                        <label class="foncolor "  for="latitude">Latitude <i class="text-danger">*</i></label>
                         <input type="number" name="latitude" value="{{ old('latitude') }}"
                             class="form-control inp inputbackground" placeholder="0">
                         @error('latitude')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 marginb">
                         <label class="foncolor " for="longitude">Longitude <i class="text-danger">*</i></label>
                         <input type="number" name="longitude" value="{{ old('longitude') }}"
                             class="form-control inp inputbackground" placeholder="0">
@@ -164,10 +167,10 @@
                     <!-- first left side form clouser div is next  -->
                 </div>
             </div>
-            <div class="col-6" style="padding-left: 20px;">
+            <div class="col-6" style="padding-left: 20px; margin-top: -58px;">
                 <div class="row borderset">
                     <div class="col-md-12">
-                        <label class="foncolor" for="website_url">Website</label>
+                        <label class="foninput" for="website_url">Website</label>
                         <input type="text" name="website_url" class="form-control inp"
                             value="{{ old('longitude') }}" placeholder="Enter Website ID">
 
@@ -203,7 +206,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label>Signature Date </label>
+                        <label class="foncolor">Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
                             <input type="text" name="signature_date" class="btn-filters  form-cs inp  inputbackground"
                                 value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
@@ -222,7 +225,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label>License Expiry Date </label>
+                        <label class="foncolor">License Expiry Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
                             <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
                                 value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
@@ -245,8 +248,8 @@
                             placeholder="Enter Write Comment">
                     </div>
 
-                    <div class="col-md-12">
-                        <label class="foncolor" for="Read_Comment">Read Comment</label>
+                    <div class="col-md-12 marginb">
+                        <label class="foncolor " for="Read_Comment">Read Comment</label>
                         <input type="text" id="Read_Comment" name="read_comment"
                             class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
                             placeholder="Enter Read Comment">
@@ -380,7 +383,7 @@
             <!-- ---------- -->
 
             <div class="ptop d-flex">
-                <div>
+               
                     <div class="input-block mb-3">
                         <label class="foncolor" for="status">Status</label>
 
@@ -395,7 +398,7 @@
                         @enderror
 
                     </div>
-                </div>
+                
 
                 <div style="margin-top:22px;">
                     <div class="add-customer-btns ">

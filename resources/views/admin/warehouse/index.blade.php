@@ -14,30 +14,31 @@
         </div>
     </div>
     </div>
-
-
-
-
-
+    
+  
+    
+   
+  
     <x-slot name="cardTitle">
-        <p class="head">All Warehouses</p>
-
-        <div class="usersearch d-flex usersserach">
-
-            <div class="top-nav-search">
-                <form>
-                    <input type="text" class="form-control forms" placeholder="Search ">
-
-                </form>
-            </div>
-            <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
-            </div>
-        </div>
-    </x-slot>
-
+  <div class="d-flex topnavs" >
+    <p class="head">All Warehouses</p>
+    <div class="usersearch d-flex usersserach">
+      <div class="top-nav-search">
+        <form>
+          <input type="text" class="form-control forms" placeholder="Search ">
+        </form>
+      </div>
+      
+      <div class="mt-2">
+        <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+          <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+            <span><i class="fe fe-refresh-ccw"></i></span>
+          </a>
+        </button>
+      </div>
+    </div>
+  </div>
+</x-slot>
     <div>
 
         <div class="card-table">
@@ -47,21 +48,21 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
-                                <th>Warehouse Name</th>
-                                <th>Warehouse Code</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Zip Code</th>
-                                <th>Country</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th >S. No.</th>
+                                <th >Warehouse Name</th>
+                                <th >Warehouse Code</th>
+                                <th >Address</th>
+                                <th >City</th>
+                                <th >State</th>
+                                <th >Zip Code</th>
+                                <th >Country</th> 
+                                <th >Phone</th>
+                                <th >Status</th>
+                                <th >Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($warehouses as $index => $warehouse)
+                        @forelse ($warehouses as $index => $warehouse)
                                 <tr>
                                     <td>
                                         {{ ++$index }}
@@ -117,7 +118,10 @@
                             @endforelse
 
                         </tbody>
-                        {{-- <tr>
+                    
+                            
+                            
+                          <!-- <tr>
                             <td>1</td>
                             <td>Location ABC</td>
                             <td>W_ABC</td>
@@ -526,8 +530,8 @@
                                     </div>
                                 </div>
                             </td>
-                        </tr> --}}
-
+                        </tr>  -->
+                       
                     </table>
 
                     <div class="bottom-user-page mt-3">
