@@ -722,3 +722,70 @@ background-color:#EDEDED;
  .pheads{
   padding-bottom: 20px !important;
  }
+
+
+ .textbutton{
+  padding-top: 50px;
+    padding-bottom: 30px;
+ }
+ .tabletext{
+   text-align: center !important;
+ }
+
+
+
+ 
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #203A5F; 
+  border-radius: 4px; 
+  appearance: none; 
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background-color: #fff; 
+}
+
+
+input[type="checkbox"]:checked {
+  background-color: #203A5F; 
+  border-color: #203A5F; 
+}
+
+
+input[type="checkbox"]:checked::after {
+  content: '✔'; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  color: white; 
+  font-size: 12px; 
+}
+.toggles .checktoggle.log:after {
+  border: 2px solid #BB1F23;
+  height: 20px;
+  width: 20px;
+}
+
+
+.toggles .checktoggle.log{
+  background-color:#FF7A7E;
+  height: 20px;
+  border :1px solid #BB1F23;
+}
+
+.toggles .check:checked+.checktoggle.log{
+  background-color: #203A5F;
+  height: 20px;
+  width: 20px;
+}
+.status-toggle .check:checked+.checktoggle.log:after{
+  border:2px solid #4D82CE;
+}
+
+.togglep{
+  justify-content: center;
+}
