@@ -6,15 +6,7 @@
         </div>
 
     </div>
-    <div>
-        <!-- <a href="javascript:void(0);" class="side-toggle" id="toggle_btn">
-            <span class="toggle-bars">
-                <span class="bar-icons"></span>
-                <span class="bar-icons"></span>
-                <span class="bar-icons"></span>
-                <span class="bar-icons"></span>
-            </span>
-        </a> -->
+    <div class="d-flex align-items-center ps-sm-3">
         <a href="javascript:void(0);" id="toggle_btn" class="side-toggle">
             <span class="toggle-bars">
                 <span class="bar-icons"></span>
@@ -23,41 +15,25 @@
                 <span class="bar-icons"></span>
             </span>
         </a>
-    </div>
-
-    <!-- Sidebar Toggle -->
-    <div class="dash2">
-        <h5 style="color: #ffffff">
-            @isset($header)
+        <div class="dash2">
+            <h5 style="color: #ffffff">
+                @isset($header)
                 {{ $header }}
-            @endisset
-        </h5>
+                @endisset
+            </h5>
+        </div>
     </div>
-    <!-- /Sidebar Toggle -->
+    <div class="col d-flex align-items-center justify-content-end">
 
-    <!-- Search -->
-
-    <!-- /Search -->
-
-    <!-- Mobile Menu Toggle -->
-
-    <!-- /Mobile Menu Toggle -->
-
-    <!-- Header Menu -->
-
-    <!-- -------------- Notification ------------------------------ -->
-    <div class="col-md-6 d-flex align-items-center justify-content-end me-4">
-
-        <a class="nav-link mt-1 me-2" href="{{route('admin.notification.index')}}">
+        <a class="nav-link me-2" href="{{route('admin.notification.index')}}">
             <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
             <img src="../assets/images/notification BTN.svg" alt="..." />
         </a>
 
 
         <div class="nav-profile">
-            <button class="btn profile dropdown-toggle btnColor1" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <span><i class="fa-regular fa-user" style="color: #ffffff; font-size:25px;"></i></span>
+            <button class="btn profile dropdown-toggle btnColor1 px-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <span><i class="ti ti-user" style="color: #ffffff; font-size:26px;"></i></span>
 
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

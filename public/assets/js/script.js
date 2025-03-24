@@ -842,14 +842,14 @@ Version      : 1.0
     // Country Code Selection
     if ($("#mobile_code").length > 0) {
         $("#mobile_code").intlTelInput({
-            initialCountry: "in",
+            initialCountry: "us",
             separateDialCode: true,
         });
     }
 
     if ($("#mobile").length > 0) {
         $("#mobile").intlTelInput({
-            initialCountry: "in",
+            initialCountry: "us",
             separateDialCode: true,
         });
     }
@@ -1096,6 +1096,18 @@ Version      : 1.0
                 .columns.adjust();
         });
     }
+
+    // password toggle 
+    $(".toggle-password1").click(function() {
+
+        $(this).toggleClass("ti-eye-off");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
     
 })(jQuery);
 

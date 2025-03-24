@@ -5,9 +5,10 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-       <p class="subhead">Add Warehouse Manager</p> 
+    <div class="d-flex innertopnav">
+        <p class="subhead pheads" >Add Warehouse Manager</p>
+        </div>
     </x-slot>
-
     <form action="{{ route('admin.warehouse_manager.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -38,7 +39,7 @@
                 <!-- Warehouse Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="manager_name" class="foncolor">Warehouse Manage Name<i class="text-danger">*</i></label>
+                        <label for="manager_name" class="foncolor">Warehouse Manager Name<i class="text-danger">*</i></label>
                         <input type="text" name="manager_name" class="form-control inp" placeholder="Enter Full Name" value="{{ old('manager_name') }}">
                         @error('manager_name')
                             <span class="text-danger">{{ $message }}</span>
@@ -72,7 +73,7 @@
                 </div>
 
                 <!-- Contact Number -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="phone" class="foncolor">Contact Number <i class="text-danger">*</i></label>
                         <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact No."
@@ -81,9 +82,14 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
+                </div> -->
 
-               
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                 
+                        <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
+						<input type="number" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
+                   
+                    </div>
                
 
                
@@ -92,7 +98,7 @@
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="status" class="foncolor">Status <i class="text-danger">*</i></label>
+                        <label for="status" class="foncolor">Status</label>
                         <!-- <div class="toggle-switch">
                             <label for="cb-switch">
                                 <input type="checkbox" id="cb-switch" name="status" value="Active">
