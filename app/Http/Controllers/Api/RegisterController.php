@@ -143,6 +143,11 @@ class RegisterController extends Controller
 
         $user = Auth::user();
 
+        if(!empty($request->warehouse_code) && !in_array($user->role_id,[4]) ){
+            Auth::logout();
+            return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
+        }
+
         // Role-based warehouse validation
         if ($user->role_id == 4) {
             if (!$request->filled('warehouse_code') || !$user->warehouse || $user->warehouse->warehouse_code !== $request->warehouse_code) {

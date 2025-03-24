@@ -34,7 +34,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="width" class="opacity-50">Item Name<i class="text-danger">*</i></label>
-                        <input class="form-control input-padding" name="width" type="number" value=""
+                        <input class="form-control input-padding" name="width" type="text" value=""
                             placeholder="Enter Item Name" aria-label="default input example" required>
 
                         @error('width')
