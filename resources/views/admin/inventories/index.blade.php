@@ -54,9 +54,10 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>Sn no.</th>
+                                <th>S. No.</th>
+                                <th>Inventory Type</th>
+                                <th>Supply Image</th>
                                 <th>Inventory Name</th>
-                                <th>Image</th>
                                 <th>Warehouse Name</th>
                                 <th>Weight (kg)</th>
                                 <th>Width(m)</th>
@@ -69,9 +70,80 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
 
-                        </tbody>
+            <!-- ------------------------------------------------------------------------------------------- -->
+
+            <tbody>
+                        <tr class="background-instock text-center">
+                                <td>
+                                   1
+                                </td>
+
+                                <td>Supply</td>
+                                <td>
+                                    @if (!empty($inventory->img))
+                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
+                                            height="50">
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                </td>
+                                <td>Barrel</td>
+                                <td><span>Location ABC</span></td>
+                                <td><span>15</span></td>
+                                <td><span>5</span></td>
+                                <td><span>10</span></td>
+                                <td><span>1200
+                                    </span></td>
+
+                                <td><span>$25</span></td>
+                                <td><span>20</span></td>
+                                <td><span>12/5/2025</span></td>
+                                <td><span
+                                        class="bg-light text-success">In Stock</span>
+                                </td>
+                         
+                                <td class="d-flex align-items-center">
+                             
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fe fe-more-vertical fs-4"
+                                                data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href='admin.inventories.edit'>
+                                                        <i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                                <li>
+
+                                                    <form
+                                                        action="admin.inventories.destroy"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href='admin.inventories.show'><i
+                                                            class="far fa-eye me-2"></i>View History</a>
+                                                </li>
+                                          
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+             </tbody>
+
+
+            <!-- ------------------------------------------------------------------------------------------- -->
+                        <!-- <tbody>
                         @forelse ($inventories as $inventory)
                         <tr style="
                             @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
@@ -128,7 +200,7 @@
                                                         href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
                                                             class="far fa-edit me-2"></i>Edit</a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
 
                                                     <form
                                                         action="{{ route('admin.inventories.destroy', $inventory->id) }}"
@@ -139,7 +211,7 @@
                                                             onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</button>
                                                     </form>
-                                                </li>
+                                                </li> --}}
                                                 <li>
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.inventories.show', $inventory->id) }}"><i
@@ -164,6 +236,7 @@
                             </tr>
                         @endforelse
 
+                        </tbody> -->
                     </table>
                 </div>
             </div>

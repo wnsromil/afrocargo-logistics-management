@@ -13,16 +13,15 @@
             <div class="col-md-12">
                 <div class="row row-cols-1 row-cols-md-3 g-4 dash-gap">
 
-                    <!-- <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4"> -->
 
 
                     <!-- First Row (4 Columns) -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
 
                                 <!-- <div class="dash-widget-header col-md-12 "> -->
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Today’s Orders</p>
                                         <div class="dash-counts countFontSize2">
@@ -30,7 +29,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="42" height="42" viewBox="0 0 44 44" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -48,10 +47,10 @@
 
                     <!-- --------- 2nd -------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Orders</p>
                                         <div class="dash-counts countFontSize2">
@@ -59,8 +58,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <span class="dash-widget-icon col-md-6 float-end">
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end p-1 ps-3">
                                         <svg width="50" height="50" viewBox="0 0 52 52" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -77,10 +76,10 @@
 
                     <!--  ---------- 3rd --------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <h5 class="fontSize fw-medium text-dark">Ready for Shipping</h5>
                                         <div class="dash-counts countFontSize2">
@@ -88,8 +87,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <span class="dash-widget-icon col-md-6 float-end">
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end ps-4">
                                         <svg width="45" height="45" viewBox="0 0 36 37" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -106,10 +105,10 @@
 
                     <!-- -------------- 4th -------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-3 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">In Transit</p>
                                         <div class="dash-counts countFontSize2">
@@ -117,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="80" height="50" viewBox="0 0 65 44" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -164,10 +163,10 @@
                 <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontpize fw-medium">Delivered</p>
                                         <div class="dash-counts countFontSize2">
@@ -175,7 +174,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="41" height="47" viewBox="0 0 43 49" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -195,10 +194,10 @@
                     <!-- -------------- 6th-------------------- -->
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Customers</p>
                                         <div class="dash-counts countFontSize2">
@@ -206,7 +205,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="43" height="43" viewBox="0 0 45 45" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -225,10 +224,10 @@
 
                     <!-- ---------------- 7th ------------ -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">New Customers</p>
                                         <div class="dash-counts countFontSize2">
@@ -236,7 +235,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="34.03" height="41.39" viewBox="0 0 37 44" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -256,10 +255,10 @@
 
                     <!-- --------------------- 8th ----------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Drivers</p>
                                         <div class="dash-counts countFontSize2">
@@ -267,7 +266,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="24" height="48" viewBox="0 0 26 50" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -303,10 +302,10 @@
 
                     <!-- ------------------------- 9th card --------------------------->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Warehouses</p>
                                         <div class="dash-counts countFontSize2">
@@ -314,7 +313,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="35" height="33.09" viewBox="0 0 37 35" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -333,10 +332,10 @@
 
                     <!-- -------------------------10th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Vehicles</p>
                                         <div class="dash-counts countFontSize2">
@@ -344,7 +343,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="41" height="41" viewBox="0 0 43 43" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -363,10 +362,10 @@
 
                     <!-- ------------------------- 11th ------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Earnings</p>
                                         <div class="dash-counts countFontSize2">
@@ -374,7 +373,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="52" height="40.44" viewBox="0 0 54 43" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -392,10 +391,10 @@
                     </div>
                     <!-- ------------------------- 12th -------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Today Earnings</p>
                                         <div class="dash-counts countFontSize2">
@@ -403,7 +402,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="47" height="31.33" viewBox="0 0 49 33" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -429,10 +428,10 @@
 
                     <!-- ------------------------- 13th card --------------------------->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Supply</p>
                                         <div class="dash-counts countFontSize2">
@@ -440,8 +439,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <span class="dash-widget-icon col-md-6 float-end">
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end  p-1 ps-3">
                                         <svg width="50" height="50" viewBox="0 0 52 52" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -459,10 +458,10 @@
 
                     <!-- -------------------------14th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">New Supply</p>
                                         <div class="dash-counts countFontSize2">
@@ -470,7 +469,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="44" height="49" viewBox="0 0 44 49" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -511,25 +510,26 @@
                 <!-- --------------------------- 1st -------------------------------- -->
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>KG 2114</p>
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span
-                                        class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+                            <div class="col-md-9 justify-content-start p-3 pe-1">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>KG 2114</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_1" class="toggle-btn1 check" type="checkbox">
-                                    <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_1" class="check" type="checkbox">
+                                        <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -541,25 +541,27 @@
 
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize bg-selected">
-                    <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span
-                                        class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+                    <div class="card innerCards w-100 setCard setCardSize checkbox-cardBg">
+                        <div class="d-flex flex-row justify-content-between">
+
+                            <div class="col-md-9 justify-content-start p-3 pe-1">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4 justify-content-end">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_2" class="toggle-btn1 check" type="checkbox" checked="">
-                                    <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3 justify-content-end">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_2" class="check" type="checkbox" checked="">
+                                        <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -570,24 +572,27 @@
 
                 <!-- --------------------------------- 3rd ------------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
-                    <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+                    <div class="card innerCards w-100 setCard setCardSize">
+                        <div class="d-flex flex-row justify-content-between">
+
+                            <div class="col-md-9 justify-content-start p-3 pe-1">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4 justify-content-end">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_3" class="toggle-btn1 check" type="checkbox">
-                                    <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3 justify-content-end">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_3" class="check" type="checkbox">
+                                        <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -598,25 +603,28 @@
 
                 <!-- --------------------------------------- 4th ---------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
-                    <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>NF 3501</p>
-                            
-                                        <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+                    <div class="card innerCards w-100 setCard setCardSize">
+                        <div class="d-flex flex-row justify-content-between">
+
+                            <div class="col-md-9 justify-content-start p-3 pe-1 cardFontSize">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>NF
+                                        3501</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4 justify-content-end">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_4" class="toggle-btn1 check" type="checkbox">
-                                    <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3 justify-content-end">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_4" class="check" type="checkbox">
+                                        <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -743,27 +751,472 @@
 
     <!-- ----------------------------- Table ---------------------------------------- -->
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-sm-12">
             <div class="dash-title">
-                <h5 class="order-title cardh5Size">Latest Orders</h5>
+                <h5 class='cardh5Size mb-4'>Latest Container</h5>
             </div>
             <div class="card-table">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-stripped table-hover datatable">
-                            <thead class="thead-light backColor">
+                            <thead class="thead-light backColor set">
                                 <tr>
-                                    <th>Customer Name</th>
-                                    <th>Order ID</th>
-                                    <th>Date</th>
-                                    <th>Product</th>
-                                    <th>Status</th>
+                                    <th>S. No.</th>
+                                    <th>Tracking ID</th>
+                                    <th>Customer</th>
+                                    <th>Pickup Date</th>
+                                    <th>Item Limit</th>
                                     <th>Amount</th>
+                                    <th>Status</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
+
                             <tbody>
+                                <tr>
+                                    <td class="table-content text-center">1</td>
+                                    <td class="table-contenttable-content">WE97078893</td>
+                                    <td class="table-contenttable-content">Andrew B S</td>
+                                    <td class="table-contenttable-content">12-12-2024</td>
+                                    <td class="table-contenttable-content">Books, Electronics...</td>
+                                    <td class="table-contenttable-content">$167.00</td>
+                                    <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                            style="color:red;"></i>Canceled</td> -->
+                                    <td><span
+                                            class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Pending</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ----------------- 2 ------------------ -->
+
+                                <tr>
+                                    <td class="text-center">2</td>
+                                    <td class="profileUpdateFont">WE97078891</td>
+                                    <td>Patrick Wilson</td>
+                                    <td>12-12-2024</td>
+                                    <td>Household Set, Card... </td>
+                                    <td>$863.00</td>
+                                    <td><span
+                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
+                                            Pickup</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ------------------------ 3 ------------------------------ -->
+                                <tr>
+                                    <td class="table-content text-center">3</td>
+                                    <td class="table-content">WE97078896</td>
+                                    <td class="table-content">Kotlin Drwight</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Books</td>
+                                    <td class="table-content">$617.00</td>
+
+                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Pickup
+                                            Re-Schedule</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- ------------------ 4 ------------------------ -->
+                                <tr>
+                                    <td class="text-center">4</td>
+                                    <td class="profileUpdateFont">WE97078897</td>
+                                    <td>Aron Finch</td>
+                                    <td>12-12-2024</td>
+                                    <td>Household Set, Card...</td>
+                                    <td>$751.00</td>
+
+                                    <td><span class="bg-text-color2 px-2 py-1 rounded fw-medium">Received By Pickup
+                                            Man</span>
+                                    </td>
+                                    <td class="d-flextext-dark">
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ----------------- 5 -------------------------- -->
+
+                                <tr>
+                                    <td class="table-content text-center">5</td>
+                                    <td class="table-content">WE97078898</td>
+                                    <td class="table-content">Michele Saint</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Books</td>
+                                    <td class="table-content">$356.00</td>
+
+                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Pickup
+                                            Re-Schedule</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- ---------------- 6 ------------------------------- -->
+                                <tr>
+                                    <td>6</td>
+                                    <td class="profileUpdateFont">WE97078899</td>
+                                    <td>Ruphel Soden</td>
+                                    <td>12-12-2024</td>
+                                    <td>Cards</td>
+                                    <td>$940.00</td>
+
+                                    <td><span class="bg-text-color2 px-2 py-1 rounded fw-medium">Received By Pickup
+                                            Man</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- -------------------- 7 ------------------------------- -->
+
+                                <tr>
+                                    <td class="table-content">7</td>
+                                    <td class="table-content">WE97078900</td>
+                                    <td class="table-content">Kristiean Salt</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Books</td>
+                                    <td class="table-content">$125.00</td>
+
+                                    <td><span
+                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
+                                            Pickup</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- ----------------- 8 ----------------------------------- -->
+                                <tr>
+                                    <td>8</td>
+                                    <td class="profileUpdateFont">WE97078901</td>
+                                    <td>Benjamin</td>
+                                    <td>12-12-2024</td>
+                                    <td>Received By Pickup Man</td>
+                                    <td>$759.00</td>
+                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Received By Pickup
+                                            Man</span>
+                                        </d>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- --------------- 9 -------------------------- -->
+                                <tr>
+                                    <td class="table-content">9</td>
+                                    <td class="table-content">WE97078894</td>
+                                    <td class="table-content">Abistanial</td>
+                                    <td class="table-content">12-12-2024</td>
+                                    <td class="table-content">Electronics</td>
+                                    <td class="table-content">$300.00</td>
+
+                                    <td><span
+                                            class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Pending</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- ------------------------------- 10 --------------------------------- -->
+                                <tr>
+                                    <td>10</td>
+                                    <td class="profileUpdateFont">WE97078898</td>
+                                    <td>Manny Operans</td>
+                                    <td>12-12-2024</td>
+                                    <td>Household</td>
+                                    <td>$456.00</td>
+
+                                    <td><span
+                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
+                                            Pickup</span>
+                                    </td>
+                                    <td class="d-flex align-items-center text-dark">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"><i
+                                                                class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fe fe-eye border-start icon-size fs-6"
+                                                        style="color: white" data-bs-toggle="tooltip"
+                                                        title="fe fe-eye"></i>
+                                                </button></a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- <tbody>
                                 <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
@@ -811,7 +1264,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <!-- 2 -->
+                             
                                 <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
@@ -1241,10 +1694,10 @@
                                     </td>
                                 </tr>
 
-                            </tbody>
+                            </tbody> -->
 
                         </table>
-                        <nav aria-label="Page navigation example">
+                        <!-- <nav aria-label="Page navigation example">
                             <ul class="pagination pagi-dash">
                                 <li class="page-item">
                                     <a class="page-link" href="#" aria-label="Previous">
@@ -1263,16 +1716,15 @@
                                     </a>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> -->
                     </div>
-
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- </div> -->
+
 
     </div>
     </div>
@@ -1296,6 +1748,7 @@
             })
         })
     </script>
+
 
 
     <!-- <script>

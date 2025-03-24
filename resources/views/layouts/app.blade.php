@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/scss/layout/select.scss') }}">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -47,7 +49,6 @@
     <script src="{{ asset('assets/js/layout.js') }}"></script>
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
@@ -92,7 +93,7 @@
         <div class="page-wrapper" style="margin-top:0px">
             <div class="content container-fluid screen-width">
                 @yield('content')
-                <div class="card mb-0">
+                <div class="card mainCardGlobal mb-0">
                     <div class="card-body">
                         <!-- Page Header -->
                         <div class="page-header">
@@ -192,6 +193,7 @@
         function redirectTo(url) {
             window.location.href = url;
         }
+        
 
     </script>
 

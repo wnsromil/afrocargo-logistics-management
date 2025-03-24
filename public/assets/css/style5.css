@@ -15,12 +15,11 @@
     font-size:16px;
     font-weight:600px !important;
 }
-.borderset{
-    border: 2px solid #00000042;
-    border-radius: 8px;
-    margin-top: 40px;
-    padding-top:15px;
-    /* padding:15px; */
+.borderset {
+  border: 1px solid #00000042;
+  border-radius: 8px;
+  margin-top: 0;
+  padding: 15px !important;
 }
   .bsdown{
     margin-top: 40px;
@@ -415,7 +414,8 @@ border:2px solid red
            .select2{
             width: 100%;
             height: 40px;
-            border: 1px solid #00000042;
+            /* border: 1px solid #00000042; */
+            border: unset;
             border-radius: 4px;
             color: #737B8B;
            }
@@ -690,7 +690,7 @@ background-color:#EDEDED;
   .daterangepicker-wrap.cal-icon::after {
     left: 10px;
     right: auto;
-    top: 3px;
+    top: 6px;
 }
 .foninput{
   margin-top:0;

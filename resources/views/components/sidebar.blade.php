@@ -6,7 +6,7 @@
 
         @if ($hasSubmenu)
             <li class="submenu {{  !empty($menu->active) ? isActive($menu->active, 'subdrop') : '' }} mt-2">
-                <a href="javascript:void(0)">
+                <a href="javascript:void(0)" class="{{  !empty($menu->active) ? isActive($menu->active) : '' }}">
                     @if ($menu->icon)
                         <img src="{{ asset($menu->icon) }}" alt="{{ $menu->title }}">
                     @endif
@@ -22,7 +22,12 @@
                                 @if ($submenu->icon)
                                     <img src="{{ asset($submenu->icon) }}" alt="{{ $submenu->title }}">
                                 @endif
-                                <span>{{ $submenu->title }}</span>
+                                <span>
+                                    {!! isActive($submenu->active,'
+                                        <i class="fa fa-arrow-right tooltipped" data-position="top" data-tooltip="fa fa-arrow-right"></i>
+                                    ') !!}
+                                    {{ $submenu->title }}
+                                </span>
                             </a>
                         </li>
                     @endforeach
