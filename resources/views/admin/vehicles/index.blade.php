@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Warehouse Management') }}
+        {{ __('Vehicle List') }}
     </x-slot>
 
 
@@ -18,6 +18,7 @@
     </div>
 
 
+    
 
     {{-- <x-slot name="cardTitle">
         <p class="head">All Vehicle</p>
@@ -37,8 +38,11 @@
         </div>
     </x-slot> --}}
 
+
+
+    
     <x-slot name="cardTitle">
-        <p class="head">All Vehicles</p>
+        <p class="head">All Vehicle</p>
         <div class="usersearch d-flex usersserach">
         
         <div class="top-nav-search">
@@ -57,7 +61,7 @@
                         href="{{ route('admin.vehicle.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
         </div>
-    </div>
+    </div>  
         <!-- <div class="usersearch d-flex">
             <div class="top-nav-search">
                 <form action="{{ url()->current() }}" method="get">
@@ -88,7 +92,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>Sn no.</th>
+                                <th>S. No.</th>
                                 <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
                                 <th>Driver Name</th>

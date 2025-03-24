@@ -13,16 +13,15 @@
             <div class="col-md-12">
                 <div class="row row-cols-1 row-cols-md-3 g-4 dash-gap">
 
-                    <!-- <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4"> -->
 
 
                     <!-- First Row (4 Columns) -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
 
                                 <!-- <div class="dash-widget-header col-md-12 "> -->
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Today’s Orders</p>
                                         <div class="dash-counts countFontSize2">
@@ -30,7 +29,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="42" height="42" viewBox="0 0 44 44" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -48,10 +47,10 @@
 
                     <!-- --------- 2nd -------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Orders</p>
                                         <div class="dash-counts countFontSize2">
@@ -59,8 +58,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <span class="dash-widget-icon col-md-6 float-end">
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end p-1 ps-3">
                                         <svg width="50" height="50" viewBox="0 0 52 52" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -77,10 +76,10 @@
 
                     <!--  ---------- 3rd --------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <h5 class="fontSize fw-medium text-dark">Ready for Shipping</h5>
                                         <div class="dash-counts countFontSize2">
@@ -88,8 +87,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <span class="dash-widget-icon col-md-6 float-end">
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end ps-4">
                                         <svg width="45" height="45" viewBox="0 0 36 37" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -106,10 +105,10 @@
 
                     <!-- -------------- 4th -------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-3 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">In Transit</p>
                                         <div class="dash-counts countFontSize2">
@@ -117,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="80" height="50" viewBox="0 0 65 44" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -164,10 +163,10 @@
                 <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontpize fw-medium">Delivered</p>
                                         <div class="dash-counts countFontSize2">
@@ -175,7 +174,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="41" height="47" viewBox="0 0 43 49" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -195,10 +194,10 @@
                     <!-- -------------- 6th-------------------- -->
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Customers</p>
                                         <div class="dash-counts countFontSize2">
@@ -206,7 +205,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="43" height="43" viewBox="0 0 45 45" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -225,10 +224,10 @@
 
                     <!-- ---------------- 7th ------------ -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard pe-1 h-75">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">New Customers</p>
                                         <div class="dash-counts countFontSize2">
@@ -236,7 +235,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="34.03" height="41.39" viewBox="0 0 37 44" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -256,10 +255,10 @@
 
                     <!-- --------------------- 8th ----------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Drivers</p>
                                         <div class="dash-counts countFontSize2">
@@ -267,7 +266,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="24" height="48" viewBox="0 0 26 50" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -303,10 +302,10 @@
 
                     <!-- ------------------------- 9th card --------------------------->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Warehouses</p>
                                         <div class="dash-counts countFontSize2">
@@ -314,7 +313,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="35" height="33.09" viewBox="0 0 37 35" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -333,10 +332,10 @@
 
                     <!-- -------------------------10th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Vehicles</p>
                                         <div class="dash-counts countFontSize2">
@@ -344,7 +343,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="41" height="41" viewBox="0 0 43 43" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -363,10 +362,10 @@
 
                     <!-- ------------------------- 11th ------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Earnings</p>
                                         <div class="dash-counts countFontSize2">
@@ -374,7 +373,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="52" height="40.44" viewBox="0 0 54 43" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -392,10 +391,10 @@
                     </div>
                     <!-- ------------------------- 12th -------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Today Earnings</p>
                                         <div class="dash-counts countFontSize2">
@@ -403,7 +402,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="47" height="31.33" viewBox="0 0 49 33" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -429,10 +428,10 @@
 
                     <!-- ------------------------- 13th card --------------------------->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Supply</p>
                                         <div class="dash-counts countFontSize2">
@@ -440,8 +439,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <span class="dash-widget-icon col-md-6 float-end">
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end  p-1 ps-3">
                                         <svg width="50" height="50" viewBox="0 0 52 52" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -459,10 +458,10 @@
 
                     <!-- -------------------------14th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="card innerCards inovices-card w-100 setCard h-75 pe-1">
-                            <div class="d-flex flex-row justify-content-between py-3">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
                                 <!-- <div class="dash-widget-header col-md-12"> -->
-                                <div class="col-md-8 float-left">
+                                <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">New Supply</p>
                                         <div class="dash-counts countFontSize2">
@@ -470,7 +469,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
                                         <svg width="44" height="49" viewBox="0 0 44 49" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -511,25 +510,26 @@
                 <!-- --------------------------- 1st -------------------------------- -->
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>KG 2114</p>
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span
-                                        class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+                            <div class="col-md-9 justify-content-start p-3 pe-1">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>KG 2114</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_1" class="toggle-btn1 check" type="checkbox">
-                                    <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_1" class="check" type="checkbox">
+                                        <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -541,25 +541,27 @@
 
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize bg-selected">
+                    <div class="card innerCards w-100 setCard setCardSize checkbox-cardBg">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span
-                                        class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+
+                            <div class="col-md-9 justify-content-start p-3 pe-1">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4 justify-content-end">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_2" class="toggle-btn1 check" type="checkbox" checked="">
-                                    <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3 justify-content-end">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_2" class="check" type="checkbox" checked="">
+                                        <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -570,25 +572,27 @@
 
                 <!-- --------------------------------- 3rd ------------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>F2 172</p>
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span
-                                        class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+
+                            <div class="col-md-9 justify-content-start p-3 pe-1">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4 justify-content-end">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_3" class="toggle-btn1 check" type="checkbox">
-                                    <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3 justify-content-end">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_3" class="check" type="checkbox">
+                                        <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>
@@ -599,26 +603,28 @@
 
                 <!-- --------------------------------------- 4th ---------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards rounded inovices-card w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard setCardSize">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-8 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="opacity-50">Seal No : </span>NF 3501</p>
 
-                                <h5 class='countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-normal">
-                                    Total Order : <span class="fw-medium">120</span><br>
-                                    Total Amt : <span class="fw-medium">$2220</span><br>
-                                    <span class=" text-success">Received Amt : </span><span
-                                        class="fw-medium">$1520</span><br>
-                                    <span class="text-danger">Due Amt : </span><span class="fw-medium">$700</span><br>
+                            <div class="col-md-9 justify-content-start p-3 pe-1 cardFontSize">
+                                <p><span class="opacity-75 font13">Seal No : </span><strong>NF
+                                        3501</strong></p>
+                                <h5 class='text-black countFontSize'>Xl Container</h5>
+                                <div class="cardFontSize mt-2">
+                                    <span class="opacity-75">Total Order :
+                                    </span><strong>120</strong><br>
+                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
+                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
+                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
                                 </div>
                             </div>
 
-                            <div class="col-4 justify-content-end">
-                                <!-- <div class="my-3"> -->
-                                <div class="status-toggle float-end">
-                                    <input id="rating_4" class="toggle-btn1 check" type="checkbox">
-                                    <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
+                            <div class="col-3 justify-content-end">
+                                <div class="my-1">
+                                    <div class="status-toggle float-end me-0">
+                                        <input id="rating_4" class="check" type="checkbox">
+                                        <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
                                 </div>
                                 <!-- </div> -->
                             </div>

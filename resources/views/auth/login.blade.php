@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
 <x-guest-layout>
     <style>
         .w-100 {
@@ -65,18 +66,19 @@
 
         <div class="row mt-3 mb-2">
             <div class="d-block">
-                <div class="col-md-12 d-flex text-center ps-4 ms-5">
-                    <div id="click"></div>
-                    <button id="adminBtn" type="button" class="border-0 th-font fw-semiBold p-1 pe-2 faded"
-                        onclick="toggleLoginForm('admin')">Admin</button>
+                 <div class="d-flex text-center authTabDiv">
 
-                    <button id="managerBtn" type="button" class="border-0 th-font fw-semiBold p-1 ps-2 faded"
-                        onclick="toggleLoginForm('manager')">Warehouse Manager</button>
+                    <div id="click"></div>
+
+                    <button id="adminBtn" type="button" class="btnBorder th-font fw-semiBold col737 me-3 activity-feed" onclick="toggleLoginForm('admin')">Admin</button>
+
+                    <button id="managerBtn" type="button" class="btnBorder th-font fw-semiBold col737" onclick="toggleLoginForm('manager')">Warehouse Manager</button>
+
                 </div>
 
                 <!-- <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div> -->
                 <!-- First Border -->
-                <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div>
+                {{-- <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div> --}}
 
 
             </div>
@@ -103,9 +105,9 @@
                     autocomplete="username"
                     class="form-control border-1 form-control-lg profileUpdateFont" type="text"
                     placeholder="Username or email address" aria-label=".form-control-lg example">
-                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                <span class="input-group-text border border-dark border-start-0"
                     id="inputGroup-sizing-lg">
-                    <i class="fa-regular fa-user" style="color: #595C5F"></i>
+                     <i class="fe fe-user" style="color: #595C5F"></i>
                 </span>
             </div>
 
@@ -122,10 +124,9 @@
                     autocomplete="current-password" placeholder="Password"
                     class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
                     aria-label=".form-control-lg example">
-                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                <span class="input-group-text border border-dark border-start-0"
                     id="inputGroup-sizing-lg">
-                    <i class="fe fe-unlock border-start" style="color: #595C5F" data-bs-toggle="tooltip"
-                        title="fe fe-unlock"></i>
+                    <span toggle="#password" class="ti ti-eye field-icon toggle-password1"></span>
                 </span>
             </div>
 
@@ -142,7 +143,7 @@
                 @if (Route::has('password.request'))
                 @endif
 
-                <x-primary-button class="btn w-100 justify-content-center border rounded-0 text-capitalize login-btn">
+                <x-primary-button class="btn w-100 btn-primary authBTN">
                     {{ __('Login') }}
                 </x-primary-button>
             </div>
@@ -151,13 +152,13 @@
         <!-- -------------------------------------- manager login page ---------------------------------------- -->
         <form method="POST" action="{{ route('login') }}" id="manager" style="display:none;">
             @csrf
-            <div class="input-group mb-3 border rounded mt-4 position-relative">
+            <div class="input-group input-group-lg bg-color2 mt-4 position-relative">
                 <input id="warehouse_code" type="text" name="warehouse_code" :value="old('warehouse_code')"
                     class="form-control border-1 form-control-lg profileUpdateFont input-placeholder"
                      required autofocus autocomplete="off"
                     placeholder="Enter warehouse code">
-                <span class="input-group-text border border-dark border-opacity-25 border-start-0">
-                    <img src="../assets/images/warehouse.svg" alt="#">
+                <span class="input-group-text border border-dark border-start-0">
+                    <i class="ti ti-building-warehouse"></i>
                 </span>
 
                 <!-- ✅ Dropdown Jo Input Ke Niche Dikhe -->
@@ -185,7 +186,7 @@
                     autocomplete="username"
                     class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
                     placeholder="Username or email address" aria-label=".form-control-lg example">
-                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                <span class="input-group-text border border-dark border-start-0"
                     id="inputGroup-sizing-lg">
                     <!-- <i class="fa-regular fa-user" style="color: #595C5F"></i> -->
                     <i class="fe fe-user" style="color: #595C5F"></i>
@@ -202,14 +203,14 @@
             </div> -->
 
             <div class="input-group input-group-lg bg-color2">
-                <input id="password" type="password" name="password" :value="old('email')" required
+                <input id="password1" type="password" name="password" :value="old('email')" required
                     autocomplete="current-password" placeholder="Password"
                     class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
                     aria-label=".form-control-lg example">
-                <span class="input-group-text border border-dark border-opacity-25 border-start-0"
+                <span class="input-group-text border border-dark border-start-0"
                     id="inputGroup-sizing-lg">
-                    <i class="fe fe-eye border-start" style="color: #595C5F" data-bs-toggle="tooltip"
-                        title="fe fe-eye"></i>
+                    <span toggle="#password1" class="ti ti-eye field-icon toggle-password1"></span>
+                </span>
                 </span>
             </div>
 
@@ -226,7 +227,7 @@
                 @if (Route::has('password.request'))
                 @endif
 
-                <x-primary-button class="btn w-100 justify-content-center border rounded-0 text-capitalize login-btn">
+                <x-primary-button class="btn w-100 btn-primary authBTN">
                     {{ __('Login') }}
                 </x-primary-button>
             </div>
@@ -310,5 +311,18 @@
             toggleLoginForm(formType);
         };
     </script>
+    <script>
+    $(".toggle-password1").click(function() {
+
+        $(this).toggleClass("ti-eye-off");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+
+</script>
     <!-- -------------------------------------------------------------------------------------------------- -->
 </x-guest-layout>

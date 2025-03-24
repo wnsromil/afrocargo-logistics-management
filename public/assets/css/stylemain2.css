@@ -654,8 +654,21 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: left;
 }
 
+/* WNSshubham */
+.card.mainCardGlobal:before {
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-bottom: 1px dashed #dededecc;
+    top: 62px;
+}
+.br_12,
+.bg-image-login .w-full.sm\:max-w-md.mt-6.bg-white.shadow-md.overflow-hidden.sm\:rounded-lg
+{
+    border-radius: 12px!important;
+}
 
-/* Mannual CSS  */
 .authTabDiv {
     border-bottom: 2px solid #737B8B;
     width: max-content;
@@ -744,8 +757,10 @@ h1, h2, h3, h4, h5, h6 {
 .login-card i.ti 
 {
     font-size: 20px;
-    color: #595C5F;
+    color: #595C5F!important;
 }
+
+
 input::placeholder,
 select::placeholder,
 textarea::placeholder
@@ -760,12 +775,65 @@ textarea,
     color: #3a3a3a!important;
     font-family: 'Poppins', serif!important;
     font-size: 14px!important;
+    border-color:#00000027!important;
 }
-.br_12,
-.bg-image-login .w-full.sm\:max-w-md.mt-6.bg-white.shadow-md.overflow-hidden.sm\:rounded-lg
+.login-card input.form-control
 {
-    border-radius: 12px!important;
+    border-radius: 6px 0 0px 6px!important;
+    padding: 10px 15px !important;
+    border: 1px solid #00000027!important;
 }
+.login-card .input-group-text {
+    padding: .5rem .8rem;
+    border-radius: 0px 6px 6px 0px!important;
+    border: 1px solid #00000027!important;
+    border-left: 0!important;
+}
+input:-webkit-autofill {
+    background-color: #ffffff;
+  }
+  
+  input:-webkit-autofill:focus {
+    background-color: #f0f0f0;
+  }
+.login-card .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    opacity: 1;
+}
+body.mini-sidebar.expand-menu .sidebar {
+    width: 245px;
+}
+.page-wrapper .content {
+    padding: 20px;
+}
+.page-wrapper .content > .card {
+    border-radius: 0;
+}
+.dropdown-menu {
+    border-radius: 4px;
+}
+.content-page-header h6, .content-page-header p {
+    font-size: 22px;
+    color: #3a3a3a;
+    font-weight: 500;
+    margin: 0;
+}
+.basic-info-detail h6 {
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 5px;
+}
+.basic-info-detail p { 
+    color: #3a3a3a;
+}
+.sidebar .sidebar-menu ul li.active a span {
+    color: #203A5F;
+    background: #d3d3d3;
+    margin-left: 0%;
+    margin-right: 0;
+}
+
+/* WNSshubham */
+
 
 
 
