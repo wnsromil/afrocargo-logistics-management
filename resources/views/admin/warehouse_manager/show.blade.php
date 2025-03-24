@@ -1,55 +1,50 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
+            {{ __('Warehouse Manager Details') }}
         </h2>
     </x-slot>
-
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <!-- start -->
-                    <div class="row">
-                        <div class="col-lg-12 margin-tb">
-                            <div class="pull-left">
-                                <h2> Show User</h2>
-                            </div>
-                            <div class="pull-right">
-                                <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <strong>Name:</strong>
-                                {{ $user->name }}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <strong>Email:</strong>
-                                {{ $user->email }}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <strong>Roles:</strong>
-                                @if(!empty($user->getRoleNames()))
-                                    @foreach($user->getRoleNames() as $v)
-                                        <label class="badge badge-success">{{ $v }}</label>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- end -->
+    <x-slot name="cardTitle">
+        <h6 class=subhead>Warehouse Manager Details</h6>
+    </x-slot>
+    <section class="mt-4">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Warehouse Manager Name</h6>
+                    <p>Robert Pattison</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Warehouse Name</h6>
+                    <p>Invio Cargo</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Email Address</h6>
+                    <p>robertpattison1@mailinator.com</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Contact No.</h6>
+                    <p>+1 15541 54544</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Address</h6>
+                    <p>22 Junior Avenue California, LA 30097</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Status</h6>
+                    <p>Inactive</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </x-app-layout>
