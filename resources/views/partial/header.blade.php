@@ -54,7 +54,7 @@
         <!-- -------------- Notification ------------------------------ -->
         <div class="d-flex align-items-center float-end me-4">
 
-            <a class="nav-link mt-1 me-2" href="{{route('admin.notification.index')}}">
+            <a class="nav-link mt-1 me-2 pt-2" href="{{route('admin.notification.index')}}">
                 <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
                 <img src="../assets/images/notification BTN.svg" alt="..." />
             </a>
@@ -63,7 +63,7 @@
             <div class="nav-profile">
                 <button class="btn profile dropdown-toggle btnColor1" type="button" id="dropdownMenuButton1"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <span><i class="fa-regular fa-user" style="color: #ffffff; font-size:25px;"></i></span>
+                    <span><i class="fe fe-user" style="color:rgb(255, 255, 255)"></i></span>
 
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

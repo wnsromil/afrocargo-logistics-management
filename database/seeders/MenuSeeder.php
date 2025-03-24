@@ -31,7 +31,7 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager', 'driver']
             ],
             [
-                'title' => 'Warehouse',
+                'title' => 'Warehouses',
                 'icon' => 'assets/images/warehouse.svg',
                 'route' => '#',
                 'active' => 'warehouses*,warehouse_manager*',
@@ -143,7 +143,7 @@ class MenuSeeder extends Seeder
         }
 
         // Add submenus
-        $warehouse = Menu::where('title', 'Warehouse')->first();
+        $warehouse = Menu::where('title', 'Warehouses')->first();
         if ($warehouse) {
             Menu::create(['title' => 'Warehouse List', 'route' => 'admin.warehouses.index', 'active' => 'warehouses*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
             Menu::create(['title' => 'Warehouse Manager', 'route' => 'admin.warehouse_manager.index', 'active' => 'warehouse_manager*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
