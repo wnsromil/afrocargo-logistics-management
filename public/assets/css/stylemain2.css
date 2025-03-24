@@ -76,6 +76,9 @@
     font-weight: 600;
     color: #252F49;
 }
+.header-heading{
+    color: #E8EAF0;
+}
 
 .cardFontSize {
     font-family: "Poppins", serif;
@@ -197,8 +200,9 @@
 
 .logopin {
     display: block;
-    margin: 0 auto;
-    max-width: 100%;
+    /* margin: 0 auto; */
+    width: 100% !important;
+    /* text-align: center !important; */
     padding-top: -80px;
     padding-top: -80px;
 }
@@ -832,3 +836,8 @@ body.mini-sidebar.expand-menu .sidebar {
 
 
 
+
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control, .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select, .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    opacity: 1;
+    border-color: #b1a2a2;
+}

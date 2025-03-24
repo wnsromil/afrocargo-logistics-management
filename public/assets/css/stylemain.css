@@ -65,6 +65,12 @@ h2 {
     margin-top: 0px;
 } */
 
+table thead.set{
+    text-align: left;
+}
+.table-content{
+    color: #737B8B;
+}
 .setStyle {
     font-family: 'Poppins', serif;
 }
@@ -117,7 +123,6 @@ h2 {
     font-family: "Poppins", serif;
     font-size: 12px;
 }
-
 
 .font13 {
     font-size: 13px;
@@ -226,6 +231,9 @@ h2 {
     color: #D9D9D9;
 }
 
+
+
+
 .checkbox-cardBg {
     background-color: #D3FFE6;
 }
@@ -249,14 +257,6 @@ h2 {
 
 .page-wrapper {
     padding-top: 0px;
-}
-
-.logopin {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    padding-top: -80px;
-    padding-top: -80px;
 }
 
 .noticIcon {
@@ -610,13 +610,9 @@ h6 {
 }
 
 .selected {
-    background: #203A5F;
     color: white !important;
 }
-.bg-selected{
-    background-color: #D3FFE6;
-    border-color: green;
-}
+
 .img-size {
     height: 55px;
     width: 60px;
@@ -751,20 +747,18 @@ h6 {
     color: #a0a0a0;
 }
 
-/* --- Calendar --- */
-.calemdar-container {
+
+.calemdar-contaner {
     background: #f9f9f9;
     border-radius: 10px;
     padding: 15px;
     width: 280px;
-    border: 1px solid black !important;
-    border-radius: 4px ;
     box-shadow: 2px 2px 15px rgba(0, 0, 0.2);
     text-align: center;
     position: relative;
 }
 
-.calendar-header {
+.calemdar-header {
     font-weight: bold;
     font-size: 18px;
     padding-bottom: 10px;
@@ -797,7 +791,7 @@ h6 {
 }
 
 .inactive {
-    color: #b5b5b5;
+    color: #d1cbcb;
     pointer-events: none;
 }
 
@@ -813,10 +807,13 @@ h6 {
 .opacity-100 {
     opacity: .50;
 }
-/* 
+
+.dash-logo img {
+    max-width: 100%;
+}
 .bg-dark {
     background-color: #343a40;
-} */
+}
 
 .margin-margin {
     margin-top: 35px;
@@ -871,6 +868,38 @@ h6 {
     color: #595C5F;
 }
 
+.btn-size{
+    width: 36px;
+    height: 26px;
+    font-weight: 2px;
+    border-radius: 4px;
+    padding: 0px;
+}
+.icon-size{
+    font-weight: 2px;
+    padding: 0px;
+}
+.tr-size{
+    color: #c0c1c4;
+ }
+ .bg-text-color1{
+    background-color: #E7D9FF;
+    color:#600AF3;
+ }
+ .bg-text-color2{
+    background-color: #F9DAFF;
+    color:#BD14DF;
+ }
+ .service-upload.img-size2{
+    min-height: 85px;
+    /* padding: 10px !important; */
+    align-content: center !important;
+ }
+
+.background-instock{
+    background-color: #B6FFD3;
+}
+
 
 /* - Calendar     */
 
@@ -885,16 +914,16 @@ h6 {
 }
 
 .fc-toolbar {
-    background: transparent;
+    background: #00AEEF;
     text-align: center;
     border-radius: 8px;
     padding: 10px 0px;
 }
 
 .fc-toolbar-title {
-    color: black !important;
-    font-size: 14px !important;
-    font-weight: 400px !important;
+    color: white !important;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .fc-daygrid {
@@ -912,6 +941,13 @@ h6 {
     font-size: 14px;
 }
 
+.fc-day-today {
+    background: #00AEEF;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
 .fc-button {
     background: transparent;
     color: white !important;
@@ -923,21 +959,24 @@ h6 {
     color: #fff !important;
 }
 
+.fc-prev-button,
+.fc-next-button {
+    font-size: 18px !important;
+    color: white !important;
+    background: none !important;
+    border: none !important;
+}
 
 .fc-prev-button::before {
-   background: white !important;
-   border: none !important;
+    content: "<";
     font-size: 20px;
     font-weight: bold;
-    background-color: black !important;
 }
 
 .fc-next-button::before {
-    background: white !important;
-    border: none !important;
-     font-size: 20px;
-     font-weight: bold;
-     background-color: black !important;
+    content: ">";
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events 

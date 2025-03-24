@@ -1,62 +1,93 @@
-<div class="header header-one nav-head shadow d-flex col-md-12 align-items-center justify-content-between">
+<div class="header header-one nav-head shadow d-flex col-md-12 logopin align-items-center ">
 
-    <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none shadow col-md-8">
+    <div
+        class="main-logo d-inline float-start d-lg-flex align-items-center align-center d-none d-sm-none d-md-none shadow col-md-8">
         <div class="dash-logo logopin">
             <img src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt="">
         </div>
 
     </div>
-    <div class="d-flex align-items-center ps-sm-3">
-        <a href="javascript:void(0);" id="toggle_btn" class="side-toggle">
+
+    <div class="d-flex justify-content-between w-100">
+
+        <div class="ps-3">
+            <!-- <a href="javascript:void(0);" class="side-toggle" id="toggle_btn">
             <span class="toggle-bars">
                 <span class="bar-icons"></span>
                 <span class="bar-icons"></span>
                 <span class="bar-icons"></span>
                 <span class="bar-icons"></span>
             </span>
-        </a>
-        <div class="dash2">
+            </a> -->
+            <a href="javascript:void(0);" id="toggle_btn" class="side-toggle">
+                <span class="toggle-bars">
+                    <span class="bar-icons"></span>
+                    <span class="bar-icons"></span>
+                    <span class="bar-icons"></span>
+                    <span class="bar-icons"></span>
+                </span>
+            </a>
+    
+
+
+        <!-- Sidebar Toggle -->
+        <div class="dash2 countFontSize2 header-heading">
             <h5 style="color: #ffffff">
                 @isset($header)
-                {{ $header }}
+                    {{ $header }}
                 @endisset
             </h5>
         </div>
-    </div>
-    <div class="col d-flex align-items-center justify-content-end">
+</div>
+        <!-- /Sidebar Toggle -->
 
-        <a class="nav-link me-2" href="{{route('admin.notification.index')}}">
-            <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
-            <img src="../assets/images/notification BTN.svg" alt="..." />
-        </a>
+        <!-- Search -->
+
+        <!-- /Search -->
+
+        <!-- Mobile Menu Toggle -->
+
+        <!-- /Mobile Menu Toggle -->
+
+        <!-- Header Menu -->
+
+        <!-- -------------- Notification ------------------------------ -->
+        <div class="d-flex align-items-center float-end me-4">
+
+            <a class="nav-link mt-1 me-2" href="{{route('admin.notification.index')}}">
+                <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
+                <img src="../assets/images/notification BTN.svg" alt="..." />
+            </a>
 
 
-        <div class="nav-profile">
-            <button class="btn profile dropdown-toggle btnColor1 px-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <span><i class="ti ti-user" style="color: #ffffff; font-size:26px;"></i></span>
+            <div class="nav-profile">
+                <button class="btn profile dropdown-toggle btnColor1" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <span><i class="fa-regular fa-user" style="color: #ffffff; font-size:25px;"></i></span>
 
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li>
-                    <a class="dropdown-item" href="{{ route('profile.index') }}">
-                        <img class="mr-3" src="{{asset('assets/images/myprofile.svg')}}" alt="">
-                        <span class="drop-span">{{ __('Profile') }}</span>
-                    </a>
-                </li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault();
-                this.closest('form').submit();">
-                            <img class="mr-3" src="{{asset('assets/images/logout.svg')}}" alt="">
-                            <Span class="drop-span">{{ __('Log Out') }}</Span>
-
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.index') }}">
+                            <img class="mr-3" src="{{asset('assets/images/myprofile.svg')}}" alt="">
+                            <span class="drop-span">{{ __('Profile') }}</span>
                         </a>
-                    </form>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault();
+                this.closest('form').submit();">
+                                <img class="mr-3" src="{{asset('assets/images/logout.svg')}}" alt="">
+                                <Span class="drop-span">{{ __('Log Out') }}</Span>
 
-                </li>
+                            </a>
+                        </form>
 
-            </ul>
+                    </li>
+
+                </ul>
+            </div>
         </div>
     </div>
 </div>
