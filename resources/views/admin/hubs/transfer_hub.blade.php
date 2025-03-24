@@ -130,7 +130,7 @@
 			</div>
                             </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
                               </td>
                              </tr>
                         </tbody>

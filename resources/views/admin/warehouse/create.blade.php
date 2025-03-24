@@ -290,13 +290,15 @@
                     <div class="input-block mb-3">
                         <label class="foncolor divform" for="status">Status </label>
                        
-
-                        <div class="status-toggle">
-                            <span>Active</span>
-                            <input id="rating_1" class="check" type="checkbox" checked>
-                            <label for="rating_1" class="checktoggle checkbox-bg togc"></label>
-                            <span class="">Inactive</span>
+                        <div class="d-flex align-items-center">
+                            <p class="profileUpdateFont" id="activeText">Active</p>
+                            <div class="status-toggle px-2">
+                                <input id="rating_6" class="check" type="checkbox" value="Inactive">
+                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
+                            </div>
+                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
+
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

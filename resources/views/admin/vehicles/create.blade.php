@@ -364,6 +364,14 @@
                             </label>
                         </div> -->
 
+                        <div class="d-flex align-items-center">
+                            <p class="profileUpdateFont" id="activeText">Active</p>
+                            <div class="status-toggle px-2">
+                                <input id="rating_6" class="check" type="checkbox" value="Inactive">
+                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
+                            </div>
+                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
+                        </div>
 
                         <div class="status-toggle">
                             <span>Active</span>
