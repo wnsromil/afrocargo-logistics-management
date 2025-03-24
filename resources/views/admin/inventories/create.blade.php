@@ -167,7 +167,7 @@
                             </span>
                             <h6 class="drop-browse align-center">
                               Upload Image</h6>
-                            <input type="file" multiple="" id="image_sign">
+                            <input type="file" multiple="" id="image_sign" name="img">
                             <div id="frames"></div>
                         </div> -->
 
