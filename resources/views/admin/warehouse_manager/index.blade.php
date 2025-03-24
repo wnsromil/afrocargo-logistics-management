@@ -11,27 +11,28 @@
   
   
   
-    <x-slot name="cardTitle" >
-        
-    
-       <p class="head">All Warehouse Manager</p>
-
-       <div class="usersearch d-flex usersserach">
-        
-        <div class="top-nav-search">
-            <form>
-                <input type="text" class="form-control forms" placeholder="Search ">
-
-            </form>
-        </div>
-        <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Refresh"><span><i
-                                            class="fe fe-refresh-ccw"></i></span></a></button>
-        </div>
+    <x-slot name="cardTitle">
+  <div class="d-flex topnavs" >
+    <p class="head">All Warehouse Managers</p>
+    <div class="usersearch d-flex usersserach">
+      <div class="top-nav-search">
+        <form>
+          <input type="text" class="form-control forms" placeholder="Search ">
+        </form>
+      </div>
+      
+      <div class="mt-2">
+        <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+          <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+            <span><i class="fe fe-refresh-ccw"></i></span>
+          </a>
+        </button>
+      </div>
     </div>
-    </x-slot>
-    
+  </div>
+</x-slot>
+
+<!--     
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
             <div class="mt-2">
@@ -41,8 +42,18 @@
                 </a>
             </div>
         </div>
+    </div> -->
+    
+    <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="usersearch d-flex">
+            <div class="mt-2">
+                <a href="{{ route('admin.warehouses.create') }}" class="btn btn-primary buttons">
+                    <img class="imgs" src="assets/images/Vector.png">
+                    Add Manager
+                </a>
+            </div>
+        </div>
     </div>
-
     <div>
 
         <div class="card-table">
