@@ -39,7 +39,7 @@ h2 {
 }
 .col737
 {
-    color: #737B8B;
+    color: #737B8B !important;
 }
 .coldarkblue
 {
@@ -65,6 +65,16 @@ h2 {
     margin-top: 0px;
 } */
 
+
+.btn-outline-primary{
+    border-color: #3a3a3a;
+    color: #3a3a3a;
+}
+.btn-outline-primary:hover{
+    background-color: transparent;
+    border-color: #3a3a3a;
+    color: #3a3a3a;
+}
 table thead.set{
     text-align: left;
 }
@@ -144,6 +154,10 @@ width: 26px;
     font-size: 16px;
 }
 
+.form-header h4.font16 {
+font-size: 16px;
+font-weight: 500px;
+}
 .buttoncolor {
     background-color: #203f5f;
     color: white;
@@ -609,7 +623,7 @@ h6 {
 
 .selected2 {
     background-color: #203A5F !important;
-    border: #203A5F !important;
+    border-color: #203A5F !important;
     color: white !important;
 }
 
@@ -633,6 +647,9 @@ h6 {
     color: rgba(243, 8, 153, 0.74);
 }
 
+.paid-continue-btn {
+    border-color: #3A3A3A;
+}
 .parentDiv {
     display: inline-block;
     width: auto;
@@ -767,6 +784,11 @@ h6 {
     position: relative;
 }
 
+.border-radius-6{
+    border-radius: 6px;
+}
+
+
 .calemdar-header {
     font-weight: bold;
     font-size: 18px;
@@ -806,7 +828,6 @@ h6 {
 
 .selected-schedule-color {
     color: #595C5F;
-    border-color: #595C5F;
 }
 
 .opacity-25 {
@@ -927,6 +948,13 @@ hr.border-opac{
     background-color: none;
     border-color: #3a3a3a ;
 }
+
+/* @media (min-width: 576px) {
+    .modal-dialog .md-small {
+        max-width: 20%;
+    }
+} */
+
 
 /* - Calendar     */
 
