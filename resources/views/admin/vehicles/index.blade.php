@@ -9,7 +9,7 @@
             <div class="mt-2">
                 <a href="{{ route('admin.vehicle.create') }}" class="btn btn-primary buttons">
                     <div class="d-flex align-items-center justify-content-center">
-                        <img class="imgs" src="assets/images/Vector.png" alt="Icon">
+                        <i class="ti ti-circle-plus me-2 text-white"></i>
                         Add Vehicle
                     </div>
                 </a>

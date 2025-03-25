@@ -47,7 +47,7 @@
         <div class="usersearch d-flex">
             <div class="mt-2">
                 <a href="{{ route('admin.warehouses.create') }}" class="btn btn-primary buttons">
-                    <img class="imgs" src="assets/images/Vector.png">
+                    <i class="ti ti-circle-plus me-2 text-white"></i>
                     Add Manager
                 </a>
             </div>
