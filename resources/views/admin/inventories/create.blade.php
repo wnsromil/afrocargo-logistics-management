@@ -201,7 +201,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 align-center">
                     <div class="mb-3 float-end">
                         <label for="in_status">Status</label>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center text-dark">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
                                 <input id="rating_6" class="check" type="checkbox" value="Inactive">
@@ -243,14 +243,13 @@
         $(document).ready(function () {
             $('#rating_6').change(function () {
                 if ($(this).is(':checked')) {
-                    $('#activeText').addClass('bold').removeClass('faded');
-                    $('#inactiveText').removeClass('bold').addClass('faded');
+                    $('#inactiveText').removeClass('faded');
+                    $('#activeText').addClass('faded');
                 } else {
-                    $('#inactiveText').addClass('bold').removeClass('faded');
-                    $('#activeText').removeClass('bold').addClass('faded');
+                    $('#activeText').removeClass('faded');
+                    $('#inactiveText').addClass('faded');
                 }
             });
         });
-
     </script>
 </x-app-layout>
