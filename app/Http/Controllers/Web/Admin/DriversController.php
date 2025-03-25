@@ -69,22 +69,19 @@ class DriversController extends Controller
      */
     public function store(Request $request)
     {
-        try {  // Validation rules
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
             'mobile_code' => 'required|string|max:15|unique:users,phone',
             'address' => 'required|string|max:500',
-            'vehicle_type' => 'nullable',
-            'license_number' => 'nullable',
-            'license_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+            'vehicle_type' => 'required',
+            'license_number' => 'required',
+            'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
-
-        // Check if validation fails
-
+       
         $status  = !empty($request->status) ? $request->status : 'Inactive';
 
         // Handle License Document Upload
@@ -119,12 +116,6 @@ class DriversController extends Controller
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Drivers created successfully.');
-        } catch (\Exception $e) {
-            // Handle unexpected errors
-            return redirect()->back()
-                ->with('error', 'Something went wrong! ' . $e->getMessage())
-                ->withInput();
-        }
     }
 
 
