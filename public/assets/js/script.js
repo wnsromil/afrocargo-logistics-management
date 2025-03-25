@@ -1062,6 +1062,19 @@ Version      : 1.0
     $(".search-dropdown-item").click(function (event) {
         event.stopPropagation();
     });
+    
+
+    // password toggle 
+    $(".toggle-password1").click(function() {
+
+        $(this).toggleClass("ti-eye-off");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
     if ($(".datatable").length > 0) {
         $(".datatable").DataTable({
             bFilter: false,
@@ -1096,18 +1109,6 @@ Version      : 1.0
                 .columns.adjust();
         });
     }
-
-    // password toggle 
-    $(".toggle-password1").click(function() {
-
-        $(this).toggleClass("ti-eye-off");
-        var input = $($(this).attr("toggle"));
-        if (input.attr("type") == "password") {
-            input.attr("type", "text");
-        } else {
-            input.attr("type", "password");
-        }
-    });
     
 })(jQuery);
 
