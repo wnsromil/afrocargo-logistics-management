@@ -327,7 +327,7 @@
                     <div class="input-block mb-3">
                         <label for="vehicle_number" class="foncolor">Vehicle Number(Plate No.)<i
                                 class="text-danger">*</i></label>
-                        <input type="vehicle_number" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                        <input type="number" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
                             value="{{ old('vehicle_number') }}">
                         @error('vehicle_number')
                         <span class="text-danger">{{ $message }}</span>

@@ -84,7 +84,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
 
                     <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
-                    <input type="number" id="mobile_code" name="phone" class="form-control inp"
+                    <input type="tel" id="mobile_code" name="phone" class="form-control inp"
                         placeholder="Enter Mobile No.">
                         @error('phone')
                         <span class="text-danger">{{ $message }}</span>
