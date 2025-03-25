@@ -19,19 +19,19 @@
         <p class="head">All Inventory</p>
 
         <div class="usersearch d-flex usersserach">
-        
-        <div class="top-nav-search">
-            <form>
-                <input type="text" class="form-control forms" placeholder="Search ">
 
-            </form>
+            <div class="top-nav-search">
+                <form>
+                    <input type="text" class="form-control forms" placeholder="Search ">
+
+                </form>
+            </div>
+            <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
+                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+            </div>
         </div>
-        <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Refresh"><span><i
-                                            class="fe fe-refresh-ccw"></i></span></a></button>
-        </div>
-    </div>
 
     </x-slot>
     <div class="d-flex align-items-center justify-content-end mb-1">
@@ -71,21 +71,21 @@
                             </tr>
                         </thead>
 
-            <!-- ------------------------------------------------------------------------------------------- -->
+                        <!-- ------------------------------------------------------------------------------------------- -->
 
-            <tbody>
-                        <tr class="background-instock text-center">
+                        <tbody>
+                            <tr class="background-instock text-center">
                                 <td>
-                                   1
+                                    1
                                 </td>
 
                                 <td>Supply</td>
                                 <td>
                                     @if (!empty($inventory->img))
-                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                            height="50">
+                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
+                                        height="50">
                                     @else
-                                        <span>-</span>
+                                    <span>-</span>
                                     @endif
                                 </td>
                                 <td>Barrel</td>
@@ -99,51 +99,46 @@
                                 <td><span>$25</span></td>
                                 <td><span>20</span></td>
                                 <td><span>12/5/2025</span></td>
-                                <td><span
-                                        class="bg-light text-success">In Stock</span>
+                                <td><span class="bg-light text-success">In Stock</span>
                                 </td>
-                         
+
                                 <td class="d-flex align-items-center">
-                             
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                                data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item"
-                                                        href='admin.inventories.edit'>
-                                                        <i class="far fa-edit me-2"></i>Update</a>
-                                                </li>
-                                                <li>
 
-                                                    <form
-                                                        action="admin.inventories.destroy"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="dropdown-item"
-                                                            onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                                class="far fa-trash-alt me-2"></i>Delete</button>
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item"
-                                                        href='admin.inventories.show'><i
-                                                            class="far fa-eye me-2"></i>View History</a>
-                                                </li>
-                                          
-                                            </ul>
-                                        </div>
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
+                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <ul>
+                                            <li>
+                                                <a class="dropdown-item" href='admin.inventories.edit'>
+                                                    <i class="far fa-edit me-2"></i>Update</a>
+                                            </li>
+                                            <li>
 
+                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="dropdown-item"
+                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
+                                                            class="far fa-trash-alt me-2"></i>Delete</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href='admin.inventories.show'><i
+                                                        class="far fa-eye me-2"></i>View History</a>
+                                            </li>
+
+                                        </ul>
                                     </div>
-                                </td>
-                            </tr>
-             </tbody>
+
+                </div>
+                </td>
+                </tr>
+                </tbody>
 
 
-            <!-- ------------------------------------------------------------------------------------------- -->
-                        <!-- <tbody>
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- <tbody>
                         @forelse ($inventories as $inventory)
                         <tr style="
                             @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
@@ -237,50 +232,44 @@
                         @endforelse
 
                         </tbody> -->
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
-
-
-        <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
-
-            <div class="col-md-6 d-flex p-2 align-items-center">
-                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example">
-                    <option selected>10</option>
-                    <option value="1">5</option>
-                    <option value="2">10</option>
-                    <option value="3">15</option>
-                </select>
-                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
-            </div>
-
-            <div class="col-md-6">
-                <div class="float-end">
-                    <button class="btn button-border">
-                        <i class="fa fa-angle-left tooltipped" data-position="top" data-tooltip="fa fa-angle-left"></i>
-                    </button>
-                    <button class="btn paginate_button page-item button-border active" type="button"
-                        data-bs-toggle="button">1</button>
-                    <button class="btn button-border">2</button>
-                    <button class="btn button-border" type="button">3</button>
-                    <button class="btn button-border" type="button">4</button>
-                    <button class="btn button-border" type="button">5</button>
-
-
-                    <button class="btn button-border">
-                        <i class="fa fa-angle-right tooltipped" data-position="top"
-                            data-tooltip="fa fa-angle-right"></i>
-                    </button>
-                    <!--   <li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li> -->
-                </div>
-            </div>
-        </div>
-
-
     </div>
 
 
+    <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+
+        <div class="col-md-6 d-flex p-2 align-items-center">
+            <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+            <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example">
+                <option selected>10</option>
+                <option value="1">5</option>
+                <option value="2">10</option>
+                <option value="3">15</option>
+            </select>
+            <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+        </div>
+
+        <div class="col-md-6">
+            <div class="float-end">
+                <button class="btn button-border">
+                    <i class="fa fa-angle-left tooltipped" data-position="top" data-tooltip="fa fa-angle-left"></i>
+                </button>
+                <button class="btn paginate_button page-item button-border active" type="button"
+                    data-bs-toggle="button">1</button>
+                <button class="btn button-border">2</button>
+                <button class="btn button-border" type="button">3</button>
+                <button class="btn button-border" type="button">4</button>
+                <button class="btn button-border" type="button">5</button>
+
+
+                <button class="btn button-border">
+                    <i class="fa fa-angle-right tooltipped" data-position="top" data-tooltip="fa fa-angle-right"></i>
+                </button>
+                <!--   <li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li> -->
+            </div>
+        </div>
+    </div>
 
 </x-app-layout>
