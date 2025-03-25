@@ -8,7 +8,7 @@
             <li class="submenu {{  !empty($menu->active) ? isActive($menu->active, 'subdrop') : '' }} mt-2">
                 <a href="javascript:void(0)" class="{{  !empty($menu->active) ? isActive($menu->active) : '' }}">
                     @if ($menu->icon)
-                        <img src="{{ asset($menu->icon) }}" alt="{{ $menu->title }}">
+                        {!! $menu->icon !!}
                     @endif
                     <span>{{ $menu->title }}</span>
                 </a>
@@ -18,14 +18,11 @@
 
                             <a
                                 href="{{ $submenu->route && !in_array($submenu->route, ["#", "''"]) ? route($submenu->route) : 'javascript:void(0)' }}">
-                                <!-- <i class="fa fa-arrow-right" data-bs-toggle="tooltip" title="fa fa-arrow-right" style="color:black;"></i> -->
                                 @if ($submenu->icon)
                                     <img src="{{ asset($submenu->icon) }}" alt="{{ $submenu->title }}">
                                 @endif
                                 <span>
-                                    {!! isActive($submenu->active,'
-                                        <i class="fa fa-arrow-right tooltipped" data-position="top" data-tooltip="fa fa-arrow-right"></i>
-                                    ') !!}
+                                    <i class="fa fa-arrow-right tooltipped" data-position="top" data-tooltip="fa fa-arrow-right"></i>
                                     {{ $submenu->title }}
                                 </span>
                             </a>
@@ -37,7 +34,7 @@
             <li class="{{ !empty($menu->active) ? isActive($menu->active) : '' }} mt-2" style="font-size:50px;">
                 <a href="{{ $menu->route && !in_array($menu->route, ["#", "''"]) ? route($menu->route) : 'javascript:void(0)' }}">
                     @if ($menu->icon)
-                        <img src="{{ asset($menu->icon) }}" alt="{{ $menu->title }}">
+                        {!! $menu->icon !!}
                     @endif
                     <span>{{ $menu->title }}</span>
                 </a>
