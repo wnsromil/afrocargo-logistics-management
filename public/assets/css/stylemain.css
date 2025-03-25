@@ -788,6 +788,10 @@ h6 {
     border-radius: 6px;
 }
 
+.modal-content.resized{
+    height: 144px;
+    width: 296px;
+}
 
 .calemdar-header {
     font-weight: bold;

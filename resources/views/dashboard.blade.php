@@ -1109,7 +1109,7 @@
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_man_cancel">Delivery
+                                                            data-bs-target="#delivery_reschedule">Delivery
                                                             Re-schedule</a>
                                                     </li>
                                                     <li>
@@ -1261,7 +1261,7 @@
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_man_cancel">Delivery
+                                                            data-bs-target="#delivery_reschedule">Delivery
                                                             Re-schedule</a>
                                                     </li>
                                                     <li>
@@ -2008,13 +2008,13 @@
 <!-- ----------------------------------------------------------------------------------------------------------- -->
 
 
-<!-- Schedule Pickup Modal -->
-<!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
+<!-- delivery_reschedule Modal -->
+<div class="modal custom-modal fade" id="delivery_reschedule" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
+        <div class="modal-content schedule-popup1 border-radius-6">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Pickup Man Assign</h4>
+                    <h4 class="font16 mb-0">Pickup Re-Schedule</h4>
                 </div>
                 <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
                 </button>
@@ -2034,9 +2034,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                <label class="col737">Date<span class="text-danger">*</span></label>
+                                <div class="cal-icon cal-icon-info">
+                                    <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-3">
                         <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -2047,16 +2057,16 @@
             </form>
         </div>
     </div>
-</div> -->
-<!-- /Schedule Pickup Modal -->
+</div>
+<!-- /delivery_reschedule Modal -->
 <!-- ---------------------------------------------------------------------------------------------------- -->
 <!-- schedule_pickup_cancel Modal -->
 <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
+        <div class="modal-content resized">
             <div class="modal-body p-3">
                 <div class="form-header">
-                    <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Schedule Pickup?</p>
+                    <h4 class="font16 col3A fw-medium">Do you want to cancel the Schedule Pickup?</h4>
                 </div>
                 <div class="modal-btn delete-action align-cenetr">
                     <div class="row">
@@ -2080,7 +2090,7 @@
 <!-- delivery_man_cancel Modal -->
 <div class="modal custom-modal fade" id="delivery_man_cancel" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
+        <div class="modal-content resized">
             <div class="modal-body p-3">
                 <div class="form-header">
                     <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub ?
