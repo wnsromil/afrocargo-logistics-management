@@ -72,10 +72,10 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-       
+    //    return $request->all();
         // Validate incoming request data
         $request->validate([
-            'warehouse_id'    => 'required|exists:warehouses,id',
+            'warehouse_name'    => 'required|exists:warehouses,id',
             'vehicle_type'    => 'required|string|max:255',
             'vehicle_number'  => 'nullable|string|max:50|unique:vehicles,vehicle_number',
             'vehicle_model'   => 'required|string|max:255',
@@ -86,7 +86,7 @@ class VehicleController extends Controller
 
         // Create a new vehicle
             $vehicle = new Vehicle();
-            $vehicle->warehouse_id   = $request->warehouse_id;
+            $vehicle->warehouse_id   = $request->warehouse_name;
             $vehicle->vehicle_type   = $request->vehicle_type;
             $vehicle->vehicle_number = $request->vehicle_number;
             $vehicle->vehicle_model  = $request->vehicle_model;

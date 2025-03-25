@@ -31,7 +31,7 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager', 'driver']
             ],
             [
-                'title' => 'Warehouse',
+                'title' => 'Warehouses',
                 'icon' => '<i class="menuIcon ti ti-building-warehouse"></i>',
                 'route' => '#',
                 'active' => 'warehouses*,warehouse_manager*',

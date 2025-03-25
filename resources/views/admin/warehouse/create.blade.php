@@ -280,8 +280,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                  
                         <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
-						<input type="number" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No.">
-                   
+						<input type="number" id="mobile_code" name="phone" class="form-control inp" placeholder="Enter Contact No.">
+                        @error('phone')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
