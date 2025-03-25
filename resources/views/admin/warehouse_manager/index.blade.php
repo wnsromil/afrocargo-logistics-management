@@ -5,33 +5,36 @@
 
 
 
-        
-  
-  
-  
-  
-    <x-slot name="cardTitle">
-  <div class="d-flex topnavs" >
-    <p class="head">All Warehouse Managers</p>
-    <div class="usersearch d-flex usersserach">
-      <div class="top-nav-search">
-        <form>
-          <input type="text" class="form-control forms" placeholder="Search ">
-        </form>
-      </div>
-      
-      <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-          <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
-            <span><i class="fe fe-refresh-ccw"></i></span>
-          </a>
-        </button>
-      </div>
-    </div>
-  </div>
-</x-slot>
 
-<!--     
+
+
+
+
+    <x-slot name="cardTitle">
+        <div class="d-flex topnavs">
+            <p class="head">All Warehouse Managers</p>
+            <div class="usersearch d-flex usersserach">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control forms" placeholder="Search ">
+                    </form>
+                </div>
+
+                <div class="mt-2">
+                    <button type="button"
+                        class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                        <a class="btn-filters d-flex justify-content-center align-items-center"
+                            href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Refresh">
+                            <span><i class="fe fe-refresh-ccw"></i></span>
+                        </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </x-slot>
+
+    <!--     
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
             <div class="mt-2">
@@ -42,7 +45,7 @@
             </div>
         </div>
     </div> -->
-    
+
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
             <div class="mt-2">
@@ -73,19 +76,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- @forelse ($warehouses as $index => $warehouse)
+                            @forelse ($warehouses as $index => $warehouse)
                                 <tr>
                                     <td>
                                         {{ ++$index }}
                                     </td>
 
-                                    <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
+                                    <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '-')}}</td>
                                     <td><span>{{$warehouse->name ?? '-'}}</span></td>
                                     <td>{{$warehouse->email ?? '-'}}</td>
                                     <td>{{$warehouse->phone ?? '-'}}</td>
                                     <td>{{$warehouse->address ?? '-'}}</td>
-                                    <td><span
-                                            class="badge {{$warehouse->status == 'Active' ? 'bg-success-light' : 'bg-danger-light'}}">{{$warehouse->status ?? '-'}}</span>
+                                    <td>
+                                        @if ($warehouse->status == 'Active')
+                                            <div class="container">
+                                                <img src="../assets/img/checkbox.png" alt="Image" />
+                                                <p>Active</p>
+                                            </div>
+                                        @else
+                                            <div class="container">
+                                                <img src="../assets/img/inactive.png" alt="Image" />
+                                                <p>Inactive</p>
+                                            </div>
+                                        @endif
                                     </td>
                                     <td class="d-flex align-items-center">
                                         {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
@@ -102,18 +115,21 @@
                                                             href="{{route('admin.warehouse_manager.edit', $warehouse->id)}}"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
-                                                    <li> -->
-                            <!-- Delete form -->
-                            <!-- <form
+                                                    <li>
+                                                        <!-- Delete form -->
+                                                        {{-- <form
                                                             action="{{ route('admin.warehouse_manager.destroy', $warehouse->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')"><i class="far fa-trash-alt me-2"></i>Delete</button>
-                                                        </form>
+                                                            <button type="button" class="dropdown-item"
+                                                                onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')"><i
+                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
+                                                        </form> --}}
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{route('admin.warehouse_manager.show', $warehouse->id)}}"><i
+                                                        <a class="dropdown-item"
+                                                            href="{{route('admin.warehouse_manager.show', $warehouse->id)}}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
                                                     <li>
@@ -134,7 +150,7 @@
                                 <tr>
                                     <td colspan="11" class="px-4 py-4 text-center text-gray-500">No manager found.</td>
                                 </tr>
-                            @endforelse -->
+                            @endforelse
                             {{-- <div>
                                 <tr>
                                     <td>1</td>
@@ -151,17 +167,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -184,17 +205,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -217,17 +243,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -250,17 +281,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -283,17 +319,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -316,17 +357,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -349,17 +395,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -382,17 +433,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -415,17 +471,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
@@ -448,17 +509,22 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                        <a class="dropdown-item" href="edit-customer.html"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+                                                        <a class="dropdown-item" href="customer-details.html"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
 
                                                 </ul>
