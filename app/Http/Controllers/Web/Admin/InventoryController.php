@@ -50,6 +50,7 @@ class InventoryController extends Controller
         $request->validate([
             'warehouse_id'      => 'required|exists:warehouses,id',
             'inventory_name'    => 'required|string',
+            'item_name'    => 'required|string',
             'in_stock_quantity' => 'required|numeric',
             'low_stock_warning' => 'required|numeric',
             'status'           => 'in:Active,Inactive',
@@ -99,6 +100,7 @@ class InventoryController extends Controller
             'warehouse_id'    => $request->warehouse_id,
             'category_id'     => $category_id,
             'inventory_id'    => $inventory->id,
+            'name'    => $inventory->item_name,
             'user_id'         => auth()->id(),
             'in_stock_quantity' => $request->in_stock_quantity,
             'low_stock_warning' => $request->low_stock_warning,

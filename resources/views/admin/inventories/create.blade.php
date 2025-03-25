@@ -5,7 +5,7 @@
 
     <x-slot name="cardTitle">
         <div class="innertopnav">
-        <p class="fw-semibold fs-5 text-dark pheads">Add Inventory</p>
+            <p class="fw-semibold fs-5 text-dark pheads">Add Inventory</p>
         </div>
     </x-slot>
 
@@ -37,10 +37,10 @@
                     <div class="input-block mb-3">
                         <label for="width" class="table-content profileUpdateFont fw-medium">Item Name<i
                                 class="text-danger">*</i></label>
-                        <input class="form-control input-padding" name="width" type="number" value=""
-                            placeholder="Enter Item Name" aria-label="default input example" required>
+                        <input class="form-control input-padding" name="item_name" type="text" value=""
+                            placeholder="Enter Item Name" aria-label="default input example">
 
-                        @error('width')
+                        @error('item_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -133,8 +133,8 @@
                         <label for="in_price"
                             class="table-content profileUpdateFont fw-medium required text-dark">Price</label>
                         <div class="d-flex align-items-center justify-content-between form-control">
-                            <input class="no-border" type="number" name="price" value="{{ old('price') }}"
-                                placeholder="Enter price" required>
+                            <input class="no-border" type="tel" name="price" value="{{ old('price') }}"
+                                placeholder="Enter price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                         </div>
 
@@ -187,8 +187,11 @@
                                     </defs>
                                 </svg></span>
                             <h6 class="drop-browse align-center">
-                            Upload Image
+                                Upload Image
                             </h6>
+                            @error('img')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             <!-- <input type="file" multiple="" id="image_sign"> -->
                             <!-- <div id="frames"></div> -->
                         </div>

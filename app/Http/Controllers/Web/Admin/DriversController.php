@@ -115,7 +115,7 @@ class DriversController extends Controller
 
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
-            ->with('success', 'Drivers created successfully.');
+            ->with('success', 'Driver created successfully.');
     }
 
 

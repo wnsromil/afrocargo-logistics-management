@@ -191,6 +191,11 @@
                     <!-- <i class="fa-regular fa-user" style="color: #595C5F"></i> -->
                     <i class="fe fe-user" style="color: #595C5F"></i>
                 </span>
+                @if ($errors->has('email'))
+                <div class="text-danger mt-2">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </div>
+            @endif
             </div>
 
             <!-- <div class="input-group mb-3 border rounded my-4">
@@ -213,6 +218,12 @@
                 </span>
                 </span>
             </div>
+
+            @if ($errors->has('password'))
+            <div class="text-danger mt-2">
+                <strong>{{ $errors->first('password') }}</strong>
+            </div>
+        @endif
 
             <!-- Remember Me -->
             <div class="block mt-4">
