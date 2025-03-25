@@ -90,18 +90,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -164,18 +164,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -245,18 +245,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -323,18 +323,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -374,18 +374,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -452,18 +452,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -504,18 +504,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -589,18 +589,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -640,18 +640,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 
@@ -715,18 +715,18 @@
                         <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td>
                               <td>
                                 <div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-user"></i>Markham</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div></div>
+                                     <div class="row"><div class="td"><i class="me-2 ti ti-map-pin"></i><p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block California</p></div></div>
                                     </div>
                                 </div>
                               </td> 

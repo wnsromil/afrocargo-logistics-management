@@ -1,3 +1,10 @@
+<style>
+.card.mainCardGlobal:before
+{
+    display: none;
+}
+</style>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-light">

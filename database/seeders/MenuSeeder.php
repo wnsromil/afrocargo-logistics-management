@@ -18,28 +18,28 @@ class MenuSeeder extends Seeder
         $menus = [
             [
                 'title' => 'Dashboard',
-                'icon' => 'assets/images/dashboardlogo.svg',
+                'icon' => '<i class="menuIcon ti ti-layout-dashboard"></i>',
                 'route' => 'admin.dashboard',
                 'active' => 'dashboard*',
                 'roles' => ['admin', 'warehouse_manager', 'driver']
             ],
             [
                 'title' => 'Customers',
-                'icon' => 'assets/images/Users.svg',
+                'icon' => '<i class="menuIcon ti ti-users"></i>',
                 'route' => 'admin.customer.index',
                 'active' => 'customer*',
                 'roles' => ['admin', 'warehouse_manager', 'driver']
             ],
             [
                 'title' => 'Warehouses',
-                'icon' => 'assets/images/warehouse.svg',
+                'icon' => '<i class="menuIcon ti ti-building-warehouse"></i>',
                 'route' => '#',
                 'active' => 'warehouses*,warehouse_manager*',
                 'roles' => ['admin']
             ],
             [
                 'title' => 'Vehicle Management',
-                'icon' => 'assets/images/vehiclemangement.svg',
+                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 //'route' => 'admin.vehicle.index',
                 'route' => '#',
                 'active' => 'vehicle*,container*',
@@ -47,49 +47,49 @@ class MenuSeeder extends Seeder
             ],
             [
                 'title' => 'Drivers',
-                'icon' => 'assets/images/Drivers.svg',
+                'icon' => '<i class="menuIcon ti ti-forklift"></i>',
                 'route' => 'admin.drivers.index',
                 'active' => 'drivers*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Inventory',
-                'icon' => 'assets/images/inventory.svg',
+                'icon' => '<i class="menuIcon ti ti-brand-unsplash"></i>',
                 'route' => 'admin.inventories.index',
                 'active' => 'inventories*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Driver Inventory',
-                'icon' => 'assets/images/driver_inventory.svg',
+                'icon' => '<i class="menuIcon ti ti-truck-loading"></i>',
                 'route' => 'admin.driver_inventory.index',
                 'active' => 'driver_inventory*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Service Orders',
-                'icon' => 'assets/images/shipment.svg',
+                'icon' => '<i class="menuIcon ti ti-packages"></i>',
                 'route' => 'admin.service_orders.index',
                 'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Supply Orders',
-                'icon' => 'assets/images/supply_orders@3x.svg',
+                'icon' => '<i class="menuIcon ti ti-cube-send"></i>',
                 'route' => 'admin.supply_orders.index',
                 'active' => 'supply_orders*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Expenses List',
-                'icon' => 'assets/images/expenses.svg',
+                'icon' => '<i class="menuIcon ti ti-businessplan"></i>',
                 'route' => 'admin.expenses.index',
                 'active' => 'expenses*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Signature List',
-                'icon' => 'assets/images/signaturelist.svg',
+                'icon' => '<i class="menuIcon ti ti-clipboard-list"></i>',
                 'route' => 'admin.signature.index',
                 'active' => 'signature*',
                 'roles' => ['admin', 'warehouse_manager']
@@ -102,36 +102,36 @@ class MenuSeeder extends Seeder
             //     'roles' => ['admin', 'warehouse_manager']
             // ],
             [
+                'title' => 'Invoice',
+                'icon' => '<i class="menuIcon ti ti-file-dollar"></i>',
+                'route' => 'admin.invoices.index',
+                'active' => 'invoices*',
+                'roles' => ['admin', 'warehouse_manager']
+            ], 
+            [
                 'title' => 'Notifications Schedule',
-                'icon' => 'assets/images/notification_schedule.svg',
+                'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
                 'route' => 'admin.notification_schedule.index',
                 'active' => 'notification_schedule*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
-                'title' => 'Invoice',
-                'icon' => 'assets/images/invoices.svg',
-                'route' => 'admin.invoices.index',
-                'active' => 'invoices*',
-                'roles' => ['admin', 'warehouse_manager']
-            ],
-            [
                 'title' => 'Role Management',
-                'icon' => 'assets/images/user_role.svg',
+                'icon' => '<i class="menuIcon ti ti-user-check"></i>',
                 'route' => 'admin.user_role.index',
                 'active' => 'user_role*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Advance Reports',
-                'icon' => 'assets/images/reports.svg',
+                'icon' => '<i class="menuIcon ti ti-clipboard-data"></i>',
                 'route' => 'admin.advance_reports.index',
                 'active' => 'advance_reports*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Notification',
-                'icon' => 'assets/images/notification.svg',
+                'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
                 'route' => 'admin.notification.index',
                 'active' => 'notification',
                 'roles' => ['admin', 'warehouse_manager']
