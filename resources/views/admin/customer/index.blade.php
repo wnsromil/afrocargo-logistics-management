@@ -117,7 +117,7 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                         <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
                                         <td>-</td>
                                         <td>{{ $customer->license_number ?? '-' }}</td>
-                                        <td>{{ $customer->phone ?? '-' }}</td>
+                                        <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}</td>
                                         <td>{{ $customer->address ?? '-' }}</td>
                                         <td>
                                             @if ($customer->status == 'Active')

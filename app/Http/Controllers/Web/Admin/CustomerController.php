@@ -66,7 +66,10 @@ class CustomerController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
-            'longitude' => 'required|numeric' // Optional
+            'longitude' => 'required|numeric', // Optional
+            'country_code' => 'required|string',
+            'country_code_2' => 'required|string',
+
         ]);
 
         $imagePaths = [];
@@ -122,6 +125,7 @@ class CustomerController extends Controller
             'profile_pic' => $imagePaths['profile_pics'] ?? null,
             'signup_type' => 'for_admin',
             'country_code'        => $request->country_code,
+            'country_code_2'        => $request->country_code_2,
         ];
         if (!empty($request->license_expiry_date)) {
             $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');

@@ -75,7 +75,7 @@
                                     <td>{{ $warehouse->state->name ?? '-' }}</td>
                                     <td>{{ $warehouse->country->name ?? '-' }}</td>
                                     <td>{{ $warehouse->zip_code ?? '-' }}</td>
-                                    <td>{{ $warehouse->phone ?? '-' }}</td>
+                                    <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                                     <td>
                                         @if ($warehouse->status == 'Active')
                                             <div class="container">
