@@ -12,31 +12,41 @@
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Warehouse Name</h6>
-                    <p>Invio Cargo</p>
+                    <p>{{$warehouse->warehouse_name ?? '-'}}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Warehouse Code</h6>
-                    <p>WH-001</p>
+                    <p>{{$warehouse->warehouse_code ?? '-'}}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Contact No.</h6>
-                    <p>+1 15541 54544</p>
+                    <p>{{ $warehouse->country_code ?? '' }} {{$warehouse->phone ?? '-' }}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Address</h6>
-                    <p>22 Junior Avenue California, LA 30097</p>
+                    <p>{{ $warehouse->address ?? '-' }}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Status</h6>
-                    <p>Inactive</p>
+                    @if ($warehouse->status == 'Active')
+                        <div class="container">
+                            <img src="../assets/img/checkbox.png" alt="Image" />
+                            <p>Active</p>
+                        </div>
+                    @else
+                        <div class="container">
+                            <img src="../assets/img/inactive.png" alt="Image" />
+                            <p>Inactive</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

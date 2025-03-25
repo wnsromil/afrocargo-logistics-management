@@ -12,37 +12,47 @@
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Warehouse Manager Name</h6>
-                    <p>Robert Pattison</p>
+                    <p>{{$user->name ?? '-'}}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Warehouse Name</h6>
-                    <p>Invio Cargo</p>
+                    <p>{{$user->warehouse->warehouse_name ?? '-'}}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Email Address</h6>
-                    <p>robertpattison1@mailinator.com</p>
+                    <p>{{$user->email ?? '-'}}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Contact No.</h6>
-                    <p>+1 15541 54544</p>
+                    <p>{{ $user->country_code ?? '' }} {{$user->phone ?? '-' }}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Address</h6>
-                    <p>22 Junior Avenue California, LA 30097</p>
+                    <p>{{$user->address ?? '-' }}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Status</h6>
-                    <p>Inactive</p>
+                    @if ($user->status == 'Active')
+                        <div class="container">
+                            <img src="../assets/img/checkbox.png" alt="Image" />
+                            <p>Active</p>
+                        </div>
+                    @else
+                        <div class="container">
+                            <img src="../assets/img/inactive.png" alt="Image" />
+                            <p>Inactive</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

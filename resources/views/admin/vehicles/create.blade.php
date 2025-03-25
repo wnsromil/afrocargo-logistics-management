@@ -335,22 +335,6 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="driver_id" class="foncolor">Assigned Driver <i class="text-danger">*</i></label>
-
-                        <select name="driver_id" class="js-example-basic-single select2">
-                            <option value="" readonly>Select Driver</option>
-                            @foreach ($drivers as $driver)
-                            <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('driver_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">

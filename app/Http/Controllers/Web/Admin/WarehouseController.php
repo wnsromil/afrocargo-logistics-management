@@ -101,9 +101,9 @@ class WarehouseController extends Controller
      */
     public function show($id)
     {
-        $user = Warehouse::find($id);
+        $warehouse = Warehouse::find($id);
 
-        return view('admin.warehouse.show',compact('user'));
+        return view('admin.warehouse.show',compact('warehouse'));
     }
     
     /**
