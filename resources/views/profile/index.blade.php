@@ -10,8 +10,8 @@
     </div>
     @endsection
     <div class="text-end mt-n4">
-        <a class="btn btn-primary me-2" href="{{ route('profile.edit') }}"><i class="ti ti-edit"></i> Update Profile</a>
-        <a href="{{ route('profile.password') }}" class="btn btn-primary"><i class="ti ti-lock-square-rounded"></i> Change Password</a>
+        <a class="btn update btn-primary me-2" href="{{ route('profile.edit') }}"><i class="ti ti-edit"></i> Update Profile</a>
+        <a href="{{ route('profile.password') }}" class="btn update btn-primary"><i class="ti ti-lock-square-rounded"></i> Change Password</a>
     </div>
     <section>
         <div class="row align-items-center">
