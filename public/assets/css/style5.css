@@ -250,11 +250,10 @@ td {
   color: #3A3A3A;
 }
 
-.container {
+/* .container {
   display: flex;
   align-items: center;
-  /* This will align both image and text vertically in the middle */
-}
+} */
 
 .container img {
   margin-right: 10px;
@@ -714,11 +713,10 @@ input[type="radio"] {
 
 }
 
-.container {
+/* .container {
   display: flex;
   align-items: center;
-  /* Aligns text and image vertically */
-}
+} */
 
 .container img {
   height: 100%;
@@ -750,7 +748,6 @@ h2 {
 .inputbackground {
   background-color: #EDEDED;
 }
-
 .avtarc {
   border-radius: 50%;
   width: 100px;
@@ -783,6 +780,7 @@ h2 {
 
 .content-page-header {
   margin-top: -5px;
+  justify-content: space-between;
 }
 .content-page-header:has(.usersearch.d-flex.usersserach) {
   margin-top: -7px;
@@ -831,10 +829,10 @@ h2 {
   margin-bottom: 15px;
 }
 
-.text-end {
+/* .text-end {
   padding-top: 120px;
   padding-bottom: 30px;
-}
+} */
 
 .divform {
   margin-bottom: 3px !important;

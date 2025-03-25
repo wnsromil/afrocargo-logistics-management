@@ -1,36 +1,8 @@
-<div class="app-wrapper-footer">
-    <div class="app-footer">
-        <div class="app-footer__inner">
-            <div class="app-footer-left">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a href="javascript:void(0);" class="nav-link">
-                            Footer Link 1
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0);" class="nav-link">
-                            Footer Link 2
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="app-footer-right">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a href="javascript:void(0);" class="nav-link">
-                            Footer Link 3
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0);" class="nav-link">
-                            <div class="badge badge-success mr-1 ml-0">
-                                <small>NEW</small>
-                            </div>
-                            Footer Link 4
-                        </a>
-                    </li>
-                </ul>
+<div class="section bg-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="fs_14 fw_600 colb0b text-center">Copyright © 2025 all rights reserved by <a class="purpleText" href="/">Afro Cargo Express</a></p>
             </div>
         </div>
     </div>

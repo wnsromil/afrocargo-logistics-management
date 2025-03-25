@@ -116,7 +116,7 @@
             <div>
                 <p class="heading mt-4">Order History</p>
                 <!-- Timeline -->
-                <div class="col-md-12">
+                {{-- <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="cd-horizontal-timeline mannual">
@@ -136,6 +136,8 @@
                                                         <p class="smfont">12-12-2024</p>
                                                     </a>
                                                     <a href="#0" data-date="16/01/2014" class="botttom">
+                                                        <p class="bigfont">Schedule Pickup</p>
+                                                        <p class="smfont">12-12-2024</p>
                                                         <p class="bigfont">Assign Driver</p>
                                                         <p class="smfont">Alex Jim</p>
                                                         <p class="smfont">12-12-2024</p>
@@ -179,7 +181,68 @@
                             </div>
                         </div>
                     </div>
+                </div> --}}
+
+                <!-- Timeline -->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="cd-horizontal-timeline mannuallyCSS">
+                                <div class="timeline w-100">
+                                    <div class="events-wrapper">
+                                        <div class="events">
+                                            <ol>
+                                                <li>
+                                                    <a href="#0" data-date="16/01/2014" class="selected">
+                                                        <p class="bigfont">Pending</p>
+                                                        <p class="smfont">12-12-2024</p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#0" data-date="28/02/2014">
+                                                        <p class="bigfont">Schedule Pickup</p>
+                                                        <p class="smfont">12-12-2024</p>
+                                                        <div class="bottom">
+                                                            <p class="bigfont">Assign Driver</p>
+                                                            <p class="smfont">Alex Jim</p>
+                                                            <p class="smfont">12-12-2024</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#0" data-date="20/04/2014">
+                                                        <p class="bigfont">Transfer to Hub</p>
+                                                        <p class="smfont">13-12-2024</p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#0" data-date="28/02/2014">
+                                                        <p class="bigfont">Schedule Pickup</p>
+                                                        <p class="smfont">12-12-2024</p>
+                                                        <div class="bottom">
+                                                            <p class="bigfont">Assign Driver</p>
+                                                            <p class="smfont">Alex Jim</p>
+                                                            <p class="smfont">12-12-2024</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ol>
+                                            <span class="filling-line" aria-hidden="true"></span>
+                                        </div>
+                                        <!-- events -->
+                                    </div>
+                                    <ul class="cd-timeline-navigation">
+                                        <li><a href="#0" class="prev inactive">Prev</a></li>
+                                        <li><a href="#0" class="next">Next</a></li>
+                                    </ul>
+                                    <!-- cd-timeline-navigation -->
+                                </div>
+                                <!-- timeline -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- Timeline -->
             </div>
         </div>
     </div>
