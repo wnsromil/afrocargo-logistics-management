@@ -3,84 +3,81 @@
         {{ __('Inventory Management') }}
     </x-slot>
 
-    <x-slot name="cardTitle" >
-       <p class="head">Advance Reports</p>
-       <div class="usersearch d-flex">
-                 <div>
-                 <button class="btn btn-primary"style="background:#33B469;border-color:#203A5F!important; font-weight:300; height:37px;text-color:white;"><img style="width:10px; margin-right:5px;"src="../assets/images/Export.png">Export</button>
-                 <button class="btn btn-primary"style="background:#203A5F; font-weight:300;"><img style="margin-right:5px;"src="../assets/images/Print.png">Print</button>
-             </div> 
+    <x-slot name="cardTitle">
+        <p class="head">Advance Reports</p>
+        <div class="usersearch d-flex">
+            <div>
+                <button class="btn btn-primary" style="background:#33B469;border-color:#203A5F!important; font-weight:300; height:37px;text-color:white;"><img style="width:10px; margin-right:5px;" src="../assets/images/Export.png">Export</button>
+                <button class="btn btn-primary" style="background:#203A5F; font-weight:300;"><img style="margin-right:5px;" src="../assets/images/Print.png">Print</button>
             </div>
+        </div>
     </x-slot>
 
     <form>
-    <div class="row">
-    <div class="col-md-3 dposition" >
-        <label>Invoice Date</label>
-        <div class="daterangepicker-wrap cal-icon cal-icon-info">
-		<input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
-	    </div>
-		</div>
+        <div class="row">
+            <div class="col-md-3 dposition">
+                <label>Invoice Date</label>
+                <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                    <input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" style="border:none" />
+                </div>
+            </div>
 
-     <div class="col-md-3 dposition" >
-     <label>By warehouse</label> 
-     <select class="js-example-basic-single select2 form-cs">
-		<option selected="selected " style="color:#737B8B">Select Warehouse</option>
-		<option>white</option>
-		<option>purple</option>
+            <div class="col-md-3 dposition">
+                <label>By warehouse</label>
+                <select class="js-example-basic-single select2 form-cs">
+                    <option selected="selected " style="color:#737B8B">Select Warehouse</option>
+                    <option>white</option>
+                    <option>purple</option>
+                </select>
+            </div>
+            <div class="col-md-3 dposition">
+                <label>By Tracking ID</label>
+                <img class="imgc" src="assets/img/icons/search.svg" alt="img">
+                <input type="text" class="form-control form-cs" placeholder="Enter Tracking ID">
+            </div>
 
-        
+            <div class="col-md-3 dposition">
+                <label>By Customer </label>
+                <img class="imgc" src="assets/img/icons/search.svg" alt="img">
+                <input type="text" class="form-control form-cs" placeholder="Enter Customer Name">
+            </div>
 
-		</select>
-     </div>
-     <div class="col-md-3 dposition" >
-     <label>By Tracking ID</label> 
-     <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
-    <input type="text" class="form-control form-cs" placeholder="Enter Tracking ID" >
-		</div>
-     
-     <div class="col-md-3 dposition" >
-     <label>By Customer </label> 
-     <img  class="imgc" src="assets/img/icons/search.svg" alt="img">
-    <input type="text" class="form-control form-cs" placeholder="Enter Customer Name" >
-    </div>
+            <div class="col-md-3 dmargin">
+                <!-- Moment.js (required for daterangepicker) -->
+                <label>By Driver</label>
+                <select class="js-example-basic-single select2">
+                    <option selected="selected" style="color:#737B8B">Select Driver</option>
+                    <option>white</option>
+                    <option>purple</option>
+                </select>
+            </div>
 
-   <div class="col-md-3 dmargin">
-   <!-- Moment.js (required for daterangepicker) -->
-   <label>By Driver</label> 
-   <select class="js-example-basic-single select2">
-		<option selected="selected" style="color:#737B8B">Select Driver</option>
-		<option>white</option>
-		<option>purple</option>
-		</select>
-   </div>
+            <div class="col-md-3 dmargin">
+                <label>By Hub</label>
+                <select class="js-example-basic-single select2">
+                    <option selected="selected">Select Hub</option>
+                    <option>white</option>
+                    <option>purple</option>
+                </select>
+            </div>
 
-    <div class="col-md-3 dmargin" >
-    <label>By Hub</label> 
-   <select class="js-example-basic-single select2">
-		<option selected="selected">Select Hub</option>
-		<option>white</option>
-		<option>purple</option>
-		</select>
+
+            <div class="col-md-3 dmargin">
+                <label>By Order Status</label>
+                <select class="js-example-basic-single select2">
+                    <option selected="selected">Select Order Status</option>
+                    <option>white</option>
+                    <option>purple</option>
+                </select>
+            </div>
+
+            <div class="col-md-3 twobutton">
+                <button class="btn btn-primary btnf">Filter</button>
+                <button class="btn btn-outline-danger btnr ">Reset</button>
+            </div>
         </div>
 
-
-        <div class="col-md-3 dmargin" >
-        <label>By Order Status</label> 
-        <select class="js-example-basic-single select2">
-		<option selected="selected">Select Order Status</option>
-		<option>white</option>
-		<option>purple</option>
-		</select>
-    </div>
-    
-    <div class="col-md-3 twobutton">
-       <button class="btn btn-primary btnf">Filter</button>
-          <button class="btn btn-outline-danger btnr ">Reset</button>
-        </div>
-        </div>
-    
-</form>
+    </form>
 
 
     <div>
@@ -113,7 +110,7 @@
                                 <td>
                                     {{ ++$index }}
                                 </td>
-    
+
                                 <td>{{ ucfirst($inventory->category->name ?? '')}}</td>
                                 <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '')}}</td>
                                 <td><span>{{$inventory->in_stock_quantity ?? '-'}}</span></td>
@@ -163,7 +160,7 @@
                         </tbody>
 
                     </table>
-                    
+
                     <div class="bottom-user-page mt-3">
                         {!! $inventories->links('pagination::bootstrap-5') !!}
                     </div>
@@ -171,5 +168,5 @@
             </div>
         </div>
     </div>
-    
+
 </x-app-layout>
