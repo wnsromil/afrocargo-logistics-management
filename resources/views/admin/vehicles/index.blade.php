@@ -57,10 +57,12 @@
                 </form>
         </div>
         <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="{{ route('admin.vehicle.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
-        </div>
+        <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+          <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+            <span><i class="fe fe-refresh-ccw"></i></span>
+          </a>
+        </button>
+      </div>
     </div>  
         <!-- <div class="usersearch d-flex">
             <div class="top-nav-search">
@@ -99,12 +101,12 @@
                                 <th>Vehicle/SEAL Number</th>
                                 <th>Vehicle Model</th>
                                 <th>Vehicle Year</th>
-                                <th>Status</th>
+                                <th class="tabletext">Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($vehicles as $index => $vehicle)
+                            <!-- @forelse ($vehicles as $index => $vehicle)
                                 <tr>
                                     <td>
                                         {{ $loop->iteration }}
@@ -119,11 +121,11 @@
                                     <td><span
                                             class="badge {{ $vehicle->status == 'Active' ? 'bg-success-light' : 'bg-danger-light' }}">{{ $vehicle->status ?? '-' }}</span>
                                     </td>
-                                    <td class="d-flex align-items-center">
+                                    <td class="d-flex align-items-center"> -->
                                         {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i> Invoice</a>  
                                     <a href="customers-ledger.html" class="btn btn-greys me-2"><i
                                             class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
-                                        <div class="dropdown dropdown-action">
+                                        <!-- <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
@@ -133,9 +135,9 @@
                                                             href="{{ route('admin.vehicle.edit', $vehicle->id) }}"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
-                                                    <li>
+                                                    <li> -->
                                                         <!-- Delete form -->
-                                                        <form
+                                                        <!-- <form
                                                             action="{{ route('admin.vehicle.destroy', $vehicle->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
@@ -172,7 +174,316 @@
                                 <tr>
                                     <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
                                 </tr>
-                            @endforelse
+                            @endforelse -->
+                          <tr>
+                           <td>1</td>
+                           <td>Two Wheeler</td>
+                           <td>Location ABC</td>
+                           <td>Jelene Largan</td>
+                           <td class="tabletext">2E 5777</td>
+                           <td>Sedan</td>
+                           <td>2000</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>2</td>
+                           <td>Van</td>
+                           <td>Location CSA</td>
+                           <td>Alysig Tremblett</td>
+                           <td  class="tabletext">5T 789</td>
+                           <td>Truck</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/inactive.png" alt="Image" />
+        <p>Inactive</p></div></td>
+                           <td> <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                            </td>
+                          </tr>
+                          <tr>
+                           <td>3</td>
+                           <td>Two Wheeler</td>
+                           <td>Location QWQ</td>
+                           <td>Norma McLarens</td>
+                           <td class="tabletext">2E 5777</td>
+                           <td>Sedan</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>4</td>
+                           <td>Van</td>
+                           <td>Location TTT</td>
+                           <td>Berting Dominico</td>
+                           <td class="tabletext">5T 789</td>
+                           <td>Truck</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>5</td>
+                           <td>Container</td>
+                           <td>Location GGG</td>
+                           <td>Amalie McLachlan</td>
+                           <td class="tabletext">2E 5777</td>
+                           <td>Sedan</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>6</td>
+                           <td>Container</td>
+                           <td>Location DDD </td>
+                           <td>Peterus Simondson</td>
+                           <td class="tabletext">5T 789</td>
+                           <td>Truck</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>7</td>
+                           <td>Two Wheeler</td>
+                           <td>Location  SSSS</td>
+                           <td>Gar Delagnes</td>
+                           <td class="tabletext">2E 5777</td>
+                           <td>Sedan</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>8</td>
+                           <td>Van</td>
+                           <td>Location  FDFDF</td>
+                           <td>Bartlet Rayworth</td>
+                           <td class="tabletext">5T 789</td>
+                           <td>Truck</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>9</td>
+                           <td>Van</td>
+                           <td>Location  DBGD</td>
+                           <td>Saxe Fegres</td>
+                           <td class="tabletext">2E 5777</td>
+                           <td>Sedan</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
+                          <tr>
+                           <td>10</td>
+                           <td>Container</td>
+                           <td>Location WWW</td>
+                           <td>Lock Gillbanks</td>
+                           <td class="tabletext">5T 789</td>
+                           <td>Truck</td>
+                           <td>2025</td>
+                           <td><div class="container">
+        <img src="../assets/img/checkbox.png" alt="Image" />
+        <p>Active</p></div></td>
+                           <td>
+                           <div class="dropdown dropdown-action">
+															<a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+															<div class="dropdown-menu dropdown-menu-end">
+																<ul>
+																	<li>
+																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+																	</li>
+																	<li>
+																		<a class="dropdown-item" href="customer-details.html"><i class="far fa-eye me-2"></i>View</a>
+																	</li>
+																	
+																</ul>
+															</div>
+														</div>
+                           </td>
+                          </tr>
 
                         </tbody>
 
