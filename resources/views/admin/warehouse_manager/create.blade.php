@@ -89,12 +89,8 @@
                         @error('phone')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
-
+                    <input type="hidden" id="country_code" name="country_code">
                 </div>
-
-
-
-
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -141,4 +137,12 @@
 
         </div>
     </form>
+    @section('script')
+    <script>
+        $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+        $('.col-sm-12').on('click', () => {
+            $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+        })
+    </script>
+@endsection
 </x-app-layout>

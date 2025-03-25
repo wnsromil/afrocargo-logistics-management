@@ -27,19 +27,19 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-12 mb-2 mobile_code">
                             <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
                             <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
                         </div>
 
                         <input type="hidden" id="country_code" name="country_code">
 
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-12 mb-2 alternate_mobile_no">
                             <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                             <input type="tel" id="mobile" name="alternate_mobile_no" class="form-control inp" placeholder="Enter Mobile No.">
                         </div>
 
-                        <input type="hidden" id="country_code" name="country_code2">
+                        <input type="hidden" id="country_code_2" name="country_code_2">
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
                             <input type="text" name="address_1" value="{{ old('address_1') }}" class="form-control inp" placeholder="Enter Address 1">
@@ -425,9 +425,14 @@
         document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
         document.getElementById('file_' + imageType).value = "";
     }
-    $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+    $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
     $('.col-md-12').on('click', () => {
-        $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+        $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+    })
+
+    $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+    $('.col-md-12').on('click', () => {
+        $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
     })
 
 </script>

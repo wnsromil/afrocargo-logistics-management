@@ -69,25 +69,21 @@ class DriversController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation rules
+        try {  // Validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'phone' => 'required|string|max:15|unique:users,phone',
+            'mobile_code' => 'required|string|max:15|unique:users,phone',
             'address' => 'required|string|max:500',
             'vehicle_type' => 'nullable',
             'license_number' => 'nullable',
             'license_document' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
+            'country_code' => 'required|string',
         ]);
 
         // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         $status  = !empty($request->status) ? $request->status : 'Inactive';
 
@@ -109,11 +105,12 @@ class DriversController extends Controller
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address,
-            'phone' => $request->phone,
+            'phone' => $request->mobile_code,
             'status' => $status,
             'role_id' => 4,
             'role' => "driver",
             'password' => $hashedPassword,
+            'country_code' => $request->country_code,
             'license_number' => $request->license_number,
             'license_expiry_date' => Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d'),
             'license_document' => $licenseDocumentPath, // Store Image URL
@@ -122,6 +119,12 @@ class DriversController extends Controller
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Drivers created successfully.');
+        } catch (\Exception $e) {
+            // Handle unexpected errors
+            return redirect()->back()
+                ->with('error', 'Something went wrong! ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
 
