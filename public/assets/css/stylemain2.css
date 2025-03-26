@@ -494,6 +494,7 @@ h1, h2, h3, h4, h5, h6 {
 .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {    opacity: .5;
 } */
 
+
 .font-size2{
     font-size: 25px;
     font-family: "Poppins", serif;
@@ -527,7 +528,6 @@ h1, h2, h3, h4, h5, h6 {
 .permission-font{
     color: #3A3A3A;
     font-size: 14px;
-  
 }
 
 .text-indigo-600{
@@ -569,6 +569,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: rgb(240, 208, 240);
     color: rgba(243, 8, 153, 0.74);
 }
+
 
 .parentDiv {
     display: inline-block;

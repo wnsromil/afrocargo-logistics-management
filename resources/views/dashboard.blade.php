@@ -1,8 +1,7 @@
 <style>
-.card.mainCardGlobal:before
-{
-    display: none;
-}
+    .card.mainCardGlobal:before {
+        display: none;
+    }
 </style>
 
 <x-app-layout>
@@ -654,16 +653,16 @@
     <div class="row">
         <h5 class='cardh5Size mb-3 fw-semibold'>Analytics</h5>
         <div class="col-xl-6 d-flex">
-            <div class="card shadow-box flex-fill p-0">
+            <div class="card shadow-box flex-fill border-radius-6 p-0">
 
-                <div class="d-flex justify-content-between align-items-center p-4">
-                    <h5 class="cardh5Size">Users Analytics</h5>
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="cardh5Size fw-semibold">Users Analytics</h5>
 
                     <div class="main">
-                        <h5 class='cardAnalyticsSize'>Customers and Drivers Analytics</h5>
+                        <h5 class='cardAnalyticsSize fw-medium'>Customers and Drivers Analytics</h5>
                     </div>
                 </div>
-                <hr class="border-bottom border-1 border-opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-opacity-25 mt-0 mb-1">
                 </hr>
 
 
@@ -690,7 +689,7 @@
                 <!-- <div id="sales_chart"></div> -->
 
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="s-col"></div>
                 </div>
             </div>
@@ -699,19 +698,19 @@
         <!-- -------------------------- pie chart ---------------------------- -->
 
         <div class="col-xl-6 d-flex">
-            <div class="card shadow-box flex-fill p-0">
+            <div class="card shadow-box flex-fill border-radius-6 p-0">
 
-                <div class="d-flex justify-content-between align-items-center p-4">
-                    <h5 class="cardh5Size">Payment Analytics</h5>
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="cardh5Size fw-semibold">Payment Analytics</h5>
 
                     <div class="main">
-                        <h5 class='cardAnalyticsSize'>Earning Analytics</h5>
+                        <h5 class='cardAnalyticsSize fw-medium'>Earning Analytics</h5>
                     </div>
                 </div>
-                <hr class="border-bottom border-1 border-opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-radius-6 border-opacity-25 mt-0 mb-1">
                 </hr>
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="s-line-area"></div>
                 </div>
             </div>
@@ -1863,15 +1862,15 @@
 <!-- Schedule Pickup Modal -->
 <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
+        <div class="modal-content schedule-popup1 border-radius">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
                     <h4 class="font16 mb-0">Pickup Man Assign</h4>
                 </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <hr class="border border-dark border-opac mb-0">
+            <hr class="border-set border-opac mb-0">
 
             <form action="#">
                 <div class="modal-body p-3">
@@ -1879,9 +1878,9 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block mb-0 fw-medium profileUpdateFont">
                                 <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                <select class="form-select form-select-lg selected-schedule-color rounded-1 mb-3"
                                     aria-label="Large select example">
-                                    <option selected>Select Delivery Man</option>
+                                    <option selected></option>
                                 </select>
                             </div>
                         </div>
@@ -1893,8 +1892,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                        class="btn btn-border-color cancel-btn me-3 btn-padding2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal"
+                        class="btn paid-continue-btn btnColor1 btn-padding1">Save</button>
                 </div>
             </form>
         </div>
@@ -1907,15 +1907,15 @@
 <!-- return_to_courier Modal -->
 <div class="modal custom-modal fade" id="return_to_courier" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
+        <div class="modal-content schedule-popup1 border-radius">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
                     <h4 class="font16 mb-0">Return to Courier</h4>
                 </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <hr class="border border-dark border-opac mb-0">
+            <hr class="border-set border-opac mb-0">
 
             <form action="#">
                 <div class="modal-body p-3">
@@ -1927,8 +1927,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                        class="btn btn-border-color cancel-btn me-3 btn-padding2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal"
+                        class="btn paid-continue-btn btnColor1 btn-padding1">Save</button>
                 </div>
             </form>
         </div>
@@ -1940,15 +1941,18 @@
 <!-- delivered Modal -->
 <div class="modal custom-modal fade" id="delivered" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
+        <div class="modal-content schedule-popup1 border-radius">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
                     <h4 class="font16 mb-0">Delivered</h4>
                 </div>
                 <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
                 </button>
+                <!-- <button class="btn btn-light btn-content text-dark fw-semibold" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" data-bs-toggle="tooltip" title="fa fa-times"></i>
+                </button> -->
             </div>
-            <hr class="border border-dark border-opac mb-0">
+            <hr class="border-set border-opac mb-0">
 
             <form action="#">
                 <div class="modal-body p-3">
@@ -1960,8 +1964,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                        class="btn btn-border-color cancel-btn me-3 btn-padding2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal"
+                        class="btn paid-continue-btn btnColor1 btn-padding1">Save</button>
                 </div>
             </form>
         </div>
@@ -1974,7 +1979,7 @@
 <!-- Received_Warehouse Modal -->
 <div class="modal custom-modal fade" id="Received_Warehouse" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
+        <div class="modal-content schedule-popup1 border-radius">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
                     <h4 class="font16 mb-0">Received Warehouse</h4>
@@ -1982,7 +1987,7 @@
                 <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <hr class="border border-dark border-opac mb-0">
+            <hr class="border-set border-opac mb-0">
 
             <form action="#">
                 <div class="modal-body p-3">
@@ -2004,8 +2009,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                        class="btn btn-border-color cancel-btn me-3 btn-padding2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal"
+                        class="btn paid-continue-btn btnColor1 btn-padding1">Save</button>
                 </div>
             </form>
         </div>
@@ -2018,25 +2024,25 @@
 <!-- delivery_reschedule Modal -->
 <div class="modal custom-modal fade" id="delivery_reschedule" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
+        <div class="modal-content schedule-popup1 border-radius">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Pickup Re-Schedule</h4>
+                    <h4 class="font16 mb-0">Delivery Re-Schedule</h4>
                 </div>
                 <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <hr class="border border-dark border-opac mb-0">
+            <hr class="border-set border-opac mb-0">
 
             <form action="#">
                 <div class="modal-body p-3">
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                <label class="col737">Delivery Man<span class="text-danger">*</span></label>
                                 <select class="form-select form-select-lg selected-schedule-color mb-3"
                                     aria-label="Large select example">
-                                    <option selected>Select Delivery Man</option>
+                                    <option selected></option>
                                 </select>
                             </div>
                         </div>
@@ -2058,8 +2064,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                        class="btn btn-border-color cancel-btn me-3 btn-padding2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal"
+                        class="btn paid-continue-btn btnColor1 btn-padding1">Save</button>
                 </div>
             </form>
         </div>
@@ -2070,7 +2077,7 @@
 <!-- schedule_pickup_cancel Modal -->
 <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content resized">
+        <div class="modal-content resized border-radius">
             <div class="modal-body p-3">
                 <div class="form-header">
                     <h4 class="font16 col3A fw-medium">Do you want to cancel the Schedule Pickup?</h4>
@@ -2097,9 +2104,9 @@
 <!-- delivery_man_cancel Modal -->
 <div class="modal custom-modal fade" id="delivery_man_cancel" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content resized">
-            <div class="modal-body p-3">
-                <div class="form-header">
+        <div class="modal-content resized border-radius px-4">
+            <div class="modal-body p-2 pb-3">
+                <div class="form-header mb-2">
                     <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub ?
                     </p>
                 </div>
@@ -2125,7 +2132,7 @@
 <!-- pickup_reschedule Modal -->
 <div class="modal custom-modal fade" id="pickup_reschedule" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
+        <div class="modal-content schedule-popup1 border-radius">
             <div class="modal-header border-0 p-3 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
                     <h4 class="font16 mb-0">Pickup Re-Schedule</h4>
@@ -2133,7 +2140,7 @@
                 <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <hr class="border border-dark border-opac mb-0">
+            <hr class="border-set border-opac mb-0">
 
             <form action="#">
                 <div class="modal-body p-3">
@@ -2143,7 +2150,7 @@
                                 <label class="col737">Pickup Man<span class="text-danger">*</span></label>
                                 <select class="form-select form-select-lg selected-schedule-color mb-3"
                                     aria-label="Large select example">
-                                    <option selected>Select Delivery Man</option>
+                                    <option selected></option>
                                 </select>
                             </div>
                         </div>
@@ -2165,8 +2172,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                        class="btn btn-border-color cancel-btn me-3 btn-padding2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal"
+                        class="btn paid-continue-btn btnColor1 btn-padding1">Save</button>
                 </div>
             </form>
         </div>
