@@ -150,7 +150,8 @@ class OrderShipmentController extends Controller
     public function OrderHistory(string $id)
     {
         //
-        $ParcelHistories = ParcelHistory::where('parcel_id', $id)
+        $parcel= Parcel::where('id', $id)->orWhere('tracking_number',$id)->first();
+        $ParcelHistories = ParcelHistory::where('parcel_id', $parcel->id)
             ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
 
         return $this->sendResponse($ParcelHistories, 'Order histories fetch  successfully.');

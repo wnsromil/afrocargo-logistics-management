@@ -14,7 +14,8 @@ use App\Http\Controllers\Api\{
     AddressController,
     CartController,
     InvoiceController,
-    WarehouseController
+    WarehouseController,
+    SlotController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -46,6 +47,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('verifyOtp', [RegisterController::class, 'verifyOtp']);
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);
     Route::post('resetPassword', [ForgetPassword::class, 'resetPassword']);
+
+    Route::get('/available-slots', [SlotController::class, 'getAvailableSlots']);
+    Route::post('/book-slot', [SlotController::class, 'bookSlot']);
+    Route::get('/booked-slots', [SlotController::class, 'getBookedSlots']);
+    Route::delete('/cancel-booking', [SlotController::class, 'cancelBooking']);
+
 
     Route::middleware(['apiAuthCheck'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'profile']);

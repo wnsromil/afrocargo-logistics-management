@@ -796,7 +796,7 @@ h6 {
 }
 
 .cd-horizontal-timeline .events a.older-event::after {
-    border-color: black;
+    border-color: #203A5F;
 }
 
 .company-booking-address.company-five-address,
@@ -1684,6 +1684,18 @@ body.mini-sidebar.expand-menu .sidebar {
             height: 34px;
         background-color: #33B46933!important;
         color: #33B469;
+    }
+}
+
+.page-wrapper {
+    min-height: 100% !important;
+}
+
+.select2-container--default 
+{
+    .select2-results__option--highlighted[aria-selected] {
+        background: #203A5F;
+        color: #fff;
     }
 }
 

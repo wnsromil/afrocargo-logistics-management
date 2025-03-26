@@ -79,10 +79,10 @@
                                 <td class="text-dark">Supply</td>
                                 <!-- <td>
                                     @if (!empty($inventory->img))
-                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                            height="50">
+                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
+                                        height="50">
                                     @else
-                                        <span>-</span>
+                                    <span>-</span>
                                     @endif
                                 </td> -->
                                 <td><img src="../assets/img/img2.png" alt="Inventory Image" width="50" height="50">
@@ -724,8 +724,7 @@
                         @endforelse
 
                         </tbody> -->
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
 
@@ -769,21 +768,20 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll("#setBackground tbody tr").forEach(row => {
-                // Get the text content of the <span> element inside the 13th <td> (index 12)
                 let back = row.cells[12].querySelector('span').innerText.trim();
 
-                // Apply background color to the <tr> based on stock status
                 if (back === 'Low Stock' || back === 'low stock') {
                     row.classList.add('bg-warning-bg');
-                    row.cells[12].querySelector('span').classList.add('bg-set4');  // Apply bg-set4 to the <span> as well
+                    row.cells[12].querySelector('span').classList.add('bg-set4');
                 } else if (back === 'Out of Stock' || back === 'out of stock') {
                     row.classList.add('bg-danger-bg');
-                    row.cells[12].querySelector('span').classList.add('bg-set3');  // Apply bg-set3 to the <span> as well
+                    row.cells[12].querySelector('span').classList.add('bg-set3');
                 } else if (back === 'In Stock' || back === 'in stock') {
                     row.classList.add('bg-success-bg');
-                    row.cells[12].querySelector('span').classList.add('bg-set2');  // Apply bg-set2 to the <span> as well
+                    row.cells[12].querySelector('span').classList.add('bg-set2');
                 }
             });
         });
     </script>
+
 </x-app-layout>

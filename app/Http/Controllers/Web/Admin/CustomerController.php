@@ -51,7 +51,6 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-         try {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'mobile_code' => 'required|digits:10',
@@ -72,6 +71,8 @@ class CustomerController extends Controller
 
         ]);
 
+         try {
+        
         $imagePaths = [];
 
         foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
@@ -142,7 +143,7 @@ class CustomerController extends Controller
             ->with('success', 'User created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation Errors dikhane ke liye
-            return response()->json(['errors' => $e->errors()], 422);
+            return back()->with('errors',$e->getMessage());
         }
     }
 
