@@ -327,7 +327,7 @@
                     <div class="input-block mb-3">
                         <label for="vehicle_number" class="foncolor">Vehicle Number(Plate No.)<i
                                 class="text-danger">*</i></label>
-                        <input type="number" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                        <input type="text" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
                             value="{{ old('vehicle_number') }}">
                         @error('vehicle_number')
                         <span class="text-danger">{{ $message }}</span>
@@ -348,14 +348,14 @@
                             </label>
                         </div> -->
 
-                        <div class="d-flex align-items-center">
+                        {{-- <div class="d-flex align-items-center">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
                                 <input id="rating_6" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
-                        </div>
+                        </div> --}}
 
                         <div class="status-toggle">
                             <span>Active</span>

@@ -11,8 +11,8 @@
     </x-slot>
     <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="row g-3">
-            <div class="col-md-6 mb-2">
+        <div class="row g-3 align-items-stretch">
+            <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
                         <div class="col-md-12 mb-2">
@@ -73,7 +73,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-2">
                             <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
                             <select id="state" name="state" class="js-example-basic-single select2">
                                 <option value="">Select State</option>
@@ -86,7 +86,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-2">
                             <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
                             <select id="city" name="city" class="js-example-basic-single select2">
                                 <option value="">Select City</option>
@@ -99,7 +99,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-2">
                             <label class="foncolor" for="Zip_code">Zipcode <i class="text-danger">*</i></label>
                             <input type="text" name="Zip_code" value="{{ old('Zip_code') }}" class="form-control inp" placeholder="Enter Zip">
                             @error('Zip_code')
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
                         <div class="col-md-12 mb-2">
