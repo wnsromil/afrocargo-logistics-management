@@ -327,25 +327,9 @@
                     <div class="input-block mb-3">
                         <label for="vehicle_number" class="foncolor">Vehicle Number(Plate No.)<i
                                 class="text-danger">*</i></label>
-                        <input type="vehicle_number" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                        <input type="number" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
                             value="{{ old('vehicle_number') }}">
                         @error('vehicle_number')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="driver_id" class="foncolor">Assigned Driver <i class="text-danger">*</i></label>
-
-                        <select name="driver_id" class="js-example-basic-single select2">
-                            <option value="" readonly>Select Driver</option>
-                            @foreach ($drivers as $driver)
-                            <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('driver_id')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

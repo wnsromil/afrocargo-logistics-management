@@ -77,7 +77,7 @@ class VehicleController extends Controller
         $request->validate([
             'warehouse_name'    => 'required|exists:warehouses,id',
             'vehicle_type'    => 'required|string|max:255',
-            'vehicle_number'  => 'nullable|string|max:50|unique:vehicles,vehicle_number',
+            'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number',
             'vehicle_model'   => 'required|string|max:255',
             'vehicle_year'    => 'required|digits:4',
             'driver_id'    => 'nullable|integer',

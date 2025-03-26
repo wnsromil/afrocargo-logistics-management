@@ -57,14 +57,16 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="tel" name="phone" class="form-control inp" placeholder="Enter Contact Number"
-                            value="{{ old('phone') }}" maxlength="10" pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
-                        @error('phone')
+                        <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp"
+                            placeholder="Enter Contact Number" value="{{ old('mobile_code') }}" maxlength="10"
+                            pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
+                        @error('mobile_code')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                        <input type="hidden" id="country_code" name="country_code">
                     </div>
                 </div>
-                
+
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -98,7 +100,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="license_number">License Number<i class="text-danger">*</i></label>
-                        <input type="text" name="license_number" class="form-control inp" placeholder="Enter Address"
+                        <input type="text" name="license_number" class="form-control inp" placeholder="Enter License"
                             value="{{ old('license_number') }}">
                         @error('license_number')
                             <span class="text-danger">{{ $message }}</span>
@@ -110,11 +112,12 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
 
-                     
 
-                        <label  class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                        <input type="text" name="license_expiry_date" class="form-control inp" placeholder="Select Expiry Date"
-                            value="{{ old('license_expiry_date') }}">
+
+                        <label class="foncolor" for="license_expiry_date">License Expiry Date<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="license_expiry_date" class="form-control inp"
+                            placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -160,7 +163,15 @@
             <button type="submit" class="btn btn-primary ">Submit</button>
 
         </div>
-
-
     </form>
+
+    @section('script')
+        <script>
+            $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+            $('.col-sm-12').on('click', () => {
+                $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+            })
+        </script>
+    @endsection
+
 </x-app-layout>

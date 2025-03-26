@@ -75,15 +75,21 @@
                                 <td>{{$warehouse->email ?? '-'}}</td>
                                 <td>{{$warehouse->phone ?? '-'}}</td>
                                 <td>{{$warehouse->address ?? '-'}}</td>
-                                <td><span
-                                        class="badge {{$warehouse->status == 'Active' ? 'bg-success-light' : 'bg-danger-light'}}">{{$warehouse->status
-                                        ?? '-'}}</span>
+                                <td>
+                                    @if ($warehouse->status == 'Active')
+                                        <div class="container">
+                                            <img src="../assets/img/checkbox.png" alt="Image" />
+                                            <p>Active</p>
+                                        </div>
+                                    @else
+                                        <div class="container">
+                                            <img src="../assets/img/inactive.png" alt="Image" />
+                                            <p>Inactive</p>
+                                        </div>
+                                    @endif
                                 </td>
+
                                 <td class="d-flex align-items-center">
-                                    {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
-                                            class="fa fa-plus-circle me-1"></i> Invoice</a>
-                                    <a href="customers-ledger.html" class="btn btn-greys me-2"><i
-                                            class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
                                             aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -93,18 +99,6 @@
                                                     <a class="dropdown-item"
                                                         href="{{route('admin.warehouse_manager.edit', $warehouse->id)}}"><i
                                                             class="far fa-edit me-2"></i>Edit</a>
-                                                </li>
-                                                <li>
-                                                    <!-- Delete form -->
-                                                    <form
-                                                        action="{{ route('admin.warehouse_manager.destroy', $warehouse->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="dropdown-item"
-                                                            onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')"><i
-                                                                class="far fa-trash-alt me-2"></i>Delete</button>
-                                                    </form>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item"

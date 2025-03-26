@@ -45,26 +45,15 @@ class WarehouseManagerController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'email' => 'required|email|unique:warehouse,email',
-        //     'password' => 'required|same:confirm-password',
-        //     'roles' => 'required'
-        // ]);
-
-        // Validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            // 'password' => 'required|same:confirm-password',
-            // 'confirm-password' => 'required',
             'address' => 'required|string|max:500',
             'phone' => 'required|string|max:15',
             'status' => 'in:Active,Inactive',
+            'country_code' => 'required|string',
         ]);
-
-
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()
@@ -82,9 +71,11 @@ class WarehouseManagerController extends Controller
             'email' => $request->email,
             'password' => \Hash::make('12345678'),
             'phone' => $request->phone,
+            'country_code' => $request->country_code,
             'status' => $status,
             'role_id' => 2,
             'role' => "warehouse_manager",
+            
         ]);
 
         // Redirect with success message

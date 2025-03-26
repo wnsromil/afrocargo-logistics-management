@@ -397,7 +397,8 @@
 }
 
 .bg-color2{
-    background-color: white;
+    background-color: #ffffff00;
+    border: 0!important;
 }
 .button {
     display: inline-block;
