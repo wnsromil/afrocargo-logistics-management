@@ -116,7 +116,7 @@ function generateTimeSlots(array $config = [], array $bookedSlotsByProject = [],
         if ($nextTime > $endTime) break;
 
         // Convert to chosen format
-        $formattedSlot = date($config['time_format'], $startTime) . " to " . date($config['time_format'], $nextTime);
+        $formattedSlot = date($config['time_format'], $startTime) . "-" . date($config['time_format'], $nextTime);
         $slotKey = date("H:i", $startTime) . "-" . date("H:i", $nextTime);
 
         // Check if slot falls within break times

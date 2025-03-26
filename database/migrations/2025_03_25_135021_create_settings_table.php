@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('booked_slots', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('project_id')->nullable(); // Project-specific slots
-            $table->date('date')->nullable(); // Booking date
-            $table->string('slot')->nullable();
+            $table->string('key');
+            $table->text('value');
+            $table->string('type')->default('string'); 
+            $table->text('default_value')->nullable();
+            $table->string('is_active')->default('1');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('booked_slots');
+        Schema::dropIfExists('settings');
     }
 };
