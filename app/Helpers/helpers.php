@@ -63,5 +63,5 @@ function calculatePrice($value=0,$Unit=0,$Rate=0)
 }
 
 function setting(){
-    return new SettingsHelper;
+    return new SettingsHelper();
 }

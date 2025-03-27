@@ -113,28 +113,32 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status">Status</label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active" @checked($inventory->status === 'Active')>
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
+
+                <div class="col-lg-4 col-md-6 col-sm-12 align-center">
+                    <div class="mb-3 float-end">
+                        <label for="in_status">Status</label>
+                        <div class="d-flex align-items-center text-dark">
+                            <p class="profileUpdateFont" id="activeText">Active</p>
+                            <div class="status-toggle px-2">
+                                <input id="rating_6" class="check" type="checkbox" name="status" value="Active" @checked($inventory->status === 'Active')>
+                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
+                            </div>
+                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
                         @error('status')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
+
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save">Submit</button>
+            <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary ">Submit</button>
         </div>
+
     </form>
 </x-app-layout>
