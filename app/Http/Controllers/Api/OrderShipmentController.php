@@ -348,4 +348,25 @@ class OrderShipmentController extends Controller
 
         return response()->json(['message' => 'Order creation process completed', 'customer_id' => $request->customer_id, 'ship_to' => $request->ship_to], 200);
     }
+
+    public function estimatPrice(Request $request)
+    {
+        $request->validate([
+            'weight' => 'required|numeric|min:0',
+            'distance' => 'required|numeric|min:0',
+            'amount' => 'nullable|numeric|min:0'
+        ]);
+
+        $weight_rate = setting()->get('weight_rate');
+        $weight_unit = setting()->get('weight_unit');
+        $distance_rate = setting()->get('distance_rate');
+        $distance_unit = setting()->get('distance_unit');
+
+        $data = calculatePrice($request->input('weight',0),$weight_unit,$weight_rate) +
+        calculatePrice($request->input('distance',0),$distance_unit,$distance_rate);
+
+        return $this->sendResponse($data, 'Estimate Price fetched successfully.');
+    }
+
+    // end
 }

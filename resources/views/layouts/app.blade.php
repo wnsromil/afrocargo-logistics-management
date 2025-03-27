@@ -198,6 +198,22 @@
             window.location.href = url;
         }
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const phoneInput = document.querySelector('input[type="tel"]');
+
+            phoneInput.addEventListener("input", function (event) {
+                this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+            });
+
+            phoneInput.addEventListener("blur", function () {
+                if (!/^\d+$/.test(this.value)) {
+                    // alert("Please enter a valid phone number.");
+                    this.value = "";
+                }
+            });
+        });
+
+
     </script>
 
     @yield('script')

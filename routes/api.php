@@ -15,7 +15,8 @@ use App\Http\Controllers\Api\{
     CartController,
     InvoiceController,
     WarehouseController,
-    SlotController
+    SlotController,
+    SettingController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -40,6 +41,7 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgetPassword', [ForgetPassword::class, 'forgetPassword']);
 Route::post('/warehouse-list', [WarehouseController::class, 'index']);
+Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
 
 Route::middleware('auth:api')->group(function () {
@@ -52,6 +54,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/book-slot', [SlotController::class, 'bookSlot']);
     Route::get('/booked-slots', [SlotController::class, 'getBookedSlots']);
     Route::delete('/cancel-booking', [SlotController::class, 'cancelBooking']);
+
+    Route::prefix('settings')->group(function () {
+        Route::get('/project', [SettingController::class, 'getProjectSettings']);
+        Route::post('/global', [SettingController::class, 'updateGlobalSettings']);
+        Route::post('/project', [SettingController::class, 'updateProjectSettings']);
+    });
 
 
     Route::middleware(['apiAuthCheck'])->group(function () {

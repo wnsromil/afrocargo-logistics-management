@@ -5,24 +5,25 @@ use App\Models\Setting;
 
 class SettingsHelper
 {
-    public static function get($projectId, $key, $default = null)
+    public static function get($key=null, $default = null)
     {
         // Try to get project-specific setting
-        $setting = Setting::where('project_id', $projectId)->where('key', $key)->first();
-
-        // If not found, fall back to global setting
-        if (!$setting) {
-            $setting = Setting::whereNull('project_id')->where('key', $key)->first();
-        }
+        $setting = Setting::where('key', $key)->first();
 
         // Return setting value or default
         return $setting ? self::formatValue($setting->type, $setting->value) : $default;
     }
 
-    public static function set($projectId, $key, $value, $type = 'string', $defaultValue = null)
+    public static function getAll()
+    {
+        // Return setting value or default
+        return Setting::get();
+    }
+
+    public static function set($key, $value, $type = 'string', $defaultValue = null)
     {
         return Setting::updateOrCreate(
-            ['project_id' => $projectId, 'key' => $key],
+            ['key' => $key],
             ['value' => is_array($value) ? json_encode($value) : $value, 'type' => $type, 'default_value' => $defaultValue]
         );
     }
@@ -30,7 +31,7 @@ class SettingsHelper
     public static function setGlobal($key, $value, $type = 'string', $defaultValue = null)
     {
         return Setting::updateOrCreate(
-            ['project_id' => null, 'key' => $key],
+            ['key' => $key],
             ['value' => is_array($value) ? json_encode($value) : $value, 'type' => $type, 'default_value' => $defaultValue]
         );
     }
