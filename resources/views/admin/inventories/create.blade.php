@@ -183,8 +183,8 @@
                         <div class="d-flex align-items-center text-dark">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
-                                <input id="rating_6" class="check" type="checkbox" value="Inactive">
-                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
+                                <input id="rating_16" class="check" type="checkbox" value="Inactive">
+                                <label for="rating_16" class="checktoggle tog-circle checkbox-bg">checkbox</label>
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>

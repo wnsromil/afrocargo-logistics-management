@@ -5,17 +5,21 @@
 
     <x-slot name="cardTitle">
         <p class="head">Received Orders</p>
-        <div class="usersearch d-flex">
+        <div class="usersearch d-flex usersserach">
             <div class="top-nav-search">
                 <form>
                     <input type="text" class="form-control forms" placeholder="Search ">
-
                 </form>
             </div>
+
             <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+                <button type="button"
+                    class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+                        <span><i class="fe fe-refresh-ccw"></i></span>
+                    </a>
+                </button>
             </div>
         </div>
 
@@ -29,7 +33,7 @@
                     <table class="table table-stripped table-hover datatable table-body">
                         <thead class="thead-light">
                             <tr class="no-border">
-                                <th>Sn no.</th>
+                                <th>S. No.</th>
                                 <th>Tracking ID</th>
                                 <th>From</th>
                                 <th>To</th>
@@ -52,23 +56,42 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td>WE97078890</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25.png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -78,17 +101,17 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$450</span></div>
                                 </td>
-                                <td class="opacity-75">2E 5777</td>
-                                <td class="opacity-75">55</td>
-                                <td class="opacity-75">Jelene Largan</td>
-                                <td class="text-center opacity-75">$25</td>
+                                <td>2E 5777</td>
+                                <td>55</td>
+                                <td>Jelene Largan</td>
+                                <td class="text-center">$25</td>
                                 <td class="text-center"><span
                                         class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Unpaid</span>
                                 </td>
 
 
-                                <td class="fw-semibold opacity-50">Cash</td>
-                                <td class="opacity-75">Books, Electronics...</td>
+                                <td class="fw-semibold">Cash</td>
+                                <td>Books, Electronics...</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -97,10 +120,12 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
+                                        <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <button type="button" class="btn btn-primary align-center rounded-1"
+                                                style="height:26px; width:36px;">
+                                                <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    data-position="top" data-tooltip="fa fa-angle-down"></i>
                                             </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
@@ -123,22 +148,41 @@
                                 <td class="text-center">2</td>
                                 <td>WE97078891</td>
                                 <td>
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25 (1).png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 2.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -168,11 +212,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -193,23 +239,42 @@
                             <tr>
                                 <td class="text-center">3</td>
                                 <td>WE97078895</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25 (2).png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 3.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -219,17 +284,17 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$450</span></div>
                                 </td>
-                                <td class="opacity-75">2E 5777</td>
-                                <td class="opacity-75">55</td>
-                                <td class="opacity-75">Norma McLarens</td>
-                                <td class="text-center opacity-75">$12</td>
+                                <td>2E 5777</td>
+                                <td>55</td>
+                                <td>Norma McLarens</td>
+                                <td class="text-center">$12</td>
                                 <td class="text-center"><span
                                         class="bg-success-subtle text-success px-3 px-2 py-1 rounded fw-medium">Paid</span>
                                 </td>
 
 
-                                <td class="fw-semibold opacity-50">Cheque</td>
-                                <td class="opacity-75">Books</td>
+                                <td class="fw-semibold">Cheque</td>
+                                <td>Books</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -238,11 +303,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -263,23 +330,42 @@
                             <tr>
                                 <td class="text-center">4</td>
                                 <td>WE97078896</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25.png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -289,10 +375,10 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$250</span></div>
                                 </td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">Berting Dominico</td>
-                                <td class="text-center opacity-75">$35</td>
+                                <td>5T 789</td>
+                                <td>5T 789</td>
+                                <td>Berting Dominico</td>
+                                <td class="text-center">$35</td>
                                 <td class="text-center"><span
                                         class="bg-warning-subtle text-warning px-3 px-2 py-1 rounded fw-medium">Partialy
                                         Paid</span>
@@ -300,7 +386,7 @@
 
 
                                 <td class="fw-medium">Online/Card</td>
-                                <td class="opacity-75">Houshold set, Card...</td>
+                                <td>Houshold set, Card...</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -309,11 +395,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -334,23 +422,42 @@
                             <tr>
                                 <td class="text-center">5</td>
                                 <td>WE97078897</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25 (1).png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 2.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -360,17 +467,17 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$450</span></div>
                                 </td>
-                                <td class="opacity-75">2E 5777</td>
-                                <td class="opacity-75">55</td>
-                                <td class="opacity-75">Amalie Mclachian</td>
-                                <td class="text-center opacity-75">$55</td>
-                                <td class="text-center"><span
+                                <td>2E 5777</td>
+                                <td>55</td>
+                                <td>Amalie Mclachian</td>
+                                <td class="text-center">$55</td>
+                                <td><span
                                         class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Unpaid</span>
                                 </td>
 
 
-                                <td class="fw-semibold opacity-50">Cash</td>
-                                <td class="opacity-75">Books</td>
+                                <td class="fw-semibold">Cash</td>
+                                <td>Books</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -379,11 +486,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -404,23 +513,42 @@
                             <tr>
                                 <td class="text-center">6</td>
                                 <td>WE97078898</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25 (2).png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 3.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -430,10 +558,10 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$250</span></div>
                                 </td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">Peterus Simondson</td>
-                                <td class="text-center opacity-75">$12</td>
+                                <td>5T 789</td>
+                                <td>5T 789</td>
+                                <td>Peterus Simondson</td>
+                                <td class="text-center">$12</td>
                                 <td class="text-center"><span
                                         class="bg-warning-subtle text-warning px-3 px-2 py-1 rounded fw-medium">Partialy
                                         Paid</span>
@@ -441,7 +569,7 @@
 
 
                                 <td class="fw-medium">Online/Card</td>
-                                <td class="opacity-75">Cards</td>
+                                <td>Cards</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -450,11 +578,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -475,23 +605,42 @@
                             <tr>
                                 <td class="text-center">7</td>
                                 <td>WE97078899</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25.png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -501,17 +650,17 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$450</span></div>
                                 </td>
-                                <td class="opacity-75">2E 5777</td>
-                                <td class="opacity-75">55</td>
-                                <td class="opacity-75">Gar Delagnes</td>
-                                <td class="text-center opacity-75">$8</td>
+                                <td>2E 5777</td>
+                                <td>2E 5777</td>
+                                <td>Gar Delagnes</td>
+                                <td class="text-center">$8</td>
                                 <td class="text-center"><span
                                         class="bg-success-subtle text-success px-3 px-2 py-1 rounded fw-medium">Paid</span>
                                 </td>
 
 
-                                <td class="fw-semibold opacity-50">Cheque</td>
-                                <td class="opacity-75">Books</td>
+                                <td class="fw-semibold">Cheque</td>
+                                <td>Books</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -520,11 +669,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -545,23 +696,42 @@
                             <tr>
                                 <td class="text-center">8</td>
                                 <td>WE97078900</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25 (1).png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 2.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -571,10 +741,10 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$250</span></div>
                                 </td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">Bartlet Rayworth</td>
-                                <td class="text-center opacity-75">$34</td>
+                                <td>5T 789</td>
+                                <td>5T 789</td>
+                                <td>Bartlet Rayworth</td>
+                                <td class="text-center">$34</td>
                                 <td class="text-center"><span
                                         class="bg-warning-subtle text-warning px-3 px-2 py-1 rounded fw-medium">Partialy
                                         Paid</span>
@@ -582,7 +752,7 @@
 
 
                                 <td class="fw-medium">Cheque</td>
-                                <td class="opacity-75">Houshold set, Card...</td>
+                                <td>Houshold set, Card...</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -591,11 +761,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -616,23 +788,42 @@
                             <tr>
                                 <td class="text-center">9</td>
                                 <td>WE97078901</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25 (2).png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 3.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -642,17 +833,17 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$450</span></div>
                                 </td>
-                                <td class="opacity-75">2E 5777</td>
-                                <td class="opacity-75">55</td>
-                                <td class="opacity-75">Saxe Fegres</td>
-                                <td class="text-center opacity-75">$21</td>
+                                <td>2E 5777</td>
+                                <td>2E 5777</td>
+                                <td>Saxe Fegres</td>
+                                <td class="text-center">$21</td>
                                 <td class="text-center"><span
                                         class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Unpaid</span>
                                 </td>
 
 
-                                <td class="fw-semibold opacity-50">Cash</td>
-                                <td class="opacity-75">Electronics</td>
+                                <td class="fw-semibold">Cash</td>
+                                <td>Electronics</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -661,11 +852,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
@@ -685,23 +878,42 @@
                             <tr>
                                 <td class="text-center">10</td>
                                 <td>WE97078904</td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Lokesh B S</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145995</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p class="ellipseText">No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block..</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">
-                                    <p><i class="fe fe-user pe-2"></i>Markham</p>
-                                    <p><i class="fe fe-phone pe-2" data-bs-toggle="tooltip"
-                                            title="fe fe-phone"></i>09513145991</p>
-                                    <p><i class="fe fe-map-pin pe-2" data-bs-toggle="tooltip" title="fe fe-map-pin"></i>
-                                        No 295, opp.shalini ground ,10th main, 39th C Cross Road, 5th Block...</p>
+                                <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>No 295, opp.shalini ground,10th main, 39th C Cross Road, 5th Block...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="opacity-75">12-12-2024</td>
+                                <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/images/Rectangle 25.png" alt="Picture.png">
+                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -711,10 +923,10 @@
                                     <div class="d-flex justify-content-between fw-medium td-color">
                                         Total:<span class="opacity-75 ps-1">$250</span></div>
                                 </td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">5T 789</td>
-                                <td class="opacity-75">Lock Gilbanks</td>
-                                <td class="text-center opacity-75">$25</td>
+                                <td>5T 789</td>
+                                <td>5T 789</td>
+                                <td>Lock Gilbanks</td>
+                                <td class="text-center">$25</td>
                                 <td class="text-center"><span
                                         class="bg-warning-subtle text-warning px-3 px-2 py-1 rounded fw-medium">Partialy
                                         Paid</span>
@@ -722,7 +934,7 @@
 
 
                                 <td class="fw-medium">Online/Card</td>
-                                <td class="opacity-75">Household</td>
+                                <td>Household</td>
                                 <td>
                                     <span class="bg-set px-3 px-2 py-1 fw-medium rounded">
                                         Received By Warehouse
@@ -731,11 +943,13 @@
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                            aria-expanded="false"><button type="button" class="btn btn-primary">
-                                                <i class="fa fa-angle-down tooltipped fs-4" data-position="top"
-                                                    data-tooltip="fa fa-angle-down"></i>
-                                            </button></a>
+                                    <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    style="height:26px; width:36px;">
+                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
