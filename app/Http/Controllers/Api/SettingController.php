@@ -2,48 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Helpers\SettingsHelper;
 
 class SettingController extends Controller
 {
-    public function getGlobalSettings()
+    public function getProjectSettings(Request $request)
     {
-        return response()->json(['settings' => $this->getSettings(null)]);
-    }
-
-    public function updateGlobalSettings(Request $request)
-    {
-        $validated = $request->validate([
-            'settings' => 'required|array'
-        ]);
-
-        foreach ($validated['settings'] as $key => $config) {
-            SettingsHelper::setGlobal(
-                $key,
-                $config['value'] ?? null,
-                $config['type'] ?? 'string',
-                $config['default_value'] ?? null
-            );
+        $key =null;
+        if(!empty($request->key)){
+            $key = $request->key;
         }
-
-        return response()->json(['status' => 'success', 'message' => 'Global settings updated']);
+        return response()->json(['settings' => $this->getSettings($key)]);
     }
 
-    public function getProjectSettings($projectId)
-    {
-        return response()->json(['settings' => $this->getSettings($projectId)]);
-    }
-
-    public function updateProjectSettings(Request $request, $projectId)
+    public function updateProjectSettings(Request $request)
     {
         $validated = $request->validate([
             'settings' => 'required|array'
         ]);
 
         foreach ($validated['settings'] as $key => $config) {
-            SettingsHelper::set(
-                $projectId,
+            setting()->set(
                 $key,
                 $config['value'] ?? null,
                 $config['type'] ?? 'string',
@@ -54,20 +34,12 @@ class SettingController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Project settings updated']);
     }
 
-    private function getSettings($projectId)
+    private function getSettings($key=null)
     {
-        $keys = Setting::whereNull('project_id')->pluck('key')->toArray();
-        $settings = [];
-
-        foreach ($keys as $key) {
-            $settings[$key] = [
-                'value' => SettingsHelper::get($projectId, $key),
-                'type' => Setting::where('key', $key)->value('type'),
-                'default_value' => Setting::where('key', $key)->value('default_value'),
-            ];
+        if(!empty($key)){
+            return setting()->get($key);
         }
-
-        return $settings;
+        return setting()->getAll();
     }
 }
 
