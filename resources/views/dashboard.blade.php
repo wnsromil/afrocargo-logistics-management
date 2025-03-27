@@ -2133,6 +2133,58 @@
         </div>
         <!-- /pickup_reschedule Modal -->
         <!-- ------------------------------------------------------------------------------------ -->
+         
+<!-- delivery_reschedule Modal -->
+<div class="modal custom-modal fade" id="delivery_reschedule" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content schedule-popup1 border-radius-6">
+            <div class="modal-header border-0 p-3 pb-0">
+                <div class="form-header modal-header-title text-start mb-0">
+                    <h4 class="font16 mb-0">Delivery Re-Schedule</h4>
+                </div>
+                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <hr class="border border-dark border-opac mb-0">
+
+            <form action="#">
+                <div class="modal-body p-3">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                <label class="col737">Delivery Man<span class="text-danger">*</span></label>
+                                <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                    aria-label="Large select example">
+                                    <option selected>Select Delivery Man</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                <label class="col737">Date<span class="text-danger">*</span></label>
+                                <div class="cal-icon cal-icon-info">
+                                    <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-3">
+                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal"
+                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /delivery_reschedule Modal -->
     @endsection
     @section('bottomContent')
         <script>

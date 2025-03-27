@@ -459,6 +459,12 @@ table thead.set {
     font-weight: 400px;
 }
 
+.twobutton2{
+    margin-top: 27px;
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}
 .bg-success-bg {
     background-color: #B6FFD3;
 }
