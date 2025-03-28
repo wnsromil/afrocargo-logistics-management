@@ -21,13 +21,9 @@
   border: 1px solid #00000042;
   border-radius: 8px;
   margin-top: 0;
-  padding: 15px !important;
+  padding: 14px 15px !important;
 }
 
-.bsdown {
-  margin-top: 40px;
-  padding: 15px;
-}
 
 .cal-icon-info {
   position: relative;
@@ -316,8 +312,8 @@ td.image-cell img {
 }
 
 .invocebuttoncolor {
-  margin-top: 29px;
   background-color: #33B469 !important;
+  border: 1px solid #33B469 !important;
 }
 
 .thwidth {
@@ -353,7 +349,7 @@ table tbody {
 
 .inputcolor {
   background-color: #F2F2F2;
-  border: 1px solid #0000001A;
+  border: 1px solid #0000001f;
 }
 
 .commenth {
