@@ -253,25 +253,25 @@ Version      : 1.0
             {
                 startDate: start,
                 endDate: end,
-                ranges: {
-                    Today: [moment(), moment()],
-                    Yesterday: [
-                        moment().subtract(1, "days"),
-                        moment().subtract(1, "days"),
-                    ],
-                    "Last 7 Days": [moment().subtract(6, "days"), moment()],
-                    "Last 30 Days": [moment().subtract(29, "days"), moment()],
-                    "This Month": [
-                        moment().startOf("month"),
-                        moment().endOf("month"),
-                    ],
-                    "Last Month": [
-                        moment().subtract(1, "month").startOf("month"),
-                        moment().subtract(1, "month").endOf("month"),
-                    ],
-                },
+                // ranges: {
+                //     Today: [moment(), moment()],
+                //     Yesterday: [
+                //         moment().subtract(1, "days"),
+                //         moment().subtract(1, "days"),
+                //     ],
+                //     "Last 7 Days": [moment().subtract(6, "days"), moment()],
+                //     "Last 30 Days": [moment().subtract(29, "days"), moment()],
+                //     "This Month": [
+                //         moment().startOf("month"),
+                //         moment().endOf("month"),
+                //     ],
+                //     "Last Month": [
+                //         moment().subtract(1, "month").startOf("month"),
+                //         moment().subtract(1, "month").endOf("month"),
+                //     ],
+                // },
                 locale: {
-                    format: "DD/MMM/YYYY",
+                    format: "DD/MM/YYYY",
                 },
             },
             booking_range
@@ -288,6 +288,16 @@ Version      : 1.0
             endDate: moment().startOf("hour").add(32, "hour"),
             locale: {
                 format: "M/DD hh:mm A",
+            },
+        });
+    }
+    if ($('.daterangeInput').length > 0) {
+        $('.daterangeInput').daterangepicker({
+            imePicker: false,
+            startDate: moment(),
+            endDate: moment(),
+            locale: {
+                format: "DD/MM/YYYY",
             },
         });
     }
@@ -842,6 +852,12 @@ Version      : 1.0
     // Country Code Selection
     if ($("#mobile_code").length > 0) {
         $("#mobile_code").intlTelInput({
+            initialCountry: "us",
+            separateDialCode: true,
+        });
+    }
+    if ($(".flagInput").length > 0) {
+        $(".flagInput").intlTelInput({
             initialCountry: "us",
             separateDialCode: true,
         });
