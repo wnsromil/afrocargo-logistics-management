@@ -24,7 +24,7 @@ class CustomerController extends Controller
 
         $customers = User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->where('is_deleted', 'No')->where('role_id', 3)->latest()->paginate(5);
+        })->where('is_deleted', 'No')->where('role_id', 3)->latest('id')->paginate(5);
 
 
         return view('admin.customer.index', compact('customers'));

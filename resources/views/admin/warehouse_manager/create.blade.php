@@ -113,13 +113,6 @@
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
-
-                        <div class="status-toggle">
-                            <span>Active</span>
-                            <input id="rating_1" class="check" type="checkbox" checked>
-                            <label for="rating_1" class="checktoggle checkbox-bg"></label>
-                            <span class="inactive">Inactive</span>
-                        </div>
                         @error('status')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -138,11 +131,11 @@
         </div>
     </form>
     @section('script')
-    <script>
-        $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
-        $('.col-sm-12').on('click', () => {
+        <script>
             $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
-        })
-    </script>
-@endsection
+            $('.col-sm-12').on('click', () => {
+                $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
+            })
+        </script>
+    @endsection
 </x-app-layout>

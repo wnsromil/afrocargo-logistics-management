@@ -60,8 +60,8 @@
                                 <th>Inventory Name</th>
                                 <th>Warehouse Name</th>
                                 <th>Weight (kg)</th>
-                                <th>Width (m)</th>
-                                <th>Height (m)</th>
+                                <th>Width(m)</th>
+                                <th>height(m)</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Low Stock Warning</th>
@@ -70,6 +70,9 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
+
+                        <!-- ------------------------------------------------------------------------------------------- -->
+
                         <tbody>
                             @forelse ($inventories as $inventory)
                             <tr class="background-instock text-center" style="
@@ -82,7 +85,7 @@
                                     {{ $loop->iteration }}
                                 </td>
 
-                                <td>{{ ucfirst($inventory->inventory_type ?? '') }}</td>
+                                <td class="text-dark">{{ ucfirst($inventory->inventory_type ?? '') }}</td>
                                 <td>
                                     @if (!empty($inventory->img))
                                     <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
@@ -90,156 +93,32 @@
                                     @else
                                     <span>-</span>
                                     @endif
-                                </td> -->
-                                <td><img src="../assets/img/img2.png" alt="Inventory Image" width="50" height="50">
                                 </td>
-                                <td>{{ ucfirst($inventory->name ?? '') }}</td>
-                                <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
-                                <td><span>{{ $inventory->weight ?? '-' }}</span></td>
-                                <td><span>{{ $inventory->width ?? '-' }}</span></td>
-                                <td><span>{{ $inventory->height ?? '-' }}</span></td>
-                                <td><span>{{ $inventory->in_stock_quantity ?? '-' }}</span></td>
-                                <td><span>
+                                <td class="text-dark">{{ ucfirst($inventory->name ?? '') }}</td>
+                                <td class="text-dark" >{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
+                                <td class="text-dark"><span>{{ $inventory->weight ?? '-' }}</span></td>
+                                <td class="text-dark"><span>{{ $inventory->width ?? '-' }}</span></td>
+                                <td class="text-dark"><span>{{ $inventory->height ?? '-' }}</span></td>
+                                <td class="text-dark"><span>{{ $inventory->in_stock_quantity ?? '-' }}</span></td>
+                                <td class="text-dark"><span>
                                         @if (!empty($inventory->price))
                                             $
                                         @endif{{ $inventory->price ?? '-' }}
                                     </span>
                                 </td>
 
-                                <td><span>{{ $inventory->low_stock_warning ?? '-' }}</span></td>
-                                <td><span>{{ $inventory->formatted_created_at ?? '-' }}</span></td>
-                                <td><span
+                                <td class="text-dark"><span>{{ $inventory->low_stock_warning ?? '-' }}</span></td>
+                                <td class="text-dark"><span>{{ $inventory->formatted_created_at ?? '-' }}</span></td>
+                                <td class="text-dark"><span
                                         class=" @if ($inventory->stock_status == 'In Stock') bg-light text-success @elseif($inventory->stock_status == 'Out Of Stock')
                                     bg-light text-danger
                                     @else
                                     bg-light text-warning @endif  px-2 py-1 stock-font fw-medium">{{ $inventory->stock_status ?? '-' }}</span>
                                 </td>
-                                <td class="text-dark">Box</td>
-                                <td class="text-dark">Location CSA</td>
-                                <td class="text-dark">20</td>
-                                <td class="text-dark">8</td>
-                                <td class="text-dark">15</td>
-                                <td class="text-dark text-start">500</td>
-                                <td class="text-dark text-start">$500</td>
-                                <td class="text-dark">45</td>
-                                <td class="text-dark">12/12/2024</td>
-                                <td class="text-center"><span class="font-10 px-3 px-2 py-1 rounded-1 fw-medium">Out of
-                                        Stock</span>
-                                </td>
-                                <td>
-                                    <a href="#" class=" btn-action-icon bg-transparent" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <ul>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.edit'>
-                                                    <i class="far fa-edit me-2"></i>Update</a>
-                                            </li>
-                                            <li>
-                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.show'><i
-                                                        class="far fa-eye me-2"></i>View History</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
 
-                            <!-- ----------------------- 3 --------------------------- -->
-                            <tr class="text-center">
-                                <td class="text-dark">
-                                    3
-                                </td>
-                                <td class="text-dark">Supply</td>
-                                <!-- <td>
-                                    @if (!empty($inventory->img))
-                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                            height="50">
-                                    @else
-                                        <span>-</span>
-                                    @endif
-                                </td> -->
-                                <td><img src="../assets/img/img3.png" alt="Inventory Image" width="50" height="50">
-                                </td>
-                                <td class="text-dark">Brown Tap</td>
-                                <td class="text-dark">Location QWQ</td>
-                                <td class="text-dark">5</td>
-                                <td class="text-dark">2</td>
-                                <td class="text-dark">5</td>
-                                <td class="text-dark text-start">78555</td>
-                                <td class="text-dark text-start">$120</td>
-                                <td class="text-dark">85</td>
-                                <td class="text-dark">12/5/2025</td>
-                                <td class="text-center"><span class="font-10 px-3 px-2 py-1 rounded-1 fw-medium">Low
-                                        Stock</span>
-                                </td>
-                                <td>
-                                    <a href="#" class=" btn-action-icon bg-transparent" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <ul>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.edit'>
-                                                    <i class="far fa-edit me-2"></i>Update</a>
-                                            </li>
-                                            <li>
-                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.show'><i
-                                                        class="far fa-eye me-2"></i>View History</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                                <td class="d-flex align-items-center">
 
-                            <!-- ------------------------ 4 -------------------------- -->
-                            <tr class="text-center">
-                                <td class="text-dark">
-                                    4
-                                </td>
-                                <td class="text-dark">Supply</td>
-                                <!-- <td>
-                                    @if (!empty($inventory->img))
-                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                            height="50">
-                                    @else
-                                        <span>-</span>
-                                    @endif
-                                </td> -->
-                                <td><img src="../assets/img/img4.png" alt="Inventory Image" width="50" height="50">
-                                </td>
-                                <td class="text-dark">Clear Tap</td>
-                                <td class="text-dark">Location TTT</td>
-                                <td class="text-dark">0.5</td>
-                                <td class="text-dark">0.2</td>
-                                <td class="text-dark">1</td>
-                                <td class="text-dark text-start">9855</td>
-                                <td class="text-dark text-start">$75</td>
-                                <td class="text-dark">55</td>
-                                <td class="text-dark">12/12/2024</td>
-                                <td class="text-center"><span class="font-10 px-3 px-2 py-1 rounded-1 fw-medium">In
-                                        Stock</span>
-                                </td>
-                                <td>
-                                    <a href="#" class=" btn-action-icon bg-transparent" data-bs-toggle="dropdown"
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="fe fe-more-vertical fs-4"
                                             data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
@@ -250,118 +129,7 @@
                                                         class="far fa-edit me-2"></i>Edit</a>
                                             </li>
                                             <li>
-                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.show'><i
-                                                        class="far fa-eye me-2"></i>View History</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
 
-                            <!-- ------------------------ 5 --------------------------- -->
-                            <tr class="text-center">
-                                <td class="text-dark">
-                                    5
-                                </td>
-                                <td class="text-dark">Supply</td>
-                                <!-- <td>
-                                    @if (!empty($inventory->img))
-                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                            height="50">
-                                    @else
-                                        <span>-</span>
-                                    @endif
-                                </td> -->
-                                <td><img src="../assets/img/img5.png" alt="Inventory Image" width="50" height="50">
-                                </td>
-                                <td class="text-dark">Shrink Wrap</td>
-                                <td class="text-dark">Location GGG</td>
-                                <td class="text-dark">14</td>
-                                <td class="text-dark">6</td>
-                                <td class="text-dark">4</td>
-                                <td class="text-dark text-start">755</td>
-                                <td class="text-dark text-start">$16</td>
-                                <td class="text-dark">12</td>
-                                <td class="text-dark">12/5/2025</td>
-                                <td class="text-center"><span class="font-10 px-3 px-2 py-1 rounded-1 fw-medium">Out of
-                                        Stock</span>
-                                </td>
-                                <td>
-                                    <a href="#" class=" btn-action-icon bg-transparent" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <ul>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.edit'>
-                                                    <i class="far fa-edit me-2"></i>Update</a>
-                                            </li>
-                                            <li>
-                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.show'><i
-                                                        class="far fa-eye me-2"></i>View History</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- ----------------------- 6 --------------------------- -->
-                            <tr class="text-center">
-                                <td class="text-dark">
-                                    6
-                                </td>
-                                <td class="text-dark">Supply</td>
-                                <!-- <td>
-                                    @if (!empty($inventory->img))
-                                        <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                            height="50">
-                                    @else
-                                        <span>-</span>
-                                    @endif
-                                </td> -->
-                                <td><img src="../assets/img/img2.png" alt="Inventory Image" width="50" height="50">
-                                </td>
-                                <td class="text-dark">Barrel</td>
-                                <td class="text-dark">Location DDD</td>
-                                <td class="text-dark">45</td>
-                                <td class="text-dark">25</td>
-                                <td class="text-dark">10</td>
-                                <td class="text-dark text-start">2223</td>
-                                <td class="text-dark text-start">$25</td>
-                                <td class="text-dark">1</td>
-                                <td class="text-dark">12/12/2024</td>
-                                <td class="text-center"><span class="font-10 px-3 px-2 py-1 rounded-1 fw-medium">Low
-                                        Stock</span>
-                                </td>
-                                <td>
-                                    <a href="#" class=" btn-action-icon bg-transparent" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <ul>
-                                            <li>
-                                                <a class="dropdown-item" href='admin.inventories.edit'>
-                                                    <i class="far fa-edit me-2"></i>Update</a>
-                                            </li>
-                                            <li>
                                                 <form action="admin.inventories.destroy" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -392,6 +160,7 @@
                 </table>
             </div>
         </div>
+    </div>
 
 
     <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">

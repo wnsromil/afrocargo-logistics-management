@@ -23,7 +23,7 @@ class InventoryController extends Controller
 
         $inventories = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->paginate(10);
+        })->latest('id')->paginate(10);
         return view('admin.inventories.index', compact('inventories'));
     }
 
@@ -124,7 +124,7 @@ class InventoryController extends Controller
     public function show(string $id)
     {
         //
-        $inventories = Stock::where('inventory_id', $id)->paginate(10);
+        $inventories = Stock::where('inventory_id', $id)->latest('id')->paginate(10);
         return view('admin.inventories.show', compact('inventories'));
     }
 

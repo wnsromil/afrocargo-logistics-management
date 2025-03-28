@@ -31,7 +31,7 @@
         } */
 
         .backgroundImage {
-            background-image: url('../assets/images/Background.svg');
+            background-image: url({{ asset('assets/images/Background.svg')}});
             background-repeat: no-repeat;
             background-size: cover;
             margin-right: 10px;

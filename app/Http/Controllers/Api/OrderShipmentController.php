@@ -48,7 +48,7 @@ class OrderShipmentController extends Controller
                 }
             })
             ->with(['warehouse', 'customer', 'driver'])
-            ->latest()
+            ->latest('id')
             ->paginate(10);
 
         return $this->sendResponse($parcels, 'Parcel data fetched successfully.');

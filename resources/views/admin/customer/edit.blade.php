@@ -253,7 +253,7 @@
                       <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
                       <div class="avtarset">
                           <!-- Image Preview -->
-                          <img id="preview_{{ $imageType }}" class="avtars" src="{{ asset('../assets/img.png') }}" alt="avatar">
+                          <img id="preview_{{ $imageType }}" class="avtars" src="{{ asset('assets/img.png') }}" alt="avatar">
                           
                           <!-- File Input (Hidden by Default) -->
                           <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
@@ -354,7 +354,7 @@
 
   // ❌ Remove Image Function
   function removeImage(imageType) {
-      document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+      document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
       document.getElementById('file_' + imageType).value = "";
   }
 </script>
