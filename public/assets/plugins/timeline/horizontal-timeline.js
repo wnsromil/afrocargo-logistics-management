@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
     var timelines = $('.cd-horizontal-timeline'),
-        eventsMinDistance = 300;  // default value
+        eventsMinDistance = 225;  // default value
 
     timelines.each(function() {
         // Check if the current timeline has the 'two' class
