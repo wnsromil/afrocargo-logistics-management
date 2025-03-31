@@ -214,6 +214,26 @@
         });
 
 
+        function updateStatusValue() {
+            let checkbox = document.getElementById('rating_6');
+
+            // If checked, set value to "Inactive", else set to "Active"
+            checkbox.value = checkbox.checked ? 'Inactive' : 'Active';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".check").forEach(function (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    this.value = this.checked ? "Inactive" : "Active";
+                });
+
+                // Ensure correct value is set on page load
+                checkbox.value = checkbox.checked ? "Inactive" : "Active";
+            });
+        });
+
+
+
     </script>
 
     @yield('script')

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Inventory extends Model
 {
@@ -26,5 +27,16 @@ class Inventory extends Model
 
     public function warehouse(){
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function cart(){
+        return $this->belongsTo(Cart::class,'id','product_id');
+    }
+
+    protected function img(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? url($value):null,
+        );
     }
 }

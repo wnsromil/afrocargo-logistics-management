@@ -40,7 +40,7 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Vehicle Management',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
-                //'route' => 'admin.vehicle.index',
+                'route' => 'admin.vehicle.index',
                 'route' => '#',
                 'active' => 'vehicle*,container*',
                 'roles' => ['admin', 'warehouse_manager']
@@ -48,7 +48,7 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Drivers',
                 'icon' => '<i class="menuIcon ti ti-forklift"></i>',
-                // 'route' => 'admin.drivers.index',
+                'route' => 'admin.drivers.index',
                 'active' => 'drivers*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -62,35 +62,35 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Driver Inventory',
                 'icon' => '<i class="menuIcon ti ti-truck-loading"></i>',
-                // 'route' => 'admin.driver_inventory.index',
+                'route' => 'admin.driver_inventory.index',
                 'active' => 'driver_inventory*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Service Orders',
                 'icon' => '<i class="menuIcon ti ti-packages"></i>',
-                // 'route' => 'admin.service_orders.index',
+                'route' => 'admin.service_orders.index',
                 'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Supply Orders',
                 'icon' => '<i class="menuIcon ti ti-cube-send"></i>',
-                // 'route' => 'admin.supply_orders.index',
+                'route' => 'admin.supply_orders.index',
                 'active' => 'supply_orders*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Expenses List',
                 'icon' => '<i class="menuIcon ti ti-businessplan"></i>',
-                // 'route' => 'admin.expenses.index',
+                'route' => 'admin.expenses.index',
                 'active' => 'expenses*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Signature List',
                 'icon' => '<i class="menuIcon ti ti-clipboard-list"></i>',
-                // 'route' => 'admin.signature.index',
+                'route' => 'admin.signature.index',
                 'active' => 'signature*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -104,35 +104,35 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Invoice',
                 'icon' => '<i class="menuIcon ti ti-file-dollar"></i>',
-                // 'route' => 'admin.invoices.index',
+                'route' => 'admin.invoices.index',
                 'active' => 'invoices*',
                 'roles' => ['admin', 'warehouse_manager']
             ], 
             [
                 'title' => 'Notifications Schedule',
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
-                // 'route' => 'admin.notification_schedule.index',
+                'route' => 'admin.notification_schedule.index',
                 'active' => 'notification_schedule*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Role Management',
                 'icon' => '<i class="menuIcon ti ti-user-check"></i>',
-                // 'route' => 'admin.user_role.index',
+                'route' => 'admin.user_role.index',
                 'active' => 'user_role*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin']
             ],
             [
                 'title' => 'Advance Reports',
                 'icon' => '<i class="menuIcon ti ti-clipboard-data"></i>',
-                // 'route' => 'admin.advance_reports.index',
+                'route' => 'admin.advance_reports.index',
                 'active' => 'advance_reports*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Notification',
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
-                // 'route' => 'admin.notification.index',
+                'route' => 'admin.notification.index',
                 'active' => 'notification',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -150,7 +150,7 @@ class MenuSeeder extends Seeder
         }
         // Add submenus
         $orderShip = Menu::where('title', 'Service Orders')->first();
-        if (!$orderShip) {
+        if ($orderShip) {
             Menu::create([
                 'title' => 'Order',
                 'route' => 'admin.OrderShipment.index',
@@ -183,7 +183,7 @@ class MenuSeeder extends Seeder
 
         // Add submenus
         $vehicle = Menu::where('title', 'Vehicle Management')->first();
-        if (!$vehicle) {
+        if ($vehicle) {
             Menu::create([
                 'title' => 'Vehicle List',
                 'route' => 'admin.vehicle.index',

@@ -27,7 +27,7 @@ class InvoiceController extends Controller
     public function index()
     {
         $invoices = Invoice::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
+            // return $q->where('warehouse_id', $this->user->warehouse_id);
         })->latest()->paginate(10);
 
         return view('admin.Invoices.index', compact('invoices'));
@@ -59,7 +59,7 @@ class InvoiceController extends Controller
         })->get();
 
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
+            // return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
 
         $customers = $user->where('role_id', 3)->values();
@@ -139,7 +139,7 @@ class InvoiceController extends Controller
         })->get();
 
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
+            // return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
 
         $customers = $user->where('role_id', 3)->values();
@@ -147,7 +147,7 @@ class InvoiceController extends Controller
         $drivers = $user->where('role_id', 4)->values();
 
         $parcel = Parcel::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
+            // return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();

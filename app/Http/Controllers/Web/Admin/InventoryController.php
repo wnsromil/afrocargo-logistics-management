@@ -52,6 +52,7 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        
         // Validate incoming request data
         $request->validate([
             'warehouse_id'      => 'required|exists:warehouses,id',
@@ -64,7 +65,7 @@ class InventoryController extends Controller
             'width' => 'nullable|numeric',
             'height' => 'nullable|numeric',
             'price' => 'required|numeric',
-            // 'img' => 'required|image|mimes:jpg,png|max:2048',
+            'img' => 'required|image|mimes:jpg,png|max:2048',
         ]);
 
         $imageName = null;
@@ -138,7 +139,10 @@ class InventoryController extends Controller
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
-        $categories = Category::get();
+        $categories = collect([
+            (object) ["id" => "Supply", "name" => "Supply"],
+            (object) ["id" => "Service", "name" => "Service"]
+        ]);
         $inventory = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
@@ -179,8 +183,27 @@ class InventoryController extends Controller
             'total_quantity'      => $request->in_stock_quantity,
             'in_stock_quantity'   => $request->in_stock_quantity,
             'low_stock_warning'   => $request->low_stock_warning,
-            'stock_status'        => $stock_status
+            'stock_status'        => $stock_status,
+            'weight' => $request->weight,
+            'width' => $request->width,
+            'height' => $request->height,
+            'price' => $request->price,
+            'status' => $request->status ?? 'Inactive',
+            // 'img'    => $imageName,
+            'name'=>$request->inventory_name,
+            'inventory_type'=>$request->inventory_type,
+            'warehouse_id'    => $request->warehouse_id,
         ]);
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = 'uploads/inventory/'. $image->getClientOriginalName(); // Generate unique name
+            $image->move(public_path('uploads/inventory'), $imageName); 
+
+            $inventory->update([
+                'img'=> $imageName
+            ]);
+        }
 
         // Create a new stock entry
         Stock::create([
