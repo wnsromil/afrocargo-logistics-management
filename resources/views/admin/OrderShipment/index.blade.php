@@ -121,7 +121,7 @@
                                     <div>12-12-24</div>
                                 </td>
                                 <td>
-                                    <div><img src="../assets/img/Rectangle 25.png" alt="image"></div>
+                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                                 </td>
                                 <td>
                                     <div>Books,Electronics..</div>
@@ -160,7 +160,7 @@
 
                                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                                <div><img src="../assets/img/downarrow.png"></div>
+                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                             </span>
                                         </a>
                                         <div class="dropdown-menu menu-drop-user">
@@ -180,7 +180,7 @@
                 </div>
                 </td>
                 <td class="btntext">
-                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                 </td>
                 </tr>
                 <!-- second line -->
@@ -226,7 +226,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 2.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Household Set,Card..</div>
@@ -265,7 +265,7 @@
 
                                 <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                    <div><img src="../assets/img/downarrow.png"></div>
+                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
                             <div class="dropdown-menu menu-drop-user">
@@ -291,7 +291,7 @@
                         </li>
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
 
@@ -337,7 +337,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 3.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 3.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Books</div>
@@ -376,7 +376,7 @@
 
                                 <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                    <div><img src="../assets/img/downarrow.png"></div>
+                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
                             <div class="dropdown-menu menu-drop-user">
@@ -399,7 +399,7 @@
                         </li>
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
 
@@ -445,7 +445,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 25.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Household Set,card..</div>
@@ -480,7 +480,7 @@
                     <td><label class="labelstatuspi" for="status">Received By Pickup Man</label></td>
                     <td></td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
 
@@ -526,7 +526,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 2.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 2.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Books</div>
@@ -565,7 +565,7 @@
 
                                 <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                    <div><img src="../assets/img/downarrow.png"></div>
+                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
                             <div class="dropdown-menu menu-drop-user">
@@ -588,7 +588,7 @@
                         </li>
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
 
@@ -634,7 +634,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 3.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 3.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Cards</div>
@@ -671,7 +671,7 @@
 
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
                 <!-- seven line -->
@@ -716,7 +716,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 25.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Books</div>
@@ -755,7 +755,7 @@
 
                                 <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                    <div><img src="../assets/img/downarrow.png"></div>
+                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
                             <div class="dropdown-menu menu-drop-user">
@@ -785,7 +785,7 @@
 
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
 
@@ -831,7 +831,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 2.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Household set,card..</div>
@@ -867,7 +867,7 @@
                     <td>
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
                 <!-- nine line -->
@@ -912,7 +912,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 3.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 3.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Electronics</div>
@@ -951,7 +951,7 @@
 
                                 <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                    <div><img src="../assets/img/downarrow.png"></div>
+                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
                             <div class="dropdown-menu menu-drop-user">
@@ -971,7 +971,7 @@
 
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
 
@@ -1017,7 +1017,7 @@
                         <div>12-12-24</div>
                     </td>
                     <td>
-                        <div><img src="../assets/img/Rectangle 25.png" alt="image"></div>
+                        <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                     </td>
                     <td>
                         <div>Household</div>
@@ -1056,7 +1056,7 @@
 
                                 <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                    <div><img src="../assets/img/downarrow.png"></div>
+                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
                             <div class="dropdown-menu menu-drop-user">
@@ -1084,7 +1084,7 @@
                             </div>
                     </td>
                     <td class="btntext">
-                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                     </td>
                 </tr>
                 </tbody>
@@ -1526,7 +1526,7 @@
                     </div>
                 </div>
 
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
             </div>
             <form action="#">
@@ -1581,7 +1581,7 @@
                         <h4>Pickup Re-Schedule</h4>
                     </div>
                 </div>
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
             </div>
             <form action="#">
@@ -1642,7 +1642,7 @@
                         <h4>Reason for Action</h4>
                     </div>
                 </div>
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
             </div>
             <form action="#">
@@ -1697,7 +1697,7 @@
                         <h4>Recieved Warehouse</h4>
                     </div>
                 </div>
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
 
                 </button>
@@ -1784,7 +1784,7 @@
                         <h4>Delivery Re-Schedule</h4>
                     </div>
                 </div>
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
 
 
@@ -1847,7 +1847,7 @@
                         <h4>Return to Courier</h4>
                     </div>
                 </div>
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
             </div>
             <form action="#">
@@ -1891,7 +1891,7 @@
                         <h4>Delivered</h4>
                     </div>
                 </div>
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="../assets/img/cross.png">
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close" src="{{asset('assets/img/cross.png')}}">
 
             </div>
             <form action="#">

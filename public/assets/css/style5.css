@@ -77,7 +77,10 @@
   margin-right: 10px;
   margin-left: 10px;
 }
-
+.inventory{
+  color:#000000;
+  padding:10px !important;
+}
 
 .status-toggle .checktoggle {
   background-color: #50E500;
@@ -1002,3 +1005,10 @@ input[type="checkbox"]:checked::after {
   color:#03A1AC;
   font-size: 13px;
   font-weight: 500;}
+
+
+  .custom-zindex {
+    position: relative;
+    z-index: 100;
+}
+

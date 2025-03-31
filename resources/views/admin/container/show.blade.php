@@ -50,16 +50,16 @@
    <td>WE97078893</td>
    <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div></td>
    <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Markham</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145991</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
                                     </div>
                                 </div></td>
    <td><div>12-12-24</div></td>
@@ -87,16 +87,16 @@
   <td>WE97078891</td>
    <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div></td>
    <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Markham</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145991</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
                                     </div>
                                 </div></td>
    <td>12-12-24</td>
@@ -122,16 +122,16 @@
   <td>WE97078895</td>
   <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div></td>
   <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Markham</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145991</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
                                     </div>
                                 </div></td>
   <td>12-12-24</td>
@@ -157,16 +157,16 @@
 <td>WE97078896</td>
 <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div></td>
     <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Markham</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145991</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
                                     </div>
                                 </div></td>
     <td>12-12-24</td>
@@ -192,16 +192,16 @@
   <td>WE97078897</td>
   <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div></td>
   <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Markham</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145991</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
                                     </div>
                                 </div></td>
   <td>12-12-24</td>
@@ -227,16 +227,16 @@
 <td>WE97078898</td>
 <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Lokesh B S</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145995</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Lokesh B S</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145995</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location"><label class="ellipseText">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block</label></div></div>
                                     </div>
                                 </div></td>
    <td><div>
                                     <div class="col">
-                                     <div class="row"><div ><img src="../assets/img/User.png" alt="user">Markham</div></div>
-                                     <div class="row"><div ><img src="../assets/img/phone.png" alt="phone">09513145991</div></div>
-                                     <div class="row"><div ><img src="../assets/img/Vector.png" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/User.png')}}" alt="user">Markham</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/phone.png')}}" alt="phone">09513145991</div></div>
+                                     <div class="row"><div ><img src="{{asset('assets/img/Vector.png')}}" alt="location">No 295 opp.shalini ground,10th main,39th C Cross Road,5th Block....</div></div>
                                     </div>
                                 </div></td>
    <td>12-12-24</td>
