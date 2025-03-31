@@ -272,9 +272,9 @@
 
 td {
   /* border: 1px solid #00000042 !important; */
-  height: 45px !important;
+ td{ height: 45px !important;}
   /* width:96px !important; */
-}
+
 
 .tdborder {
   border: none;
