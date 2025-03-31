@@ -106,7 +106,7 @@
                         <table class="table table-stripped table-hover datatable">
                             <thead class="thead-light">
                                 <tr>
-                                <th>S No.</th>
+                                <th>S. No.</th>
                                     <th>Date</th>
                                     <th>Driver</th>
                                     <th>Item Number</th>
@@ -134,10 +134,10 @@
         <!-- ---------------------------------------------------------------------------------------------------------- -->
 
         <tbody>
-                                @forelse ($inventories as $index => $inventory)
+                                <!-- @forelse ($inventories as $index => $inventory)
                                     <tr>
-                                        <td>
-                                            {{ ++$index }}
+                                        <td> -->
+                                            <!-- {{ ++$index }}
                                         </td>
 
                                         <td>{{ ucfirst($inventory->category->name ?? '')}}</td>
@@ -145,8 +145,8 @@
                                         <td><span>{{$inventory->in_stock_quantity ?? '-'}}</span></td>
                                         <td><span>{{$inventory->low_stock_warning ?? '-'}}</span></td>
                                         <td><span
-                                                class="badge {{$inventory->in_stock_quantity >= $inventory->low_stock_warning ? 'bg-success-light' : 'bg-danger-light'}}">{{$inventory->stock_status ?? '-'}}</span>
-                                        </td>
+                                                class="badge {{$inventory->in_stock_quantity >= $inventory->low_stock_warning ? 'bg-success-light' : 'bg-danger-light'}}">{{$inventory->stock_status ?? '-'}}</span> -->
+                                        <!-- </td>
                                         <td class="d-flex align-items-center">
                                             {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
                                                     class="fa fa-plus-circle me-1"></i> Invoice</a>
@@ -162,9 +162,9 @@
                                                                 href="{{route('admin.inventories.edit', $inventory->id)}}"><i
                                                                     class="far fa-edit me-2"></i>Edit</a>
                                                         </li>
-                                                        <li>
+                                                        <li> -->
                                                             <!-- Delete form -->
-                                                            <form
+                                                            <!-- <form
                                                                 action="{{ route('admin.inventories.destroy', $inventory->id) }}"
                                                                 method="POST" class="d-inline">
                                                                 @csrf
@@ -178,9 +178,9 @@
                                                             <a class="dropdown-item"
                                                                 href="{{route('admin.inventories.show', $inventory->id)}}"><i
                                                                     class="far fa-eye me-2"></i>View History</a>
-                                                        </li>
-                                                        {{-- <li>
-                                                            <a class="dropdown-item" href="active-customers.html"><i
+                                                        </li> -->
+                                                        <!-- {{-- <li> -->
+                                                            <!-- <a class="dropdown-item" href="active-customers.html"><i
                                                                     class="fa-solid fa-power-off me-2"></i>Activate</a>
                                                         </li>
                                                         <li>
@@ -191,24 +191,119 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <td><div style="text-align:center;"><img src="../assets/img/Vector (13).png"></div></td>
                                     </tr>
                                 @empty
                                     <tr>
                                         <td colspan="11" class="px-4 py-4 text-center text-gray-500">No users found.</td>
                                     </tr>
-                                @endforelse
+                                @endforelse -->
+ <tr>
+    <td>1</td>
+    <td>02-12-2024</td>
+    <td>Jelene Largan</td>
+    <td>TIT-000055</td>
+    <td>Large Empty Barrel</td>
+    <td>Out</td>
+    <td>1</td>
+    <td><div style="text-align:center;"><img src="../assets/img/Vector (13).png"></div></td>
+ </tr>
 
-                            </tbody>
+ <tr>
+    <td>2</td>
+    <td>02-12-2024</td>
+    <td>Alysig Tremblett</td>
+    <td>TIT-000055</td>
+    <td>Large Empty Barrel</td>
+    <td>Out</td>
+    <td>1</td>
+    <td><div style="text-align:center;"><img src="../assets/img/Vector (13).png"></div></td>
+ </tr>
+</tbody>
 
 
                         </table>
-
-                        <div class="bottom-user-page mt-3">
-                            {!! $inventories->links('pagination::bootstrap-5') !!}
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
+                       <div class="d-flex"style="border:1px solid #737B8B;height: 47px;justify-content: space-between;
+    padding: 0 10px;">
+                         <div><p class="inventory">Out Qty (1) - Sold Qty (3) = -2</p></div>
+                         <div><p class="inventory">Total Qty</p></div>
+                         <div><p class="inventory">Outs Qty (1) - Ins Qty (0) = 1</p></div>
+                       </div>
+
+
+                       <p class="head" style="margin-top: 20px;color:#3A3A3A">Detail Driver Supplies</p>
+                       <div class="card-table">
+                <div class="card-body">
+                    <div class="table-responsive mt-3">
+                        <table class="table table-stripped table-hover datatable">
+                            <thead class="thead-light">
+                             <tr>
+                                <th>S. No.</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Invoice No.</th>
+                                <th>Item No.</th>
+                                <th>Item</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>02-12-24</td>
+                                <td>Kate Wings</td>
+                                <td>#INV 00005</td>
+                                <td>TIT-000055</td>
+                                <td>Large Empty Barrel</td>
+                                <td>Sold</td>
+                                <td>1</td>
+                                <td>65</td>
+                                <td>65</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>02-11-24</td>
+                                <td>Mark Woods</td>
+                                <td>#INV 00002</td>
+                                <td>TIT-000055</td>
+                                <td>Large Empty Barrel</td>
+                                <td>Sold</td>
+                                <td>1</td>
+                                <td>65</td>
+                                <td>65</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>02-10-24</td>
+                                <td>Shane Tatom</td>
+                                <td>#INV 00003</td>
+                                <td>TIT-000055</td>
+                                <td>Large Empty Barrel</td>
+                                <td>Sold</td>
+                                <td>1</td>
+                                <td>65</td>
+                                <td>65</td>
+                            </tr>
+                        </tbody>
+                       </table>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                       <div class="d-flex"style="border:1px solid #737B8B;height: 47px;">
+                        <div><p class="inventory">Total </p></div>
+                        <div><p class="inventory">3</p></div>
+                        <div><p class="inventory">195</p></div>
+                       </div>
+                       <div class="bottom-user-page mt-3">
+                            {!! $inventories->links('pagination::bootstrap-5') !!}
+                        </div>
+                 
 
 </x-app-layout>
