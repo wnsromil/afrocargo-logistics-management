@@ -165,7 +165,7 @@
 
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="email">Email</label>
+                            <label class="foncolor" for="email">Email<i class="text-danger">*</i></label>
                             <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID" value="{{ old('longitude') }}">
                             @error('email')
                             <small class="text-danger">{{ $message }}</small>
