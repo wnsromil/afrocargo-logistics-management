@@ -186,6 +186,7 @@ border:2px solid red
     .amountfont{
      font-weight:700;
      color: #3A3A3A ;
+     min-width: 70px;
     }
     .datatable{
       border:none !important;
@@ -782,10 +783,32 @@ input[type="checkbox"]:checked::after {
   height: 20px;
   width: 20px;
 }
-.status-toggle .check:checked+.checktoggle.log:after{
+.toggles .check:checked+.checktoggle.log:after{
   border:2px solid #4D82CE;
 }
 
 .togglep{
   justify-content: center;
 }
+
+.custo{
+  justify-content: space-between;
+    padding-top: 20px;
+}
+.status-toggle .check:checked+.checktoggle.log:after {
+  border: none;
+  height: 16px;
+  width: 16px;
+}
+
+.labelstatusc{
+  background: #C0FBFF;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  height: 28px;
+  border-radius: 4px;
+  color:#03A1AC;
+  font-size: 13px;
+  font-weight: 500;}

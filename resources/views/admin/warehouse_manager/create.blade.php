@@ -107,16 +107,16 @@
                                 </span>
                             </label>
                         </div> -->
-
-                        <div class="d-flex align-items-center">
+                        <label class="foncolor divform" for="in_status">Status</label>
+                        <div class="d-flex align-items-center text-dark">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
                                 <input id="rating_6" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
-                        </div>
-
+</div>
+</div>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -133,4 +133,21 @@
                 
            </div>
     </form>
+
+
+    {{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#rating_6').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#inactiveText').removeClass('faded');
+                    $('#activeText').addClass('faded');
+                } else {
+                    $('#activeText').removeClass('faded');
+                    $('#inactiveText').addClass('faded');
+                }
+            });
+        });
+    </script>
 </x-app-layout>

@@ -358,9 +358,22 @@
 
 
 
-        <!-- ---------- -->
+       
 
-                        <div class="d-flex align-items-center">
+                    
+                       
+                    <!-- <div class="status-toggle ">
+                        <span id="activeText" >Active</span>
+                        <input id="status" class="check" type="checkbox" name="status" checked>
+                        <label for="status" class="checktoggle checkbox-bg togc"></label>
+                        <span id="inactiveText">Inactive</span>
+                    </div>
+                     -->
+
+                   <div class="d-flex custo">
+                    <div class="mb-3">
+                        <label for="in_status">Status</label>
+                        <div class="d-flex align-items-center text-dark">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
                                 <input id="rating_6" class="check" type="checkbox" value="Inactive">
@@ -369,19 +382,11 @@
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
 
-
-                    <div class="status-toggle">
-                        <span>Active</span>
-                        <input id="status" class="check" type="checkbox" name="status" checked>
-                        <label for="status" class="checktoggle checkbox-bg togc"></label>
-                        <span class="">Inactive</span>
                     </div>
-                    @error('status')
+                
+                @error('status')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
-
-                </div>
-            </div>
 
             <div style="margin-top:22px;">
                 <div class="add-customer-btns ">
@@ -391,6 +396,7 @@
                     <button type="submit" class="btn btn-primary ">Submit</button>
 
                 </div>
+            </div>
             </div>
 
 
@@ -472,3 +478,18 @@
     });
 
 </script>
+{{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#rating_6').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#inactiveText').removeClass('faded');
+                    $('#activeText').addClass('faded');
+                } else {
+                    $('#activeText').removeClass('faded');
+                    $('#inactiveText').addClass('faded');
+                }
+            });
+        });
+    </script>

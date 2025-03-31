@@ -36,8 +36,8 @@
                                 <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
                                 <th>Seal No.</th>
-                                <th>Container 1</th>
-                                <th>Container 2</th>
+                                <th>Container No. 1</th>
+                                <th>Container  No. 2</th>
                                 <th>Container Size</th>
                                 <th>Open Date</th>
                                 <th>Close Date</th>
@@ -134,18 +134,12 @@
                             <td>-</td>
                             <td>12-12-2024</td>
                             <td>120</td>
-                            <td><div class="row">
-                                <div class="col-6">
-                                    <div class="row amountfont">Received:</div>
-                                    <div class="row amountfont">Due:</div>
-                                    <div class="row amountfont">Total:</div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">$1500</div>
-                                    <div class="row">$120</div>
-                                    <div class="row">$2120</div>
-                                </div>
-                                </div></td>
+                            <td>
+                                <p><label class="amountfont">Recieved:</label> $1500</p>
+                                <p><label class="amountfont">Due:</label> $120</p>
+                                <p><label class="amountfont">Total:</label> $2120</p>
+                               
+                            </td>
                             <td><label class="labelstatus"for="unpaid_status">Inactive</label></td>
                             <td>
                            
@@ -158,8 +152,8 @@
 
                             </td>
                             <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
-                              </td>
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td>  
                           
                            </tr>
 
@@ -178,19 +172,10 @@
                             <td>Don John</td>
                             <td>02-21-2024</td>
                             <td>555</td>
-                            <td><div class="row">
-                                <div class="col-6">
-                                    <div class="row amountfont">Received:</div>
-                                    <div class="row amountfont">Due:</div>
-                                    <div class="row amountfont">Total:</div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">$5000</div>
-                                    <div class="row">$555</div>
-                                    <div class="row">$5555</div>
-                                </div>
-                                </div></td>
-                            <td><label  class="labelstatusw"for="partial_status"> paid</label></td>
+                            <td> <p><label class="amountfont">Recieved:</label> $5000</p>
+                                <p><label class="amountfont">Due:</label> $555</p>
+                                <p><label class="amountfont">Total:</label> $5555</p></td>
+                            <td><label  class="labelstatusw"for="partial_status"> Active</label></td>
                             <td >
                             <div class="status-toggle toggles togglep">
                                 <input id="rating_9" class="check" type="checkbox" value="Inactive">
@@ -198,7 +183,9 @@
                             </div>
                        
                             </td>
-                            <td></td>
+                            <td class="btntext">
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td> 
                            </tr>
 
                            <tr>
@@ -216,24 +203,17 @@
                             <td>-</td>
                             <td>06-16-2024</td>
                             <td>200</td>
-                            <td><div class="row">
-                                <div class="col-6">
-                                    <div class="row amountfont">Received:</div>
-                                    <div class="row amountfont">Due:</div>
-                                    <div class="row amountfont">Total:</div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">$900</div>
-                                    <div class="row">$300</div>
-                                    <div class="row">$1200</div>
-                                </div>
-                                </div></td>
+                            <td><p><label class="amountfont">Recieved:</label> $900</p>
+                                <p><label class="amountfont">Due:</label> $300</p>
+                                <p><label class="amountfont">Total:</label> $1200</p></td>
                             <td><label class="labelstatus"for="unpaid_status">Inactive</label></td>
                             <td > <div class="status-toggle toggles togglep">
                                 <input id="rating_1" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_1" class="checktoggle log checkbox-bg" >checkbox</label>
                             </div></td>
-                            <td></td>
+                            <td class="btntext">
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td> 
                            </tr>
 
                            <tr>
@@ -251,24 +231,17 @@
                             <td>-</td>
                             <td>06-16-2024</td>
                             <td>300</td>
-                            <td><div class="row">
-                                <div class="col-6">
-                                    <div class="row amountfont">Received:</div>
-                                    <div class="row amountfont">Due:</div>
-                                    <div class="row amountfont">Total:</div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">$100</div>
-                                    <div class="row">$300</div>
-                                    <div class="row">$1300</div>
-                                </div>
-                                </div></td>
+                            <td><p><label class="amountfont">Recieved:</label> $100</p>
+                                <p><label class="amountfont">Due:</label> $300</p>
+                                <p><label class="amountfont">Total:</label> $1300</p></td>
                             <td><label class="labelstatus"for="unpaid_status">Inactive</label></td>
                             <td > <div class="status-toggle toggles togglep">
                                 <input id="rating_2" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_2" class="checktoggle log checkbox-bg" >checkbox</label>
                             </div></td>
-                            <td></td>
+                            <td class="btntext">
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td> 
                            </tr>
 
                            <tr>
@@ -286,24 +259,17 @@
                             <td>Peter Duke</td>
                             <td>12-4-2024</td>
                             <td>450</td>
-                            <td><div class="row">
-                                <div class="col-6">
-                                    <div class="row amountfont">Received:</div>
-                                    <div class="row amountfont">Due:</div>
-                                    <div class="row amountfont">Total:</div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">$1500</div>
-                                    <div class="row">$120</div>
-                                    <div class="row">$2120</div>
-                                </div>
-                                </div></td>
+                            <td><p><label class="amountfont">Recieved:</label> $1500</p>
+                                <p><label class="amountfont">Due:</label> $120</p>
+                                <p><label class="amountfont">Total:</label> $2120</p></td>
                             <td><label class="labelstatus"for="unpaid_status">Inactive</label></td>
                             <td > <div class="status-toggle toggles togglep">
                                 <input id="rating_3" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_3" class="checktoggle log checkbox-bg" >checkbox</label>
                             </div></td>
-                            <td></td>
+                            <td class="btntext">
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td> 
                            </tr>
 
                            <tr>
@@ -338,7 +304,9 @@
                                 <input id="rating_4" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_4" class="checktoggle log checkbox-bg" >checkbox</label>
                             </div></td>
-                            <td></td>
+                            <td class="btntext">
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td> 
                            </tr>
                            
                            <tr>
@@ -373,7 +341,9 @@
                                 <input id="rating_5" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_5" class="checktoggle log checkbox-bg" >checkbox</label>
                             </div></td>
-                            <td></td>
+                            <td class="btntext">
+                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                              </td> 
                            </tr>
                         </tbody>
 

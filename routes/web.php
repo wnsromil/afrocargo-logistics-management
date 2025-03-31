@@ -122,6 +122,10 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::get('/serviceorderdetails', function () {
             return view('admin.serviceorderdetails.orderdetails');
         })->name('serviceorderdetails.orderdetails');
+
+        Route::get('/container/{id}', function () {
+            return view('admin.container.show');
+        })->name('container.show');
     });
 });
 
