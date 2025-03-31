@@ -336,6 +336,7 @@
                     </div>
                 </div>
             </div>
+            </div>
 
 
 
@@ -420,3 +421,18 @@
     });
 
 </script>
+{{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#rating_6').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#inactiveText').removeClass('faded');
+                    $('#activeText').addClass('faded');
+                } else {
+                    $('#activeText').removeClass('faded');
+                    $('#inactiveText').addClass('faded');
+                }
+            });
+        });
+    </script>
