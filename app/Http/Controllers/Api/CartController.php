@@ -4,7 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Cart;
+use App\Models\{
+    Cart,
+    User,
+    Category,
+    Warehouse,
+    Stock,
+    Inventory
+};
 
 class CartController extends Controller
 {
@@ -45,6 +52,14 @@ class CartController extends Controller
         ]);
 
         return $this->sendResponse($cart, 'Product added in Cart successfully.');
+    }
+
+    public function productList(Request $request){
+        $warehouseIds = Warehouse::where('state_id',auth()->user()->state)->get()->pluck('id');
+        $inventories = Inventory::whereIn('warehouse_id', $warehouseIds)->when($request->inventory_type,function($q){
+            return $q->where('inventory_type',$request->inventory_type);
+        })->latest('id')->paginate(10);
+        return $this->sendResponse($inventories, 'Fetch Product list successfully.');
     }
 
     /**

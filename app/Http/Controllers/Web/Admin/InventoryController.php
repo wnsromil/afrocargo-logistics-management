@@ -23,7 +23,7 @@ class InventoryController extends Controller
 
         $inventories = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->paginate(10);
+        })->latest('id')->paginate(10);
         return view('admin.inventories.index', compact('inventories'));
     }
 
@@ -37,7 +37,13 @@ class InventoryController extends Controller
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
-        $categories = Category::get();
+        
+        $categories = collect([
+            (object) ["id" => "Supply", "name" => "Supply"],
+            (object) ["id" => "Service", "name" => "Service"]
+        ]);
+        
+
         return view('admin.inventories.create', compact('warehouses', 'categories'));
     }
 
@@ -50,6 +56,7 @@ class InventoryController extends Controller
         $request->validate([
             'warehouse_id'      => 'required|exists:warehouses,id',
             'inventory_name'    => 'required|string',
+            'inventory_type'    => 'required|string',
             'in_stock_quantity' => 'required|numeric',
             'low_stock_warning' => 'required|numeric',
             'status'           => 'in:Active,Inactive',
@@ -57,7 +64,7 @@ class InventoryController extends Controller
             'width' => 'nullable|numeric',
             'height' => 'nullable|numeric',
             'price' => 'required|numeric',
-            'img' => 'required|image|mimes:jpg,png|max:2048',
+            // 'img' => 'required|image|mimes:jpg,png|max:2048',
         ]);
 
         $imageName = null;
@@ -85,6 +92,8 @@ class InventoryController extends Controller
                 'price' => $request->price,
                 'status' => $request->status ?? 'Inactive',
                 'img'    => $imageName,
+                'name'=>$request->inventory_name,
+                'inventory_type'=>$request->inventory_type
             ]
         );
 
@@ -115,7 +124,7 @@ class InventoryController extends Controller
     public function show(string $id)
     {
         //
-        $inventories = Stock::where('inventory_id', $id)->paginate(10);
+        $inventories = Stock::where('inventory_id', $id)->latest('id')->paginate(10);
         return view('admin.inventories.show', compact('inventories'));
     }
 

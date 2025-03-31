@@ -253,25 +253,25 @@ Version      : 1.0
             {
                 startDate: start,
                 endDate: end,
-                ranges: {
-                    Today: [moment(), moment()],
-                    Yesterday: [
-                        moment().subtract(1, "days"),
-                        moment().subtract(1, "days"),
-                    ],
-                    "Last 7 Days": [moment().subtract(6, "days"), moment()],
-                    "Last 30 Days": [moment().subtract(29, "days"), moment()],
-                    "This Month": [
-                        moment().startOf("month"),
-                        moment().endOf("month"),
-                    ],
-                    "Last Month": [
-                        moment().subtract(1, "month").startOf("month"),
-                        moment().subtract(1, "month").endOf("month"),
-                    ],
-                },
+                // ranges: {
+                //     Today: [moment(), moment()],
+                //     Yesterday: [
+                //         moment().subtract(1, "days"),
+                //         moment().subtract(1, "days"),
+                //     ],
+                //     "Last 7 Days": [moment().subtract(6, "days"), moment()],
+                //     "Last 30 Days": [moment().subtract(29, "days"), moment()],
+                //     "This Month": [
+                //         moment().startOf("month"),
+                //         moment().endOf("month"),
+                //     ],
+                //     "Last Month": [
+                //         moment().subtract(1, "month").startOf("month"),
+                //         moment().subtract(1, "month").endOf("month"),
+                //     ],
+                // },
                 locale: {
-                    format: "DD/MMM/YYYY",
+                    format: "DD/MM/YYYY",
                 },
             },
             booking_range
@@ -288,6 +288,16 @@ Version      : 1.0
             endDate: moment().startOf("hour").add(32, "hour"),
             locale: {
                 format: "M/DD hh:mm A",
+            },
+        });
+    }
+    if ($('.daterangeInput').length > 0) {
+        $('.daterangeInput').daterangepicker({
+            imePicker: false,
+            startDate: moment(),
+            endDate: moment(),
+            locale: {
+                format: "DD/MM/YYYY",
             },
         });
     }
@@ -846,6 +856,12 @@ Version      : 1.0
             separateDialCode: true,
         });
     }
+    if ($(".flagInput").length > 0) {
+        $(".flagInput").intlTelInput({
+            initialCountry: "us",
+            separateDialCode: true,
+        });
+    }
 
     if ($("#mobile").length > 0) {
         $("#mobile").intlTelInput({
@@ -1062,6 +1078,19 @@ Version      : 1.0
     $(".search-dropdown-item").click(function (event) {
         event.stopPropagation();
     });
+    
+
+    // password toggle 
+    $(".toggle-password1").click(function() {
+
+        $(this).toggleClass("ti-eye-off");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
     if ($(".datatable").length > 0) {
         $(".datatable").DataTable({
             bFilter: false,
@@ -1096,18 +1125,6 @@ Version      : 1.0
                 .columns.adjust();
         });
     }
-
-    // password toggle 
-    $(".toggle-password1").click(function() {
-
-        $(this).toggleClass("ti-eye-off");
-        var input = $($(this).attr("toggle"));
-        if (input.attr("type") == "password") {
-            input.attr("type", "text");
-        } else {
-            input.attr("type", "password");
-        }
-    });
     
 })(jQuery);
 

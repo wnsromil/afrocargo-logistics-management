@@ -24,7 +24,7 @@ class Parcel extends Model
         'pickup_date' => 'date',
     ];
     
-
+    protected $appends = ['category_names'];
 
     // Mutator to set a default tracking number
     protected static function boot()
@@ -69,8 +69,15 @@ class Parcel extends Model
 
     public function getCategoryNamesAttribute()
     {
-        return Category::whereIn('id', $this->parcel_car_ids)->pluck('name')->toArray();
+        $ids = $this->parcel_car_ids ?? []; // Ensure it's an array
+
+        if (!is_array($ids)) {
+            $ids = json_decode($ids, true) ?? []; // Decode JSON if needed
+        }
+
+        return count($ids) > 0 ? Category::whereIn('id', $ids)->pluck('name')->toArray() : [];
     }
+
 
     protected function driverParcelImage(): Attribute
     {
@@ -78,4 +85,24 @@ class Parcel extends Model
             get: fn ($value) => url($value),
         );
     }
+
+    public function setCustomerSubcategoriesDataAttribute($value)
+    {
+        // Ensure value is an array before encoding
+        if (is_string($value)) {
+            $value = json_decode($value, true);
+        }
+        
+        $this->attributes['customer_subcategories_data'] = json_encode($value ?? []);
+    }
+
+    public function setDriverSubcategoriesDataAttribute($value)
+    {
+        if (is_string($value)) {
+            $value = json_decode($value, true);
+        }
+        
+        $this->attributes['driver_subcategories_data'] = json_encode($value ?? []);
+    }
+
 }

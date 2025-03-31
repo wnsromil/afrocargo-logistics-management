@@ -91,25 +91,7 @@
                     </div>
                 </div>
 
-                <!-- Vehicle Capacity -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="driver_id">Assigned Driver </label>
-                        <select name="driver_id" id="driver_id" class="form-control select2">
-                            <option value="" readonly>Select Driver</option>
-                            @foreach ($drivers as $driver)
-                                <option value="{{ $driver->id }}"
-                                    {{ $vehicle->driver_id == $driver->id ? 'selected' : '' }}>{{ $driver->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('vehicle_capacity')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-
+                
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">

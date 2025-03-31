@@ -1,4 +1,11 @@
 <x-app-layout>
+    @section('style')
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+        </style>
+    @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-light">
             {{ __('Admin Dashboard') }}
@@ -500,8 +507,13 @@
     <div class="row">
 
         <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
-            <h5 class='cardh5Size'>Latest Container</h5>
-            <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button>
+            <h5 class='cardh5Size fw-semibold'>Latest Container</h5>
+            <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
+            <div class="col-auto">
+                <a href="#" class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
+                    See All
+                </a>
+            </div>
         </div>
 
 
@@ -510,24 +522,24 @@
                 <!-- --------------------------- 1st -------------------------------- -->
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard setCardSize rounded">
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-9 justify-content-start p-3 pe-1">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>KG 2114</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> KG 2114</p>
+                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-medium">
+                                    <span class="fw-regular col737">Total Order :</span>
+                                    120<br>
+                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
+                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
+                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
                                 </div>
                             </div>
 
-                            <div class="col-3">
-                                <div class="my-1">
+                            <div class="col-3 justify-content-end">
+                                <div>
                                     <div class="status-toggle float-end me-0">
-                                        <input id="rating_1" class="check" type="checkbox">
+                                        <input id="rating_1" class="toggle-btn1 check" type="checkbox">
                                         <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -541,25 +553,25 @@
 
 
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard setCardSize checkbox-cardBg">
+                    <div class="card innerCards w-100 setCard setCardSize rounded bg-selected1">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <div class="col-md-9 justify-content-start p-3 pe-1">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> 2E 879</p>
+                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-medium">
+                                    <span class="fw-regular col737">Total Order :</span>
+                                    120<br>
+                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
+                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
+                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
                                 </div>
                             </div>
 
                             <div class="col-3 justify-content-end">
-                                <div class="my-1">
+                                <div>
                                     <div class="status-toggle float-end me-0">
-                                        <input id="rating_2" class="check" type="checkbox" checked="">
+                                        <input id="rating_2" class="toggle-btn1 check" type="checkbox" checked="">
                                         <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -572,25 +584,25 @@
 
                 <!-- --------------------------------- 3rd ------------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard rounded setCardSize">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <div class="col-md-9 justify-content-start p-3 pe-1">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>F2 172</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> F2 172</p>
+                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-medium">
+                                    <span class="fw-regular col737">Total Order :</span>
+                                    120<br>
+                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
+                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
+                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
                                 </div>
                             </div>
 
                             <div class="col-3 justify-content-end">
-                                <div class="my-1">
+                                <div>
                                     <div class="status-toggle float-end me-0">
-                                        <input id="rating_3" class="check" type="checkbox">
+                                        <input id="rating_3" class="toggle-btn1 check" type="checkbox">
                                         <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -603,26 +615,25 @@
 
                 <!-- --------------------------------------- 4th ---------------------------------- -->
                 <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard setCardSize">
+                    <div class="card innerCards w-100 setCard rounded setCardSize">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <div class="col-md-9 justify-content-start p-3 pe-1 cardFontSize">
-                                <p><span class="opacity-75 font13">Seal No : </span><strong>NF
-                                        3501</strong></p>
-                                <h5 class='text-black countFontSize'>Xl Container</h5>
-                                <div class="cardFontSize mt-2">
-                                    <span class="opacity-75">Total Order :
-                                    </span><strong>120</strong><br>
-                                    <span class="opacity-75">Total Amt : </span><strong>$2220</strong><br>
-                                    <span class=" text-success">Received Amt : </span><strong>$1520</strong><br>
-                                    <span class="text-danger">Due Amt : </span><strong>$700</strong><br>
+                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> NF 3501</p>
+                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
+                                <div class="cardFontSize mt-2 fw-medium">
+                                    <span class="fw-regular col737">Total Order :</span>
+                                    120<br>
+                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
+                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
+                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
                                 </div>
                             </div>
 
                             <div class="col-3 justify-content-end">
-                                <div class="my-1">
+                                <div>
                                     <div class="status-toggle float-end me-0">
-                                        <input id="rating_4" class="check" type="checkbox">
+                                        <input id="rating_4" class="toggle-btn1 check" type="checkbox">
                                         <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -641,18 +652,18 @@
     <!-- ---------------------------- Bar Graph / Pie Chart ---------------------- -->
 
     <div class="row">
-        <h5 class='cardh5Size mb-3'>Analytics</h5>
+        <h5 class='cardh5Size mb-3 fw-semibold'>Analytics</h5>
         <div class="col-xl-6 d-flex">
-            <div class="card shadow-box flex-fill p-0">
+            <div class="card shadow-box flex-fill border-radius-6 p-0">
 
-                <div class="d-flex justify-content-between align-items-center p-4">
-                    <h5 class="cardh5Size">Users Analytics</h5>
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="cardh5Size fw-semibold">Users Analytics</h5>
 
                     <div class="main">
-                        <h5 class='cardAnalyticsSize'>Customers and Drivers Analytics</h5>
+                        <h5 class='cardAnalyticsSize fw-medium'>Customers and Drivers Analytics</h5>
                     </div>
                 </div>
-                <hr class="border-bottom border-1 border-opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-opacity-25 mt-0 mb-1">
                 </hr>
 
 
@@ -679,7 +690,7 @@
                 <!-- <div id="sales_chart"></div> -->
 
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="s-col"></div>
                 </div>
             </div>
@@ -688,19 +699,19 @@
         <!-- -------------------------- pie chart ---------------------------- -->
 
         <div class="col-xl-6 d-flex">
-            <div class="card shadow-box flex-fill p-0">
+            <div class="card shadow-box flex-fill border-radius-6 p-0">
 
-                <div class="d-flex justify-content-between align-items-center p-4">
-                    <h5 class="cardh5Size">Payment Analytics</h5>
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="cardh5Size fw-semibold">Payment Analytics</h5>
 
                     <div class="main">
-                        <h5 class='cardAnalyticsSize'>Earning Analytics</h5>
+                        <h5 class='cardAnalyticsSize fw-medium'>Earning Analytics</h5>
                     </div>
                 </div>
-                <hr class="border-bottom border-1 border-opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-radius-6 border-opacity-25 mt-0 mb-1">
                 </hr>
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="s-line-area"></div>
                 </div>
             </div>
@@ -754,7 +765,7 @@
     <div class="row mt-4">
         <div class="col-sm-12">
             <div class="dash-title">
-                <h5 class='cardh5Size mb-4'>Latest Container</h5>
+                <h5 class='cardh5Size fw-semibold mb-4'>Latest Orders</h5>
             </div>
             <div class="card-table">
                 <div class="card-body">
@@ -790,7 +801,7 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -798,6 +809,11 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#Schedule_Pickup">Schedule Pickup</a>
+                                                    </li>
+
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -805,19 +821,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -839,7 +858,7 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -847,6 +866,21 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#schedule_pickup_cancel">Schedule Pickup
+                                                            Cancel</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#pickup_reschedule">Pickup Re-schedule</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="edit-products.html"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#Schedule_Pickup">Received By
+                                                            Pickup Man</a>
+                                                    </li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -854,19 +888,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
 
                                         </div>
                                     </td>
@@ -888,7 +925,7 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -896,6 +933,14 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#pickup_reschedule">Pickup Re-schedule</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#Received_Warehouse">Received Warehouse</a>
+                                                    </li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -903,19 +948,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
 
                                         </div>
                                     </td>
@@ -934,15 +982,16 @@
                                     </td>
                                     <td class="d-flextext-dark">
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
-
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -964,7 +1013,7 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -972,6 +1021,14 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#pickup_reschedule">Pickup Re-schedule</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#Received_Warehouse">Received Warehouse</a>
+                                                    </li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -979,20 +1036,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
-
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1010,38 +1069,18 @@
                                             Man</span>
                                     </td>
                                     <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="edit-products.html"><i
-                                                                class="far fa-edit me-2"></i>Edit</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delete_modal"><i
-                                                                class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
-
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1063,7 +1102,7 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -1071,6 +1110,24 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delivery_man_cancel">Delivery Man Assign
+                                                            Cancel</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delivery_reschedule">Delivery
+                                                            Re-schedule</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#return_to_courier">Return To Courier</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delivered">Delivered</a>
+                                                    </li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -1078,19 +1135,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1107,14 +1167,16 @@
                                         </d>
                                     <td class="d-flex align-items-center text-dark">
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1135,7 +1197,7 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -1143,6 +1205,12 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="edit-products.html"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#Schedule_Pickup">Schedule
+                                                            Pickup</a>
+                                                    </li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -1150,19 +1218,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1183,14 +1254,32 @@
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
+                                            <div class="dropdown-menu dropdown-menu-right rounded">
                                                 <ul>
                                                     <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delivery_man_cancel">Delivery Man Assign
+                                                            Cancel</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delivery_reschedule">Delivery
+                                                            Re-schedule</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#return_to_courier">Return To Courier</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delivered">Delivered</a>
+                                                    </li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -1198,20 +1287,22 @@
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>
                                         <div>
-                                            <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
+                                                onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
+                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded"
+                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye border-start icon-size fs-6"
-                                                        style="color: white" data-bs-toggle="tooltip"
-                                                        title="fe fe-eye"></i>
-                                                </button></a>
-
+                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
+                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
+                                                </button></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -1724,57 +1815,390 @@
         </div>
     </div>
 
-
-
-    </div>
-    </div>
-    </div>
-
-
-
     <!-- ---------------------------------------------------------------------------------------------------- -->
 
+    @section('bottomContent')
+        <!-- ---------------------------------------------------------------------------------- -->
+
+        <!-- Schedule Pickup Modal -->
+        <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Pickup Man Assign</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                        <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                            aria-label="Large select example">
+                                            <option selected>Select Delivery Man</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /Schedule Pickup Modal -->
+
+        <!-- ------------------------------------------------------------------------------------- -->
+
+        <!-- return_to_courier Modal -->
+        <div class="modal custom-modal fade" id="return_to_courier" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Return to Courier</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea11"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea11" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /return_to_courier Modal -->
+
+        <!-- ------------------------------------------------------------------------------------- -->
+        <!-- delivered Modal -->
+        <div class="modal custom-modal fade" id="delivered" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Delivered</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea11"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea11" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /delivered Modal -->
+
+        <!-- ---------------------------------------------------------------------------------------------------- -->
+
+        <!-- Received_Warehouse Modal -->
+        <div class="modal custom-modal fade" id="Received_Warehouse" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Received Warehouse</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Warehouse Name<span class="text-danger">*</span></label>
+                                        <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                            aria-label="Large select example">
+                                            <option selected>Select Warehouse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /Received_Warehouse Modal -->
+        <!-- ----------------------------------------------------------------------------------------------------------- -->
 
 
-    <script>
-        document.querySelectorAll('.toggle-btn1').forEach(input => {
-            input.addEventListener("change", function () {
-                const parentDiv = this.closest(".card");
-                if (this.checked) {
-                    parentDiv.classList.add('bg-selected');
-                } else {
-                    parentDiv.classList.remove('bg-selected');
-                }
+        <!-- Schedule Pickup Modal -->
+        <!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header border-0 p-3 pb-0">
+                            <div class="form-header modal-header-title text-start mb-0">
+                                <h4 class="font16 mb-0">Pickup Man Assign</h4>
+                            </div>
+                            <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <hr class="border border-dark border-opac mb-0">
+
+                        <form action="#">
+                            <div class="modal-body p-3">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                            <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                            <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                                aria-label="Large select example">
+                                                <option selected>Select Delivery Man</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-bs-dismiss="modal"
+                                    class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                                <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> -->
+        <!-- /Schedule Pickup Modal -->
+        <!-- ---------------------------------------------------------------------------------------------------- -->
+        <!-- schedule_pickup_cancel Modal -->
+        <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-body p-3">
+                        <div class="form-header">
+                            <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Schedule Pickup?</p>
+                        </div>
+                        <div class="modal-btn delete-action align-cenetr">
+                            <div class="row">
+                                <div class="col-6 px-1">
+                                    <button type="reset" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-outline-primary float-end px-5">No</button>
+                                </div>
+                                <div class="col-6 px-2">
+                                    <button type="submit" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-primary me-2 px-5">Yes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /schedule_pickup_cancel Modal -->
+
+        <!-- ------------------------------------------------------------- -->
+        <!-- delivery_man_cancel Modal -->
+        <div class="modal custom-modal fade" id="delivery_man_cancel" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-body p-3">
+                        <div class="form-header">
+                            <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub
+                                ?
+                            </p>
+                        </div>
+                        <div class="modal-btn delete-action align-cenetr">
+                            <div class="row">
+                                <div class="col-6 px-1">
+                                    <button type="reset" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-outline-primary float-end px-5">No</button>
+                                </div>
+                                <div class="col-6 px-2">
+                                    <button type="submit" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-primary me-2 px-5">Yes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /delivery_man_cancel Modal -->
+        <!-- ------------------------------------------------------------------------------ -->
+
+        <!-- pickup_reschedule Modal -->
+        <div class="modal custom-modal fade" id="pickup_reschedule" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Pickup Re-Schedule</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                        <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                            aria-label="Large select example">
+                                            <option selected>Select Delivery Man</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Date<span class="text-danger">*</span></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="my-3">
+                                <label for="exampleFormControlTextarea1"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /pickup_reschedule Modal -->
+        <!-- ------------------------------------------------------------------------------------ -->
+         
+<!-- delivery_reschedule Modal -->
+<div class="modal custom-modal fade" id="delivery_reschedule" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content schedule-popup1 border-radius-6">
+            <div class="modal-header border-0 p-3 pb-0">
+                <div class="form-header modal-header-title text-start mb-0">
+                    <h4 class="font16 mb-0">Delivery Re-Schedule</h4>
+                </div>
+                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <hr class="border border-dark border-opac mb-0">
+
+            <form action="#">
+                <div class="modal-body p-3">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                <label class="col737">Delivery Man<span class="text-danger">*</span></label>
+                                <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                    aria-label="Large select example">
+                                    <option selected>Select Delivery Man</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                <label class="col737">Date<span class="text-danger">*</span></label>
+                                <div class="cal-icon cal-icon-info">
+                                    <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-3">
+                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal"
+                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /delivery_reschedule Modal -->
+    @endsection
+    @section('bottomContent')
+        <script>
+            document.querySelectorAll('.toggle-btn1').forEach(input => {
+                input.addEventListener("change", function () {
+                    const parentDiv = this.closest(".card");
+                    if (this.checked) {
+                        parentDiv.classList.add('bg-selected1');
+                    } else {
+                        parentDiv.classList.remove('bg-selected1');
+                    }
+                })
             })
-        })
-    </script>
-
-
-
-    <!-- <script>
-    // rating_1
-
-    const card = document.getElementById('card');
-    const toggle = document.getElementById('toggle');
-
-    toggle.addEventListener('change', ()=>{
-        if(toggle.checked){
-            card.style.backgroundColor = "green";
-        }else{
-            card.style.backgroundColor = "blue";
-        }
-    });
-
-
-    
-</script> -->
-    <!-- jQuery -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-
-    <!-- DataTables CSS -->
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> -->
-
-    <!-- DataTables JS -->
-    <!-- <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+        </script>
+    @endsection
 
 </x-app-layout>

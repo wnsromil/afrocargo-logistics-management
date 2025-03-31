@@ -110,7 +110,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{ asset('assets/img/downarrow.png'))}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -130,7 +130,7 @@
 			</div>
                             </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img src="{{ asset('assets/img/ordereye.png')}}"></button>
                               </td>
                              </tr>
                         </tbody>

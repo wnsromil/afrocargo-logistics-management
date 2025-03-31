@@ -4,10 +4,10 @@
         Vehicle Management
     </x-slot>
 
-    
+
     <x-slot name="cardTitle">
-    <div class="d-flex innertopnav">
-        <p class="subhead pheads" >Add Vehicle</p>
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Add Vehicle</p>
         </div>
     </x-slot>
 
@@ -16,8 +16,8 @@
 
         <!-- <div class="form-group-customer customer-additional-form">
             <div class="row"> -->
-                <!-- Warehouse Location -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- Warehouse Location -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_id">Warehouse Location <i class="text-danger">*</i></label>
 
@@ -35,16 +35,16 @@
                 </div> -->
 
 
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3"> -->
-                        <!-- <label for="warehouse_location" class="foncolor">Warehouse Location<i class="text-danger">*</i></label> -->
-                        <!-- <select name="warehouse_name" class="form-control inp select2">
+        <!-- <label for="warehouse_location" class="foncolor">Warehouse Location<i class="text-danger">*</i></label> -->
+        <!-- <select name="warehouse_name" class="form-control inp select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
                                 <option {{ old('warehouse_name') == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select> -->
-                        <!-- <select class="js-example-basic-single select2">
+        <!-- <select class="js-example-basic-single select2">
 												<option selected="selected">Select Warehouse</option>
 												<option></option>
 												<option></option>
@@ -55,8 +55,8 @@
                         @enderror
                     </div>
                 </div> -->
-                <!-- Vehicle Type  -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- Vehicle Type  -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle Type <i class="text-danger">*</i></label>
                         <select name="vehicle_type" class="form-control select2" id="vehicle_type">
@@ -95,16 +95,16 @@
                 </div> -->
 
 
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_location" class="foncolor">Vehicle Type<i class="text-danger">*</i></label> -->
-                        <!-- <select name="warehouse_name" class="form-control inp select2">
+        <!-- <select name="warehouse_name" class="form-control inp select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
                                 <option {{ old('warehouse_name') == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select> -->
-                        <!-- <select class="js-example-basic-single select2">
+        <!-- <select class="js-example-basic-single select2">
 												<option selected="selected">Select Vehicle</option>
 												<option></option>
 												<option></option>
@@ -115,8 +115,8 @@
                         @enderror
                     </div>
                 </div> -->
-                <!-- Vehicle Model  -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- Vehicle Model  -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_model" class="foncolor">Vehicle Model <i class="text-danger">*</i></label>
                         <input type="text" name="vehicle_model" class="form-control"
@@ -127,8 +127,8 @@
                     </div>
                 </div> -->
 
-                <!-- Vehicle Manufactured year -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- Vehicle Manufactured year -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_year">Vehicle Manufactured year <i class="text-danger">*</i></label>
                         <input type="number" name="vehicle_year" class="form-control"
@@ -139,8 +139,8 @@
                     </div>
                 </div> -->
 
-                <!-- Vehicle Number (Plate No.)  -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12 vehicle_number_input">
+        <!-- Vehicle Number (Plate No.)  -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12 vehicle_number_input">
                     <div class="input-block mb-3">
                         <label for="vehicle_number">Vehicle Number (Plate No.) <i class="text-danger">*</i></label>
                         <input type="text" name="vehicle_number" class="form-control"
@@ -151,8 +151,8 @@
                     </div>
                 </div> -->
 
-                <!-- contaainer 1 -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12 container-inputs" style="display: none;">
+        <!-- contaainer 1 -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12 container-inputs" style="display: none;">
                     <div class="input-block mb-3">
                         <label for="container_no_1">Container No.1 <i class="text-danger">*</i></label>
                         <input type="text" name="container_no_1" class="form-control" placeholder="Enter Container No.1"
@@ -163,8 +163,8 @@
                     </div>
                 </div> -->
 
-                <!-- continer 2 -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12 container-inputs" style="display: none;">
+        <!-- continer 2 -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12 container-inputs" style="display: none;">
                     <div class="input-block mb-3">
                         <label for="container_no_2">Container No.2 <i class="text-danger">*</i></label>
                         <input type="text" name="container_no_2" class="form-control" placeholder="Enter Container No.2"
@@ -175,8 +175,8 @@
                     </div>
                 </div> -->
 
-                {{-- container size --}}
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12 container-inputs" style="display: none;">
+        {{-- container size --}}
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12 container-inputs" style="display: none;">
                     <div class="input-block mb-3">
                         <label for="container_size">Container Size</label>
                         <select name="container_size" class="form-control select2" id="container_size">
@@ -193,8 +193,8 @@
 
                  -->
 
-                <!-- Vehicle Capacity -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- Vehicle Capacity -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="driver_id">Assigned Driver </label>
                         <select name="driver_id" id="driver_id" class="form-control select2">
@@ -210,8 +210,8 @@
                 </div> -->
 
 
-                <!-- Status -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- Status -->
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="status">Status</label>
                         <div class="toggle-switch">
@@ -245,21 +245,18 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="warehouse_location" class="foncolor">Warehouse Location <i class="text-danger">*</i></label>
-                        <!-- <select name="warehouse_name" class="form-control inp select2">
+                        <label for="warehouse_location" class="foncolor">Warehouse Location <i
+                                class="text-danger">*</i></label>
+                        <select name="warehouse_name" class="js-example-basic-single select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_name') == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                            <option {{ old('warehouse_name')==$warehouse->id ? 'selected' :'' }} value="{{
+                                $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
-                        </select> -->
-                        <select class="js-example-basic-single select2">
-												<option selected="selected">Select Warehouse</option>
-												<option></option>
-												<option></option>
-											</select>
+                        </select>
 
                         @error('warehouse_name')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -278,31 +275,34 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type" class="foncolor">Vehicle Type <i class="text-danger">*</i></label>
-                        <!-- <select name="warehouse_name" class="form-control inp select2">
-                            <option value="">Select Warehouse </option>
-                            @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_name') == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                            @endforeach
-                        </select> -->
-                        <select class="js-example-basic-single select2">
-												<option selected="selected">Select Vehicle</option>
-												<option></option>
-												<option></option>
-											</select>
+                        <select name="vehicle_type" class="js-example-basic-single select2">
+                            <option value="">Select Vehicle Type </option>
+                            <option value="car">Car</option>
+                            <option value="motorcycle">Motorcycle</option>
+                            <option value="truck">Truck</option>
+                            <option value="truck-container">Truck Container</option>
+                            <option value="mini-truck">Mini Truck</option>
+                            <option value="pickup-truck">Pickup Truck</option>
+                            <option value="trailer-truck">Trailer Truck</option>
+                            <option value="tanker-truck">Tanker Truck</option>
+                            <option value="bicycle">Bicycle</option>
+                            <option value="van">Van</option>
+                            <option value="auto-rickshaw">Auto Rickshaw</option>
+                        </select>
 
-                        @error('warehouse_name')
-                            <span class="text-danger">{{ $message }}</span>
+                        @error('vehicle_type')
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="address"class="foncolor">Vehicle Model <i class="text-danger">*</i></label>
-                        <input type="text" name="address" class="form-control inp" placeholder="Enter Vehicle Model"
-                            value="{{ old('address') }}">
-                        @error('address')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label for="vehicle_model" class="foncolor">Vehicle Model <i class="text-danger">*</i></label>
+                        <input type="text" name="vehicle_model" class="form-control inp" placeholder="Enter Vehicle Model"
+                            value="{{ old('vehicle_model') }}">
+                        @error('vehicle_model')
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -311,53 +311,29 @@
                 <!-- Email -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="email" class="foncolor">Vehicle Manufactured year<i class="text-danger">*</i></label>
-                        <input type="email" name="email" class="form-control inp" placeholder=" Enter Vehicle Manufactured year"
-                            value="{{ old('email') }}">
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label for="vehicle_year" class="foncolor">Vehicle Manufactured year<i
+                                class="text-danger">*</i></label>
+                        <input type="vehicle_year" name="vehicle_year" class="form-control inp"
+                            placeholder=" Enter Vehicle Manufactured year" value="{{ old('vehicle_year') }}">
+                        @error('vehicle_year')
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
-               
- <!-- Email -->
- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="email" class="foncolor">Vehicle Number(Plate No.)<i class="text-danger">*</i></label>
-                        <input type="email" name="email" class="form-control inp" placeholder=" Enter Vehicle No."
-                            value="{{ old('email') }}">
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
 
+                <!-- Email -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type" class="foncolor">Assigned Driver <i class="text-danger">*</i></label>
-                       
-                        <select class="js-example-basic-single select2">
-												<option selected="selected">Select Driver</option>
-												<option></option>
-												<option></option>
-											</select>
-
-                        @error('warehouse_name')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label for="vehicle_number" class="foncolor">Vehicle Number(Plate No.)<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                            value="{{ old('vehicle_number') }}">
+                        @error('vehicle_number')
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-
-
-
-
-
-
-
-              
-               
-
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -372,31 +348,38 @@
                             </label>
                         </div> -->
 
-                        <div class="d-flex align-items-center">
+                        {{-- <div class="d-flex align-items-center">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
                                 <input id="rating_6" class="check" type="checkbox" value="Inactive">
                                 <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
-                        </div>
+                        </div> --}}
 
+                        <div class="status-toggle">
+                            <span>Active</span>
+                            <input id="rating_1" class="check" type="checkbox" checked>
+                            <label for="rating_1" class="checktoggle checkbox-bg"></label>
+                            <span class="inactive">Inactive</span>
+                        </div>
                         @error('status')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="add-customer-btns text-end textbutton">
-           
-           <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button> 
-          
-                <button type="submit" class="btn btn-primary ">Submit</button>
-                
-           </div>
-           
+        <div class="add-customer-btns text-end">
+
+            <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary ">Submit</button>
+
+        </div>
+
     </form>
 
     {{-- jqury cdn --}}

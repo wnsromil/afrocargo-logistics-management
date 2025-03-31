@@ -1,4 +1,7 @@
 <?php
+include('timeSlot.php');
+use App\Helpers\SettingsHelper;
+
 
 function isActive($urls, $class = 'active',$default='')
 {
@@ -50,4 +53,15 @@ function activeStatusKey($statusName = 'Pending') {
 
     // Return the key if found, or 'pending' if not.
     return str_replace(' ','_',strtolower($statusName));
+}
+
+
+function calculatePrice($value=0,$Unit=0,$Rate=0)
+{
+    // value-based calculation
+    return ceil($value / $Unit) * $Rate;
+}
+
+function setting(){
+    return new SettingsHelper();
 }

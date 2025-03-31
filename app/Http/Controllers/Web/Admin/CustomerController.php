@@ -24,7 +24,7 @@ class CustomerController extends Controller
 
         $customers = User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->where('is_deleted', 'No')->where('role_id', 3)->latest()->paginate(5);
+        })->where('is_deleted', 'No')->where('role_id', 3)->latest('id')->paginate(5);
 
 
         return view('admin.customer.index', compact('customers'));
@@ -51,7 +51,6 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-         try {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'mobile_code' => 'required|digits:10',
@@ -66,9 +65,14 @@ class CustomerController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
-            'longitude' => 'required|numeric' // Optional
+            'longitude' => 'required|numeric', // Optional
+            'country_code' => 'required|string',
+            'country_code_2' => 'required|string',
+
         ]);
 
+         try {
+        
         $imagePaths = [];
 
         foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
@@ -122,6 +126,7 @@ class CustomerController extends Controller
             'profile_pic' => $imagePaths['profile_pics'] ?? null,
             'signup_type' => 'for_admin',
             'country_code'        => $request->country_code,
+            'country_code_2'        => $request->country_code_2,
         ];
         if (!empty($request->license_expiry_date)) {
             $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -138,7 +143,7 @@ class CustomerController extends Controller
             ->with('success', 'User created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation Errors dikhane ke liye
-            return response()->json(['errors' => $e->errors()], 422);
+            return back()->with('errors',$e->getMessage());
         }
     }
 

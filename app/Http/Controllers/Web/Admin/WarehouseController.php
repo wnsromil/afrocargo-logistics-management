@@ -21,7 +21,7 @@ class WarehouseController extends Controller
         
         $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
             return $q->where('id',$this->user->warehouse_id);
-        })->paginate(10);
+        })->latest('id')->paginate(10);
         return view('admin.warehouse.index',compact('warehouses'));
     }
 
@@ -61,7 +61,8 @@ class WarehouseController extends Controller
             'state_id' => 'required|integer|exists:states,id',
             'city_id' => 'required|integer|exists:cities,id',
             'zip_code' => 'required|string|max:20',
-            'phone' => 'required|string|max:15',
+            'mobile_code' => 'required|string|max:15',
+            'country_code' => 'required|string',
             'status' => 'in:Active,Inactive',
         ]);
 
@@ -82,7 +83,8 @@ class WarehouseController extends Controller
             'state_id' => $request->state_id,
             'city_id' => $request->city_id,
             'zip_code' => $request->zip_code,
-            'phone' => $request->phone,
+            'phone' => $request->mobile_code,
+            'country_code' => $request->country_code,
             'status' => $status,
         ]);
 
@@ -99,9 +101,9 @@ class WarehouseController extends Controller
      */
     public function show($id)
     {
-        $user = Warehouse::find($id);
+        $warehouse = Warehouse::find($id);
 
-        return view('admin.warehouse.show',compact('user'));
+        return view('admin.warehouse.show',compact('warehouse'));
     }
     
     /**

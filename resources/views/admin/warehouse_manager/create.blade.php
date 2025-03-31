@@ -1,12 +1,12 @@
 <x-app-layout>
 
     <x-slot name="header">
-       Add Warehouse Manager
+        Add Warehouse Manager
     </x-slot>
 
     <x-slot name="cardTitle">
-    <div class="d-flex innertopnav">
-        <p class="subhead pheads" >Add Warehouse Manager</p>
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Add Warehouse Manager</p>
         </div>
     </x-slot>
     <form action="{{ route('admin.warehouse_manager.store') }}" method="POST" enctype="multipart/form-data">
@@ -18,20 +18,15 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name" class="foncolor">Warehouse Name <i class="text-danger">*</i></label>
-                        <!-- <select name="warehouse_name" class="form-control inp select2">
+                        <select name="warehouse_name" class="js-example-basic-single select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
                                 <option {{ old('warehouse_name') == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
-                        </select> -->
-                        <select class="js-example-basic-single select2">
-												<option selected="selected">Select Warehouse</option>
-												<option></option>
-												<option></option>
-											</select>
+                        </select>
 
                         @error('warehouse_name')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -39,10 +34,12 @@
                 <!-- Warehouse Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="manager_name" class="foncolor">Warehouse Manager Name<i class="text-danger">*</i></label>
-                        <input type="text" name="manager_name" class="form-control inp" placeholder="Enter Full Name" value="{{ old('manager_name') }}">
+                        <label for="manager_name" class="foncolor">Warehouse Manager Name<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="manager_name" class="form-control inp" placeholder="Enter Full Name"
+                            value="{{ old('manager_name') }}">
                         @error('manager_name')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -50,11 +47,11 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="address"class="foncolor">Address <i class="text-danger">*</i></label>
+                        <label for="address" class="foncolor">Address <i class="text-danger">*</i></label>
                         <input type="text" name="address" class="form-control inp" placeholder="Enter Address"
                             value="{{ old('address') }}">
                         @error('address')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -67,7 +64,7 @@
                         <input type="email" name="email" class="form-control inp" placeholder="Enter Email Id"
                             value="{{ old('email') }}">
                         @error('email')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -85,15 +82,15 @@
                 </div> -->
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                 
-                        <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
-						<input type="number" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
-                   
-                    </div>
-               
 
-               
-
+                    <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
+                    <input type="tel" id="mobile_code" name="phone" class="form-control inp"
+                        placeholder="Enter Mobile No.">
+                        @error('phone')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    <input type="hidden" id="country_code" name="country_code">
+                </div>
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -115,10 +112,10 @@
                                 <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
-</div>
-</div>
+                        </div>
+
                         @error('status')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -126,28 +123,12 @@
         </div>
 
         <div class="add-customer-btns text-end">
-           
-           <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button> 
-          
-                <button type="submit" class="btn btn-primary ">Submit</button>
-                
-           </div>
+
+            <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary ">Submit</button>
+
+        </div>
     </form>
-
-
-    {{-- jqury cdn --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#rating_6').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#inactiveText').removeClass('faded');
-                    $('#activeText').addClass('faded');
-                } else {
-                    $('#activeText').removeClass('faded');
-                    $('#inactiveText').addClass('faded');
-                }
-            });
-        });
-    </script>
 </x-app-layout>

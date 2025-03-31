@@ -152,8 +152,8 @@
 
                             </td>
                             <td class="btntext">
-                             <button onClick= "redirectTo('{{ route('admin.container.show', 1) }}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
-                              </td>  
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{ asset('assets/img/ordereye.png')}}"></button>
+                              </td>
                           
                            </tr>
 

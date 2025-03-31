@@ -55,9 +55,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <!-- Red Rose Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,9 +114,15 @@
                         </div>
                     </div>
                 </div>
+                @yield('bottomContent')
             </div>
+            <!-- footer -->
+            @include('partial.footer')
+            <!-- /footer -->
         </div>
         <!-- /Page Wrapper -->
+
+
 
     </div>
     <!-- /Main Wrapper -->
@@ -129,7 +133,7 @@
     <!-- /Theme Setting -->
     <!-- jQuery -->
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
-     <script src = "{{ asset('assets/js/bootstrap.bundle.min.js') }}" ></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Feather Icon JS -->
     <script src="{{ asset('assets/js/feather.min.js') }}"></script>
@@ -144,7 +148,7 @@
 
     <script src="{{ asset('js/comman.js') }}"></script>
     <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
-    // <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
 
     <!-- Theme Settings JS -->
@@ -156,14 +160,14 @@
     <!-- Intl Tell Input js -->
     <script src="{{ asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/timeline/horizontal-timeline.js') }}"></script>
-<!-- Custom JS -->
-<script src="{{ asset('assets/js/script.js') }}"></script>
+    <!-- Custom JS -->
+    <script src="{{ asset('assets/js/script.js') }}"></script>
     <script>
         @session('success')
         Swal.fire({
-            title: "Good job!",
-            text: "{{ $value }}",
-            icon: "success"
+            title: "Good job!"
+            , text: "{{ $value }}"
+            , icon: "success"
         });
         @endsession
         @session('error')
@@ -193,7 +197,22 @@
         function redirectTo(url) {
             window.location.href = url;
         }
-        
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const phoneInput = document.querySelector('input[type="tel"]');
+
+            phoneInput.addEventListener("input", function (event) {
+                this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+            });
+
+            phoneInput.addEventListener("blur", function () {
+                if (!/^\d+$/.test(this.value)) {
+                    // alert("Please enter a valid phone number.");
+                    this.value = "";
+                }
+            });
+        });
+
 
     </script>
 

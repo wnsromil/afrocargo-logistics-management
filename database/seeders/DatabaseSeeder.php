@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             TermsConditionSeeder::class,
             PrivacyPolicySeeder::class,
-            AboutUsSeeder::class
+            AboutUsSeeder::class,
+            SettingsTableSeeder::class
         ]);
 
         // User::factory(10)->create();
