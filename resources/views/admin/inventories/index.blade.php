@@ -95,25 +95,25 @@
                                     @endif
                                 </td>
                                 <td class="text-dark">{{ ucfirst($inventory->name ?? '') }}</td>
-                                <td class="text-dark" >{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
+                                <td class="text-dark">{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
                                 <td class="text-dark"><span>{{ $inventory->weight ?? '-' }}</span></td>
                                 <td class="text-dark"><span>{{ $inventory->width ?? '-' }}</span></td>
                                 <td class="text-dark"><span>{{ $inventory->height ?? '-' }}</span></td>
                                 <td class="text-dark"><span>{{ $inventory->in_stock_quantity ?? '-' }}</span></td>
                                 <td class="text-dark"><span>
                                         @if (!empty($inventory->price))
-                                            $
+                                        $
                                         @endif{{ $inventory->price ?? '-' }}
                                     </span>
                                 </td>
 
                                 <td class="text-dark"><span>{{ $inventory->low_stock_warning ?? '-' }}</span></td>
                                 <td class="text-dark"><span>{{ $inventory->formatted_created_at ?? '-' }}</span></td>
-                                <td class="text-dark"><span
-                                        class=" @if ($inventory->stock_status == 'In Stock') bg-light text-success @elseif($inventory->stock_status == 'Out Of Stock')
+                                <td class="text-dark"><span class=" @if ($inventory->stock_status == 'In Stock') bg-light text-success @elseif($inventory->stock_status == 'Out Of Stock')
                                     bg-light text-danger
                                     @else
-                                    bg-light text-warning @endif  px-2 py-1 stock-font fw-medium">{{ $inventory->stock_status ?? '-' }}</span>
+                                    bg-light text-warning @endif  px-2 py-1 stock-font fw-medium">{{
+                                        $inventory->stock_status ?? '-' }}</span>
                                 </td>
 
                                 <td class="d-flex align-items-center">
@@ -151,10 +151,10 @@
                 </td>
                 </tr>
                 @empty
-                    <tr>
-                        <td colspan="11" class="px-4 py-4 text-center text-gray-500">No inventories found.
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No inventories found.
+                    </td>
+                </tr>
                 @endforelse
                 </tbody>
                 </table>
@@ -164,7 +164,7 @@
 
 
     <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
-        
+
         <div class="col-md-6 d-flex p-2 align-items-center">
             <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
             <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example">
@@ -175,7 +175,7 @@
             </select>
             <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
         </div>
-        
+
 
         <div class="col-md-6">
             <div class="float-end">

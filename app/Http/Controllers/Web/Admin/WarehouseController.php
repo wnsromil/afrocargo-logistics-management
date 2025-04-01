@@ -73,7 +73,7 @@ class WarehouseController extends Controller
                 ->withInput();  // Keep old input data
         }
         
-        $status  = !empty($request->status) ? $request->status : 'Inactive';
+        $status  = !empty($request->status) ? $request->status : 'Active';
         // Store validated data
         Warehouse::create([
             'warehouse_name' => $request->warehouse_name,
@@ -153,8 +153,7 @@ class WarehouseController extends Controller
         // Find the warehouse by ID
         $warehouse = Warehouse::find($id);
     
-        // 🛑 Agar status nahi aaya request me, to default 'Inactive' set karein
-        $status = $request->has('status') ? $request->status : 'Inactive';
+        
     
         // Update warehouse with validated data
         $warehouse->update([
@@ -166,7 +165,7 @@ class WarehouseController extends Controller
             'city_id' => $request->city_id,
             'zip_code' => $request->zip_code,
             'phone' => $request->phone,
-            'status' => $status, // Default 'Inactive' agar request me na ho
+            'status' => $request->status ?? 'Active', // Default 'Inactive' agar request me na ho
         ]);
     
         // Redirect to the warehouse index page with a success message

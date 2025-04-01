@@ -274,45 +274,26 @@
           </div>
 
 
-            <!-- ------------ --> l
-            <!-- <div class="row custodis">
-    <div class="col-md-4">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">Signature</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
-        </div>
-    </div>
-    <div></div>
-    <div></div>
-</div>
-
- -->
-
-
 
             <!-- ---------- -->
 
             <div class="ptop d-flex">
-                <div>
-                    <div class="input-block mb-3">
-                        <label class="foncolor" for="status">Status</label>
-
-                        <div class="status-toggle">
-                            <span>Active</span>
-                            <input id="status" class="check" type="checkbox" name="status" checked>
-                            <label for="status" class="checktoggle checkbox-bg togc"></label>
-                            <span class="">Inactive</span>
+                <div class="col-lg-4 col-md-6 col-sm-12 align-center">
+                    <div class="mb-3 float-end">
+                        <label for="in_status">Status</label>
+                        <div class="d-flex align-items-center text-dark">
+                            <p class="profileUpdateFont" id="activeText">Active</p>
+                            <div class="status-toggle px-2">
+                                <input id="rating_6" class="check" type="checkbox" name="status" 
+                                    value="Active" @checked($user->status === 'Inactive') 
+                                    onchange="updateStatusValue()">
+                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
+                            </div>
+                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
                         @error('status')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
-
                     </div>
                 </div>
 
@@ -330,114 +311,116 @@
             <input id="city_id_defult" type="hidden" name="city_id_defult" value="{{ ($user->city_id) }}">
             <input id="page_no" type="hidden" name="page_no" value="{{ ($page_no) }}">
         </form>
-
-</x-app-layout>
+@section('script')
 <script>
-  // 🖼 Image Preview Function
-  function previewImage(input, imageType) {
-      if (input.files && input.files[0]) {
-          let file = input.files[0];
-
-          // ✅ Sirf PNG ya JPG Allow Hai
-          if (file.type === "image/png" || file.type === "image/jpeg") {
-              let reader = new FileReader();
-              reader.onload = function (e) {
-                  document.getElementById('preview_' + imageType).src = e.target.result;
-              };
-              reader.readAsDataURL(file);
-          } else {
-              alert("Only PNG & JPG images are allowed!");
-              input.value = ""; // Invalid file ko remove karna
-          }
-      }
-  }
-
-  // ❌ Remove Image Function
-  function removeImage(imageType) {
-      document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
-      document.getElementById('file_' + imageType).value = "";
-  }
-</script>
-<script>
-    $(document).ready(function() {
-        loadStatesAndCitiesOnEdit();
-        // Country Change Event
-        $('#country').change(function() {
-            var country_id = $(this).val();
-            $('#state').html('<option selected="selected">Loading...</option>');
-            $('#city').html('<option selected="selected">Select City</option>');
-
-            $.ajax({
-                url: '/api/get-states/' + country_id,
-                type: 'GET',
-                success: function(states) {
-                    $('#state').html('<option selected="selected">Select State</option>');
-                    $.each(states, function(key, state) {
-                        $('#state').append('<option value="' + state.id + '">' +
-                            state.name + '</option>');
-                    });
-                }
-            });
-        });
-
-        // State Change Event
-        $('#state').change(function() {
-            var state_id = $(this).val();
-            $('#city').html('<option selected="selected">Loading...</option>');
-
-            $.ajax({
-                url: '/api/get-cities/' + state_id,
-                type: 'GET',
-                success: function(cities) {
-                    $('#city').html('<option selected="selected">Select City</option>');
-                    $.each(cities, function(key, city) {
-                        $('#city').append('<option value="' + city.id + '">' + city
-                            .name + '</option>');
-                    });
-                }
-            });
-        });
-         
-        function loadStatesAndCitiesOnEdit() {
-            var country_id = $('#country').val();
-            var state_id_defult = $('#state_id_defult').val();
-            var city_id_defult = $('#city_id_defult').val();
-            var selected_state = "{{ $user->state ?? '' }}"; // Backend se state ka ID le rahe hain
-            var selected_city = "{{ $user->city ?? '' }}"; // Backend se city ka ID le rahe hain
-
-            if (country_id) {
-                $('#state').html('<option selected="selected">Loading...</option>');
-                $.ajax({
-                    url: '/api/get-states/' + country_id,
-                    type: 'GET',
-                    success: function(states) {
-                        $('#state').html('<option selected="selected">Select State</option>');
-                        $.each(states, function(key, state) {
-                            var selected = state.id == state_id_defult ? 'selected' : '';
-                            $('#state').append('<option value="' + state.id + '" ' + selected + '>' +
-                                state.name + '</option>');
-                        });
-
-                        // Call city API only if state is selected
-                        if (state_id_defult) {
-                            $('#city').html('<option selected="selected">Loading...</option>');
-                            $.ajax({
-                                url: '/api/get-cities/' + state_id_defult,
-                                type: 'GET',
-                                success: function(cities) {
-                                    $('#city').html('<option selected="selected">Select City</option>');
-                                    $.each(cities, function(key, city) {
-                                        var selected = city.id == city_id_defult ? 'selected' : '';
-                                        $('#city').append('<option value="' + city.id + '" ' + selected + '>' +
-                                            city.name + '</option>');
-                                    });
-                                }
-                            });
-                        }
-                    }
-                });
+    // 🖼 Image Preview Function
+    function previewImage(input, imageType) {
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
+  
+            // ✅ Sirf PNG ya JPG Allow Hai
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview_' + imageType).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only PNG & JPG images are allowed!");
+                input.value = ""; // Invalid file ko remove karna
             }
         }
+    }
+  
+    // ❌ Remove Image Function
+    function removeImage(imageType) {
+        document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
+        document.getElementById('file_' + imageType).value = "";
+    }
+  </script>
+  <script>
+      $(document).ready(function() {
+          loadStatesAndCitiesOnEdit();
+          // Country Change Event
+          $('#country').change(function() {
+              var country_id = $(this).val();
+              $('#state').html('<option selected="selected">Loading...</option>');
+              $('#city').html('<option selected="selected">Select City</option>');
+  
+              $.ajax({
+                  url: '/api/get-states/' + country_id,
+                  type: 'GET',
+                  success: function(states) {
+                      $('#state').html('<option selected="selected">Select State</option>');
+                      $.each(states, function(key, state) {
+                          $('#state').append('<option value="' + state.id + '">' +
+                              state.name + '</option>');
+                      });
+                  }
+              });
+          });
+  
+          // State Change Event
+          $('#state').change(function() {
+              var state_id = $(this).val();
+              $('#city').html('<option selected="selected">Loading...</option>');
+  
+              $.ajax({
+                  url: '/api/get-cities/' + state_id,
+                  type: 'GET',
+                  success: function(cities) {
+                      $('#city').html('<option selected="selected">Select City</option>');
+                      $.each(cities, function(key, city) {
+                          $('#city').append('<option value="' + city.id + '">' + city
+                              .name + '</option>');
+                      });
+                  }
+              });
+          });
+           
+          function loadStatesAndCitiesOnEdit() {
+              var country_id = $('#country').val();
+              var state_id_defult = $('#state_id_defult').val();
+              var city_id_defult = $('#city_id_defult').val();
+              var selected_state = "{{ $user->state ?? '' }}"; // Backend se state ka ID le rahe hain
+              var selected_city = "{{ $user->city ?? '' }}"; // Backend se city ka ID le rahe hain
+  
+              if (country_id) {
+                  $('#state').html('<option selected="selected">Loading...</option>');
+                  $.ajax({
+                      url: '/api/get-states/' + country_id,
+                      type: 'GET',
+                      success: function(states) {
+                          $('#state').html('<option selected="selected">Select State</option>');
+                          $.each(states, function(key, state) {
+                              var selected = state.id == state_id_defult ? 'selected' : '';
+                              $('#state').append('<option value="' + state.id + '" ' + selected + '>' +
+                                  state.name + '</option>');
+                          });
+  
+                          // Call city API only if state is selected
+                          if (state_id_defult) {
+                              $('#city').html('<option selected="selected">Loading...</option>');
+                              $.ajax({
+                                  url: '/api/get-cities/' + state_id_defult,
+                                  type: 'GET',
+                                  success: function(cities) {
+                                      $('#city').html('<option selected="selected">Select City</option>');
+                                      $.each(cities, function(key, city) {
+                                          var selected = city.id == city_id_defult ? 'selected' : '';
+                                          $('#city').append('<option value="' + city.id + '" ' + selected + '>' +
+                                              city.name + '</option>');
+                                      });
+                                  }
+                              });
+                          }
+                      }
+                  });
+              }
+          }
+  
+     });
+  </script>
+@endsection
+</x-app-layout>
 
-   });
-</script>

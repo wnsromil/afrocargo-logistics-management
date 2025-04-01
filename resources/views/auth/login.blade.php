@@ -52,7 +52,7 @@
         <div class="container row">
             <div class="container col col-lg-12 d-flex red-rose align-items-center bg-white">
                 <div class="col col-md-2">
-                    <img src="../assets/images/AfroCargoLogo.svg" alt="#" class="setSize">
+                    <img src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt="#" class="setSize">
                 </div>
                 <div class="col">
                     <p class="red-rose-fontSet fw-bold">Afro Cargo Express</p>

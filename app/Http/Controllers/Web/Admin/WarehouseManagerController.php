@@ -12,6 +12,9 @@ use App\Models\{
     Country
 };
 use DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistorMail;
+
 
 class WarehouseManagerController extends Controller
 {
@@ -45,13 +48,15 @@ class WarehouseManagerController extends Controller
      */
     public function store(Request $request)
     {
+     
+        
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address' => 'required|string|max:500',
             'phone' => 'required|string|max:15',
-            'status' => 'in:Active,Inactive',
+            'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
         // Check if validation fails
@@ -72,15 +77,28 @@ class WarehouseManagerController extends Controller
             'password' => \Hash::make('12345678'),
             'phone' => $request->phone,
             'country_code' => $request->country_code,
-            'status' => $status,
+            'status' => $request->status ?? 'Active',
             'role_id' => 2,
             'role' => "warehouse_manager",
             
         ]);
 
+        // Example dynamic data
+        $userName = $validated['first_name'];
+        $email = $validated['email'] ?? null;
+        $mobileNumber = $validated['mobile_code'];
+        $password = '12345678';
+        $loginUrl = route('login');
+
+        // Send the email
+        // Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
+
+
         // Redirect with success message
         return redirect()->route('admin.warehouse_manager.index')
             ->with('success', 'Manager created successfully.');
+
+        
     }
 
     /**
@@ -121,6 +139,7 @@ class WarehouseManagerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         // Custom validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
@@ -148,7 +167,7 @@ class WarehouseManagerController extends Controller
             'address' => $request->address,
             'email' => $request->email,
             'phone' => $request->phone,
-            'status' => $request->status, // Status ko handle karna
+            'status' => $request->status ?? 'Active', // Status ko handle karna
         ]);
 
 
