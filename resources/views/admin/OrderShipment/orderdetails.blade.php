@@ -73,7 +73,7 @@
                                 <div>12-12-24</div>
                             </td>
                             <td>
-                                <div><img src="../assets/img/Rectangle 25.png" alt="image"></div>
+                                <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                             </td>
                             <td>
                                 <div class="row">
@@ -105,9 +105,9 @@
                             <td>Cash</td>
                             <td>Books,Electronics..</td>
                             <td>
-                                <div><img src="../assets/img/Rectangle 25.png" alt="image"></div>
+                                <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                             </td>
-                            <td><img src="../assets/img/user-signature copy.png"></td>
+                            <td><img src="{{asset('assets/img/user-signature copy.png')}}"></td>
                             <td><label class="labelstatus" for="status">Self Pickup</label></td>
                         </tr>
                     </tbody>

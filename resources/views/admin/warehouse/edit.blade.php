@@ -137,8 +137,9 @@
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
                         @error('status')
-                        <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
+
                     </div>
                 </div>
 

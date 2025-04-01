@@ -123,12 +123,12 @@
                                     <td>
                                         @if ($vehicle->status == 'Active')
                                             <div class="container">
-                                                <img src="../assets/img/checkbox.png" alt="Image" />
+                                                <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                                 <p>Active</p>
                                             </div>
                                         @else
                                             <div class="container">
-                                                <img src="../assets/img/inactive.png" alt="Image" />
+                                                <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
                                                 <p>Inactive</p>
                                             </div>
                                         @endif
@@ -183,7 +183,7 @@
                                 <td>2000</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -222,8 +222,8 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/inactive.png" alt="Image" />
-                                        <p>Inactive</p>
+                                    <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
+                                       <p>Inactive</p>
                                     </div>
                                 </td>
                                 <td>
@@ -261,7 +261,8 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                       
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -300,7 +301,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -339,7 +340,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -378,7 +379,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -417,7 +418,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -456,7 +457,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -495,7 +496,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -534,7 +535,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                        <img src="../assets/img/checkbox.png" alt="Image" />
+                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
