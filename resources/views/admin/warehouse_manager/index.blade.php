@@ -128,12 +128,12 @@
 
                     </table>
 
-                    <div class="bottom-user-page mt-3">
-                        {!! $warehouses->links('pagination::bootstrap-5') !!}
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="bottom-user-page mt-3">
+        {!! $warehouses->links('pagination::bootstrap-5') !!}
     </div>
 
 </x-app-layout>

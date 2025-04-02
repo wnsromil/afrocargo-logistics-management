@@ -20,7 +20,7 @@ class WarehouseManagerController extends Controller
     {
         $warehouses = User::when($this->user->role_id!=1,function($q){
             return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->where('role_id', 2)->paginate(10);
+        })->where('role_id', 2)->latest('id')->paginate(10);
         return view('admin.warehouse_manager.index', compact('warehouses'));
     }
 

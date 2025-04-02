@@ -380,7 +380,7 @@ table thead.set {
 }
 
 .profileBg {
-    background: transparent;
+    background: transparent !important;
 }
 
 .profileImg {
@@ -478,7 +478,7 @@ table thead.set {
 }
 
 .stock-font {
-    font-size: 11px;
+    font-size: 11px !important;
     border-radius: 4px;
     /* font-weight: 600px; */
 }
@@ -1512,13 +1512,16 @@ body.mini-sidebar.expand-menu .sidebar {
 
         .events-wrapper {
             align-content: center;
+            margin: 0 30px;
         }
 
         .cd-timeline-navigation {
             a {
                 border: 2px solid #203A5F;
                 color: #203A5F;
+                background: white;
             }
+
         }
 
         .cd-timeline-navigation a::after {
@@ -1648,16 +1651,16 @@ body.mini-sidebar.expand-menu .sidebar {
                 bottom: -7px;
             }
         }
-        
+
     }
-    .events-content li 
-        {
-            padding: 0;
-        }
-        .row 
-        {
-            max-width: 100%;
-        }
+
+    .events-content li {
+        padding: 0;
+    }
+
+    .row {
+        max-width: 100%;
+    }
 }
 
 /* timeline css  */
@@ -1682,14 +1685,13 @@ body.mini-sidebar.expand-menu .sidebar {
     }
 }
 
-.activityCard 
-{
+.activityCard {
     background: linear-gradient(178deg, rgba(255, 255, 255, 0) 0%, rgba(237, 237, 237, 1) 100%);
     border: 1px solid #00000042;
     border-radius: 13px;
     box-shadow: 0px 4px 10px #00000042;
     width: max-content;
-    padding: 0!important;
+    padding: 0 !important;
     margin-bottom: 20px;
 
     i.ti {
@@ -1698,22 +1700,26 @@ body.mini-sidebar.expand-menu .sidebar {
         margin-top: 2px;
         margin-right: 6px;
     }
+
     .activityCard p {
         line-height: 26px !important;
     }
+
     button.btn.btn-primary.smbtn {
-            height: 34px;
-        background-color: #252f4833!important;
-        color: #252f48!important;
+        height: 34px;
+        background-color: #252f4833 !important;
+        color: #252f48 !important;
     }
+
     button.btn.btn-danger.smbtn {
-            height: 34px;
-        background-color: #BB1F2333!important;
+        height: 34px;
+        background-color: #BB1F2333 !important;
         color: #BB1F23;
     }
+
     button.btn.btn-success.smbtn {
-            height: 34px;
-        background-color: #33B46933!important;
+        height: 34px;
+        background-color: #33B46933 !important;
         color: #33B469;
     }
 }
@@ -1722,13 +1728,279 @@ body.mini-sidebar.expand-menu .sidebar {
     min-height: 100% !important;
 }
 
-.select2-container--default 
-{
+.select2-container--default {
     .select2-results__option--highlighted[aria-selected] {
         background: #203A5F;
         color: #fff;
     }
 }
+
+.invoice .dposition {
+    input {
+        font-size: 13px !important;
+        border-radius: 4px !important;
+        height: 40px;
+    }
+
+    i {
+        position: absolute;
+        left: 20px;
+        bottom: 13px;
+        font-size: 17px;
+    }
+
+    .daterangepicker-wrap {
+        input {
+            padding-left: 35px;
+        }
+    }
+
+    .daterangepicker-wrap.cal-icon::after {
+        top: 5px;
+    }
+
+    .select2-selection__rendered {
+        font-size: 13px !important;
+        border-radius: 4px !important;
+    }
+
+}
+
+.invoices-tabs-card {
+    .invoices-main-tabs {
+        padding: 0 0 6px 0;
+        border-bottom: 2px solid #737B8B;
+
+        ul {
+            li {
+                margin: 0;
+
+                a {
+                    padding: 0 15px 6px 15px;
+                    border-bottom: 4px solid #203a5f00;
+                    font-size: 16px;
+                }
+
+                a.active {
+                    font-weight: 600;
+                    border-bottom: 4px solid #203A5F !important;
+                }
+            }
+        }
+    }
+}
+
+.page-header:has(.page-header.mb-0),
+.content-page-header:has(.page-header.mb-0) {
+    margin-bottom: 0 !important;
+}
+
+.content-page-header.tomain {
+    align-items: top !important;
+    -webkit-align-items: top !important;
+    margin: 0 0 0 0 !important;
+}
+
+.invoiceForm {
+    label {
+        color: #737B8B !important;
+        margin-bottom: 0;
+    }
+
+    .middleDiv {
+        flex-grow: 1;
+        position: relative;
+            span.text-danger
+            {
+            font-size: 12px;
+            position: absolute;
+            bottom: -25px;
+            left: 15px;
+        }
+    }
+
+    input,
+    select,
+    textarea,
+    .iti__selected-dial-code,
+    .select2-selection__rendered {
+        color: #737B8B !important;
+        font-size: 12px !important;
+        font-weight: 500;
+    }
+
+    .iti__country-list {
+        z-index: 999;
+    }
+
+    .iti__flag {
+        width: 18px;
+        height: 10px;
+    }
+
+    .square.sm {
+        font-size: 8px;
+        padding: 8px 5px !important;
+        height: max-content;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        border-radius: 5px;
+    }
+
+    .invoiceNoInput input {
+        padding-left: 51px;
+    }
+
+    span.dollarSign {
+        font-size: 16px;
+        font-weight: 500;
+        color: #3a3a3a;
+        position: absolute;
+        left: 10px;
+        top: 9px;
+    }
+
+    .daterangepicker-wrap {
+        height: 40px;
+
+        input {
+            height: 38px !important;
+        }
+    }
+
+    .curve_tabel {
+        .table {
+            border-radius: 8px !important;
+            box-shadow: 0px 0px 0px 1px #00000042;
+
+            th,
+            td {
+                border: 1px solid #00000042 !important;
+            }
+
+            th {
+                border-top: 0 !important;
+                vertical-align: middle;
+            }
+
+            th:first-child,
+            td:first-child {
+                border-left: 0 !important;
+                border-radius: 8px 0 0 !important;
+            }
+
+            th:last-child,
+            td:last-child {
+                border-right: 0 !important;
+                border-radius: 0 8px 0 0 !important;
+            }
+
+            tr:last-child td {
+                border-bottom: 0 !important;
+            }
+
+            td .select2 {
+                height: 32px !important;
+                min-width: 85% !important;
+
+                .select2-selection {
+                    height: 32px !important;
+                    background: #F2F2F2 !important;
+                    border: 1px solid #0000001f !important;
+
+                }
+
+                .select2-selection__arrow {
+                    height: 40px;
+                    right: -27px;
+                    top: -2px;
+                }
+            }
+
+            .priceInput i {
+                font-size: 18px;
+            }
+        }
+
+        .flat-btn {
+            margin-right: -6px;
+            margin-left: 3px;
+        }
+    }
+
+}
+
+button.btn.iconBtn {
+    padding: 4px 0 0 2px !important;
+    width: 23px;
+    height: 23px;
+    text-align: center;
+    align-content: center;
+    line-height: 17px;
+    border-radius: 4px;
+    margin: 0 1px;
+
+    i {
+        color: inherit;
+        font-size: 17px;
+    }
+}
+
+.dltBtn {
+    border: 1px solid #BB1F23;
+    background-color: #BB1F23;
+    color: white;
+}
+
+.addBtn {
+    border: 1px solid #203A5F;
+    background-color: #203A5F;
+    color: white;
+}
+
+.editBtn {
+    border: 1px solid #203A5F;
+    background-color: white;
+    color: #203A5F;
+}
+
+.blueRibbon {
+    background-color: #203A5F;
+    padding: 12px 15px;
+
+    .belowflex {
+        div {
+            margin: 8px 4px;
+        }
+    }
+
+    label {
+        color: white;
+        margin-bottom: 3px;
+    }
+
+    input,
+    .btn {
+        height: 40px;
+    }
+
+}
+
+.flat-btn {
+    background: unset;
+    padding: 0 !important;
+    height: unset;
+    border: 0;
+    width: unset;
+    text-align: center;
+    background-color: #fff;
+}
+
+.flat-btn:hover {
+    background-color: #ffffff7c;
+}
+
 
 /* WNSshubham */
 
@@ -1740,11 +2012,30 @@ body.mini-sidebar.expand-menu .sidebar {
         margin: 0;
         padding: 5px;
     }
+
+    .bigInput {
+        width: 140px
+    }
+
+    .smInput {
+        width: 90px;
+    }
 }
 
 @media (min-width: 991.98px) {
     .mini-sidebar .sidebar .sidebar-menu ul li a {
         padding: 10px;
         justify-content: center;
+    }
+}
+
+@media (max-width: 700px) {
+    .content-page-header {
+        margin-top: 0;
+        display: flex;
+    }
+
+    .card.mainCardGlobal:before {
+        top: 70px;
     }
 }

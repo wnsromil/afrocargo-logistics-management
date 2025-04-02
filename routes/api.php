@@ -85,7 +85,9 @@ Route::middleware('auth:api')->group(function () {
         // Container Routes
         Route::get('/container-list', [ContainerController::class, 'getActiveContainers']);
         Route::apiResource('cart', CartController::class);
-       
+        Route::post('/productList', [CartController::class, 'productList']);
+        Route::post('/delete-product', [CartController::class, 'destroyProduct']);
+
         // Addresse Routes
         Route::post('/address-list', [AddressController::class, 'getAddress']);
         Route::post('/addresse-create', [AddressController::class, 'createAddress']);

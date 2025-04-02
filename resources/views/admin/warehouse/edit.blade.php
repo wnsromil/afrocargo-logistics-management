@@ -261,30 +261,44 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                 
+                <div class="col-lg-4 col-md-6 col-sm-12 ">
                     <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" {{ $warehouse->status =='Active' ? 'checked':'' }} value="Active">
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
+                        <label for="in_status">Status</label>
+                        <div class="d-flex align-items-center text-dark">
+                            <p class="profileUpdateFont" id="activeText">Active</p>
+                            <div class="status-toggle px-2">
+                                <input id="rating_16" class="check" type="checkbox" value="Inactive">
+                                <label for="rating_16" class="checktoggle tog-circle checkbox-bg">checkbox</label>
+                            </div>
+                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
 
-
-                        @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
+
+                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="input-block mb-3">
+                        <label class="foncolor" for="status">Status</label>
+
+                        <div class="status-toggle">
+                            <span>Active</span>
+                            <input id="status" class="check" type="checkbox" name="status" >
+                            <label for="status" class="checktoggle checkbox-bg togc"></label>
+                            <span class="">Inactive</span>
+                        </div>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                    </div>
+    </div> -->
             </div>
         </div>
 
         <div class="add-customer-btns text-end">
             <a href="{{ route('admin.warehouses.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save">Submit</button>
+            <button type="submit" class="btn btn-primary ">Submit</button>
         </div>
     </form>
 

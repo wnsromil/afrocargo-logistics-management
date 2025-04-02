@@ -122,12 +122,12 @@
                                         <td>
                                             @if ($customer->status == 'Active')
                                                 <div class="container">
-                                                    <img src="../assets/img/checkbox.png" alt="Image" />
+                                                    <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
                                                     <p>Active</p>
                                                 </div>
                                             @else
                                                 <div class="container">
-                                                    <img src="../assets/img/inactive.png" alt="Image" />
+                                                    <img src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
                                                     <p>Inactive</p>
                                                 </div>
                                             @endif
@@ -663,12 +663,14 @@
 
                         </table>
 
-                        <div class="bottom-user-page mt-3">
-                            {!! $customers->links('pagination::bootstrap-5') !!}
-                        </div>
+                        
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="bottom-user-page mt-3">
+            {!! $customers->links('pagination::bootstrap-5') !!}
         </div>
 
 

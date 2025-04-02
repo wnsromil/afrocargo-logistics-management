@@ -186,87 +186,86 @@
                             <label class="foncolor" for="email">Email</label>
                             <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID"
                                 value="{{ old('longitude') }}">
-                            @error('email')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
 
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="warehouse"> Warehouse </label>
-                            <select class="js-example-basic-single select2" name="warehouse_id"
-                                value="{{ old('warehouse_id') }}">
-                                <option selected="selected">Select Warehouse</option>
-                                @foreach ($warehouses as $warehouse)
-                                    <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                                @endforeach
-                            </select>
                         </div>
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
 
-
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="container"> Container </label>
-                            <select class="js-example-basic-single select2" name="warehouse_id"
-                                value="{{ old('warehouse_id') }}">
-                                <option selected="selected" value="">Select Container</option>
-                                <option></option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-12 mb-2">
-                            <label>Signature Date </label>
-                            <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" name="signature_date"
-                                    class="btn-filters  form-cs inp  inputbackground"
-                                    value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
-                            </div>
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor " for="Year_to_Date">Year to Date</label>
-                            <input type="text" name="year_to_date" id="Year to Date"
-                                class="form-control inp inputbackground" placeholder="0"
-                                value="{{ old('year_to_date') }}">
-                        </div>
-
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor " for="License_ID">License ID</label>
-                            <input type="text" id="License_ID" name="license_number"
-                                class="form-control inp inputbackground" value="{{ old('license_number') }}"
-                                placeholder="Enter License ID">
-                        </div>
-
-                        <div class="col-md-12 mb-2">
-                            <label>License Expiry Date </label>
-                            <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
-                                    value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
-                            </div>
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="warehouse"> Language </label>
-                            <select class="js-example-basic-single select2" name="language"
-                                value="{{ old('language') }}">
-                                <option selected="selected">India - English</option>
-                                <option>Hindi</option>
-                            </select>
-                        </div>
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="warehouse"> Warehouse </label>
+                        <select class="js-example-basic-single select2" name="warehouse_id"
+                            value="{{ old('warehouse_id') }}">
+                            <option selected="selected">Select Warehouse</option>
+                            @foreach ($warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
 
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="Write_Comment">Write Comment</label>
-                            <input type="text" id="Write_Comment" name="write_comment" class="form-control inp commenth"
-                                value="{{ old('write_comment') }}" placeholder="Enter Write Comment">
-                        </div>
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="container"> Container </label>
+                        <select class="js-example-basic-single select2" name="warehouse_id"
+                            value="{{ old('warehouse_id') }}">
+                            <option selected="selected" value="">Select Container</option>
+                            <option></option>
+                        </select>
+                    </div>
 
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="Read_Comment">Read Comment</label>
-                            <input type="text" id="Read_Comment" name="read_comment"
-                                class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
-                                placeholder="Enter Read Comment">
+                    <div class="col-md-12 mb-2">
+                        <label>Signature Date </label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input type="text" name="signature_date" class="btn-filters  form-cs inp  inputbackground"
+                                value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
                         </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor " for="Year_to_Date">Year to Date</label>
+                        <input type="text" name="year_to_date" id="Year to Date"
+                            class="form-control inp inputbackground" placeholder="0" value="{{ old('year_to_date') }}">
+                    </div>
+
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor " for="License_ID">License ID</label>
+                        <input type="text" id="License_ID" name="license_number"
+                            class="form-control inp inputbackground" value="{{ old('license_number') }}"
+                            placeholder="Enter License ID">
+                    </div>
+
+                    <div class="col-md-12 mb-2">
+                        <label>License Expiry Date </label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
+                                value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="warehouse"> Language </label>
+                        <select class="js-example-basic-single select2" name="language" value="{{ old('language') }}">
+                            <option selected="selected">India - English</option>
+                            <option>Hindi</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="Write_Comment">Write Comment</label>
+                        <input type="text" id="Write_Comment" name="write_comment" class="form-control inp commenth"
+                            value="{{ old('write_comment') }}" placeholder="Enter Write Comment">
+                    </div>
+
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="Read_Comment">Read Comment</label>
+                        <input type="text" id="Read_Comment" name="read_comment"
+                            class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
+                            placeholder="Enter Read Comment">
                     </div>
                 </div>
             </div>
-            <!-- second form right side closer div is next -->
+        </div>
+        <!-- second form right side closer div is next -->
         </div>
 
 
@@ -338,73 +337,37 @@
         </div>
 
 
-        <!-- <div class="col-md-3">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">Signature</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
         </div>
-    </div> -->
-        <!-- <div class="col-md-3">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">Contract Signature</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 300px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
         </div>
-    </div> -->
-
-        <!-- <div class="col-md-3">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">License Picture</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
-        </div>
-    </div> -->
 
 
+        <div class="ptop d-flex">
+            <div>
+                <div class="input-block mb-3">
+                    <label class="foncolor" for="status">Status</label>
 
-        <!-- ---------- -->
-        <!-- 
-        <div class="d-flex align-items-center">
-            <p class="profileUpdateFont" id="activeText">Active</p>
-            <div class="status-toggle px-2">
-                <input id="rating_6" class="check" type="checkbox" value="Inactive">
-                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
-            </div>
-            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
-        </div> -->
+                    <div class="status-toggle">
+                        <span>Active</span>
+                        <input id="status" class="check" type="checkbox" name="status">
+                        <label for="status" class="checktoggle checkbox-bg togc"></label>
+                        <span class="">Inactive</span>
+                    </div>
+                    @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
-
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="mb-3">
-                <label for="in_status">Status</label>
-                <div class="status-toggle d-flex align-items-center">
-                    <span id="activeText" class="bold">Active</span>
-                    <input id="status" class="check d-none" type="checkbox" name="status" checked>
-                    <label for="status" class="checktoggle checkbox-bg togc mx-2"></label>
-                    <span id="inactiveText">Inactive</span>
                 </div>
             </div>
-        </div>
-        @error('status')
-            <span class="text-danger">{{ $message }}</span>
-        @enderror
 
+            <div style="margin-top:22px;">
+                <div class="add-customer-btns ">
+
+                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+
+                </div>
+            </div>
         </div>
         </div>
 
@@ -414,12 +377,8 @@
                     <button type="submit" class="btn btn-primary ">Submit</button>
                 </div>
             </div> -->
-        <div class="add-customer-btns text-end">
-            <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
-                class="btn btn-outline-primary custom-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary ">Submit</button>
         </div>
-        </div>
+
     </form>
 
     <script>

@@ -109,148 +109,139 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
 
             <!-- first row end  -->
-            <div class="row d-flex" style="justify-content: space-between;">
-                <div class="col-6" style="padding-right: 20px;">
-                    <div class="row borderset">
-                        <div class="col-6">
-                            <label class="foncolor" for="warehouse_name">First Name <i class="text-danger">*</i></label>
-                            <input type="text" name="first_name" class="form-control inp"
-                                placeholder="Enter First Name">
+            <div class="row mt-5 g-3">
+                <div class="col-md-6">
+                    <div class="borderset">
+                        <div class="row gx-3 gy-2">
+                            <div class="col-md-6">
+                                <label class="foncolor" for="warehouse_name">First Name <i class="text-danger">*</i></label>
+                                <input type="text" name="first_name" class="form-control inp" placeholder="Enter First Name">
 
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="last_name">Last Name <i class="text-danger">*</i></label>
-                            <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="contact_no1">Contact No.1 <i class="text-danger">*</i></label>
-                            <input type="text" id="mobile_code" class="form-control inp"
-                                placeholder="Enter Contact Number 1" name="name">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="contact_no1">Contact No.2 <i class="text-danger">*</i></label>
-                            <input type="text" id="mobile" class="form-control inp" placeholder="Enter Contact Number 2"
-                                name="name">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                            <select class="js-example-basic-single select2">
-                                <option selected="selected">orange</option>
-                                <option>white</option>
-                                <option>purple</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                            <select class="js-example-basic-single select2">
-                                <option selected="selected">orange</option>
-                                <option>white</option>
-                                <option>purple</option>
-                            </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="last_name">Last Name <i class="text-danger">*</i></label>
+                                <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="contact_no1">Contact No.1 <i class="text-danger">*</i></label>
+                                <input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Contact Number 1" name="name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="contact_no1">Contact No.2 <i class="text-danger">*</i></label>
+                                <input type="text" id="mobile" class="form-control inp" placeholder="Enter Contact Number 2" name="name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option>purple</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option>purple</option>
+                                </select>
 
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                            <select class="js-example-basic-single select2">
-                                <option selected="selected">orange</option>
-                                <option>white</option>
-                                <option>purple</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
-                            <input type="text" name="Zip_code" class="form-control inp" placeholder="Enter Zip">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="Address.1">Address 1 <i class="text-danger">*</i></label>
-                            <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 1">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="Address.2">Address 2 </label>
-                            <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option>purple</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                <input type="text" name="Zip_code" class="form-control inp" placeholder="Enter Zip">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="Address.1">Address 1 <i class="text-danger">*</i></label>
+                                <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 1">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="Address.2">Address 2 </label>
+                                <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6" style="padding-left: 20px;">
-                    <div class="row borderset">
-                        <div class="col-6">
-                            <label class="foncolor" for="warehouse_name">Reciever First Name <i
-                                    class="text-danger">*</i></label>
-                            <input type="text" name="first_name" class="form-control inp"
-                                placeholder="Enter First Name">
+                <div class="col-md-6">
+                    <div class="borderset">
+                        <div class="row gx-3 gy-2">
+                            <div class="col-md-6">
+                                <label class="foncolor" for="warehouse_name">Reciever First Name <i class="text-danger">*</i></label>
+                                <input type="text" name="first_name" class="form-control inp" placeholder="Enter First Name">
 
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="last_name">Reciever Last Name <i
-                                    class="text-danger">*</i></label>
-                            <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="contact_no1">Contact No.1 <i class="text-danger">*</i></label>
-                            <input type="text" id="mobile_code" class="form-control inp"
-                                placeholder="Enter Contact Number 1" name="name">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="contact_no1">Contact No.2 <i class="text-danger">*</i></label>
-                            <input type="text" id="mobile" class="form-control inp" placeholder="Enter Contact Number 2"
-                                name="name">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                            <select class="js-example-basic-single select2">
-                                <option selected="selected">orange</option>
-                                <option>white</option>
-                                <option>purple</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                            <select class="js-example-basic-single select2">
-                                <option selected="selected">orange</option>
-                                <option>white</option>
-                                <option>purple</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="Address.1">Address 1 <i class="text-danger">*</i></label>
-                            <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 1">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="Address.2">Address 2 </label>
-                            <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
-                        </div>
-                        <div class="col-6">
-                            <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
-                            <input type="text" name="Zip_code" class="form-control inp" placeholder="Enter Zip">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="last_name">Reciever Last Name <i class="text-danger">*</i></label>
+                                <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="contact_no1">Contact No.1 <i class="text-danger">*</i></label>
+                                <input type="text" class="form-control inp flagInput" placeholder="Enter Contact Number 1" name="name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="contact_no1">Contact No.2 <i class="text-danger">*</i></label>
+                                <input type="text" class="form-control inp flagInput" placeholder="Enter Contact Number 2" name="name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option>purple</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2">
+                                    <option selected="selected">orange</option>
+                                    <option>white</option>
+                                    <option>purple</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="Address.1">Address 1 <i class="text-danger">*</i></label>
+                                <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 1">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="Address.2">Address 2 </label>
+                                <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                <input type="text" name="Zip_code" class="form-control inp" placeholder="Enter Zip">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <!-- both form ended -->
             <div>
-                <div class="row bsdown">
+                <div class="row mt-4 pt-3 g-3">
                     <div class="col-md-3">
                         <label> Date <i class="text-danger">*</i></label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" class="btn-filters form-control form-cs inp " name="datetimes"
-                                placeholder="From Date - To Date" />
+                            <input type="text" class="btn-filters form-control form-cs inp " name="datetimes" placeholder="From Date - To Date" />
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <label>Invoice# <i class="text-danger">*</i></label>
-                        <div class="input-container"
-                            style="display:flex; position: relative;border: 1px solid #00000042;border-radius: 5px !important;">
-                            <div
-                                style="background: #203A5F; width: 30px; height: 30px; margin-right: 10px; border-radius: 5px; margin-left: 4px; margin-block: 4px; color: white; font-size: 8px; align-content: center; text-align: center;">
-                                Auto</div>
-
-                            <input type="text" class="form-control form-cs inp" placeholder="INV 00021"
-                                style=" border:none !important">
+                        <div class="input-container invoiceNoInput position-relative">
+                            <button class="btn-primary square sm">Auto</button>
+                            <input type="text" class="form-control form-cs inp" placeholder="INV 00021">
                         </div>
                     </div>
 
@@ -265,33 +256,28 @@
                     <div class="col-md-3">
                         <label>Total</label>
                         <div class="input-container" style="position: relative;">
-                            <img src="../assets/img/invoices/$.png" alt="img"
-                                style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 11px; height: 24px;">
-                            <input type="text" class="form-control form-cs inp" placeholder="0.00"
-                                style="padding-left: 30px;">
+                            <span class="dollarSign">$</span>
+                            <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label>Due Date <i class="text-danger">*</i></label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" class="btn-filters  form-cs inp " name="datetimes"
-                                placeholder="From Date - To Date" />
+                            <input type="text" class="btn-filters daterangeInput form-cs inp " name="duedaterange" placeholder="From Date - To Date" />
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <label>Payment</label>
                         <div class="input-container" style="position: relative;">
-                            <img src="../assets/img/invoices/$.png" alt="img"
-                                style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 11px; height: 24px;">
-                            <input type="text" class="form-control form-cs inp" placeholder="0.00"
-                                style="padding-left: 30px;">
+                            <span class="dollarSign">$</span>
+                            <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                         </div>
                     </div>
 
                     <div class="col-md-3 ">
                         <label>User</label>
-                        <input type="text" class="form-control form-cs inp" placeholder="John Duo">
+                        <input type="text" class="form-control inp" placeholder="John Duo">
                     </div>
                     <div class="col-md-3">
                         <label>Container<i class="text-danger">*</i></label>
@@ -303,21 +289,19 @@
                     </div>
                     <div class="col-md-3 ">
                         <label>Status<i class="text-danger">*</i></label>
-                        <input type="text" class="form-control form-cs inp" placeholder="Pending">
+                        <input type="text" class="form-control inp" placeholder="Pending">
                     </div>
                     <div class="col-md-3">
                         <label>Balance</label>
                         <div class="input-container" style="position: relative;">
-                            <img src="../assets/img/invoices/$.png" alt="img"
-                                style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 11px; height: 24px;">
-                            <input type="text" class="form-control form-cs inp" placeholder="0.00"
-                                style="padding-left: 30px;">
+                            <span class="dollarSign">$</span>
+                            <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                         </div>
                     </div>
 
                     <div class="col-md-3 ">
                         <label>Total Items</label>
-                        <input type="text" class="form-control form-cs inp" placeholder="0">
+                        <input type="text" class="form-control inp" placeholder="0">
                     </div>
                     <div class="col-md-3 ">
 
@@ -330,18 +314,18 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
+            <div class="card-body curve_tabel p-0 mt-5">
+                <div class="table-responsive p-1">
                     <table class="table table-bordered ">
                         <thead>
                             <tr>
                                 <th style="width:57px;">Item</th>
-                                <th class="thwidth">Value</th>
                                 <th class="thwidth">Qty</th>
                                 <th class="thwidth">Label Qty</th>
                                 <th class="thwidth">Price</th>
-                                <th class="thwidth">Discount</th>
+                                <th class="thwidth">Value</th>
                                 <th class="thwidth">Ins</th>
+                                <th class="thwidth">Discount</th>
                                 <th class="thwidth">Tax%</th>
                                 <th class="thwidth">Total</th>
                                 <th style="width:100px">Actions</th>
@@ -349,7 +333,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="mwidth"><select class="js-example-basic-single select2 ">
+                                <td class="mwidth">
+                                    <select class="js-example-basic-single select2 inputcolor">
                                         <option selected="selected " class="form-cs"></option>
                                         <option></option>
                                         <option></option>
@@ -357,11 +342,9 @@
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
+                                <td> <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div> </td>
                                 <td>
-                                    <div class="d-flex"><input type="text" class="form-control inputcolor"
-                                            placeholder=""><img class="plusimg" src="../assets/img/Vector (8).png"
-                                            alt="Icon"></div>
+                                    <input type="text" class="form-control tdbor inputcolor" placeholder="">
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
@@ -369,16 +352,16 @@
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td>
 
-                                    <div class="image-container imgin">
-                                        <img class="" src="../assets/img/dlt.png" alt="img">
-                                        <img src="../assets/img/edit.png" alt="img">
+                                    <div class="text-center">
+                                        <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                                        <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
                                     </div>
                                 </td>
 
                             </tr>
                             <tr>
                             <tr>
-                                <td class="mwidth"><select class="js-example-basic-single select2 ">
+                                <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
                                         <option selected="selected " class="form-cs"></option>
                                         <option></option>
                                         <option></option>
@@ -386,11 +369,9 @@
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
+                                <td> <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div> </td>
                                 <td>
-                                    <div class="d-flex"><input type="text" class="form-control inputcolor"
-                                            placeholder=""><img class="plusimg" src="../assets/img/Vector (8).png"
-                                            alt="Icon"></div>
+                                    <input type="text" class="form-control tdbor inputcolor" placeholder="">
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
@@ -398,16 +379,18 @@
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td>
 
-                                    <div class="image-container imgin">
-                                        <img src="../assets/img/dlt.png" alt="img">
-                                        <img src="../assets/img/edit.png" alt="img">
+                                    <div class="text-center">
+                                        <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                                        <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+
+
                                     </div>
                                 </td>
 
                             </tr>
 
                             <tr>
-                                <td class="mwidth"><select class="js-example-basic-single select2 ">
+                                <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
                                         <option selected="selected " class="form-cs"></option>
                                         <option></option>
                                         <option></option>
@@ -415,11 +398,9 @@
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
+                                <td> <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div> </td>
                                 <td>
-                                    <div class="d-flex"><input type="text" class="form-control inputcolor"
-                                            placeholder=""><img class="plusimg" src="../assets/img/Vector (8).png"
-                                            alt="Icon"></div>
+                                    <input type="text" class="form-control tdbor inputcolor" placeholder="">
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
@@ -427,14 +408,14 @@
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td>
 
-                                    <div class="image-container imgin">
-                                        <img src="../assets/img/dlt.png" alt="img">
-                                        <img src="../assets/img/edit.png" alt="img">
+                                    <div class="text-center">
+                                        <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                                        <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="mwidth"><select class="js-example-basic-single select2 ">
+                                <td class="mwidth"><select class="js-example-basic-single select2">
                                         <option selected="selected " class="form-cs"></option>
                                         <option></option>
                                         <option></option>
@@ -442,55 +423,23 @@
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
+                                <td> <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div> </td>
                                 <td>
-                                    <div class="d-flex"><input type="text" class="form-control inputcolor"
-                                            placeholder=""><img class="plusimg" src="../assets/img/Vector (8).png"
-                                            alt="Icon"></div>
+                                    <input type="text" class="form-control tdbor inputcolor" placeholder="">
                                 </td>
                                 <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                 <td><input type="text" class="form-control tdbor inputcolor " placeholder=""></td>
                                 <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                <td style="padding-left:0px !important">
-                                    <div class="image-container imgin" style="margin-left:0px !important"><img
-                                            src="../assets/img/dlt.png" alt="img"><img src="../assets/img/add.png"
-                                            alt="img"><img src="../assets/img/edit.png" alt="img"></div>
+                                <td>
+                                    <div class="text-center"><button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                                        <button class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
+                                        <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button></div>
                                 </td>
 
                             </tr>
                         </tbody>
                     </table>
-
-                    <div class="d-flex" style="background-color:#203A5F;height:105px;margin-top:20px">
-                        <div><label>Subtotal</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Value</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Tax</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Discount</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Ins</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Payment</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Service Fee</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div><label>Balance</label>
-                            <input type="text" class="form-control form-cs" placeholder="0">
-                        </div>
-                        <div> <button type="submit" class="btn btn-primary invocebuttoncolor ">Submit</button></div>
-                    </div>
-
-
                 </div>
             </div>
 
@@ -686,6 +635,29 @@
             <button type="submit" class="btn customer-btn-save">Submit</button>
         </div> -->
         </div>
+
+        <div class="blueRibbon">
+            <div class="d-sm-flex align-items-end belowflex">
+                <div><label>Subtotal</label>
+                    <input type="text" class="form-control bigInput" placeholder="0">
+                </div>
+                <div><label>Value</label>
+                    <input type="text" class="form-control smInput" placeholder="0"></div>
+                <div><label>Tax</label>
+                    <input type="text" class="form-control smInput" placeholder="0"></div>
+                <div><label>Discount</label>
+                    <input type="text" class="form-control smInput" placeholder="0"></div>
+                <div><label>Ins</label>
+                    <input type="text" class="form-control smInput" placeholder="0"></div>
+                <div><label>Payment</label>
+                    <input type="text" class="form-control" placeholder="0"></div>
+                <div><label>Service Fee</label>
+                    <input type="text" class="form-control" placeholder="0"></div>
+                <div><label>Balance</label>
+                    <input type="text" class="form-control" placeholder="0"></div>
+                <div> <button type="submit" class="btn btn-success invocebuttoncolor ">Submit</button></div>
+            </div>
+        </div>
     </form>
 
 
@@ -880,17 +852,7 @@
                         <label>Invoice# <i class="text-danger">*</i></label>
                         <div class="input-container"
                             style="display:flex; position: relative;border: 1px solid #00000042;border-radius: 5px !important;">
-                            <div style="background: #203A5F;
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    border-radius: 5px;
-    margin-left: 4px;
-    margin-block: 4px;
-    color: white;
-    font-size: 8px;
-    align-content: center;
-    text-align: center;">Auto</div>
+                            <div style="background: #203A5F; width: 30px; height: 30px; margin-right: 10px; border-radius: 5px; margin-left: 4px; margin-block: 4px; color: white; font-size: 8px; align-content: center; text-align: center;">Auto</div>
 
                             <input type="text" class="form-control form-cs inp" placeholder="INV 00021"
                                 style=" border:none !important">
@@ -1137,28 +1099,6 @@
     </form>
 
     <script>
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const tabLinks = document.querySelectorAll(".tab-link");
-        //     const servicesForm = document.getElementById("services-form");
-        //     const suppliesForm = document.getElementById("supplies-form");
-
-        //     tabLinks.forEach(link => {
-        //         link.addEventListener("click", function (event) {
-        //             event.preventDefault();
-
-        //             tabLinks.forEach(tab => tab.classList.remove("active3"));
-        //             this.classList.add("active3");
-
-        //             if (this.dataset.tab === "services") {
-        //                 servicesForm.classList.remove("hidden");
-        //                 suppliesForm.classList.add("hidden");
-        //             } else {
-        //                 servicesForm.classList.add("hidden");
-        //                 suppliesForm.classList.remove("hidden");
-        //             }
-        //         });
-        //     });
-        // });
 
         function toggleLoginForm(type) {
             if (type === 'services') {
@@ -1175,9 +1115,6 @@
 
             }
         }
-
-        
-
 
         window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);

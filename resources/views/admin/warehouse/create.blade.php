@@ -277,7 +277,7 @@
                         @enderror
                     </div>
                 </div> -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                  
                         <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
 						<input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No.">
@@ -285,14 +285,23 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                         <input type="hidden" id="country_code" name="country_code">
-                    </div>
+                    </div> -->
+
+
+                    <div class="col-lg-4 col-md-6 col-sm-12 custom-zindex">
+    <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label> 
+    <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No."> 
+    @error('mobile_code') 
+        <span class="text-danger">{{ $message }}</span> 
+    @enderror 
+    <input type="hidden" id="country_code" name="country_code">
+</div>
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="status">Status </label>
-                       
-                        <div class="d-flex align-items-center">
+                        <label class="foncolor divform" for="in_status">Status</label>
+                        <div class="d-flex align-items-center text-dark">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
                                 <input id="rating_6" class="check" type="checkbox" value="Inactive">
@@ -301,6 +310,7 @@
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
 
+                    </div>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
