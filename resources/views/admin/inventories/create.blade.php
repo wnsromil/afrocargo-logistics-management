@@ -5,7 +5,7 @@
 
     <x-slot name="cardTitle">
         <div class="innertopnav">
-        <p class="fw-semibold fs-5 text-dark pheads">Add Inventory</p>
+            <p class="fw-semibold fs-5 text-dark pheads">Add Inventory</p>
         </div>
     </x-slot>
 
@@ -187,7 +187,7 @@
                                     </defs>
                                 </svg></span>
                             <h6 class="drop-browse align-center">
-                            Upload Image
+                                Upload Image
                             </h6>
                             <!-- <input type="file" multiple="" id="image_sign"> -->
                             <!-- <div id="frames"></div> -->
@@ -201,55 +201,53 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 align-center">
                     <div class="mb-3 float-end">
                         <label for="in_status">Status</label>
-                        <div class="d-flex align-items-center text-dark">
-                            <p class="profileUpdateFont" id="activeText">Active</p>
-                            <div class="status-toggle px-2">
-                                <input id="rating_16" class="check" type="checkbox" value="Inactive">
-                                <label for="rating_16" class="checktoggle tog-circle checkbox-bg">checkbox</label>
-                            </div>
-                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
+                        <div class="status-toggle d-flex align-items-center">
+                            <span id="activeText" class="bold">Active</span>
+                            <input id="status" class="check d-none" type="checkbox" name="status" checked>
+                            <label for="status" class="checktoggle checkbox-bg togc mx-2"></label>
+                            <span id="inactiveText">Inactive</span>
                         </div>
-
                     </div>
                 </div>
-
-
-                <div class="add-customer-btns text-end">
-                    <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
-                        class="btn btn-outline-primary custom-btn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ">Submit</button>
-                </div>
-                <!--  <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel px-3 py-2">Cancel</a>
-            <button type="submit" class="btn customer btn-save px-3 py-2">Submit</button>
-        </div> -->
-                {{-- change status --}}
-                <input id="status" class="check" name="status" type="hidden" value="Active">
-
             </div>
 
 
-            @error('status')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
+            <div class="add-customer-btns text-end">
+                <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
+                    class="btn btn-outline-primary custom-btn">Cancel</button>
+                <button type="submit" class="btn btn-primary ">Submit</button>
+            </div>
+            <!--  <div class="add-customer-btns text-end">
+            <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel px-3 py-2">Cancel</a>
+            <button type="submit" class="btn customer btn-save px-3 py-2">Submit</button>
+        </div> -->
+            {{-- change status --}}
+            <input id="status" class="check" name="status" type="hidden" value="Active">
+        </div>
+        @error('status')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
         </div>
         </div>
 
     </form>
 
-    {{-- jqury cdn --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#rating_6').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#inactiveText').removeClass('faded');
-                    $('#activeText').addClass('faded');
+        document.addEventListener("DOMContentLoaded", function () {
+            let statusToggle = document.getElementById("status");
+            let activeText = document.getElementById("activeText");
+            let inactiveText = document.getElementById("inactiveText");
+            function updateTextColor() {
+                if (statusToggle.checked) {
+                    activeText.classList.add("bold");
+                    inactiveText.classList.remove("bold");
                 } else {
-                    $('#activeText').removeClass('faded');
-                    $('#inactiveText').addClass('faded');
+                    activeText.classList.remove("bold");
+                    inactiveText.classList.add("bold");
                 }
-            });
+            }
+            updateTextColor();
+            statusToggle.addEventListener("change", updateTextColor);
         });
     </script>
 </x-app-layout>

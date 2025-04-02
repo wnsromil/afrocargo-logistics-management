@@ -15,12 +15,7 @@
                 </div>
             </div>
         </div>
-
-
     </x-slot>
-
-  
-
 
 <form>
     <div class="row">
