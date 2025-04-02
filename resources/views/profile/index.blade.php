@@ -3,6 +3,13 @@
         <h2 class="font-semibold text-xl text-light leading-tight">
             {{ __('My Profile') }}
         </h2>
+        @section('style')
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+        </style>
+    @endsection
     </x-slot>
     @section('content')
     <div class="content-page-header mb-4">

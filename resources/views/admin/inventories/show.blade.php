@@ -26,7 +26,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>Sn no.</th>
+                                <th>S. No.</th>
                                 <th>Created By User</th>
                                 <th>Inventory Name</th>
                                 <th>Warehouse Name</th>

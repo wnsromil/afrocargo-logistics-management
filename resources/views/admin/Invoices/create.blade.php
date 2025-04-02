@@ -113,7 +113,7 @@
                                 <input type="text" id="mobile_code" class="form-control inp" placeholder="Enter Contact Number 1" name="name">
                             </div>
                             <div class="col-md-6">
-                                <label class="foncolor" for="contact_no1">Contact No.2 <i class="text-danger">*</i></label>
+                                <label class="foncolor" for="contact_no1">Contact No.2 </label>
                                 <input type="text" id="mobile" class="form-control inp" placeholder="Enter Contact Number 2" name="name">
                             </div>
                             <div class="col-md-6">
@@ -173,7 +173,7 @@
                                 <input type="text" class="form-control inp flagInput" placeholder="Enter Contact Number 1" name="name">
                             </div>
                             <div class="col-md-6">
-                                <label class="foncolor" for="contact_no1">Contact No.2 <i class="text-danger">*</i></label>
+                                <label class="foncolor" for="contact_no1">Contact No.2 </label>
                                 <input type="text" class="form-control inp flagInput" placeholder="Enter Contact Number 2" name="name">
                             </div>
                             <div class="col-md-6">

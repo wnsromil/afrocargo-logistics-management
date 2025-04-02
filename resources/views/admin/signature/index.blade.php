@@ -36,24 +36,40 @@
 
     </x-slot> -->
 
-    <x-slot name="cardTitle" >
-       <p class="head">Order Management</p>
+    <x-slot name="cardTitle">
+        <div class="d-flex topnavs">
+            <p class="head">All Signature</p>
+            <div class="usersearch d-flex usersserach">
+                <div class="top-nav-search">
+                    <form>
+                        <input type="text" class="form-control forms" placeholder="Search ">
+                    </form>
+                </div>
 
-       <div class="usersearch d-flex usersserach">
-        
-        <div class="top-nav-search">
-            <form>
-                <input type="text" class="form-control forms" placeholder="Search ">
-
-            </form>
+                <div class="mt-2">
+                    <button type="button"
+                        class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                        <a class="btn-filters d-flex justify-content-center align-items-center"
+                            href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Refresh">
+                            <span><i class="fe fe-refresh-ccw"></i></span>
+                        </a>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Refresh"><span><i
-                                            class="fe fe-refresh-ccw"></i></span></a></button>
+    </x-slot>
+
+    <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="usersearch d-flex">
+            <div class="mt-2">
+                <a href="{{ route('admin.warehouse_manager.create') }}" class="btn btn-primary buttons">
+                    <img class="imgs" src="assets/images/Vector.png">
+                    Add Signature
+                </a>
+            </div>
         </div>
     </div>
-    </x-slot>
 
     <div>
         <div class="card-table">
@@ -62,28 +78,15 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                {{-- <th><input type="checkbox" id="selectAll"></th> --}}
-                                <th>Sn no.</th>
-                                <th>Tracking ID</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Amount</th>
-                                <th>Payment Mode</th>
-                                {{-- <th>Warehouse</th> --}}
-                                <th>Pickup Date</th>
-                                <th>Capture Image</th>
-                                <th>Item List</th>
-                                <th>Estimate cost</th>
-                                <th>Driver Name</th>
-                                <th>Vehicle Type</th>
-                                <th>Payment Status</th>
-                                <th>Delivery Date</th>
-                                <th>Status</th>
-                                <th>Status update</th>
-                                <th>Action</th>
+                                <th>S. No.</th>
+                                <th>Signature Name</th>
+                                <th >Signature</th>
+                                <th >Status</th>
+                                <th class="statusposition">Action</th>
+                                
                             </tr>
                         </thead>
-                        <tbody>
+                        <!-- <tbody>
                             @forelse ($parcels as $index => $parcel)
                                 <tr>
                                     {{-- <td><input type="checkbox" class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($parcel->status) }}" value="{{ $parcel->id }}"></td> --}}
@@ -242,6 +245,290 @@
                                     <td colspan="9" class="px-4 py-4 text-center text-gray-500">No parcels found.</td>
                                 </tr>
                             @endforelse
+                        </tbody> -->
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Jelene Largan</td>
+                                <td><img src="{{asset('assets/img/sign1.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                            <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Alysig Tremblett</td>
+                                <td><img src="{{asset('assets/img/sign2.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td>
+                                <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Norma McLarens</td>
+                                <td><img src="{{asset('assets/img/sign3.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Berting Dominico</td>
+                                <td><img src="{{asset('assets/img/sign4.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Amalie McLachlan</td>
+                                <td><img src="{{asset('assets/img/sign1.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Peterus Simondson</td>
+                                <td><img src="{{asset('assets/img/sign2.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Gar Delagnes</td>
+                                <td><img src="{{asset('assets/img/sign3.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Bartlet Rayworth</td>
+                                <td><img src="{{asset('assets/img/sign4.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Sathe Fegres</td>
+                                <td><img src="{{asset('assets/img/sign1.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Lock Gillbanks</td>
+                                <td><img src="{{asset('assets/img/sign2.png')}}" alt="Image" /></td>
+                                <td> <div class="container">
+                                <img src="{{('assets/img/checkbox.png')}}" alt="Image" />
+                                            <p>Active</p>
+                                        </div></td>
+                                <td><div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="#"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
