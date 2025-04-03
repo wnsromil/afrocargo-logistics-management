@@ -5,26 +5,27 @@
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-    <div class="d-flex innertopnav">
-        <p class="subhead pheads" >Add Customer</p>
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Add Customer</p>
         </div>
     </x-slot>
     <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="row g-3">
-            <div class="col-md-6 mb-2">
+        <div class="row g-3 align-items-stretch">
+            <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="company_name"> Company </label>
+                            <label class="foncolor mt-0 pt-0" for="company_name"> Company </label>
                             <input type="text" name="company_name" class="form-control inp" placeholder="Enter Company Name" value="{{ old('company_name') }}">
 
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="first_name">First Name <i class="text-danger">*</i></label>
-                            <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name" value="{{ old('first_name') }}">
+                            <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name"
+                                value="{{ old('first_name') }}">
                             @error('first_name')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2 mobile_code">
@@ -42,20 +43,23 @@
                         <input type="hidden" id="country_code_2" name="country_code_2">
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
-                            <input type="text" name="address_1" value="{{ old('address_1') }}" class="form-control inp" placeholder="Enter Address 1">
+                            <input type="text" name="address_1" value="{{ old('address_1') }}" class="form-control inp"
+                                placeholder="Enter Address 1">
                             @error('address_1')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Address_2">Address 2 </label>
-                            <input type="text" name="Address_2" value="{{ old('Address_2') }}" class="form-control inp" placeholder="Enter Address 2">
+                            <input type="text" name="Address_2" value="{{ old('Address_2') }}" class="form-control inp"
+                                placeholder="Enter Address 2">
                         </div>
 
 
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="Apartment">Apartment </label>
-                            <input type="text" name="Apartment" value="{{ old('Apartment') }}" class="form-control inp" placeholder="Enter Apartment">
+                            <input type="text" name="Apartment" value="{{ old('Apartment') }}" class="form-control inp"
+                                placeholder="Enter Apartment">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -69,86 +73,96 @@
                                 @endforeach
                             </select>
                             @error('country')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-2">
                             <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
                             <select id="state" name="state" class="js-example-basic-single select2">
                                 <option value="">Select State</option>
                                 @if (old('state'))
-                                <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
+                                    <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
                                 @endif
                             </select>
                             @error('state')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-2">
                             <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
                             <select id="city" name="city" class="js-example-basic-single select2">
                                 <option value="">Select City</option>
                                 @if (old('city'))
-                                <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
+                                    <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
                                 @endif
                             </select>
                             @error('city')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-2">
                             <label class="foncolor" for="Zip_code">Zipcode <i class="text-danger">*</i></label>
-                            <input type="text" name="Zip_code" value="{{ old('Zip_code') }}" class="form-control inp" placeholder="Enter Zip">
+                            <input type="text" name="Zip_code" value="{{ old('Zip_code') }}" class="form-control inp"
+                                placeholder="Enter Zip">
                             @error('Zip_code')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor " for="username">Username <i class="text-danger">*</i></label>
-                            <input type="text" name="username" value="{{ old('Username') }}" class="form-control inp inputbackground" placeholder="Enter User Name">
+                            <input type="text" name="username" value="{{ old('Username') }}"
+                                class="form-control inp inputbackground" placeholder="Enter User Name">
                             @error('username')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="password">Password <i class="text-danger">*</i></label>
-                            <div class="d-flex position-relative" style="border: 1px solid #00000042 !important; border-radius: 4px;">
-                                <input type="password" id="password" name="password" class="form-control pass-input inp" style="border: none !important" placeholder="Enter Password">
+                            <div class="d-flex position-relative"
+                                style="border: 1px solid #00000042 !important; border-radius: 4px;">
+                                <input type="password" id="password" name="password" class="form-control pass-input inp"
+                                    style="border: none !important" placeholder="Enter Password">
                                 <span toggle="#password" class="ti ti-eye field-icon toggle-password1"></span>
                             </div>
                             @error('password')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="password_confirmation">Confirm New Password <i class="text-danger">*</i></label>
-                            <div class="d-flex position-relative" style="border: 1px solid #00000042 !important; border-radius: 4px;">
-                                <input id="password1" type="password" name="password_confirmation" class="form-control pass-input inp" style="border: none !important" placeholder="Enter Confirm New Password">
+                            <label class="foncolor" for="password_confirmation">Confirm New Password <i
+                                    class="text-danger">*</i></label>
+                            <div class="d-flex position-relative"
+                                style="border: 1px solid #00000042 !important; border-radius: 4px;">
+                                <input id="password1" type="password" name="password_confirmation"
+                                    class="form-control pass-input inp" style="border: none !important"
+                                    placeholder="Enter Confirm New Password">
                                 <span toggle="#password1" class="ti ti-eye field-icon toggle-password1"></span>
                             </div>
                             @error('password_confirmation')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
 
                         <div class="col-md-6 mb-2">
                             <label class="foncolor " for="latitude">Latitude <i class="text-danger">*</i></label>
-                            <input type="number" name="latitude" value="{{ old('latitude') }}" class="form-control inp inputbackground" placeholder="0">
+                            <input type="number" name="latitude" value="{{ old('latitude') }}"
+                                class="form-control inp inputbackground" placeholder="0">
                             @error('latitude')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="foncolor " for="longitude">Longitude <i class="text-danger">*</i></label>
-                            <input type="number" name="longitude" value="{{ old('longitude') }}" class="form-control inp inputbackground" placeholder="0">
+                            <input type="number" name="longitude" value="{{ old('longitude') }}"
+                                class="form-control inp inputbackground" placeholder="0">
                             @error('longitude')
-                            <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -156,21 +170,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="website_url">Website</label>
+                            <label class="foncolor mt-0 pt-0" for="website_url">Website</label>
                             <input type="text" name="website_url" class="form-control inp" value="{{ old('longitude') }}" placeholder="Enter Website ID">
 
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="email">Email</label>
+                            <label class="foncolor" for="email">Email<i class="text-danger">*</i></label>
                             <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID" value="{{ old('longitude') }}">
                             @error('email')
                             <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                        @enderror
+                    </div>
 
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="warehouse"> Warehouse </label>
@@ -178,9 +192,9 @@
                                 <option selected="selected">Select Warehouse</option>
                                 @foreach ($warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            @endforeach
+                        </select>
+                    </div>
 
 
                         <div class="col-md-12 mb-2">
@@ -238,33 +252,19 @@
         </div>
 
 
-
-
-
-
         <div class="row custodis">
-
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center avtard">
-                    <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Profile Picture</label>
-                    <div style="position: relative;">
-                        <img src="../assets/img.png" alt="avatar" class="avtarc">
-
-                        <div class="divedit">
-                            <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
-                            <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center  avtard">
-                    <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Signature</label>
-                    <div style="position: relative;">
-                        <img src="../assets/img.png" alt="avatar" class="avtarc">
-
+            @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center  avtard">
+                        <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
+                    <div class="avtarset" style="position: relative;">
+                        <!-- Image Preview -->
+                        <img id="preview_{{ $imageType }}" class="avtars avtarc" src="{{ asset('assets/img.png') }}" alt="avatar">
+                        
+                        <!-- File Input (Hidden by Default) -->
+                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
+                            style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
+        
                         <div class="divedit">
                             <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
                             <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
@@ -285,100 +285,30 @@
                             <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center avtard">
-                    <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">License Picture</label>
-                    <div style="position: relative;">
-                        <img src="../assets/img.png" alt="avatar" class="avtarc">
-
-                        <div class="divedit">
-                            <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
-                            <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
-                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
 
 
-
-
-
-
-
-
-
-
-
-        <!-- <div class="col-md-3">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">Signature</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
         </div>
-    </div> -->
-        <!-- <div class="col-md-3">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">Contract Signature</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 300px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
         </div>
-    </div> -->
-
-        <!-- <div class="col-md-3">
-        <div class="d-flex">
-        <label class="foncolor" for="Read_Comment">License Picture</label>
-     <div>
-      <img  src="../assets/img.png" alt="avtar">
-      <div style="position: absolute;  left: 120px; display: flex; flex-direction: row;">
-        <img src="../assets/img/edit (1).png" alt="edit" style="margin-bottom: 5px;">
-        <img src="../assets/img/dlt (1).png" alt="delete">
-      </div>
-     </div>
-        </div>
-    </div> -->
 
 
+        <div class="ptop d-flex">
+            <div>
+                <div class="input-block mb-3">
+                    <label class="foncolor" for="status">Status</label>
 
-
-
-
-
-
-        <!-- ---------- -->
-
-                        <div class="d-flex align-items-center">
-                            <p class="profileUpdateFont" id="activeText">Active</p>
-                            <div class="status-toggle px-2">
-                                <input id="rating_6" class="check" type="checkbox" value="Inactive">
-                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
-                            </div>
-                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
+                        <div class="status-toggle">
+                            <span>Active</span>
+                            <input id="status" class="check" type="checkbox" name="status" >
+                            <label for="status" class="checktoggle checkbox-bg togc"></label>
+                            <span class="">Inactive</span>
                         </div>
-
-
-                    <div class="status-toggle">
-                        <span>Active</span>
-                        <input id="status" class="check" type="checkbox" name="status" checked>
-                        <label for="status" class="checktoggle checkbox-bg togc"></label>
-                        <span class="">Inactive</span>
-                    </div>
-                    @error('status')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
 
                 </div>
             </div>
@@ -386,18 +316,44 @@
             <div style="margin-top:22px;">
                 <div class="add-customer-btns ">
 
-                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                        <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
 
                     <button type="submit" class="btn btn-primary ">Submit</button>
 
+                    </div>
                 </div>
             </div>
+            </div>
 
-
-
-
+        <!-- <div style="margin-top:22px;">
+                <div class="add-customer-btns ">
+                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                </div>
+            </div> -->
         </div>
+
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let statusToggle = document.getElementById("status");
+            let activeText = document.getElementById("activeText");
+            let inactiveText = document.getElementById("inactiveText");
+
+            function updateTextColor() {
+                if (statusToggle.checked) {
+                    activeText.classList.add("bold");
+                    inactiveText.classList.remove("bold");
+                } else {
+                    activeText.classList.remove("bold");
+                    inactiveText.classList.add("bold");
+                }
+            }
+            updateTextColor();
+            statusToggle.addEventListener("change", updateTextColor);
+        });
+    </script>
 
 </x-app-layout>
 <script>
@@ -409,7 +365,7 @@
             // ✅ Sirf PNG ya JPG Allow Hai
             if (file.type === "image/png" || file.type === "image/jpeg") {
                 let reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('preview_' + imageType).src = e.target.result;
                 };
                 reader.readAsDataURL(file);
@@ -437,9 +393,9 @@
 
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Country Change Event
-        $('#country').change(function() {
+        $('#country').change(function () {
             var country_id = $(this).val();
             $('#state').html('<option selected="selected">Loading...</option>');
             $('#city').html('<option selected="selected">Select City</option>');
@@ -447,9 +403,9 @@
             $.ajax({
                 url: '/api/get-states/' + country_id
                 , type: 'GET'
-                , success: function(states) {
+                , success: function (states) {
                     $('#state').html('<option selected="selected">Select State</option>');
-                    $.each(states, function(key, state) {
+                    $.each(states, function (key, state) {
                         $('#state').append('<option value="' + state.id + '">' +
                             state.name + '</option>');
                     });
@@ -458,16 +414,16 @@
         });
 
         // State Change Event
-        $('#state').change(function() {
+        $('#state').change(function () {
             var state_id = $(this).val();
             $('#city').html('<option selected="selected">Loading...</option>');
 
             $.ajax({
                 url: '/api/get-cities/' + state_id
                 , type: 'GET'
-                , success: function(cities) {
+                , success: function (cities) {
                     $('#city').html('<option selected="selected">Select City</option>');
-                    $.each(cities, function(key, city) {
+                    $.each(cities, function (key, city) {
                         $('#city').append('<option value="' + city.id + '">' + city
                             .name + '</option>');
                     });
@@ -477,3 +433,18 @@
     });
 
 </script>
+{{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#rating_6').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#inactiveText').removeClass('faded');
+                    $('#activeText').addClass('faded');
+                } else {
+                    $('#activeText').removeClass('faded');
+                    $('#inactiveText').addClass('faded');
+                }
+            });
+        });
+    </script>

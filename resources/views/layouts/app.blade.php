@@ -135,6 +135,8 @@
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
+    <script src="{{asset('js/pagination.js')}}"></script>
+
     <!-- Feather Icon JS -->
     <script src="{{ asset('assets/js/feather.min.js') }}"></script>
 
@@ -198,8 +200,114 @@
             window.location.href = url;
         }
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const phoneInput = document.querySelector('input[type="tel"]');
+
+            phoneInput.addEventListener("input", function (event) {
+                this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+            });
+
+            phoneInput.addEventListener("blur", function () {
+                if (!/^\d+$/.test(this.value)) {
+                    // alert("Please enter a valid phone number.");
+                    this.value = "";
+                }
+            });
+        });
+
+
+        function updateStatusValue() {
+            let checkbox = document.getElementById('rating_6');
+
+            // If checked, set value to "Inactive", else set to "Active"
+            checkbox.value = checkbox.checked ? 'Inactive' : 'Active';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".check").forEach(function (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    this.value = this.checked ? "Inactive" : "Active";
+                });
+
+                // Ensure correct value is set on page load
+                checkbox.value = checkbox.checked ? "Inactive" : "Active";
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const refreshUserBtn = document.querySelector(".refeshuser");
+
+            if (refreshUserBtn) {
+                refreshUserBtn.addEventListener("click", function () {
+                    sessionStorage.setItem("refreshTriggered", "true");
+                    location.href = window.location.pathname; // Remove query parameters
+                });
+            }
+
+            // Check if refresh was triggered
+            if (sessionStorage.getItem("refreshTriggered") === "true") {
+                sessionStorage.removeItem("refreshTriggered"); // Clear the flag
+                location.href = window.location.pathname; // Reload without query parameters
+            }
+        });
+
+
+
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const searchInput = document.getElementById("searchInput");
+
+        //     function fetchData(query) {
+        //         let url = new URL(window.location.href);
+        //         if (query) {
+        //             url.searchParams.set("search", query);
+        //         } else {
+        //             url.searchParams.delete("search");
+        //         }
+
+        //         // ✅ Update URL without reloading the page
+        //         window.history.pushState({}, "", url);
+
+        //         // ✅ Fetch search results via AJAX (No Full Page Reload)
+        //         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+        //             .then(response => response.text())
+        //             .then(html => {
+        //                 document.getElementById("ajexTable").innerHTML = html;
+        //             })
+        //             .catch(error => console.error("Error fetching data:", error));
+        //     }
+
+        //     searchInput.addEventListener("input", function () {
+        //         fetchData(searchInput.value.trim());
+        //     });
+        // });
+
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const pageSizeSelect = document.querySelector(".form-select");
+
+        //     pageSizeSelect.addEventListener("change", function () {
+        //         let selectedValue = this.value;
+        //         let url = new URL(window.location.href);
+
+        //         // ✅ Update URL parameter
+        //         url.searchParams.set("per_page", selectedValue);
+
+        //         // ✅ Update URL without reloading the whole page
+        //         window.history.pushState({}, "", url);
+
+        //         // ✅ Fetch data using AJAX
+        //         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+        //             .then(response => response.text())
+        //             .then(html => {
+        //                 document.getElementById("ajexTable").innerHTML = html;
+        //             })
+        //             .catch(error => console.error("Error fetching data:", error));
+        //     });
+        // });
+
     </script>
 
+    
+    
     @yield('script')
 
 </body>

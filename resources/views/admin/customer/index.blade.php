@@ -1,7 +1,7 @@
-<?php
-echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
-?>
 <x-app-layout>
+    @section('script')
+        <link rel='stylesheet' href='./css/admin/select2.css' />
+    @endsection
     <x-slot name="header">
         {{ __('Customer List') }}
     </x-slot>
@@ -48,25 +48,25 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
     
 
         <x-slot name="cardTitle">
-  <div class="d-flex topnavs" >
-    <p class="head">All Customers</p>
-    <div class="usersearch d-flex usersserach">
-      <div class="top-nav-search">
-        <form>
-          <input type="text" class="form-control forms" placeholder="Search ">
-        </form>
-      </div>
-      
-      <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-          <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
-            <span><i class="fe fe-refresh-ccw"></i></span>
-          </a>
-        </button>
-      </div>
-    </div>
-  </div>
-</x-slot>
+            <div class="d-flex topnavs" >
+                <p class="head">All Customers</p>
+                <div class="usersearch d-flex usersserach">
+                <div class="top-nav-search">
+                    <form>
+                    <input type="text" class="form-control forms" placeholder="Search ">
+                    </form>
+                </div>
+                
+                <div class="mt-2">
+                    <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+                        <span><i class="fe fe-refresh-ccw"></i></span>
+                    </a>
+                    </button>
+                </div>
+                </div>
+            </div>
+        </x-slot>
 
         
         <div>
@@ -122,12 +122,12 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
                                         <td>
                                             @if ($customer->status == 'Active')
                                                 <div class="container">
-                                                    <img src="../assets/img/checkbox.png" alt="Image" />
+                                                    <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
                                                     <p>Active</p>
                                                 </div>
                                             @else
                                                 <div class="container">
-                                                    <img src="../assets/img/inactive.png" alt="Image" />
+                                                    <img src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
                                                     <p>Inactive</p>
                                                 </div>
                                             @endif
@@ -663,12 +663,14 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
 
                         </table>
 
-                        <div class="bottom-user-page mt-3">
-                            {!! $customers->links('pagination::bootstrap-5') !!}
-                        </div>
+                        
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="bottom-user-page mt-3">
+            {!! $customers->links('pagination::bootstrap-5') !!}
         </div>
 
 
@@ -699,50 +701,51 @@ echo "<link rel='stylesheet' href='./css/admin/select2.css' />";
         </div>
         <!-- /Delete Items Modal -->
         @section('script')
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let deleteId = null;
+        
+                // 🔹 Delete button click par modal open hone se pehle ID store kare
+                document.querySelectorAll('[data-bs-target="#delete_modal"]').forEach(button => {
+                    button.addEventListener('click', function() {
+                        deleteId = this.getAttribute('data-id'); // User ID ko store kare
+                        console.log("Selected ID:", deleteId); // Debug ke liye
+                    });
+                });
+        
+                // 🔹 Delete Confirm Button par API call kare
+                document.getElementById('confirmDelete').addEventListener('click', function() {
+                    if (deleteId) {
+                        fetch(`/delete-customers/${deleteId}`, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: "Good job!",
+                                        text: "Customer deleted successfully",
+                                        icon: "success"
+                                    });
+        
+                                    setTimeout(function() {
+                                        location.reload(); // 2 second ke baad page refresh karega
+                                    }, 2000);
+        
+                                } else {
+                                    alert('Error: ' + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+                });
+            });
+        </script>
         @endsection
 </x-app-layout>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let deleteId = null;
 
-        // 🔹 Delete button click par modal open hone se pehle ID store kare
-        document.querySelectorAll('[data-bs-target="#delete_modal"]').forEach(button => {
-            button.addEventListener('click', function() {
-                deleteId = this.getAttribute('data-id'); // User ID ko store kare
-                console.log("Selected ID:", deleteId); // Debug ke liye
-            });
-        });
-
-        // 🔹 Delete Confirm Button par API call kare
-        document.getElementById('confirmDelete').addEventListener('click', function() {
-            if (deleteId) {
-                fetch(`/delete-customers/${deleteId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire({
-                                title: "Good job!",
-                                text: "Customer deleted successfully",
-                                icon: "success"
-                            });
-
-                            setTimeout(function() {
-                                location.reload(); // 2 second ke baad page refresh karega
-                            }, 2000);
-
-                        } else {
-                            alert('Error: ' + data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        });
-    });
-</script>

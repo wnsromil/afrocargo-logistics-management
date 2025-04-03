@@ -30,7 +30,7 @@
             </div>
             <div style="margin-left:auto">
                 <a href="{{ route('admin.customer.edit', $user->id) }}" class="btn btn-primary buttons">
-                    <img class="imgs" src="../assets/img/Vector (9).png">
+                    <img class="imgs" src="{{ asset('assets/img/Vector (9).png')}}">
                     Update Customer
                 </a>
             </div>

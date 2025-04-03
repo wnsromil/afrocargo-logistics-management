@@ -24,7 +24,7 @@ class HubTrackingController extends Controller
     {
         //
         $parcels = HubTracking::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+            return $q->where('to_warehouse_id',$this->user->warehouse_id)->orWhere('from_warehouse_id',$this->user->warehouse_id);
         })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
         return view('admin.hubs.transfer_hub', compact('parcels'));
     }
@@ -33,7 +33,7 @@ class HubTrackingController extends Controller
     {
         //
         $parcels = HubTracking::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+            return $q->where('to_warehouse_id',$this->user->warehouse_id)->orWhere('from_warehouse_id',$this->user->warehouse_id);
         })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
         return view('admin.hubs.received_hub', compact('parcels'));
     }
@@ -43,7 +43,7 @@ class HubTrackingController extends Controller
     {
         //
         $parcels = HubTracking::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
+            return $q->where('to_warehouse_id',$this->user->warehouse_id)->orWhere('from_warehouse_id',$this->user->warehouse_id);
         })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
         return view('admin.hubs.received_orders', compact('parcels'));
     }

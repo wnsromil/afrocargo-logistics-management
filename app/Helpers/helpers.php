@@ -1,4 +1,7 @@
 <?php
+include('timeSlot.php');
+use App\Helpers\SettingsHelper;
+
 
 function isActive($urls, $class = 'active',$default='')
 {
@@ -25,29 +28,46 @@ function isActive($urls, $class = 'active',$default='')
 }
 
 function activeStatusKey($statusName = 'Pending') {
-    
-    $parcelStatuses = collect([
-        'pending'                => 'Pending',
-        'pickup_assign'          => 'Pickup Assign',//admin
-        'pickup_reschedule'      => 'Pickup Re-Schedule',
-        'received_by_pickup_man' => 'Received By Pickup Man',
-        'received_warehouse'     => 'Received Warehouse',
-        'transfer_to_hub'        => 'Transfer to Hub',
-        'received_by_hub'        => 'Received by Hub',
-        'delivery_man_assign'    => 'Delivery Man Assign',
-        'return_to_courier'      => 'Return to Courier',
-        'delivered'              => 'Delivered',
-        'cancelled'              => 'Cancelled',
-        'created'                => 'Created',
-        'updated'                => 'Updated',
-        'deleted'                => 'Deleted',
-        'archived'               => 'Archived',
-        'rejected'               => 'Rejected',
-        'completed'              => 'Completed',
-        'on_hold'                => 'On Hold',
-        'partial'                => 'Partial',
-    ]);
 
+    $newStatusClass = [
+        'pending'                => 'labelstatus',
+        'pickup_assign'          => 'pickup_assign',//admin
+        'pickup_reschedule'      => 'pickup_reschedule',
+        'received_by_pickup_man' => 'received_by_pickup_man',
+        'received_warehouse'     => 'received_warehouse',
+        'received_by_warehouse'  => 'bg-set',
+        'transfer_to_hub'        => 'transfer_to_hub',
+        'received_by_hub'        => 'received_by_hub',
+        'delivery_man_assign'    => 'delivery_man_assign',
+        'assign_delivery_boy'    => 'labelstatuspi',
+        'return_to_courier'      => 'return_to_courier',
+        'delivered'              => 'delivered',
+        'cancelled'              => 'cancelled',
+        'created'                => 'created',
+        'updated'                => 'updated',
+        'deleted'                => 'Deleted',
+        'archived'               => 'deleted',
+        'rejected'               => 'rejected',
+        'completed'              => 'completed',
+        'on_hold'                => 'on_hold',
+        'partial'                => 'partial',
+        'unpaid'                 => 'labelstatus',
+        'partialy_paid'          => 'labelstatusy',
+        'paid'                   => 'labelstatusw',
+    ];
+
+    return $newStatusClass[strtolower($statusName)] ?? '';
     // Return the key if found, or 'pending' if not.
     return str_replace(' ','_',strtolower($statusName));
+}
+
+
+function calculatePrice($value=0,$Unit=0,$Rate=0)
+{
+    // value-based calculation
+    return ceil($value / $Unit) * $Rate;
+}
+
+function setting(){
+    return new SettingsHelper();
 }

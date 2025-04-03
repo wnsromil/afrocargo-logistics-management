@@ -1,13 +1,17 @@
-<style>
-    .card.mainCardGlobal:before {
-        display: none;
-    }
-
-    .card.mainCardGlobal>.card-body>.page-header {
-        margin-bottom: -10px !important;
-    }
-</style>
 <x-app-layout>
+    @section('style')
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+
+            .card.mainCardGlobal>.card-body>.page-header {
+                margin-bottom: -10px !important;
+            }
+
+        </style>
+    @endsection
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-light leading-tight">
             {{ __('Driver Details') }}

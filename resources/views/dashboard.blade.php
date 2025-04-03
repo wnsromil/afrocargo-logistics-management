@@ -1,14 +1,14 @@
-<style>
-.card.mainCardGlobal:before
-{
-    display: none;
-}
-</style>
-
 <x-app-layout>
+    @section('style')
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+        </style>
+    @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-light">
-            {{ __('Admin Dashboard') }}
+            {{ __(ucfirst(auth()->user()->role).' Dashboard') }}
         </h2>
     </x-slot>
 
@@ -654,16 +654,16 @@
     <div class="row">
         <h5 class='cardh5Size mb-3 fw-semibold'>Analytics</h5>
         <div class="col-xl-6 d-flex">
-            <div class="card shadow-box flex-fill p-0">
+            <div class="card shadow-box flex-fill border-radius-6 p-0">
 
-                <div class="d-flex justify-content-between align-items-center p-4">
-                    <h5 class="cardh5Size">Users Analytics</h5>
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="cardh5Size fw-semibold">Users Analytics</h5>
 
                     <div class="main">
-                        <h5 class='cardAnalyticsSize'>Customers and Drivers Analytics</h5>
+                        <h5 class='cardAnalyticsSize fw-medium'>Customers and Drivers Analytics</h5>
                     </div>
                 </div>
-                <hr class="border-bottom border-1 border-opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-opacity-25 mt-0 mb-1">
                 </hr>
 
 
@@ -690,7 +690,7 @@
                 <!-- <div id="sales_chart"></div> -->
 
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="s-col"></div>
                 </div>
             </div>
@@ -699,19 +699,19 @@
         <!-- -------------------------- pie chart ---------------------------- -->
 
         <div class="col-xl-6 d-flex">
-            <div class="card shadow-box flex-fill p-0">
+            <div class="card shadow-box flex-fill border-radius-6 p-0">
 
-                <div class="d-flex justify-content-between align-items-center p-4">
-                    <h5 class="cardh5Size">Payment Analytics</h5>
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <h5 class="cardh5Size fw-semibold">Payment Analytics</h5>
 
                     <div class="main">
-                        <h5 class='cardAnalyticsSize'>Earning Analytics</h5>
+                        <h5 class='cardAnalyticsSize fw-medium'>Earning Analytics</h5>
                     </div>
                 </div>
-                <hr class="border-bottom border-1 border-opacity-25 mt-0">
+                <hr class="border-bottom border-1 border-radius-6 border-opacity-25 mt-0 mb-1">
                 </hr>
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="s-line-area"></div>
                 </div>
             </div>
@@ -1116,7 +1116,7 @@
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_man_cancel">Delivery
+                                                            data-bs-target="#delivery_reschedule">Delivery
                                                             Re-schedule</a>
                                                     </li>
                                                     <li>
@@ -1268,7 +1268,7 @@
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_man_cancel">Delivery
+                                                            data-bs-target="#delivery_reschedule">Delivery
                                                             Re-schedule</a>
                                                     </li>
                                                     <li>
@@ -1817,350 +1817,388 @@
 
     <!-- ---------------------------------------------------------------------------------------------------- -->
 
-    <script>
-        document.querySelectorAll('.toggle-btn1').forEach(input => {
-            input.addEventListener("change", function () {
-                const parentDiv = this.closest(".card");
-                if (this.checked) {
-                    parentDiv.classList.add('bg-selected1');
-                } else {
-                    parentDiv.classList.remove('bg-selected1');
-                }
-            })
-        })
-    </script>
+    @section('bottomContent')
+        <!-- ---------------------------------------------------------------------------------- -->
 
-    <!-- <script>
-    // rating_1
+        <!-- Schedule Pickup Modal -->
+        <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Pickup Man Assign</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
 
-    const card = document.getElementById('card');
-    const toggle = document.getElementById('toggle');
-
-    toggle.addEventListener('change', ()=>{
-        if(toggle.checked){
-            card.style.backgroundColor = "green";
-        }else{
-            card.style.backgroundColor = "blue";
-        }
-    });
-
-
-    
-</script> -->
-    <!-- jQuery -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-
-    <!-- DataTables CSS -->
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> -->
-
-    <!-- DataTables JS -->
-    <!-- <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
-
-</x-app-layout>
-
-<!-- ---------------------------------------------------------------------------------- -->
-
-<!-- Schedule Pickup Modal -->
-<div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
-            <div class="modal-header border-0 p-3 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Pickup Man Assign</h4>
-                </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <hr class="border border-dark border-opac mb-0">
-
-            <form action="#">
-                <div class="modal-body p-3">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                    aria-label="Large select example">
-                                    <option selected>Select Delivery Man</option>
-                                </select>
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                        <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                            aria-label="Large select example">
+                                            <option selected>Select Delivery Man</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- /Schedule Pickup Modal -->
-
-<!-- ------------------------------------------------------------------------------------- -->
-
-<!-- return_to_courier Modal -->
-<div class="modal custom-modal fade" id="return_to_courier" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
-            <div class="modal-header border-0 p-3 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Return to Courier</h4>
-                </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <hr class="border border-dark border-opac mb-0">
-
-            <form action="#">
-                <div class="modal-body p-3">
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea11"
-                            class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea11" rows="4"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- /return_to_courier Modal -->
-
-<!-- ------------------------------------------------------------------------------------- -->
-<!-- delivered Modal -->
-<div class="modal custom-modal fade" id="delivered" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
-            <div class="modal-header border-0 p-3 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Delivered</h4>
-                </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <hr class="border border-dark border-opac mb-0">
-
-            <form action="#">
-                <div class="modal-body p-3">
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea11"
-                            class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea11" rows="4"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- /delivered Modal -->
-
-<!-- ---------------------------------------------------------------------------------------------------- -->
-
-<!-- Received_Warehouse Modal -->
-<div class="modal custom-modal fade" id="Received_Warehouse" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
-            <div class="modal-header border-0 p-3 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Received Warehouse</h4>
-                </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <hr class="border border-dark border-opac mb-0">
-
-            <form action="#">
-                <div class="modal-body p-3">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                <label class="col737">Warehouse Name<span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                    aria-label="Large select example">
-                                    <option selected>Select Warehouse</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- /Received_Warehouse Modal -->
-<!-- ----------------------------------------------------------------------------------------------------------- -->
-
-
-<!-- Schedule Pickup Modal -->
-<!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-header border-0 p-3 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Pickup Man Assign</h4>
-                </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <hr class="border border-dark border-opac mb-0">
-
-            <form action="#">
-                <div class="modal-body p-3">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                    aria-label="Large select example">
-                                    <option selected>Select Delivery Man</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-<!-- /Schedule Pickup Modal -->
-<!-- ---------------------------------------------------------------------------------------------------- -->
-<!-- schedule_pickup_cancel Modal -->
-<div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-body p-3">
-                <div class="form-header">
-                    <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Schedule Pickup?</p>
-                </div>
-                <div class="modal-btn delete-action align-cenetr">
-                    <div class="row">
-                        <div class="col-6 px-1">
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="btn-right btn btn-sm btn-outline-primary float-end px-5">No</button>
-                        </div>
-                        <div class="col-6 px-2">
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
                             <button type="submit" data-bs-dismiss="modal"
-                                class="btn-right btn btn-sm btn-primary me-2 px-5">Yes</button>
+                                class="btn paid-continue-btn btnColor1">Save</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- /schedule_pickup_cancel Modal -->
+        <!-- /Schedule Pickup Modal -->
 
-<!-- ------------------------------------------------------------- -->
-<!-- delivery_man_cancel Modal -->
-<div class="modal custom-modal fade" id="delivery_man_cancel" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-body p-3">
-                <div class="form-header">
-                    <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub ?
-                    </p>
-                </div>
-                <div class="modal-btn delete-action align-cenetr">
-                    <div class="row">
-                        <div class="col-6 px-1">
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="btn-right btn btn-sm btn-outline-primary float-end px-5">No</button>
+        <!-- ------------------------------------------------------------------------------------- -->
+
+        <!-- return_to_courier Modal -->
+        <div class="modal custom-modal fade" id="return_to_courier" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Return to Courier</h4>
                         </div>
-                        <div class="col-6 px-2">
-                            <button type="submit" data-bs-dismiss="modal"
-                                class="btn-right btn btn-sm btn-primary me-2 px-5">Yes</button>
-                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /delivery_man_cancel Modal -->
-<!-- ------------------------------------------------------------------------------ -->
+                    <hr class="border border-dark border-opac mb-0">
 
-<!-- pickup_reschedule Modal -->
-<div class="modal custom-modal fade" id="pickup_reschedule" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content schedule-popup1 border-radius-6">
-            <div class="modal-header border-0 p-3 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="font16 mb-0">Pickup Re-Schedule</h4>
-                </div>
-                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <hr class="border border-dark border-opac mb-0">
-
-            <form action="#">
-                <div class="modal-body p-3">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                    aria-label="Large select example">
-                                    <option selected>Select Delivery Man</option>
-                                </select>
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea11"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea11" rows="4"></textarea>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /return_to_courier Modal -->
+
+        <!-- ------------------------------------------------------------------------------------- -->
+        <!-- delivered Modal -->
+        <div class="modal custom-modal fade" id="delivered" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Delivered</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                <label class="col737">Date<span class="text-danger">*</span></label>
-                                <div class="cal-icon cal-icon-info">
-                                    <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea11"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea11" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /delivered Modal -->
+
+        <!-- ---------------------------------------------------------------------------------------------------- -->
+
+        <!-- Received_Warehouse Modal -->
+        <div class="modal custom-modal fade" id="Received_Warehouse" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Received Warehouse</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Warehouse Name<span class="text-danger">*</span></label>
+                                        <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                            aria-label="Large select example">
+                                            <option selected>Select Warehouse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /Received_Warehouse Modal -->
+        <!-- ----------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- Schedule Pickup Modal -->
+        <!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header border-0 p-3 pb-0">
+                            <div class="form-header modal-header-title text-start mb-0">
+                                <h4 class="font16 mb-0">Pickup Man Assign</h4>
+                            </div>
+                            <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <hr class="border border-dark border-opac mb-0">
+
+                        <form action="#">
+                            <div class="modal-body p-3">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                            <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                            <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                                aria-label="Large select example">
+                                                <option selected>Select Delivery Man</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-bs-dismiss="modal"
+                                    class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                                <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> -->
+        <!-- /Schedule Pickup Modal -->
+        <!-- ---------------------------------------------------------------------------------------------------- -->
+        <!-- schedule_pickup_cancel Modal -->
+        <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-body p-3">
+                        <div class="form-header">
+                            <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Schedule Pickup?</p>
+                        </div>
+                        <div class="modal-btn delete-action align-cenetr">
+                            <div class="row">
+                                <div class="col-6 px-1">
+                                    <button type="reset" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-outline-primary float-end px-5">No</button>
+                                </div>
+                                <div class="col-6 px-2">
+                                    <button type="submit" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-primary me-2 px-5">Yes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="my-3">
-                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+        <!-- /schedule_pickup_cancel Modal -->
+
+        <!-- ------------------------------------------------------------- -->
+        <!-- delivery_man_cancel Modal -->
+        <div class="modal custom-modal fade" id="delivery_man_cancel" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-body p-3">
+                        <div class="form-header">
+                            <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub
+                                ?
+                            </p>
+                        </div>
+                        <div class="modal-btn delete-action align-cenetr">
+                            <div class="row">
+                                <div class="col-6 px-1">
+                                    <button type="reset" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-outline-primary float-end px-5">No</button>
+                                </div>
+                                <div class="col-6 px-2">
+                                    <button type="submit" data-bs-dismiss="modal"
+                                        class="btn-right btn btn-sm btn-primary me-2 px-5">Yes</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+            </div>
+        </div>
+        <!-- /delivery_man_cancel Modal -->
+        <!-- ------------------------------------------------------------------------------ -->
+
+        <!-- pickup_reschedule Modal -->
+        <div class="modal custom-modal fade" id="pickup_reschedule" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content schedule-popup1 border-radius-6">
+                    <div class="modal-header border-0 p-3 pb-0">
+                        <div class="form-header modal-header-title text-start mb-0">
+                            <h4 class="font16 mb-0">Pickup Re-Schedule</h4>
+                        </div>
+                        <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <hr class="border border-dark border-opac mb-0">
+
+                    <form action="#">
+                        <div class="modal-body p-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                        <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                            aria-label="Large select example">
+                                            <option selected>Select Delivery Man</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                        <label class="col737">Date<span class="text-danger">*</span></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="my-3">
+                                <label for="exampleFormControlTextarea1"
+                                    class="form-label table-content fw-medium">Note</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                            <button type="submit" data-bs-dismiss="modal"
+                                class="btn paid-continue-btn btnColor1">Save</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+        </div>
+        <!-- /pickup_reschedule Modal -->
+        <!-- ------------------------------------------------------------------------------------ -->
+         
+    <!-- delivery_reschedule Modal -->
+    <div class="modal custom-modal fade" id="delivery_reschedule" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content schedule-popup1 border-radius-6">
+                <div class="modal-header border-0 p-3 pb-0">
+                    <div class="form-header modal-header-title text-start mb-0">
+                        <h4 class="font16 mb-0">Delivery Re-Schedule</h4>
+                    </div>
+                    <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <hr class="border border-dark border-opac mb-0">
+
+                <form action="#">
+                    <div class="modal-body p-3">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                    <label class="col737">Delivery Man<span class="text-danger">*</span></label>
+                                    <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                        aria-label="Large select example">
+                                        <option selected>Select Delivery Man</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                    <label class="col737">Date<span class="text-danger">*</span></label>
+                                    <div class="cal-icon cal-icon-info">
+                                        <input type="text" class="datetimepicker form-control" placeholder="dd-mm-yyyy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<!-- /pickup_reschedule Modal -->
-<!-- ------------------------------------------------------------------------------------ -->
+    <!-- /delivery_reschedule Modal -->
+    @endsection
+    @section('bottomContent')
+        <script>
+            document.querySelectorAll('.toggle-btn1').forEach(input => {
+                input.addEventListener("change", function () {
+                    const parentDiv = this.closest(".card");
+                    if (this.checked) {
+                        parentDiv.classList.add('bg-selected1');
+                    } else {
+                        parentDiv.classList.remove('bg-selected1');
+                    }
+                })
+            })
+        </script>
+    @endsection
+
+</x-app-layout>

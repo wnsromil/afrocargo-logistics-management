@@ -16,7 +16,7 @@
             <div class="usersearch d-flex usersserach">
                 <div class="top-nav-search">
                     <form>
-                        <input type="text" class="form-control forms" placeholder="Search ">
+                        <input id="searchInput" type="text" class="form-control forms" placeholder="Search ">
                     </form>
                 </div>
 
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div id='ajexTable'>
 
         <div class="card-table">
             <div class="card-body">
@@ -69,12 +69,11 @@
                                 <td>
                                     {{ ++$index }}
                                 </td>
-
-                                <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
                                 <td><span>{{$warehouse->name ?? '-'}}</span></td>
+                                <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
                                 <td>{{$warehouse->email ?? '-'}}</td>
-                                <td>{{$warehouse->phone ?? '-'}}</td>
                                 <td>{{$warehouse->address ?? '-'}}</td>
+                                <td>{{$warehouse->phone ?? '-'}}</td>
                                 <td>
                                     @if ($warehouse->status == 'Active')
                                         <div class="container">
@@ -128,8 +127,26 @@
 
                     </table>
 
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+
+            <div class="col-md-6 d-flex p-2 align-items-center">
+                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                    <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
+                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                    <option value="15" {{ request('per_page') == 15 ? 'selected' : '' }}>15</option>
+                </select>
+                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+            </div>
+        
+        
+            <div class="col-md-6">
+                <div class="float-end">
                     <div class="bottom-user-page mt-3">
-                        {!! $warehouses->links('pagination::bootstrap-5') !!}
+                        {!! $warehouses->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
             </div>

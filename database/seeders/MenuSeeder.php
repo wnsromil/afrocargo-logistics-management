@@ -40,7 +40,7 @@ class MenuSeeder extends Seeder
             [
                 'title' => 'Vehicle Management',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
-                //'route' => 'admin.vehicle.index',
+                'route' => 'admin.vehicle.index',
                 'route' => '#',
                 'active' => 'vehicle*,container*',
                 'roles' => ['admin', 'warehouse_manager']
@@ -120,7 +120,7 @@ class MenuSeeder extends Seeder
                 'icon' => '<i class="menuIcon ti ti-user-check"></i>',
                 'route' => 'admin.user_role.index',
                 'active' => 'user_role*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin']
             ],
             [
                 'title' => 'Advance Reports',
