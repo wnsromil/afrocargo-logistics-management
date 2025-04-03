@@ -116,7 +116,7 @@
                                         px-2 py-1 stock-font fw-medium">{{ $inventory->stock_status ?? '-' }}</span>
                                     </td>
 
-                                    <td class="d-flex align-items-center">
+                                    <td class="align-items-center">
 
                                         <a href="#" class=" btn-action-icon profileBg" data-bs-toggle="dropdown"
                                             aria-expanded="false"><i class="fe fe-more-vertical fs-4"
