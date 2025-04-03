@@ -17,15 +17,34 @@ class InventoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default to 10 per page
 
         $inventories = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest('id')->paginate(10);
-        return view('admin.inventories.index', compact('inventories'));
+        })
+        ->when($search, function ($q) use ($search) { // 🔹 Search Query
+            return $q->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%")
+                    ->orWhere('inventory_type', 'like', "%$search%")
+                    ->orWhereHas('warehouse', function ($q) use ($search) { // 🔹 Search by Warehouse Name
+                        $q->where('warehouse_name', 'like', "%$search%");
+                    });
+            });
+        })
+        ->latest('id')
+        ->paginate($perPage)
+        ->appends(['search' => $search, 'per_page' => $perPage]); // Maintain query params
+
+        if ($request->ajax()) {
+            return view('admin.inventories.table', compact('inventories'));
+        }
+
+        return view('admin.inventories.index', compact('inventories', 'search', 'perPage'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -65,15 +84,8 @@ class InventoryController extends Controller
             'width' => 'nullable|numeric',
             'height' => 'nullable|numeric',
             'price' => 'required|numeric',
-            'img' => 'required|image|mimes:jpg,png|max:2048',
+            'img' => 'nullable|image|mimes:jpg,png|max:2048',
         ]);
-
-        $imageName = null;
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $imageName = 'uploads/inventory/'. $image->getClientOriginalName(); // Generate unique name
-            $image->move(public_path('uploads/inventory'), $imageName); // Move image to the desired folder
-        }
     
 
         $category_id = $this->getCategoryIdByName($request->inventory_name);
@@ -82,17 +94,18 @@ class InventoryController extends Controller
             [
                 'warehouse_id' => $request->warehouse_id,
                 'category_id'  => $category_id,
+                'inventory_type' => $request->inventory_type
             ],
             [
                 'total_quantity'    => 0,
                 'in_stock_quantity' => 0,
                 'low_stock_warning' => $request->low_stock_warning,
-                'weight' => $request->weight,
-                'width' => $request->width,
-                'height' => $request->height,
-                'price' => $request->price,
-                'status' => $request->status ?? 'Inactive',
-                'img'    => $imageName,
+                'weight' => $request->weight ?? null,
+                'width' => $request->width ?? null,
+                'height' => $request->height ?? null,
+                'price' => $request->price ?? null,
+                'status' => $request->status ?? 'Active',
+                // 'img'    => $imageName,
                 'name'=>$request->inventory_name,
                 'inventory_type'=>$request->inventory_type
             ]
@@ -103,6 +116,16 @@ class InventoryController extends Controller
             'in_stock_quantity'   => $inventory->in_stock_quantity + $request->in_stock_quantity,
             'low_stock_warning'   => $request->low_stock_warning
         ]);
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = 'uploads/inventory/'. $image->getClientOriginalName(); // Generate unique name
+            $image->move(public_path('uploads/inventory'), $imageName); // Move image to the desired folder
+
+            $inventory->update([
+                'img'    => $imageName,
+            ]);
+        }
 
         // Create a new stock entry
         Stock::create([
@@ -188,7 +211,7 @@ class InventoryController extends Controller
             'width' => $request->width,
             'height' => $request->height,
             'price' => $request->price,
-            'status' => $request->status ?? 'Inactive',
+            'status' => $request->status ?? 'Active',
             // 'img'    => $imageName,
             'name'=>$request->inventory_name,
             'inventory_type'=>$request->inventory_type,

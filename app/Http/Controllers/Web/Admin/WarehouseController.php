@@ -16,14 +16,46 @@ use DB;
 class WarehouseController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
-        })->latest('id')->paginate(10);
-        return view('admin.warehouse.index',compact('warehouses'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+
+        $warehouses = Warehouse::with(['country', 'state', 'city']) // ✅ Include relationships
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('warehouse_name', 'like', "%$search%")
+                        ->orWhere('warehouse_code', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%")
+                        ->orWhere('zip_code', 'like', "%$search%")
+                        ->orWhere('phone', 'like', "%$search%")
+                      
+                        ->orWhereHas('country', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('state', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('city', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%");
+                        });
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+        if ($request->ajax()) {
+            return view('admin.warehouse.table', compact('warehouses'))->render();
+        }
+
+        return view('admin.warehouse.index', compact('warehouses', 'search', 'perPage'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -73,7 +105,7 @@ class WarehouseController extends Controller
                 ->withInput();  // Keep old input data
         }
         
-        $status  = !empty($request->status) ? $request->status : 'Inactive';
+        $status  = !empty($request->status) ? $request->status : 'Active';
         // Store validated data
         Warehouse::create([
             'warehouse_name' => $request->warehouse_name,
@@ -153,8 +185,7 @@ class WarehouseController extends Controller
         // Find the warehouse by ID
         $warehouse = Warehouse::find($id);
     
-        // 🛑 Agar status nahi aaya request me, to default 'Inactive' set karein
-        $status = $request->has('status') ? $request->status : 'Inactive';
+        
     
         // Update warehouse with validated data
         $warehouse->update([
@@ -166,7 +197,7 @@ class WarehouseController extends Controller
             'city_id' => $request->city_id,
             'zip_code' => $request->zip_code,
             'phone' => $request->phone,
-            'status' => $status, // Default 'Inactive' agar request me na ho
+            'status' => $request->status ?? 'Active', // Default 'Inactive' agar request me na ho
         ]);
     
         // Redirect to the warehouse index page with a success message

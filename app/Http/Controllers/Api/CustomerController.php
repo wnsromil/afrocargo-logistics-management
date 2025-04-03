@@ -9,6 +9,8 @@ use App\Models\Address;
 use App\Models\Parcel;
 use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistorMail;
 
 class CustomerController extends Controller
 {
@@ -84,6 +86,7 @@ class CustomerController extends Controller
         $user->state_id = $request->state_id;
         $user->city_id = $request->city_id;
         $user->pincode = $request->pincode;
+        $user->password = \Hash::make('12345678');
         $user->save();
         return response()->json(['user' => $user], 200);
     }
@@ -123,13 +126,24 @@ class CustomerController extends Controller
             ->first();
 
         if (!$existingUser) {
-            dd($existingUser);
+            
             // Call createCustomer if user does not exist
             $newUser = $this->createCustomer($request->all());
             $customer_id = $newUser->id;
         } else {
             $customer_id = $existingUser->id;
         }
+
+        // Example dynamic data
+        $userName = $request->first_name;
+        $email = $request->email ?? null;
+        $mobileNumber = $request->phone;
+        $password = '12345678';
+        $loginUrl = route('login');
+
+        // Send the email
+        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
+
 
         // Create new ShippingUser entry
         $shippingUser = new ShippingUser();

@@ -16,9 +16,8 @@
                 <div class="borderset">
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="company_name"> Company </label>
-                            <input type="text" name="company_name" class="form-control inp"
-                                placeholder="Enter Company Name" value="{{ old('company_name') }}">
+                            <label class="foncolor mt-0 pt-0" for="company_name"> Company </label>
+                            <input type="text" name="company_name" class="form-control inp" placeholder="Enter Company Name" value="{{ old('company_name') }}">
 
                         </div>
                         <div class="col-md-12 mb-2">
@@ -31,16 +30,14 @@
                         </div>
                         <div class="col-md-12 mb-2 mobile_code">
                             <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
-                            <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp"
-                                placeholder="Enter Mobile No.">
+                            <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Mobile No.">
                         </div>
 
                         <input type="hidden" id="country_code" name="country_code">
 
                         <div class="col-md-12 mb-2 alternate_mobile_no">
                             <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                            <input type="tel" id="mobile" name="alternate_mobile_no" class="form-control inp"
-                                placeholder="Enter Mobile No.">
+                            <input type="tel" id="mobile" name="alternate_mobile_no" class="form-control inp" placeholder="Enter Mobile No.">
                         </div>
 
                         <input type="hidden" id="country_code_2" name="country_code_2">
@@ -70,9 +67,9 @@
                             <select id="country" name="country" class="js-example-basic-single select2">
                                 <option value="">Select Country</option>
                                 @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}" {{ old('country') == $country->id ? 'selected' : '' }}>
-                                        {{ $country->name }}
-                                    </option>
+                                <option value="{{ $country->id }}" {{ old('country') == $country->id ? 'selected' : '' }}>
+                                    {{ $country->name }}
+                                </option>
                                 @endforeach
                             </select>
                             @error('country')
@@ -177,130 +174,100 @@
                 <div class="borderset">
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="website_url">Website</label>
-                            <input type="text" name="website_url" class="form-control inp"
-                                value="{{ old('longitude') }}" placeholder="Enter Website ID">
+                            <label class="foncolor mt-0 pt-0" for="website_url">Website</label>
+                            <input type="text" name="website_url" class="form-control inp" value="{{ old('longitude') }}" placeholder="Enter Website ID">
 
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="email">Email</label>
-                            <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID"
-                                value="{{ old('longitude') }}">
-
-                        </div>
-                        @error('email')
+                            <label class="foncolor" for="email">Email<i class="text-danger">*</i></label>
+                            <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID" value="{{ old('longitude') }}">
+                            @error('email')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor" for="warehouse"> Warehouse </label>
-                        <select class="js-example-basic-single select2" name="warehouse_id"
-                            value="{{ old('warehouse_id') }}">
-                            <option selected="selected">Select Warehouse</option>
-                            @foreach ($warehouses as $warehouse)
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="warehouse"> Warehouse </label>
+                            <select class="js-example-basic-single select2" name="warehouse_id" value="{{ old('warehouse_id') }}">
+                                <option selected="selected">Select Warehouse</option>
+                                @foreach ($warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
 
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor" for="container"> Container </label>
-                        <select class="js-example-basic-single select2" name="warehouse_id"
-                            value="{{ old('warehouse_id') }}">
-                            <option selected="selected" value="">Select Container</option>
-                            <option></option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-12 mb-2">
-                        <label>Signature Date </label>
-                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" name="signature_date" class="btn-filters  form-cs inp  inputbackground"
-                                value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="container"> Container </label>
+                            <select class="js-example-basic-single select2" name="warehouse_id" value="{{ old('warehouse_id') }}">
+                                <option selected="selected" value="">Select Container</option>
+                                <option></option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor " for="Year_to_Date">Year to Date</label>
-                        <input type="text" name="year_to_date" id="Year to Date"
-                            class="form-control inp inputbackground" placeholder="0" value="{{ old('year_to_date') }}">
-                    </div>
 
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor " for="License_ID">License ID</label>
-                        <input type="text" id="License_ID" name="license_number"
-                            class="form-control inp inputbackground" value="{{ old('license_number') }}"
-                            placeholder="Enter License ID">
-                    </div>
-
-                    <div class="col-md-12 mb-2">
-                        <label>License Expiry Date </label>
-                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                            <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
-                                value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
+                        <div class="col-md-12 mb-2">
+                            <label>Signature Date </label>
+                            <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                <input type="text" name="signature_date" class="btn-filters  form-cs inp  inputbackground" value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor" for="warehouse"> Language </label>
-                        <select class="js-example-basic-single select2" name="language" value="{{ old('language') }}">
-                            <option selected="selected">India - English</option>
-                            <option>Hindi</option>
-                        </select>
-                    </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor " for="Year_to_Date">Year to Date</label>
+                            <input type="text" name="year_to_date" id="Year to Date" class="form-control inp inputbackground" placeholder="0" value="{{ old('year_to_date') }}">
+                        </div>
+
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor " for="License_ID">License ID</label>
+                            <input type="text" id="License_ID" name="license_number" class="form-control inp inputbackground" value="{{ old('license_number') }}" placeholder="Enter License ID">
+                        </div>
+
+                        <div class="col-md-12 mb-2">
+                            <label>License Expiry Date </label>
+                            <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp " value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="warehouse"> Language </label>
+                            <select class="js-example-basic-single select2" name="language" value="{{ old('language') }}">
+                                <option selected="selected">India - English</option>
+                                <option>Hindi</option>
+                            </select>
+                        </div>
 
 
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor" for="Write_Comment">Write Comment</label>
-                        <input type="text" id="Write_Comment" name="write_comment" class="form-control inp commenth"
-                            value="{{ old('write_comment') }}" placeholder="Enter Write Comment">
-                    </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="Write_Comment">Write Comment</label>
+                            <input type="text" id="Write_Comment" name="write_comment" class="form-control inp commenth" value="{{ old('write_comment') }}" placeholder="Enter Write Comment">
+                        </div>
 
-                    <div class="col-md-12 mb-2">
-                        <label class="foncolor" for="Read_Comment">Read Comment</label>
-                        <input type="text" id="Read_Comment" name="read_comment"
-                            class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
-                            placeholder="Enter Read Comment">
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="Read_Comment">Read Comment</label>
+                            <input type="text" id="Read_Comment" name="read_comment" class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}" placeholder="Enter Read Comment">
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- second form right side closer div is next -->
         </div>
-        <!-- second form right side closer div is next -->
-        </div>
-
-
-
-
 
 
         <div class="row custodis">
-
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center avtard">
-                    <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Profile Picture</label>
-                    <div style="position: relative;">
-                        <img src="../assets/img.png" alt="avatar" class="avtarc">
-
+            @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center  avtard">
+                        <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
+                    <div class="avtarset" style="position: relative;">
+                        <!-- Image Preview -->
+                        <img id="preview_{{ $imageType }}" class="avtars avtarc" src="{{ asset('assets/img.png') }}" alt="avatar">
+                        
+                        <!-- File Input (Hidden by Default) -->
+                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
+                            style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
+        
                         <div class="divedit">
-                            <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
-                            <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center  avtard">
-                    <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">Signature</label>
-                    <div style="position: relative;">
-                        <img src="../assets/img.png" alt="avatar" class="avtarc">
-
-                        <div class="divedit">
-                            <img class="editstyle" src="../assets/img/edit (1).png" alt="edit"
-                                style="width: 20px; height: 20px;">
-                            <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete"
-                                style="width: 20px; height: 20px;">
+                            <img class="editstyle" src="../assets/img/edit (1).png" alt="edit" style="width: 20px; height: 20px;">
+                            <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete" style="width: 20px; height: 20px;">
                         </div>
                     </div>
                 </div>
@@ -318,22 +285,9 @@
                             <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center avtard">
-                    <label class="foncolor" for="Read_Comment" style="margin-right: 10px;">License Picture</label>
-                    <div style="position: relative;">
-                        <img src="../assets/img.png" alt="avatar" class="avtarc">
-
-                        <div class="divedit">
-                            <img class="editstyle" src="../assets/img/edit (1).png" alt="edit">
-                            <img class="editstyle" src="../assets/img/dlt (1).png" alt="delete">
-                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
 
 
@@ -346,15 +300,15 @@
                 <div class="input-block mb-3">
                     <label class="foncolor" for="status">Status</label>
 
-                    <div class="status-toggle">
-                        <span>Active</span>
-                        <input id="status" class="check" type="checkbox" name="status">
-                        <label for="status" class="checktoggle checkbox-bg togc"></label>
-                        <span class="">Inactive</span>
-                    </div>
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                        <div class="status-toggle">
+                            <span>Active</span>
+                            <input id="status" class="check" type="checkbox" name="status" >
+                            <label for="status" class="checktoggle checkbox-bg togc"></label>
+                            <span class="">Inactive</span>
+                        </div>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
 
                 </div>
             </div>
@@ -362,14 +316,14 @@
             <div style="margin-top:22px;">
                 <div class="add-customer-btns ">
 
-                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                        <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
 
                     <button type="submit" class="btn btn-primary ">Submit</button>
 
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
+            </div>
 
         <!-- <div style="margin-top:22px;">
                 <div class="add-customer-btns ">
@@ -477,4 +431,20 @@
             });
         });
     });
+
 </script>
+{{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#rating_6').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#inactiveText').removeClass('faded');
+                    $('#activeText').addClass('faded');
+                } else {
+                    $('#activeText').removeClass('faded');
+                    $('#inactiveText').addClass('faded');
+                }
+            });
+        });
+    </script>

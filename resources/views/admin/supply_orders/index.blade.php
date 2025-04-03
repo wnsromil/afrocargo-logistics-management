@@ -143,7 +143,7 @@
 			</div>
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -186,7 +186,7 @@
                             
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -230,7 +230,7 @@
                             
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -274,7 +274,7 @@
                             
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
                             
@@ -341,7 +341,7 @@
 			</div>
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -410,7 +410,7 @@
 			</div>
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -457,7 +457,7 @@
                             
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -525,7 +525,7 @@
 			</div>
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 <!-- nine line started -->
@@ -591,7 +591,7 @@
 			</div>
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
 
@@ -658,7 +658,7 @@
 			</div>
                                </td>
                                <td class="btntext">
-                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="../assets/img/ordereye.png"></button>
+                             <button onClick= "redirectTo('{{route('admin.orderdetails')}}')"class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                               </td>
                             </tr>
                             <!-- @forelse ($parcels as $index => $parcel)

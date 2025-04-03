@@ -407,8 +407,8 @@ table thead.set {
 }
 
 .avatar-edit {
-    bottom: 275px;
-    right: 70px;
+    top: 0;
+    right: 40px;
     color: white;
     background-color: #203A5F;
     /* position: top 0px right 0px; */
@@ -426,8 +426,8 @@ table thead.set {
 }
 
 .avatar-trash {
-    bottom: 275px;
-    right: 25px;
+    top: 0;
+    right: 0;
     color: white;
     border-radius: 50%;
     background-color: #BB1F23;
@@ -435,6 +435,12 @@ table thead.set {
     position: absolute;
     justify-content: center;
     align-items: center;
+}
+
+label.profile-img img{
+    object-fit: cover;
+    height: 250px;
+    max-width: 250px;
 }
 
 .required::after {

@@ -81,10 +81,10 @@
                     </div>
                 </div> -->
 
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 mobile_code">
 
                     <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
-                    <input type="tel" id="mobile_code" name="phone" class="form-control inp"
+                    <input type="tel" id="mobile_code" name="phone" class=" form-control inp"
                         placeholder="Enter Mobile No.">
                         @error('phone')
                         <span class="text-danger">{{ $message }}</span>
@@ -93,42 +93,40 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status" class="foncolor">Status</label>
-                        <!-- <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active">
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
-                        </div> -->
-                        <label class="foncolor divform" for="in_status">Status</label>
+                <div class="col-lg-4 col-md-6 col-sm-12 align-center">
+                    <div class="mb-3 float-end">
+                        <label for="in_status">Status</label>
                         <div class="d-flex align-items-center text-dark">
                             <p class="profileUpdateFont" id="activeText">Active</p>
                             <div class="status-toggle px-2">
-                                <input id="rating_6" class="check" type="checkbox" value="Inactive">
-                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
+                                <input id="rating_16" class="check" type="checkbox" value="Inactive">
+                                <label for="rating_16" class="checktoggle tog-circle checkbox-bg">checkbox</label>
                             </div>
                             <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                         </div>
 
-                        @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
+                    {{-- change status --}}
+                <input id="status" class="check" name="status" type="hidden" value="Active">
                 </div>
             </div>
         </div>
 
         <div class="add-customer-btns text-end">
 
-            <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
+            <button type="button" onclick="redirectTo('{{route('admin.warehouse_manager.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>
 
             <button type="submit" class="btn btn-primary ">Submit</button>
 
         </div>
     </form>
+    @section('script')
+    <script>
+        $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+        $('.col-md-12').on('click', () => {            
+            $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+        })
+    </script>
+    @endsection
 </x-app-layout>
