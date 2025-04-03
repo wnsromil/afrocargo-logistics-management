@@ -30,6 +30,20 @@ use App\Mail\RegistorMail;
 Route::group(['middleware'=>'auth'],function () {
 
     Route::middleware('authCheck')->group(function(){
+
+        Route::get('/seed/{class?}', function ($class = null) {
+            $command = 'db:seed';
+        
+            if ($class) {
+                $command .= " --class=$class";
+            }
+        
+            Artisan::call($command, ['--force' => true]);
+        
+            return response()->json([
+                'message' => $class ? "$class seeding completed successfully!" : 'Database seeding completed!',
+            ]);
+        });
     
         // Run Migrations (Optional Path)
         Route::get('/migrate/{path?}', function ($path = null) {
