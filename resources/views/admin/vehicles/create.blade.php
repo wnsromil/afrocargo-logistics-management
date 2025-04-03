@@ -335,28 +335,66 @@
                     </div>
                 </div>
 
+         <!-- <div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_number" class="foncolor">Seal No.<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                            value="{{ old('vehicle_number') }}">
+                        @error('vehicle_number')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_number" class="foncolor">Container No.1<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                            value="{{ old('vehicle_number') }}">
+                        @error('vehicle_number')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+      
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_number" class="foncolor">Container No.2<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="vehicle_number" class="form-control inp" placeholder=" Enter Vehicle No."
+                            value="{{ old('vehicle_number') }}">
+                        @error('vehicle_number')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+             
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="warehouse_location" class="foncolor">Container Size <i
+                                class="text-danger">*</i></label>
+                        <select name="warehouse_name" class="js-example-basic-single select2">
+                            <option value="">Select Container Size</option>
+                            <option>40"</option>
+                            <option>20 feet</option>
+                        </select>
+
+                        @error('warehouse_name')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div> -->
+
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="status" class="foncolor">Status</label>
-                        <!-- <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active">
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
-                        </div> -->
-
-                        {{-- <div class="d-flex align-items-center">
-                            <p class="profileUpdateFont" id="activeText">Active</p>
-                            <div class="status-toggle px-2">
-                                <input id="rating_6" class="check" type="checkbox" value="Inactive">
-                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
-                            </div>
-                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
-                        </div> --}}
-
                         <div class="status-toggle">
                             <span>Active</span>
                             <input id="rating_1" class="check" type="checkbox" checked>
@@ -411,4 +449,6 @@
             }
         });
     </script>
+
+    
 </x-app-layout>
