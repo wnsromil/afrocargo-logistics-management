@@ -158,8 +158,7 @@
                                     <li class="nav-item dropdown">
                                         <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                            <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                            <span class="user-content droparrow">
                                                 <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                             </span>
                                         </a>
@@ -263,8 +262,7 @@
                         <li class="nav-item dropdown">
                             <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                <span class="user-content droparrow droparrow">
                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
@@ -374,8 +372,7 @@
                         <li class="nav-item dropdown">
                             <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                <span class="user-content droparrow droparrow">
                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
@@ -563,8 +560,7 @@
                         <li class="nav-item dropdown">
                             <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                <span class="user-content droparrow droparrow" >
                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
@@ -753,8 +749,7 @@
                         <li class="nav-item dropdown">
                             <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                <span class="user-content droparrow droparrow">
                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
@@ -949,8 +944,7 @@
                         <li class="nav-item dropdown">
                             <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                <span class="user-content droparrow droparrow">
                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>
@@ -1054,8 +1048,7 @@
                         <li class="nav-item dropdown">
                             <a class="amargin" href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 
-                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-    height: 26px;align-content: center;">
+                                <span class="user-content droparrow droparrow">
                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                 </span>
                             </a>

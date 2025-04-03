@@ -91,7 +91,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 25.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -182,7 +182,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 2.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 2.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -274,7 +274,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 3.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 3.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -365,7 +365,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 25.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -457,7 +457,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 2.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 2.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -548,7 +548,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 3.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 3.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -640,7 +640,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 25.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -731,7 +731,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 2.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 2.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -823,7 +823,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 3.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 3.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">
@@ -913,7 +913,7 @@
                                 </td>
                                 <td>12-12-2024</td>
                                 <td class="img-size">
-                                    <img src="../assets/img/Rectangle 25.png" alt="Picture.png">
+                                    <img src="{{asset('assets/img/Rectangle 25.png')}}" alt="Picture.png">
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-between fw-medium td-color">

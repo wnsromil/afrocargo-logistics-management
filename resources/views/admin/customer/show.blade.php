@@ -1,10 +1,21 @@
 <x-app-layout>
-
+@section('style')
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+        </style>
+    @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
+            {{ __('Customer Detail') }}
         </h2>
     </x-slot>
+    @section('content')
+    <div class="content-page-header mb-4">
+        <h5 class="setting-menu">User Detail</h5>
+    </div>
+    @endsection
     <div class="customerhead">
         <div class="d-flex">
             <div>
@@ -144,7 +155,7 @@
 
         <div class="col-4">
             <div class="d-flex align-items-center">
-                <p class="phead" style="margin-bottom: 0;">Contract Picture </p>
+                <p class="phead" style="margin-bottom: 0;">Contract Signature </p>
                     @if ($user->signature_img)
                     <img src="{{ asset('storage/' . $user->contract_signature_img) }}" alt="license"
                         style="margin-left: 15px; max-width: 150px;">

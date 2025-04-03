@@ -92,7 +92,7 @@
                                 <td>Message Notification #41</td>
                                 <td>All</td>
                                 <td>02-12-2025 11:40 AM</td>
-                                <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                                <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                                 <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -110,7 +110,7 @@
                                 <td>Message Notification #42</td>
                                 <td>Warehouse</td>
                                 <td>02-11-2025 11:50 AM</td>
-                                <td><div class="container"><img src="../assets/img/checkbox.png"><p>Active</p></div></td>
+                                <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}"><p>Active</p></div></td>
                                 <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -129,7 +129,7 @@
                             <td>Message Notification #43</td>
                             <td>Users</td>
                             <td>02-10-2025 10:40 AM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -148,7 +148,7 @@
                             <td>Message Notification #44</td>
                             <td>Drivers</td>
                             <td>02-09-2025 10:40 AM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -167,7 +167,7 @@
                             <td>Message Notification #45</td>
                             <td>Drivers</td>
                             <td>02-15-2025 11:40 AM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -186,7 +186,7 @@
                             <td>Message Notification #46</td>
                             <td>Warehouse</td>
                             <td>02-14-2025 11:40 AM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -205,7 +205,7 @@
                             <td>Message Notification #47</td>
                             <td>User</td>
                             <td>02-02-2025 11:40 AM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -224,7 +224,7 @@
                             <td>Message Notification #48</td>
                             <td>Drivers</td>
                             <td>02-03-2025 11:40 AM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>  <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 															<div class="dropdown-menu dropdown-menu-end">
@@ -243,7 +243,7 @@
                             <td>Message Notification #40</td>
                             <td>Drivers</td>
                             <td>02-14-2025 11:40 PM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>
                             <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -264,7 +264,7 @@
                             <td>Message Notification #50</td>
                             <td>All</td>
                             <td>02-22-2025 10:10 PM</td>
-                            <td><div class="container"><img src="../assets/img/checkbox.png">Active</div></td>
+                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
                             <td>
                             <div class="dropdown dropdown-action container">
 															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
