@@ -41,6 +41,7 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-3">
                                 {{ @$user->name ?? '--'}} {{ @$user->last_name ?? ''}}</h6>
+                                <p class="fs_14 fw_400 col00 mb-0"> {{ ucfirst(auth()->user()->role ?? '') }}</p>
                         </div>
                     </div>
                 </div>

@@ -174,7 +174,7 @@ table thead.set {
 
 .cardAnalyticsSize {
     color: black;
-    font-size: 16px;
+    font-size: 16px !important;
 }
 
 .form-header h4.font16 {
@@ -380,7 +380,7 @@ table thead.set {
 }
 
 .profileBg {
-    background: transparent;
+    background: transparent !important;
 }
 
 .profileImg {
@@ -407,8 +407,8 @@ table thead.set {
 }
 
 .avatar-edit {
-    bottom: 275px;
-    right: 70px;
+    top: 0;
+    right: 40px;
     color: white;
     background-color: #203A5F;
     /* position: top 0px right 0px; */
@@ -426,8 +426,8 @@ table thead.set {
 }
 
 .avatar-trash {
-    bottom: 275px;
-    right: 25px;
+    top: 0;
+    right: 0;
     color: white;
     border-radius: 50%;
     background-color: #BB1F23;
@@ -435,6 +435,12 @@ table thead.set {
     position: absolute;
     justify-content: center;
     align-items: center;
+}
+
+label.profile-img img{
+    object-fit: cover;
+    height: 250px;
+    max-width: 250px;
 }
 
 .required::after {
@@ -478,9 +484,15 @@ table thead.set {
 }
 
 .stock-font {
-    font-size: 11px;
+    font-size: 11px !important;
     border-radius: 4px;
     /* font-weight: 600px; */
+}
+
+.checktoggle:after {
+    border: none !important;
+    height: 16px !important;
+    width: 16px !important;
 }
 
 .input-box {
@@ -493,7 +505,7 @@ table thead.set {
 
 .input-width {
     /* height: 21px; */
-    width: 55px;
+    width: 75px;
     font-size: 10px;
     border-radius: 0px;
 }
@@ -504,6 +516,8 @@ table thead.set {
     margin: 0px 5px 0px 5px;
 }
 
+
+
 .active2 {
     text-decoration: none !important;
     border-bottom: 4px solid black !important;
@@ -511,6 +525,20 @@ table thead.set {
     font-size: 16px !important;
     font-weight: 700px !important;
 }
+
+.active3{
+    text-decoration: none;
+    border-bottom: 4px solid #203A5F !important;
+    font-weight: 800px !important;
+    color: #203A5F !important;
+    position: relative !important;
+}
+.authTabDiv {
+    border-bottom: 2px solid #737B8B !important;
+    width: max-content !important;
+
+}
+
 
 .btn-check:checked+.btn,
 .btn.active,
@@ -595,6 +623,9 @@ table thead.set {
     background-size: cover;
 }
 
+.form-control:disabled, .select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: white !important;
+}
 
 h6 {
     font-size: 30px;
@@ -605,9 +636,9 @@ h6 {
 .btnBorder {
     border: none;
     color: black;
-    margin-bottom: -2px;
+    margin-bottom: -3px;
+    font-weight: 700px !important;
 }
-
 
 .setColor {
     color: black;
@@ -1771,7 +1802,9 @@ body.mini-sidebar.expand-menu .sidebar {
 }
 
 .content-page-header.tomain {
-    margin-bottom: 24px;
+    align-items: top !important;
+    -webkit-align-items: top !important;
+    margin: 0 0 0 0 !important;
 }
 
 .invoiceForm {

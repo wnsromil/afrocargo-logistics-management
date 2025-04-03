@@ -11,6 +11,8 @@ use DB;
 use Hash;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
+use App\Mail\RegistorMail;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -21,15 +23,44 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-
-        $customers = User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->where('is_deleted', 'No')->where('role_id', 3)->latest('id')->paginate(5);
-
-
-        return view('admin.customer.index', compact('customers'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
+    
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->where('is_deleted', 'No')
+            ->where('role_id', 3)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%");
+                        // ->orWhereHas('warehouse.country', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // })
+                        // ->orWhereHas('warehouse.state', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // })
+                        // ->orWhereHas('warehouse.city', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // });
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+            $serialStart = ($currentPage - 1) * $perPage;
+        if ($request->ajax()) {
+            return view('admin.customer.table', compact('customers', 'serialStart'))->render();
+        }
+    
+        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -53,9 +84,16 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'mobile_code' => 'required|digits:10',
-            'email' => 'required|string|max:255|unique:users,email',
-            'alternate_mobile_no' => 'nullable|digits:10',
+            'mobile_code' => 'required|max:13|unique:users,phone',
+            'email' => [
+                'required',
+                'email',
+                'string',
+                'max:255',
+                'unique:users,email',
+                'regex:/^[a-zA-Z0-9._%+-]+@gmail\.[a-zA-Z]{2,}$/'
+            ],
+            'alternate_mobile_no' => 'nullable|max:13',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
             'state' => 'required|string',
@@ -66,10 +104,11 @@ class CustomerController extends Controller
             'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
-            'country_code' => 'required|string',
+            'country_code' => 'required',
             'country_code_2' => 'required|string',
 
         ]);
+       
 
          try {
         
@@ -92,12 +131,12 @@ class CustomerController extends Controller
                 }
             }
         }
-      
+    
 
         // 🛠 Mapping Request Fields to Database Fields
         $userData = [
             'name'          => $validated['first_name'],
-            'email'          => $validated['email'],
+            'email'          => $validated['email'] ?? null,
             'phone'   => $validated['mobile_code'],
             'phone_2'      => $validated['alternate_mobile_no'] ?? null, // Optional Field
             'address'        => $validated['address_1'],
@@ -107,26 +146,26 @@ class CustomerController extends Controller
             'city_id'        => $validated['city'],
             'pincode'            => $validated['Zip_code'],
             'password'       => Hash::make($validated['password']),
-            'status'      => ($request->status === 'on') ? 'Inactive' : 'Active',
-            'company_name'        => $request->company_name,
-            'apartment'        => $request->apartment,
+            'status' => $request->status ?? 'Active',
+            'company_name'        => $request->company_name ?? null,
+            'apartment'        => $request->apartment ?? null,
             'username'      => $validated['username'],
             'latitude'       => $validated['latitude'] ?? null, // Optional Field
             'longitude'      => $validated['longitude'] ?? null, // Optional Field
-            'website_url'        => $request->website_url,
-            'write_comment'        => $request->write_comment,
-            'read_comment'        => $request->read_comment,
-            'language'        => $request->language,
-            'year_to_date'        => $request->year_to_date,
-            'license_number'        => $request->license_number,
-            'warehouse_id'        => $request->warehouse_id,
+            'website_url'        => $request->website_url ?? null,
+            'write_comment'        => $request->write_comment ?? null,
+            'read_comment'        => $request->read_comment ?? null,
+            'language'        => $request->language ?? null,
+            'year_to_date'        => $request->year_to_date ?? null,
+            'license_number'        => $request->license_number ?? null,
+            'warehouse_id'        => $request->warehouse_id ?? null,
             'signature_img' => $imagePaths['signature'] ?? null,
             'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
             'license_document' => $imagePaths['license_picture'] ?? null,
             'profile_pic' => $imagePaths['profile_pics'] ?? null,
             'signup_type' => 'for_admin',
-            'country_code'        => $request->country_code,
-            'country_code_2'        => $request->country_code_2,
+            'country_code'        => $request->country_code ?? null,
+            'country_code_2'        => $request->country_code_2 ?? null,
         ];
         if (!empty($request->license_expiry_date)) {
             $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -139,10 +178,22 @@ class CustomerController extends Controller
         // 📌 Create User
         $user = User::create($userData);
 
+ 
+        // Example dynamic data
+        $userName = $validated['first_name'];
+        $email = $validated['email'] ?? null;
+        $mobileNumber = $validated['mobile_code'];
+        $password = $validated['password'];
+        $loginUrl = route('login');
+
+        // Send the email
+        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
+
         return redirect()->route('admin.customer.index')
             ->with('success', 'User created successfully');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (\Throwable $th) {
             // Validation Errors dikhane ke liye
+            return  $th;
             return back()->with('errors',$e->getMessage());
         }
     }
@@ -206,7 +257,6 @@ class CustomerController extends Controller
     
         $user = User::findOrFail($id);
         $imagePaths = [];
-    
         // 🔹 File Upload Handling
         foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
             if ($request->hasFile($imageType)) {
@@ -235,7 +285,7 @@ class CustomerController extends Controller
             'state_id'    => $validated['state'],
             'city_id'     => $validated['city'],
             'pincode'     => $validated['Zip_code'],
-            'status'      => ($request->status === 'on') ? 'Inactive' : 'Active',
+            'status' => $request->status ?? 'Active',
             'company_name' => $request->company_name,
             'apartment'   => $request->apartment,
             'username'    => $validated['username'],

@@ -1,5 +1,6 @@
 <?php
-
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Admin\{
@@ -24,12 +25,55 @@ use App\Http\Controllers\Web\Admin\{
     NotificationScheduleController,
     RoleManagementController
 };
+use App\Mail\RegistorMail;
 
+Route::group(['middleware'=>'auth'],function () {
+
+    Route::middleware('authCheck')->group(function(){
+    
+        // Run Migrations (Optional Path)
+        Route::get('/migrate/{path?}', function ($path = null) {
+            $command = 'migrate';
+
+            if ($path) {
+                $command .= " --path=database/migrations/$path";
+            }
+
+            Artisan::call($command, ['--force' => true]);
+
+            return response()->json([
+                'message' => $path ? "Migration for $path ran successfully!" : 'All migrations ran successfully!',
+            ]);
+        });
+
+        // Rollback Migrations (Optional Path)
+        Route::get('/migrate-rollback/{path?}', function ($path = null) {
+            $command = 'migrate:rollback';
+
+            if ($path) {
+                $command .= " --path=database/migrations/$path";
+            }
+
+            Artisan::call($command, ['--force' => true]);
+
+            return response()->json([
+                'message' => $path ? "Rollback for $path completed!" : 'Last batch of migrations rolled back!',
+            ]);
+        });
+    });
+});
+
+
+Route::get('/send', function () {
+    Mail::to('krishnapawarwns@gmail.com')->send(new  RegistorMail());
+    return [
+        'message' => 'Welcome to this api',
+    ];
+});
 
 Route::get('/', function () {
     return view('auth.login');
 });
-
 Route::get('/customeruser', function () {
     return view('admin.customeruser.user');
 });
