@@ -45,7 +45,7 @@
                             </div>
                         </span>
                         <div class="customer-details-cont">
-                            <h6 class="fs_20 fw_600 col00 mb-1">Drek Amiko</h6>
+                            <h6 class="fs_20 fw_600 col00 mb-1">{{ $user->name ?? 'Drek Amiko' }}</h6>
                             <p class="col3A fw_500">Driver</p>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         </span>
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">License No.</h6>
-                            <p class="col3A fw_500">{{ $user->address ?? 'KNG5567854' }}</p>
+                            <p class="col3A fw_500">{{ $user->license_number ?? 'KNG5567854' }}</p>
                         </div>
                     </div>
                 </div>

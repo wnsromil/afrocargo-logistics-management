@@ -136,7 +136,7 @@
                                     <td class="d-flex align-items-center">
 
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                            <a href="#" class=" btn-action-icon profileBg" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
@@ -150,7 +150,7 @@
                                                             href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <a class="dropdown-item activate" href="javascript:void(0)"
                                                             data-id="{{ $vehicle->id }}" data-status="Active">
                                                             <i class="fa-solid fa-power-off me-2"></i>Activate
@@ -161,7 +161,7 @@
                                                             data-id="{{ $vehicle->id }}" data-status="Inactive">
                                                             <i class="far fa-bell-slash me-2"></i>Deactivate
                                                         </a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>

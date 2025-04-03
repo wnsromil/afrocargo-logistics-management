@@ -73,7 +73,7 @@
                         <table class="table table-stripped table-hover datatable">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>Sn no.</th>
+                                    <th>S. No.</th>
                                     <th>Warehouse Name</th>
                                     <th>Driver Name</th>
                                     <th>Phone</th>
@@ -131,7 +131,7 @@
                                         <a href="customers-ledger.html" class="btn btn-greys me-2"><i
                                                 class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                <a href="#" class="btn-action-icon profileBg" data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <ul>
@@ -145,7 +145,7 @@
                                                                 href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
                                                                     class="far fa-eye me-2"></i>View</a>
                                                         </li>
-                                                        <li>
+                                                        <!-- <li>
                                                             <a class="dropdown-item activate" href="javascript:void(0)"
                                                                 data-id="{{ $warehouse->id }}" data-status="Active">
                                                                 <i class="fa-solid fa-power-off me-2"></i>Activate
@@ -157,7 +157,7 @@
                                                                 data-id="{{ $warehouse->id }}" data-status="Inactive">
                                                                 <i class="far fa-bell-slash me-2"></i>Deactivate
                                                             </a>
-                                                        </li>
+                                                        </li> -->
                                                     </ul>
                                                 </div>
                                             </div>

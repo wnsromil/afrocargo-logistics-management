@@ -4,10 +4,10 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Edit Driver
+        <p class="subhead">Edit Driver</p>
     </x-slot>
 
-    <form action="{{ route('admin.drivers.update',$manager_data->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.drivers.update', $manager_data->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group-customer customer-additional-form">
@@ -19,7 +19,7 @@
                         <select name="warehouse_name" class="form-control">
                             <option value="">Select Warehouse Name</option>
                             @foreach($warehouses as $warehouse)
-                                <option {{ $manager_data->warehouse_id ?? old('warehouse_name')  == $warehouse->id ? 'selected' :'' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                <option {{ $manager_data->warehouse_id ?? old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
 
@@ -33,7 +33,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="driver_name">Driver Name<i class="text-danger">*</i></label>
-                        <input type="text" name="driver_name" class="form-control" placeholder="Enter Warehouse Code"  value="{{$manager_data->name ?? old('driver_name') }}">
+                        <input type="text" name="driver_name" class="form-control" placeholder="Enter Warehouse Code"
+                            value="{{$manager_data->name ?? old('driver_name') }}">
                         @error('driver_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -47,7 +48,7 @@
                         <input type="email" name="email" class="form-control" placeholder="Enter Contact Number"
                             value="{{$manager_data->email ?? old('email') }}">
                         @error('email')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div> --}}
@@ -57,7 +58,7 @@
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
                         <input type="text" name="phone" class="form-control" placeholder="Enter Contact Number"
-                        value="{{$manager_data->phone ?? old('phone') }}">
+                            value="{{$manager_data->phone ?? old('phone') }}">
                         @error('phone')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -69,7 +70,7 @@
                     <div class="input-block mb-3">
                         <label for="address">Address </label>
                         <input type="text" name="address" class="form-control" placeholder="Enter Address"
-                        value="{{$manager_data->address ?? old('address') }}">
+                            value="{{$manager_data->address ?? old('address') }}">
                         @error('address')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -83,7 +84,7 @@
                         <input type="text" name="password" class="form-control" placeholder="Enter Contact Number"
                             value="{{ old('password') }}">
                         @error('password')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div> --}}
@@ -91,10 +92,10 @@
                 {{-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="phone">Confirm Password </label>
-                        <input type="text" name="confirm-password" class="form-control" placeholder="Enter Contact Number"
-                            value="{{ old('confirm-password') }}">
+                        <input type="text" name="confirm-password" class="form-control"
+                            placeholder="Enter Contact Number" value="{{ old('confirm-password') }}">
                         @error('confirm-password')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div> --}}
@@ -154,6 +155,21 @@
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="in_status">Status</label>
+                        <div class="status-toggle d-flex align-items-center">
+                            <span id="inactiveText" class="bold">Active</span>
+                            <input id="cb-switch" class="check" type="checkbox" name="status" value="Active"
+                            {{ old('status', $manager_data->status) == 'Inactive' ? 'checked' : '' }}>
+                            <label for="cb-switch" class="checktoggle checkbox-bg togc"></label>
+                            <span id="activeText">Inactive</span>
+                        </div>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="status">Status</label>
                         <div class="toggle-switch">
@@ -164,19 +180,41 @@
                                 </span>
                             </label>
                         </div>
-
-
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
         <div class="add-customer-btns text-end">
+            <button type="button" onclick="redirectTo('{{route('admin.drivers.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+        <!-- <div class="add-customer-btns text-end">
             <a href="{{ route('admin.drivers.index') }}" class="btn customer-btn-cancel">Cancel</a>
             <button type="submit" class="btn customer-btn-save">Update</button>
-        </div>
+        </div> -->
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let statusToggle = document.getElementById("cb-switch");
+            let activeText = document.getElementById("activeText");
+            let inactiveText = document.getElementById("inactiveText");
+            function updateTextColor() {
+                if (statusToggle.checked) {
+                    activeText.classList.add("bold");
+                    inactiveText.classList.remove("bold");
+                } else {
+                    activeText.classList.remove("bold");
+                    inactiveText.classList.add("bold");
+                }
+            }
+            updateTextColor();
+            statusToggle.addEventListener("change", updateTextColor);
+        });
+    </script>
 </x-app-layout>
