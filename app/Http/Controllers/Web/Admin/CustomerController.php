@@ -23,15 +23,43 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-
-        $customers = User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->where('is_deleted', 'No')->where('role_id', 3)->latest('id')->paginate(5);
-
-
-        return view('admin.customer.index', compact('customers'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+    
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->where('is_deleted', 'No')
+            ->where('role_id', 3)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%");
+                        // ->orWhereHas('warehouse.country', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // })
+                        // ->orWhereHas('warehouse.state', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // })
+                        // ->orWhereHas('warehouse.city', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // });
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+    
+        if ($request->ajax()) {
+            return view('admin.customer.table', compact('customers'))->render();
+        }
+    
+        return view('admin.customer.index', compact('customers', 'search', 'perPage'));
     }
-
     /**
      * Show the form for creating a new resource.
      *

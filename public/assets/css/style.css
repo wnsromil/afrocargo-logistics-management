@@ -2290,7 +2290,7 @@ div.dataTables_wrapper div.dataTables_info {
   color: #333;
 }
 .pagination li a:hover {
-  background: #7539FF;
+  background: #0d6efd;
   color: #fff;
 }
 .pagination li a:focus {
@@ -2298,8 +2298,8 @@ div.dataTables_wrapper div.dataTables_info {
   box-shadow: none;
 }
 .pagination li.active a.page-link {
-  background: #7539FF;
-  border-color: #7539FF;
+  background: #0d6efd;
+  border-color: #0d6efd;
   border-radius: 5px;
 }
 @media (max-width: 320px) {

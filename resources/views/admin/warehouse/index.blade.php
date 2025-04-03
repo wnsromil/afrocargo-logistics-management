@@ -119,7 +119,6 @@
 
                         </tbody>
                 
-                       
                     </table>
 
                 </div>
@@ -136,8 +135,6 @@
                 </select>
                 <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
             </div>
-        
-        
             <div class="col-md-6">
                 <div class="float-end">
                     <div class="bottom-user-page mt-3">
