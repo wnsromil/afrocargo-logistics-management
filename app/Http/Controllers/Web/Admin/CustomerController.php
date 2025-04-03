@@ -88,10 +88,8 @@ class CustomerController extends Controller
             'email' => [
                 'required',
                 'email',
-                'string',
                 'max:255',
                 'unique:users,email',
-                'regex:/^[a-zA-Z0-9._%+-]+@gmail\.[a-zA-Z]{2,}$/'
             ],
             'alternate_mobile_no' => 'nullable|max:13',
             'address_1' => 'required|string|max:255',
@@ -100,8 +98,8 @@ class CustomerController extends Controller
             'city' => 'required|string',
             'Zip_code' => 'required|string|max:10',
             'username' => 'required|string|max:255|unique:users,username',
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required|string',
+            // 'password' => 'required|string|min:6|confirmed',
+            // 'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
             'country_code' => 'required',
@@ -145,7 +143,7 @@ class CustomerController extends Controller
             'state_id'       => $validated['state'],
             'city_id'        => $validated['city'],
             'pincode'            => $validated['Zip_code'],
-            'password'       => Hash::make($validated['password']),
+            'password'       => Hash::make(1235678),
             'status' => $request->status ?? 'Active',
             'company_name'        => $request->company_name ?? null,
             'apartment'        => $request->apartment ?? null,
@@ -183,7 +181,7 @@ class CustomerController extends Controller
         $userName = $validated['first_name'];
         $email = $validated['email'] ?? null;
         $mobileNumber = $validated['mobile_code'];
-        $password = $validated['password'];
+        $password =12345678;
         $loginUrl = route('login');
 
         // Send the email
@@ -241,7 +239,12 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'contact_no1' => 'required|digits:10',
-            'email' => 'required|string|max:255|unique:users,email,' . $id,
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email',
+            ],
             'alternate_mobile_no' => 'nullable|digits:10',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
@@ -249,8 +252,8 @@ class CustomerController extends Controller
             'city' => 'required|string',
             'Zip_code' => 'required|string|max:10',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
-            'password' => 'nullable|string|min:6|confirmed',
-            'password_confirmation' => 'nullable|string',
+            // 'password' => 'nullable|string|min:6|confirmed',
+            // 'password_confirmation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric'
         ]);

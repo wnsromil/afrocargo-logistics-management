@@ -234,15 +234,14 @@
 
                     <div class="col-md-12">
                         <label class="foncolor" for="Write_Comment">Write Comment</label>
-                        <input type="text" id="Write_Comment" name="write_comment" class="form-control inp commenth"
-                            value="{{ old('write_comment', $user->write_comment) }}" placeholder="Enter Write Comment">
+                        <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3" placeholder="Enter Write Comment">{{ old('write_comment', $user->write_comment) }}</textarea>
                     </div>
-
+                    
                     <div class="col-md-12">
                         <label class="foncolor" for="Read_Comment">Read Comment</label>
-                        <input type="text" id="Read_Comment" name="read_comment" class="form-control inp commenth"
-                            value="{{ old('read_comment', $user->read_comment) }}" placeholder="Enter Read Comment">
+                        <textarea id="Read_Comment" name="read_comment" class="form-control inp commenth" rows="3" placeholder="Enter Read Comment">{{ old('read_comment', $user->read_comment) }}</textarea>
                     </div>
+                    
                 </div>
                 <!-- second form right side closer div is next -->
             </div>

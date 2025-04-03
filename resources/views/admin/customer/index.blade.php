@@ -87,9 +87,7 @@
                                     <th>Container No.</th>
                                     <th>License ID</th>
                                     <th>Phone</th>
-                                    <th>Phone 2</th>
                                     <th>Address</th>
-                                    <th>Address 2</th>
                                     <th style="text-align: center;">Status</th>
                                     <th>Action</th>
 
@@ -119,10 +117,12 @@
                                         <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
                                         <td>-</td>
                                         <td>{{ $customer->license_number ?? '-' }}</td>
-                                        <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}</td>
-                                        <td>{{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}</td>
-                                        <td>{{ $customer->address ?? '-' }}</td>
-                                        <td>{{ $customer->address_2 ?? '-' }}</td>
+                                        <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}<br>
+                                            {{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}
+                                        </td>
+                                        <td>{{ $customer->address ?? '-' }}<br>
+                                            {{ $customer->address_2 ?? '-' }}
+                                        </td>
                                         <td>
                                             @if ($customer->status == 'Active')
                                                 <div class="container">

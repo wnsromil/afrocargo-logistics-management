@@ -20,24 +20,37 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
+        $currentPage = $request->input('page', 1); // ✅ Current page number
+    
         $vehicles = Vehicle::with(['driver', 'warehouse'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
-            ->when($request->search, function ($q) use ($request) {
-                $q->where('vehicle_type', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('driver', function ($q) use ($request) {
-                        $q->where('name', 'like', '%' . $request->search . '%');
+            ->when($query, function ($q) use ($query) {
+                return $q->where('vehicle_type', 'like', '%' . $query . '%')
+                    ->orWhereHas('driver', function ($q) use ($query) {
+                        $q->where('name', 'like', '%' . $query . '%');
                     })
-                    ->orWhereHas('warehouse', function ($q) use ($request) {
-                        $q->where('warehouse_name', 'like', '%' . $request->search . '%');
+                    ->orWhereHas('warehouse', function ($q) use ($query) {
+                        $q->where('warehouse_name', 'like', '%' . $query . '%');
                     });
             })
             ->latest()
-            ->paginate(10);
-
-        return view('admin.vehicles.index', compact('vehicles'));
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]); // ✅ URL parameters add karega
+    
+        // ✅ Serial number start point
+        $serialStart = ($currentPage - 1) * $perPage;
+    
+        if ($request->ajax()) {
+            return view('admin.vehicles.table', compact('vehicles', 'serialStart'))->render();
+        }
+    
+        return view('admin.vehicles.index', compact('vehicles', 'query', 'perPage', 'serialStart'));
     }
+    
 
 
 
