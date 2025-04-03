@@ -25,6 +25,7 @@ class CustomerController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
     
         $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
             ->when($this->user->role_id != 1, function ($q) {
@@ -53,12 +54,12 @@ class CustomerController extends Controller
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-    
+            $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.customer.table', compact('customers'))->render();
+            return view('admin.customer.table', compact('customers', 'serialStart'))->render();
         }
     
-        return view('admin.customer.index', compact('customers', 'search', 'perPage'));
+        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
     }
     /**
      * Show the form for creating a new resource.
@@ -81,12 +82,17 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-    
-        
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'mobile_code' => 'required|max:13|unique:users,phone',
-            'email' => 'required|string|max:255|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                'string',
+                'max:255',
+                'unique:users,email',
+                'regex:/^[a-zA-Z0-9._%+-]+@gmail\.[a-zA-Z]{2,}$/'
+            ],
             'alternate_mobile_no' => 'nullable|max:13',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
@@ -102,7 +108,7 @@ class CustomerController extends Controller
             'country_code_2' => 'required|string',
 
         ]);
-        
+       
 
          try {
         
@@ -251,7 +257,6 @@ class CustomerController extends Controller
     
         $user = User::findOrFail($id);
         $imagePaths = [];
-    
         // 🔹 File Upload Handling
         foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
             if ($request->hasFile($imageType)) {
