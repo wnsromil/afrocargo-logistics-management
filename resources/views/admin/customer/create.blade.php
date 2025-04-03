@@ -260,16 +260,14 @@
 
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Write_Comment">Write Comment</label>
-                            <input type="text" id="Write_Comment" name="write_comment" class="form-control inp commenth"
-                                value="{{ old('write_comment') }}" placeholder="Enter Write Comment">
+                            <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3" placeholder="Enter Write Comment">{{ old('write_comment') }}</textarea>
                         </div>
-
+                        
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Read_Comment">Read Comment</label>
-                            <input type="text" id="Read_Comment" name="read_comment"
-                                class="form-control inp commenth inputbackground" value="{{ old('read_comment') }}"
-                                placeholder="Enter Read Comment">
+                            <textarea id="Read_Comment" name="read_comment" class="form-control inp commenth inputbackground" rows="3" placeholder="Enter Read Comment">{{ old('read_comment') }}</textarea>
                         </div>
+                        
                     </div>
                 </div>
             </div>
