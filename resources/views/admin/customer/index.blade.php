@@ -53,7 +53,7 @@
                 <div class="usersearch d-flex usersserach">
                 <div class="top-nav-search">
                     <form>
-                    <input type="text" class="form-control forms" placeholder="Search ">
+                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search ">
                     </form>
                 </div>
                 
@@ -69,7 +69,7 @@
         </x-slot>
 
         
-        <div>
+        <div id='ajexTable'>
             <div class="card-table">
                 <div class="card-body">
                     <div class="table-responsive mt-3">
@@ -97,7 +97,7 @@
                             <tbody>
                                 @forelse ($customers as $index => $customer)
                                     <tr>
-                                        <td>{{ ++$index }}</td>
+                                        <td> {{ $serialStart + $index + 1 }}</td>
                                         <td>
                                             <h2 {{-- class="table-avatar" --}}>
                                                 <a href="{{ route('admin.customer.show', $customer->id) }}"
@@ -117,8 +117,12 @@
                                         <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
                                         <td>-</td>
                                         <td>{{ $customer->license_number ?? '-' }}</td>
-                                        <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}</td>
-                                        <td>{{ $customer->address ?? '-' }}</td>
+                                        <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}<br>
+                                            {{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}
+                                        </td>
+                                        <td>{{ $customer->address ?? '-' }}<br>
+                                            {{ $customer->address_2 ?? '-' }}
+                                        </td>
                                         <td>
                                             @if ($customer->status == 'Active')
                                                 <div class="container">
@@ -667,12 +671,26 @@
                     </div>
                 </div>
             </div>
+            <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+                <div class="col-md-6 d-flex p-2 align-items-center">
+                    <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                    <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                        <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="float-end">
+                        <div class="bottom-user-page mt-3">
+                            {!! $customers->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="bottom-user-page mt-3">
-            {!! $customers->links('pagination::bootstrap-5') !!}
-        </div>
-
 
         <!-- Delete Items Modal -->
         <div class="modal custom-modal fade" id="delete_modal" role="dialog">

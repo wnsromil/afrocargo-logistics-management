@@ -11,12 +11,12 @@
         @csrf
         @method('PUT')
         <div class="row d-flex" style="justify-content: space-between;">
-            <div class="col-6"style="padding-right: 20px;">
+            <div class="col-6" style="padding-right: 20px;">
                 <div class="row borderset">
                     <div class="col-md-12">
                         <label class="foncolor" for="company_name"> Company </label>
-                        <input type="text" name="company_name" class="form-control inp"
-                            placeholder="Enter Company Name" value="{{ old('company_name', $user->company_name) }}">
+                        <input type="text" name="company_name" class="form-control inp" placeholder="Enter Company Name"
+                            value="{{ old('company_name', $user->company_name) }}">
 
                     </div>
                     <div class="col-md-12">
@@ -24,16 +24,16 @@
                         <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name"
                             value="{{ old('first_name', $user->name) }}">
                         @error('first_name')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
-                        <input type="number" id="contact_no1" value="{{ old('contact_no1', $user->phone) }}" class="form-control inp"
-                            placeholder="Enter Mobile Number" name="contact_no1"
+                        <input type="number" id="contact_no1" value="{{ old('contact_no1', $user->phone) }}"
+                            class="form-control inp" placeholder="Enter Mobile Number" name="contact_no1"
                             oninput="this.value = this.value.slice(0, 10)">
                         @error('contact_no1')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -45,31 +45,31 @@
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
-                        <input type="text" name="address_1" value="{{ old('address_1', $user->address) }}" class="form-control inp"
-                            placeholder="Enter Address 1">
+                        <input type="text" name="address_1" value="{{ old('address_1', $user->address) }}"
+                            class="form-control inp" placeholder="Enter Address 1">
                         @error('address_1')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="Address_2">Address 2 </label>
-                        <input type="text" name="Address_2" value="{{ old('Address_2', $user->address_2) }}" class="form-control inp"
-                            placeholder="Enter Address 2">
+                        <input type="text" name="Address_2" value="{{ old('Address_2', $user->address_2) }}"
+                            class="form-control inp" placeholder="Enter Address 2">
                     </div>
                     <div class="col-md-6">
                         <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                         <select id="country" name="country" class="js-example-basic-single select2">
                             <option value="">Select Country</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country->id }}" 
-                                    {{ old('country', $user->country_id) == $country->id ? 'selected' : '' }}>
-                                    {{ $country->name }}
-                                </option>
+                            <option value="{{ $country->id }}" {{ old('country', $user->country_id) == $country->id ?
+                                'selected' : '' }}>
+                                {{ $country->name }}
+                            </option>
                             @endforeach
                         </select>
-                        
+
                         @error('country')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -77,11 +77,11 @@
                         <select id="state" name="state" class="js-example-basic-single select2">
                             <option value="">Select State</option>
                             @if (old('state'))
-                                <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
+                            <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
                             @endif
                         </select>
                         @error('state')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -89,24 +89,24 @@
                         <select id="city" name="city" class="js-example-basic-single select2">
                             <option value="">Select City</option>
                             @if (old('city'))
-                                <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
+                            <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
                             @endif
                         </select>
                         @error('city')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="foncolor" for="Apartment">Apartment </label>
-                        <input type="text" name="Apartment" value="{{ old('apartment', $user->apartment) }}" class="form-control inp"
-                            placeholder="Enter Apartment">
+                        <input type="text" name="Apartment" value="{{ old('apartment', $user->apartment) }}"
+                            class="form-control inp" placeholder="Enter Apartment">
                     </div>
                     <div class="col-md-12">
                         <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
                         <input type="text" name="Zip_code" value="{{ old('Zip_code', $user->pincode) }}"
                             class="form-control inp" placeholder="Enter Zip">
                         @error('Zip_code')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12">
@@ -114,7 +114,7 @@
                         <input type="text" name="username" value="{{ old('Username', $user->username) }}"
                             class="form-control inp" placeholder="Enter User Name">
                         @error('username')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -126,7 +126,7 @@
                             <i class="fe fe-eye passeye" data-bs-toggle="tooltip" title="Show/Hide Password"></i>
                         </div>
                         @error('password')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -139,7 +139,7 @@
                             <i class="fe fe-eye passeye" data-bs-toggle="tooltip" title="Show/Hide Password"></i>
                         </div>
                         @error('password_confirmation')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div> --}}
 
@@ -149,7 +149,7 @@
                         <input type="number" name="latitude" value="{{ old('latitude', $user->latitude) }}"
                             class="form-control inp" placeholder="0">
                         @error('latitude')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -157,7 +157,7 @@
                         <input type="number" name="longitude" value="{{ old('longitude', $user->longitude) }}"
                             class="form-control inp" placeholder="0">
                         @error('longitude')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -177,7 +177,7 @@
                         <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID"
                             value="{{ old('email', $user->email) }}">
                         @error('email')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -186,14 +186,14 @@
                         <select class="js-example-basic-single select2" name="warehouse_id">
                             <option disabled>Select Warehouse</option>
                             @foreach ($warehouses as $warehouse)
-                                <option value="{{ $warehouse->id }}" 
-                                    {{ old('warehouse_id', $user->warehouse_id ?? '') == $warehouse->id ? 'selected' : '' }}>
-                                    {{ $warehouse->warehouse_name }}
-                                </option>
+                            <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $user->warehouse_id ?? '') ==
+                                $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -221,101 +221,110 @@
                                 placeholder="m/d/yyyy" />
                         </div>
                     </div>
-                    
+
                     <div class="col-md-12">
                         <label class="foncolor" for="warehouse"> Language </label>
                         <select class="js-example-basic-single select2" name="language">
-                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ? 'selected' : '' }}>English</option>
-                            <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ? 'selected' : '' }}>Hindi</option>
+                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?
+                                'selected' : '' }}>English</option>
+                            <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ?
+                                'selected' : '' }}>Hindi</option>
                         </select>
-                    </div>
-                    
-                    <div class="col-md-12">
-                        <label class="foncolor" for="Write_Comment">Write Comment</label>
-                        <input type="text" id="Write_Comment" name="write_comment"
-                            class="form-control inp commenth" value="{{ old('write_comment', $user->write_comment) }}"
-                            placeholder="Enter Write Comment">
                     </div>
 
                     <div class="col-md-12">
-                        <label class="foncolor" for="Read_Comment">Read Comment</label>
-                        <input type="text" id="Read_Comment" name="read_comment"
-                            class="form-control inp commenth" value="{{ old('read_comment', $user->read_comment) }}"
-                            placeholder="Enter Read Comment">
+                        <label class="foncolor" for="Write_Comment">Write Comment</label>
+                        <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3" placeholder="Enter Write Comment">{{ old('write_comment', $user->write_comment) }}</textarea>
                     </div>
+                    
+                    <div class="col-md-12">
+                        <label class="foncolor" for="Read_Comment">Read Comment</label>
+                        <textarea id="Read_Comment" name="read_comment" class="form-control inp commenth" rows="3" placeholder="Enter Read Comment">{{ old('read_comment', $user->read_comment) }}</textarea>
+                    </div>
+                    
                 </div>
                 <!-- second form right side closer div is next -->
             </div>
         </div>
         <div class="row custodis">
-            @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center justify-content-center  avtard">
-                        <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
+            @php
+                $imglabel = ['profile_pic'=>'Profile pics', 'signature_img'=>'Signature', 'contract_signature_img'=>'Contract signature', 'license_document_img'=>'License picture'];
+            @endphp
+            @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document_img'] as $imageType)
+            <div class="col-md-3">
+                <div class="d-flex align-items-center justify-content-center avtard">
+                    <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
+                        }}</label>
                     <div class="avtarset" style="position: relative;">
                         <!-- Image Preview -->
-                        <img id="preview_{{ $imageType }}" class="avtars avtarc" src="{{ asset('assets/img.png') }}" alt="avatar">
-                        
+                        <img id="preview_{{ $imageType }}" class="avtars avtarc"
+                            src="{{ $user->{$imageType} ? (Str::startsWith($user->{$imageType}, 'http') ? $user->{$imageType} : asset("storage/".$user->{$imageType})) : asset('assets/img.png') }}"
+                        alt="avatar">
+
                         <!-- File Input (Hidden by Default) -->
-                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
-                            style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
-        
+                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
+                            accept="image/png, image/jpeg" style="display: none;"
+                            onchange="previewImage(this, '{{ $imageType }}')">
+
                         <div class="divedit">
                             <!-- Edit Button -->
-                            <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit" style="cursor: pointer;"
-                            onclick="document.getElementById('file_{{ $imageType }}').click();">
-                        
+                            <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
+                                style="cursor: pointer;"
+                                onclick="document.getElementById('file_{{ $imageType }}').click();">
+
                             <!-- Delete Button -->
-                            <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete" style="cursor: pointer;"
-                                onclick="removeImage('{{ $imageType }}')">
+                            <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
+                                style="cursor: pointer;" onclick="removeImage('{{ $imageType }}')">
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
             @endforeach
+
         </div>
 
 
 
-            <!-- ---------- -->
+        <!-- ---------- -->
 
-            <div class="ptop d-flex">
-                <div class="col-lg-4 col-md-6 col-sm-12 align-center">
-                    <div class="mb-3 float-end">
-                        <label for="in_status">Status</label>
-                        <div class="d-flex align-items-center text-dark">
-                            <p class="profileUpdateFont" id="activeText">Active</p>
-                            <div class="status-toggle px-2">
-                                <input id="rating_6" class="check" type="checkbox" name="status" 
-                                    value="Active" @checked($user->status === 'Inactive') 
-                                    onchange="updateStatusValue()">
-                                <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
-                            </div>
-                            <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
+        <div class="ptop d-flex">
+            <div class="col-lg-4 col-md-6 col-sm-12 align-center">
+                <div class="mb-3 float-end">
+                    <label for="in_status">Status</label>
+                    <div class="d-flex align-items-center text-dark">
+                        <p class="profileUpdateFont" id="activeText">Active</p>
+                        <div class="status-toggle px-2">
+                            <input id="rating_6" class="check" type="checkbox" name="status" value="Active"
+                                @checked($user->status === 'Inactive')
+                            onchange="updateStatusValue()">
+                            <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
                         </div>
-                        @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                     </div>
+                    @error('status')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+            </div>
 
-                <div style="margin-top:22px;">
-                    <div class="add-customer-btns ">
+            <div style="margin-top:22px;">
+                <div class="add-customer-btns ">
 
-                        <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
+                    <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')"
+                        class="btn btn-outline-primary custom-btn">Cancel</button>
 
-                        <button type="submit" class="btn btn-primary ">Submit</button>
+                    <button type="submit" class="btn btn-primary ">Submit</button>
 
-                    </div>
                 </div>
-            
+            </div>
+
             <input id="state_id_defult" type="hidden" name="state_id_defult" value="{{ ($user->state_id) }}">
             <input id="city_id_defult" type="hidden" name="city_id_defult" value="{{ ($user->city_id) }}">
             <input id="page_no" type="hidden" name="page_no" value="{{ ($page_no) }}">
-        </form>
-@section('script')
-<script>
-    // 🖼 Image Preview Function
+    </form>
+    @section('script')
+    <script>
+        // 🖼 Image Preview Function
     function previewImage(input, imageType) {
         if (input.files && input.files[0]) {
             let file = input.files[0];
@@ -339,9 +348,9 @@
         document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
         document.getElementById('file_' + imageType).value = "";
     }
-  </script>
-  <script>
-      $(document).ready(function() {
+    </script>
+    <script>
+        $(document).ready(function() {
           loadStatesAndCitiesOnEdit();
           // Country Change Event
           $('#country').change(function() {
@@ -422,7 +431,6 @@
           }
   
      });
-  </script>
-@endsection
+    </script>
+    @endsection
 </x-app-layout>
-

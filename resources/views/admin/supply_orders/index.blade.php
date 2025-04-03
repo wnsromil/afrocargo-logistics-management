@@ -96,7 +96,7 @@
                             </td>
                             <td>Location ABC</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img1.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img1.png')}}" alt="image"></div></td></td>
                             <td>Boxes</td>
                             <td>4</td>
                             <td>$40</td>
@@ -123,7 +123,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{asset('assets/img/downarrow.png')}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -161,7 +161,7 @@
                             </td>
                             <td>Location CSA</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img2.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img2.png')}}" alt="image"></div></td></td>
                             <td>Barrels</td>
                             <td>3</td>
                             <td>$150</td>
@@ -205,7 +205,7 @@
                             </td>
                             <td>Location QWQ</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img3.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img3.png')}}" alt="image"></div></td></td>
                             <td>Brown tap</td>
                             <td>2</td>
                             <td>$40</td>
@@ -249,7 +249,7 @@
                             </td>
                             <td>Location TTT</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img4.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img4.png')}}" alt="image"></div></td></td>
                             <td>Clear Tap</td>
                             <td>5</td>
                             <td>$125</td>
@@ -294,7 +294,7 @@
                             </td>
                             <td>Location GGG </td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img5.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img5.png')}}" alt="image"></div></td></td>
                             <td>Shrink Wrap</td>
                             <td>20</td>
                             <td>$600</td>
@@ -321,7 +321,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{asset('assets/img/downarrow.png')}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -363,7 +363,7 @@
                             </td>
                             <td>Location DDD</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img1.png" alt="image"></div></td></td>
+                            <td><div><img src="{{('assets/img/img1.png')}}" alt="image"></div></td></td>
                             <td>Boxes</td>
                             <td>2</td>
                             <td>$40</td>
@@ -390,7 +390,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{asset('assets/img/downarrow.png')}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -432,7 +432,7 @@
                             </td>
                             <td>Location SSSS</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img2.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img2.png')}}" alt="image"></div></td></td>
                             <td>Barrels</td>
                             <td>1</td>
                             <td>$50</td>
@@ -478,7 +478,7 @@
                             </td>
                             <td>Location FDFDF</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img3.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img3.png')}}" alt="image"></div></td></td>
                             <td>Brown tap</td>
                             <td>5</td>
                             <td>$100</td>
@@ -505,7 +505,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{asset('assets/img/downarrow.png')}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -544,7 +544,7 @@
                             </td>
                             <td>Location DBGD</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img4.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img4.png')}}" alt="image"></div></td></td>
                             <td>Clear Tap</td>
                             <td>10</td>
                             <td>$250</td>
@@ -571,7 +571,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{asset('assets/img/downarrow.png')}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -611,7 +611,7 @@
                             </td>
                             <td>Location WWW</td>
                             <td>12-12-24</td>
-                            <td><div><img src="../assets/img/img5.png" alt="image"></div></td></td>
+                            <td><div><img src="{{asset('assets/img/img5.png')}}" alt="image"></div></td></td>
                             <td>Shrink Wrap</td>
                             <td>10</td>
                             <td>$300</td>
@@ -638,7 +638,7 @@
                             
                             <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
     height: 26px;align-content: center;">
-                                <div ><img src="../assets/img/downarrow.png"></div>
+                                <div ><img src="{{asset('assets/img/downarrow.png')}}"></div>
                             </span>
                         </a>
                         <div class="dropdown-menu menu-drop-user">
@@ -1025,7 +1025,7 @@
                                 </div>
 							</div>
 							
-								<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="../assets/img/cross.png">
+								<img  class="btn-close" data-bs-dismiss="modal" aria-label="Close"src="{{asset('assets/img/cross.png')}}">
 							
 						</div>
 						<form action="#">

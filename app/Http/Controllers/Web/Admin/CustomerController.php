@@ -23,15 +23,44 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-
-        $customers = User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->where('is_deleted', 'No')->where('role_id', 3)->latest('id')->paginate(5);
-
-
-        return view('admin.customer.index', compact('customers'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
+    
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->where('is_deleted', 'No')
+            ->where('role_id', 3)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%");
+                        // ->orWhereHas('warehouse.country', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // })
+                        // ->orWhereHas('warehouse.state', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // })
+                        // ->orWhereHas('warehouse.city', function ($q) use ($search) {
+                        //     $q->where('name', 'LIKE', "%$search%");
+                        // });
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+            $serialStart = ($currentPage - 1) * $perPage;
+        if ($request->ajax()) {
+            return view('admin.customer.table', compact('customers', 'serialStart'))->render();
+        }
+    
+        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -53,12 +82,15 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-    
-        
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'mobile_code' => 'required|max:13|unique:users,phone',
-            'email' => 'required|string|max:255|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email',
+            ],
             'alternate_mobile_no' => 'nullable|max:13',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
@@ -66,15 +98,15 @@ class CustomerController extends Controller
             'city' => 'required|string',
             'Zip_code' => 'required|string|max:10',
             'username' => 'required|string|max:255|unique:users,username',
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required|string',
+            // 'password' => 'required|string|min:6|confirmed',
+            // 'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
             'country_code' => 'required',
             'country_code_2' => 'required|string',
 
         ]);
-        
+       
 
          try {
         
@@ -111,7 +143,7 @@ class CustomerController extends Controller
             'state_id'       => $validated['state'],
             'city_id'        => $validated['city'],
             'pincode'            => $validated['Zip_code'],
-            'password'       => Hash::make($validated['password']),
+            'password'       => Hash::make(1235678),
             'status' => $request->status ?? 'Active',
             'company_name'        => $request->company_name ?? null,
             'apartment'        => $request->apartment ?? null,
@@ -149,7 +181,7 @@ class CustomerController extends Controller
         $userName = $validated['first_name'];
         $email = $validated['email'] ?? null;
         $mobileNumber = $validated['mobile_code'];
-        $password = $validated['password'];
+        $password =12345678;
         $loginUrl = route('login');
 
         // Send the email
@@ -181,7 +213,7 @@ class CustomerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function edit(Request $request, $id)
     {
@@ -207,7 +239,12 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'contact_no1' => 'required|digits:10',
-            'email' => 'required|string|max:255|unique:users,email,' . $id,
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email',
+            ],
             'alternate_mobile_no' => 'nullable|digits:10',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
@@ -215,22 +252,21 @@ class CustomerController extends Controller
             'city' => 'required|string',
             'Zip_code' => 'required|string|max:10',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
-            'password' => 'nullable|string|min:6|confirmed',
-            'password_confirmation' => 'nullable|string',
+            // 'password' => 'nullable|string|min:6|confirmed',
+            // 'password_confirmation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric'
         ]);
     
         $user = User::findOrFail($id);
         $imagePaths = [];
-    
         // 🔹 File Upload Handling
-        foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
+        foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document_img'] as $imageType) {
             if ($request->hasFile($imageType)) {
                 $file = $request->file($imageType);
                 $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
                 
-                if ($imageType === 'profile_pics') {
+                if ($imageType === 'profile_pic') {
                     $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
                     $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName;
                 } else {
@@ -269,10 +305,22 @@ class CustomerController extends Controller
         ];
     
         // 🔹 File Path Update
-        $userData['signature_img'] = $imagePaths['signature'] ?? $user->signature_img;
-        $userData['contract_signature_img'] = $imagePaths['contract_signature'] ?? $user->contract_signature_img;
-        $userData['license_document'] = $imagePaths['license_picture'] ?? $user->license_document;
-        $userData['profile_pic'] = $imagePaths['profile_pics'] ?? $user->profile_pic;
+        if(!empty($imagePaths['signature_img'])){
+            $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
+        }
+
+        if(!empty($userData['contract_signature_img'])){
+            $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
+        }
+        if(!empty($userData['license_document'])){
+            $userData['license_document'] = $imagePaths['license_document_img'] ?? $user->license_document;
+        }
+        if(!empty($userData['profile_pic'])){
+            $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
+        }
+        
+        
+        
     
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {

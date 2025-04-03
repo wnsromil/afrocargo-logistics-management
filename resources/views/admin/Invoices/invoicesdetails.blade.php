@@ -2,9 +2,7 @@
     <x-slot name="header">
         {{ __('Invoices') }}
     </x-slot>
-    <x-slot name="cardTitle">
-        Invoices Details
-    </x-slot>
+   
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap');
@@ -187,11 +185,18 @@
         }
     </style>
 
-    <div class="invoice-container">
+
+
+
+<x-slot name="cardTitle">
+    <p class="head" style="color:black">Invoices Details</p>
+   
+
+    <div class="invoice-container ">
         <!-- Download Buttons -->
         <div class="download-buttons" id="downloadButtons">
             <a href="{{ route('admin.invoices.invoicesdownload', $getInvoice['id']) }}" class="btn btn-primary me-2">
-                <i class="fa-solid fa-download me-2"></i>Download PDF
+                <i class="fa-solid fa-download me-2"></i>Download 
             </a>
 
             <a href="javascript:void(0)" class="btn btn-primary me-2" onclick="printInvoice()">
@@ -200,45 +205,71 @@
 
         </div>
 
+        </x-slot>
+
         <!-- Header Section -->
         <div class="header-section">
             <img src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt="">
+            <div class="d-flex inco">
             <div class="company-address">
-                Noviiren Cargo NY<br>
-                366 Concord Ave NY<br>
-                ID: 0004054<br>
+                Noviiren Cargo NY 366 Concord Ave NY,<br>
+                The Bronx10454<br>
                 Tel: 646-468-4155<br>
                 Tel: 718-954-9093
+            </div>
+
+
+            <div class="company-address">
+            Ivoirien Cargo Abidjan Avenue 21 Rue 15 <br>
+            Abidjan Autonomous District Abidjan,<br>
+            Tel-07 09 04 1250<br>
+            Tel-07 89 49 2486
+            </div>
             </div>
         </div>
 
         <!-- Invoice Info -->
         <div class="invoice-info">
-            <p><span class="highlight">Issue
+            <p><span class="highlight">Invoice
                     Date:</span>{{Carbon\Carbon::parse($getInvoice->issue_date)->format('d-m-Y')}}</p>
             <p><span class="highlight">Driver Name:</span>{{$getInvoice->parcel->driver->name}}</p>
             <p><span class="highlight">Cont:</span> 0425</p>
-            <p><span class="highlight">Invoice No:</span> {{$getInvoice->invoice_no}}</p>
+            <p><span class="highlight">Invoice No:123</span> {{$getInvoice->invoice_no}}</p>
         </div>
 
         <!-- Customer & Shipping Details -->
         <div class="details-section">
             <div style="flex:4">
                 <h5>Customer</h5>
-                {{$getInvoice->parcel->customer->name}}<br>
-                {{$getInvoice->parcel->customer->address}}<br>
-                {{$getInvoice->parcel->customer->phone}}
+               <p> {{$getInvoice->parcel->customer->name}}</p>
+                <p>{{$getInvoice->parcel->customer->address}}</p>
+               <p> {{$getInvoice->parcel->customer->phone}}</p>
             </div>
 
             <div style="flex:1">
                 <h5>Ship To</h5>
-                {{$getInvoice->parcel->destination_user_name}}<br>
-                {{$getInvoice->parcel->destination_address}}<br>
-                {{$getInvoice->parcel->destination_user_phone}}
+                <p>{{$getInvoice->parcel->destination_user_name}}</p>
+                <p>{{$getInvoice->parcel->destination_address}}</p>
+               <p> {{$getInvoice->parcel->destination_user_phone}}</p>
             </div>
         </div>
 
-        <!-- Items Table -->
+<div>
+    <div style="border:1px solid #595C5F;height:50px; display:flex ;justify-content: space-evenly;">
+     <div><p>P.: AbidjaM</p></div>
+     <div><p>M.: Abidjam</p></div>
+     <div><p>S.: Abidjan</p></div>
+
+    </div>
+    <div style="display:flex; justify-content: space-evenly;height:35px;border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-color: #595C5F;">
+        <p>Ship Via: CARGO</p>
+        <p>Driver: Dra Sacko </p>
+        <p>Branch: Ivoirien Cargo NY</p>
+        <p>User: Dra Sacko</p>
+    </div>
+    <div>
         <table>
             <thead>
                 <tr>
@@ -264,9 +295,58 @@
                 <!-- Repeat for other items -->
             </tbody>
         </table>
+        <div>
+            <div>Sub total $1660.00</div>
+            <div>Discount $0.00</div>
+            <div>Insurance $0.00</div>
+            <div>Value $800.00</div>
+            <div>Tax $0.00</div>
+            <div>Quantity 3</div>
+            <div>Amount $0.00</div>
+            <div>Balance $1660.00</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Items Table -->
+        <!-- <table>
+            <thead>
+                <tr>
+                    <th>Product / Service</th>
+                    <th>Quantity</th>
+                    <th>Weight</th>
+                    <th>Paid</th>
+                    <th>Due</th>
+                    <th>Payment Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ implode(', ', array_map('ucfirst', $getInvoice->parcel->getCategoryNamesAttribute())) }}</td>
+                    <td>1</td>
+                    <td>{{$getInvoice->parcel->weight}}</td>
+                    <td>${{$getInvoice->parcel->partial_payment}}</td>
+                    <td>${{$getInvoice->parcel->remaining_payment}}</td>
+                    <td>{{$getInvoice->parcel->payment_type}}</td>
+                    <td>${{$getInvoice->parcel->total_amount}}</td>
+                </tr> -->
+                <!-- Repeat for other items -->
+            <!-- </tbody>
+        </table> -->
 
         <!-- Total Section -->
-        <div class="row-container" style="background-color: #E7E9F6;">
+        <!-- <div class="row-container" style="background-color: #E7E9F6;">
             <div class="signature-section">
                 <p>I have Received the Contract and Accept the Terms and Condition.</p>
                 <p style="margin-top:20px;">Authorised Sign</p>
@@ -279,7 +359,7 @@
                 <h5>Total Amount: ${{$getInvoice->parcel->total_amount}}</h5>
             </div>
         </div>
-    </div>
+    </div> -->
     <script>
         function printInvoice() {
             window.print();

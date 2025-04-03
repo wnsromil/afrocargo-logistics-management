@@ -119,7 +119,6 @@
 
                         </tbody>
                 
-                       
                     </table>
 
                 </div>
@@ -130,14 +129,13 @@
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
                 <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
-                    <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
-                    <option value="15" {{ request('per_page') == 15 ? 'selected' : '' }}>15</option>
+                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                 </select>
                 <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
             </div>
-        
-        
             <div class="col-md-6">
                 <div class="float-end">
                     <div class="bottom-user-page mt-3">

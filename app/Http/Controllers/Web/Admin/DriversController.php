@@ -23,10 +23,12 @@ class DriversController extends Controller
     public function index(Request $request)
     {
         $query = $request->search;
-
+        $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
+        $currentPage = $request->input('page', 1); // ✅ Current page number
+    
         $warehouses = User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
             ->where('role_id', 4)
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($q) use ($query) {
@@ -37,12 +39,20 @@ class DriversController extends Controller
                         ->orWhere('status', 'LIKE', "%$query%");
                 });
             })
-            ->latest()->paginate(10);
-
-        return view('admin.drivers.index', compact('warehouses'));
+            ->latest()
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
+    
+        // ✅ Serial number start point
+        $serialStart = ($currentPage - 1) * $perPage;
+    
+        if ($request->ajax()) {
+            return view('admin.drivers.table', compact('warehouses', 'serialStart'))->render();
+        }
+    
+        return view('admin.drivers.index', compact('warehouses', 'query', 'perPage', 'serialStart'));
     }
-
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -115,7 +125,7 @@ class DriversController extends Controller
 
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
-            ->with('success', 'Drivers created successfully.');
+            ->with('success', 'Driver created successfully.');
     }
 
 
