@@ -76,11 +76,6 @@
 
                 </div>
 
-                <!-- <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div> -->
-                <!-- First Border -->
-                {{-- <div class="border-bottom border-1 border-dark border-opacity-50 mb-4 login-border-width"></div> --}}
-
-
             </div>
         </div>
 
@@ -90,14 +85,6 @@
         <!-- ----------------------------------- admin login page ------------------------------------------ -->
         <form method="POST" action="{{ route('login') }}" id="admin" style="display:none;">
             @csrf
-
-            <!-- <div class="input-group mb-4 border rounded mt-4">
-                <input id="email" type="email" name="email" :value="old('email')" class="form-control rounded border-0"
-                    required autofocus autocomplete="username" placeholder="Username or email address">
-                <span class="input-group-text">
-                    <i class="fa-regular fa-user border-start"></i>
-                </span>
-            </div> -->
 
 
             <div class="input-group input-group-lg bg-color2 my-4 border  border-opacity-25">
@@ -110,17 +97,15 @@
                      <i class="fe fe-user" style="color: #595C5F"></i>
                 </span>
             </div>
+            @if ($errors->has('email'))
+                <div class="text-danger mb-3">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </div>
+            @endif
 
-            <!--     <div class="input-group mb-4 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('email')"
-                    class="form-control rounded border-0" required autocomplete="current-password"
-                    placeholder="Password">
-                <span class="input-group-text">
-                    <i class="fe fe-unlock border-start" data-bs-toggle="tooltip" title="fe fe-unlock"></i>
-                </span>
-            </div> -->
+    
             <div class="input-group input-group-lg bg-color2">
-                <input id="password" type="password" name="password" :value="old('email')" required
+                <input id="password" type="password" name="password" :value="old('password')" required
                     autocomplete="current-password" placeholder="Password"
                     class="form-control border-1 form-control-lg profileUpdateFont input-placeholder" type="text"
                     aria-label=".form-control-lg example">
@@ -128,13 +113,20 @@
                     id="inputGroup-sizing-lg">
                     <span toggle="#password" class="ti ti-eye field-icon toggle-password1"></span>
                 </span>
+                
+                
             </div>
+            @if ($errors->has('password'))
+                <div class="text-danger mb-3">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </div>
+            @endif
 
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
                     <input id="remember_me" type="checkbox"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember" {{ old('remember') || Cookie::get('remember_me') ? 'checked' : '' }}>
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
@@ -165,22 +157,17 @@
                 <ul id="warehouseDropdown" class="dropdown-menu position-absolute w-100"
                     style="display: none; z-index: 1000; top: 42px;">
                 </ul>
-                @if ($errors->has('warehouse_code'))
-                    <div class="text-danger mt-2">
-                        <strong>{{ $errors->first('warehouse_code') }}</strong>
-                    </div>
-                @endif
+                
 
             </div>
 
-            <!-- <div class="input-group mb-3 border rounded my-4">
-                <input id="email" type="email" name="email" :value="old('email')"
-                    class="form-control rounded border-0 bg-light" required autofocus autocomplete="username"
-                    placeholder="Username or email address">
-                <span class="input-group-text">
-                    <i class="fa-regular fa-user border-start"></i>
-                </span>
-            </div> -->
+            @if ($errors->has('warehouse_code'))
+                <div class="text-danger mt-2">
+                    <strong>{{ $errors->first('warehouse_code') }}</strong>
+                </div>
+            @endif
+
+        
             <div class="input-group input-group-lg bg-color2 my-4">
                 <input id="email" type="email" name="email" :value="old('email')" required autofocus
                     autocomplete="username"
@@ -193,14 +180,12 @@
                 </span>
             </div>
 
-            <!-- <div class="input-group mb-3 border rounded my-4">
-                <input id="password" type="password" name="password" :value="old('email')"
-                    class="form-control rounded bg-color border-0" required autocomplete="current-password"
-                    placeholder="Password">
-                <span class="input-group-text">
-                    <i class="fe fe-eye border-start" data-bs-toggle="tooltip" title="fe fe-eye"></i>
-                </span>
-            </div> -->
+            @if ($errors->has('email'))
+                <div class="text-danger mb-3">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </div>
+            @endif
+
 
             <div class="input-group input-group-lg bg-color2">
                 <input id="password1" type="password" name="password" :value="old('email')" required
@@ -213,15 +198,20 @@
                 </span>
                 </span>
             </div>
+            @if ($errors->has('password'))
+                <div class="text-danger mb-3">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </div>
+            @endif
 
-            <!-- Remember Me -->
+            {{-- <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
                     <input id="remember_me" type="checkbox"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember" {{ old('remember') || Cookie::get('remember_me') ? 'checked' : '' }}>
                     <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
-            </div>
+            </div> --}}
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))

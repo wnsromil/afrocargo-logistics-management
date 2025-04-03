@@ -246,32 +246,34 @@
                 </div>
                 <!-- second form right side closer div is next -->
             </div>
-
-            <div class="row custodis">
-              @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
-                  <div class="col-md-3 d-flex">
-                      <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
-                      <div class="avtarset">
-                          <!-- Image Preview -->
-                          <img id="preview_{{ $imageType }}" class="avtars" src="{{ asset('assets/img.png') }}" alt="avatar">
-                          
-                          <!-- File Input (Hidden by Default) -->
-                          <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
-                              style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
-          
-                          <div style="position: absolute; left: 120px; display: flex; flex-direction: row;">
-                              <!-- Edit Button -->
-                              <img src="{{ asset('assets/img/edit (1).png') }}" alt="edit" style="margin-bottom: 5px; cursor: pointer;"
-                                  onclick="document.getElementById('file_{{ $imageType }}').click();">
-                              
-                              <!-- Delete Button -->
-                              <img src="{{ asset('assets/img/dlt (1).png') }}" alt="delete" style="cursor: pointer;"
-                                  onclick="removeImage('{{ $imageType }}')">
-                          </div>
-                      </div>
-                  </div>
-              @endforeach
-          </div>
+        </div>
+        <div class="row custodis">
+            @foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType)
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center  avtard">
+                        <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst(str_replace('_', ' ', $imageType)) }}</label>
+                    <div class="avtarset" style="position: relative;">
+                        <!-- Image Preview -->
+                        <img id="preview_{{ $imageType }}" class="avtars avtarc" src="{{ asset('assets/img.png') }}" alt="avatar">
+                        
+                        <!-- File Input (Hidden by Default) -->
+                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}" accept="image/png, image/jpeg" 
+                            style="display: none;" onchange="previewImage(this, '{{ $imageType }}')">
+        
+                        <div class="divedit">
+                            <!-- Edit Button -->
+                            <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit" style="cursor: pointer;"
+                            onclick="document.getElementById('file_{{ $imageType }}').click();">
+                        
+                            <!-- Delete Button -->
+                            <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete" style="cursor: pointer;"
+                                onclick="removeImage('{{ $imageType }}')">
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
 
 
@@ -300,13 +302,13 @@
                 <div style="margin-top:22px;">
                     <div class="add-customer-btns ">
 
-                        <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                        <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
 
                         <button type="submit" class="btn btn-primary ">Submit</button>
 
                     </div>
                 </div>
-            </div>
+            
             <input id="state_id_defult" type="hidden" name="state_id_defult" value="{{ ($user->state_id) }}">
             <input id="city_id_defult" type="hidden" name="city_id_defult" value="{{ ($user->city_id) }}">
             <input id="page_no" type="hidden" name="page_no" value="{{ ($page_no) }}">

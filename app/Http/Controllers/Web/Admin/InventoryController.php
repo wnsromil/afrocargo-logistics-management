@@ -17,15 +17,34 @@ class InventoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default to 10 per page
 
         $inventories = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest('id')->paginate(10);
-        return view('admin.inventories.index', compact('inventories'));
+        })
+        ->when($search, function ($q) use ($search) { // 🔹 Search Query
+            return $q->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%")
+                    ->orWhere('inventory_type', 'like', "%$search%")
+                    ->orWhereHas('warehouse', function ($q) use ($search) { // 🔹 Search by Warehouse Name
+                        $q->where('warehouse_name', 'like', "%$search%");
+                    });
+            });
+        })
+        ->latest('id')
+        ->paginate($perPage)
+        ->appends(['search' => $search, 'per_page' => $perPage]); // Maintain query params
+
+        if ($request->ajax()) {
+            return view('admin.inventories.table', compact('inventories'));
+        }
+
+        return view('admin.inventories.index', compact('inventories', 'search', 'perPage'));
     }
+
 
     /**
      * Show the form for creating a new resource.

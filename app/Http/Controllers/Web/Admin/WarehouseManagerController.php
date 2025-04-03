@@ -19,13 +19,41 @@ use App\Mail\RegistorMail;
 class WarehouseManagerController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $warehouses = User::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->where('role_id', 2)->latest('id')->paginate(10);
-        return view('admin.warehouse_manager.index', compact('warehouses'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default is 10
+
+        $warehouses = User::when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->with('warehouse')
+            ->where('role_id', 2)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%")
+                        ->orWhere('status', 'like', "%$search%")
+                        ->orWhere('phone', 'like', "%$search%");
+                })
+                ->orWhereHas('warehouse', function ($query) use ($search) {
+                    $query->where('warehouse_name', 'like', "%$search%"); // 🔹 Search by Warehouse Name
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+        if ($request->ajax()) {
+            return view('admin.warehouse_manager.table', compact('warehouses'));
+        }
+
+        return view('admin.warehouse_manager.index', compact('warehouses', 'search', 'perPage'));
     }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +83,7 @@ class WarehouseManagerController extends Controller
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:15|unique:users,phone',
             'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
@@ -84,15 +112,17 @@ class WarehouseManagerController extends Controller
         ]);
 
         // Example dynamic data
-        $userName = $validated['first_name'];
-        $email = $validated['email'] ?? null;
-        $mobileNumber = $validated['mobile_code'];
+        $userName = $request->warehouse_name ?? null;
+        $email = $request->email ?? null;
+        $mobileNumber = $request->phone ?? null;
         $password = '12345678';
         $loginUrl = route('login');
 
-        // Send the email
-        // Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
-
+         if(!empty($email)){
+            // Send the email
+            Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
+         }
+         
 
         // Redirect with success message
         return redirect()->route('admin.warehouse_manager.index')

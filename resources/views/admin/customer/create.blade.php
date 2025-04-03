@@ -187,7 +187,7 @@
 
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="email">Email</label>
+                            <label class="foncolor" for="email">Email<i class="text-danger">*</i></label>
                             <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID"
                                 value="{{ old('email') }}">
                             @error('email')
@@ -328,12 +328,13 @@
             <div style="margin-top:22px;">
                 <div class="add-customer-btns ">
 
-                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                    <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
 
                     <button type="submit" class="btn btn-primary ">Submit</button>
 
                 </div>
             </div>
+            
         </div>
         </div>
 
