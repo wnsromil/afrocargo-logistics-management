@@ -178,6 +178,11 @@
                     <!-- <i class="fa-regular fa-user" style="color: #595C5F"></i> -->
                     <i class="fe fe-user" style="color: #595C5F"></i>
                 </span>
+                @if ($errors->has('email'))
+                <div class="text-danger mt-2">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </div>
+            @endif
             </div>
 
             @if ($errors->has('email'))
