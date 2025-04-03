@@ -213,7 +213,7 @@ class CustomerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function edit(Request $request, $id)
     {
@@ -261,12 +261,12 @@ class CustomerController extends Controller
         $user = User::findOrFail($id);
         $imagePaths = [];
         // 🔹 File Upload Handling
-        foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
+        foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document_img'] as $imageType) {
             if ($request->hasFile($imageType)) {
                 $file = $request->file($imageType);
                 $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
                 
-                if ($imageType === 'profile_pics') {
+                if ($imageType === 'profile_pic') {
                     $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
                     $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName;
                 } else {
@@ -305,10 +305,22 @@ class CustomerController extends Controller
         ];
     
         // 🔹 File Path Update
-        $userData['signature_img'] = $imagePaths['signature'] ?? $user->signature_img;
-        $userData['contract_signature_img'] = $imagePaths['contract_signature'] ?? $user->contract_signature_img;
-        $userData['license_document'] = $imagePaths['license_picture'] ?? $user->license_document;
-        $userData['profile_pic'] = $imagePaths['profile_pics'] ?? $user->profile_pic;
+        if(!empty($imagePaths['signature_img'])){
+            $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
+        }
+
+        if(!empty($userData['contract_signature_img'])){
+            $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
+        }
+        if(!empty($userData['license_document'])){
+            $userData['license_document'] = $imagePaths['license_document_img'] ?? $user->license_document;
+        }
+        if(!empty($userData['profile_pic'])){
+            $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
+        }
+        
+        
+        
     
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {

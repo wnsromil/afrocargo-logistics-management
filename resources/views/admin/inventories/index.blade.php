@@ -61,7 +61,7 @@
                                 <th>Warehouse Name</th>
                                 <th>Weight (kg)</th>
                                 <th>Width(m)</th>
-                                <th>Height(m)</th>
+                                <th>height(m)</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Low Stock Warning</th>
@@ -75,10 +75,23 @@
 
                         <tbody>
                             @forelse ($inventories as $inventory)
-                                <tr class="background-instock text-center" style="
-                                    @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                    @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                        @else background-color: #FFD6A5;
+                            <tr class="background-instock text-center" style="
+                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                @else background-color: #FFD6A5;
+                                @endif
+                            ">
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <td class="text-dark">{{ ucfirst($inventory->inventory_type ?? '') }}</td>
+                                <td>
+                                    @if (!empty($inventory->img))
+                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
+                                        height="50">
+                                    @else
+                                    <span>-</span>
                                     @endif
                                 </td>
                                 <td class="text-dark">{{ ucfirst($inventory->name ?? '') }}</td>
@@ -103,7 +116,7 @@
                                         $inventory->stock_status ?? '-' }}</span>
                                 </td>
 
-                                <td class="d-flex align-items-center">
+                                    <td class="align-items-center">
 
                                     <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="fe fe-more-vertical fs-4"
@@ -171,6 +184,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {

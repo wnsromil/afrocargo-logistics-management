@@ -184,6 +184,8 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::get('/container/{id}', function () {
             return view('admin.container.show');
         })->name('container.show');
+
+        
     });
 });
 

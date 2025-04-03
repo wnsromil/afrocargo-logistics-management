@@ -3,6 +3,14 @@
         {{ __('Notifications') }}
     </x-slot>
 
+    @section('style')
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+        </style>
+    @endsection
+    
     <div class="nav">
         <nav class="navbar navbar-expand-lg">
             <div>

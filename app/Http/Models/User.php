@@ -118,4 +118,25 @@ class User extends Authenticatable
             get: fn($value) => !empty($value) ? url($value):null,
         );
     }
+    protected function signatureImg(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? asset('storage/' . $value) : null,
+        );
+    }
+
+    protected function contractSignatureImg(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? asset('storage/' . $value) : null,
+        );
+    }
+
+    protected function licenseDocument(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? asset('storage/' . $value) : null,
+        );
+    }
+
 }

@@ -104,14 +104,14 @@
                                                         href="{{route('admin.warehouse_manager.show', $warehouse->id)}}"><i
                                                             class="far fa-eye me-2"></i>View</a>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <a class="dropdown-item" href="active-customers.html"><i
                                                             class="fa-solid fa-power-off me-2"></i>Activate</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="deactive-customers.html"><i
                                                             class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>
