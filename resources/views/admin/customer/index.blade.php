@@ -120,9 +120,11 @@
                                         <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}<br>
                                             {{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}
                                         </td>
-                                        <td>{{ $customer->address ?? '-' }}<br>
-                                            {{ $customer->address_2 ?? '-' }}
+                                        <td>
+                                            {{ Str::limit($customer->address ?? '-', 15) }}<br>
+                                            {{ Str::limit($customer->address_2 ?? '-', 15) }}
                                         </td>
+                                        
                                         <td>
                                             @if ($customer->status == 'Active')
                                                 <div class="container">

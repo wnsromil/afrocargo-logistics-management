@@ -53,7 +53,7 @@ class RegistorMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.register-mail',
+            view: 'emails.register-email-customer',
         );
     }
 

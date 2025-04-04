@@ -55,8 +55,8 @@
     <div class="row customerbody">
         <div class="col-4 customerr">
             <p class="phead">Phone Numbers</p>
-            <p class="pdata">{{ $user->phone ?? '-' }}</p>
-            <p class="pdata">{{ $user->phone_2 ?? '-' }}</p>
+            <p class="pdata">{{ $user->country_code ?? '' }} {{ $user->phone ?? '-' }}</p>
+            <p class="pdata">{{ $user->country_code_2 ?? '' }}{{ $user->phone_2 ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Address</p>

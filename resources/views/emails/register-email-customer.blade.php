@@ -38,7 +38,7 @@
                                                                                 <td>
                                                                                     <a href="{{ url('/') }}"
                                                                                         target="_blank">
-                                                                                        <img src='./AfroCargoLogo 1.png'
+                                                                                      <img src='{{asset('assets/images/AfroCargoLogo.svg')}}'
                                                                                             alt="Afrocargo Logo"
                                                                                             style="display: block; width: 100px; height: 100px;"
                                                                                             width="200px" border="0">
@@ -91,6 +91,33 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td valign="top" align="center">
+                                                                    You can log in using the details below:
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-top: 8px" valign="top"
+                                                                    align="center">
+                                                                    <p style="margin:3px"><b>Email/Mobile Number: </b>{{$email}} / {{$mobileNumber}}</p>
+                                                                    <p style="margin:3px"><b>Password: </b>
+                                                                        {{$password}}</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:15px 0px;" valign="top" align="center">
+                                                                   Wishing you a smooth journey 
+                                                                   <p style="margin:0px;">with Afrocargo!</p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" bgcolor="#FFFFFF" align="center">
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td valign="top" align="center">
                                                                     You can access our services by downloading the Afrocargo app:
                                                                 </td>
                                                             </tr>
@@ -126,7 +153,7 @@
                                                                                     style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 16px; font-weight: bold; color: white; background-color: #203A5F; padding: 5px 10px; border-radius: 5px; text-align: center;">
                                                                                     <a target="_blank"
                                                                                         style="font-family: Arial, Helvetica, sans-serif; font-size: 11px!important; text-decoration: none; color: white;"
-                                                                                        href="{{ $loginUrl }}">Click
+                                                                                        href="{{$loginUrl}}">Click
                                                                                         here to login</a>
                                                                                 </td>
                                                                             </tr>

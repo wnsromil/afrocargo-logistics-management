@@ -238,7 +238,7 @@ class CustomerController extends Controller
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'contact_no1' => 'required|digits:10',
+            'mobile_code' => 'required|digits:10',
             'email' => [
                 'required',
                 'email',
