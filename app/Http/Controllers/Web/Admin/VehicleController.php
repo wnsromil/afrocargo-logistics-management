@@ -12,7 +12,7 @@ use App\Models\{
     Country,
     Vehicle
 };
-
+use Illuminate\Support\Facades\Validator;
 class VehicleController extends Controller
 {
     /**
@@ -24,7 +24,7 @@ class VehicleController extends Controller
         $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
         $currentPage = $request->input('page', 1); // ✅ Current page number
 
-        $vehicles = Vehicle::with(['driver', 'warehouse'])
+        $vehicles = Vehicle::with(['driver', 'warehouse'])->where('vehicle_type', '!=', 'Container')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
@@ -54,9 +54,12 @@ class VehicleController extends Controller
 
     public function container_index()
     {
-        $vehicles = Vehicle::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->paginate(10);
+        $vehicles = Vehicle::where('vehicle_type', 'Container') // 👈 Filter only Container vehicles
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->paginate(10);
+    
         return view('admin.container.index', compact('vehicles'));
     }
 
@@ -83,19 +86,35 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-        //    return $request->all();
-        // Validate incoming request data
-        $request->validate([
-            'warehouse_name'    => 'required|exists:warehouses,id',
-            'vehicle_type'    => 'required|string|max:255',
-            'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number',
-            'vehicle_model'   => 'required|string|max:255',
-            'vehicle_year'    => 'required|digits:4',
-            'driver_id'    => 'nullable|integer',
-            'status'          => 'in:Active,Inactive',
-        ]);
+        
+        // Base rules
+        $rules = [
+            'warehouse_name' => 'required|exists:warehouses,id',
+            'vehicle_type'   => 'required|string|max:255',
+            'vehicle_model'  => 'required|string|max:255',
+            'vehicle_year'   => 'required|digits:4',
+            'driver_id'      => 'nullable|integer',
+        ];
 
-        // Create a new vehicle
+        // Conditional rules
+        if ($request->vehicle_type === 'Container') {
+            $rules['container_no_1'] = 'required|string|max:100';
+            $rules['container_no_2'] = 'required|string|max:100';
+            $rules['container_size'] = 'required|string|max:50';
+            $rules['seal_no']        = 'required|string|max:100';
+        } else {
+            $rules['vehicle_number'] = 'required|string|max:50|unique:vehicles,vehicle_number';
+        }
+
+        // Run validation
+        $validator = Validator::make($request->all(), $rules);
+
+        // Redirect back if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Create and save vehicle
         $vehicle = new Vehicle();
         $vehicle->warehouse_id   = $request->warehouse_name;
         $vehicle->vehicle_type   = $request->vehicle_type;
@@ -103,18 +122,17 @@ class VehicleController extends Controller
         $vehicle->vehicle_model  = $request->vehicle_model;
         $vehicle->vehicle_year   = $request->vehicle_year;
         $vehicle->driver_id      = $request->driver_id;
-        $vehicle->status         = $request->status ?? 'Inactive';
+        $vehicle->status         = $request->status ?? 'Active';
 
         if ($request->vehicle_type == 'Container') {
             $vehicle->container_no_1  = $request->container_no_1;
-            $vehicle->container_no_2   = $request->container_no_2;
-            $vehicle->container_size      = $request->container_size;
+            $vehicle->container_no_2  = $request->container_no_2;
+            $vehicle->container_size  = $request->container_size;
+            $vehicle->seal_no         = $request->seal_no;
         }
 
         $vehicle->save();
 
-
-        // Redirect back with success message
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
     }
 
@@ -153,7 +171,6 @@ class VehicleController extends Controller
         // Validate incoming request data
         $request->validate([
             'warehouse_id'    => 'nullable|exists:warehouses,id',
-            'vehicle_type'    => 'required|string|max:255',
             'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number,' . $id,  // Exclude the current record's vehicle_number
             'vehicle_model'   => 'nullable|string|max:255',
             'vehicle_year'    => 'nullable|digits:4',
@@ -165,12 +182,11 @@ class VehicleController extends Controller
         $vehicle = Vehicle::findOrFail($id);
         $vehicle->update([
             'warehouse_id'    => $request->warehouse_id,
-            'vehicle_type'    => $request->vehicle_type,
             'vehicle_number'  => $request->vehicle_number,
             'vehicle_model'   => $request->vehicle_model,
             'vehicle_year'    => $request->vehicle_year,
             'driver_id'       => $request->driver_id,
-            'status'          => $request->status ?? 'Inactive',
+            'status'          => $request->status ?? 'Active',
         ]);
 
         // Redirect back with success message

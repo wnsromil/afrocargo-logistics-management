@@ -82,12 +82,17 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor" for="vehicle_type">Vehicle</label>
+                        <label class="foncolor" for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
                         <select name="vehicle_type" class="form-control inp select2">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
-                                <option {{ old('vehicle_type') == $Vehicle->id ? 'selected' : '' }}
-                                    value="{{ $Vehicle->id }}">{{ $Vehicle->vehicle_type }}</option>
+                            <option {{ old('vehicle_type') == $Vehicle->id ? 'selected' : '' }}
+                                value="{{ $Vehicle->id }}">
+                                {{ $Vehicle->vehicle_type }}
+                                (
+                                {{ $Vehicle->vehicle_type == 'Container' ? $Vehicle->container_no_1 : $Vehicle->vehicle_number }}
+                                )
+                            </option>                                                
                             @endforeach
                         </select>
                         @error('vehicle_type')

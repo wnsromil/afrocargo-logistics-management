@@ -99,7 +99,7 @@
                                 <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
                                 <th>Driver Name</th>
-                                <th>Vehicle/SEAL Number</th>
+                                <th>Vehicle No</th>
                                 <th>Vehicle Model</th>
                                 <th>Vehicle Year</th>
                                 <th class="tabletext">Status</th>
