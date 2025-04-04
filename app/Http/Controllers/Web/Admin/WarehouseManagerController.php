@@ -23,7 +23,7 @@ class WarehouseManagerController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default is 10
-
+        $currentPage = $request->input('page', 1);
         $warehouses = User::when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
@@ -43,12 +43,12 @@ class WarehouseManagerController extends Controller
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-
+            $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.warehouse_manager.table', compact('warehouses'));
+            return view('admin.warehouse_manager.table', compact('warehouses','serialStart'));
         }
 
-        return view('admin.warehouse_manager.index', compact('warehouses', 'search', 'perPage'));
+        return view('admin.warehouse_manager.index', compact('warehouses','serialStart', 'search', 'perPage'));
     }
 
 

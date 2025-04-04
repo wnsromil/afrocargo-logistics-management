@@ -24,31 +24,35 @@
                         <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name"
                             value="{{ old('first_name', $user->name) }}">
                         @error('first_name')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="contact_no1">Mobile No. <i class="text-danger">*</i></label>
-                        <input type="number" id="contact_no1" value="{{ old('contact_no1', $user->phone) }}"
-                            class="form-control inp" placeholder="Enter Mobile Number" name="contact_no1"
+                        <label class="foncolor" for="mobile_code">Mobile No. <i class="text-danger">*</i></label>
+                        <input type="tel" id="mobile_code" value="{{ old('mobile_code', $user->phone) }}"
+                            class="form-control inp" placeholder="Enter Mobile Number" name="mobile_code"
                             oninput="this.value = this.value.slice(0, 10)">
-                        @error('contact_no1')
-                        <small class="text-danger">{{ $message }}</small>
+                        @error('mobile_code')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-
+                    <input type="hidden" id="country_code" name="country_code"
+                        value="{{ old('country_code', $user->country_code) }}">
                     <div class="col-md-12">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                        <input type="number" id="alternate_mobile_no" name="alternate_mobile_no"
+                        <input type="tel" id="mobile" name="alternate_mobile_no"
                             value="{{ old('alternate_mobile_no', $user->phone_2) }}" class="form-control inp"
                             placeholder="Enter Mobile Number" oninput="this.value = this.value.slice(0, 10)">
                     </div>
+                    <input type="hidden" id="country_code_2" name="country_code_2"
+                        value="{{ old('country_code_2', $user->country_code_2) }}">
+
                     <div class="col-md-12">
                         <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
                         <input type="text" name="address_1" value="{{ old('address_1', $user->address) }}"
                             class="form-control inp" placeholder="Enter Address 1">
                         @error('address_1')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12">
@@ -61,15 +65,15 @@
                         <select id="country" name="country" class="js-example-basic-single select2">
                             <option value="">Select Country</option>
                             @foreach ($countries as $country)
-                            <option value="{{ $country->id }}" {{ old('country', $user->country_id) == $country->id ?
+                                                    <option value="{{ $country->id }}" {{ old('country', $user->country_id) == $country->id ?
                                 'selected' : '' }}>
-                                {{ $country->name }}
-                            </option>
+                                                        {{ $country->name }}
+                                                    </option>
                             @endforeach
                         </select>
 
                         @error('country')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -77,11 +81,11 @@
                         <select id="state" name="state" class="js-example-basic-single select2">
                             <option value="">Select State</option>
                             @if (old('state'))
-                            <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
+                                <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
                             @endif
                         </select>
                         @error('state')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -89,11 +93,11 @@
                         <select id="city" name="city" class="js-example-basic-single select2">
                             <option value="">Select City</option>
                             @if (old('city'))
-                            <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
+                                <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
                             @endif
                         </select>
                         @error('city')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -106,7 +110,7 @@
                         <input type="text" name="Zip_code" value="{{ old('Zip_code', $user->pincode) }}"
                             class="form-control inp" placeholder="Enter Zip">
                         @error('Zip_code')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12">
@@ -114,7 +118,7 @@
                         <input type="text" name="username" value="{{ old('Username', $user->username) }}"
                             class="form-control inp" placeholder="Enter User Name">
                         @error('username')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -149,7 +153,7 @@
                         <input type="number" name="latitude" value="{{ old('latitude', $user->latitude) }}"
                             class="form-control inp" placeholder="0">
                         @error('latitude')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">
@@ -157,7 +161,7 @@
                         <input type="number" name="longitude" value="{{ old('longitude', $user->longitude) }}"
                             class="form-control inp" placeholder="0">
                         @error('longitude')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -177,7 +181,7 @@
                         <input type="text" name="email" class="form-control inp" placeholder="Enter Email ID"
                             value="{{ old('email', $user->email) }}">
                         @error('email')
-                        <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -186,10 +190,10 @@
                         <select class="js-example-basic-single select2" name="warehouse_id">
                             <option disabled>Select Warehouse</option>
                             @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $user->warehouse_id ?? '') ==
+                                                    <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $user->warehouse_id ?? '') ==
                                 $warehouse->id ? 'selected' : '' }}>
-                                {{ $warehouse->warehouse_name }}
-                            </option>
+                                                        {{ $warehouse->warehouse_name }}
+                                                    </option>
                             @endforeach
                         </select>
                     </div>
@@ -226,59 +230,61 @@
                         <label class="foncolor" for="warehouse"> Language </label>
                         <select class="js-example-basic-single select2" name="language">
                             <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?
-                                'selected' : '' }}>English</option>
+    'selected' : '' }}>English</option>
                             <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ?
-                                'selected' : '' }}>Hindi</option>
+    'selected' : '' }}>Hindi</option>
                         </select>
                     </div>
 
                     <div class="col-md-12">
                         <label class="foncolor" for="Write_Comment">Write Comment</label>
-                        <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3" placeholder="Enter Write Comment">{{ old('write_comment', $user->write_comment) }}</textarea>
+                        <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3"
+                            placeholder="Enter Write Comment">{{ old('write_comment', $user->write_comment) }}</textarea>
                     </div>
-                    
+
                     <div class="col-md-12">
                         <label class="foncolor" for="Read_Comment">Read Comment</label>
-                        <textarea id="Read_Comment" name="read_comment" class="form-control inp commenth" rows="3" placeholder="Enter Read Comment">{{ old('read_comment', $user->read_comment) }}</textarea>
+                        <textarea id="Read_Comment" name="read_comment" class="form-control inp commenth" rows="3"
+                            placeholder="Enter Read Comment">{{ old('read_comment', $user->read_comment) }}</textarea>
                     </div>
-                    
+
                 </div>
                 <!-- second form right side closer div is next -->
             </div>
         </div>
         <div class="row custodis">
             @php
-                $imglabel = ['profile_pic'=>'Profile pics', 'signature_img'=>'Signature', 'contract_signature_img'=>'Contract signature', 'license_document_img'=>'License picture'];
+                $imglabel = ['profile_pic' => 'Profile pics', 'signature_img' => 'Signature', 'contract_signature_img' => 'Contract signature', 'license_document' => 'License picture'];
             @endphp
-            @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document_img'] as $imageType)
-            <div class="col-md-3">
-                <div class="d-flex align-items-center justify-content-center avtard">
-                    <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                        }}</label>
-                    <div class="avtarset" style="position: relative;">
-                        <!-- Image Preview -->
-                        <img id="preview_{{ $imageType }}" class="avtars avtarc"
-                            src="{{ $user->{$imageType} ? (Str::startsWith($user->{$imageType}, 'http') ? $user->{$imageType} : asset("storage/".$user->{$imageType})) : asset('assets/img.png') }}"
-                        alt="avatar">
+            @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType)
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center avtard">
+                        <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
+                            }}</label>
+                        <div class="avtarset" style="position: relative;">
+                            <!-- Image Preview -->
+                            <img id="preview_{{ $imageType }}" class="avtars avtarc"
+                                src="{{ $user->{$imageType} ? (Str::startsWith($user->{$imageType}, 'http') ? $user->{$imageType} : asset("storage/" . $user->{$imageType})) : asset('assets/img.png') }}"
+                                alt="avatar">
 
-                        <!-- File Input (Hidden by Default) -->
-                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
-                            accept="image/png, image/jpeg" style="display: none;"
-                            onchange="previewImage(this, '{{ $imageType }}')">
+                            <!-- File Input (Hidden by Default) -->
+                            <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
+                                accept="image/png, image/jpeg" style="display: none;"
+                                onchange="previewImage(this, '{{ $imageType }}')">
 
-                        <div class="divedit">
-                            <!-- Edit Button -->
-                            <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
-                                style="cursor: pointer;"
-                                onclick="document.getElementById('file_{{ $imageType }}').click();">
+                            <div class="divedit">
+                                <!-- Edit Button -->
+                                <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
+                                    style="cursor: pointer;"
+                                    onclick="document.getElementById('file_{{ $imageType }}').click();">
 
-                            <!-- Delete Button -->
-                            <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
-                                style="cursor: pointer;" onclick="removeImage('{{ $imageType }}')">
+                                <!-- Delete Button -->
+                                <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
+                                    style="cursor: pointer;" onclick="removeImage('{{ $imageType }}')">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endforeach
 
         </div>
@@ -295,14 +301,13 @@
                         <p class="profileUpdateFont" id="activeText">Active</p>
                         <div class="status-toggle px-2">
                             <input id="rating_6" class="check" type="checkbox" name="status" value="Active"
-                                @checked($user->status === 'Inactive')
-                            onchange="updateStatusValue()">
+                                @checked($user->status === 'Inactive') onchange="updateStatusValue()">
                             <label for="rating_6" class="checktoggle log checkbox-bg">checkbox</label>
                         </div>
                         <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                     </div>
                     @error('status')
-                    <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -323,114 +328,150 @@
             <input id="page_no" type="hidden" name="page_no" value="{{ ($page_no) }}">
     </form>
     @section('script')
-    <script>
-        // 🖼 Image Preview Function
-    function previewImage(input, imageType) {
-        if (input.files && input.files[0]) {
-            let file = input.files[0];
-  
-            // ✅ Sirf PNG ya JPG Allow Hai
-            if (file.type === "image/png" || file.type === "image/jpeg") {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('preview_' + imageType).src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert("Only PNG & JPG images are allowed!");
-                input.value = ""; // Invalid file ko remove karna
+        <script>
+            // 🖼 Image Preview Function
+            function previewImage(input, imageType) {
+                if (input.files && input.files[0]) {
+                    let file = input.files[0];
+
+                    // ✅ Sirf PNG ya JPG Allow Hai
+                    if (file.type === "image/png" || file.type === "image/jpeg") {
+                        let reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById('preview_' + imageType).src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert("Only PNG & JPG images are allowed!");
+                        input.value = ""; // Invalid file ko remove karna
+                    }
+                }
             }
-        }
-    }
-  
-    // ❌ Remove Image Function
-    function removeImage(imageType) {
-        document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
-        document.getElementById('file_' + imageType).value = "";
-    }
-    </script>
-    <script>
-        $(document).ready(function() {
-          loadStatesAndCitiesOnEdit();
-          // Country Change Event
-          $('#country').change(function() {
-              var country_id = $(this).val();
-              $('#state').html('<option selected="selected">Loading...</option>');
-              $('#city').html('<option selected="selected">Select City</option>');
-  
-              $.ajax({
-                  url: '/api/get-states/' + country_id,
-                  type: 'GET',
-                  success: function(states) {
-                      $('#state').html('<option selected="selected">Select State</option>');
-                      $.each(states, function(key, state) {
-                          $('#state').append('<option value="' + state.id + '">' +
-                              state.name + '</option>');
-                      });
-                  }
-              });
-          });
-  
-          // State Change Event
-          $('#state').change(function() {
-              var state_id = $(this).val();
-              $('#city').html('<option selected="selected">Loading...</option>');
-  
-              $.ajax({
-                  url: '/api/get-cities/' + state_id,
-                  type: 'GET',
-                  success: function(cities) {
-                      $('#city').html('<option selected="selected">Select City</option>');
-                      $.each(cities, function(key, city) {
-                          $('#city').append('<option value="' + city.id + '">' + city
-                              .name + '</option>');
-                      });
-                  }
-              });
-          });
-           
-          function loadStatesAndCitiesOnEdit() {
-              var country_id = $('#country').val();
-              var state_id_defult = $('#state_id_defult').val();
-              var city_id_defult = $('#city_id_defult').val();
-              var selected_state = "{{ $user->state ?? '' }}"; // Backend se state ka ID le rahe hain
-              var selected_city = "{{ $user->city ?? '' }}"; // Backend se city ka ID le rahe hain
-  
-              if (country_id) {
-                  $('#state').html('<option selected="selected">Loading...</option>');
-                  $.ajax({
-                      url: '/api/get-states/' + country_id,
-                      type: 'GET',
-                      success: function(states) {
-                          $('#state').html('<option selected="selected">Select State</option>');
-                          $.each(states, function(key, state) {
-                              var selected = state.id == state_id_defult ? 'selected' : '';
-                              $('#state').append('<option value="' + state.id + '" ' + selected + '>' +
-                                  state.name + '</option>');
-                          });
-  
-                          // Call city API only if state is selected
-                          if (state_id_defult) {
-                              $('#city').html('<option selected="selected">Loading...</option>');
-                              $.ajax({
-                                  url: '/api/get-cities/' + state_id_defult,
-                                  type: 'GET',
-                                  success: function(cities) {
-                                      $('#city').html('<option selected="selected">Select City</option>');
-                                      $.each(cities, function(key, city) {
-                                          var selected = city.id == city_id_defult ? 'selected' : '';
-                                          $('#city').append('<option value="' + city.id + '" ' + selected + '>' +
-                                              city.name + '</option>');
-                                      });
-                                  }
-                              });
-                          }
-                      }
-                  });
-              }
-          }
-  
-     });
-    </script>
+
+            // ❌ Remove Image Function
+            function removeImage(imageType) {
+                document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
+                document.getElementById('file_' + imageType).value = "";
+            }
+            $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+            $('.col-md-12').on('click', () => {
+                $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+            })
+
+            $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            $('.col-md-12').on('click', () => {
+                $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            })
+        </script>
+        <script>
+            $(document).ready(function () {
+                loadStatesAndCitiesOnEdit();
+                // Country Change Event
+                $('#country').change(function () {
+                    var country_id = $(this).val();
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $('#city').html('<option selected="selected">Select City</option>');
+
+                    $.ajax({
+                        url: '/api/get-states/' + country_id,
+                        type: 'GET',
+                        success: function (states) {
+                            $('#state').html('<option selected="selected">Select State</option>');
+                            $.each(states, function (key, state) {
+                                $('#state').append('<option value="' + state.id + '">' +
+                                    state.name + '</option>');
+                            });
+                        }
+                    });
+                });
+
+                // State Change Event
+                $('#state').change(function () {
+                    var state_id = $(this).val();
+                    $('#city').html('<option selected="selected">Loading...</option>');
+
+                    $.ajax({
+                        url: '/api/get-cities/' + state_id,
+                        type: 'GET',
+                        success: function (cities) {
+                            $('#city').html('<option selected="selected">Select City</option>');
+                            $.each(cities, function (key, city) {
+                                $('#city').append('<option value="' + city.id + '">' + city
+                                    .name + '</option>');
+                            });
+                        }
+                    });
+                });
+
+                function loadStatesAndCitiesOnEdit() {
+                    var country_id = $('#country').val();
+                    var state_id_defult = $('#state_id_defult').val();
+                    var city_id_defult = $('#city_id_defult').val();
+                    var selected_state = "{{ $user->state ?? '' }}"; // Backend se state ka ID le rahe hain
+                    var selected_city = "{{ $user->city ?? '' }}"; // Backend se city ka ID le rahe hain
+
+                    if (country_id) {
+                        $('#state').html('<option selected="selected">Loading...</option>');
+                        $.ajax({
+                            url: '/api/get-states/' + country_id,
+                            type: 'GET',
+                            success: function (states) {
+                                $('#state').html('<option selected="selected">Select State</option>');
+                                $.each(states, function (key, state) {
+                                    var selected = state.id == state_id_defult ? 'selected' : '';
+                                    $('#state').append('<option value="' + state.id + '" ' + selected + '>' +
+                                        state.name + '</option>');
+                                });
+
+                                // Call city API only if state is selected
+                                if (state_id_defult) {
+                                    $('#city').html('<option selected="selected">Loading...</option>');
+                                    $.ajax({
+                                        url: '/api/get-cities/' + state_id_defult,
+                                        type: 'GET',
+                                        success: function (cities) {
+                                            $('#city').html('<option selected="selected">Select City</option>');
+                                            $.each(cities, function (key, city) {
+                                                var selected = city.id == city_id_defult ? 'selected' : '';
+                                                $('#city').append('<option value="' + city.id + '" ' + selected + '>' +
+                                                    city.name + '</option>');
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+
+            });
+            $(document).ready(function () {
+                function initializeIntlTelInput(inputId, hiddenInputId, defaultCountry) {
+                    let input = document.querySelector(inputId);
+                    let iti = window.intlTelInput(input, {
+                        initialCountry: defaultCountry ? defaultCountry.toLowerCase() : "in", // Default 'IN' (India)
+                        separateDialCode: true,
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                    });
+
+                    // Set hidden input value on load
+                    if (defaultCountry) {
+                        let dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    }
+
+                    // Update country code when user selects a different country
+                    input.addEventListener("countrychange", function () {
+                        let dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    });
+                }
+
+                // Initialize for both mobile fields
+                initializeIntlTelInput("#mobile_code", "#country_code", "{{ $user->country_code }}");
+                initializeIntlTelInput("#mobile", "#country_code_2", "{{ $user->country_code_2 }}");
+            });
+
+        </script>
     @endsection
 </x-app-layout>

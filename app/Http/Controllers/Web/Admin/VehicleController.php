@@ -23,7 +23,7 @@ class VehicleController extends Controller
         $query = $request->search;
         $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
         $currentPage = $request->input('page', 1); // ✅ Current page number
-    
+
         $vehicles = Vehicle::with(['driver', 'warehouse'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -40,18 +40,16 @@ class VehicleController extends Controller
             ->latest()
             ->paginate($perPage)
             ->appends(['search' => $query, 'per_page' => $perPage]); // ✅ URL parameters add karega
-    
+
         // ✅ Serial number start point
         $serialStart = ($currentPage - 1) * $perPage;
-    
+
         if ($request->ajax()) {
             return view('admin.vehicles.table', compact('vehicles', 'serialStart'))->render();
         }
-    
+
         return view('admin.vehicles.index', compact('vehicles', 'query', 'perPage', 'serialStart'));
     }
-    
-
 
 
     public function container_index()
@@ -85,7 +83,7 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-    //    return $request->all();
+        //    return $request->all();
         // Validate incoming request data
         $request->validate([
             'warehouse_name'    => 'required|exists:warehouses,id',
@@ -98,23 +96,22 @@ class VehicleController extends Controller
         ]);
 
         // Create a new vehicle
-            $vehicle = new Vehicle();
-            $vehicle->warehouse_id   = $request->warehouse_name;
-            $vehicle->vehicle_type   = $request->vehicle_type;
-            $vehicle->vehicle_number = $request->vehicle_number;
-            $vehicle->vehicle_model  = $request->vehicle_model;
-            $vehicle->vehicle_year   = $request->vehicle_year;
-            $vehicle->driver_id      = $request->driver_id;
-            $vehicle->status         = $request->status ?? 'Inactive';
-            
-            if($request->vehicle_type == 'Container')
-            {
-                $vehicle->container_no_1  = $request->container_no_1;
-                $vehicle->container_no_2   = $request->container_no_2;
-                $vehicle->container_size      = $request->container_size;
-            }
-            
-            $vehicle->save();
+        $vehicle = new Vehicle();
+        $vehicle->warehouse_id   = $request->warehouse_name;
+        $vehicle->vehicle_type   = $request->vehicle_type;
+        $vehicle->vehicle_number = $request->vehicle_number;
+        $vehicle->vehicle_model  = $request->vehicle_model;
+        $vehicle->vehicle_year   = $request->vehicle_year;
+        $vehicle->driver_id      = $request->driver_id;
+        $vehicle->status         = $request->status ?? 'Inactive';
+
+        if ($request->vehicle_type == 'Container') {
+            $vehicle->container_no_1  = $request->container_no_1;
+            $vehicle->container_no_2   = $request->container_no_2;
+            $vehicle->container_size      = $request->container_size;
+        }
+
+        $vehicle->save();
 
 
         // Redirect back with success message
@@ -139,13 +136,13 @@ class VehicleController extends Controller
     {
         //
         $vehicle = Vehicle::where('id', $id)->first();
-        $drivers = User::where('role_id', '=','4')->get();
-        
+        $drivers = User::where('role_id', '=', '4')->get();
+
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        return view('admin.vehicles.edit', compact('vehicle', 'warehouses','drivers'));
+        return view('admin.vehicles.edit', compact('vehicle', 'warehouses', 'drivers'));
     }
 
     /**

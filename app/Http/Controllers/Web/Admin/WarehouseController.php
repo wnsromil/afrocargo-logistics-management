@@ -20,7 +20,7 @@ class WarehouseController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default pagination
-
+        $currentPage = $request->input('page', 1);
         $warehouses = Warehouse::with(['country', 'state', 'city']) // ✅ Include relationships
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('id', $this->user->warehouse_id);
@@ -47,12 +47,12 @@ class WarehouseController extends Controller
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-
+            $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.warehouse.table', compact('warehouses'))->render();
+            return view('admin.warehouse.table', compact('warehouses','serialStart'))->render();
         }
 
-        return view('admin.warehouse.index', compact('warehouses', 'search', 'perPage'));
+        return view('admin.warehouse.index', compact('warehouses','serialStart', 'search', 'perPage'));
     }
 
 

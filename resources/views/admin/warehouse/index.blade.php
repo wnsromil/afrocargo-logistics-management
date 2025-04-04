@@ -65,7 +65,7 @@
                         @forelse ($warehouses as $index => $warehouse)
                                 <tr>
                                     <td>
-                                        {{ ++$index }}
+                                        {{ $serialStart + $index + 1 }}
                                     </td>
 
                                     <td>{{ ucfirst($warehouse->warehouse_name ?? '') }}</td>
