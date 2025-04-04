@@ -291,8 +291,8 @@ Version      : 1.0
             },
         });
     }
-    if ($('.daterangeInput').length > 0) {
-        $('.daterangeInput').daterangepicker({
+    if ($(".daterangeInput").length > 0) {
+        $(".daterangeInput").daterangepicker({
             imePicker: false,
             startDate: moment(),
             endDate: moment(),
@@ -333,9 +333,9 @@ Version      : 1.0
             showDropdowns: true, // Month/Year Dropdown Enable
             minDate: moment().startOf("day"), // Past Dates Disabled
             startDate: moment().startOf("day"), // Default Today Selected
-            autoUpdateInput: true, // Auto Update Input With Default Date
+            autoUpdateInput: false, // Auto Update Input With Default Date
             locale: {
-                format: "M/DD/YYYY", // Date Format
+                format: "MM-DD-YYYY", // Date Format
             },
         });
 
@@ -343,9 +343,20 @@ Version      : 1.0
         $('input[name="signature_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
-                $(this).val(picker.startDate.format("M/DD/YYYY"));
+                $(this).val(picker.startDate.format("MM-DD-YYYY"));
             }
         );
+
+        // ✅ User Date Picker Open Kare Aur Select Na Kare To Placeholder Wapas Aayega
+        $('input[name="signature_date"]').on(
+            "cancel.daterangepicker",
+            function () {
+                $(this).val("").attr("placeholder", "MM-DD-YYYY");
+            }
+        );
+
+        // ✅ Placeholder Pehle Se Hi Set Karna
+        $('input[name="signature_date"]').attr("placeholder", "MM-DD-YYYY");
     }
 
     if ($('input[name="license_expiry_date"]').length > 0) {
@@ -358,7 +369,7 @@ Version      : 1.0
                 format: "M/DD/YYYY", // Date Format
             },
         });
-    
+
         // Date Select Hone Ke Baad Input Me Value Set Karo
         $('input[name="license_expiry_date"]').on(
             "apply.daterangepicker",
@@ -366,11 +377,13 @@ Version      : 1.0
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
-    
+
         // Placeholder Set Karne Ke Liye
-        $('input[name="license_expiry_date"]').attr("placeholder", "MM-DD-YYYY");
+        $('input[name="license_expiry_date"]').attr(
+            "placeholder",
+            "MM-DD-YYYY"
+        );
     }
-    
 
     if ($('input[name="edit_signature_date"]').length > 0) {
         $('input[name="edit_signature_date"]').daterangepicker({
@@ -404,7 +417,7 @@ Version      : 1.0
                 format: "M/DD/YYYY", // Date Format
             },
         });
-    
+
         // Date Select Hone Ke Baad Input Me Value Set Karo
         $('input[name="edit_license_expiry_date"]').on(
             "apply.daterangepicker",
@@ -413,8 +426,6 @@ Version      : 1.0
             }
         );
     }
-
-   
 
     // Sidebar Slimscroll
 
@@ -492,7 +503,7 @@ Version      : 1.0
 
     // Small Sidebar
     $(document).on("click", "#toggle_btn", function () {
-        console.log('check check')
+        console.log("check check");
         if ($("body").hasClass("mini-sidebar")) {
             $("body").removeClass("mini-sidebar");
             $(".subdrop + ul").slideDown();
@@ -1078,11 +1089,9 @@ Version      : 1.0
     $(".search-dropdown-item").click(function (event) {
         event.stopPropagation();
     });
-    
 
-    // password toggle 
-    $(".toggle-password1").click(function() {
-
+    // password toggle
+    $(".toggle-password1").click(function () {
         $(this).toggleClass("ti-eye-off");
         var input = $($(this).attr("toggle"));
         if (input.attr("type") == "password") {
@@ -1125,6 +1134,4 @@ Version      : 1.0
                 .columns.adjust();
         });
     }
-    
 })(jQuery);
-
