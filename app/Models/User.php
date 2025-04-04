@@ -58,7 +58,8 @@ class User extends Authenticatable
         'contract_signature_img',
         'profile_pic',
         'country_code_2',
-        'country_code'
+        'country_code',
+        'signup_type'
     ];
 
 

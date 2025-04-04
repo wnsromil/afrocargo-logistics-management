@@ -38,10 +38,10 @@
                                                                                 <td>
                                                                                     <a href="{{ url('/') }}"
                                                                                         target="_blank">
-                                                                                        <img src='./AfroCargoLogo 1.png'
-                                                                                            alt="Afrocargo Logo"
-                                                                                            style="display: block; width: 100px; height: 100px;"
-                                                                                            width="200px" border="0">
+                                                                                        <img src='{{asset('assets/images/AfroCargoLogo.svg')}}'
+                                                                                        alt="Afrocargo Logo"
+                                                                                        style="display: block; width: 100px; height: 100px;"
+                                                                                        width="200px" border="0">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -65,19 +65,15 @@
                                                                             <tr>
                                                                                 <td style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 24px; padding:5px 0px; color: black;"
                                                                                     valign="middle" align="center">
-                                                                                    <span style="font-size: 18px;">Dear
-                                                                                       Manager,</span>
+                                                                                    <span style="font-size: 18px;">Dear Driver,</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 24px; color: black; padding-bottom:30px;"
                                                                                     valign="middle" align="center">
                                                                                     <span
-                                                                                        style="font-size: 18px;">Welcome
-                                                                                        to Afrocargo!
-                                                                                        <p style="margin:0px">We’re
-                                                                                            thrilled to have you on
-                                                                                            board.</p>
+                                                                                        style="font-size: 18px;">Welcome to Afrocargo!
+                                                                                        <p style="margin:0px">We’re excited to have you as part of our team.</p>
                                                                                     </span>
                                                                                 </td>
                                                                             </tr>
@@ -95,22 +91,26 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td valign="top" align="center">
-                                                                    You can access your account using the following
-                                                                    credentials:
+                                                                    You can log in using the details below:
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="padding-top: 8px" valign="top"
                                                                     align="center">
-                                                                    <p style="margin:3px"><b>Email/Mobile Number:</b>
-                                                                        $email / $mobileNumber </p>
-                                                                    <p style="margin:3px"><b>Warehouse Code:</b>
-                                                                        $warehouse_code</p>
+                                                                    <p style="margin:3px"><b>Email/Mobile Number: </b>$email / $mobileNumber</p>
+                                                                    <p style="margin:3px"><b>Driver Code: </b>
+                                                                        $driver_code</p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="margin: 3px" valign="top" align="center">
-                                                                    <b>Password:</b> $password
+                                                                    <b>Password:</b> {{$password}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:15px 0px;" valign="top" align="center">
+                                                                   Wishing you a smooth journey 
+                                                                   <p style="margin:0px;">with Afrocargo!</p>
                                                                 </td>
                                                             </tr>
                                                         </tbody>

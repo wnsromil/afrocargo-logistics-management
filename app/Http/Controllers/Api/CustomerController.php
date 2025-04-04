@@ -115,7 +115,7 @@ class CustomerController extends Controller
                 'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
                 'license_document' => $imagePaths['license_picture'] ?? null,
                 'profile_pic' => $imagePaths['profile_pics'] ?? null,
-                'signup_type' => 'for_admin',
+                'signup_type' => 'for_driver',
                 'country_code' => $request->country_code ?? null,
                 'country_code_2' => $request->country_code_2 ?? null,
             ];
