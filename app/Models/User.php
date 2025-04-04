@@ -115,7 +115,7 @@ class User extends Authenticatable
     protected function profilePic(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => !empty($value) ? url($value):null,
+            get: fn($value) => !empty($value) ? url('storage/'.$value):null,
         );
     }
 }

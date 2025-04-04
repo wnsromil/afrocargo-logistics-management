@@ -104,7 +104,7 @@ class DriversController extends Controller
         }
   
         $randomPassword = Str::random(8); // Random password of 8 characters
-        $hashedPassword = Hash::make($randomPassword); // Hashing password
+        $hashedPassword = Hash::make(12345678); // Hashing password
 
         // Store validated data
         $driver = User::create([
