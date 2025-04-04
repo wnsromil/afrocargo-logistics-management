@@ -87,14 +87,14 @@
 
 .font13 {
     font-size: 13px;
-    font-weight: 500px;
+    font-weight: 500;
     /* color: #203A5F; */
 }
 
 .cardh5Size {
     color: black;
     font-size: 18px;
-    font-weight: 600px;
+    font-weight: 600;
 }
 
 .cardAnalyticsSize {
@@ -281,7 +281,7 @@
 .profileUpdateFont{
     font-style: "Poppins", serif;
     font-size: 14px;
-    font-weight: 400px;
+    font-weight: 400;
 }
 
 
@@ -348,7 +348,7 @@
 .th-font{
     font-family: "Poppins", serif;
     font-size: 16px;
-    font-weight: 400px;
+    font-weight: 400;
 }
 
 .bg-success-bg{
@@ -408,7 +408,7 @@
     border: 1px solid #ccc;
     color: black;
     font-size: 14px;
-    font-weight: 600px;
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -450,7 +450,7 @@
 .login-logo-font{
     font-family: "Red Rose", serif;
     font-size: 20px;
-    font-weight: 700px;
+    font-weight: 700;
 }
 
 .bg-image-login{
@@ -475,7 +475,7 @@ h1, h2, h3, h4, h5, h6 {
 .login-btn{
     background: #203A5F;
     text-align: center;
-    font-weight: 400px;
+    font-weight: 400;
     font-size: 14px;
     border-radius: 0px;
     /* line-height: 1rem;*/
@@ -499,13 +499,13 @@ h1, h2, h3, h4, h5, h6 {
 .font-size2{
     font-size: 25px;
     font-family: "Poppins", serif;
-    font-weight: 700px;
+    font-weight: 700;
 }
 
 
 .red-rose-fontSet {
     font-family: "Red Rose", serif;
-    font-weight: 700px;
+    font-weight: 700;
     font-style: normal;
     font-size: 20px;
     padding: 11px;

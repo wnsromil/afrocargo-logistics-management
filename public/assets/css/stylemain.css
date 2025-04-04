@@ -96,8 +96,11 @@ table thead.set {
     text-align: left;
 }
 
-.table-content {
-    color: #737B8B;
+
+.t-padding .card-table .card-body .table td {
+    padding: 25px 1rem !important;
+    /* padding-right: 1rem !important;
+    padding-left: 1rem !important; */
 }
 
 .card-table .card-body .table{
@@ -151,9 +154,10 @@ table thead.set {
     color: #252F49;
 }
 
-.table tbody td a.btn-action-icon {
+.table tbody td a.btn-action-icon.set {
     height: 26px;
     width: 26px;
+    background: #252F49  !important;
 }
 
 .cardFontSize {
@@ -169,7 +173,7 @@ table thead.set {
 .cardh5Size {
     color: black;
     font-size: 18px;
-    font-weight: 600px;
+    font-weight: 600;
 }
 
 .cardAnalyticsSize {
@@ -179,7 +183,7 @@ table thead.set {
 
 .form-header h4.font16 {
     font-size: 16px;
-    font-weight: 500px;
+    font-weight: 500;
 }
 
 .buttoncolor {
@@ -388,13 +392,13 @@ table thead.set {
     height: 100%;
 }
 
-.input-block{
-    font-weight: 400px !important;
-} 
+span.select2-selection__rendered{
+    font-weight: 400 !important;
+}
 .profileUpdateFont {
     font-style: "Poppins", serif;
     font-size: 14px;
-    font-weight: 400px;
+    font-weight: 400 !important;
 }
 
 
@@ -465,7 +469,7 @@ label.profile-img img{
 .th-font {
     font-family: "Poppins", serif;
     font-size: 16px;
-    font-weight: 400px;
+    font-weight: 400;
 }
 
 .twobutton2{
@@ -489,7 +493,6 @@ label.profile-img img{
 .stock-font {
     font-size: 11px !important;
     border-radius: 4px;
-    /* font-weight: 600px; */
 }
 
 .checktoggle:after {
@@ -526,13 +529,13 @@ label.profile-img img{
     border-bottom: 4px solid black !important;
     color: black !important;
     font-size: 16px !important;
-    font-weight: 700px !important;
+    font-weight: 700 !important;
 }
 
 .active3{
     text-decoration: none;
     border-bottom: 4px solid #203A5F !important;
-    font-weight: 800px !important;
+    font-weight: 800 !important;
     color: #203A5F !important;
     position: relative !important;
 }
@@ -561,7 +564,7 @@ label.profile-img img{
     border: 1px solid #ccc;
     color: black;
     font-size: 14px;
-    font-weight: 600px;
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -617,7 +620,7 @@ label.profile-img img{
 .login-logo-font {
     font-family: "Red Rose", serif;
     font-size: 20px;
-    font-weight: 700px;
+    font-weight: 700;
 }
 
 .bg-image-login {
@@ -640,7 +643,7 @@ h6 {
     border: none;
     color: black;
     margin-bottom: -3px;
-    font-weight: 700px !important;
+    font-weight: 700 !important;
 }
 
 .setColor {
@@ -658,13 +661,13 @@ h6 {
 .font-size2 {
     font-size: 25px;
     font-family: "Poppins", serif;
-    font-weight: 700px;
+    font-weight: 700;
 }
 
 
 .red-rose-fontSet {
     font-family: "Red Rose", serif;
-    font-weight: 700px;
+    font-weight: 700;
     font-style: normal;
     font-size: 20px;
 }
@@ -878,7 +881,7 @@ h6 {
 .header .profile {
     border: transparent;
     font-size: 26px;
-    font-weight: 200px !important;
+    font-weight: 200 !important;
 }
 
 .calemdar-contaner {
@@ -898,7 +901,7 @@ h6 {
     border-radius: 6px;
 }
 .modal-content.resized{
-    width: 296px;
+    width: 296px !important;
 }
 
 .border-set{
@@ -1041,15 +1044,11 @@ h6 {
 .btn-size {
     width: 36px;
     height: 26px;
-    font-weight: 2px;
+    font-weight: 2;
     border-radius: 4px;
     padding: 0px;
 }
 
-.icon-size {
-    font-weight: 2px;
-    padding: 0px;
-}
 
 .tr-size {
     color: #c0c1c4;
@@ -1094,15 +1093,15 @@ hr.border-opac {
     border-color: #3a3a3a;
 }
 
+.text-truncate.width{
+    max-width: 50px;
+}
 .font-10{
     font-size: 10px;
 }
-/* @media (min-width: 576px) {
-    .modal-dialog .md-small {
-        max-width: 20%;
-    }
-} */
-
+.pending-text{
+    color: #FF0000;
+}
 
 /* - Calendar     */
 
@@ -1139,7 +1138,7 @@ hr.border-opac {
 
 .fc-daygrid-daynumber {
     color: black !important;
-    font-weight: 600px;
+    font-weight: 600;
     text-decoration: none !important;
     font-size: 14px;
 }
@@ -1681,9 +1680,13 @@ body.mini-sidebar.expand-menu .sidebar {
         color: #fff !important;
     }
 }
+.select2-container--default .select2-selection--single, .select2-selection--single .select2-selection__arrow {
+    margin-top: 5px;
+}
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 40px;
+    font-weight: 400 !important;
 }
 
 .daterangepicker-wrap.mannual {
@@ -1741,6 +1744,7 @@ body.mini-sidebar.expand-menu .sidebar {
     .select2-results__option--highlighted[aria-selected] {
         background: #203A5F;
         color: #fff;
+        font-weight: 400 !important;
     }
 }
 
@@ -1835,7 +1839,6 @@ body.mini-sidebar.expand-menu .sidebar {
     .select2-selection__rendered {
         color: #737B8B !important;
         font-size: 12px !important;
-        font-weight: 500;
     }
 
     .iti__country-list {
