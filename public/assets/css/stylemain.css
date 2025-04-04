@@ -388,6 +388,9 @@ table thead.set {
     height: 100%;
 }
 
+.input-block{
+    font-weight: 400px !important;
+} 
 .profileUpdateFont {
     font-style: "Poppins", serif;
     font-size: 14px;
