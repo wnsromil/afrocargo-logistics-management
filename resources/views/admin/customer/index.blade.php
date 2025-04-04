@@ -26,7 +26,7 @@
 
 
 
-         <!-- <x-slot name="cardTitle">
+        <!-- <x-slot name="cardTitle">
           <div class= d-flex style="border-bottom:1px dashed #DFDFDF; width:100%">
             <p class="head">All Customers</p>
             <div class="usersearch d-flex usersserach">
@@ -45,30 +45,33 @@
     </div>
     </div>
         </x-slot> -->
-    
+
 
         <x-slot name="cardTitle">
-            <div class="d-flex topnavs" >
+            <div class="d-flex topnavs">
                 <p class="head">All Customers</p>
                 <div class="usersearch d-flex usersserach">
-                <div class="top-nav-search">
-                    <form>
-                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search ">
-                    </form>
-                </div>
-                
-                <div class="mt-2">
-                    <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
-                        <span><i class="fe fe-refresh-ccw"></i></span>
-                    </a>
-                    </button>
-                </div>
+                    <div class="top-nav-search">
+                        <form>
+                            <input type="text" id="searchInput" class="form-control forms" placeholder="Search ">
+                        </form>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="button"
+                            class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                            <a class="btn-filters d-flex justify-content-center align-items-center"
+                                href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Refresh">
+                                <span><i class="fe fe-refresh-ccw"></i></span>
+                            </a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </x-slot>
 
-        
+
         <div id='ajexTable'>
             <div class="card-table">
                 <div class="card-body">
@@ -120,11 +123,11 @@
                                         <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}<br>
                                             {{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}
                                         </td>
-                                        <td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                            title="{!! nl2br(e($customer->address ?? '-')) . '<br>' . nl2br(e($customer->address_2 ?? '-')) !!}">
                                             {{ Str::limit($customer->address ?? '-', 15) }}<br>
                                             {{ Str::limit($customer->address_2 ?? '-', 15) }}
                                         </td>
-                                        
                                         <td>
                                             @if ($customer->status == 'Active')
                                                 <div class="container">
@@ -669,14 +672,15 @@
 
                         </table>
 
-                        
+
                     </div>
                 </div>
             </div>
             <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
                 <div class="col-md-6 d-flex p-2 align-items-center">
                     <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                    <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                    <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                        id="pageSizeSelect">
                         <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                         <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                         <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -721,22 +725,22 @@
         </div>
         <!-- /Delete Items Modal -->
         @section('script')
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                let deleteId = null;
-        
-                // 🔹 Delete button click par modal open hone se pehle ID store kare
-                document.querySelectorAll('[data-bs-target="#delete_modal"]').forEach(button => {
-                    button.addEventListener('click', function() {
-                        deleteId = this.getAttribute('data-id'); // User ID ko store kare
-                        console.log("Selected ID:", deleteId); // Debug ke liye
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let deleteId = null;
+
+                    // 🔹 Delete button click par modal open hone se pehle ID store kare
+                    document.querySelectorAll('[data-bs-target="#delete_modal"]').forEach(button => {
+                        button.addEventListener('click', function () {
+                            deleteId = this.getAttribute('data-id'); // User ID ko store kare
+                            console.log("Selected ID:", deleteId); // Debug ke liye
+                        });
                     });
-                });
-        
-                // 🔹 Delete Confirm Button par API call kare
-                document.getElementById('confirmDelete').addEventListener('click', function() {
-                    if (deleteId) {
-                        fetch(`/delete-customers/${deleteId}`, {
+
+                    // 🔹 Delete Confirm Button par API call kare
+                    document.getElementById('confirmDelete').addEventListener('click', function () {
+                        if (deleteId) {
+                            fetch(`/delete-customers/${deleteId}`, {
                                 method: 'GET',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -744,28 +748,35 @@
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 }
                             })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        title: "Good job!",
-                                        text: "Customer deleted successfully",
-                                        icon: "success"
-                                    });
-        
-                                    setTimeout(function() {
-                                        location.reload(); // 2 second ke baad page refresh karega
-                                    }, 2000);
-        
-                                } else {
-                                    alert('Error: ' + data.message);
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
-                    }
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire({
+                                            title: "Good job!",
+                                            text: "Customer deleted successfully",
+                                            icon: "success"
+                                        });
+
+                                        setTimeout(function () {
+                                            location.reload(); // 2 second ke baad page refresh karega
+                                        }, 2000);
+
+                                    } else {
+                                        alert('Error: ' + data.message);
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+                    });
                 });
-            });
-        </script>
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl, { html: true });
+                    });
+                });
+            </script>
         @endsection
 </x-app-layout>
-

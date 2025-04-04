@@ -26,7 +26,7 @@ class CustomerController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default pagination
         $currentPage = $request->input('page', 1);
-    
+
         $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -40,25 +40,25 @@ class CustomerController extends Controller
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%");
-                        // ->orWhereHas('warehouse.country', function ($q) use ($search) {
-                        //     $q->where('name', 'LIKE', "%$search%");
-                        // })
-                        // ->orWhereHas('warehouse.state', function ($q) use ($search) {
-                        //     $q->where('name', 'LIKE', "%$search%");
-                        // })
-                        // ->orWhereHas('warehouse.city', function ($q) use ($search) {
-                        //     $q->where('name', 'LIKE', "%$search%");
-                        // });
+                    // ->orWhereHas('warehouse.country', function ($q) use ($search) {
+                    //     $q->where('name', 'LIKE', "%$search%");
+                    // })
+                    // ->orWhereHas('warehouse.state', function ($q) use ($search) {
+                    //     $q->where('name', 'LIKE', "%$search%");
+                    // })
+                    // ->orWhereHas('warehouse.city', function ($q) use ($search) {
+                    //     $q->where('name', 'LIKE', "%$search%");
+                    // });
                 });
             })
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-            $serialStart = ($currentPage - 1) * $perPage;
+        $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart'))->render();
         }
-    
+
         return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
     }
     /**
@@ -89,7 +89,7 @@ class CustomerController extends Controller
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email',
+                'unique:users,email'
             ],
             'alternate_mobile_no' => 'nullable|max:13',
             'address_1' => 'required|string|max:255',
@@ -106,93 +106,93 @@ class CustomerController extends Controller
             'country_code_2' => 'required|string',
 
         ]);
-       
 
-         try {
-        
-        $imagePaths = [];
 
-        foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
-           
-            if ($request->hasFile($imageType)) {
-                $file = $request->file($imageType);
-                $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
-                
-                // 🔹 Agar profile_pics hai to alag folder me store kare
-                if ($imageType === 'profile_pics') {
-                    $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                    $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName; // Store path in DB
-                } else {
-                    // 🔹 Baaki images customer folder me store ho
-                    $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
-                    $imagePaths[$imageType] = 'uploads/customer/' . $fileName; // Store path in DB
+        try {
+
+            $imagePaths = [];
+
+            foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
+
+                if ($request->hasFile($imageType)) {
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
+
+                    // 🔹 Agar profile_pics hai to alag folder me store kare
+                    if ($imageType === 'profile_pics') {
+                        $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
+                        $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName; // Store path in DB
+                    } else {
+                        // 🔹 Baaki images customer folder me store ho
+                        $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                        $imagePaths[$imageType] = 'uploads/customer/' . $fileName; // Store path in DB
+                    }
                 }
             }
-        }
-    
 
-        // 🛠 Mapping Request Fields to Database Fields
-        $userData = [
-            'name'          => $validated['first_name'],
-            'email'          => $validated['email'] ?? null,
-            'phone'   => $validated['mobile_code'],
-            'phone_2'      => $validated['alternate_mobile_no'] ?? null, // Optional Field
-            'address'        => $validated['address_1'],
-            'address_2'        => $request->Address_2,
-            'country_id'     => $validated['country'],
-            'state_id'       => $validated['state'],
-            'city_id'        => $validated['city'],
-            'pincode'            => $validated['Zip_code'],
-            'password'       => Hash::make(1235678),
-            'status' => $request->status ?? 'Active',
-            'company_name'        => $request->company_name ?? null,
-            'apartment'        => $request->apartment ?? null,
-            'username'      => $validated['username'],
-            'latitude'       => $validated['latitude'] ?? null, // Optional Field
-            'longitude'      => $validated['longitude'] ?? null, // Optional Field
-            'website_url'        => $request->website_url ?? null,
-            'write_comment'        => $request->write_comment ?? null,
-            'read_comment'        => $request->read_comment ?? null,
-            'language'        => $request->language ?? null,
-            'year_to_date'        => $request->year_to_date ?? null,
-            'license_number'        => $request->license_number ?? null,
-            'warehouse_id'        => $request->warehouse_id ?? null,
-            'signature_img' => $imagePaths['signature'] ?? null,
-            'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
-            'license_document' => $imagePaths['license_picture'] ?? null,
-            'profile_pic' => $imagePaths['profile_pics'] ?? null,
-            'signup_type' => 'for_admin',
-            'country_code'        => $request->country_code ?? null,
-            'country_code_2'        => $request->country_code_2 ?? null,
-        ];
-        if (!empty($request->license_expiry_date)) {
-            $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
-        }
 
-        if (!empty($request->signature_date)) {
-            $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->signature_date)->format('Y-m-d');
-        }
+            // 🛠 Mapping Request Fields to Database Fields
+            $userData = [
+                'name'          => $validated['first_name'],
+                'email'          => $validated['email'] ?? null,
+                'phone'   => $validated['mobile_code'],
+                'phone_2'      => $validated['alternate_mobile_no'] ?? null, // Optional Field
+                'address'        => $validated['address_1'],
+                'address_2'        => $request->Address_2,
+                'country_id'     => $validated['country'],
+                'state_id'       => $validated['state'],
+                'city_id'        => $validated['city'],
+                'pincode'            => $validated['Zip_code'],
+                'password'       => Hash::make(1235678),
+                'status' => $request->status ?? 'Active',
+                'company_name'        => $request->company_name ?? null,
+                'apartment'        => $request->apartment ?? null,
+                'username'      => $validated['username'],
+                'latitude'       => $validated['latitude'] ?? null, // Optional Field
+                'longitude'      => $validated['longitude'] ?? null, // Optional Field
+                'website_url'        => $request->website_url ?? null,
+                'write_comment'        => $request->write_comment ?? null,
+                'read_comment'        => $request->read_comment ?? null,
+                'language'        => $request->language ?? null,
+                'year_to_date'        => $request->year_to_date ?? null,
+                'license_number'        => $request->license_number ?? null,
+                'warehouse_id'        => $request->warehouse_id ?? null,
+                'signature_img' => $imagePaths['signature'] ?? null,
+                'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
+                'license_document' => $imagePaths['license_picture'] ?? null,
+                'profile_pic' => $imagePaths['profile_pics'] ?? null,
+                'signup_type' => 'for_admin',
+                'country_code'        => $request->country_code ?? null,
+                'country_code_2'        => $request->country_code_2 ?? null,
+            ];
+            if (!empty($request->license_expiry_date)) {
+                $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
+            }
 
-        // 📌 Create User
-        $user = User::create($userData);
+            if (!empty($request->signature_date)) {
+                $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->signature_date)->format('Y-m-d');
+            }
 
- 
-        // Example dynamic data
-        $userName = $validated['first_name'];
-        $email = $validated['email'] ?? null;
-        $mobileNumber = $validated['mobile_code'];
-        $password =12345678;
-        $loginUrl = route('login');
+            // 📌 Create User
+            $user = User::create($userData);
 
-        // Send the email
-        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
 
-        return redirect()->route('admin.customer.index')
-            ->with('success', 'User created successfully');
+            // Example dynamic data
+            $userName = $validated['first_name'];
+            $email = $validated['email'] ?? null;
+            $mobileNumber = $validated['mobile_code'];
+            $password = 12345678;
+            $loginUrl = route('login');
+
+            // Send the email
+            Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
+
+            return redirect()->route('admin.customer.index')
+                ->with('success', 'User created successfully');
         } catch (\Throwable $th) {
             // Validation Errors dikhane ke liye
             return  $th;
-            return back()->with('errors',$e->getMessage());
+            return back()->with('errors', $e->getMessage());
         }
     }
 
@@ -223,7 +223,7 @@ class CustomerController extends Controller
         $warehouses = Warehouse::where('status', 'Active')->get();
         $countries = Country::all();
         $page_no = $request->page;
-        return view('admin.customer.edit', compact('user', 'roles', 'userRole','warehouses', 'countries','page_no'));
+        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no'));
     }
 
     /**
@@ -243,9 +243,9 @@ class CustomerController extends Controller
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email',
+                'unique:users,email,' . $id,
             ],
-            'alternate_mobile_no' => 'nullable|digits:10',
+            'alternate_mobile_no' => 'nullable',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
             'state' => 'required|string',
@@ -257,15 +257,15 @@ class CustomerController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric'
         ]);
-    
+
         $user = User::findOrFail($id);
         $imagePaths = [];
         // 🔹 File Upload Handling
-        foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document_img'] as $imageType) {
+        foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType) {
             if ($request->hasFile($imageType)) {
                 $file = $request->file($imageType);
                 $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
-                
+
                 if ($imageType === 'profile_pic') {
                     $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
                     $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName;
@@ -275,12 +275,12 @@ class CustomerController extends Controller
                 }
             }
         }
-    
+
         // 🔹 Updating User Data
         $userData = [
             'name'        => $validated['first_name'],
             'email'       => $validated['email'],
-            'phone'       => $validated['contact_no1'],
+            'phone'       => $validated['mobile_code'],
             'phone_2'     => $validated['alternate_mobile_no'] ?? null,
             'address'     => $validated['address_1'],
             'address_2'   => $request->Address_2,
@@ -303,47 +303,46 @@ class CustomerController extends Controller
             'warehouse_id'   => $request->warehouse_id,
             'signup_type'    => 'for_admin'
         ];
-    
+
         // 🔹 File Path Update
-        if(!empty($imagePaths['signature_img'])){
+        if (!empty($imagePaths['signature_img'])) {
             $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
         }
 
-        if(!empty($userData['contract_signature_img'])){
+        if (!empty($userData['contract_signature_img'])) {
             $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
         }
-        if(!empty($userData['license_document'])){
-            $userData['license_document'] = $imagePaths['license_document_img'] ?? $user->license_document;
+        if (!empty($userData['license_document'])) {
+            $userData['license_document'] = $imagePaths['license_document'] ?? $user->license_document;
         }
-        if(!empty($userData['profile_pic'])){
+        if (!empty($userData['profile_pic'])) {
             $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
         }
-        
-        
-        
-    
+
+
+
+
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {
             $userData['edit_license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
         }
-    
+
         if (!empty($request->edit_signature_date)) {
             $userData['edit_signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
         }
-    
+
         // 🔹 Password Handling (Agar diya gaya hai tabhi update karo)
         // if (!empty($validated['password'])) {
         //     $userData['password'] = Hash::make($validated['password']);
         // }
-    
+
         // 🛠 Update User Data
         $user->update($userData);
-    
+
         return redirect()->route('admin.customer.index', ['page' => $request->page_no])
-        ->with('success', 'User updated successfully');
-    
+            ->with('success', 'User updated successfully');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -367,16 +366,16 @@ class CustomerController extends Controller
     public function deleteCustomer(Request $request)
     {
         $user = User::find($request->id);
-    
+
         if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
-    
+
         $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
-    
+
         return response()->json([
             'success' => true,
             'message' => 'User marked as deleted successfully',

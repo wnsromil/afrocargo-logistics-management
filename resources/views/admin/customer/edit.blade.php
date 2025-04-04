@@ -254,9 +254,9 @@
         </div>
         <div class="row custodis">
             @php
-                $imglabel = ['profile_pic' => 'Profile pics', 'signature_img' => 'Signature', 'contract_signature_img' => 'Contract signature', 'license_document_img' => 'License picture'];
+                $imglabel = ['profile_pic' => 'Profile pics', 'signature_img' => 'Signature', 'contract_signature_img' => 'Contract signature', 'license_document' => 'License picture'];
             @endphp
-            @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document_img'] as $imageType)
+            @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType)
                 <div class="col-md-3">
                     <div class="d-flex align-items-center justify-content-center avtard">
                         <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
