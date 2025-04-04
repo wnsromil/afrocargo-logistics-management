@@ -104,6 +104,8 @@ class CustomerController extends Controller
             'longitude' => 'required|numeric', // Optional
             'country_code' => 'required',
             'country_code_2' => 'required|string',
+            'signature_date' => 'nullable|date_format:m/d/Y',
+            'license_expiry_date' => 'nullable|date_format:m/d/Y'
 
         ]);
 
