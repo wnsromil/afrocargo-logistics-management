@@ -13,6 +13,7 @@ use App\Models\{
     Vehicle
 };
 use Illuminate\Support\Facades\Validator;
+
 class VehicleController extends Controller
 {
     /**
@@ -52,16 +53,42 @@ class VehicleController extends Controller
     }
 
 
-    public function container_index()
+    public function container_index(Request $request)
     {
-        $vehicles = Vehicle::where('vehicle_type', 'Container') // 👈 Filter only Container vehicles
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+    
+        $vehicles = Vehicle::with(['driver', 'warehouse'])
+            ->where('vehicle_type', 'Container') // ✅ Only container type
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
-            ->paginate(10);
+            ->when($query, function ($q) use ($query) {
+                return $q->where(function ($subQuery) use ($query) {
+                    $subQuery->where('vehicle_model', 'like', '%' . $query . '%')
+                        ->orWhere('vehicle_year', 'like', '%' . $query . '%')
+                        ->orWhereHas('driver', function ($q) use ($query) {
+                            $q->where('name', 'like', '%' . $query . '%');
+                        })
+                        ->orWhereHas('warehouse', function ($q) use ($query) {
+                            $q->where('warehouse_name', 'like', '%' . $query . '%');
+                        });
+                });
+            })
+            ->latest()
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
     
-        return view('admin.container.index', compact('vehicles'));
+        $serialStart = ($currentPage - 1) * $perPage;
+    
+        if ($request->ajax()) {
+            return view('admin.container.table', compact('vehicles', 'serialStart'))->render();
+        }
+    
+        return view('admin.container.index', compact('vehicles', 'query', 'perPage', 'serialStart'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -86,7 +113,7 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-        
+
         // Base rules
         $rules = [
             'warehouse_name' => 'required|exists:warehouses,id',
@@ -100,7 +127,7 @@ class VehicleController extends Controller
         if ($request->vehicle_type === 'Container') {
             $rules['container_no_1'] = 'required|string|max:100';
             $rules['container_no_2'] = 'required|string|max:100';
-            $rules['container_size'] = 'required|string|max:50';
+            $rules['container_size'] = 'nullable|string|max:50';
             $rules['seal_no']        = 'required|string|max:100';
         } else {
             $rules['vehicle_number'] = 'required|string|max:50|unique:vehicles,vehicle_number';

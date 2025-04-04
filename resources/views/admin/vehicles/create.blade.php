@@ -140,15 +140,12 @@
                 <!-- Container Size -->
                 <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-size-field" style="display:none">
                     <div class="input-block mb-3">
-                        <label for="container_size" class="foncolor">Container Size <i class="text-danger">*</i></label>
+                        <label for="container_size" class="foncolor">Container Size</label>
                         <select name="container_size" id="container_size" class="js-example-basic-single select2">
                             <option value="">Select Container Size</option>
                             <option>40 feet</option>
                             <option>20 feet</option>
                         </select>
-                        @error('warehouse_name')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
 
