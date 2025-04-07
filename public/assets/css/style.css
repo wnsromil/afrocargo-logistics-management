@@ -26809,5 +26809,13 @@ td .invoice-detail i {
 {
   min-height: 90vh;
 }
-
+.input-box .bottom-user-page {
+  margin-top: 0px !important;
+}
+.input-box .align-items-center {
+  padding: 0px !important;
+}
+.bottom-user-page nav p{
+  display: none !important;
+}
 /*# sourceMappingURL=style.css.map */

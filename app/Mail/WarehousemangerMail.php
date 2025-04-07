@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
 class WarehousemangerMail extends Mailable
 {
@@ -46,6 +47,7 @@ class WarehousemangerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('no-reply@afrocargo.com', 'Afro Cargo'),
             subject: 'Register Mail',
         );
     }
