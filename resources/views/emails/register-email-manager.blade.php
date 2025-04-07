@@ -38,7 +38,7 @@
                                                                                 <td>
                                                                                     <a href="{{ url('/') }}"
                                                                                         target="_blank">
-                                                                                        <img src='./AfroCargoLogo 1.png'
+                                                                                        <img src='{{asset('assets/images/AfroCargoLogo.svg')}}'
                                                                                             alt="Afrocargo Logo"
                                                                                             style="display: block; width: 100px; height: 100px;"
                                                                                             width="200px" border="0">
@@ -103,14 +103,14 @@
                                                                 <td style="padding-top: 8px" valign="top"
                                                                     align="center">
                                                                     <p style="margin:3px"><b>Email/Mobile Number:</b>
-                                                                        $email / $mobileNumber </p>
+                                                                        {{$email}} / {{$mobileNumber}} </p>
                                                                     <p style="margin:3px"><b>Warehouse Code:</b>
-                                                                        $warehouse_code</p>
+                                                                        {{$warehouse_code}}</p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="margin: 3px" valign="top" align="center">
-                                                                    <b>Password:</b> $password
+                                                                    <b>Password:</b> {{$password}}
                                                                 </td>
                                                             </tr>
                                                         </tbody>

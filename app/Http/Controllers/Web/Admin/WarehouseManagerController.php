@@ -13,7 +13,7 @@ use App\Models\{
 };
 use DB;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\RegistorMail;
+use App\Mail\WarehousemangerMail;
 
 
 class WarehouseManagerController extends Controller
@@ -76,10 +76,8 @@ class WarehouseManagerController extends Controller
      */
     public function store(Request $request)
     {
-     
-        
         $validator = Validator::make($request->all(), [
-            'warehouse_name' => 'required',
+            'warehouse_name' => 'required|exists:warehouses,id', // Ensure ID exists
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address' => 'required|string|max:500',
@@ -87,17 +85,26 @@ class WarehouseManagerController extends Controller
             'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
-        // Check if validation fails
+    
         if ($validator->fails()) {
             return redirect()->back()
-                ->withErrors($validator)  // Send errors to the session
-                ->withInput();  // Keep old input data
+                ->withErrors($validator)
+                ->withInput();
         }
-
-        $status  = !empty($request->status) ? $request->status : 'Inactive';
-
-        // Store validated data
-        User::create([
+    
+        $status = !empty($request->status) ? $request->status : 'Inactive';
+    
+        // Warehouse ki ID se warehouse_code nikalna
+        $warehouse = Warehouse::find($request->warehouse_name); 
+    
+        if (!$warehouse) {
+            return redirect()->back()->with('error', 'Warehouse not found.');
+        }
+    
+        $warehouse_code = $warehouse->warehouse_code; // Warehouse Code get karna
+    
+        // User Create
+        $user = User::create([
             'warehouse_id' => $request->warehouse_name,
             'name' => $request->manager_name,
             'address' => $request->address,
@@ -105,30 +112,25 @@ class WarehouseManagerController extends Controller
             'password' => \Hash::make('12345678'),
             'phone' => $request->phone,
             'country_code' => $request->country_code,
-            'status' => $request->status ?? 'Active',
+            'status' => $status,
             'role_id' => 2,
             'role' => "warehouse_manager",
-            
         ]);
-
-        // Example dynamic data
-        $userName = $request->warehouse_name ?? null;
-        $email = $request->email ?? null;
-        $mobileNumber = $request->phone ?? null;
+    
+        // Email Data Prepare Karna
+        $manager_name = $request->manager_name;
+        $email = $request->email;
+        $mobileNumber = $request->phone;
         $password = '12345678';
         $loginUrl = route('login');
-
-         if(!empty($email)){
-            // Send the email
-            Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
-         }
-         
-
-        // Redirect with success message
+    
+        if (!empty($email)) {
+            // Email Send Karna
+            Mail::to($email)->send(new WarehousemangerMail($manager_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
+        }
+    
         return redirect()->route('admin.warehouse_manager.index')
             ->with('success', 'Manager created successfully.');
-
-        
     }
 
     /**

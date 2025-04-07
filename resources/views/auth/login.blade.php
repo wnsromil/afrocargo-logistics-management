@@ -185,13 +185,6 @@
             @endif
             </div>
 
-            @if ($errors->has('email'))
-                <div class="text-danger mb-3">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </div>
-            @endif
-
-
             <div class="input-group input-group-lg bg-color2">
                 <input id="password1" type="password" name="password" :value="old('email')" required
                     autocomplete="current-password" placeholder="Password"
