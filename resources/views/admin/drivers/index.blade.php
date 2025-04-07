@@ -78,6 +78,7 @@
                                         <th>License Number</th>
                                         <th>License Expiry Date</th>
                                         <th>License Doc</th>
+                                        <th>Schedule</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -107,6 +108,10 @@
                                                 @else
                                                     <p class="text-center">--</p>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('admin.drivers.schedule', $warehouse->id) }}"> 
+                                                    <i class="ti ti-calendar-clock"></i></a>
                                             </td>
                                             <td>
                                                 @if ($warehouse->status == 'Active')
@@ -142,18 +147,18 @@
                                                                         class="far fa-eye me-2"></i>View</a>
                                                             </li>
                                                             <!-- <li>
-                                                                <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                    data-id="{{ $warehouse->id }}" data-status="Active">
-                                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item deactivate"
-                                                                    href="javascript:void(0)"
-                                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
-                                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                                </a>
-                                                            </li> -->
+                                                                            <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                                data-id="{{ $warehouse->id }}" data-status="Active">
+                                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item deactivate"
+                                                                                href="javascript:void(0)"
+                                                                                data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                                            </a>
+                                                                        </li> -->
                                                         </ul>
                                                     </div>
                                                 </div>

@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,6 +28,18 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = Auth::user();
+        
+        // ✅ Fixed Condition for Warehouse Code
+        if (empty($request->warehouse_code) && in_array($user->role_id, [2])) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => 'These credentials do not match our records',
+            ]);
+
+            return redirect()->intended(route('login', absolute: false));
+        }
 
         return redirect()->intended(route('admin.dashboard', absolute: false));
     }

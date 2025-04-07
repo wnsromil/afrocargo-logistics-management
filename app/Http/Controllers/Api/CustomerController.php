@@ -11,6 +11,8 @@ use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistorMail;
+use Hash;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -53,43 +55,95 @@ class CustomerController extends Controller
 
     public function createCustomer(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users,email',
-            'role' => 'nullable|in:customer,driver',
-            'role_id' => 'nullable|integer',
-            'phone' => 'required|string|max:15|unique:users,phone',
-            'phone_2' => 'nullable|string|max:15',
-            'address' => 'required|string|max:255',
-            'address_2' => 'nullable|string|max:255',
-            'country_id' => 'required|string|max:255',
-            // 'state_id' => 'required|string|max:255',
-            // 'city_id' => 'required|string|max:255',
-            'pincode' => 'required|numeric',
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'mobile_code' => 'required|max:13|unique:users,phone',
+            'email' => 'required|email|max:255|unique:users,email',
+            'alternate_mobile_no' => 'nullable|max:13',
+            'address_1' => 'required|string|max:255',
+            'country' => 'required|string|exists:countries,id',
+            'state' => 'required|string',
+            'city' => 'required|string',
+            'Zip_code' => 'required|string|max:10',
+            'username' => 'required|string|max:255|unique:users,username',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'country_code' => 'required',
+            'country_code_2' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        try {
+            $imagePaths = [];
+            foreach (['profile_pics', 'signature', 'contract_signature', 'license_picture'] as $imageType) {
+                if ($request->hasFile($imageType)) {
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->last_name = $request->last_name;
-        $user->role = 'customer';
-        $user->role_id = 3;
-        $user->phone = $request->phone;
-        $user->phone_2 = $request->phone_2;
-        $user->address = $request->address;
-        $user->address_2 = $request->address_2;
-        $user->country_id = $request->country_id;
-        $user->state_id = $request->state_id;
-        $user->city_id = $request->city_id;
-        $user->pincode = $request->pincode;
-        $user->password = \Hash::make('12345678');
-        $user->save();
-        return response()->json(['user' => $user], 200);
+                    $folder = ($imageType === 'profile_pics') ? 'uploads/profile_pics' : 'uploads/customer';
+                    $filePath = $file->storeAs($folder, $fileName, 'public');
+
+                    $imagePaths[$imageType] = $filePath;
+                }
+            }
+
+            $userData = [
+                'name' => $validated['first_name'],
+                'email' => $validated['email'] ?? null,
+                'phone' => $validated['mobile_code'],
+                'phone_2' => $validated['alternate_mobile_no'] ?? null,
+                'address' => $validated['address_1'],
+                'address_2' => $request->Address_2,
+                'country_id' => $validated['country'],
+                'state_id' => $validated['state'],
+                'city_id' => $validated['city'],
+                'pincode' => $validated['Zip_code'],
+                'password' => Hash::make(12345678),
+                'status' => $request->status ?? 'Active',
+                'company_name' => $request->company_name ?? null,
+                'apartment' => $request->apartment ?? null,
+                'username' => $validated['username'],
+                'latitude' => $validated['latitude'] ?? null,
+                'longitude' => $validated['longitude'] ?? null,
+                'website_url' => $request->website_url ?? null,
+                'write_comment' => $request->write_comment ?? null,
+                'read_comment' => $request->read_comment ?? null,
+                'language' => $request->language ?? null,
+                'year_to_date' => $request->year_to_date ?? null,
+                'license_number' => $request->license_number ?? null,
+                'warehouse_id' => $request->warehouse_id ?? null,
+                'signature_img' => $imagePaths['signature'] ?? null,
+                'contract_signature_img' => $imagePaths['contract_signature'] ?? null,
+                'license_document' => $imagePaths['license_picture'] ?? null,
+                'profile_pic' => $imagePaths['profile_pics'] ?? null,
+                'signup_type' => 'for_driver',
+                'country_code' => $request->country_code ?? null,
+                'country_code_2' => $request->country_code_2 ?? null,
+            ];
+
+            if (!empty($request->license_expiry_date)) {
+                $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
+            }
+
+            if (!empty($request->signature_date)) {
+                $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->signature_date)->format('Y-m-d');
+            }
+
+            $user = User::create($userData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Customer added successfully',
+                'data' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function createShippingCustomer(Request $request)
     {
@@ -126,7 +180,7 @@ class CustomerController extends Controller
             ->first();
 
         if (!$existingUser) {
-            
+
             // Call createCustomer if user does not exist
             $newUser = $this->createCustomer($request->all());
             $customer_id = $newUser->id;
@@ -142,7 +196,7 @@ class CustomerController extends Controller
         $loginUrl = route('login');
 
         // Send the email
-        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
+        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
 
         // Create new ShippingUser entry
@@ -189,21 +243,20 @@ class CustomerController extends Controller
     public function deleteCustomer(Request $request)
     {
         $user = User::find($request->id);
-    
+
         if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
-    
+
         $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
-    
+
         return response()->json([
             'success' => true,
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
     }
-    
 }

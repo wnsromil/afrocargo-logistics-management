@@ -58,7 +58,8 @@ class User extends Authenticatable
         'contract_signature_img',
         'profile_pic',
         'country_code_2',
-        'country_code'
+        'country_code',
+        'signup_type'
     ];
 
 
@@ -115,7 +116,7 @@ class User extends Authenticatable
     protected function profilePic(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => !empty($value) ? url($value):null,
+            get: fn($value) => !empty($value) ? url('storage/'.$value):null,
         );
     }
 }

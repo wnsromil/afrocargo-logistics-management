@@ -104,6 +104,8 @@ class CustomerController extends Controller
             'longitude' => 'required|numeric', // Optional
             'country_code' => 'required',
             'country_code_2' => 'required|string',
+            'signature_date' => 'nullable|date_format:m/d/Y',
+            'license_expiry_date' => 'nullable|date_format:m/d/Y'
 
         ]);
 
@@ -301,7 +303,7 @@ class CustomerController extends Controller
             'year_to_date' => $request->year_to_date,
             'license_number' => $request->license_number,
             'warehouse_id'   => $request->warehouse_id,
-            'signup_type'    => 'for_admin'
+           // 'signup_type'    => 'for_admin'
         ];
 
         // 🔹 File Path Update

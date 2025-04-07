@@ -16,6 +16,8 @@ use App\Models\{
     Vehicle
 };
 use DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DriverMail;
 
 class DriversController extends Controller
 {
@@ -104,7 +106,7 @@ class DriversController extends Controller
         }
   
         $randomPassword = Str::random(8); // Random password of 8 characters
-        $hashedPassword = Hash::make($randomPassword); // Hashing password
+        $hashedPassword = Hash::make(12345678); // Hashing password
 
         // Store validated data
         $driver = User::create([
@@ -127,6 +129,17 @@ class DriversController extends Controller
             'driver_id' => $driver->id,
         ]);
 
+        // $driver_name = $request->driver_name;
+        // $email = $request->email;
+        // $mobileNumber = $request->mobile_code;
+        // $password = '12345678';
+        // $loginUrl = route('login');
+    
+        // if (!empty($email)) {
+        //     // Email Send Karna
+        //     Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl));
+        // }
+
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Driver created successfully.');
@@ -143,6 +156,14 @@ class DriversController extends Controller
         $user = User::find($id);
 
         return view('admin.drivers.show', compact('user'));
+    }
+
+
+    public function schedule($id)
+    {
+        $user = User::find($id);
+
+        return view('admin.drivers.schedule', compact('user'));
     }
 
     /**

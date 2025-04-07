@@ -38,10 +38,10 @@
                                                                                 <td>
                                                                                     <a href="{{ url('/') }}"
                                                                                         target="_blank">
-                                                                                        <img src='./AfroCargoLogo 1.png'
-                                                                                            alt="Afrocargo Logo"
-                                                                                            style="display: block; width: 100px; height: 100px;"
-                                                                                            width="200px" border="0">
+                                                                                        <img src='{{asset('assets/images/AfroCargoLogo.svg')}}'
+                                                                                        alt="Afrocargo Logo"
+                                                                                        style="display: block; width: 100px; height: 100px;"
+                                                                                        width="200px" border="0">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -100,6 +100,11 @@
                                                                     <p style="margin:3px"><b>Email/Mobile Number: </b>$email / $mobileNumber</p>
                                                                     <p style="margin:3px"><b>Driver Code: </b>
                                                                         $driver_code</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="margin: 3px" valign="top" align="center">
+                                                                    <b>Password:</b> {{$password}}
                                                                 </td>
                                                             </tr>
                                                             <tr>
