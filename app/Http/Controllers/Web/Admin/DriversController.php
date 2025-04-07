@@ -67,7 +67,7 @@ class DriversController extends Controller
         })->select('id', 'warehouse_name')->get();
         $Vehicle_data = Vehicle::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->select('id', 'vehicle_type')->get();
+        })->select('id', 'vehicle_type','vehicle_number','container_no_1')->get();
         return view('admin.drivers.create', compact('roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
 
@@ -107,7 +107,7 @@ class DriversController extends Controller
         $hashedPassword = Hash::make($randomPassword); // Hashing password
 
         // Store validated data
-        User::create([
+        $driver = User::create([
             'warehouse_id' => $request->warehouse_name,
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
@@ -120,14 +120,17 @@ class DriversController extends Controller
             'country_code' => $request->country_code,
             'license_number' => $request->license_number,
             'license_expiry_date' => Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d'),
-            'license_document' => $licenseDocumentPath, // Store Image URL
+            'license_document' => $licenseDocumentPath,
+        ]);
+
+        Vehicle::where('id', $request->vehicle_type)->update([
+            'driver_id' => $driver->id,
         ]);
 
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Driver created successfully.');
     }
-
 
     /**
      * Display the specified resource.

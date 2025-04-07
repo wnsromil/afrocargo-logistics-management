@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Web\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Admin\{
     RoleController,
@@ -120,12 +121,13 @@ Route::get('/', function () {
 });
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'authCheck', 'verified'])->name('admin.dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'authCheck', 'verified'])->name('admin.dashboard');
 
 
 Route::middleware(['auth', 'authCheck'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/password', [ProfileController::class, 'change'])->name('profile.password');

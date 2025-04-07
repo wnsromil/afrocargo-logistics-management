@@ -510,7 +510,7 @@
             <h5 class='cardh5Size fw-semibold'>Latest Container</h5>
             <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
             <div class="col-auto">
-                <a href="#" class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
+                <a href="{{ route('admin.container.list') }}" class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
                     See All
                 </a>
             </div>
@@ -518,21 +518,21 @@
 
 
         <div class="col-md-12">
-            <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4 justify-content-between">
+            <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
                 <!-- --------------------------- 1st -------------------------------- -->
-
+                @forelse ($latestContainers as $index => $latestContainer)
                 <div class="col-md-5 col-xl-3 col-sm-6">
                     <div class="card innerCards w-100 setCard setCardSize rounded">
                         <div class="d-flex flex-row justify-content-between">
                             <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> KG 2114</p>
-                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
+                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> {{$latestContainer->seal_no ?? "-"}}</p>
+                                <h5 class='text-black countFontSize fw-medium'>{{$latestContainer->container_no_1 ?? "-"}}</h5>
                                 <div class="cardFontSize mt-2 fw-medium">
                                     <span class="fw-regular col737">Total Order :</span>
-                                    120<br>
-                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
-                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
-                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
+                                    --<br>
+                                    <span class="fw-regular col737">Total Amt : </span>-<br>
+                                    <span class="fw-regular text-success">Received Amt : </span>-<br>
+                                    <span class="fw-regular text-danger">Due Amt : </span>-<br>
                                 </div>
                             </div>
 
@@ -548,100 +548,10 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- ----------------- 2nd ----------------- -->
-
-
-                <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard setCardSize rounded bg-selected1">
-                        <div class="d-flex flex-row justify-content-between">
-
-                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> 2E 879</p>
-                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-medium">
-                                    <span class="fw-regular col737">Total Order :</span>
-                                    120<br>
-                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
-                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
-                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
-                                </div>
-                            </div>
-
-                            <div class="col-3 justify-content-end">
-                                <div>
-                                    <div class="status-toggle float-end me-0">
-                                        <input id="rating_2" class="toggle-btn1 check" type="checkbox" checked="">
-                                        <label for="rating_2" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
-                                </div>
-                                <!-- </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- --------------------------------- 3rd ------------------------------------- -->
-                <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard rounded setCardSize">
-                        <div class="d-flex flex-row justify-content-between">
-
-                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> F2 172</p>
-                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-medium">
-                                    <span class="fw-regular col737">Total Order :</span>
-                                    120<br>
-                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
-                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
-                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
-                                </div>
-                            </div>
-
-                            <div class="col-3 justify-content-end">
-                                <div>
-                                    <div class="status-toggle float-end me-0">
-                                        <input id="rating_3" class="toggle-btn1 check" type="checkbox">
-                                        <label for="rating_3" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
-                                </div>
-                                <!-- </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- --------------------------------------- 4th ---------------------------------- -->
-                <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard rounded setCardSize">
-                        <div class="d-flex flex-row justify-content-between">
-
-                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> NF 3501</p>
-                                <h5 class='text-black countFontSize fw-medium'>Xl Container</h5>
-                                <div class="cardFontSize mt-2 fw-medium">
-                                    <span class="fw-regular col737">Total Order :</span>
-                                    120<br>
-                                    <span class="fw-regular col737">Total Amt : </span>$2220<br>
-                                    <span class="fw-regular text-success">Received Amt : </span>$1520<br>
-                                    <span class="fw-regular text-danger">Due Amt : </span>$700<br>
-                                </div>
-                            </div>
-
-                            <div class="col-3 justify-content-end">
-                                <div>
-                                    <div class="status-toggle float-end me-0">
-                                        <input id="rating_4" class="toggle-btn1 check" type="checkbox">
-                                        <label for="rating_4" class="checktoggle tog checkbox-bg">checkbox</label>
-                                    </div>
-                                </div>
-                                <!-- </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                    <p colspan="7" class="px-4 py-4 text-center text-gray-500">No container found.
+                    </p>
+            @endforelse
             </div>
         </div>
     </div>
@@ -834,7 +744,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
@@ -904,7 +814,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
@@ -967,7 +877,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
@@ -1061,7 +971,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
@@ -1093,7 +1003,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
@@ -1166,7 +1076,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
@@ -1253,7 +1163,7 @@
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
