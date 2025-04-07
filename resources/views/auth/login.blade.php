@@ -275,12 +275,30 @@
                 document.getElementById('adminBtn').classList.add('active1');
                 document.getElementById('managerBtn').classList.remove('active1');
                 updateURL('admin');
+                location.reload();
             } else if (type === 'manager') {
                 document.getElementById('admin').style.display = 'none';
                 document.getElementById('manager').style.display = 'block';
                 document.getElementById('adminBtn').classList.remove('active1');
                 document.getElementById('managerBtn').classList.add('active1');
-                updateURL('manager');
+                updateURL('manager');  
+                location.reload();
+            }
+        }
+
+        function defaulttoggleLoginForm(type) {
+            if (type === 'admin') {
+                document.getElementById('admin').style.display = 'block';
+                document.getElementById('manager').style.display = 'none';
+                document.getElementById('adminBtn').classList.add('active1');
+                document.getElementById('managerBtn').classList.remove('active1');
+                updateURL('admin');
+            } else if (type === 'manager') {
+                document.getElementById('admin').style.display = 'none';
+                document.getElementById('manager').style.display = 'block';
+                document.getElementById('adminBtn').classList.remove('active1');
+                document.getElementById('managerBtn').classList.add('active1');
+                updateURL('manager');  
             }
         }
 
@@ -296,7 +314,7 @@
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const formType = urlParams.get('id') || 'admin'; // Default 'admin'
-            toggleLoginForm(formType);
+            defaulttoggleLoginForm(formType);
         };
     </script>
     <script>

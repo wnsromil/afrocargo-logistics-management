@@ -25,8 +25,8 @@ class WarehouseManagerController extends Controller
         $perPage = $request->input('per_page', 10); // Default is 10
         $currentPage = $request->input('page', 1);
         $warehouses = User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
             ->with('warehouse')
             ->where('role_id', 2)
             ->when($search, function ($q) use ($search) {
@@ -36,19 +36,19 @@ class WarehouseManagerController extends Controller
                         ->orWhere('status', 'like', "%$search%")
                         ->orWhere('phone', 'like', "%$search%");
                 })
-                    ->orWhereHas('warehouse', function ($query) use ($search) {
-                        $query->where('warehouse_name', 'like', "%$search%"); // 🔹 Search by Warehouse Name
-                    });
+                ->orWhereHas('warehouse', function ($query) use ($search) {
+                    $query->where('warehouse_name', 'like', "%$search%"); // 🔹 Search by Warehouse Name
+                });
             })
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-        $serialStart = ($currentPage - 1) * $perPage;
+            $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.warehouse_manager.table', compact('warehouses', 'serialStart'));
+            return view('admin.warehouse_manager.table', compact('warehouses','serialStart'));
         }
 
-        return view('admin.warehouse_manager.index', compact('warehouses', 'serialStart', 'search', 'perPage'));
+        return view('admin.warehouse_manager.index', compact('warehouses','serialStart', 'search', 'perPage'));
     }
 
 
@@ -85,24 +85,24 @@ class WarehouseManagerController extends Controller
             'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
+    
         $status = !empty($request->status) ? $request->status : 'Inactive';
-
+    
         // Warehouse ki ID se warehouse_code nikalna
-        $warehouse = Warehouse::find($request->warehouse_name);
-
+        $warehouse = Warehouse::find($request->warehouse_name); 
+    
         if (!$warehouse) {
             return redirect()->back()->with('error', 'Warehouse not found.');
         }
-
+    
         $warehouse_code = $warehouse->warehouse_code; // Warehouse Code get karna
-
+    
         // User Create
         $user = User::create([
             'warehouse_id' => $request->warehouse_name,
@@ -116,21 +116,19 @@ class WarehouseManagerController extends Controller
             'role_id' => 2,
             'role' => "warehouse_manager",
         ]);
-
+    
         // Email Data Prepare Karna
         $manager_name = $request->manager_name;
         $email = $request->email;
         $mobileNumber = $request->phone;
         $password = '12345678';
         $loginUrl = route('login');
-
+    
         if (!empty($email)) {
             // Email Send Karna
             Mail::to($email)->send(new WarehousemangerMail($manager_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
-            
         }
-        
-
+    
         return redirect()->route('admin.warehouse_manager.index')
             ->with('success', 'Manager created successfully.');
     }
@@ -173,7 +171,7 @@ class WarehouseManagerController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        
         // Custom validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',

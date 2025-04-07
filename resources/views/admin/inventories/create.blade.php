@@ -70,7 +70,7 @@
                     <div class="input-block mb-3">
                         <label for="weight" class="table-content col737 fw-medium">Weight (kg)</label>
                         <input class="form-control input-padding" type="number" name="weight"
-                            value="{{ old('weight') }}" placeholder="Enter Weight" aria-label="default input example">
+                        value="{{ old('weight') }}" placeholder="Enter Weight" step="any" aria-label="default input example">                 
 
                         @error('weight')
                         <span class="text-danger">{{ $message }}</span>
@@ -81,7 +81,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="width" class="table-content col737 fw-medium">Width (cm)</label>
-                        <input class="form-control input-padding" name="width" type="number" value=""
+                        <input class="form-control input-padding" name="width" type="number" step="any" value=""
                             placeholder="Enter Width" aria-label="default input example">
 
                         @error('width')
@@ -93,7 +93,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="height" class="table-content col737 fw-medium">Height (cm)</label>
-                        <input class="form-control input-padding" name="height" type="number" value=""
+                        <input class="form-control input-padding" name="height" type="number" step="any" value=""
                             placeholder="Enter Height" aria-label="default input example">
 
                         @error('height')

@@ -24,7 +24,8 @@ use App\Http\Controllers\Web\Admin\{
     ExpensesController,
     SignatureController,
     NotificationScheduleController,
-    RoleManagementController
+    RoleManagementController,
+    ContainerController,
 };
 use App\Mail\RegistorMail;
 
@@ -148,6 +149,7 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('warehouses', WarehouseController::class);
         Route::resource('customer', CustomerController::class);
         Route::resource('vehicle', VehicleController::class);
+        Route::resource('container', ContainerController::class);
         Route::resource('warehouse_manager', WarehouseManagerController::class);
         Route::resource('drivers', DriversController::class);
         Route::resource('inventories', InventoryController::class);
@@ -165,8 +167,7 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
-        Route::get('container', [VehicleController::class, 'container_index'])->name('container.list');
-  
+        
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
