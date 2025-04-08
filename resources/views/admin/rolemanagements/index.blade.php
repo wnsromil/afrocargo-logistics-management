@@ -10,7 +10,7 @@
             <div class="mt-2">
                 <a href="{{ route('admin.inventories.create') }}" class="btn btn-primary buttons"
                     style="background:#203A5F">
-                    <img src="assets/images/Vector.png" class="pe-3">
+                    <i class="ti ti-circle-plus me-2 text-white"></i>
                     Add Role
                 </a>
             </div>

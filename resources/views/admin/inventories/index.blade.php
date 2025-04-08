@@ -28,7 +28,7 @@
             </div>
             <div class="mt-2">
                 <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        href="javascript:void(0);" data-bs-placement="bottom"
                         title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
             </div>
         </div>
@@ -39,7 +39,7 @@
             <div class="mt-2">
                 <a href="{{ route('admin.inventories.create') }}" class="btn btn-primary buttons"
                     style="background:#203A5F">
-                    <img src="assets/images/Vector.png" class="pe-3">
+                    <i class="ti ti-circle-plus me-2 text-white"></i>
                     Add Inventory
                 </a>
             </div>
@@ -120,7 +120,7 @@
 
                                     <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
+                                            ></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>

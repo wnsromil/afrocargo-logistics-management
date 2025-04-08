@@ -138,8 +138,8 @@ Version      : 1.0
             for (var i = 0; i < $(this)[0].files.length; i++) {
                 $("#frames").append(
                     '<img src="' +
-                        window.URL.createObjectURL(this.files[i]) +
-                        '" width="100px" height="100px">'
+                    window.URL.createObjectURL(this.files[i]) +
+                    '" width="100px" height="100px">'
                 );
             }
         });
@@ -148,8 +148,8 @@ Version      : 1.0
             for (var i = 0; i < $(this)[0].files.length; i++) {
                 $("#frames2").append(
                     '<img src="' +
-                        window.URL.createObjectURL(this.files[i]) +
-                        '" width="100px" height="100px">'
+                    window.URL.createObjectURL(this.files[i]) +
+                    '" width="100px" height="100px">'
                 );
             }
         });
@@ -185,12 +185,19 @@ Version      : 1.0
     }
 
     // Page Content Height Resize
+    var nnHeight = $(window).height() - 80; // Store initial height
+
+    // Set the initial height for .page-wrapper
+    $(".page-wrapper").css("min-height", nnHeight);
+
     $(window).resize(function () {
         if ($(".page-wrapper").length > 0) {
-            var height = $(window).height();
-            $(".page-wrapper").css("min-height", height);
+            var nnHeight = $(window).height() - 80; // Update height on resize
+            $(".page-wrapper").css("min-height", nnHeight);
         }
     });
+
+
 
     // Select 2
     if ($(".select").length > 0) {

@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        Edit Parcel
+        Update Invoice
     </x-slot>
 
     <x-slot name="cardTitle">
-        Update Parcel Information
+        Update Invoice
     </x-slot>
 
     <form action="{{ route('admin.OrderShipment.update', $parcel->id) }}" method="POST" enctype="multipart/form-data">
