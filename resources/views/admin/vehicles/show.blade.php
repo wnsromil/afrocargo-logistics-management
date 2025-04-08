@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        Vehicle Details - {{ $vehicle->vehicle_number ?? '--'}}
+    <p class="head">Vehicle Details - {{ $vehicle->vehicle_number ?? '--'}}</p>
     </x-slot>
 
     <div class="card">

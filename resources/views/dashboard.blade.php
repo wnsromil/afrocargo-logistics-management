@@ -20,8 +20,6 @@
             <div class="col-md-12">
                 <div class="row row-cols-1 row-cols-md-3 g-4 dash-gap">
 
-
-
                     <!-- First Row (4 Columns) -->
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
@@ -510,48 +508,49 @@
             <h5 class='cardh5Size fw-semibold'>Latest Container</h5>
             <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
             <div class="col-auto">
-                <a href="{{ route('admin.container.list') }}" class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
+                <a href="{{ route('admin.container.list') }}"
+                    class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
                     See All
                 </a>
             </div>
         </div>
 
-
+        <!-- -------------------------------- Container Cards -------------------------------- -->
         <div class="col-md-12">
             <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
-                <!-- --------------------------- 1st -------------------------------- -->
                 @forelse ($latestContainers as $index => $latestContainer)
-                <div class="col-md-5 col-xl-3 col-sm-6">
-                    <div class="card innerCards w-100 setCard setCardSize rounded">
-                        <div class="d-flex flex-row justify-content-between">
-                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                <p class="font13 fw-medium"><span class="col737">Seal No :</span> {{$latestContainer->seal_no ?? "-"}}</p>
-                                <h5 class='text-black countFontSize fw-medium'>{{$latestContainer->container_no_1 ?? "-"}}</h5>
-                                <div class="cardFontSize mt-2 fw-medium">
-                                    <span class="fw-regular col737">Total Order :</span>
-                                    --<br>
-                                    <span class="fw-regular col737">Total Amt : </span>-<br>
-                                    <span class="fw-regular text-success">Received Amt : </span>-<br>
-                                    <span class="fw-regular text-danger">Due Amt : </span>-<br>
-                                </div>
-                            </div>
-
-                            <div class="col-3 justify-content-end">
-                                <div>
-                                    <div class="status-toggle float-end me-0">
-                                        <input id="rating_1" class="toggle-btn1 check" type="checkbox">
-                                        <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
+                    <div class="col-md-5 col-xl-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard setCardSize rounded">
+                            <div class="card2 d-flex flex-row justify-content-between">
+                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                    <p class="font13 fw-medium"><span class="col737">Seal No :</span>
+                                        {{$latestContainer->seal_no ?? "-"}}</p>
+                                    <h5 class='text-black countFontSize fw-medium'>
+                                        {{$latestContainer->container_no_1 ?? "-"}}
+                                    </h5>
+                                    <div class="cardFontSize mt-2 fw-medium">
+                                        <span class="fw-regular col737">Total Order :</span>
+                                        --<br>
+                                        <span class="fw-regular col737">Total Amt : </span>-<br>
+                                        <span class="fw-regular text-success">Received Amt : </span>-<br>
+                                        <span class="fw-regular text-danger">Due Amt : </span>-<br>
                                     </div>
                                 </div>
-                                <!-- </div> -->
+
+                                <div class="col-3 justify-content-end">
+                                    <div class="status-toggle float-end me-0">
+
+                                        <input id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox">
+                                        <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @empty
                     <p colspan="7" class="px-4 py-4 text-center text-gray-500">No container found.
                     </p>
-            @endforelse
+                @endforelse
             </div>
         </div>
     </div>
@@ -663,7 +662,7 @@
 												</div>
 											</div>
 										</div>-->
-                                <!-- </div> 
+        <!-- </div> 
 								</div>
 							</div>
 						</div> -->
@@ -1748,6 +1747,26 @@
 
     <!-- ---------------------------------------------------------------------------------------------------- -->
 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.toggle-btn1').forEach(input => {
+                if (input.checked) {
+                    card.classList.add('card-active');
+                }
+                input.addEventListener("change", function () {
+                    const parentDiv = this.closest(".card");
+                    if (this.checked) {
+                        parentDiv.classList.add('bg-selected1');
+                    } else {
+                        parentDiv.classList.remove('bg-selected1');
+                    }
+                });
+            });
+        });
+    </script>
+
+
     @section('bottomContent')
         <!-- ---------------------------------------------------------------------------------- -->
 
@@ -1914,44 +1933,44 @@
 
         <!-- Schedule Pickup Modal -->
         <!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered modal-md">
-                        <div class="modal-content">
-                            <div class="modal-header border-0 p-3 pb-0">
-                                <div class="form-header modal-header-title text-start mb-0">
-                                    <h4 class="font16 mb-0">Pickup Man Assign</h4>
-                                </div>
-                                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                                </button>
-                            </div>
-                            <hr class="border border-dark border-opac mb-0">
+                                                        <div class="modal-dialog modal-dialog-centered modal-md">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header border-0 p-3 pb-0">
+                                                                    <div class="form-header modal-header-title text-start mb-0">
+                                                                        <h4 class="font16 mb-0">Pickup Man Assign</h4>
+                                                                    </div>
+                                                                    <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
+                                                                    </button>
+                                                                </div>
+                                                                <hr class="border border-dark border-opac mb-0">
 
-                            <form action="#">
-                                <div class="modal-body p-3">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12">
-                                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                                <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                                <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                                    aria-label="Large select example">
-                                                    <option selected>Select Delivery Man</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" data-bs-dismiss="modal"
-                                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div> -->
+                                                                <form action="#">
+                                                                    <div class="modal-body p-3">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12 col-md-12">
+                                                                                <div class="input-block mb-0 fw-medium profileUpdateFont">
+                                                                                    <label class="col737">Pickup Man<span class="text-danger">*</span></label>
+                                                                                    <select class="form-select form-select-lg selected-schedule-color mb-3"
+                                                                                        aria-label="Large select example">
+                                                                                        <option selected>Select Delivery Man</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
+                                                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" data-bs-dismiss="modal"
+                                                                            class="btn btn-border-color cancel-btn me-2">Cancel</button>
+                                                                        <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
         <!-- /Schedule Pickup Modal -->
         <!-- ---------------------------------------------------------------------------------------------------- -->
         <!-- schedule_pickup_cancel Modal -->
@@ -1987,7 +2006,8 @@
                 <div class="modal-content resized">
                     <div class="modal-body p-3">
                         <div class="form-header">
-                            <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub ?
+                            <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub
+                                ?
                             </p>
                         </div>
                         <div class="modal-btn delete-action align-cenetr">
@@ -2119,18 +2139,21 @@
         <!-- /delivery_reschedule Modal -->
     @endsection
     @section('bottomContent')
-        <script>
-            document.querySelectorAll('.toggle-btn1').forEach(input => {
-                input.addEventListener("change", function () {
-                    const parentDiv = this.closest(".card");
-                    if (this.checked) {
-                        parentDiv.classList.add('bg-selected1');
-                    } else {
-                        parentDiv.classList.remove('bg-selected1');
-                    }
+
+        <!-- <script>
+                document.querySelectorAll('.toggle-btn1').forEach(input => {
+                    input.addEventListener("change", function () {
+                       const parentDiv = this.closest(".card.setCard");
+                        if (this.checked) {
+                             parentDiv.classList.add('bg-selected1');
+                        } else {
+                            parentDiv.classList.remove('bg-selected1');
+                        }
+                    })
                 })
-            })
-        </script>
+        </script> -->
+
+
     @endsection
 
 </x-app-layout>
