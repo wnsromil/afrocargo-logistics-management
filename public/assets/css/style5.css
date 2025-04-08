@@ -1178,6 +1178,11 @@ input[type="checkbox"]:checked::after {
 .day{
   min-width: 85px;
   justify-content: flex-start;
+  margin-top:9px;
 }
 
 
+.inputs{
+  padding: 1px;
+    font-size: 13px !important;
+}
