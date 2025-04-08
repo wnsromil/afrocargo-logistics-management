@@ -198,6 +198,15 @@
                         </select>
                     </div>
 
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="container">Group Container </label>
+                        <select class="js-example-basic-single select2" name="container_id"
+                            value="{{ old('container_id') }}">
+                            <option selected="selected" value="">Select Container</option>
+                            <option></option>
+                        </select>
+                    </div>
+                    
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">

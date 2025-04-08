@@ -279,7 +279,7 @@ class CustomerController extends Controller
 
                 if ($imageType === 'profile_pic') {
                     $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                    $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName;
+                    $imagePaths[$imageType] = 'uploads/profile_pics/' . $fileName;
                 } else {
                     $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
                     $imagePaths[$imageType] = 'uploads/customer/' . $fileName;
@@ -320,13 +320,13 @@ class CustomerController extends Controller
             $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
         }
 
-        if (!empty($userData['contract_signature_img'])) {
+        if (!empty($imagePaths['contract_signature_img'])) {
             $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
         }
-        if (!empty($userData['license_document'])) {
+        if (!empty($imagePaths['license_document'])) {
             $userData['license_document'] = $imagePaths['license_document'] ?? $user->license_document;
         }
-        if (!empty($userData['profile_pic'])) {
+        if (!empty($imagePaths['profile_pic'])) {
             $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
         }
 

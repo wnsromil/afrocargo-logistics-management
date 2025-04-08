@@ -97,6 +97,9 @@ Route::middleware('auth:api')->group(function () {
 
         // item Routes
         Route::get('/get-items', [InventoryController::class, 'getItems']);
+
+        // Order shipment Routes
+        Route::post('/invoice-order-create', [OrderShipmentController::class, 'invoiceOrderCreate']);
     });
 
     //invoice controller

@@ -64,7 +64,7 @@
             <p class="pdata">{{ $user->address_2 ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
-            <p class="phead">Longitude & Latitude</p>
+            <p class="phead">Latitude & Longitude</p>
             <p class="pdata">{{ $user->latitude ?? '-' }}, {{ $user->longitude ?? '-' }}</p>
         </div>
     </div>
