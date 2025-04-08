@@ -537,7 +537,8 @@
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
                                         {{$latestContainer->seal_no ?? "-"}}</p>
                                     <h5 class='text-black countFontSize fw-medium'>
-                                        {{$latestContainer->container_no_1 ?? "-"}}</h5>
+                                        {{$latestContainer->container_no_1 ?? "-"}}
+                                    </h5>
                                     <div class="cardFontSize mt-2 fw-medium">
                                         <span class="fw-regular col737">Total Order :</span>
                                         --<br>
@@ -550,7 +551,7 @@
                                 <div class="col-3 justify-content-end">
                                     <div class="status-toggle float-end me-0">
 
-                                        <input id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox">
+                                        <input id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $index === 1 ? 'checked' : '' }}>
                                         <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -1760,6 +1761,34 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const allToggles = document.querySelectorAll('.toggle-btn1');
+
+            allToggles.forEach(input => {
+                const parentDiv = input.closest(".card");
+                if (input.checked) {
+                    parentDiv.classList.add('bg-selected1');
+                }
+                input.addEventListener("change", function () {
+                    allToggles.forEach(other => {
+                        const otherCard = other.closest(".card");
+                        if (other !== input) {
+                            other.checked = false;
+                            otherCard.classList.remove('bg-selected1');
+                        }
+                    });
+                    if (this.checked) {
+                        parentDiv.classList.add('bg-selected1');
+                    } else {
+                        parentDiv.classList.remove('bg-selected1');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.toggle-btn1').forEach(input => {
                 if (input.checked) {
                     card.classList.add('card-active');
@@ -1774,7 +1803,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
 
 
     @section('bottomContent')
@@ -1938,51 +1967,8 @@
             </div>
         </div>
         <!-- /Received_Warehouse Modal -->
-        <!-- ----------------------------------------------------------------------------------------------------------- -->
-
-
-        <!-- Schedule Pickup Modal -->
-        <!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
-                                                        <div class="modal-dialog modal-dialog-centered modal-md">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header border-0 p-3 pb-0">
-                                                                    <div class="form-header modal-header-title text-start mb-0">
-                                                                        <h4 class="font16 mb-0">Pickup Man Assign</h4>
-                                                                    </div>
-                                                                    <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                                                                    </button>
-                                                                </div>
-                                                                <hr class="border border-dark border-opac mb-0">
-
-                                                                <form action="#">
-                                                                    <div class="modal-body p-3">
-                                                                        <div class="row">
-                                                                            <div class="col-lg-12 col-md-12">
-                                                                                <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                                                                    <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                                                                    <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                                                                        aria-label="Large select example">
-                                                                                        <option selected>Select Delivery Man</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                                                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-bs-dismiss="modal"
-                                                                            class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                                                                        <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
-        <!-- /Schedule Pickup Modal -->
         <!-- ---------------------------------------------------------------------------------------------------- -->
+         
         <!-- schedule_pickup_cancel Modal -->
         <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md">
@@ -2149,21 +2135,6 @@
         <!-- /delivery_reschedule Modal -->
     @endsection
     @section('bottomContent')
-
-        <!-- <script>
-                document.querySelectorAll('.toggle-btn1').forEach(input => {
-                    input.addEventListener("change", function () {
-                       const parentDiv = this.closest(".card.setCard");
-                        if (this.checked) {
-                             parentDiv.classList.add('bg-selected1');
-                        } else {
-                            parentDiv.classList.remove('bg-selected1');
-                        }
-                    })
-                })
-        </script> -->
-
-
     @endsection
 
 </x-app-layout>
