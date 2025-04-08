@@ -125,7 +125,7 @@ class CustomerController extends Controller
                     // 🔹 Agar profile_pics hai to alag folder me store kare
                     if ($imageType === 'profile_pics') {
                         $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                        $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName; // Store path in DB
+                        $imagePaths[$imageType] = 'uploads/profile_pics/' . $fileName; // Store path in DB
                     } else {
                         // 🔹 Baaki images customer folder me store ho
                         $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
