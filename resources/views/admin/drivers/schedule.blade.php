@@ -184,30 +184,30 @@ font-weight :400;
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
@@ -234,30 +234,30 @@ font-weight :400;
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs"  placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
@@ -284,30 +284,30 @@ font-weight :400;
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
@@ -334,30 +334,30 @@ font-weight :400;
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
@@ -384,30 +384,30 @@ font-weight :400;
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
@@ -434,30 +434,30 @@ font-weight :400;
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row gx-2">
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Opening Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Opening Time">
                               </div>
                                <div class="col-md-6">
-                               <input type="text" class="form-control inp" placeholder="Closing Time">
+                               <input type="text" class="form-control inp inputs" placeholder="Closing Time">
                              </div>
                             </div>
                         </div>
