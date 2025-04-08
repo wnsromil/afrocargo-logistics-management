@@ -111,7 +111,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.drivers.schedule', $warehouse->id) }}"> 
-                                                    <i class="ti ti-calendar-clock"></i></a>
+                                                   <img src="{{asset('assets/img/scheduel btn.png')}}" alt="img"></a>
                                             </td>
                                             <td>
                                                 @if ($warehouse->status == 'Active')
