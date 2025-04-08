@@ -1103,3 +1103,81 @@ input[type="checkbox"]:checked::after {
         justify-content:space-between;
         width:100%;
       }
+
+      
+
+
+
+
+
+
+      #calendar-container {
+        width: 300px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 15px;
+        font-family: 'Roboto', sans-serif;
+      }
+      
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      
+      .calendar-header button {
+        background-color: white;
+        color: black;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+      }
+      
+      .day-name {
+        font-weight: bold;
+        color:Black;
+      }
+      
+      .date {
+        padding: 10px 0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        color:black;
+      }
+      
+      .date:hover {
+        background-color: #eee;
+      }
+      
+      .date.selected {
+        background-color: #2c3e50;
+        color: white;
+      }
+      
+      #prev-month,
+#next-month {
+  font-size: 20px;
+}
+
+.calender{
+  color:black
+}
+
+.day{
+  min-width: 85px;
+  justify-content: flex-start;
+}
+
+
