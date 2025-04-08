@@ -44,7 +44,7 @@
                             <option value="2 Wheeler" {{ old('vehicle_type') == 'wheeler' ? 'selected' : '' }}>2 Wheeler
                             </option>
                             <option value="Van" {{ old('vehicle_type') == 'van' ? 'selected' : '' }}>Van</option>
-                            <option value="Container" {{ old('vehicle_type') == 'Container' ? 'selected' : '' }}>Container
+                            {{-- <option value="Container" {{ old('vehicle_type') == 'Container' ? 'selected' : '' }}>Container --}}
                             </option>
                         </select>
 

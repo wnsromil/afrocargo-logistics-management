@@ -69,7 +69,9 @@ class CustomerController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        $warehouses = Warehouse::where('status', 'Active')->get();
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->where('status', 'Active')->get();
         $countries = Country::all();
         return view('admin.customer.create', compact('roles', 'warehouses', 'countries'));
     }
@@ -84,7 +86,7 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'mobile_code' => 'required|max:13|unique:users,phone',
+           'mobile_code' => 'required|digits:10|unique:users,phone',
             'email' => [
                 'required',
                 'email',
@@ -104,8 +106,8 @@ class CustomerController extends Controller
             'longitude' => 'required|numeric', // Optional
             'country_code' => 'required',
             'country_code_2' => 'required|string',
-            'signature_date' => 'nullable|date_format:m/d/Y',
-            'license_expiry_date' => 'nullable|date_format:m/d/Y'
+            // 'signature_date' => 'nullable|date_format:m/d/Y',
+            // 'license_expiry_date' => 'nullable|date_format:m/d/Y'
 
         ]);
 
@@ -187,6 +189,11 @@ class CustomerController extends Controller
             $loginUrl = route('login');
 
             // Send the email
+            
+            // Mail::to($email)->send(
+            //     (new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl))
+            //         ->from('no-reply@afrocargo.com', 'Afro Cargo')   
+            //     );
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
             return redirect()->route('admin.customer.index')
@@ -222,7 +229,9 @@ class CustomerController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-        $warehouses = Warehouse::where('status', 'Active')->get();
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->where('status', 'Active')->get();
         $countries = Country::all();
         $page_no = $request->page;
         return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no'));

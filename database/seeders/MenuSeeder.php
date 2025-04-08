@@ -113,7 +113,7 @@ class MenuSeeder extends Seeder
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
                 'route' => 'admin.notification_schedule.index',
                 'active' => 'notification_schedule*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin']
             ],
             [
                 'title' => 'Role Management',
@@ -194,7 +194,7 @@ class MenuSeeder extends Seeder
 
             Menu::create([
                 'title' => 'Container List',
-                'route' => 'admin.container.list',
+                'route' => 'admin.container.index',
                 'active' => 'container*',
                 'parent_id' => $vehicle->id,
                 'roles' => ['admin', 'warehouse_manager']

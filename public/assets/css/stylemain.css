@@ -2062,6 +2062,24 @@ button.btn.iconBtn {
     background-color: #ffffff7c;
 }
 
+ul.pagination 
+{
+    a.page-link:hover
+    {
+        background: #203a5f;
+        border-color: #203a5f;
+    }
+
+    li.page-item.active span.page-link {
+        background: #203a5f;
+        border-color: #203a5f;
+        border-radius: 5px;
+    }
+}
+.table tbody td a:hover {
+    color: #ffffff !important;
+    background: #203a5f !important;
+}
 
 /* WNSshubham */
 

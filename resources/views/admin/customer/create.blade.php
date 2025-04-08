@@ -120,7 +120,7 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor " for="username">Username <i class="text-danger">*</i></label>
-                            <input type="text" name="username" value="{{ old('Username') }}"
+                            <input type="text" name="username" value="{{ old('username') }}"
                                 class="form-control inp inputbackground" placeholder="Enter User Name">
                             @error('username')
                                 <small class="text-danger">{{ $message }}</small>
@@ -198,20 +198,36 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="warehouse"> Warehouse </label>
-                            <select class="js-example-basic-single select2" name="warehouse_id"
-                                value="{{ old('warehouse_id') }}">
-                                <option selected="selected" value="">Select Warehouse</option>
-                                @foreach ($warehouses as $warehouse)
-                                    <option value={{ $warehouse->id }}>{{ $warehouse->warehouse_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @php
+                            $isSingleWarehouse = count($warehouses) === 1;
+                        @endphp
+
+                        @if($isSingleWarehouse)
+                            {{-- ✅ Readonly Input for Single Warehouse --}}
+                            <div class="col-md-12 mb-2">
+                                <label class="foncolor" for="warehouse"> Warehouse </label>
+                                <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}"
+                                    readonly style="background-color: #e9ecef; color: #6c757d;">
+                                <input type="hidden" name="warehouse_id" value="{{ $warehouses[0]->id }}">
+                            </div>
+                        @else
+                            {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+                            <div class="col-md-12 mb-2">
+                                <label class="foncolor" for="warehouse"> Warehouse </label>
+                                <select class="js-example-basic-single select2 form-control" name="warehouse_id" style="">
+                                    <option value="">Select Warehouse</option>
+                                    @foreach ($warehouses as $warehouse)
+                                        <option value="{{ $warehouse->id }}" {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                            {{ $warehouse->warehouse_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
 
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="container"> Container </label>
+                            <label class="foncolor" for="container">Group Container </label>
                             <select class="js-example-basic-single select2" name="container_id"
                                 value="{{ old('container_id') }}">
                                 <option selected="selected" value="">Select Container</option>
@@ -222,7 +238,7 @@
                         <div class="col-md-12 mb-2">
                             <label>Signature Date </label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" name="signature_date"
+                                <input type="text" name="signature_date"  readonly style="cursor: pointer;"
                                     class="btn-filters  form-cs inp  inputbackground"
                                     value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
                             </div>
@@ -244,7 +260,7 @@
                         <div class="col-md-12 mb-2">
                             <label>License Expiry Date </label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
+                                <input  readonly style="cursor: pointer;" type="text" name="license_expiry_date" class="btn-filters  form-cs inp "
                                     value="{{ old('license_expiry_date') }}" placeholder="mm-dd-yy" />
                             </div>
                         </div>
@@ -252,22 +268,25 @@
                             <label class="foncolor" for="warehouse"> Language </label>
                             <select class="js-example-basic-single select2" name="language"
                                 value="{{ old('language') }}">
-                                <option selected="selected">India - English</option>
-                                <option>Hindi</option>
+                                <option selected="selected">English</option>
+                                <option>French</option>
                             </select>
                         </div>
 
 
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Write_Comment">Write Comment</label>
-                            <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3" placeholder="Enter Write Comment">{{ old('write_comment') }}</textarea>
+                            <textarea id="Write_Comment" name="write_comment" class="form-control inp commenth" rows="3"
+                                placeholder="Enter Write Comment">{{ old('write_comment') }}</textarea>
                         </div>
-                        
+
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Read_Comment">Read Comment</label>
-                            <textarea id="Read_Comment" name="read_comment" class="form-control inp commenth inputbackground" rows="3" placeholder="Enter Read Comment">{{ old('read_comment') }}</textarea>
+                            <textarea id="Read_Comment" name="read_comment"
+                                class="form-control inp commenth inputbackground" rows="3"
+                                placeholder="Enter Read Comment">{{ old('read_comment') }}</textarea>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

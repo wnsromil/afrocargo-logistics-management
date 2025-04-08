@@ -8,9 +8,20 @@
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-light">
-            {{ __(ucfirst(auth()->user()->role) . ' Dashboard') }}
+            @php
+                $role = auth()->user()->role;
+                $roleTitle = match ($role) {
+                    'admin' => 'Admin Dashboard',
+                    'warehouse_manager' => 'Warehouse Manager Dashboard',
+                    'customer' => 'Customer Dashboard',
+                    'driver' => 'Driver Dashboard',
+                    default => 'Dashboard',
+                };
+            @endphp
+            {{ $roleTitle }}
         </h2>
     </x-slot>
+
 
     <div class="dashboardContent">
         <div class="row">
@@ -508,7 +519,7 @@
             <h5 class='cardh5Size fw-semibold'>Latest Container</h5>
             <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
             <div class="col-auto">
-                <a href="{{ route('admin.container.list') }}"
+                <a href="{{ route('admin.container.index') }}"
                     class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
                     See All
                 </a>
@@ -526,8 +537,7 @@
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
                                         {{$latestContainer->seal_no ?? "-"}}</p>
                                     <h5 class='text-black countFontSize fw-medium'>
-                                        {{$latestContainer->container_no_1 ?? "-"}}
-                                    </h5>
+                                        {{$latestContainer->container_no_1 ?? "-"}}</h5>
                                     <div class="cardFontSize mt-2 fw-medium">
                                         <span class="fw-regular col737">Total Order :</span>
                                         --<br>

@@ -3,6 +3,19 @@
         {{ __('Container List') }}
     </x-slot>
 
+    <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="usersearch d-flex">
+            <div class="mt-2">
+                <a href="{{ route('admin.container.create') }}" class="btn btn-primary buttons">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="ti ti-circle-plus me-2 text-white"></i>
+                        Add Container
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <x-slot name="cardTitle">
         <p class="head">All Containers</p>
 
@@ -29,17 +42,18 @@
     <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive mt-3">
 
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
                                 <th>S. No.</th>
                                 <th>Vehicle Type</th>
-                                <th>Vehicle Model</th>
-                                <th>Manufactured year</th>
+                                {{-- <th>Vehicle Model</th>
+                                <th>Manufactured year</th> --}}
                                 <th>Warehouse Name</th>
                                 <th>Seal No.</th>
+                                <th>Bill Of Lading</th>
                                 <th>Container No. 1</th>
                                 <th>Container No. 2</th>
                                 <th>Container Size</th>
@@ -64,11 +78,12 @@
                                     </td>
 
                                     <td><span>{{ $vehicle->vehicle_type ?? '-' }}</span></td>
-                                    <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
-                                    <td>{{ $vehicle->vehicle_year ?? '-' }}</td>
+                                    {{-- <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
+                                    <td>{{ $vehicle->vehicle_year ?? '-' }}</td> --}}
                                     <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
 
                                     <td>{{ $vehicle->seal_no ?? '-' }}</td>
+                                    <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
                                     <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
                                     <td>{{ $vehicle->container_no_2 ?? '-' }}</td>
                                     <td>{{ $vehicle->container_size ?? '-' }}</td>
