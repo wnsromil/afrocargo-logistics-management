@@ -115,7 +115,9 @@ Route::get('/driverschedule', function () {
 Route::get('/driverinventory', function () {
     return view('admin.driverinventory.index');
 });
-
+Route::get('/notificationsend', function () {
+    return view('admin.notificationsend.create');
+});
 
 Route::get('/', function () {
     return view('auth.login');

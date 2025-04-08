@@ -124,7 +124,7 @@
                                             aria-expanded="false">
                                             <button type="button" class="btn btn-primary align-center rounded-1"
                                                 style="height:26px; width:36px;">
-                                                <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                     data-position="top" data-tooltip="fa fa-angle-down"></i>
                                             </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -216,7 +216,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -307,7 +307,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -399,7 +399,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -490,7 +490,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -582,7 +582,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -673,7 +673,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -765,7 +765,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -856,7 +856,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
@@ -947,7 +947,7 @@
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
+                                                    <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
                                                 </button></a>
                                         <div class="dropdown-menu dropdown-menu-end">
