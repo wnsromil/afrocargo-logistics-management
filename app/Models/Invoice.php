@@ -17,6 +17,21 @@ class Invoice extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id')->with(['country', 'state', 'city']);
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
+    }
+   
 
 
     // Custom Invoice Number Generate karne ke liye

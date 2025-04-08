@@ -59,7 +59,9 @@ class User extends Authenticatable
         'profile_pic',
         'country_code_2',
         'country_code',
-        'signup_type'
+        'signup_type',
+        'invoice_custmore_type',
+        'invoice_custmore_id'
     ];
 
 
