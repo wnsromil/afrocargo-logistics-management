@@ -302,7 +302,6 @@
             }
         }
 
-        // Function to update URL without reloading the page
         function updateURL(type) {
             let newUrl = window.location.pathname + "?id=" + type;
             window.history.pushState({
@@ -310,10 +309,9 @@
             }, "", newUrl);
         }
 
-        // Function to check URL parameters on page load
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const formType = urlParams.get('id') || 'admin'; // Default 'admin'
+            const formType = urlParams.get('id') || 'admin';
             defaulttoggleLoginForm(formType);
         };
     </script>
