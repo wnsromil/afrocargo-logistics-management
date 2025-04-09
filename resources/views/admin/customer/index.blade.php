@@ -159,13 +159,13 @@
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                data-id="{{ $warehouse->id }}" data-status="Active">
+                                                                data-id="{{ $customer->id }}" data-status="Active">
                                                                 <i class="fa-solid fa-power-off me-2"></i>Activate
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                                data-id="{{ $customer->id }}" data-status="Inactive">
                                                                 <i class="far fa-bell-slash me-2"></i>Deactivate
                                                             </a>
                                                         </li>
@@ -735,6 +735,33 @@
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('.activate, .deactivate').on('click', function () {
+                let id = $(this).data('id');
+                let status = $(this).data('status');
+
+                $.ajax({
+                    url: "{{ route('admin.customer.status', '') }}/" + id,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status: status
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Status Updated',
+                                text: response.success
+                            });
+
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        </script>
         <!-- /Delete Items Modal -->
         @section('script')
             <script>
@@ -790,5 +817,6 @@
                     });
                 });
             </script>
+
         @endsection
 </x-app-layout>

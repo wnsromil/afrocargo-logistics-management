@@ -146,7 +146,7 @@
                                                                     href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
                                                                         class="far fa-eye me-2"></i>View</a>
                                                             </li>
-                                                            <!-- <li>
+                                                            <li>
                                                                             <a class="dropdown-item activate" href="javascript:void(0)"
                                                                                 data-id="{{ $warehouse->id }}" data-status="Active">
                                                                                 <i class="fa-solid fa-power-off me-2"></i>Activate
@@ -158,7 +158,7 @@
                                                                                 data-id="{{ $warehouse->id }}" data-status="Inactive">
                                                                                 <i class="far fa-bell-slash me-2"></i>Deactivate
                                                                             </a>
-                                                                        </li> -->
+                                                                        </li> 
                                                         </ul>
                                                     </div>
                                                 </div>

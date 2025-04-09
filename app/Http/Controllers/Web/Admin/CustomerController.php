@@ -393,4 +393,18 @@ class CustomerController extends Controller
             'user' => $user
         ], 200);
     }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = User::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
+    }
 }

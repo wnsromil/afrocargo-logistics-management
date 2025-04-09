@@ -48,8 +48,8 @@
             <div class="top-nav-search">
                 <form action="{{ url()->current() }}" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput" name="search"
-                            value="{{ request()->search }}">
+                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput"
+                            name="search" value="{{ request()->search }}">
                         {{-- <button type="submit">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button> --}}
@@ -149,7 +149,7 @@
                                                             href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
-                                                    <!-- <li>
+                                                    <li>
                                                         <a class="dropdown-item activate" href="javascript:void(0)"
                                                             data-id="{{ $vehicle->id }}" data-status="Active">
                                                             <i class="fa-solid fa-power-off me-2"></i>Activate
@@ -160,7 +160,7 @@
                                                             data-id="{{ $vehicle->id }}" data-status="Inactive">
                                                             <i class="far fa-bell-slash me-2"></i>Deactivate
                                                         </a>
-                                                    </li> -->
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -221,8 +221,8 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
-                                       <p>Inactive</p>
+                                        <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
+                                        <p>Inactive</p>
                                     </div>
                                 </td>
                                 <td>
@@ -260,8 +260,8 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
-                                       
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -300,7 +300,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -339,7 +339,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -378,7 +378,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -417,7 +417,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -456,7 +456,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -495,7 +495,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -534,7 +534,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -574,7 +574,8 @@
         <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                     <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                     <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>

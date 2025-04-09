@@ -127,9 +127,8 @@ class WarehouseManagerController extends Controller
         if (!empty($email)) {
             // Email Send Karna
             Mail::to($email)->send(new WarehousemangerMail($manager_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
-            
         }
-        
+
 
         return redirect()->route('admin.warehouse_manager.index')
             ->with('success', 'Manager created successfully.');
@@ -228,5 +227,19 @@ class WarehouseManagerController extends Controller
 
         return redirect()->route('admin.warehouse_manager.index')
             ->with('error', 'Manager not found');
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = User::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
     }
 }
