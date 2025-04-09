@@ -119,8 +119,7 @@
                                     <td class="align-items-center">
 
                                     <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            data-bs-toggle="tooltip" title="fe fe-more-vertical"></i></a>
+                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
@@ -130,11 +129,11 @@
                                             </li>
                                             <li>
 
-                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
+                                                <form action="{{ route('admin.inventories.destroy', $inventory->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
+                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory?')"><i
                                                             class="far fa-trash-alt me-2"></i>Delete</button>
                                                 </form>
                                             </li>

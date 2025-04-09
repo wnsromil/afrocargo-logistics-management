@@ -2118,3 +2118,6 @@ ul.pagination
         top: 70px;
     }
 }
+.swal2-confirm{
+    background-color: #203A5F !important;
+}
