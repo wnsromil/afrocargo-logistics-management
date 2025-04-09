@@ -48,16 +48,13 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>S. No.</th>
-                                <th>Vehicle Type</th>
-                                {{-- <th>Vehicle Model</th>
-                                <th>Manufactured year</th> --}}
-                                <th>Warehouse Name</th>
-                                <th>Seal No.</th>
-                                <th>Booking Number</th>
-                                <th>Bill Of Lading</th>
+                                <th>Warehouse</th>
+                                <th>Size</th>
                                 <th>Container No. 1</th>
                                 <th>Container No. 2</th>
-                                <th>Container Size</th>
+                                <th>Booking Number</th>
+                                <th>Seal No.</th>
+                                <th>Bill Of Lading</th>
                                 <th>Open Date</th>
                                 <th>Close Date</th>
                                 <th>Close Invoice</th>
@@ -77,18 +74,14 @@
                                     <td>
                                         {{ ++$index }}
                                     </td>
-
-                                    <td><span>{{ $vehicle->vehicle_type ?? '-' }}</span></td>
-                                    {{-- <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
-                                    <td>{{ $vehicle->vehicle_year ?? '-' }}</td> --}}
                                     <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
-
-                                    <td>{{ $vehicle->seal_no ?? '-' }}</td>
-                                    <td>{{ $vehicle->booking_number ?? '-' }}</td>
-                                    <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
+                                    <td>{{ $vehicle->container_size ?? '-' }}</td>
                                     <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
                                     <td>{{ $vehicle->container_no_2 ?? '-' }}</td>
-                                    <td>{{ $vehicle->container_size ?? '-' }}</td>
+                                    <td>{{ $vehicle->booking_number ?? '-' }}</td>
+                                    <td>{{ $vehicle->seal_no ?? '-' }}</td>
+                                    <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
+                                  
                                     <td>-</td>
                                     <td>-</td>
                                     <td class="tabletext"><input type="checkbox"></td>

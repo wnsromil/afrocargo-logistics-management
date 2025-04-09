@@ -18,7 +18,7 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block fwNormal mb-3">
-                        <label for="warehouse_location" class="foncolor">Warehouse Location <i
+                        <label for="warehouse_location" class="foncolor">Warehouse<i
                                 class="text-danger">*</i></label>
                         <select name="warehouse_name" class="js-example-basic-single select2">
                             <option value="">Select Warehouse </option>
@@ -36,9 +36,9 @@
                 <!-- Container Size -->
                 <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-size-field">
                     <div class="input-block mb-3">
-                        <label for="container_size" class="foncolor">Container Size</label>
+                        <label for="container_size" class="foncolor">Size</label>
                         <select name="container_size" id="container_size" class="js-example-basic-single select2">
-                            <option value="">Select Container Size</option>
+                            <option value="">Select Size</option>
                             <option>40 feet</option>
                             <option>20 feet</option>
                         </select>

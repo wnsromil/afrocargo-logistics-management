@@ -82,8 +82,6 @@ class ContainerController extends Controller
         // Base rules
         $rules = [
             'warehouse_name' => 'required|exists:warehouses,id',
-            // 'vehicle_model'  => 'required|string|max:255',
-            // 'vehicle_year'   => 'required|digits:4',
             'driver_id'      => 'nullable|integer',
             'container_no_1'      => 'required|string|max:100',
             'container_no_2'      => 'required|string|max:100',
@@ -92,14 +90,17 @@ class ContainerController extends Controller
             'booking_number'      => 'required|string|max:100',
             'bill_of_lading'      => 'required|string|max:100',
         ];
-        // Run validation
-        $validator = Validator::make($request->all(), $rules);
 
-        // Redirect back if validation fails
+        $messages = [
+            'warehouse_name.required' => 'The warehouse field is required.',
+            'warehouse_name.exists'   => 'The selected warehouse is invalid.',
+        ];
+        // Run validation
+        $validator = Validator::make($request->all(), $rules, $messages);
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
         // Create and save vehicle
         $vehicle = new Vehicle();
         $vehicle->warehouse_id   = $request->warehouse_name;
@@ -117,7 +118,6 @@ class ContainerController extends Controller
         $vehicle->bill_of_lading         = $request->bill_of_lading;
         $vehicle->save();
         return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
-       
     }
 
 
