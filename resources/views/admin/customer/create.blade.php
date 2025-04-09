@@ -230,8 +230,12 @@
                             <label class="foncolor" for="container">Group Container </label>
                             <select class="js-example-basic-single select2" name="container_id"
                                 value="{{ old('container_id') }}">
-                                <option selected="selected" value="">Select Container</option>
-                                <option></option>
+                                <option value="">Select Container</option>
+                                @foreach ($containers as $container)
+                                <option value="{{ $container->id }}" {{ old('container_id') == $container->id ? 'selected' : '' }}>
+                                    {{ $container->container_no_1 }}
+                                </option>
+                              @endforeach
                             </select>
                         </div>
 

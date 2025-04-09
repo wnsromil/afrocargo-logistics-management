@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{User, Menu, Container, Warehouse, Country};
+use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle};
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -73,7 +73,8 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        return view('admin.customer.create', compact('roles', 'warehouses', 'countries'));
+        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
+        return view('admin.customer.create', compact('roles', 'warehouses', 'countries', 'containers'));
     }
 
     /**
@@ -86,7 +87,7 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-           'mobile_code' => 'required|digits:10|unique:users,phone',
+            'mobile_code' => 'required|digits:10|unique:users,phone',
             'email' => [
                 'required',
                 'email',
@@ -168,6 +169,7 @@ class CustomerController extends Controller
                 'signup_type' => 'for_admin',
                 'country_code'        => $request->country_code ?? null,
                 'country_code_2'        => $request->country_code_2 ?? null,
+                'vehicle_id'        => $request->container_id ?? null,
             ];
             if (!empty($request->license_expiry_date)) {
                 $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -189,7 +191,7 @@ class CustomerController extends Controller
             $loginUrl = route('login');
 
             // Send the email
-            
+
             // Mail::to($email)->send(
             //     (new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl))
             //         ->from('no-reply@afrocargo.com', 'Afro Cargo')   
@@ -233,8 +235,9 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
+        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
         $page_no = $request->page;
-        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no'));
+        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -312,7 +315,8 @@ class CustomerController extends Controller
             'year_to_date' => $request->year_to_date,
             'license_number' => $request->license_number,
             'warehouse_id'   => $request->warehouse_id,
-           // 'signup_type'    => 'for_admin'
+            'vehicle_id'        => $request->container_id ?? null,
+            // 'signup_type'    => 'for_admin'
         ];
 
         // 🔹 File Path Update

@@ -12,7 +12,7 @@
                         <th>Username</th>
                         <th>Email</th>
                         <th>Warehouse</th>
-                        <th>Container No.</th>
+                        <th>Group Container</th>
                         <th>License ID</th>
                         <th>Phone</th>
                         <th>Address</th>
@@ -43,7 +43,7 @@
                             <td>{{ $customer->username ?? '' }}</td>
                             <td>{{ $customer->email ?? '-' }}</td>
                             <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
-                            <td>-</td>
+                            <td>{{ $customer->vehicle->container_no_1 ?? '-' }}</td>
                             <td>{{ $customer->license_number ?? '-' }}</td>
                             <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}<br>
                                 {{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}

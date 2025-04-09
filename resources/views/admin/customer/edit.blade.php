@@ -202,11 +202,16 @@
                         <label class="foncolor" for="container">Group Container </label>
                         <select class="js-example-basic-single select2" name="container_id"
                             value="{{ old('container_id') }}">
-                            <option selected="selected" value="">Select Container</option>
-                            <option></option>
+                            <option value="">Select Container</option>
+                            @foreach ($containers as $container)
+                                                    <option value="{{ $container->id }}" {{ old('country', $user->vehicle_id) == $container->id ?
+                                'selected' : '' }}>
+                                                        {{ $container->container_no_1 }}
+                                                    </option>
+                            @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -269,7 +274,7 @@
                 <div class="col-md-3">
                     <div class="d-flex align-items-center justify-content-center avtard">
                         <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                            }}</label>
+                                    }}</label>
                         <div class="avtarset" style="position: relative;">
                             <!-- Image Preview -->
                             <img id="preview_{{ $imageType }}" class="avtars avtarc"
