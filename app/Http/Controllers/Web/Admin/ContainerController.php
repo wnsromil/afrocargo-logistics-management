@@ -82,7 +82,6 @@ class ContainerController extends Controller
         // Base rules
         $rules = [
             'warehouse_name' => 'required|exists:warehouses,id',
-            'vehicle_type'   => 'required|string|max:255',
             // 'vehicle_model'  => 'required|string|max:255',
             // 'vehicle_year'   => 'required|digits:4',
             'driver_id'      => 'nullable|integer',
@@ -90,6 +89,7 @@ class ContainerController extends Controller
             'container_no_2'      => 'required|string|max:100',
             'container_size'      => 'nullable|string|max:50',
             'seal_no'      => 'required|string|max:100',
+            'booking_number'      => 'required|string|max:100',
             'bill_of_lading'      => 'required|string|max:100',
         ];
         // Run validation
@@ -113,6 +113,7 @@ class ContainerController extends Controller
         $vehicle->container_no_2  = $request->container_no_2;
         $vehicle->container_size  = $request->container_size;
         $vehicle->seal_no         = $request->seal_no;
+        $vehicle->booking_number         = $request->booking_number;
         $vehicle->bill_of_lading         = $request->bill_of_lading;
         $vehicle->save();
         return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');

@@ -11,6 +11,7 @@
                         <th>Manufactured year</th> --}}
                         <th>Warehouse Name</th>
                         <th>Seal No.</th>
+                        <th>Booking Number</th>
                         <th>Bill Of Lading</th>
                         <th>Container No. 1</th>
                         <th>Container No. 2</th>
@@ -41,6 +42,7 @@
                             <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
 
                             <td>{{ $vehicle->seal_no ?? '-' }}</td>
+                            <td>{{ $vehicle->booking_number ?? '-' }}</td>
                             <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
                             <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
                             <td>{{ $vehicle->container_no_2 ?? '-' }}</td>
