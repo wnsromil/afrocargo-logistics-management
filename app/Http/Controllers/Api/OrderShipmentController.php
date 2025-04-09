@@ -11,7 +11,8 @@ use App\Models\{
     Stock,
     Inventory,
     Parcel,
-    ParcelHistory
+    ParcelHistory,
+    Invoice
 };
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CustomerController;
@@ -421,6 +422,17 @@ class OrderShipmentController extends Controller
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
 
+            Invoice::create([
+                'generated_by' => 'driver',
+                'generated_status' => 'view_only',
+                'issue_date' => now()->format('Y-m-d'), 
+                'parcel_id' => $Parcel->id,             
+                'user_id' => $this->user->id,
+                'total_amount' => $request->total_amount,
+                'is_paid' => $request->payment_status === 'Paid' ? 1 : 0,
+                'invoice_no' => 'INV-' . rand(1000000, 9999999),
+            ]);
+            
             return $this->sendResponse($Parcel, 'Order added successfully.');
         } catch (Exception $e) {
             // Log the error

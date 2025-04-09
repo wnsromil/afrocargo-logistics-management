@@ -53,6 +53,11 @@ class Parcel extends Model
         return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
     }
 
+    public function ship_customer()
+    {
+        return $this->belongsTo(User::class, 'ship_customer_id')->with(['country', 'state', 'city']);
+    }
+
     public function driver_vehicle()
     {
         return $this->hasOne(Vehicle::class, 'driver_id', 'driver_id');

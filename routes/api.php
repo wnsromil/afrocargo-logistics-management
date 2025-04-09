@@ -103,10 +103,11 @@ Route::middleware('auth:api')->group(function () {
     });
 
     //invoice controller
-    Route::group(['middleware' => 'apiAuthCheck', 'prefix' => 'invoice', 'as' => 'invoice.', 'controller' => InvoiceController::class], function () {
-        Route::get('/', 'index')->name('index');
+    Route::group(['middleware' => 'apiAuthCheck', 'controller' => InvoiceController::class], function () {
+        Route::get('/', 'index');
         Route::get('/create', 'create');
         Route::post('/store', 'store');
         Route::get('/supply', 'inventaries');
+        Route::get('/invoice-details/{id}', 'invoiceDetails');
     });
 });

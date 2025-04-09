@@ -8,32 +8,73 @@ class Invoice extends Model
 {
     protected $guarded = [];
 
+    // App\Models\Invoice.php
+
     public function parcel()
     {
-        return $this->belongsTo(Parcel::class)->with(['driver', 'customer']);
+        return $this->belongsTo(Parcel::class, 'parcel_id');
+    }
+
+
+    public function invoiceParcelData()
+    {
+        return $this->belongsTo(Parcel::class, 'parcel_id')
+            ->select([
+                'id',
+                'customer_id',
+                'ship_customer_id',
+                'driver_id',
+                'driver_subcategories_data',
+                'total_amount',
+                'estimate_cost',
+                'container_id',
+                'percel_comment'
+            ])->with(['driver' => function ($query) {
+                return $query->select([
+                    'id',
+                    'name',
+                    'last_name',
+                    'email',
+                    'phone',
+                    'country_code',
+                    'phone_2',
+                    'country_code_2',
+                    'address',
+                    'address_2',
+                ]);
+            }, 'customer' => function ($query) {
+                return $query->select([
+                    'id',
+                    'name',
+                    'last_name',
+                    'email',
+                    'phone',
+                    'country_code',
+                    'phone_2',
+                    'country_code_2',
+                    'address',
+                    'address_2',
+                ]);
+            }, 'ship_customer' => function ($query) {
+                return $query->select([
+                    'id',
+                    'name',
+                    'last_name',
+                    'email',
+                    'phone',
+                    'country_code',
+                    'phone_2',
+                    'country_code_2',
+                    'address',
+                    'address_2',
+                ]);
+            }]);
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function customer()
-    {
-        return $this->belongsTo(User::class, 'customer_id')->with(['country', 'state', 'city']);
-    }
-
-    public function driver()
-    {
-        return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
-    }
-
-    public function warehouse()
-    {
-        return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
-    }
-   
-
-
     // Custom Invoice Number Generate karne ke liye
     public static function boot()
     {
@@ -75,6 +116,4 @@ class Invoice extends Model
     {
         return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
     }
-
-
 }

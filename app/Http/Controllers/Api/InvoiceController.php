@@ -96,6 +96,7 @@ class InvoiceController extends Controller
             ], 500);
         }
     }
+
     public function inventaries()
     {
         $inventaries = Inventory::where('status', 'Active')->get();
@@ -103,5 +104,24 @@ class InvoiceController extends Controller
             'status' => 'success',
             'inventaries' => $inventaries
         ], 200);
+    }
+
+    public function invoiceDetails($id)
+    {
+        $invoice = Invoice::select(['id', 'issue_date', 'invoice_no','parcel_id'])
+            ->with('invoiceParcelData')->find($id);
+
+        if (!$invoice) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invoice not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Invoice details fetched successfully',
+            'data' => $invoice
+        ]);
     }
 }
