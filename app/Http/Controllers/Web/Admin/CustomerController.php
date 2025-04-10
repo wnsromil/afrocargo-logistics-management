@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{User, Menu, Container, Warehouse, Country};
+use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle};
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -73,7 +73,8 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        return view('admin.customer.create', compact('roles', 'warehouses', 'countries'));
+        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
+        return view('admin.customer.create', compact('roles', 'warehouses', 'countries', 'containers'));
     }
 
     /**
@@ -86,7 +87,7 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-           'mobile_code' => 'required|digits:10|unique:users,phone',
+            'mobile_code' => 'required|digits:10|unique:users,phone',
             'email' => [
                 'required',
                 'email',
@@ -125,7 +126,7 @@ class CustomerController extends Controller
                     // 🔹 Agar profile_pics hai to alag folder me store kare
                     if ($imageType === 'profile_pics') {
                         $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                        $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName; // Store path in DB
+                        $imagePaths[$imageType] = 'uploads/profile_pics/' . $fileName; // Store path in DB
                     } else {
                         // 🔹 Baaki images customer folder me store ho
                         $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
@@ -168,6 +169,7 @@ class CustomerController extends Controller
                 'signup_type' => 'for_admin',
                 'country_code'        => $request->country_code ?? null,
                 'country_code_2'        => $request->country_code_2 ?? null,
+                'vehicle_id'        => $request->container_id ?? null,
             ];
             if (!empty($request->license_expiry_date)) {
                 $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -189,7 +191,7 @@ class CustomerController extends Controller
             $loginUrl = route('login');
 
             // Send the email
-            
+
             // Mail::to($email)->send(
             //     (new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl))
             //         ->from('no-reply@afrocargo.com', 'Afro Cargo')   
@@ -233,8 +235,9 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
+        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
         $page_no = $request->page;
-        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no'));
+        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -279,7 +282,7 @@ class CustomerController extends Controller
 
                 if ($imageType === 'profile_pic') {
                     $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                    $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName;
+                    $imagePaths[$imageType] = 'uploads/profile_pics/' . $fileName;
                 } else {
                     $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
                     $imagePaths[$imageType] = 'uploads/customer/' . $fileName;
@@ -312,7 +315,8 @@ class CustomerController extends Controller
             'year_to_date' => $request->year_to_date,
             'license_number' => $request->license_number,
             'warehouse_id'   => $request->warehouse_id,
-           // 'signup_type'    => 'for_admin'
+            'vehicle_id'        => $request->container_id ?? null,
+            // 'signup_type'    => 'for_admin'
         ];
 
         // 🔹 File Path Update
@@ -320,13 +324,13 @@ class CustomerController extends Controller
             $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
         }
 
-        if (!empty($userData['contract_signature_img'])) {
+        if (!empty($imagePaths['contract_signature_img'])) {
             $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
         }
-        if (!empty($userData['license_document'])) {
+        if (!empty($imagePaths['license_document'])) {
             $userData['license_document'] = $imagePaths['license_document'] ?? $user->license_document;
         }
-        if (!empty($userData['profile_pic'])) {
+        if (!empty($imagePaths['profile_pic'])) {
             $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
         }
 
@@ -392,5 +396,19 @@ class CustomerController extends Controller
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = User::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
     }
 }

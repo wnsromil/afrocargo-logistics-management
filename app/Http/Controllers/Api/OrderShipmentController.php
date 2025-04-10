@@ -11,7 +11,8 @@ use App\Models\{
     Stock,
     Inventory,
     Parcel,
-    ParcelHistory
+    ParcelHistory,
+    Invoice
 };
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CustomerController;
@@ -366,6 +367,84 @@ class OrderShipmentController extends Controller
         calculatePrice($request->input('distance',0),$distance_unit,$distance_rate);
 
         return $this->sendResponse($data, 'Estimate Price fetched successfully.');
+    }
+
+
+    public function invoiceOrderCreate(Request $request)
+    {
+        try {
+            // Validate incoming request data
+            $validatedData = $request->validate([
+                'customer_id' => 'required',
+                'ship_customer_id' => 'required',
+                'container_id' => 'required',
+                'customer_subcategories_data' => 'nullable', // JSON format required
+                'driver_subcategories_data' => 'nullable',   // JSON format required
+                'total_amount' => 'required|numeric|min:0',
+                'parcel_card_ids' => 'required|array',
+                'payment_type' => 'required|in:COD,Online,Cash',
+                'status' => 'required|in:Pending',
+                'pickup_time' => 'required|string',
+                'pickup_date' => 'required|date',
+            ]);
+
+            // Assign customer ID
+            $validatedData['driver_id'] = $this->user->id;
+            $validatedData['add_order'] = 'driver';
+            $validatedData['estimate_cost'] = $request->estimate_cost ?? null;
+            // Convert parcel_card_ids to parcel_car_ids
+            $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
+            unset($validatedData['parcel_card_ids']);
+
+            // **JSON Encode Arrays Properly**
+            if (!empty($request->customer_subcategories_data)) {
+                // Ensure it's an array before encoding
+                $customerData = is_string($request->customer_subcategories_data) ? json_decode($request->customer_subcategories_data, true) : $request->customer_subcategories_data;
+                $validatedData['customer_subcategories_data'] = json_encode($customerData, JSON_UNESCAPED_UNICODE);
+            }
+
+            if (!empty($request->driver_subcategories_data)) {
+                // Ensure it's an array before encoding
+                $driverData = is_string($request->driver_subcategories_data) ? json_decode($request->driver_subcategories_data, true) : $request->driver_subcategories_data;
+                $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
+            }
+
+            // Create Parcel
+            $Parcel = Parcel::create($validatedData);
+
+            // Create Parcel History
+            ParcelHistory::create([
+                'parcel_id' => $Parcel->id,
+                'created_user_id' => $this->user->id,
+                'customer_id' => $validatedData['customer_id'],
+                'status' => 'Created',
+                'parcel_status' => 'Pending',
+                'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
+            ]);
+
+            Invoice::create([
+                'generated_by' => 'driver',
+                'generated_status' => 'view_only',
+                'issue_date' => now()->format('Y-m-d'), 
+                'parcel_id' => $Parcel->id,             
+                'user_id' => $this->user->id,
+                'total_amount' => $request->total_amount,
+                'is_paid' => $request->payment_status === 'Paid' ? 1 : 0,
+                'invoice_no' => 'INV-' . rand(1000000, 9999999),
+            ]);
+            
+            return $this->sendResponse($Parcel, 'Order added successfully.');
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Parcel Store Error: ' . $e->getMessage());
+
+            // Return error response
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while creating the parcel.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     // end

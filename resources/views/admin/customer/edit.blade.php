@@ -20,8 +20,8 @@
 
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="first_name">First Name <i class="text-danger">*</i></label>
-                        <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name"
+                        <label class="foncolor" for="first_name">Full Name <i class="text-danger">*</i></label>
+                        <input type="text" name="first_name" class="form-control inp" placeholder="Enter Full Name"
                             value="{{ old('first_name', $user->name) }}">
                         @error('first_name')
                             <small class="text-danger">{{ $message }}</small>
@@ -198,6 +198,20 @@
                         </select>
                     </div>
 
+                    <div class="col-md-12 mb-2">
+                        <label class="foncolor" for="container">Group Container </label>
+                        <select class="js-example-basic-single select2" name="container_id"
+                            value="{{ old('container_id') }}">
+                            <option value="">Select Container</option>
+                            @foreach ($containers as $container)
+                                                    <option value="{{ $container->id }}" {{ old('country', $user->vehicle_id) == $container->id ?
+                                'selected' : '' }}>
+                                                        {{ $container->container_no_1 }}
+                                                    </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="col-md-12">
                         <label>Signature Date </label>
                         <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -260,7 +274,7 @@
                 <div class="col-md-3">
                     <div class="d-flex align-items-center justify-content-center avtard">
                         <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                            }}</label>
+                                    }}</label>
                         <div class="avtarset" style="position: relative;">
                             <!-- Image Preview -->
                             <img id="preview_{{ $imageType }}" class="avtars avtarc"

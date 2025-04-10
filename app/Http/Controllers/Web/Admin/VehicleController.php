@@ -121,11 +121,13 @@ class VehicleController extends Controller
         }
 
         $vehicle->save();
-        if($request->vehicle_type === 'Container'){
-            return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
-        }else{
-            return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
-        }
+        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
+
+        // if($request->vehicle_type === 'Container'){
+        //     return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
+        // }else{
+        //     return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
+        // }
     }
 
 

@@ -1551,33 +1551,34 @@ span.dollarSign {
 .card-body .table-responsive {
     border-radius: 0px !important;
     min-height: 200px;
+
     tbody {
-        td 
-        a:has(i) {
+        td a:has(i) {
             color: #203a5d;
         }
+
         .container {
             display: flex;
             align-items: center;
-            img 
-            {
+
+            img {
                 margin-right: .5rem;
             }
-             
+
         }
     }
 }
-.basic-info-detail 
-{
+
+.basic-info-detail {
     .container {
         padding: 0;
         display: flex;
         align-items: center;
-        img 
-        {
+
+        img {
             margin-right: .5rem;
         }
-         
+
     }
 }
 
@@ -1601,24 +1602,28 @@ span.dollarSign {
         font-size: 11px;
     }
 }
+
 .mb-3.float-end label[for="in_status"] {
     margin: 0 0 8px 0;
     font-weight: 500;
     font-size: 14px;
     color: #282828;
 }
+
 .col-lg-4.col-md-6.col-sm-12.align-center:has(.status-toggle) {
     justify-content: flex-start;
 }
+
 .daterangepicker-wrap.bordered input.btn-filters {
     border: 1px solid #00000042 !important;
 }
-button.btn.customer-btn-save.btn-primary:hover
-{
+
+button.btn.customer-btn-save.btn-primary:hover {
     color: #252F49 !important;
-    background-color: white!important;
+    background-color: white !important;
 
 }
+
 /* timeline css  */
 .cd-horizontal-timeline.mannuallyCSS {
     .timeline.w-100 {
@@ -2189,7 +2194,7 @@ ul.pagination {
     }
 }
 
-.table tbody td .dropdown-menu a:hover {
+.table tbody td .dropdown-menu .dropdown-item:hover {
     color: #ffffff !important;
     background: #203a5f;
 }
@@ -2269,6 +2274,170 @@ a.btn-action-icon.fas:hover i {
 
 .content-page-header.tomain {
     margin-bottom: 24px;
+}
+
+.daterangepicker-wrap input {
+    padding-left: 35px;
+}
+
+.advanceReportFilter {
+    .col {
+        padding: 0 5px;
+    }
+
+    input {
+        height: 40px;
+        font-size: 12px !important;
+        font-weight: 500;
+        color: #737B8B !important;
+    }
+
+    input[placefolder],
+    .daterangepicker-wrap input.btn-filters[placefolder] {
+        color: #737B8B !important;
+    }
+
+    .daterangepicker-wrap.cal-icon::after {
+        left: 5px;
+    }
+
+    .daterangepicker-wrap input {
+        padding-left: 27px;
+        padding-right: 5px;
+    }
+
+    .select2-selection__rendered {
+        font-size: 12px;
+        font-weight: 500;
+        color: #737B8B !important;
+        max-width: 140px;
+        padding-right: 0 !important;
+    }
+
+    span.select2.select2-container.select2-container--default,
+    input,
+    .twoBTNs {
+        width: 193px !important;
+        min-width: 193px !important;
+        display: block !important;
+    }
+
+    .imgc {
+        top: 71%;
+        font-size: 16px;
+        left: 15px;
+    }
+
+    .daterangepicker-wrap input.btn-filters {
+        font-size: 12px !important;
+        font-weight: 500;
+    }
+
+    .form-cs {
+        padding-left: 35px;
+    }
+}
+
+.btn-primary.btn-success {
+    background-color: #33B469 !important;
+    border-color: #33B469 !important;
+}
+
+.btn-primary.btn-success:hover {
+    color: #33B469 !important;
+
+    i {
+        color: inherit !important;
+    }
+}
+
+.btn.iconbtn i.ti {
+    font-size: 19px;
+    bottom: -3px;
+    line-height: 3px;
+    padding-right: 0px;
+}
+
+.mt-n3 {
+    margin-top: -20px;
+}
+
+.height40,
+.inputheight40 input.dateInput {
+    height: 40px !important;
+}
+
+.inputGroup {
+    i {
+        position: absolute;
+        left: 8px;
+        top: 12px;
+        font-size: 16px;
+    }
+}
+
+.smpadding th,
+.smpadding td {
+    padding: 8px 10px !important;
+}
+
+.statusFor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    border-radius: 4px;
+    margin: 0 !important;
+
+}
+
+.statusFor.active {
+    background-color: #C5FFDD;
+    color: #33B469;
+}
+
+.statusFor.inactive {
+    background-color: #FFDADA;
+    color: #FF0000;
+}
+
+.select2-results__option--disabled {
+    display: none;
+}
+
+.onlyDatetime::after {
+    left: 10px;
+    top: 7px;
+}
+
+input.btn-filters.datetimepicker {
+    padding-left: 40px;
+}
+
+input[readonly] {
+    background: #ececec;
+}
+
+.avtarset.oneonly {
+    height: unset;
+
+    .avtars {
+        width: 180px;
+        border: 4px solid #fff;
+        filter: drop-shadow(0px -1px 4px #00000021);
+    }
+
+    .divedit {
+        position: absolute;
+        top: 0px;
+        right: -5px;
+
+        .editstyle {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
 }
 
 /* WNSshubham */

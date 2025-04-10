@@ -57,12 +57,16 @@
                                                     class="far fa-eye me-2"></i>View</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="active-customers.html"><i
-                                                    class="fa-solid fa-power-off me-2"></i>Activate</a>
+                                            <a class="dropdown-item activate" href="javascript:void(0)"
+                                                data-id="{{ $warehouse->id }}" data-status="Active">
+                                                <i class="fa-solid fa-power-off me-2"></i>Activate
+                                            </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="deactive-customers.html"><i
-                                                    class="far fa-bell-slash me-2"></i>Deactivate</a>
+                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                <i class="far fa-bell-slash me-2"></i>Deactivate
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>

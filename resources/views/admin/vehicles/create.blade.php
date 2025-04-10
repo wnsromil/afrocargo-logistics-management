@@ -17,9 +17,10 @@
             <div class="row">
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block fwNormal mb-3">
-                        <label for="warehouse_location" class="foncolor">Warehouse Location <i class="text-danger">*</i></label>
-                        <select name="warehouse_name" class="js-example-basic-single select2">
+                    <div class="mb-3">
+                        <label for="warehouse_location" class="foncolor">Warehouse Location <i
+                                class="text-danger">*</i></label>
+                        <select name="warehouse_name" class="js-example-basic-single select2" style="font-weight:400px !important">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
                             <option {{ old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{
@@ -35,7 +36,7 @@
 
                 <!-- Vehicle Type -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
+                    <div class="mb-3">
                         <label for="vehicle_type" class="foncolor">Vehicle Type <i class="text-danger">*</i></label>
                         <select id="vehicle_type" name="vehicle_type" class="js-example-basic-single select2 profileUpdateFont">
                             <option value="" class="fw-normal">Select Vehicle Type</option>
@@ -129,8 +130,8 @@
 
                 <!-- Container Size -->
                 <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-size-field" style="display:none">
-                    <div class="input-block mb-3">
-                        <label for="container_size" class="foncolor">Container Size</label>
+                    <div class="mb-3">
+                        <label for="container_size" class="foncolor">Container Size <i class="text-danger">*</i></label>
                         <select name="container_size" id="container_size" class="js-example-basic-single select2">
                             <option value="">Select Container Size</option>
                             <option>40 feet</option>

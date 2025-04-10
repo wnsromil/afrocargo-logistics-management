@@ -27,9 +27,7 @@
                 </form>
             </div>
             <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters" href="javascript:void(0);" data-bs-placement="bottom" title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
             </div>
         </div>
 
@@ -37,8 +35,7 @@
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
             <div class="mt-2">
-                <a href="{{ route('admin.inventories.create') }}" class="btn btn-primary buttons"
-                    style="background:#203A5F">
+                <a href="{{ route('admin.inventories.create') }}" class="btn btn-primary buttons" style="background:#203A5F">
                     <i class="ti ti-circle-plus me-2 text-white"></i>
                     Add Inventory
                 </a>
@@ -88,8 +85,7 @@
                                 <td class="text-dark">{{ ucfirst($inventory->inventory_type ?? '') }}</td>
                                 <td>
                                     @if (!empty($inventory->img))
-                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
-                                        height="50">
+                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50" height="50">
                                     @else
                                     <span>-</span>
                                     @endif
@@ -116,32 +112,24 @@
                                         $inventory->stock_status ?? '-' }}</span>
                                 </td>
 
-                                    <td class="align-items-center">
+                                <td class="align-items-center">
 
-                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fe fe-more-vertical fs-4"
-                                            ></i></a>
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fe fe-more-vertical fs-4"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
-                                                        class="far fa-edit me-2"></i>Edit</a>
+                                                <a class="dropdown-item" href="{{ route('admin.inventories.edit', $inventory->id) }}"><i class="far fa-edit me-2"></i>Edit</a>
                                             </li>
                                             <li>
 
-                                                <form action="admin.inventories.destroy" method="POST" class="d-inline">
+                                                <form action="{{ route('admin.inventories.destroy', $inventory->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory? This action can’t be undone! 🚀')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory?')"><i class="far fa-trash-alt me-2"></i>Delete</button>
                                                 </form>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.inventories.show', $inventory->id) }}"><i
-                                                        class="far fa-eye me-2"></i>View History</a>
+                                                <a class="dropdown-item" href="{{ route('admin.inventories.show', $inventory->id) }}"><i class="far fa-eye me-2"></i>View History</a>
                                             </li>
 
                                         </ul>
@@ -165,8 +153,7 @@
 
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
-                    id="pageSizeSelect">
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                     <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                     <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -187,8 +174,8 @@
         </div>
     </div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll("#setBackground tbody tr").forEach(row => {
                 let back = row.cells[12].querySelector('span').innerText.trim();
 
@@ -204,6 +191,7 @@
                 }
             });
         });
-        </script>
+
+    </script>
 
 </x-app-layout>

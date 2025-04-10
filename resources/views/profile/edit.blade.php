@@ -36,27 +36,31 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="upload-profile me-2 align-items-center mt-4">
-                            <label class="profile-img avatar avatar-xxl profileImg profile-cover-avatar"
-                                for="file-input">
+                            <label class="profile-img avatar avatar-xxl profileImg profile-cover-avatar">
                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
-                                    <img class="avatar-img" src="{{ asset($user->profile_pic) }}" alt="Profile Image"
-                                        id="blah">
+                                    <img class="avatar-img" src="{{ asset($user->profile_pic) }}" alt="Profile Image" id="blah">
                                 @else
-                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-14.jpg') }}"
-                                        alt="Profile Image" id="blah">
+                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-14.jpg') }}" alt="Profile Image" id="blah">
                                 @endif
-
+                            
+                                <!-- Only this icon will trigger input -->
                                 <span class="avatar-edit iconResize">
-                                    <i class="fe fe-edit avatar-uploader-icon shadow-soft" id="profile_pic"></i>
+                                    <label for="file-input" style="margin-bottom: 0; cursor: pointer;">
+                                        <i class="fe fe-edit avatar-uploader-icon shadow-soft" id="profile_pic"></i>
+                                    </label>
                                 </span>
+                                @if (!empty($user->profile_pic) && is_string($user->profile_pic))
                                 <span class="avatar-trash iconResize bg-danger" onclick="deleteImage()">
                                     <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
                                 </span>
+                                @endif
                             </label>
-                        </div>
-                        {{-- input --}}
-                        <input id="file-input" type="file" name="profile_pic" style="display:none;"
+                            
+                            <!-- Hidden File Input -->
+                            <input id="file-input" type="file" name="profile_pic" style="display:none;"
                             onchange="readURL(this);" accept="image/png, image/jpeg">
+                            
+                        </div>
                     </form>
                 </div>
 

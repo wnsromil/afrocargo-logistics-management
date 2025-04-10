@@ -18,7 +18,8 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block fwNormal mb-3">
-                        <label for="warehouse_location" class="foncolor">Warehouse Location <i class="text-danger">*</i></label>
+                        <label for="warehouse_location" class="foncolor">Warehouse<i
+                                class="text-danger">*</i></label>
                         <select name="warehouse_name" class="js-example-basic-single select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
@@ -26,60 +27,18 @@
                                 $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
-
                         @error('warehouse_name')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Vehicle Type -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type" class="foncolor">Vehicle Type</label>
-                        <input type="text" id="vehicle_type" name="vehicle_type" value="Container" readonly style="background-color: #e9ecef !important; color: #6c757d; cursor: not-allowed;" class="form-control profileUpdateFont">
-
-                        @error('vehicle_type')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-
-                <!-- Vehicle Model -->
-
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_model" class="foncolor">Vehicle Model <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_model" class="form-control inp"
-                            placeholder="Enter Vehicle Model" value="{{ old('vehicle_model') }}">
-                @error('vehicle_model')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-                    </div> --}}
-
-
-                    <!-- Vehicle Manufactured year -->
-
-                    {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                                        <div class="input-block mb-3">
-                                            <label for="vehicle_year" class="foncolor">Vehicle Manufactured year<i
-                                                    class="text-danger">*</i></label>
-                                            <input type="vehicle_year" name="vehicle_year" class="form-control inp"
-                                                placeholder=" Enter Vehicle Manufactured year" value="{{ old('vehicle_year') }}">
-                    @error('vehicle_year')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                    </div>
-                    </div> --}}
-
-                    <!-- Container Size -->
+                <!-- Container Size -->
                 <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-size-field">
                     <div class="input-block mb-3">
-                        <label for="container_size" class="foncolor">Container Size</label>
+                        <label for="container_size" class="foncolor">Size</label>
                         <select name="container_size" id="container_size" class="js-example-basic-single select2">
-                            <option value="">Select Container Size</option>
+                            <option value="">Select Size</option>
                             <option>40 feet</option>
                             <option>20 feet</option>
                         </select>
@@ -108,6 +67,18 @@
                         <input type="text" name="container_no_2" id="container_no_1" class="form-control inp" placeholder=" Enter Vehicle No." value="{{ old('container_no_2') }}">
                         @error('container_no_2')
                         <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                  {{-- Seal Number --}}
+                  <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="seal_no" class="foncolor">Booking Number <i class="text-danger">*</i></label>
+                        <input type="text" name="booking_number" id="booking_number" class="form-control inp"
+                            placeholder="Enter Booking Number" value="{{ old('booking_number') }}">
+                        @error('booking_number')
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>

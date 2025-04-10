@@ -87,7 +87,7 @@
                                     <th>Username</th>
                                     <th>Email</th>
                                     <th>Warehouse</th>
-                                    <th>Container No.</th>
+                                    <th>Group Container</th>
                                     <th>License ID</th>
                                     <th>Phone</th>
                                     <th>Address</th>
@@ -118,7 +118,7 @@
                                         <td>{{ $customer->username ?? '' }}</td>
                                         <td>{{ $customer->email ?? '-' }}</td>
                                         <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
-                                        <td>-</td>
+                                        <td>{{ $customer->vehicle->container_no_1 ?? '-' }}</td>
                                         <td>{{ $customer->license_number ?? '-' }}</td>
                                         <td>{{ $customer->country_code ?? '' }} {{ $customer->phone ?? '-' }}<br>
                                             {{ $customer->country_code_2 ?? '' }} {{ $customer->phone_2 ?? '-' }}
@@ -156,6 +156,18 @@
                                                             <a class="dropdown-item"
                                                                 href="{{ route('admin.customer.show', $customer->id) }}"><i
                                                                     class="far fa-eye me-2"></i>View</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                data-id="{{ $customer->id }}" data-status="Active">
+                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                                data-id="{{ $customer->id }}" data-status="Inactive">
+                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                            </a>
                                                         </li>
 
                                                     </ul>
@@ -723,6 +735,33 @@
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('.activate, .deactivate').on('click', function () {
+                let id = $(this).data('id');
+                let status = $(this).data('status');
+
+                $.ajax({
+                    url: "{{ route('admin.customer.status', '') }}/" + id,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status: status
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Status Updated',
+                                text: response.success
+                            });
+
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        </script>
         <!-- /Delete Items Modal -->
         @section('script')
             <script>
@@ -778,5 +817,6 @@
                     });
                 });
             </script>
+
         @endsection
 </x-app-layout>

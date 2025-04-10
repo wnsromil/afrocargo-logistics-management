@@ -22,6 +22,7 @@
   border-radius: 8px;
   margin-top: 0;
   padding: 14px 15px !important;
+  height: 100%;
 }
 
 
@@ -1187,6 +1188,11 @@ input[type="checkbox"]:checked::after {
 .day{
   min-width: 85px;
   justify-content: flex-start;
+  margin-top:9px;
 }
 
 
+.inputs{
+  padding: 1px;
+    font-size: 13px !important;
+}

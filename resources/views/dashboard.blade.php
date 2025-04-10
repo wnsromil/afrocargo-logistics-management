@@ -31,8 +31,6 @@
             <div class="col-md-12">
                 <div class="row row-cols-1 row-cols-md-3 g-4 dash-gap">
 
-
-
                     <!-- First Row (4 Columns) -->
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
@@ -528,19 +526,19 @@
             </div>
         </div>
 
-
+        <!-- -------------------------------- Container Cards -------------------------------- -->
         <div class="col-md-12">
             <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
-                <!-- --------------------------- 1st -------------------------------- -->
                 @forelse ($latestContainers as $index => $latestContainer)
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div class="card innerCards w-100 setCard setCardSize rounded">
-                            <div class="d-flex flex-row justify-content-between">
+                            <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
                                         {{$latestContainer->seal_no ?? "-"}}</p>
                                     <h5 class='text-black countFontSize fw-medium'>
-                                        {{$latestContainer->container_no_1 ?? "-"}}</h5>
+                                        {{$latestContainer->container_no_1 ?? "-"}}
+                                    </h5>
                                     <div class="cardFontSize mt-2 fw-medium">
                                         <span class="fw-regular col737">Total Order :</span>
                                         --<br>
@@ -551,13 +549,11 @@
                                 </div>
 
                                 <div class="col-3 justify-content-end">
-                                    <div>
-                                        <div class="status-toggle float-end me-0">
-                                            <input id="rating_1" class="toggle-btn1 check" type="checkbox">
-                                            <label for="rating_1" class="checktoggle tog checkbox-bg">checkbox</label>
-                                        </div>
+                                    <div class="status-toggle float-end me-0">
+
+                                        <input id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $index === 1 ? 'checked' : '' }}>
+                                        <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
-                                    <!-- </div> -->
                                 </div>
                             </div>
                         </div>
@@ -691,53 +687,54 @@
             <div class="dash-title">
                 <h5 class='cardh5Size fw-semibold mb-4'>Latest Orders</h5>
             </div>
-            <div class="card-table">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-stripped table-hover datatable">
-                            <thead class="thead-light backColor set">
-                                <tr>
-                                    <th>S. No.</th>
-                                    <th>Tracking ID</th>
-                                    <th>Customer</th>
-                                    <th>Pickup Date</th>
-                                    <th>Item Limit</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th class="text-end">Action</th>
-                                </tr>
-                            </thead>
+            <div class="t-padding">
+                <div class="card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-stripped table-hover datatable">
+                                <thead class="thead-light backColor set">
+                                    <tr class="ps-0">
+                                        <th class="px-3 ps-3">S. No.</th>
+                                        <th class="px-3">Tracking ID</th>
+                                        <th class="px-3">Customer</th>
+                                        <th class="px-3">Pickup Date</th>
+                                        <th class="px-3">Item Limit</th>
+                                        <th class="px-3">Amount</th>
+                                        <th class="px-3">Status</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td class="table-content text-center">1</td>
-                                    <td class="table-contenttable-content">WE97078893</td>
-                                    <td class="table-contenttable-content">Andrew B S</td>
-                                    <td class="table-contenttable-content">12-12-2024</td>
-                                    <td class="table-contenttable-content">Books, Electronics...</td>
-                                    <td class="table-contenttable-content">$167.00</td>
-                                    <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>WE97078893</td>
+                                        <td>Andrew B S</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate">Books, Electronics...</td>
+                                        <td class="table-content">$167.00</td>
+                                        <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
                                             style="color:red;"></i>Canceled</td> -->
-                                    <td><span
-                                            class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Pending</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#Schedule_Pickup">Schedule Pickup</a>
-                                                    </li>
+                                        <td><span
+                                                class="bg-danger-subtle pending-text px-2 py-1 rounded cardFontSize fw-medium">Pending</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#Schedule_Pickup">Schedule Pickup</a>
+                                                        </li>
 
-                                                    <!-- <li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -746,13 +743,15 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -760,50 +759,52 @@
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                <!-- ----------------- 2 ------------------ -->
+                                    <!-- ----------------- 2 ------------------ -->
 
-                                <tr>
-                                    <td class="text-center">2</td>
-                                    <td class="profileUpdateFont">WE97078891</td>
-                                    <td>Patrick Wilson</td>
-                                    <td>12-12-2024</td>
-                                    <td>Household Set, Card... </td>
-                                    <td>$863.00</td>
-                                    <td><span
-                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
-                                            Pickup</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#schedule_pickup_cancel">Schedule Pickup
-                                                            Cancel</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#pickup_reschedule">Pickup Re-schedule</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="edit-products.html"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#Schedule_Pickup">Received By
-                                                            Pickup Man</a>
-                                                    </li>
-                                                    <!-- <li>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>WE97078891</td>
+                                        <td>Patrick Wilson</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Household Set, Cards </td>
+                                        <td>$863.00</td>
+                                        <td><span
+                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                                Pickup</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <!-- <i class="fa fa-angle-down fs-6 fw-1" data-bs-toggle="tooltip" title="fa fa-angle-down"></i> -->
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#schedule_pickup_cancel">Schedule Pickup
+                                                                Cancel</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#pickup_reschedule">Pickup
+                                                                Re-schedule</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="edit-products.html"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#Schedule_Pickup">Received By
+                                                                Pickup Man</a>
+                                                        </li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -812,13 +813,15 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -827,42 +830,44 @@
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
 
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                <!-- ------------------------ 3 ------------------------------ -->
-                                <tr>
-                                    <td class="table-content text-center">3</td>
-                                    <td class="table-content">WE97078896</td>
-                                    <td class="table-content">Kotlin Drwight</td>
-                                    <td class="table-content">12-12-2024</td>
-                                    <td class="table-content">Books</td>
-                                    <td class="table-content">$617.00</td>
+                                    <!-- ------------------------ 3 ------------------------------ -->
+                                    <tr>
+                                        <td>3</td>
+                                        <td>WE97078896</td>
+                                        <td>Kotlin Drwight</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Books</td>
+                                        <td>$617.00</td>
 
-                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Pickup
-                                            Re-Schedule</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#pickup_reschedule">Pickup Re-schedule</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#Received_Warehouse">Received Warehouse</a>
-                                                    </li>
-                                                    <!-- <li>
+                                        <td><span class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Pickup
+                                                Re-Schedule</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#pickup_reschedule">Pickup
+                                                                Re-schedule</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#Received_Warehouse">Received
+                                                                Warehouse</a>
+                                                        </li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -871,13 +876,15 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -886,69 +893,75 @@
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
 
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- ------------------ 4 ------------------------ -->
-                                <tr>
-                                    <td class="text-center">4</td>
-                                    <td class="profileUpdateFont">WE97078897</td>
-                                    <td>Aron Finch</td>
-                                    <td>12-12-2024</td>
-                                    <td>Household Set, Card...</td>
-                                    <td>$751.00</td>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- ------------------ 4 ------------------------ -->
+                                    <tr>
+                                        <td>4</td>
+                                        <td>WE97078897</td>
+                                        <td>Aron Finch</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Household Set, Card...</td>
+                                        <td>$751.00</td>
 
-                                    <td><span class="bg-text-color2 px-2 py-1 rounded fw-medium">Received By Pickup
-                                            Man</span>
-                                    </td>
-                                    <td class="d-flextext-dark">
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                        <td><span
+                                                class="bg-text-color2 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                                By Pickup
+                                                Man</span>
+                                        </td>
+                                        <td class="align-center mt-2">
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                <!-- ----------------- 5 -------------------------- -->
+                                    <!-- ----------------- 5 -------------------------- -->
 
-                                <tr>
-                                    <td class="table-content text-center">5</td>
-                                    <td class="table-content">WE97078898</td>
-                                    <td class="table-content">Michele Saint</td>
-                                    <td class="table-content">12-12-2024</td>
-                                    <td class="table-content">Books</td>
-                                    <td class="table-content">$356.00</td>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>WE97078898</td>
+                                        <td>Michele Saint</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Books</td>
+                                        <td>$356.00</td>
 
-                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Pickup
-                                            Re-Schedule</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#pickup_reschedule">Pickup Re-schedule</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#Received_Warehouse">Received Warehouse</a>
-                                                    </li>
-                                                    <!-- <li>
+                                        <td><span class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Pickup
+                                                Re-Schedule</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#pickup_reschedule">Pickup
+                                                                Re-schedule</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#Received_Warehouse">Received
+                                                                Warehouse</a>
+                                                        </li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -957,13 +970,15 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -971,27 +986,31 @@
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                <!-- ---------------- 6 ------------------------------- -->
-                                <tr>
-                                    <td>6</td>
-                                    <td class="profileUpdateFont">WE97078899</td>
-                                    <td>Ruphel Soden</td>
-                                    <td>12-12-2024</td>
-                                    <td>Cards</td>
-                                    <td>$940.00</td>
+                                    <!-- ---------------- 6 ------------------------------- -->
+                                    <tr>
+                                        <td>6</td>
+                                        <td class="profileUpdateFont">WE97078899</td>
+                                        <td>Ruphel Soden</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Cards</td>
+                                        <td>$940.00</td>
 
-                                    <td><span class="bg-text-color2 px-2 py-1 rounded fw-medium">Received By Pickup
-                                            Man</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                        <td><span
+                                                class="bg-text-color2 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                                By Pickup
+                                                Man</span>
+                                        </td>
+                                        <td class="align-center mt-2">
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -999,53 +1018,55 @@
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- -------------------- 7 ------------------------------- -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- -------------------- 7 ------------------------------- -->
 
-                                <tr>
-                                    <td class="table-content">7</td>
-                                    <td class="table-content">WE97078900</td>
-                                    <td class="table-content">Kristiean Salt</td>
-                                    <td class="table-content">12-12-2024</td>
-                                    <td class="table-content">Books</td>
-                                    <td class="table-content">$125.00</td>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>WE97078900</td>
+                                        <td>Kristiean Salt</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Books</td>
+                                        <td>$125.00</td>
 
-                                    <td><span
-                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
-                                            Pickup</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_man_cancel">Delivery Man Assign
-                                                            Cancel</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_reschedule">Delivery
-                                                            Re-schedule</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#return_to_courier">Return To Courier</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivered">Delivered</a>
-                                                    </li>
-                                                    <!-- <li>
+                                        <td><span
+                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                                Pickup</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delivery_man_cancel">Delivery Man
+                                                                Assign
+                                                                Cancel</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delivery_reschedule">Delivery
+                                                                Re-schedule</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#return_to_courier">Return To
+                                                                Courier</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delivered">Delivered</a>
+                                                        </li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -1054,13 +1075,15 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -1068,65 +1091,69 @@
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- ----------------- 8 ----------------------------------- -->
-                                <tr>
-                                    <td>8</td>
-                                    <td class="profileUpdateFont">WE97078901</td>
-                                    <td>Benjamin</td>
-                                    <td>12-12-2024</td>
-                                    <td>Received By Pickup Man</td>
-                                    <td>$759.00</td>
-                                    <td><span class="bg-text-color1 px-2 py-1 rounded fw-medium">Received By Pickup
-                                            Man</span>
-                                        </d>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- ----------------- 8 ----------------------------------- -->
+                                    <tr>
+                                        <td>8</td>
+                                        <td class="profileUpdateFont">WE97078901</td>
+                                        <td>Benjamin</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Received By Pickup Man</td>
+                                        <td>$759.00</td>
+                                        <td><span
+                                                class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                                By Pickup
+                                                Man</span>
+                                            </d>
+                                        <td class="align-center mt-2">
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                <!-- --------------- 9 -------------------------- -->
-                                <tr>
-                                    <td class="table-content">9</td>
-                                    <td class="table-content">WE97078894</td>
-                                    <td class="table-content">Abistanial</td>
-                                    <td class="table-content">12-12-2024</td>
-                                    <td class="table-content">Electronics</td>
-                                    <td class="table-content">$300.00</td>
+                                    <!-- --------------- 9 -------------------------- -->
+                                    <tr>
+                                        <td>9</td>
+                                        <td>WE97078894</td>
+                                        <td>Abistanial</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Electronics</td>
+                                        <td>$300.00</td>
 
-                                    <td><span
-                                            class="bg-danger-subtle text-danger px-2 py-1 rounded fw-medium">Pending</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="edit-products.html"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#Schedule_Pickup">Schedule
-                                                            Pickup</a>
-                                                    </li>
-                                                    <!-- <li>
+                                        <td><span
+                                                class="bg-danger-subtle pending-text px-2 py-1 rounded cardFontSize fw-medium">Pending</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="edit-products.html"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#Schedule_Pickup">Schedule
+                                                                Pickup</a>
+                                                        </li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -1135,13 +1162,15 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                                <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
                                                 <button type="button" class="btn btn-primary align-center rounded-1"
                                                     
@@ -1149,52 +1178,54 @@
                                                     <i class="fe fe-eye icon-size fs-6" style="color: white"
                                                         data-bs-toggle="tooltip" title="fe fe-eye"></i>
                                                 </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- ------------------------------- 10 --------------------------------- -->
-                                <tr>
-                                    <td>10</td>
-                                    <td class="profileUpdateFont">WE97078898</td>
-                                    <td>Manny Operans</td>
-                                    <td>12-12-2024</td>
-                                    <td>Household</td>
-                                    <td>$456.00</td>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- ------------------------------- 10 --------------------------------- -->
+                                    <tr>
+                                        <td>10</td>
+                                        <td class="profileUpdateFont">WE97078898</td>
+                                        <td>Manny Operans</td>
+                                        <td>12-12-2024</td>
+                                        <td class="text-truncate width">Household</td>
+                                        <td>$456.00</td>
 
-                                    <td><span
-                                            class="bg-warning-subtle text-warning px-2 py-1 rounded fw-medium">Schedule
-                                            Pickup</span>
-                                    </td>
-                                    <td class="d-flex align-items-center text-dark">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fa fa-angle-down tooltipped fs-6 icon-size fw-1"
-                                                        data-position="top" data-tooltip="fa fa-angle-down"></i>
-                                                </button></a>
-                                            <div class="dropdown-menu dropdown-menu-right rounded">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_man_cancel">Delivery Man Assign
-                                                            Cancel</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivery_reschedule">Delivery
-                                                            Re-schedule</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#return_to_courier">Return To Courier</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#delivered">Delivered</a>
-                                                    </li>
-                                                    <!-- <li>
+                                        <td><span
+                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                                Pickup</span>
+                                        </td>
+                                        <td class="d-flex">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon me-1" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary align-center rounded-1"
+                                                        style="height:26px; width:36px;">
+                                                        <i class="fa fa-angle-down tooltipped fs-6 fw-1"
+                                                            data-position="top" data-tooltip="fa fa-angle-down"></i>
+                                                    </button></a>
+                                                <div class="dropdown-menu dropdown-menu-right rounded">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delivery_man_cancel">Delivery Man
+                                                                Assign
+                                                                Cancel</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delivery_reschedule">Delivery
+                                                                Re-schedule</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#return_to_courier">Return To
+                                                                Courier</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#delivered">Delivered</a>
+                                                        </li>
+                                                        <!-- <li>
                                                         <a class="dropdown-item" href="edit-products.html"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
@@ -1203,25 +1234,19 @@
                                                             data-bs-target="#delete_modal"><i
                                                                 class="far fa-trash-alt me-2"></i>Delete</a>
                                                     </li> -->
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <a class="btn-action-icon btn-primary rounded-1 ms-3 px-3"
-                                                href="javascript:void(0);"><i class="fe fe-eye icon-size fs-6"></i></a>
-                                            <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
-                                                    
-                                                    style="height:26px; width:36px;">
-                                                    <i class="fe fe-eye icon-size fs-6" style="color: white"
-                                                        data-bs-toggle="tooltip" title="fe fe-eye"></i>
-                                                </button></a> -->
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <!-- <tbody>
+                                            <div>
+                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                    href="javascript:void(0);"><i
+                                                        class="fe fe-eye icon-size fs-6"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <!-- <tbody>
                                 <tr class="opacity-75">
                                     <td>
                                         <h2 class="table-avatar">
@@ -1701,8 +1726,8 @@
 
                             </tbody> -->
 
-                        </table>
-                        <!-- <nav aria-label="Page navigation example">
+                            </table>
+                            <!-- <nav aria-label="Page navigation example">
                             <ul class="pagination pagi-dash">
                                 <li class="page-item">
                                     <a class="page-link" href="#" aria-label="Previous">
@@ -1722,7 +1747,9 @@
                                 </li>
                             </ul>
                         </nav> -->
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -1730,6 +1757,54 @@
     </div>
 
     <!-- ---------------------------------------------------------------------------------------------------- -->
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const allToggles = document.querySelectorAll('.toggle-btn1');
+
+            allToggles.forEach(input => {
+                const parentDiv = input.closest(".card");
+                if (input.checked) {
+                    parentDiv.classList.add('bg-selected1');
+                }
+                input.addEventListener("change", function () {
+                    allToggles.forEach(other => {
+                        const otherCard = other.closest(".card");
+                        if (other !== input) {
+                            other.checked = false;
+                            otherCard.classList.remove('bg-selected1');
+                        }
+                    });
+                    if (this.checked) {
+                        parentDiv.classList.add('bg-selected1');
+                    } else {
+                        parentDiv.classList.remove('bg-selected1');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.toggle-btn1').forEach(input => {
+                if (input.checked) {
+                    card.classList.add('card-active');
+                }
+                input.addEventListener("change", function () {
+                    const parentDiv = this.closest(".card");
+                    if (this.checked) {
+                        parentDiv.classList.add('bg-selected1');
+                    } else {
+                        parentDiv.classList.remove('bg-selected1');
+                    }
+                });
+            });
+        });
+    </script> -->
+
 
     @section('bottomContent')
         <!-- ---------------------------------------------------------------------------------- -->
@@ -1892,55 +1967,12 @@
             </div>
         </div>
         <!-- /Received_Warehouse Modal -->
-        <!-- ----------------------------------------------------------------------------------------------------------- -->
-
-
-        <!-- Schedule Pickup Modal -->
-        <!-- <div class="modal custom-modal fade" id="Schedule_Pickup" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered modal-md">
-                        <div class="modal-content">
-                            <div class="modal-header border-0 p-3 pb-0">
-                                <div class="form-header modal-header-title text-start mb-0">
-                                    <h4 class="font16 mb-0">Pickup Man Assign</h4>
-                                </div>
-                                <button type="button" class="btn-close fw-medium" data-bs-dismiss="modal" aria-label="Close">
-                                </button>
-                            </div>
-                            <hr class="border border-dark border-opac mb-0">
-
-                            <form action="#">
-                                <div class="modal-body p-3">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12">
-                                            <div class="input-block mb-0 fw-medium profileUpdateFont">
-                                                <label class="col737">Pickup Man<span class="text-danger">*</span></label>
-                                                <select class="form-select form-select-lg selected-schedule-color mb-3"
-                                                    aria-label="Large select example">
-                                                    <option selected>Select Delivery Man</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label table-content fw-medium">Note</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" data-bs-dismiss="modal"
-                                        class="btn btn-border-color cancel-btn me-2">Cancel</button>
-                                    <button type="submit" data-bs-dismiss="modal" class="btn paid-continue-btn btnColor1">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div> -->
-        <!-- /Schedule Pickup Modal -->
         <!-- ---------------------------------------------------------------------------------------------------- -->
+         
         <!-- schedule_pickup_cancel Modal -->
         <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md">
-                <div class="modal-content">
+                <div class="modal-content resized">
                     <div class="modal-body p-3">
                         <div class="form-header">
                             <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Schedule Pickup?</p>
@@ -1967,7 +1999,7 @@
         <!-- delivery_man_cancel Modal -->
         <div class="modal custom-modal fade" id="delivery_man_cancel" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md">
-                <div class="modal-content">
+                <div class="modal-content resized">
                     <div class="modal-body p-3">
                         <div class="form-header">
                             <p class="cardAnalyticsSize col3A fw-medium">Do you want to cancel the Container Received by Hub
@@ -2103,18 +2135,6 @@
         <!-- /delivery_reschedule Modal -->
     @endsection
     @section('bottomContent')
-        <script>
-            document.querySelectorAll('.toggle-btn1').forEach(input => {
-                input.addEventListener("change", function () {
-                    const parentDiv = this.closest(".card");
-                    if (this.checked) {
-                        parentDiv.classList.add('bg-selected1');
-                    } else {
-                        parentDiv.classList.remove('bg-selected1');
-                    }
-                })
-            })
-        </script>
     @endsection
 
 </x-app-layout>
