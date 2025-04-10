@@ -22,12 +22,29 @@ class OrderShipmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default is 10
+        $currentPage = $request->input('page', 1);
 
         $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest()->paginate(10);
+        })
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('tracking_no', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhere('estimate_cost', 'LIKE', "%$search%")
+                        ->orWhere('total_amount', 'LIKE', "%$search%");
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+        $serialStart = ($currentPage - 1) * $perPage;
+
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
@@ -37,7 +54,12 @@ class OrderShipmentController extends Controller
         })->get();
 
         $drivers = $user->where('role_id', 4)->values();
-        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses'));
+
+        if ($request->ajax()) {
+            return view('admin.OrderShipment.table', compact('parcels', 'serialStart'))->render();
+        }
+
+        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses', 'search', 'perPage', 'serialStart'));
     }
 
     /**
@@ -225,9 +247,9 @@ class OrderShipmentController extends Controller
             unset($validatedData['ParcelId']);
 
             // Fetch the parcel record
-            $parcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
+            $parcel = Parcel::when($ParcelId, function ($q) use ($ParcelId) {
+                if (is_array($ParcelId)) {
+                    return $q->whereIn('id', $ParcelId);
                 }
                 return $q->where('id', $ParcelId);
             })->get();
@@ -240,9 +262,9 @@ class OrderShipmentController extends Controller
             }
 
             // Update parcel status and driver_id if provided
-            $objParcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
+            $objParcel = Parcel::when($ParcelId, function ($q) use ($ParcelId) {
+                if (is_array($ParcelId)) {
+                    return $q->whereIn('id', $ParcelId);
                 }
                 return $q->where('id', $ParcelId);
             });
@@ -251,7 +273,7 @@ class OrderShipmentController extends Controller
 
 
             $warehouse_id = null;
-            if($validatedData['status'] == "Received Warehouse"){
+            if ($validatedData['status'] == "Received Warehouse") {
                 $warehouse_id =  $request->warehouse_id;
 
                 // $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
@@ -280,30 +302,30 @@ class OrderShipmentController extends Controller
                 // $validatedData['hub_tracking_id'] = $hubTracking->id;
             }
 
-            if($validatedData['status'] == "Received By Pickup Man"){
+            if ($validatedData['status'] == "Received By Pickup Man") {
 
-                $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-                    return $q->where('warehouse_id',$this->user->warehouse_id);
+                $vehicles = Vehicle::when($this->user->role_id != 1, function ($q) {
+                    return $q->where('warehouse_id', $this->user->warehouse_id);
                 })->get();
 
                 $warehouse_id =  $vehicles->first()->warehouse_id;
 
                 // ready to hub
-                $hubTrackings = HubTracking::where('status','pending')
-                ->withCount(['parcels'])
-                ->with('vehicle')
-                ->where(['from_warehouse_id'=>$warehouse_id])
-                ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get();
+                $hubTrackings = HubTracking::where('status', 'pending')
+                    ->withCount(['parcels'])
+                    ->with('vehicle')
+                    ->where(['from_warehouse_id' => $warehouse_id])
+                    ->whereIn('vehicle_id', $vehicles->pluck('id')->toArray())->latest()->get();
 
-                $hubTracking = collect($hubTrackings)->filter(function($item){
+                $hubTracking = collect($hubTrackings)->filter(function ($item) {
                     return $item->parcels_count < $item->vehicle->capacity;
                 })->first();
 
                 // return collect($hubTrackings)->pluck('vehicle_id')->toArray();
 
-                if(empty($hubTracking)){
+                if (empty($hubTracking)) {
                     $hubTracking = HubTracking::create([
-                        'vehicle_id' => $vehicles->whereNotIn('id',collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
+                        'vehicle_id' => $vehicles->whereNotIn('id', collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
                         'from_warehouse_id' => $warehouse_id,
                         'created_by' => $this->user->id
                     ]);
@@ -316,7 +338,7 @@ class OrderShipmentController extends Controller
             $objParcel->update($validatedData);
 
 
-            $history = $parcel->map(function($item) use($validatedData,$warehouse_id){
+            $history = $parcel->map(function ($item) use ($validatedData, $warehouse_id) {
                 return [
                     'parcel_id' => $item->id,
                     'created_user_id' => $this->user->id,
@@ -326,7 +348,7 @@ class OrderShipmentController extends Controller
                     'parcel_status' => $validatedData['status'],
                     'description' => collect($item),
                     'note' => $request->note ?? null,
-                    'created_at'=> Carbon::now()
+                    'created_at' => Carbon::now()
                 ];
             });
 

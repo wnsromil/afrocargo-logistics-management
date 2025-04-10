@@ -104,7 +104,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="in_stock_quantity" class="table-content col737 fw-medium">Quantity (kg) <i
+                        <label for="in_stock_quantity" class="table-content col737 fw-medium">Quantity<i
                                 class="text-danger">*</i></label>
                         <input class="form-control input-padding" type="number" name="in_stock_quantity"
                             value="{{ old('in_stock_quantity') }}" placeholder="Enter quantity"
@@ -148,7 +148,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block">
-                        <label class="table-content col737 fw-medium required">Inventory Image </label>
+                        <label class="table-content col737 fw-medium">Inventory Image </label>
                         <div class="input-block mb-3 service-upload img-size2 mb-0">
                             <span id="upload_inventory_image">
                                 <svg width="65" height="37" viewBox="0 0 65 37" fill="none" style="color:black;"

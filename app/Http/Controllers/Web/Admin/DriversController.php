@@ -236,7 +236,7 @@ class DriversController extends Controller
 
         // Redirect to the warehouse index page with a success message
         return redirect()->route('admin.drivers.index')
-            ->with('success', 'Manager updated successfully');
+            ->with('success', 'Driver updated successfully');
     }
 
 

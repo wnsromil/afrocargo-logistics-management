@@ -56,7 +56,7 @@
 
             <a class="nav-link mt-1 me-2 pt-2" href="{{route('admin.notification.index')}}">
                 <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
-                <img src="../assets/images/notification BTN.svg" alt="..." />
+                <img src="{{asset('../assets/images/notification BTN.svg')}}" alt="..." />
             </a>
 
 

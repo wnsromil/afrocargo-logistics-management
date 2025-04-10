@@ -204,9 +204,7 @@ class WarehouseController extends Controller
         return redirect()->route('admin.warehouses.index')
                         ->with('success', 'Warehouse updated successfully');
     }
-    
 
-    
     /**
      * Remove the specified resource from storage.
      *
@@ -218,5 +216,19 @@ class WarehouseController extends Controller
         Warehouse::find($id)->delete();
         return redirect()->route('admin.warehouses.index')
                         ->with('success','Warehouse deleted successfully');
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = Warehouse::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
     }
 }

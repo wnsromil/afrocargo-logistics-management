@@ -93,11 +93,11 @@
                 <a href="{{ route('admin.vehicle.edit', $vehicle->id) }}" class="btn btn-primary me-2">Edit</a>
                 
                 <!-- Delete Button (with confirmation) -->
-                <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST" class="d-inline">
+                {{-- <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-danger" onclick="deleteData(this, 'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')">Delete</button>
-                </form>
+                </form> --}}
             </div>
         </div>
     </div>

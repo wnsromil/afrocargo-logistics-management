@@ -64,7 +64,7 @@
             <p class="pdata">{{ $user->address_2 ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
-            <p class="phead">Longitude & Latitude</p>
+            <p class="phead">Latitude & Longitude</p>
             <p class="pdata">{{ $user->latitude ?? '-' }}, {{ $user->longitude ?? '-' }}</p>
         </div>
     </div>
@@ -77,8 +77,8 @@
             <p class="pdata">{{ $user->warehouse->warehouse_name ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
-            <p class="phead">Container</p>
-            <p class="pdata">-</p>
+            <p class="phead">Group Container</p>
+            <p class="pdata">{{ $user->vehicle->container_no_1 ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Company Name</p>
