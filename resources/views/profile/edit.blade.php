@@ -40,7 +40,7 @@
                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
                                     <img class="avatar-img" src="{{ asset($user->profile_pic) }}" alt="Profile Image" id="blah">
                                 @else
-                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-14.jpg') }}" alt="Profile Image" id="blah">
+                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-icon.png') }}" alt="Profile Image" id="blah">
                                 @endif
                             
                                 <!-- Only this icon will trigger input -->
@@ -50,7 +50,7 @@
                                     </label>
                                 </span>
                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
-                                <span class="avatar-trash iconResize bg-danger" onclick="deleteImage()">
+                                <span class="avatar-trash iconResize bg-danger" style="cursor: pointer;" onclick="deleteImage()">
                                     <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
                                 </span>
                                 @endif
