@@ -370,7 +370,7 @@ class OrderShipmentController extends Controller
     }
 
 
-    public function invoiceOrderCreate(Request $request)
+    public function invoiceOrderCreateService(Request $request)
     {
         try {
             // Validate incoming request data
