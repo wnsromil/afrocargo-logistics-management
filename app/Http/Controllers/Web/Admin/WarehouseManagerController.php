@@ -81,7 +81,7 @@ class WarehouseManagerController extends Controller
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:15|unique:users,phone',
+            'mobile_code' => 'required|string|max:15|unique:users,phone',
             'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
@@ -110,7 +110,7 @@ class WarehouseManagerController extends Controller
             'address' => $request->address,
             'email' => $request->email,
             'password' => \Hash::make('12345678'),
-            'phone' => $request->phone,
+            'phone' => $request->mobile_code,
             'country_code' => $request->country_code,
             'status' => $status,
             'role_id' => 2,
@@ -179,8 +179,9 @@ class WarehouseManagerController extends Controller
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:15',
+            'edit_mobile_code' => 'required|string|max:15',
             'status' => 'in:Active,Inactive',
+            'country_code' => 'required|string',
         ]);
 
         // Check if validation fails
@@ -199,8 +200,9 @@ class WarehouseManagerController extends Controller
             'name' => $request->manager_name,
             'address' => $request->address,
             'email' => $request->email,
-            'phone' => $request->phone,
+            'phone' => $request->edit_mobile_code,
             'status' => $request->status ?? 'Active', // Status ko handle karna
+            'country_code' => $request->country_code,
         ]);
 
 

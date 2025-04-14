@@ -81,12 +81,12 @@
                     </div>
                 </div> -->
 
-                <div class="col-lg-4 col-md-6 col-sm-12 mobile_code">
+                <div class="col-lg-4 col-md-6 col-sm-12 mobile_code" style="display: grid;">
 
                     <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
-                    <input type="tel" id="mobile_code" name="phone" class=" form-control inp"
+                    <input type="tel" id="mobile_code" name="mobile_code" class=" form-control inp"
                         placeholder="Enter Mobile No.">
-                        @error('phone')
+                        @error('mobile_code')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                     <input type="hidden" id="country_code" name="country_code">

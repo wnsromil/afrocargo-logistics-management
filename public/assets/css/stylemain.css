@@ -2121,3 +2121,24 @@ ul.pagination
 .swal2-confirm{
     background-color: #203A5F !important;
 }
+.iti--inline-dropdown .iti__dropdown-content {
+    z-index: 1000 !important;
+}
+.iti__globe {
+    display: none !important;
+}
+/* .alternate_mobile_no_class .iti__selected-dial-code{
+    display: none !important;
+}
+.edit_mobile_code_class .iti__selected-dial-code{
+    display: none !important;
+} */
+.alternate_mobile_no_class .iti--allow-dropdown{
+    width: 100% !important;
+}
+.edit_mobile_code_class .iti--allow-dropdown{
+    width: 100% !important;
+}
+#edit_mobile , #edit_mobile_code{
+    padding-left: 90px !important;
+}

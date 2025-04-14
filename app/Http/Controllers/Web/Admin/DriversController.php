@@ -200,8 +200,9 @@ class DriversController extends Controller
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'phone' => 'required|string|max:15',
+            'edit_mobile_code' => 'required|string|max:15',
             'address' => 'required|string|max:500',
+            'country_code' => 'required|string',
             // 'vehicle_type' => 'required',
             // 'email' => 'nullable|email|unique:users,email,' . $id, // Ignore current user ID
             // 'license_number' => 'required',
@@ -226,11 +227,12 @@ class DriversController extends Controller
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address,
-            'phone' => $request->phone,
+            'phone' => $request->edit_mobile_code,
             'license_number' => $request->license_number,
             'license_expiry_date' => $request->license_expiry_date,
             // 'license_document' => $licenseDocumentPath, // Store Image URL
             'status' => $request->status, // Status ko handle karna
+            'country_code' => $request->country_code,
         ]);
 
 
