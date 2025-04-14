@@ -29,22 +29,23 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="col-md-12 mb-2 mobile_code">
+                        <div class="col-md-12 mb-2 mobile_code" style="display: grid;">
                             <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
                             <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp"
-                                placeholder="Enter Mobile No." value="{{ old('mobile_code') }}">
+                                placeholder="Enter Mobile No." value="{{ old('mobile_code') }}"
+                                oninput="this.value = this.value.slice(0, 10)">
                             @error('mobile_code')
-                                <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <input type="hidden" id="country_code" name="country_code">
 
-                        <div class="col-md-12 mb-2 alternate_mobile_no">
+                        <div class="col-md-12 mb-2 alternate_mobile_no" style="display: grid;">
                             <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                            <input type="tel" id="mobile" name="alternate_mobile_no" class="form-control inp"
-                                value="{{ old('alternate_mobile_no') }}" placeholder="Enter Mobile No.">
-
+                            <input type="tel" id="alternate_mobile_no" name="alternate_mobile_no" class="form-control inp"
+                                value="{{ old('alternate_mobile_no') }}" placeholder="Enter Alternate Mobile No."
+                                oninput="this.value = this.value.slice(0, 10)">
                         </div>
 
                         <input type="hidden" id="country_code_2" name="country_code_2">

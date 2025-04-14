@@ -43,8 +43,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style5.css') }}">
 
     <!-- Intl Tell Input CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/intlTelInput/css/intlTelInput.css') }}">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
     <!-- Layout JS -->
     <script src="{{ asset('assets/js/layout.js') }}"></script>
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>

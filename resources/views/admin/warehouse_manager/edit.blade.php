@@ -59,16 +59,18 @@
                 </div>
 
                 <!-- Contact Number -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 edit_mobile_code_manger">
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control" placeholder="Enter Contact Number"
-                        value="{{$manager_data->phone ?? old('phone') }}">
-                        @error('phone')
+                        <input type="text" id="edit_mobile_code" name="edit_mobile_code" class="form-control" placeholder="Enter Contact Number"
+                        value="{{$manager_data->phone ?? old('edit_mobile_code') }}">
+                        @error('edit_mobile_code')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+                <input type="hidden" id="country_code" name="country_code"
+                        value="{{ old('country_code', $manager_data->country_code) }}">
 
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -81,31 +83,6 @@
                         @enderror
                     </div>
                 </div>
-
-                <!-- Password -->
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="phone">Password <i class="text-danger">*</i></label>
-                        <input type="text" name="password" class="form-control" placeholder="Enter Contact Number"
-                            value="{{ old('password') }}">
-                        @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> --}}
-
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="phone">Confirm Password <i class="text-danger">*</i></label>
-                        <input type="text" name="confirm-password" class="form-control" placeholder="Enter Contact Number"
-                            value="{{ old('confirm-password') }}">
-                        @error('confirm-password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> --}}
-
-
                 <!-- Status -->
 
                 <div class="col-lg-4 col-md-6 col-sm-12 align-center">
@@ -138,4 +115,36 @@
 
         </div>
     </form>
+    <script>
+        $('#country_code').val($('.edit_mobile_code_manger').find('.iti__selected-dial-code').text());
+        $('.col-md-12').on('click', () => {            
+            $('#country_code').val($('.edit_mobile_code_manger').find('.iti__selected-dial-code').text());
+        })
+    </script>
+    <script>
+         $(document).ready(function () {
+                function initializeIntlTelInput(inputId, hiddenInputId, defaultCountry) {
+                    let input = document.querySelector(inputId);
+                    let iti = window.intlTelInput(input, {
+                        initialCountry: defaultCountry ? defaultCountry.toLowerCase() : "us", // Default 'IN' (India)
+                        separateDialCode: true,
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                    });
+
+                    // Set hidden input value on load
+                    if (defaultCountry) {
+                        let dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    }
+
+                    // Update country code when user selects a different country
+                    input.addEventListener("countrychange", function () {
+                        let dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    });
+                }
+                // Initialize for both mobile fields
+                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $manager_data->country_code }}");
+            });
+        </script>
 </x-app-layout>

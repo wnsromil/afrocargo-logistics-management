@@ -94,7 +94,7 @@ class CustomerController extends Controller
                 'max:255',
                 'unique:users,email'
             ],
-            'alternate_mobile_no' => 'nullable|max:13',
+            'alternate_mobile_no' => 'nullable|max:10',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
             'state' => 'required|string',
@@ -316,6 +316,8 @@ class CustomerController extends Controller
             'license_number' => $request->license_number,
             'warehouse_id'   => $request->warehouse_id,
             'vehicle_id'        => $request->container_id ?? null,
+            'country_code'        => $request->country_code ?? null,
+            'country_code_2'        => $request->country_code_2 ?? null,
             // 'signup_type'    => 'for_admin'
         ];
 

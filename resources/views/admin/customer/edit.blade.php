@@ -27,9 +27,10 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="col-md-12">
-                        <label class="foncolor" for="mobile_code">Mobile No. <i class="text-danger">*</i></label>
-                        <input type="tel" id="mobile_code" value="{{ old('mobile_code', $user->phone) }}"
+                    
+                    <div class="col-md-12 edit_mobile_code_class" style="display: grid;">
+                        <label class="foncolor" for="edit_mobile_code">Mobile No. <i class="text-danger">*</i></label>
+                        <input type="tel" id="edit_mobile_code" value="{{ old('mobile_code', $user->phone) }}"
                             class="form-control inp" placeholder="Enter Mobile Number" name="mobile_code"
                             oninput="this.value = this.value.slice(0, 10)">
                         @error('mobile_code')
@@ -38,14 +39,17 @@
                     </div>
                     <input type="hidden" id="country_code" name="country_code"
                         value="{{ old('country_code', $user->country_code) }}">
-                    <div class="col-md-12">
+
+                    <div class="col-md-12 alternate_mobile_no_class" style="display: grid;">
                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                        <input type="tel" id="mobile" name="alternate_mobile_no"
+                        <input type="tel" id="edit_mobile" name="alternate_mobile_no"
                             value="{{ old('alternate_mobile_no', $user->phone_2) }}" class="form-control inp"
                             placeholder="Enter Mobile Number" oninput="this.value = this.value.slice(0, 10)">
                     </div>
                     <input type="hidden" id="country_code_2" name="country_code_2"
                         value="{{ old('country_code_2', $user->country_code_2) }}">
+
+
 
                     <div class="col-md-12">
                         <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
@@ -367,14 +371,15 @@
                 document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
                 document.getElementById('file_' + imageType).value = "";
             }
-            $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+
+            $('#country_code').val($('.edit_mobile_code_class').find('.iti__selected-dial-code').text());
             $('.col-md-12').on('click', () => {
-                $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+                $('#country_code').val($('.edit_mobile_code_class').find('.iti__selected-dial-code').text());
             })
 
-            $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            $('#country_code_2').val($('.alternate_mobile_no_class').find('.iti__selected-dial-code').text());
             $('.col-md-12').on('click', () => {
-                $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+                $('#country_code_2').val($('.alternate_mobile_no_class').find('.iti__selected-dial-code').text());
             })
         </script>
         <script>
@@ -463,7 +468,7 @@
                 function initializeIntlTelInput(inputId, hiddenInputId, defaultCountry) {
                     let input = document.querySelector(inputId);
                     let iti = window.intlTelInput(input, {
-                        initialCountry: defaultCountry ? defaultCountry.toLowerCase() : "in", // Default 'IN' (India)
+                        initialCountry: defaultCountry ? defaultCountry.toLowerCase() : "us", // Default 'IN' (India)
                         separateDialCode: true,
                         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
                     });
@@ -480,10 +485,9 @@
                         $(hiddenInputId).val("+" + dialCode);
                     });
                 }
-
                 // Initialize for both mobile fields
-                initializeIntlTelInput("#mobile_code", "#country_code", "{{ $user->country_code }}");
-                initializeIntlTelInput("#mobile", "#country_code_2", "{{ $user->country_code_2 }}");
+                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code }}");
+                initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 }}");
             });
 
         </script>
