@@ -20,8 +20,8 @@
 
                     </div>
                     <div class="col-md-12">
-                        <label class="foncolor" for="first_name">First Name <i class="text-danger">*</i></label>
-                        <input type="text" name="first_name" class="form-control inp" placeholder="Enter Last Name"
+                        <label class="foncolor" for="first_name">Full Name <i class="text-danger">*</i></label>
+                        <input type="text" name="first_name" class="form-control inp" placeholder="Enter Full Name"
                             value="{{ old('first_name', $user->name) }}">
                         @error('first_name')
                             <small class="text-danger">{{ $message }}</small>

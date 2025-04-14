@@ -81,13 +81,13 @@
                                     <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                                     <td>
                                         @if ($warehouse->status == 'Active')
-                                            <div class="container">
-                                                <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
+                                            <div class="d-flex align-items-center">
+                                                <img class="me-2" src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
                                                 <p>Active</p>
                                             </div>
                                         @else
-                                            <div class="container">
-                                                <img src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
+                                            <div class="d-flex align-items-center">
+                                                <img class="me-2" src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
                                                 <p>Inactive</p>
                                             </div>
                                         @endif

@@ -117,8 +117,8 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Contact No. 2</p>
-                                    <input type="number" id="mobile_code2" name="phone_2"
-                                        value="{{ old('phone_2', $user->phone_2) }}" class="form-control"
+                                    <input type="number" name="phone_2"
+                                        value="{{ old('phone_2', $user->phone_2) }}" class="flagInput form-control"
                                         placeholder="">
                                     <span class="error text-danger">
                                         @error('phone_2')

@@ -22,6 +22,7 @@
   border-radius: 8px;
   margin-top: 0;
   padding: 14px 15px !important;
+  height: 100%;
 }
 
 
@@ -36,6 +37,14 @@
   padding-top: 5px;
   margin: 2px;
 }
+.mobile_code
+{
+  .foncolor
+  {
+    margin: 0 0 8px 0;
+  }
+}
+
 
 .inp {
   border: 1px solid #00000042 !important;
@@ -80,6 +89,7 @@
 .inventory{
   color:#000000;
   padding:10px !important;
+  font-weight: 500;
 }
 
 .status-toggle .checktoggle {
@@ -179,7 +189,7 @@
 
 .daterangepicker-wrap input.btn-filters {
   font-weight: normal;
-  border: none !important;
+  /* border: none !important; */
 }
 
 .table thead tr th {
@@ -240,13 +250,13 @@
     .table tbody td a:hover {
       color:#3A3A3A;
   }
-  .container {
+  /* .container {
     display: flex;
-    align-items: center; /* This will align both image and text vertically in the middle */
+    align-items: center; 
   }
   .container img {
-    margin-right: 10px; /* This adds space between the image and the text */
-  }
+    margin-right: 10px; 
+  } */
 .alignt{
    text-align: center;
   }

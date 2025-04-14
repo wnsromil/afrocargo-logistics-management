@@ -1627,7 +1627,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>
@@ -1690,7 +1690,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>
@@ -1748,7 +1748,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>
@@ -1807,7 +1807,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>
@@ -1906,7 +1906,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>
@@ -1952,7 +1952,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>
@@ -1998,7 +1998,7 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block ">
                                 <label class="foncolor">Note</label>
-                                <div class="input-block service-upload service-upload-info mb-0">
+                                <div class="input-block mb-0">
                                     <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
                                 </div>

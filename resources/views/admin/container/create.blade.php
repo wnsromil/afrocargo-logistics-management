@@ -23,12 +23,12 @@
                         <select name="warehouse_name" class="js-example-basic-single select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
-                                                    <option {{ old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{
+                            <option {{ old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{
                                 $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
                         @error('warehouse_name')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -51,10 +51,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-no-1-field">
                     <div class="input-block mb-3">
                         <label for="container_no_1" class="foncolor">Container No.1<i class="text-danger">*</i></label>
-                        <input type="text" name="container_no_1" id="container_no_1" class="form-control inp"
-                            placeholder=" Enter Vehicle No." value="{{ old('container_no_1') }}">
+                        <input type="text" name="container_no_1" id="container_no_1" class="form-control inp" placeholder=" Enter Vehicle No." value="{{ old('container_no_1') }}">
                         @error('container_no_1')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -65,10 +64,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-no-2-field">
                     <div class="input-block mb-3">
                         <label for="container_no_2" class="foncolor">Container No.2<i class="text-danger">*</i></label>
-                        <input type="text" name="container_no_2" id="container_no_1" class="form-control inp"
-                            placeholder=" Enter Vehicle No." value="{{ old('container_no_2') }}">
+                        <input type="text" name="container_no_2" id="container_no_1" class="form-control inp" placeholder=" Enter Vehicle No." value="{{ old('container_no_2') }}">
                         @error('container_no_2')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -89,10 +87,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
                     <div class="input-block mb-3">
                         <label for="seal_no" class="foncolor">Seal Number <i class="text-danger">*</i></label>
-                        <input type="text" name="seal_no" id="seal_no" class="form-control inp"
-                            placeholder="Enter Seal Number" value="{{ old('seal_no') }}">
+                        <input type="text" name="seal_no" id="seal_no" class="form-control inp" placeholder="Enter Seal Number" value="{{ old('seal_no') }}">
                         @error('seal_no')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -100,10 +97,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
                     <div class="input-block mb-3">
                         <label for="bill_of_lading" class="foncolor">Bill Of Lading <i class="text-danger">*</i></label>
-                        <input type="text" name="bill_of_lading" id="bill_of_lading" class="form-control inp"
-                            placeholder="Enter Bill Of Lading" value="{{ old('bill_of_lading') }}">
+                        <input type="text" name="bill_of_lading" id="bill_of_lading" class="form-control inp" placeholder="Enter Bill Of Lading" value="{{ old('bill_of_lading') }}">
                         @error('bill_of_lading')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -123,13 +119,13 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="add-customer-btns text-end">
-                <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
-                    class="btn btn-outline-primary custom-btn">Cancel</button>
-                <button type="submit" class="btn btn-primary ">Submit</button>
+        <div class="add-customer-btns text-end">
+            <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary ">Submit</button>
 
-            </div>
+        </div>
 
     </form>
 
