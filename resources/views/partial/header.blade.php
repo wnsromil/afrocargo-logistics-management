@@ -66,10 +66,10 @@
                     <span><i class="fe fe-user" style="color:rgb(255, 255, 255)"></i></span>
 
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu profileDropdown" aria-labelledby="dropdownMenuButton1">
                     <li>
                         <a class="dropdown-item" href="{{ route('profile.index') }}">
-                            <img class="mr-3" src="{{asset('assets/images/myprofile.svg')}}" alt="">
+                            <i class="ti ti-user-search"></i>
                             <span class="drop-span">{{ __('Profile') }}</span>
                         </a>
                     </li>
@@ -78,7 +78,7 @@
                             @csrf
                             <a class="dropdown-item" href="#" onclick="event.preventDefault();
                 this.closest('form').submit();">
-                                <img class="mr-3" src="{{asset('assets/images/logout.svg')}}" alt="">
+                                <i class="ti ti-power"></i>
                                 <Span class="drop-span">{{ __('Log Out') }}</Span>
 
                             </a>

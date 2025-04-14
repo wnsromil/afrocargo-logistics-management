@@ -27,6 +27,8 @@ use App\Http\Controllers\Web\Admin\{
     NotificationScheduleController,
     RoleManagementController,
     ContainerController,
+    TemplateCategoryController,
+    TemplateController
 };
 use App\Mail\RegistorMail;
 
@@ -167,6 +169,8 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('signature', SignatureController::class);
         Route::resource('notification_schedule', NotificationScheduleController::class);
         Route::resource('user_role', RoleManagementController::class);
+        Route::resource('template_category', TemplateCategoryController::class);
+        Route::resource('templates', TemplateController::class);
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');

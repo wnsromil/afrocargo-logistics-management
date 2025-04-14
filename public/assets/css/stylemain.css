@@ -1,3 +1,14 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 h2 {
     color: unset;
 }
@@ -1465,7 +1476,7 @@ span.dollarSign {
                     padding: 12px 0px 12px 18px;
 
                     span {
-                        font-size: 16px;
+                        font-size: 15px;
                         font-weight: 500;
                     }
 
@@ -2199,6 +2210,12 @@ ul.pagination {
     background: #203a5f;
 }
 
+img.profileImg {
+    width: 100px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    height: auto;
+}
 
 .footerSec {
     /* position: absolute; */
@@ -2416,6 +2433,7 @@ input.btn-filters.datetimepicker {
 
 input[readonly] {
     background: #ececec;
+    cursor: not-allowed;
 }
 
 .avtarset.oneonly {
@@ -2438,6 +2456,70 @@ input[readonly] {
         }
     }
 
+}
+
+p.overflowEllipse {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.templateTable {
+
+    th,
+    td {
+        padding-left: 10px !important;
+        padding-right: 13px !important;
+    }
+}
+
+.addTemplateForm {
+    .form-check-input {
+        background-color: #ffffff;
+        display: inline-block;
+        border-color: #898989;
+        cursor: pointer;
+    }
+}
+
+.foncolor.col3A {
+    color: #3a3a3a !important;
+}
+
+.form-check-input:checked {
+    background-color: #252F49;
+    border-color: #252F49;
+}
+
+ul.dropdown-menu.profileDropdown.show {
+    border: 1px solid #00000021;
+    border-radius: 4px;
+    padding: 10px 0;
+
+    .dropdown-item {
+        font-size: 14px;
+        padding: 7px 15px;
+        display: flex;
+        align-items: center;
+        span 
+        {
+            color: inherit;
+        }
+
+        i.ti {
+            font-size: 20px;
+            padding-right: 10px;
+            color: inherit;
+        }
+    }
+    a.dropdown-item:hover {
+        color: white !important;
+        background-color: #203A5F ;
+    }
+}
+.iti__country-list {
+    z-index: 999;
 }
 
 /* WNSshubham */
