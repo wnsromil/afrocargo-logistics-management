@@ -14,7 +14,8 @@ use App\Models\{
 use DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WarehousemangerMail;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class WarehouseManagerController extends Controller
 {
@@ -102,14 +103,15 @@ class WarehouseManagerController extends Controller
         }
 
         $warehouse_code = $warehouse->warehouse_code; // Warehouse Code get karna
-
+        $randomPassword = Str::random(8); // Random password of 8 characters
+        $hashedPassword = Hash::make($randomPassword); // Hashing password
         // User Create
         $user = User::create([
             'warehouse_id' => $request->warehouse_name,
             'name' => $request->manager_name,
             'address' => $request->address,
             'email' => $request->email,
-            'password' => \Hash::make('12345678'),
+            'password' => $hashedPassword,
             'phone' => $request->mobile_code,
             'country_code' => $request->country_code,
             'status' => $status,
@@ -121,7 +123,7 @@ class WarehouseManagerController extends Controller
         $manager_name = $request->manager_name;
         $email = $request->email;
         $mobileNumber = $request->phone;
-        $password = '12345678';
+        $password = $randomPassword;
         $loginUrl = route('login');
 
         if (!empty($email)) {

@@ -53,7 +53,7 @@ class DriverMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.register-email-manager',
+            view: 'emails.register-email-driver',
         );
     }
 

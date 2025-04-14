@@ -19,6 +19,7 @@ use DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DriverMail;
 
+
 class DriversController extends Controller
 {
     //
@@ -86,6 +87,7 @@ class DriversController extends Controller
             'driver_name' => 'required|string',
             'mobile_code' => 'required|string|max:15|unique:users,phone',
             'address' => 'required|string|max:500',
+            'email' => 'required|email|unique:users,email',
             'vehicle_type' => 'required',
             'license_number' => 'required',
             'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
@@ -106,7 +108,7 @@ class DriversController extends Controller
         }
   
         $randomPassword = Str::random(8); // Random password of 8 characters
-        $hashedPassword = Hash::make(12345678); // Hashing password
+        $hashedPassword = Hash::make($randomPassword); // Hashing password
 
         // Store validated data
         $driver = User::create([
@@ -114,6 +116,7 @@ class DriversController extends Controller
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address,
+            'email' => $request->email,
             'phone' => $request->mobile_code,
             'status' => $status,
             'role_id' => 4,
@@ -129,16 +132,16 @@ class DriversController extends Controller
             'driver_id' => $driver->id,
         ]);
 
-        // $driver_name = $request->driver_name;
-        // $email = $request->email;
-        // $mobileNumber = $request->mobile_code;
-        // $password = '12345678';
-        // $loginUrl = route('login');
-    
-        // if (!empty($email)) {
-        //     // Email Send Karna
-        //     Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl));
-        // }
+        $driver_name = $request->driver_name;
+        $email = $request->email;
+        $mobileNumber = $request->mobile_code;
+        $password = $randomPassword;
+        $loginUrl = route('login');
+
+        if (!empty($email)) {
+            // Email Send Karna
+            Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl));
+        }
 
         // Redirect with success message
         return redirect()->route('admin.drivers.index')

@@ -97,9 +97,8 @@
                                                             <tr>
                                                                 <td style="padding-top: 8px" valign="top"
                                                                     align="center">
-                                                                    <p style="margin:3px"><b>Email/Mobile Number: </b>$email / $mobileNumber</p>
-                                                                    <p style="margin:3px"><b>Driver Code: </b>
-                                                                        $driver_code</p>
+                                                                    <p style="margin:3px"><b>Email/Mobile Number: </b>{{$email}} / {{$mobileNumber}}</p>
+                
                                                                 </td>
                                                             </tr>
                                                             <tr>
