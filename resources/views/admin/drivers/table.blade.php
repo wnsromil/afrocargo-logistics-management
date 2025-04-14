@@ -77,19 +77,22 @@
                                                     href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
+                                            @if($warehouse->status == 'Active')
+                                            <li>
+                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                </a>
+                                            </li>
+                                        @elseif($warehouse->status == 'Inactive')
                                             <li>
                                                 <a class="dropdown-item activate" href="javascript:void(0)"
                                                     data-id="{{ $warehouse->id }}" data-status="Active">
                                                     <i class="fa-solid fa-power-off me-2"></i>Activate
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a class="dropdown-item deactivate"
-                                                    href="javascript:void(0)"
-                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
-                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                </a>
-                                            </li>
+                                        @endif
+                                        
                                         </ul>
                                     </div>
                                 </div>

@@ -112,10 +112,10 @@ class ProfileController extends Controller
         // Upload new profile picture
         $file = $request->file('profile_pic');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/profile_pics'), $filename); // Move to public/uploads/profile_pics
+        $filePath = $file->storeAs('uploads/profile_pics', $filename, 'public');
 
         // Store new profile picture path
-        $user->profile_pic = 'uploads/profile_pics/' . $filename;
+        $user->profile_pic = $filePath;
         $user->save();
 
         return response()->json([

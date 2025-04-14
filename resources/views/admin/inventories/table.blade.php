@@ -11,8 +11,8 @@
                         <th>Inventory Name</th>
                         <th>Warehouse Name</th>
                         <th>Weight (kg)</th>
-                        <th>Width(m)</th>
-                        <th>height(m)</th>
+                        <th>Width(cm)</th>
+                        <th>Height(cm)</th>
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Low Stock Warning</th>
