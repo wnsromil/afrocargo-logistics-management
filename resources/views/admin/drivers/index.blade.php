@@ -298,19 +298,22 @@
                                                                     href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
                                                                         class="far fa-eye me-2"></i>View</a>
                                                             </li>
+                                                            @if($warehouse->status == 'Active')
                                                             <li>
-                                                                            <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                                data-id="{{ $warehouse->id }}" data-status="Active">
-                                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a class="dropdown-item deactivate"
-                                                                                href="javascript:void(0)"
-                                                                                data-id="{{ $warehouse->id }}" data-status="Inactive">
-                                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                                            </a>
-                                                                        </li> 
+                                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                                </a>
+                                                            </li>
+                                                        @elseif($warehouse->status == 'Inactive')
+                                                            <li>
+                                                                <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                    data-id="{{ $warehouse->id }}" data-status="Active">
+                                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                                </a>
+                                                            </li>
+                                                        @endif
+                                                        
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -355,7 +358,9 @@
             {{-- jqury cdn --}}
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
-                $('.activate, .deactivate').on('click', function () {
+              $(document).ready(function () {
+                // Delegate click on dynamically updated table
+                $('#ajexTable').on('click', '.activate, .deactivate', function () {
                     let id = $(this).data('id');
                     let status = $(this).data('status');
 
