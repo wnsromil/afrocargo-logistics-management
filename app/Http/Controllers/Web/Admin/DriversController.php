@@ -106,6 +106,13 @@ class DriversController extends Controller
             $filePath = $file->storeAs('uploads/licenses', $filename, 'public'); // Store in 'storage/app/public/uploads/licenses'
             $licenseDocumentPath = 'storage/' . $filePath; // Get full URL
         }
+        $warehouse = Warehouse::find($request->warehouse_name);
+
+        if (!$warehouse) {
+            return redirect()->back()->with('error', 'Warehouse not found.');
+        }
+
+        $warehouse_code = $warehouse->warehouse_code; // Warehouse Code get karna
   
         $randomPassword = Str::random(8); // Random password of 8 characters
         $hashedPassword = Hash::make($randomPassword); // Hashing password
@@ -140,7 +147,7 @@ class DriversController extends Controller
 
         if (!empty($email)) {
             // Email Send Karna
-            Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl));
+            Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
         }
 
         // Redirect with success message
