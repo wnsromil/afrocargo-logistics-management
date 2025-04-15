@@ -19,6 +19,8 @@ class DriverMail extends Mailable
     public $password;
     public $loginUrl;
 
+    public $warehouse_code;
+
     /**
      * Create a new message instance.
      *
@@ -28,13 +30,14 @@ class DriverMail extends Mailable
      * @param string $password
      * @param string $loginUrl
      */
-    public function __construct($driver_name, $email, $mobileNumber, $password, $loginUrl)
+    public function __construct($driver_name, $email, $mobileNumber, $password, $loginUrl,  $warehouse_code)
     {
         $this->driver_name = $driver_name;
         $this->email = $email;
         $this->mobileNumber = $mobileNumber;
         $this->password = $password;
         $this->loginUrl = $loginUrl;
+        $this->warehouse_code = $warehouse_code;
     }
 
     /**
@@ -53,7 +56,7 @@ class DriverMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.register-email-manager',
+            view: 'emails.register-email-driver',
         );
     }
 

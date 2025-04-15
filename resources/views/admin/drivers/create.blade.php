@@ -67,6 +67,17 @@
                     </div>
                 </div>
 
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="email" class="foncolor">Email ID<i class="text-danger">*</i></label>
+                        <input type="email" name="email" class="form-control inp" placeholder="Enter Email Id"
+                            value="{{ old('email') }}">
+                        @error('email')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
