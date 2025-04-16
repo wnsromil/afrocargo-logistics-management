@@ -97,7 +97,7 @@ class DriversController extends Controller
         ]);
        
         $status  = !empty($request->status) ? $request->status : 'Inactive';
-
+dd($status);
         // Handle License Document Upload
         $licenseDocumentPath = null;
         if ($request->hasFile('license_document')) {
@@ -154,6 +154,7 @@ class DriversController extends Controller
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Driver created successfully.');
     }
+
 
     /**
      * Display the specified resource.

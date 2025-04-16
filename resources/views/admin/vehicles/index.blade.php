@@ -120,17 +120,9 @@
                                     <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
                                     <td>{{ $vehicle->vehicle_year ?? '-' }}</td>
                                     <td>
-                                        @if ($vehicle->status == 'Active')
-                                            <div class="container">
-                                                <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
-                                                <p>Active</p>
-                                            </div>
-                                        @else
-                                            <div class="container">
-                                                <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
-                                                <p>Inactive</p>
-                                            </div>
-                                        @endif
+                                        <label class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                            {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
+                                        </label>
                                     </td>
                                     <td class="d-flex align-items-center">
 
