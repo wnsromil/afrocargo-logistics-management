@@ -17,6 +17,8 @@ use App\Http\Controllers\Api\{
     WarehouseController,
     SlotController,
     SettingController,
+    AvailabilityController,
+    WeeklySchedulesController,
     InventoryController
 };
 use App\Http\Controllers\Api\{
@@ -61,6 +63,10 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/global', [SettingController::class, 'updateGlobalSettings']);
         Route::post('/project', [SettingController::class, 'updateProjectSettings']);
     });
+
+    Route::apiResource('availabilities', AvailabilityController::class);
+    Route::apiResource('weekly-schedules', WeeklySchedulesController::class);
+
 
 
     Route::middleware(['apiAuthCheck'])->group(function () {

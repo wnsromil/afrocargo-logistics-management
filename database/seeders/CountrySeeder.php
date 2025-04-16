@@ -4,29 +4,22 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Country;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class CountrySeeder extends Seeder
 {
     public function run()
     {
-        $countries = [
-            ['name' => 'United States'],
-            ['name' => 'Canada'],
-            ['name' => 'India'],
-            ['name' => 'Nigeria'],
-            ['name' => 'South Africa'],
-            ['name' => 'Kenya'],
-            ['name' => 'Egypt'],
-            ['name' => 'Ghana'],
-            ['name' => 'Ethiopia'],
-            ['name' => 'Morocco'],
-            ['name' => 'Tanzania']
-        ];
+        // Disable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        Country::insert($countries);
+        // Load and execute the SQL file
+        $sql = File::get(database_path('seeders/sql/countries.sql'));
+        DB::unprepared($sql);
+
+        // Re-enable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
-
-
 
