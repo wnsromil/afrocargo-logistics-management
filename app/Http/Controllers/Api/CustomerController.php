@@ -166,7 +166,6 @@ class CustomerController extends Controller
         }
     }
 
-
     public function createShippingCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [

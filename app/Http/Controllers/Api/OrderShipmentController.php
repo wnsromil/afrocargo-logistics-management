@@ -134,7 +134,6 @@ class OrderShipmentController extends Controller
             ], 500);
         }
     }
-
     /**
      * Display the specified resource.
      */
@@ -367,8 +366,6 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($data, 'Estimate Price fetched successfully.');
     }
-
-
     public function invoiceOrderCreateService(Request $request)
     {
         try {

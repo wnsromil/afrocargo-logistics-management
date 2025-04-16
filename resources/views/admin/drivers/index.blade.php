@@ -2,18 +2,8 @@
     <x-slot name="header">
         {{ __('Driver Management') }}
     </x-slot>
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{route('admin.drivers.create')}}" class="btn btn-primary buttons">
-                    <i class="ti ti-circle-plus me-2 text-white"></i>
-                    Add Driver
-                </a>
-            </div>
-        </div>
-    </div>
+
     <x-slot name="cardTitle">
-        <p class="head">All Driver</p>
 
         <div class="usersearch d-flex usersserach">
 
@@ -105,7 +95,7 @@
                                                 <a href="customers-ledger.html" class="btn btn-greys me-2"><i
                                                         class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
                                                 <div class="dropdown dropdown-action">
-                                                    <a href="#" class="btn-action-icon profileBg" data-bs-toggle="dropdown"
+                                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
                                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                     <div class="dropdown-menu dropdown-menu-end">
                                                         <ul>
@@ -120,21 +110,22 @@
                                                                         class="far fa-eye me-2"></i>View</a>
                                                             </li>
                                                             @if($warehouse->status == 'Active')
-                                                            <li>
-                                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
-                                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                                </a>
-                                                            </li>
-                                                        @elseif($warehouse->status == 'Inactive')
-                                                            <li>
-                                                                <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                    data-id="{{ $warehouse->id }}" data-status="Active">
-                                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                                </a>
-                                                            </li>
-                                                        @endif
-                                                        
+                                                                <li>
+                                                                    <a class="dropdown-item deactivate"
+                                                                        href="javascript:void(0)" data-id="{{ $warehouse->id }}"
+                                                                        data-status="Inactive">
+                                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                                    </a>
+                                                                </li>
+                                                            @elseif($warehouse->status == 'Inactive')
+                                                                <li>
+                                                                    <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                        data-id="{{ $warehouse->id }}" data-status="Active">
+                                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -178,27 +169,28 @@
                     let id = $(this).data('id');
                     let status = $(this).data('status');
 
-                    $.ajax({
-                        url: "{{ route('admin.drivers.status', '') }}/" + id,
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            status: status
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Status Updated',
-                                    text: response.success
-                                });
+                        $.ajax({
+                            url: "{{ route('admin.drivers.status', '') }}/" + id,
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                status: status
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Status Updated',
+                                        text: response.success
+                                    });
 
-                                location.reload();
+                                    location.reload();
+                                }
                             }
-                        }
-                    }
+                        });
+                    });
                 });
-            });
+            </script>
 
         </script>
 
