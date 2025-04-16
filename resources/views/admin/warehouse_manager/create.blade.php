@@ -81,7 +81,7 @@
                     </div>
                 </div> -->
 
-                <div class="col-lg-4 col-md-6 col-sm-12 mobile_code" style="display: grid;">
+                <div class="col-lg-4 col-md-6 col-sm-12 mobile_code" >
 
                     <label class="foncolor" for="mobile_code">Mobile No.<span class="text-danger">*</span></label>
                     <input type="tel" id="mobile_code" name="mobile_code" class=" form-control inp"

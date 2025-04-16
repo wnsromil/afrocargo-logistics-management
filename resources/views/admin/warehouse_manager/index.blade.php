@@ -75,17 +75,9 @@
                                     <td>{{$warehouse->address ?? '-'}}</td>
                                     <td>{{ $warehouse->country_code ?? '' }} {{$warehouse->phone ?? '-'}}</td>
                                     <td>
-                                        @if ($warehouse->status == 'Active')
-                                            <div class="container">
-                                                <img src="../assets/img/checkbox.png" alt="Image" />
-                                                <p>Active</p>
-                                            </div>
-                                        @else
-                                            <div class="container">
-                                                <img src="../assets/img/inactive.png" alt="Image" />
-                                                <p>Inactive</p>
-                                            </div>
-                                        @endif
+                                        <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                            {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}
+                                        </label>
                                     </td>
 
                                     <td class="d-flex align-items-center">

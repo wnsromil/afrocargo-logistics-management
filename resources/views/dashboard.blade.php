@@ -747,7 +747,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -817,7 +818,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -880,7 +882,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -912,7 +915,8 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -974,7 +978,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1006,7 +1011,8 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1079,7 +1085,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1109,7 +1116,8 @@
                                             </d>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1166,7 +1174,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1238,7 +1247,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                        style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>

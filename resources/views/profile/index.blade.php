@@ -98,7 +98,6 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-3">Address</h6>
                             <p class="col3A fw_mid">{{ $user->address ?? '--' }}</p>
-                            <br>
                             <p class="col3A fw_mid">{{ $user->address_2 ?? '--'}}</p>
                         </div>
                     </div>

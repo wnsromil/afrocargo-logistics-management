@@ -461,6 +461,8 @@ label.profile-img img {
     object-fit: cover;
     height: 250px;
     max-width: 250px;
+    filter: drop-shadow(0px -1px 4px #cccccc);
+    border: 4px solid white;
 }
 
 .required::after {
@@ -1009,9 +1011,12 @@ h6 {
 }
 
 .profile-picture .upload-profile .profile-img .avatar {
-    width: 100px;
-    height: 100px;
+    width: 100px !important;
+    height: unset;
+    aspect-ratio: 1 !important;
+    object-fit: fill;
 }
+
 
 .iconwrapper {
     width: 100px;
@@ -1362,7 +1367,14 @@ body.mini-sidebar.expand-menu .sidebar {
     font-weight: 500;
     margin: 0;
 }
-
+.page-header .content-page-header {
+    font-size: 22px;
+    color: #3a3a3a;
+    font-weight: 500;
+}
+.service-upload .img-thumbnail {
+    max-width: 150px !important;
+}
 .basic-info-detail h6 {
     font-size: 14px;
     color: #000;
@@ -1561,7 +1573,7 @@ span.dollarSign {
 
 .card-body .table-responsive {
     border-radius: 0px !important;
-    min-height: 200px;
+    min-height: 300px;
 
     tbody {
         td a:has(i) {
@@ -2521,6 +2533,55 @@ ul.dropdown-menu.profileDropdown.show {
 .iti__country-list {
     z-index: 999;
 }
+.cal-icon-info.mannualInput:after {
+    top: 40px;
+}
+a.btn.btn-primary.icon_btn {
+    line-height: 30px;
+    i.ti 
+    {
+        font-size: 20px;
+    }
+}
+.downloadbtn i {
+    font-size: 20px;
+}
+.veiwBtn {
+    margin: 1px 0px 0 8px;
+}
+.table tbody td a.avatar:hover 
+{
+    color: #203a5f !important;
+    background: unset;
+}
+
+p.overflow-ellpise {
+    width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mt_n33 {
+    margin-top: -1.5rem;
+    margin-bottom: 1.5rem;
+}
+td.product_img img, td.product_img span {
+    width: 55px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #00000026;
+    display: block;
+    line-height: 50px;
+    display: block;
+    line-height: 50px;
+    object-fit: cover;
+}
+.table-responsive thead th
+{
+    font-size: 15px!important;
+}
+#ajexTable .row.col-md-12.d-flex.mt-4.p-2.input-box.align-items-center {
+    width: unset !important;
+}
 
 /* WNSshubham */
 
@@ -2562,8 +2623,16 @@ ul.dropdown-menu.profileDropdown.show {
 .swal2-confirm{
     background-color: #203A5F !important;
 }
-.iti--inline-dropdown .iti__dropdown-content {
-    z-index: 1000 !important;
+.iti--inline-dropdown 
+{
+    height: max-content;
+    width: 100%;
+    .iti__dropdown-content {
+        z-index: 1000 !important;
+    }
+    input.iti__search-input {
+        padding: 10px 6px 3px;
+    }
 }
 .iti__globe {
     display: none !important;
