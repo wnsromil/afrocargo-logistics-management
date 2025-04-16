@@ -95,7 +95,7 @@
                                         <p><label class="amountfont">Total:</label> $0</p>
                                     </td>
                                     <td>
-                                        <label class="labelstatus"
+                                        <label class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
                                             for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>

@@ -44,6 +44,7 @@
     margin: 0 0 8px 0;
   }
 }
+.borderset .mobile_code .foncolor { margin: 2px; }
 
 
 .inp {
@@ -51,7 +52,7 @@
   height: 40px !important;
   border-radius: 4px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400!important;
 }
 
 .inp::placeholder {
@@ -103,6 +104,9 @@
 
 .status-toggle {
   margin-top: 7px;
+}
+td .status-toggle {
+  margin-top: 0px;
 }
 
 .status-toggle .checktoggle:after {
@@ -469,16 +473,26 @@ table tbody {
 }
 
 .labelstatus {
-  background: #FFDADA;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 5px 16px;
   height: 28px;
   border-radius: 4px;
-  color: #FF0000;
   font-size: 13px;
   font-weight: 500;
+}
+.labelstatus.Inactive
+{
+  
+  background: #ffdada7e;
+  color: #FF0000;
+}
+.labelstatus.Active
+{
+  
+  background: #E1FFED;
+  color: #33B469;
 }
 
 .labelstatusy {

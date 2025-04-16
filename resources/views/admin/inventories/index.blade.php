@@ -83,7 +83,7 @@
                                 </td>
 
                                 <td class="text-dark">{{ ucfirst($inventory->inventory_type ?? '') }}</td>
-                                <td>
+                                <td class="product_img">
                                     @if (!empty($inventory->img))
                                     <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50" height="50">
                                     @else

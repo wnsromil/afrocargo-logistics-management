@@ -4,11 +4,15 @@
             {{ __('Change Password') }}
         </h2>
     </x-slot>
+    <x-slot name="cardTitle">
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Change Password</p>
+        </div>
+    </x-slot>
 
     <section>
-        <div class="content-page-header mt-n5 d-block">
-            <h5 class="setting-menu">{{ __('Change Password') }}</h5>
-            <p class="mt-1 text-sm text-gray-600">
+        <div class="mt_n33">
+            <p class="mt-1 h6 text-dark">
                 {{ __('Ensure your account is using a long, random password to stay secure.') }}
             </p>
         </div>
