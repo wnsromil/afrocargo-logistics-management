@@ -1,4 +1,4 @@
-<div class="section bg-white py-4">
+<div class="section bg-white footerSec py-3">
     <div class="container">
         <div class="row">
             <div class="col-md-12">

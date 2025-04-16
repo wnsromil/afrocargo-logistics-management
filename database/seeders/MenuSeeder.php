@@ -107,7 +107,7 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.invoices.index',
                 'active' => 'invoices*',
                 'roles' => ['admin', 'warehouse_manager']
-            ], 
+            ],
             [
                 'title' => 'Notifications Schedule',
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
@@ -127,6 +127,14 @@ class MenuSeeder extends Seeder
                 'icon' => '<i class="menuIcon ti ti-clipboard-data"></i>',
                 'route' => 'admin.advance_reports.index',
                 'active' => 'advance_reports*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Template Management',
+                'icon' => '<i class="menuIcon ti ti-template"></i>',
+                'route' => 'admin.Categorytemplate.index',
+                'route' => '#',
+                'active' => 'template_category*,templates*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -197,6 +205,26 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.container.index',
                 'active' => 'container*',
                 'parent_id' => $vehicle->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus
+        $template = Menu::where('title', 'Template Management')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'template Category',
+                'route' => 'admin.template_category.index',
+                'active' => 'template_category*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'templates',
+                'route' => 'admin.templates.index',
+                'active' => 'templates*',
+                'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
         }

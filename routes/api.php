@@ -18,7 +18,8 @@ use App\Http\Controllers\Api\{
     SlotController,
     SettingController,
     AvailabilityController,
-    WeeklySchedulesController
+    WeeklySchedulesController,
+    InventoryController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -84,7 +85,7 @@ Route::middleware('auth:api')->group(function () {
 
         Route::get('/customers-details/{id}', [CustomerController::class, 'getCustomersDetails']);
         Route::get('/customers-list', [CustomerController::class, 'getCustomers']);
-       
+
         Route::post('/create-customer', [CustomerController::class, 'createCustomer']);
         Route::post('/create-shipping-customer', [CustomerController::class, 'createShippingCustomer']);
         Route::get('/shipping-customer-list/{id}', [CustomerController::class, 'ShippingCustomerList']);
@@ -99,16 +100,22 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/addresse-create', [AddressController::class, 'createAddress']);
         Route::get('/addresse-delete/{id}', [AddressController::class, 'deleteAddress']);
         Route::post('/address-update/{id}', [AddressController::class, 'updateAddress']);
-        
+
+        // item Routes
+        Route::get('/get-items', [InventoryController::class, 'getItems']);
+
+        // Order shipment Routes
+        Route::post('/invoice-order-create-service', [OrderShipmentController::class, 'invoiceOrderCreateService']);
+        Route::post('/invoice-order-create-supply', [OrderShipmentController::class, 'invoiceOrderCreateSupply']);
 
     });
 
     //invoice controller
-    Route::group(['middleware' => 'apiAuthCheck','prefix' => 'invoice','as' => 'invoice.','controller' => InvoiceController::class], function () {
-        Route::get('/', 'index')->name('index');
+    Route::group(['middleware' => 'apiAuthCheck', 'controller' => InvoiceController::class], function () {
+        Route::get('/', 'index');
         Route::get('/create', 'create');
         Route::post('/store', 'store');
         Route::get('/supply', 'inventaries');
-
+        Route::get('/invoice-details/{id}', 'invoiceDetails');
     });
 });

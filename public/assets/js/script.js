@@ -416,7 +416,7 @@ Version      : 1.0
                 format: "M/DD/YYYY", // Date Format
             },
         });
-    
+
         // Date Select Hone Ke Baad Input Me Value Set Karo
         $('input[name="license_expiry_date"]').on(
             "apply.daterangepicker",
@@ -424,9 +424,12 @@ Version      : 1.0
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
-    
+
         // Placeholder Set Karne Ke Liye
-        $('input[name="license_expiry_date"]').attr("placeholder", "MM-DD-YYYY");
+        $('input[name="license_expiry_date"]').attr(
+            "placeholder",
+            "MM-DD-YYYY"
+        );
     }
 
     if ($('input[name="edit_signature_date"]').length > 0) {
@@ -904,26 +907,97 @@ Version      : 1.0
         }
     });
 
-    // Country Code Selection
-    if ($("#mobile_code").length > 0) {
-        $("#mobile_code").intlTelInput({
-            initialCountry: "us",
-            separateDialCode: true,
-        });
-    }
-    if ($(".flagInput").length > 0) {
-        $(".flagInput").intlTelInput({
-            initialCountry: "us",
-            separateDialCode: true,
-        });
-    }
+    const inputSelectors = [
+        { input: "#mobile_code", countryField: "#country_code" },
+        { input: "#alternate_mobile_no", countryField: "#country_code_2" },
+        { input: ".flagInput" },
+        { input: "#phone" },
+        { input: "#phone_2" },
+    ];
 
-    if ($("#mobile").length > 0) {
-        $("#mobile").intlTelInput({
-            initialCountry: "us",
-            separateDialCode: true,
-        });
-    }
+    const utilsURL =
+        "https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js";
+
+    inputSelectors.forEach(({ input, countryField }) => {
+        const inputElement = document.querySelector(input);
+        if (inputElement) {
+            const iti = window.intlTelInput(inputElement, {
+                initialCountry: "us",
+                separateDialCode: true,
+                formatOnDisplay: false,
+                loadUtils: () => import(utilsURL),
+            });
+
+            // Input filtering: allow only digits (and max 10 digits)
+            inputElement.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, "").slice(0, 10);
+            });
+
+            // Set country if countryField exists
+            if (countryField) {
+                const countryInput = document.querySelector(countryField);
+                if (countryInput) {
+                    setTimeout(() => {
+                        const code = countryInput.value;
+                        if (code) {
+                            iti.setCountry(code.toLowerCase());
+                        }
+                    }, 300);
+                }
+            }
+        }
+    });
+
+    const editinputSelectors = [
+        { selector: "#edit_mobile_code", countryCodeField: "#country_code" },
+        { selector: "#edit_mobile", countryCodeField: "#country_code_2" },
+    ];
+
+    editinputSelectors.forEach(({ selector, countryCodeField }) => {
+        const input = document.querySelector(selector);
+        const countryCodeInput = document.querySelector(countryCodeField);
+
+        if (input && countryCodeInput) {
+            const iti = window.intlTelInput(input, {
+                separateDialCode: true,
+                formatOnDisplay: false,
+                initialCountry: "auto",
+                geoIpLookup: function (callback) {
+                    callback("us");
+                },
+                utilsScript: utilsURL,
+            });
+
+            // Clean number input (only digits, max 10)
+            input.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, "").slice(0, 10);
+            });
+
+            // Set initial country from stored `+code`
+            const countryCode = countryCodeInput.value;
+            if (countryCode && countryCode.startsWith("+")) {
+                // Find and set country using dial code
+                iti.promise.then(() => {
+                    const countryDataList =
+                        window.intlTelInputGlobals.getCountryData();
+                    const found = countryDataList.find(
+                        (c) => `+${c.dialCode}` === countryCode
+                    );
+                    if (found) {
+                        iti.setCountry(found.iso2);
+                    }
+                });
+            }
+
+            // Update country code in hidden input on country change
+            input.addEventListener("countrychange", function () {
+                const selectedCountryData = iti.getSelectedCountryData();
+                if (selectedCountryData && countryCodeInput) {
+                    countryCodeInput.value = `+${selectedCountryData.dialCode}`;
+                }
+            });
+        }
+    });
 
     // Summernote
     if ($(".summernote").length > 0) {

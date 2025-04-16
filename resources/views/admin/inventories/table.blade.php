@@ -11,8 +11,8 @@
                         <th>Inventory Name</th>
                         <th>Warehouse Name</th>
                         <th>Weight (kg)</th>
-                        <th>Width(m)</th>
-                        <th>height(m)</th>
+                        <th>Width(cm)</th>
+                        <th>Height(cm)</th>
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Low Stock Warning</th>
@@ -69,7 +69,7 @@
                         <td class="d-flex align-items-center">
 
                             <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i
-                                    class="fe fe-more-vertical fs-4" data-bs-toggle="tooltip"
+                                    class="fe fe-more-vertical fs-4"
                                     title="fe fe-more-vertical"></i></a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <ul>

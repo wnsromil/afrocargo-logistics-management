@@ -6,15 +6,13 @@
                 <thead class="thead-light">
                     <tr>
                         <th>S. No.</th>
-                        <th>Vehicle Type</th>
-                        {{-- <th>Vehicle Model</th>
-                        <th>Manufactured year</th> --}}
-                        <th>Warehouse Name</th>
-                        <th>Seal No.</th>
-                        <th>Bill Of Lading</th>
+                        <th>Warehouse</th>
+                        <th>Size</th>
                         <th>Container No. 1</th>
                         <th>Container No. 2</th>
-                        <th>Container Size</th>
+                        <th>Booking Number</th>
+                        <th>Seal No.</th>
+                        <th>Bill Of Lading</th>
                         <th>Open Date</th>
                         <th>Close Date</th>
                         <th>Close Invoice</th>
@@ -34,17 +32,14 @@
                             <td>
                                 {{ ++$index }}
                             </td>
-
-                            <td><span>{{ $vehicle->vehicle_type ?? '-' }}</span></td>
-                            {{-- <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
-                            <td>{{ $vehicle->vehicle_year ?? '-' }}</td> --}}
                             <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
-
-                            <td>{{ $vehicle->seal_no ?? '-' }}</td>
-                            <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
+                            <td>{{ $vehicle->container_size ?? '-' }}</td>
                             <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
                             <td>{{ $vehicle->container_no_2 ?? '-' }}</td>
-                            <td>{{ $vehicle->container_size ?? '-' }}</td>
+                            <td>{{ $vehicle->booking_number ?? '-' }}</td>
+                            <td>{{ $vehicle->seal_no ?? '-' }}</td>
+                            <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
+                          
                             <td>-</td>
                             <td>-</td>
                             <td class="tabletext"><input type="checkbox"></td>
@@ -70,13 +65,13 @@
                                 </div>
                             </td>
                             {{-- <td class="d-flex align-items-center"> -->
-                                <a href="add-invoice.html" class="btn btn-greys me-2"><i class="fa fa-plus-circle me-1"></i>
-                                    Invoice</a>
+                                <a href="add-invoice.html" class="btn btn-greys me-2"><i
+                                        class="fa fa-plus-circle me-1"></i> Invoice</a>
                                 <a href="customers-ledger.html" class="btn btn-greys me-2"><i
                                         class="fa-regular fa-eye me-1"></i> Ledger</a>
                                 <div class="dropdown dropdown-action">
-                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i
-                                            class="fas fa-ellipsis-v"></i></a>
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
@@ -111,6 +106,7 @@
                             <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
                         </tr>
                     @endforelse
+                   
                 </tbody>
 
             </table>

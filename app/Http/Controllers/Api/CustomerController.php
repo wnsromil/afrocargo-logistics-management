@@ -18,26 +18,45 @@ class CustomerController extends Controller
 {
     public function getCustomers(Request $request)
     {
+        $request->validate([
+            'invoice_custmore_type' => 'nullable|in:from_to,ship_to,all',
+            'invoice_custmore_id' => 'nullable|integer',
+            'search' => 'nullable|string|max:255',
+        ]);
+    
+        $type = $request->query('invoice_custmore_type');
+        $invoiceCustomerId = $request->query('invoice_custmore_id');
+    
         $query = User::where('role', 'customer');
-
+    
+        if ($invoiceCustomerId) {
+            // Only fetch this specific customer by ID
+            $query->where('invoice_custmore_id', $invoiceCustomerId);
+        } else {
+            // Apply type filter only if invoice_custmore_id not provided
+            if ($type && in_array($type, ['from_to', 'ship_to'])) {
+                $query->where('invoice_custmore_type', $type);
+            }
+        }
+    
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%$search%")
-                    ->orWhere('email', 'LIKE', "%$search%");
+                  ->orWhere('email', 'LIKE', "%$search%");
             });
         }
-
-        $customers = $query->orderBy('name')->get(['id', 'name', 'phone', 'email', 'profile_pic']);
-
+    
+        $customers = $query->orderBy('name')->get(['id', 'name', 'phone', 'phone_2', 'email', 'profile_pic']);
+    
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
-            $customer->address = $address ? $address : null;
+            $customer->address = $address ?? null;
         }
-
+    
         return response()->json(['customers' => $customers], 200);
     }
-
+    
     public function getCustomersDetails(Request $request)
     {
         if ($request->has('id') && !empty($request->id)) {
@@ -69,7 +88,8 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'country_code' => 'required',
-            'country_code_2' => 'required|string',
+            'invoice_custmore_type' => 'required|in:from_to,ship_to',
+            'invoice_custmore_id' => 'nullable|integer',
         ]);
 
         try {
@@ -118,6 +138,8 @@ class CustomerController extends Controller
                 'signup_type' => 'for_driver',
                 'country_code' => $request->country_code ?? null,
                 'country_code_2' => $request->country_code_2 ?? null,
+                'invoice_custmore_type' => $request->invoice_custmore_type,
+                'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
             ];
 
             if (!empty($request->license_expiry_date)) {
@@ -156,7 +178,7 @@ class CustomerController extends Controller
             'country_id' => 'required|string|max:15',
             // 'state_id' => 'required|string|max:255',
             // 'city_id' => 'required|string|max:255',
-            'address_1' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'address_2' => 'nullable|string|max:255',
             'ship_to_id' => 'nullable|string|max:255',
             'company_name' => 'nullable|string|max:255',

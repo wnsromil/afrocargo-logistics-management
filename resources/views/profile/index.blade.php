@@ -32,7 +32,7 @@
                                         @if (!empty($user->profile_pic) && is_string($user->profile_pic))
                                         <img id="blah" class="avatar" src="{{ !empty(@$user->profile_pic) ? asset(@$user->profile_pic) : asset('assets/img/profiles/avatar-10.jpg') }}" alt="profile-img">
                                         @else
-                                        <img id="blah" class="avatar" src="{{  asset('assets/img/profiles/avatar-14.jpg') }}" alt="profile-img">
+                                        <img id="blah" class="avatar" src="{{  asset('assets/img/profiles/avatar-icon.png') }}" alt="profile-img">
                                         @endif
                                     </div>
                                 </div>
@@ -98,7 +98,6 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-3">Address</h6>
                             <p class="col3A fw_mid">{{ $user->address ?? '--' }}</p>
-                            <br>
                             <p class="col3A fw_mid">{{ $user->address_2 ?? '--'}}</p>
                         </div>
                     </div>

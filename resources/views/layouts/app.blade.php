@@ -43,8 +43,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style5.css') }}">
 
     <!-- Intl Tell Input CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/intlTelInput/css/intlTelInput.css') }}">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
     <!-- Layout JS -->
     <script src="{{ asset('assets/js/layout.js') }}"></script>
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
@@ -200,14 +200,14 @@
             window.location.href = url;
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const phoneInput = document.querySelector('input[type="tel"]');
 
-            phoneInput.addEventListener("input", function (event) {
+            phoneInput.addEventListener("input", function(event) {
                 this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
             });
 
-            phoneInput.addEventListener("blur", function () {
+            phoneInput.addEventListener("blur", function() {
                 if (!/^\d+$/.test(this.value)) {
                     // alert("Please enter a valid phone number.");
                     this.value = "";
@@ -223,9 +223,9 @@
             checkbox.value = checkbox.checked ? 'Inactive' : 'Active';
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".check").forEach(function (checkbox) {
-                checkbox.addEventListener("change", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".check").forEach(function(checkbox) {
+                checkbox.addEventListener("change", function() {
                     this.value = this.checked ? "Inactive" : "Active";
                 });
 
@@ -234,11 +234,11 @@
             });
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const refreshUserBtn = document.querySelector(".refeshuser");
 
             if (refreshUserBtn) {
-                refreshUserBtn.addEventListener("click", function () {
+                refreshUserBtn.addEventListener("click", function() {
                     sessionStorage.setItem("refreshTriggered", "true");
                     location.href = window.location.pathname; // Remove query parameters
                 });
@@ -306,8 +306,8 @@
 
     </script>
 
-    
-    
+
+
     @yield('script')
 
 </body>

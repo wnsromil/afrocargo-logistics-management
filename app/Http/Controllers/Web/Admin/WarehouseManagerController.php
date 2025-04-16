@@ -14,7 +14,8 @@ use App\Models\{
 use DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WarehousemangerMail;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class WarehouseManagerController extends Controller
 {
@@ -81,7 +82,7 @@ class WarehouseManagerController extends Controller
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:15|unique:users,phone',
+            'mobile_code' => 'required|string|max:15|unique:users,phone',
             'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
@@ -102,15 +103,16 @@ class WarehouseManagerController extends Controller
         }
 
         $warehouse_code = $warehouse->warehouse_code; // Warehouse Code get karna
-
+        $randomPassword = Str::random(8); // Random password of 8 characters
+        $hashedPassword = Hash::make($randomPassword); // Hashing password
         // User Create
         $user = User::create([
             'warehouse_id' => $request->warehouse_name,
             'name' => $request->manager_name,
             'address' => $request->address,
             'email' => $request->email,
-            'password' => \Hash::make('12345678'),
-            'phone' => $request->phone,
+            'password' => $hashedPassword,
+            'phone' => $request->mobile_code,
             'country_code' => $request->country_code,
             'status' => $status,
             'role_id' => 2,
@@ -121,15 +123,14 @@ class WarehouseManagerController extends Controller
         $manager_name = $request->manager_name;
         $email = $request->email;
         $mobileNumber = $request->phone;
-        $password = '12345678';
+        $password = $randomPassword;
         $loginUrl = route('login');
 
         if (!empty($email)) {
             // Email Send Karna
             Mail::to($email)->send(new WarehousemangerMail($manager_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
-            
         }
-        
+
 
         return redirect()->route('admin.warehouse_manager.index')
             ->with('success', 'Manager created successfully.');
@@ -180,8 +181,9 @@ class WarehouseManagerController extends Controller
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:15',
+            'edit_mobile_code' => 'required|string|max:15',
             'status' => 'in:Active,Inactive',
+            'country_code' => 'required|string',
         ]);
 
         // Check if validation fails
@@ -200,8 +202,9 @@ class WarehouseManagerController extends Controller
             'name' => $request->manager_name,
             'address' => $request->address,
             'email' => $request->email,
-            'phone' => $request->phone,
+            'phone' => $request->edit_mobile_code,
             'status' => $request->status ?? 'Active', // Status ko handle karna
+            'country_code' => $request->country_code,
         ]);
 
 
@@ -228,5 +231,19 @@ class WarehouseManagerController extends Controller
 
         return redirect()->route('admin.warehouse_manager.index')
             ->with('error', 'Manager not found');
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = User::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
     }
 }

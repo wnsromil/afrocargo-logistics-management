@@ -43,42 +43,50 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-    
+
         // ✅ Warehouse Code Optional Validation
-        if ($this->filled('warehouse_code')) { 
+        if ($this->filled('warehouse_code')) {
             $warehouse = Warehouse::where('warehouse_code', $this->input('warehouse_code'))->first();
-    
+
             if (!$warehouse) {
                 throw ValidationException::withMessages([
                     'warehouse_code' => 'Invalid warehouse code.',
                 ]);
             }
-    
+
             // ✅ User Ka Warehouse ID Check Karna
             $user = User::where('email', $this->input('email'))
-                        ->where('warehouse_id', $warehouse->id)
-                        ->where('role', 'warehouse_manager')
-                        ->first();
-    
+                ->where('warehouse_id', $warehouse->id)
+                ->where('role', 'warehouse_manager')
+                ->first();
+
             if (!$user) {
                 throw ValidationException::withMessages([
                     'warehouse_code' => 'Warehouse code is not assigned to you.',
                 ]);
             }
+
+            // 🔒 Check if manager is Inactive
+            if ($user->status === 'Inactive') {
+                throw ValidationException::withMessages([
+                    'email' => 'Your account is inactive. Please contact admin.',
+                ]);
+            }
         }
-    
+
         // ✅ Email & Password Validate Karna
         if (!Auth::attempt($this->only('email', 'password'), $this->filled('remember'))) {
             RateLimiter::hit($this->throttleKey());
-        
+
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
-    
+
         RateLimiter::clear($this->throttleKey());
     }
-    
+
+
 
     /**
      * Ensure the login request is not rate limited.
@@ -108,6 +116,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }
