@@ -28,7 +28,8 @@ use App\Http\Controllers\Web\Admin\{
     RoleManagementController,
     ContainerController,
     TemplateCategoryController,
-    TemplateController
+    TemplateController,
+    ScheduleController,
 };
 use App\Mail\RegistorMail;
 
@@ -157,6 +158,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('container', ContainerController::class);
         Route::resource('warehouse_manager', WarehouseManagerController::class);
         Route::resource('drivers', DriversController::class);
+        Route::resource('schedules', ScheduleController::class);
         Route::resource('inventories', InventoryController::class);
         Route::resource('advance_reports', AdvanceReportsController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
