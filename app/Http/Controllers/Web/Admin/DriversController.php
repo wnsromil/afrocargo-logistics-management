@@ -95,9 +95,7 @@ class DriversController extends Controller
             'status' => 'in:Active,Inactive',
             'country_code' => 'required|string',
         ]);
-       
-        $status  = !empty($request->status) ? $request->status : 'Inactive';
-
+        $status  = !empty($request->status) ? $request->status : 'Active';
         // Handle License Document Upload
         $licenseDocumentPath = null;
         if ($request->hasFile('license_document')) {

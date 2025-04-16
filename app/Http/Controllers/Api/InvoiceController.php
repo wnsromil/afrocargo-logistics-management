@@ -108,7 +108,7 @@ class InvoiceController extends Controller
 
     public function invoiceDetails($id)
     {
-        $invoice = Invoice::select(['id', 'issue_date', 'invoice_no','parcel_id'])
+        $invoice = Invoice::select(['id', 'issue_date', 'invoice_no', 'parcel_id'])
             ->with('invoiceParcelData')->find($id);
 
         if (!$invoice) {
@@ -122,6 +122,28 @@ class InvoiceController extends Controller
             'status' => true,
             'message' => 'Invoice details fetched successfully',
             'data' => $invoice
+        ]);
+    }
+
+    public function invoicesGet($type)
+    {
+        $id = $this->user->id;
+        $query = Invoice::where('user_id', $id)->select(['id', 'issue_date', 'invoice_no', 'parcel_id'])
+            ->with(['parcel']); // Assuming relation name is 'parcel'
+
+        if ($type !== 'All') {
+            // Join with parcel and filter by parcel_type
+            $query->whereHas('parcel', function ($q) use ($type) {
+                $q->where('parcel_type', $type);
+            });
+        }
+
+        $invoices = $query->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Invoices fetched successfully',
+            'data' => $invoices
         ]);
     }
 }

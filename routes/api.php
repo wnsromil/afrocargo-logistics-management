@@ -102,6 +102,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/invoice-order-create-service', [OrderShipmentController::class, 'invoiceOrderCreateService']);
         Route::post('/invoice-order-create-supply', [OrderShipmentController::class, 'invoiceOrderCreateSupply']);
 
+        // Invoice Routes
+
     });
 
     //invoice controller
@@ -111,5 +113,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/store', 'store');
         Route::get('/supply', 'inventaries');
         Route::get('/invoice-details/{id}', 'invoiceDetails');
+        Route::get('/invoice-get/{type}', 'invoicesGet');
     });
 });
