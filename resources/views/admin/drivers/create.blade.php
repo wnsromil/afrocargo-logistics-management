@@ -147,7 +147,7 @@
                         <label class="foncolor" for="status">Status <i class="text-danger">*</i></label>
                         <div class="status-toggle">
                             <span>Active</span>
-                            <input id="rating_1" class="check" name="status" type="checkbox" value="Active">
+                            <input id="rating_1" class="check" type="checkbox" value="Active">
                             <label for="rating_1" class="checktoggle checkbox-bg"></label>
                             <span class="inactive">Inactive</span>
                         </div>

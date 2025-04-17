@@ -102,9 +102,9 @@
   margin-left: 10px;
 }
 
-.status-toggle {
+/* .status-toggle {
   margin-top: 7px;
-}
+} */
 td .status-toggle {
   margin-top: 0px;
 }
@@ -1202,7 +1202,7 @@ input[type="checkbox"]:checked::after {
 .day{
   min-width: 85px;
   justify-content: flex-start;
-  margin-top:9px;
+  /* margin-top:9px; */
 }
 
 

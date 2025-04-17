@@ -184,6 +184,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
         Route::get('drivers/schedule/{id}', [DriversController::class, 'schedule'])->name('drivers.schedule');
+        Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
 
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 

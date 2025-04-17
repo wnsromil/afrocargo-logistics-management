@@ -175,6 +175,13 @@ class DriversController extends Controller
         return view('admin.drivers.schedule', compact('user'));
     }
 
+    public function scheduleshow($id)
+    {
+        $user = User::find($id);
+
+        return view('admin.drivers.scheduleshow', compact('user'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
