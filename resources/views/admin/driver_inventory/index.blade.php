@@ -42,59 +42,6 @@
                 <button class="btn btn-outline-danger btnr ">Reset</button>
             </div>
         </div>
-        <!-- ----------------------------------------------------------------------------------------------- -->
-
-        <!-- <div class="col-md-3 dposition">
-            <label>By warehouse</label>
-            <select class="js-example-basic-single select2 form-cs">
-                <option selected="selected " style="color:#737B8B">Select Warehouse</option>
-                <option>white</option>
-                <option>purple</option>
-            </select>
-        </div>
-        <div class="col-md-3 dposition">
-            <label>By Tracking ID</label>
-            <img class="imgc" src="assets/img/icons/search.svg" alt="img">
-            <input type="text" class="form-control form-cs" placeholder="Enter Tracking ID">
-        </div>
-
-        <div class="col-md-3 dposition">
-            <label>By Customer </label>
-            <img class="imgc" src="assets/img/icons/search.svg" alt="img">
-            <input type="text" class="form-control form-cs" placeholder="Enter Customer Name">
-        </div>
-
-        <div class="col-md-3 dmargin">
-            <label>By Driver</label>
-            <select class="js-example-basic-single select2">
-                <option selected="selected" style="color:#737B8B">Select Driver</option>
-                <option>white</option>
-                <option>purple</option>
-            </select>
-        </div>
-
-        <div class="col-md-3 dmargin">
-            <label>By Hub</label>
-            <select class="js-example-basic-single select2">
-                <option selected="selected">Select Hub</option>
-                <option>white</option>
-                <option>purple</option>
-            </select>
-        </div>
-
-
-        <div class="col-md-3 dmargin">
-            <label>By Order Status</label>
-            <select class="js-example-basic-single select2">
-                <option selected="selected">Select Order Status</option>
-                <option>white</option>
-                <option>purple</option>
-            </select>
-        </div>
-        </div>
-    </form> -->
-
-
         <div>
             <div class="card-table">
                 <div class="card-body">

@@ -2,25 +2,36 @@
     <x-slot name="header">
         {{ __('Driver Management') }}
     </x-slot>
-
-    <x-slot name="cardTitle">
-
-        <div class="usersearch d-flex usersserach">
-
-            <div class="top-nav-search">
-                <form action="{{ url()->current() }}" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control forms" id="searchInput" placeholder="Search" id="search" name="search" value="{{ request()->search }}">
-                    </div>
-                </form>
-            </div>
+    <div class="d-flex align-items-center justify-content-end mb-1">
+        <div class="usersearch d-flex">
             <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser ">
-                    <a class="btn-filters" href="{{ route('admin.drivers.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a>
-                </button>
+                <a href="{{route('admin.drivers.create')}}" class="btn btn-primary buttons">
+                    <i class="ti ti-circle-plus me-2 text-white"></i>
+                    Add Driver
+                </a>
             </div>
         </div>
+    </div>
 
+    <x-slot name="cardTitle">
+        <div class="d-flex topnavs">
+            <p class="head">All Drivers</p>
+            <div class="usersearch d-flex usersserach">
+
+                <div class="top-nav-search">
+                    <form action="{{ url()->current() }}" method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control forms" id="searchInput" placeholder="Search" id="search" name="search" value="{{ request()->search }}">
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-primary refeshuser ">
+                        <a class="btn-filters" href="{{ route('admin.drivers.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a>
+                    </button>
+                </div>
+            </div>
+        </div>
     </x-slot>
     <div class="row">
 
@@ -77,59 +88,43 @@
                                             <i class="ti ti-calendar-clock"></i></a>
                                     </td>
                                     <td>
-                                        @if ($warehouse->status == 'Active')
-                                        <div class="d-flex align-items-center">
-                                            <img class="me-2" src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
-                                            <p>Active</p>
-                                        </div>
-                                        @else
-                                        <div class="d-flex align-items-center">
-                                            <img class="me-2" src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
-                                            <p>Inactive</p>
-                                        </div>
-                                        @endif
+                                    <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                            {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}
+                                        </label>
                                     </td>
-                                 <td class="d-flex align-items-center">
-                                                {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
+                                    <td class="d-flex align-items-center">
+                                        {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
                                                         class="fa fa-plus-circle me-1"></i> Invoice</a>
                                                 <a href="customers-ledger.html" class="btn btn-greys me-2"><i
                                                         class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.drivers.edit', $warehouse->id) }}"><i
-                                                                        class="far fa-edit me-2"></i>Edit</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
-                                                                        class="far fa-eye me-2"></i>View</a>
-                                                            </li>
-                                                            @if($warehouse->status == 'Active')
-                                                                <li>
-                                                                    <a class="dropdown-item deactivate"
-                                                                        href="javascript:void(0)" data-id="{{ $warehouse->id }}"
-                                                                        data-status="Inactive">
-                                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                                    </a>
-                                                                </li>
-                                                            @elseif($warehouse->status == 'Inactive')
-                                                                <li>
-                                                                    <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                        data-id="{{ $warehouse->id }}" data-status="Active">
-                                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                                    </a>
-                                                                </li>
-                                                            @endif
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.drivers.edit', $warehouse->id) }}"><i class="far fa-edit me-2"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.drivers.show', $warehouse->id) }}"><i class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+                                                    @if($warehouse->status == 'Active')
+                                                    <li>
+                                                        <a class="dropdown-item deactivate" href="javascript:void(0)" data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                            <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                        </a>
+                                                    </li>
+                                                    @elseif($warehouse->status == 'Inactive')
+                                                    <li>
+                                                        <a class="dropdown-item activate" href="javascript:void(0)" data-id="{{ $warehouse->id }}" data-status="Active">
+                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                        </a>
+                                                    </li>
+                                                    @endif
 
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
 
 
                                 </tr>
@@ -163,34 +158,35 @@
         <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-             $(document).ready(function () {
+            $(document).ready(function() {
                 // Delegate click on dynamically updated table
-                $('#ajexTable').on('click', '.activate, .deactivate', function () {
+                $('#ajexTable').on('click', '.activate, .deactivate', function() {
                     let id = $(this).data('id');
                     let status = $(this).data('status');
 
-                        $.ajax({
-                            url: "{{ route('admin.drivers.status', '') }}/" + id,
-                            type: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                status: status
-                            },
-                            success: function (response) {
-                                if (response.success) {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Status Updated',
-                                        text: response.success
-                                    });
+                    $.ajax({
+                        url: "{{ route('admin.drivers.status', '') }}/" + id
+                        , type: 'POST'
+                        , data: {
+                            _token: '{{ csrf_token() }}'
+                            , status: status
+                        }
+                        , success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success'
+                                    , title: 'Status Updated'
+                                    , text: response.success
+                                });
 
-                                    location.reload();
-                                }
+                                location.reload();
                             }
-                        });
+                        }
                     });
                 });
-            </script>
+            });
+
+        </script>
 
         </script>
 
