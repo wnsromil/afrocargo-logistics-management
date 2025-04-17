@@ -339,16 +339,6 @@
             document.getElementById('file_' + imageType).value = "";
         }
 
-        $('#country_code').val($('.edit_mobile_code_class mb-2').find('.iti__selected-dial-code').text());
-        $('.col-md-12').on('click', () => {
-            $('#country_code').val($('.edit_mobile_code_class mb-2').find('.iti__selected-dial-code').text());
-        })
-
-        $('#country_code_2').val($('.alternate_mobile_no_class').find('.iti__selected-dial-code').text());
-        $('.col-md-12').on('click', () => {
-            $('#country_code_2').val($('.alternate_mobile_no_class').find('.iti__selected-dial-code').text());
-        })
-
     </script>
     <script>
         $(document).ready(function() {

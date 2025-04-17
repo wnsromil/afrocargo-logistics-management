@@ -50,9 +50,9 @@
                             <input type="hidden" id="selected-date" name="date">
                             <div id="calendar-container">
                                 <div class="calendar-header">
-                                    <button id="prev-month">&lt;</button>
+                                    <button type="button" id="prev-month">&lt;</button>
                                     <span id="month-year" class="calender"></span>
-                                    <button id="next-month">&gt;</button>
+                                    <button type="button" id="next-month">&gt;</button>
                                 </div>
                                 <div class="calendar-grid">
                                     <div class="day-name">Su</div>
@@ -632,12 +632,12 @@
                                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <ul>
-                                                        <li>
+                                                        {{-- <li>
                                                             <a class="dropdown-item"><i
                                                                     class="far fa-edit me-2"></i>Update</a>
-                                                        </li>
+                                                        </li> --}}
                                                         <li>
-                                                            <a class="dropdown-item" href=""><i
+                                                            <a class="dropdown-item" href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}"><i
                                                                     class="far fa-eye me-2"></i>View</a>
                                                         </li>
 
@@ -708,34 +708,49 @@
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const fullUnavailable = document.querySelector('input[name="full_unavailable"]');
-            const timeCheckboxes = [
-                document.querySelector('input[name="morning"]'),
-                document.querySelector('input[name="afternoon"]'),
-                document.querySelector('input[name="evening"]')
-            ];
+      document.addEventListener("DOMContentLoaded", function () {
+    const fullUnavailable = document.querySelector('input[name="full_unavailable"]');
+    const timeCheckboxes = [
+        document.querySelector('input[name="morning"]'),
+        document.querySelector('input[name="afternoon"]'),
+        document.querySelector('input[name="evening"]')
+    ];
 
-            // When "Full Unavailable" is toggled
-            fullUnavailable.addEventListener("change", function () {
-                timeCheckboxes.forEach(checkbox => {
-                    checkbox.checked = fullUnavailable.checked;
-                });
-            });
-
-            // When any of the Morning/Afternoon/Evening is changed
-            timeCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", function () {
-                    if (!checkbox.checked) {
-                        fullUnavailable.checked = false;
-                    } else {
-                        // Check if all time checkboxes are ON, then set Full Unavailable ON
-                        const allChecked = timeCheckboxes.every(cb => cb.checked);
-                        fullUnavailable.checked = allChecked;
-                    }
-                });
-            });
+    // When "Full Unavailable" is toggled
+    fullUnavailable.addEventListener("change", function () {
+        timeCheckboxes.forEach(checkbox => {
+            checkbox.checked = fullUnavailable.checked;
+            updateCheckboxValue(checkbox);
         });
+    });
+
+    // When any of the Morning/Afternoon/Evening is changed
+    timeCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            if (!checkbox.checked) {
+                fullUnavailable.checked = false;
+            } else {
+                // Check if all time checkboxes are ON, then set Full Unavailable ON
+                const allChecked = timeCheckboxes.every(cb => cb.checked);
+                fullUnavailable.checked = allChecked;
+            }
+            updateCheckboxValue(checkbox);
+        });
+    });
+
+    // Function to update checkbox value (Active/Inactive)
+    function updateCheckboxValue(checkbox) {
+        if (checkbox.checked) {
+            checkbox.value = 'Inactive';  // Active if checked
+        } else {
+            checkbox.value = '';  // Inactive if unchecked
+        }
+    }
+
+    // Initialize checkbox values based on current state
+    timeCheckboxes.forEach(checkbox => updateCheckboxValue(checkbox));
+});
+
     </script>
 
 

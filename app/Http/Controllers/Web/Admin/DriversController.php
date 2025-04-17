@@ -14,7 +14,8 @@ use App\Models\{
     Role,
     Country,
     Vehicle,
-    Availability
+    Availability,
+    WeeklySchedule
 };
 use DB;
 use Illuminate\Support\Facades\Mail;
@@ -29,10 +30,10 @@ class DriversController extends Controller
         $query = $request->search;
         $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
         $currentPage = $request->input('page', 1); // ✅ Current page number
-    
+
         $warehouses = User::when($this->user->role_id != 1, function ($q) {
-                return $q->where('warehouse_id', $this->user->warehouse_id);
-            })
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })
             ->where('role_id', 4)
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($q) use ($query) {
@@ -46,17 +47,17 @@ class DriversController extends Controller
             ->latest()
             ->paginate($perPage)
             ->appends(['search' => $query, 'per_page' => $perPage]);
-    
+
         // ✅ Serial number start point
         $serialStart = ($currentPage - 1) * $perPage;
-    
+
         if ($request->ajax()) {
             return view('admin.drivers.table', compact('warehouses', 'serialStart'))->render();
         }
-    
+
         return view('admin.drivers.index', compact('warehouses', 'query', 'perPage', 'serialStart'));
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -71,7 +72,7 @@ class DriversController extends Controller
         })->select('id', 'warehouse_name')->get();
         $Vehicle_data = Vehicle::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->select('id', 'vehicle_type','vehicle_number','container_no_1')->get();
+        })->select('id', 'vehicle_type', 'vehicle_number', 'container_no_1')->get();
         return view('admin.drivers.create', compact('roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
 
@@ -112,7 +113,7 @@ class DriversController extends Controller
         }
 
         $warehouse_code = $warehouse->warehouse_code; // Warehouse Code get karna
-  
+
         $randomPassword = Str::random(8); // Random password of 8 characters
         $hashedPassword = Hash::make($randomPassword); // Hashing password
 
@@ -170,20 +171,21 @@ class DriversController extends Controller
 
 
     public function schedule($id)
-{
-    $user = User::find($id);
-
-    // Get all active availabilities
-    $availabilities = Availability::where('is_active', 1)->get();
-
-    return view('admin.drivers.schedule', compact('user', 'availabilities'));
-}
-
-    public function scheduleshow($id)
     {
         $user = User::find($id);
 
-        return view('admin.drivers.scheduleshow', compact('user'));
+        // Get all active availabilities
+        $availabilities = Availability::where('is_active', 1)->get();
+
+        return view('admin.drivers.schedule', compact('user', 'availabilities'));
+    }
+
+    public function scheduleshow($id)
+    {
+        // $user = User::find($id);
+        $availabilitie = Availability::where('is_active', 1)->where('id', $id)->first();
+        $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('availability_id', $id)->get();
+        return view('admin.drivers.scheduleshow', compact('availabilitie', 'weeklyschedule'));
     }
 
     /**

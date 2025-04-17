@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Availability;
 use App\Models\WeeklySchedule;
 
+
 class ScheduleController extends Controller
 {
     /**
@@ -69,12 +70,13 @@ class ScheduleController extends Controller
             if ($request->has($day)) {
                 // Function to convert 12-hour format to 24-hour format
                 // Convert times to 24-hour format
-                $morning_start = $this->convertTo24HourFormat($request->input("{$day}_morning_start"));
-                $morning_end = $this->convertTo24HourFormat($request->input("{$day}_morning_end"));
-                $afternoon_start = $this->convertTo24HourFormat($request->input("{$day}_afternoon_start"));
-                $afternoon_end = $this->convertTo24HourFormat($request->input("{$day}_afternoon_end"));
-                $evening_start = $this->convertTo24HourFormat($request->input("{$day}_evening_start"));
-                $evening_end = $this->convertTo24HourFormat($request->input("{$day}_evening_end"));
+                $morning_start = $request->filled("{$day}_morning_start") ? $this->convertTo24HourFormat($request->input("{$day}_morning_start")) : null;
+                $morning_end = $request->filled("{$day}_morning_end") ? $this->convertTo24HourFormat($request->input("{$day}_morning_end")) : null;
+                $afternoon_start = $request->filled("{$day}_afternoon_start") ? $this->convertTo24HourFormat($request->input("{$day}_afternoon_start")) : null;
+                $afternoon_end = $request->filled("{$day}_afternoon_end") ? $this->convertTo24HourFormat($request->input("{$day}_afternoon_end")) : null;
+                $evening_start = $request->filled("{$day}_evening_start") ? $this->convertTo24HourFormat($request->input("{$day}_evening_start")) : null;
+                $evening_end = $request->filled("{$day}_evening_end") ? $this->convertTo24HourFormat($request->input("{$day}_evening_end")) : null;
+
 
                 $scheduleData = [
                     'creates_by' => auth()->id(),
@@ -103,6 +105,12 @@ class ScheduleController extends Controller
     {
         return \Carbon\Carbon::createFromFormat('h:i A', $time)->format('H:i:s');
     }
+
+    function convertTo12HourFormat($time)
+    {
+        return \Carbon\Carbon::createFromFormat('H:i:s', $time)->format('h:i A');
+    }
+
 
     /**
      * Display the specified resource.
