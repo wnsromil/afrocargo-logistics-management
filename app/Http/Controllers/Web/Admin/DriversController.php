@@ -13,7 +13,8 @@ use App\Models\{
     User,
     Role,
     Country,
-    Vehicle
+    Vehicle,
+    Availability
 };
 use DB;
 use Illuminate\Support\Facades\Mail;
@@ -169,11 +170,14 @@ class DriversController extends Controller
 
 
     public function schedule($id)
-    {
-        $user = User::find($id);
+{
+    $user = User::find($id);
 
-        return view('admin.drivers.schedule', compact('user'));
-    }
+    // Get all active availabilities
+    $availabilities = Availability::where('is_active', 1)->get();
+
+    return view('admin.drivers.schedule', compact('user', 'availabilities'));
+}
 
     public function scheduleshow($id)
     {
