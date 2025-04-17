@@ -291,31 +291,38 @@ Version      : 1.0
             },
         });
     }
-    $('.onlyTimePicker').each(function () {
-        const $this = $(this); // current input
-    
-        $this.daterangepicker({
-            singleDatePicker: true,
-            autoUpdateInput: false,
-            timePicker: true,
-            timePicker24Hour: false,
-            timePickerSeconds: false,
-            locale: {
-                format: "hh:mm A"
-            }
-        }, function (start, end, label) {
-            // ✅ Update only the current input
-            $this.val(start.format("hh:mm A"));
-        });
-    
-        // Optional: add custom class to popup
-        $this.on('show.daterangepicker', function (ev, picker) {
-            picker.container.addClass('myCustomPopup');
-        });
+
+ $('.onlyTimePicker').each(function () {
+    const $this = $(this);
+
+    $this.daterangepicker({
+        singleDatePicker: true,
+        timePicker: true,
+        timePicker24Hour: false,
+        timePickerSeconds: false,
+        autoUpdateInput: false, // We'll handle it manually always
+        locale: {
+            format: "hh:mm A"
+        }
+    }, function (start) {
+        // Always update value
+        $this.val(start.format("hh:mm A"));
+        $this.trigger('change'); // Optional: trigger change if needed
     });
-    
-    
-    
+
+    // 🔁 Force update when Apply is clicked even without change
+    $this.on('apply.daterangepicker', function (ev, picker) {
+        $this.val(picker.startDate.format('hh:mm A'));
+        $this.trigger('change');
+    });
+
+    // Optional: style
+    $this.on('show.daterangepicker', function (ev, picker) {
+        picker.container.addClass('myCustomPopup');
+    });
+});
+
+
     if ($(".daterangeInput").length > 0) {
         $(".daterangeInput").daterangepicker({
             timePicker: false,
