@@ -1074,6 +1074,9 @@ h6 {
 .mt-n5 {
     margin-top: -2rem;
 }
+.mt-n4 {
+    margin-top: -1.5rem;
+}
 
 .text-danger,
 .dropdown-menu>li>a.text-danger {
@@ -2643,6 +2646,10 @@ td.product_img img, td.product_img span {
 p.timedata {
     color: #3a3a3a;
     font-weight: 500;
+}
+a.btn-action-icon.profileBg
+{
+    margin: auto;
 }
 /* WNSshubham */
 

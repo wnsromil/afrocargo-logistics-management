@@ -124,7 +124,7 @@
                                             {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>
                                     </td>
-                                    <td class="d-flex align-items-center">
+                                    <td class="text-center">
 
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon profileBg" data-bs-toggle="dropdown"

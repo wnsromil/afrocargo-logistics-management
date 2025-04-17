@@ -16,7 +16,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name">Warehouse Name<i class="text-danger">*</i></label>
-                        <select name="warehouse_name" class="form-control">
+                        <select name="warehouse_name" class="form-control inp select2">
                             <option value="">Select Warehouse Name</option>
                             @foreach($warehouses as $warehouse)
                                 <option {{ $manager_data->warehouse_id ?? old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>

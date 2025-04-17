@@ -183,8 +183,8 @@ class DriversController extends Controller
     public function scheduleshow($id)
     {
         // $user = User::find($id);
-        $availabilitie = Availability::where('is_active', 1)->where('id', $id)->first();
-        $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('availability_id', $id)->get();
+        $availabilitie = Availability::where('is_active', 1)->where('id', operator: $id)->first();
+        $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('user_id', $availabilitie->user_id)->get();
         return view('admin.drivers.scheduleshow', compact('availabilitie', 'weeklyschedule'));
     }
 
