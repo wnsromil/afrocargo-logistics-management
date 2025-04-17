@@ -56,7 +56,7 @@ class CustomerController extends Controller
     
         return response()->json(['customers' => $customers], 200);
     }
-    
+
     public function getCustomersDetails(Request $request)
     {
         if ($request->has('id') && !empty($request->id)) {
@@ -79,7 +79,7 @@ class CustomerController extends Controller
             'mobile_code' => 'required|max:13|unique:users,phone',
             'email' => 'required|email|max:255|unique:users,email',
             'alternate_mobile_no' => 'nullable|max:13',
-            'address_1' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'country' => 'required|string|exists:countries,id',
             'state' => 'required|string',
             'city' => 'required|string',
@@ -111,7 +111,7 @@ class CustomerController extends Controller
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['mobile_code'],
                 'phone_2' => $validated['alternate_mobile_no'] ?? null,
-                'address' => $validated['address_1'],
+                'address' => $validated['address'],
                 'address_2' => $request->Address_2,
                 'country_id' => $validated['country'],
                 'state_id' => $validated['state'],
@@ -177,7 +177,7 @@ class CustomerController extends Controller
             'country_id' => 'required|string|max:15',
             // 'state_id' => 'required|string|max:255',
             // 'city_id' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
             'address_2' => 'nullable|string|max:255',
             'ship_to_id' => 'nullable|string|max:255',
             'company_name' => 'nullable|string|max:255',
@@ -201,7 +201,7 @@ class CustomerController extends Controller
             ->first();
 
         if (!$existingUser) {
-
+            
             // Call createCustomer if user does not exist
             $newUser = $this->createCustomer($request->all());
             $customer_id = $newUser->id;
@@ -217,7 +217,7 @@ class CustomerController extends Controller
         $loginUrl = route('login');
 
         // Send the email
-        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
+        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
 
 
         // Create new ShippingUser entry
@@ -264,20 +264,21 @@ class CustomerController extends Controller
     public function deleteCustomer(Request $request)
     {
         $user = User::find($request->id);
-
+    
         if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
-
+    
         $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
-
+    
         return response()->json([
             'success' => true,
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
     }
+    
 }
