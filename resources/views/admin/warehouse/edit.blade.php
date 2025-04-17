@@ -110,14 +110,16 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-12 edit_mobile_code_class mb-2" style="display: grid;">
-                    <label class="foncolor" for="edit_mobile_code">Contact Number <i class="text-danger">*</i></label>
-                    <input type="tel" id="edit_mobile_code" value="{{ old('mobile_code', $warehouse->phone) }}"
-                        class="form-control inp" placeholder="Enter Mobile Number" name="mobile_code"
-                        oninput="this.value = this.value.slice(0, 10)">
-                    @error('mobile_code')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
+                <!-- Contact Number -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="phone">Contact Number <i class="text-danger">*</i></label>
+                        <input type="text" name="phone" id="mobile_code" class="form-control" placeholder="Enter Contact Number"
+                        value="{{ $warehouse->phone ?? old('phone') }}">
+                        @error('phone')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
                 <input type="hidden" id="country_code" name="country_code"
                     value="{{ old('country_code', $warehouse->country_code) }}">

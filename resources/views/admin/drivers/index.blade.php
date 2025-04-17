@@ -2,7 +2,7 @@
     <x-slot name="header">
         {{ __('Driver Management') }}
     </x-slot>
-    <div class="d-flex align-items-center justify-content-end mb-1">
+    <div class="d-flex align-items-center justify-content-end mt-n4">
         <div class="usersearch d-flex">
             <div class="mt-2">
                 <a href="{{route('admin.drivers.create')}}" class="btn btn-primary buttons">

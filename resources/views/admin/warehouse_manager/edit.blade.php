@@ -6,11 +6,11 @@
 
     @endsection
     <x-slot name="header">
-        Warehouse
+        Warehouse Manager
     </x-slot>
 
     <x-slot name="cardTitle">
-        Edit Warehouse
+        Edit Warehouse Manager
     </x-slot>
 
     <form action="{{ route('admin.warehouse_manager.update',$manager_data->id) }}" method="POST" enctype="multipart/form-data">
