@@ -162,8 +162,8 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-    <div class="d-flex innertopnav">
-        <p class="subhead pheads" >Add Warehouse</p>
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Add Warehouse</p>
         </div>
     </x-slot>
 
@@ -175,7 +175,8 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3 ">
-                        <label class="foncolor divform" for="warehouse_name">Warehouse Name <i class="text-danger">*</i></label>
+                        <label class="foncolor divform" for="warehouse_name">Warehouse Name <i
+                                class="text-danger">*</i></label>
                         <input type="text" name="warehouse_name" class="form-control inp"
                             placeholder="Enter Warehouse Name" value="{{ old('warehouse_name') }}">
                         @error('warehouse_name')
@@ -188,7 +189,8 @@
                 <!-- Warehouse Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="warehouse_code">Warehouse Code <i class="text-danger">*</i></label>
+                        <label class="foncolor divform" for="warehouse_code">Warehouse Code <i
+                                class="text-danger">*</i></label>
                         <input type="text" name="warehouse_code" class="form-control inp"
                             placeholder="Enter Warehouse Code" value="{{ old('warehouse_code') }}">
                         @error('warehouse_code')
@@ -216,7 +218,9 @@
                             class="form-control  form-cs js-example-basic-single select2 ">
                             <option value="">Select Country</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                <option value="{{ $country->id }}" {{ old('country_id') == $country->id ? 'selected' : '' }}>
+                                    {{ $country->name }}
+                                </option>
                             @endforeach
                         </select>
 
@@ -233,6 +237,9 @@
                         <label class="foncolor divform" for="state_id">State <i class="text-danger">*</i></label>
                         <select name="state_id" id="state" class="form-control inp select2">
                             <option value="">Select State</option>
+                            @if (old('state_id'))
+                                <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
+                            @endif
                         </select>
                         @error('state_id')
                             <span class="text-danger">{{ $message }}</span>
@@ -246,6 +253,9 @@
                         <label class="foncolor divform" for="city_id">City <i class="text-danger">*</i></label>
                         <select name="city_id" id="city" class="form-control inp select2">
                             <option value="">Select City</option>
+                            @if (old('city_id'))
+                                <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
+                            @endif
                         </select>
                         @error('city_id')
                             <span class="text-danger">{{ $message }}</span>
@@ -265,37 +275,18 @@
                     </div>
                 </div>
 
-                <!-- Contact Number -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label class="foncolor divform" for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact No."
-                            value="{{ old('phone') }}" maxlength="10"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                        @error('phone')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                 
-                        <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
-						<input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No.">
-                        @error('mobile_code')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                        <input type="hidden" id="country_code" name="country_code">
-                    </div> -->
 
 
-                    <div class="col-lg-4 col-md-6 col-sm-12 custom-zindex">
-    <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label> 
-    <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No."> 
-    @error('mobile_code') 
-        <span class="text-danger">{{ $message }}</span> 
-    @enderror 
-    <input type="hidden" id="country_code" name="country_code">
-</div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12 custom-zindex">
+                    <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
+                    <input type="tel" id="mobile_code" name="mobile_code" value="{{ old('mobile_code') }}" class="form-control inp"
+                        placeholder="Enter Contact No.">
+                    @error('mobile_code')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    <input type="hidden" id="country_code" name="country_code">
+                </div>
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -311,22 +302,22 @@
                         </div>
 
                     </div>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                    @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="add-customer-btns text-end">
+        <div class="add-customer-btns text-end">
 
-                <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
-                    class="btn btn-outline-primary custom-btn">Cancel</button>
+            <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
 
-                <button type="submit" class="btn btn-primary ">Submit</button>
+            <button type="submit" class="btn btn-primary ">Submit</button>
 
-            </div>
+        </div>
     </form>
 
     @section('script')
@@ -337,6 +328,5 @@
             })
         </script>
     @endsection
-    
-</x-app-layout>
 
+</x-app-layout>

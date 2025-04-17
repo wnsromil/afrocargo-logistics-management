@@ -171,8 +171,9 @@ class WarehouseController extends Controller
             'state_id' => 'integer|exists:states,id',
             'city_id' => 'integer|exists:cities,id',
             'zip_code' => 'string|max:20',
-            'phone' => 'string|max:15',
+            'mobile_code' => 'string|max:15',
             'status' => 'nullable|in:Active,Inactive',  // Nullable kiya
+            'country_code' => 'required|string',
         ]);
     
         // Check if validation fails
@@ -196,7 +197,8 @@ class WarehouseController extends Controller
             'state_id' => $request->state_id,
             'city_id' => $request->city_id,
             'zip_code' => $request->zip_code,
-            'phone' => $request->phone,
+            'phone' => $request->mobile_code,
+            'country_code' => $request->country_code,
             'status' => $request->status ?? 'Active', // Default 'Inactive' agar request me na ho
         ]);
     
