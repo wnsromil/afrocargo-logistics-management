@@ -185,7 +185,6 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
         Route::get('drivers/schedule/{id}', [DriversController::class, 'schedule'])->name('drivers.schedule');
         Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
-
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
 
@@ -197,6 +196,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         // Warehouse manager 
         Route::post('warehouse_manager/status/{id}', [WarehouseManagerController::class, 'changeStatus'])->name('warehouse_manager.status');
+
+        // Schedule
+        Route::post('weekly_schedule_store', [ScheduleController::class, 'weeklyScheduleStore'])->name('schedule.weeklyschedulestore');
 
 
         Route::get('/orderdetails', function () {

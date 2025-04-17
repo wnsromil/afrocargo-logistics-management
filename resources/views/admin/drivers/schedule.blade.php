@@ -161,10 +161,11 @@
                 </div>
             </div>
         </div>
-
-
+    </form>
+    
+    <form method="POST" action="{{ route('admin.schedule.weeklyschedulestore') }}" enctype="multipart/form-data">
+        @csrf
         <div id="weekly" style="display:none;">
-
             <div class="col-md-12 mb-5">
                 <div class="d-flex flex-wrap">
                     <!-- <div class="col-md-2"></div> -->
@@ -557,7 +558,12 @@
                     </div>
                 </div>
             </div>
-
+            <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
+            <div class="text-end mt-4">
+                <button type="button"
+                    class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button>
+                <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
+            </div>
         </div>
     </form>
     <div class="col-md-12 mt-5">
