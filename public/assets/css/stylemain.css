@@ -413,6 +413,9 @@ table thead.set {
     font-weight: 400;
     color: #252F49;
 }
+.profileUpdateFont.btn-size {
+    width: max-content;
+}
 
 
 .profile-cover-avatar {
@@ -914,10 +917,14 @@ h6 {
     color: #a0a0a0;
 }
 
-.header .profile {
-    border: transparent;
-    font-size: 26px;
-    font-weight: 200px !important;
+.header 
+{
+    z-index: 9999999;
+    .profile {
+        border: transparent;
+        font-size: 26px;
+        font-weight: 200px !important;
+    }
 }
 
 .calemdar-contaner {
@@ -2632,6 +2639,10 @@ td.product_img img, td.product_img span {
 .disablesection.notvisible:before
 {
     display: none;
+}
+p.timedata {
+    color: #3a3a3a;
+    font-weight: 500;
 }
 /* WNSshubham */
 
