@@ -91,17 +91,6 @@
                                     <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>
-                                        {{-- @if ($warehouse->status == 'Active')
-                                        <div class="d-flex align-items-center">
-                                            <img class="me-2" src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
-                                            <p>Active</p>
-                                        </div>
-                                        @else
-                                        <div class="d-flex align-items-center">
-                                            <img class="me-2" src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
-                                            <p>Inactive</p>
-                                        </div>
-                                        @endif --}}
                                     </td>
                                     <td class="d-flex align-items-center">
                                         {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i

@@ -291,9 +291,34 @@ Version      : 1.0
             },
         });
     }
+    $('.onlyTimePicker').each(function () {
+        const $this = $(this); // current input
+    
+        $this.daterangepicker({
+            singleDatePicker: true,
+            autoUpdateInput: false,
+            timePicker: true,
+            timePicker24Hour: false,
+            timePickerSeconds: false,
+            locale: {
+                format: "hh:mm A"
+            }
+        }, function (start, end, label) {
+            // ✅ Update only the current input
+            $this.val(start.format("hh:mm A"));
+        });
+    
+        // Optional: add custom class to popup
+        $this.on('show.daterangepicker', function (ev, picker) {
+            picker.container.addClass('myCustomPopup');
+        });
+    });
+    
+    
+    
     if ($(".daterangeInput").length > 0) {
         $(".daterangeInput").daterangepicker({
-            imePicker: false,
+            timePicker: false,
             startDate: moment(),
             endDate: moment(),
             locale: {
