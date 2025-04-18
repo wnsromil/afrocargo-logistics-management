@@ -114,9 +114,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" id="mobile_code" class="form-control" placeholder="Enter Contact Number"
+                        <input type="text" name="mobile_code" id="edit_mobile_code" class="form-control" placeholder="Enter Contact Number"
                         value="{{ $warehouse->phone ?? old('phone') }}">
-                        @error('phone')
+                        @error('mobile_code')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

@@ -8,4 +8,9 @@ class Availability extends Model
 {
     //
     protected $guarded=[];
+
+    public function locationSchedule()
+    {
+        return $this->belongsTo(LocationSchedule::class, 'user_id', 'user_id');
+    }
 }

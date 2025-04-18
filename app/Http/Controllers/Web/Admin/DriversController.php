@@ -21,6 +21,7 @@ use DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DriverMail;
 
+use function Pest\Laravel\json;
 
 class DriversController extends Controller
 {
@@ -175,9 +176,10 @@ class DriversController extends Controller
         $user = User::find($id);
 
         // Get all active availabilities
-        $availabilities = Availability::where('is_active', 1)->get();
-
-        return view('admin.drivers.schedule', compact('user', 'availabilities'));
+        $availabilities = Availability::where('is_active', 1)->where('user_id', $id)->get();
+        $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('user_id', $id)->get();
+      // print_r(json_encode($weeklyschedule));dd();
+        return view('admin.drivers.schedule', compact('user', 'availabilities','weeklyschedule'));
     }
 
     public function scheduleshow($id)
