@@ -2662,6 +2662,34 @@ a.btn-action-icon.profileBg
         font-size: 13px !important;
     }
 }
+.orderstatus
+{
+    padding: 4px 12px;
+    font-weight: 500;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.orderstatus.pending, .orderstatus.Unpaid { background-color: #FFDADA; color: #FF0000; }
+.orderstatus.Schedule.Pickup, .orderstatus.Partialy.Paid { background-color: #FFEDD9; color: #EC8000; }
+.orderstatus.Pickup.Re-Schedule { background-color: #E7D9FF; color: #600AF3; }
+.orderstatus.paid, .orderstatus.Delivered { background-color: #DAFFE9; color: #33B469; }
+.orderstatus.Received.By.Pickup.Man, .orderstatus.Assign.Delivery.Boy { background-color: #F9DAFF; color: #BD14DF; }
+.orderstatus.Transfer.to.Hub, .orderstatus.Return.to.Courier { background-color: #FCFFC0; color: #9CA400; }
+.orderstatus.branch_to_branch { background-color: #AFFFCF; color: #0A8E41; }
+.orderstatus.Ready.to.Transfer { background-color: #C0FBFF; color: #03A1AC; }
+.orderstatus.Delivery.Man.Assign { background-color: #CFF6FF; color: #0098BA; }
+.orderstatus.In.Transit { background-color: #FFB7A7; color: #942208; }
+.orderstatus.Received.by.Warehouse { background-color: #FFD9EB; color: #F30073; }
+.btn.veiwBtn.rounded-1 
+{
+    padding: 4px 0;
+}
+.input-block .form-control {
+    border: 1px solid #00000042;
+}
+.mw-100 { max-width: 100%; }
+
 /* WNSshubham */
 
 

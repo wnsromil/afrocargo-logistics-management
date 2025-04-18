@@ -60,11 +60,11 @@
         </div>
     </x-slot>
 
-    <div class="d-flex align-items-center justify-content-end mb-1">
+    <div class="d-flex align-items-center justify-content-end mt_n33">
         <div class="usersearch d-flex">
             <div class="mt-2">
-                <a href="{{ route('admin.warehouse_manager.create') }}" class="btn btn-primary buttons">
-                    <img class="imgs" src="assets/images/Vector.png">
+                <a href="{{ route('admin.signature.create') }}" class="btn btn-primary buttons">
+                   <i class="ti ti-circle-plus me-2 text-white"></i>
                     Add Signature
                 </a>
             </div>
