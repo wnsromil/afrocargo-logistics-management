@@ -45,7 +45,7 @@
             <div class="col-md-3 dposition">
                 <label>Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange" placeholder="From Date - To Date" style="border:none" />
+                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange" placeholder="From Date - To Date" />
                 </div>
             </div>
 

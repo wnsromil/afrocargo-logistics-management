@@ -123,7 +123,7 @@
 
 
                         <label class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                        <input type="text" name="license_expiry_date" class="datetimepicker form-control inp" style="cursor: pointer;" placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
+                            <input type="text" name="license_expiry_date" class="datetimepicker form-control inp" style="cursor: pointer;" placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
