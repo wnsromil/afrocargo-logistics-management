@@ -292,36 +292,234 @@ Version      : 1.0
         });
     }
 
- $('.onlyTimePicker').each(function () {
-    const $this = $(this);
+    $(".onlyTimePicker").each(function () {
+        const $this = $(this);
 
-    $this.daterangepicker({
-        singleDatePicker: true,
-        timePicker: true,
-        timePicker24Hour: false,
-        timePickerSeconds: false,
-        autoUpdateInput: false, // We'll handle it manually always
-        locale: {
-            format: "hh:mm A"
+        $this.daterangepicker(
+            {
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerSeconds: false,
+                autoUpdateInput: false, // We'll handle it manually always
+                locale: {
+                    format: "hh:mm A",
+                },
+            },
+            function (start) {
+                // Always update value
+                $this.val(start.format("hh:mm A"));
+                $this.trigger("change"); // Optional: trigger change if needed
+            }
+        );
+
+        // 🔁 Force update when Apply is clicked even without change
+        $this.on("apply.daterangepicker", function (ev, picker) {
+            $this.val(picker.startDate.format("hh:mm A"));
+            $this.trigger("change");
+        });
+
+        // Optional: style
+        $this.on("show.daterangepicker", function (ev, picker) {
+            picker.container.addClass("myCustomPopup");
+        });
+    });
+
+    $(".onlyTimePickerSchedule").each(function () {
+        const $this = $(this);
+
+        // ✅ Make input completely read-only (no typing)
+        $this.attr("readonly", "readonly");
+        $this.on("keydown paste", function (e) {
+            e.preventDefault();
+        });
+        $this.attr("autocomplete", "off");
+        $this.css({
+            "background-color": "white",
+            cursor: "pointer",
+        });
+
+        $this.daterangepicker(
+            {
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerSeconds: false,
+                autoUpdateInput: false,
+                locale: {
+                    format: "hh:mm A",
+                },
+                timePickerIncrement: 15,
+            },
+            function (start) {
+                $this.val(start.format("hh:mm A"));
+                $this.trigger("change");
+            }
+        );
+
+        $this.on("apply.daterangepicker", function (ev, picker) {
+            $this.val(picker.startDate.format("hh:mm A"));
+            $this.trigger("change");
+            validateTimeLogic($this);
+        });
+
+        $this.on("cancel.daterangepicker", function () {
+            $this.val(""); // Clear input
+        });
+
+        $this.on("show.daterangepicker", function (ev, picker) {
+            picker.container.addClass("myCustomPopup");
+        });
+
+        $this.val(""); // Default empty
+    });
+
+    // 🔐 Function to validate time logic between fields
+    function validateTimeLogic($field) {
+        const name = $field.attr("name");
+
+        // Get time values of related fields
+        const day = name.split("_")[0]; // Extract day name
+        const timeType = name.split("_")[1]; // morning/afternoon/evening
+        const startOrEnd = name.split("_")[2]; // start or end
+
+        // Example: morning_start, morning_end logic
+        const startField = $(`input[name="${day}_${timeType}_start"]`);
+        const endField = $(`input[name="${day}_${timeType}_end"]`);
+
+        const startTime = moment(startField.val(), "hh:mm A");
+        const endTime = moment(endField.val(), "hh:mm A");
+
+        // Validation logic
+        if (startField.val() && endField.val()) {
+            if (endTime.isBefore(startTime)) {
+                alert("⛔ End time can't be before start time!");
+                endField.val(""); // Clear invalid input
+            } else if (endTime.isSame(startTime)) {
+                alert("⛔ Start time and End time can't be same!");
+                endField.val(""); // Clear invalid input
+            }
         }
-    }, function (start) {
-        // Always update value
-        $this.val(start.format("hh:mm A"));
-        $this.trigger('change'); // Optional: trigger change if needed
-    });
+    }
 
-    // 🔁 Force update when Apply is clicked even without change
-    $this.on('apply.daterangepicker', function (ev, picker) {
-        $this.val(picker.startDate.format('hh:mm A'));
-        $this.trigger('change');
-    });
+    $(document).ready(function () {
+        // Agar schedule data hai tabhi form ke andar values bharni hain
+        if (Array.isArray(scheduleData) && scheduleData.length > 0) {
+            scheduleData.forEach(function (entry) {
+                const day = entry.day.toLowerCase();
 
-    // Optional: style
-    $this.on('show.daterangepicker', function (ev, picker) {
-        picker.container.addClass('myCustomPopup');
-    });
-});
+                // Checkbox enable
+                $("#" + day).prop("checked", true);
+                $(`#${day}`).val("Inactive");
+                $("." + day).removeClass("disablesection");
 
+                // Set times if available
+                if (entry.morning_start) {
+                    $(`input[name="${day}_morning_start"]`).val(
+                        moment(entry.morning_start, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.morning_end) {
+                    $(`input[name="${day}_morning_end"]`).val(
+                        moment(entry.morning_end, "HH:mm:ss").format("hh:mm A")
+                    );
+                }
+                if (entry.afternoon_start) {
+                    $(`input[name="${day}_afternoon_start"]`).val(
+                        moment(entry.afternoon_start, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.afternoon_end) {
+                    $(`input[name="${day}_afternoon_end"]`).val(
+                        moment(entry.afternoon_end, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.evening_start) {
+                    $(`input[name="${day}_evening_start"]`).val(
+                        moment(entry.evening_start, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.evening_end) {
+                    $(`input[name="${day}_evening_end"]`).val(
+                        moment(entry.evening_end, "HH:mm:ss").format("hh:mm A")
+                    );
+                }
+            });
+        }
+
+        // Checkbox change event to handle checked and unchecked actions
+        $("input[type='checkbox']").on("change", function () {
+            const day = $(this).attr("id");
+
+            if (!$(this).prop("checked")) {
+                // If unchecked, clear all fields and disable them
+                $(`input[name="${day}_morning_start"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_morning_end"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_afternoon_start"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_afternoon_end"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_evening_start"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_evening_end"]`)
+                    .val("")
+                    .prop("disabled", true);
+
+                // Disable day section and reset its value
+                $("." + day).addClass("disablesection");
+                $(`input[name="${day}_morning_start"]`).prop("readonly", true);
+                $(`input[name="${day}_morning_end"]`).prop("readonly", true);
+                $(`input[name="${day}_afternoon_start"]`).prop(
+                    "readonly",
+                    true
+                );
+                $(`input[name="${day}_afternoon_end"]`).prop("readonly", true);
+                $(`input[name="${day}_evening_start"]`).prop("readonly", true);
+                $(`input[name="${day}_evening_end"]`).prop("readonly", true);
+
+                // Clear the value for day as well
+                $(`#${day}`).val("");
+            } else {
+                // If checked, enable the day section and fields
+                $("." + day).removeClass("disablesection");
+                $(`input[name="${day}_morning_start"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_morning_end"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_afternoon_start"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_afternoon_end"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_evening_start"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_evening_end"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+            }
+        });
+
+        // Agar koi data nahi hai to default form hi dikhega (blank), jaisa abhi dikh raha hai
+    });
 
     if ($(".daterangeInput").length > 0) {
         $(".daterangeInput").daterangepicker({
@@ -333,10 +531,6 @@ Version      : 1.0
             },
         });
     }
-    console.log("jQuery Version: ", $.fn.jquery);
-    console.log("Moment Loaded: ", typeof moment);
-    console.log("Daterangepicker Loaded: ", typeof $.fn.daterangepicker);
-
     // Expire Date Picker
     if ($('input[name="expire_date"]').length > 0) {
         $('input[name="expire_date"]').daterangepicker({
