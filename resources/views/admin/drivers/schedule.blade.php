@@ -21,6 +21,7 @@
             margin-top: -5px;
             justify-content: normal;
         }
+
     </style>
     <x-slot name="cardTitle">
         <p class="subhead login-logo-font fw-semibold me-sm-5">Add Schedule</p>
@@ -102,15 +103,14 @@
                                 </div>
                             </div>
                             @error('date')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-8">
                             <div class="my-3">
                                 <div class="status-toggle togglewrapper">
                                     <div class="status-toggle px-2 ps-0">
-                                        <input id="rating_21" class="check" type="checkbox" name="full_unavailable"
-                                            value="full_unavailable">
+                                        <input id="rating_21" class="check" type="checkbox" name="full_unavailable" value="full_unavailable">
                                         <label for="rating_21" class="checktoggle log checkbox-bg ms-0">checkbox</label>
                                     </div>
                                     <p class="profileUpdateFont text-dark">Full Unavailable</p>
@@ -120,15 +120,12 @@
                             <div class="col-md-12 marginTopBottom">
                                 <div class="d-flex">
                                     <div class="col-md-4">
-                                        <button type="button"
-                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
+                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2 ps-0">
-                                                    <input id="rating_24" class="check" name="morning" type="checkbox"
-                                                        value="0">
-                                                    <label for="rating_24"
-                                                        class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                                                    <input id="rating_24" class="check" name="morning" type="checkbox" value="0">
+                                                    <label for="rating_24" class="checktoggle log checkbox-bg ms-0">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -136,15 +133,12 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button type="button"
-                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
+                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2">
-                                                    <input id="rating_22" class="check" name="afternoon" type="checkbox"
-                                                        value="0">
-                                                    <label for="rating_22"
-                                                        class="checktoggle log checkbox-bg">checkbox</label>
+                                                    <input id="rating_22" class="check" name="afternoon" type="checkbox" value="0">
+                                                    <label for="rating_22" class="checktoggle log checkbox-bg">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -152,15 +146,12 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button type="button"
-                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
+                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2">
-                                                    <input id="rating_23" class="check" name="evening" type="checkbox"
-                                                        value="0">
-                                                    <label for="rating_23"
-                                                        class="checktoggle log checkbox-bg">checkbox</label>
+                                                    <input id="rating_23" class="check" name="evening" type="checkbox" value="0">
+                                                    <label for="rating_23" class="checktoggle log checkbox-bg">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -188,26 +179,24 @@
             <div class="col-md-12 mb-5">
                 <div class="d-flex flex-wrap">
                     <!-- <div class="col-md-2"></div> -->
-                    <div class="col-md-9 offset-md-3 d-flex flex-wrap">
-                        <div class="col-md-4">
-                            <button type="button"
-                                class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Morning</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button"
-                                class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Afternoon</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button"
-                                class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Evening</button>
+                    <div class="col-md-9 offset-md-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Morning</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Afternoon</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Evening</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="timePickersSLots">
                 <div class="col-md-12 d-flex flax-wrap">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Monday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Monday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
                                 <input id="monday" name="monday" class="check dayToggle" type="checkbox" value="monday">
@@ -264,12 +253,10 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Tuesday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Tuesday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="tuesday" name="tuesday" class="check dayToggle" type="checkbox"
-                                    value="Inactive">
+                                <input id="tuesday" name="tuesday" class="check dayToggle" type="checkbox" value="Inactive">
                                 <label for="tuesday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -323,12 +310,10 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Wednesday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Wednesday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="wednesday" name="wednesday" class="check dayToggle" type="checkbox"
-                                    value="Inactive">
+                                <input id="wednesday" name="wednesday" class="check dayToggle" type="checkbox" value="Inactive">
                                 <label for="wednesday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -382,12 +367,10 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Thursday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Thursday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="thursday" name="thursday" class="check dayToggle" type="checkbox"
-                                    value="Inactive">
+                                <input id="thursday" name="thursday" class="check dayToggle" type="checkbox" value="Inactive">
                                 <label for="thursday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -441,12 +424,10 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Friday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Friday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="friday" name="friday" class="check dayToggle" type="checkbox"
-                                    value="Inactive">
+                                <input id="friday" name="friday" class="check dayToggle" type="checkbox" value="Inactive">
                                 <label for="friday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -500,12 +481,10 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Saturday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Saturday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="saturday" name="saturday" class="check dayToggle" type="checkbox"
-                                    value="Inactive">
+                                <input id="saturday" name="saturday" class="check dayToggle" type="checkbox" value="Inactive">
                                 <label for="saturday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -559,12 +538,10 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span
-                            class="day pointernone">Sunday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Sunday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="sunday" name="sunday" class="check dayToggle" type="checkbox"
-                                    value="Inactive">
+                                <input id="sunday" name="sunday" class="check dayToggle" type="checkbox" value="Inactive">
                                 <label for="sunday" class="checktoggle log checkbox-bg"> </label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -637,17 +614,13 @@
                     <div class="usersearch d-flex justify-content-end">
                         <div class="top-nav-search">
                             <form>
-                                <input type="text" id="searchInput" class="form-control forms me-2"
-                                    placeholder="Search ">
+                                <input type="text" id="searchInput" class="form-control forms me-2" placeholder="Search ">
                             </form>
                         </div>
 
                         <div class="">
-                            <button type="button"
-                                class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                                <a class="btn-filters d-flex justify-content-center align-items-center"
-                                    href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                    title="Refresh">
+                            <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                                <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
                                     <span><i class="fe fe-refresh-ccw"></i></span>
                                 </a>
                             </button>
@@ -785,10 +758,10 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.toggle-switch').forEach(switchBtn => {
 
-                switchBtn.addEventListener("change", function () {
+                switchBtn.addEventListener("change", function() {
                     let buttonsContainer = this.closest('.form-check').querySelector('.schedule-buttons');
                     let buttons = buttonsContainer.querySelectorAll('button');
                     buttons.forEach(button => {
@@ -885,7 +858,7 @@
         }
 
         // Optional: generate current month on load
-        window.onload = function () {
+        window.onload = function() {
             const today = new Date();
             generateCalendar(today.getFullYear(), today.getMonth());
         };
@@ -968,9 +941,9 @@
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll('.dayToggle').forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.dayToggle').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
                     const day = this.name;
                     const targetDiv = document.querySelector('.disablesection.' + day);
                     if (this.checked) {

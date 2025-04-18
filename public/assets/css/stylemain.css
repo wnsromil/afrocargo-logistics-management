@@ -2452,6 +2452,9 @@ a.btn-action-icon.fas:hover i {
     left: 10px;
     top: 7px;
 }
+.onlyDatetime.little::after {
+    top: 6px;
+}
 
 input.btn-filters.datetimepicker {
     padding-left: 40px;
@@ -2650,6 +2653,14 @@ p.timedata {
 a.btn-action-icon.profileBg
 {
     margin: auto;
+}
+.searchFilters 
+{
+    input, .select2-selection__rendered 
+    {
+        height: 40px;
+        font-size: 13px !important;
+    }
 }
 /* WNSshubham */
 
