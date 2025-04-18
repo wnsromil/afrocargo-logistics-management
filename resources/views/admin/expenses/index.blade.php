@@ -35,7 +35,7 @@
             <div class="col-md-3 mb-3">
                 <label>Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
-                    <input type="text" name="daterangeOnly" class="btn-filters form-cs inp dateInput" placeholder="02-21-2024 - 02-21-2024" />
+                    <input type="text" name="daterangeOnly" class="btn-filters form-cs inp bookingrange" placeholder="02-21-2024 - 02-21-2024" />
                 </div>
             </div>
             <div class="col-md-3 mb-3">

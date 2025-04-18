@@ -716,7 +716,7 @@
                                         <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
                                             style="color:red;"></i>Canceled</td> -->
                                         <td><span
-                                                class="bg-danger-subtle pending-text px-2 py-1 rounded cardFontSize fw-medium">Pending</span>
+                                                class="orderstatus pending">Pending</span>
                                         </td>
                                         <td class="d-flex">
                                             <div class="dropdown dropdown-action">
@@ -774,7 +774,7 @@
                                         <td class="text-truncate width">Household Set, Cards </td>
                                         <td>$863.00</td>
                                         <td><span
-                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                                class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -845,7 +845,7 @@
                                         <td class="text-truncate width">Books</td>
                                         <td>$617.00</td>
 
-                                        <td><span class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Pickup
+                                        <td><span class="orderstatus Pickup Re-Schedule">Pickup
                                                 Re-Schedule</span>
                                         </td>
                                         <td class="d-flex">
@@ -909,7 +909,7 @@
                                         <td>$751.00</td>
 
                                         <td><span
-                                                class="bg-text-color2 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                                class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
                                         </td>
@@ -941,7 +941,7 @@
                                         <td class="text-truncate width">Books</td>
                                         <td>$356.00</td>
 
-                                        <td><span class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Pickup
+                                        <td><span class="orderstatus Pickup Re-Schedule">Pickup
                                                 Re-Schedule</span>
                                         </td>
                                         <td class="d-flex">
@@ -1005,7 +1005,7 @@
                                         <td>$940.00</td>
 
                                         <td><span
-                                                class="bg-text-color2 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                                class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
                                         </td>
@@ -1038,7 +1038,7 @@
                                         <td>$125.00</td>
 
                                         <td><span
-                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                                class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -1110,10 +1110,10 @@
                                         <td class="text-truncate width">Received By Pickup Man</td>
                                         <td>$759.00</td>
                                         <td><span
-                                                class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                                class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
-                                            </d>
+                                            </td>
                                         <td class="align-center mt-2">
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
@@ -1142,7 +1142,7 @@
                                         <td>$300.00</td>
 
                                         <td><span
-                                                class="bg-danger-subtle pending-text px-2 py-1 rounded cardFontSize fw-medium">Pending</span>
+                                                class="orderstatus Pending">Pending</span>
                                         </td>
                                         <td class="d-flex">
                                             <div class="dropdown dropdown-action">
@@ -1200,7 +1200,7 @@
                                         <td>$456.00</td>
 
                                         <td><span
-                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                                class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
