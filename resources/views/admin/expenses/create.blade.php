@@ -36,8 +36,8 @@
                                 </div>
                                 <div class="col-md-12 mb-1">
                                     <label> Due Date <i class="text-danger">*</i></label>
-                                    <div class="cal-icon onlyDatetime cal-icon-info">
-                                        <input type="text" class="btn-filters datetimepicker form-control form-cs inp " name="dateTime" placeholder="MM/DD/YYYY HH:MM AM" />
+                                    <div class="cal-icon onlyDatetime little cal-icon-info">
+                                        <input type="text" class="btn-filters datetimepicker form-control form-cs inp " name="dateTime" placeholder="MM/DD/YYYY" />
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-1">

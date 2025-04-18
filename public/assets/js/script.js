@@ -438,31 +438,31 @@ Version      : 1.0
         );
     }
 
-    if ($('input[name="license_expiry_date"]').length > 0) {
-        $('input[name="license_expiry_date"]').daterangepicker({
-            singleDatePicker: true, // Single Date Picker Enable
-            showDropdowns: true, // Month/Year Dropdown Enable
-            minDate: moment().startOf("day"), // Past Dates Disabled
-            autoUpdateInput: false, // Default Date Auto Set Na Ho
-            locale: {
-                format: "M/DD/YYYY", // Date Format
-            },
-        });
+    // if ($('input[name="license_expiry_date"]').length > 0) {
+    //     $('input[name="license_expiry_date"]').daterangepicker({
+    //         singleDatePicker: true, // Single Date Picker Enable
+    //         showDropdowns: true, // Month/Year Dropdown Enable
+    //         minDate: moment().startOf("day"), // Past Dates Disabled
+    //         autoUpdateInput: false, // Default Date Auto Set Na Ho
+    //         locale: {
+    //             format: "M/DD/YYYY", // Date Format
+    //         },
+    //     });
 
-        // Date Select Hone Ke Baad Input Me Value Set Karo
-        $('input[name="license_expiry_date"]').on(
-            "apply.daterangepicker",
-            function (ev, picker) {
-                $(this).val(picker.startDate.format("M/DD/YYYY"));
-            }
-        );
+    //     // Date Select Hone Ke Baad Input Me Value Set Karo
+    //     $('input[name="license_expiry_date"]').on(
+    //         "apply.daterangepicker",
+    //         function (ev, picker) {
+    //             $(this).val(picker.startDate.format("M/DD/YYYY"));
+    //         }
+    //     );
 
-        // Placeholder Set Karne Ke Liye
-        $('input[name="license_expiry_date"]').attr(
-            "placeholder",
-            "MM-DD-YYYY"
-        );
-    }
+    //     // Placeholder Set Karne Ke Liye
+    //     $('input[name="license_expiry_date"]').attr(
+    //         "placeholder",
+    //         "MM-DD-YYYY"
+    //     );
+    // }
 
     if ($('input[name="edit_signature_date"]').length > 0) {
         $('input[name="edit_signature_date"]').daterangepicker({
