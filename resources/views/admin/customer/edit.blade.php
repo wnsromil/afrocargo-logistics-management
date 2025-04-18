@@ -465,7 +465,7 @@
                     const allCountries = window.intlTelInputGlobals.getCountryData();
                     dialCode = dialCode.replace('+', '');
                     const match = allCountries.find(c => c.dialCode === dialCode);
-                    return match ? match.iso2 : 'in'; // fallback to India
+                    return match ? match.iso2 : 'us'; // fallback to India
                 }
 
                 function initializeIntlTelInput(inputId, hiddenInputId, userDialCode) {
@@ -490,8 +490,8 @@
                 }
 
                 // Pass dial code like '+91' from Laravel
-                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+91' }}");
-                initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+91' }}");
+                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+1' }}");
+                initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+1' }}");
             });
 
         </script>

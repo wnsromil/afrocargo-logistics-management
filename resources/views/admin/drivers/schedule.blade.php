@@ -58,7 +58,7 @@
                             <div class="col-md-6">
                                 <label for="LacationInput1" class="form-label">Enter Location</label>
                                 <input type="text" class="form-control" id="LacationInput1" placeholder="Location"
-                                    name="address" value="{{ old('address') }}">
+                                    name="address" value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

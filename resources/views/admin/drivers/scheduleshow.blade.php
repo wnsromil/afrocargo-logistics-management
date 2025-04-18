@@ -64,7 +64,8 @@
                 @foreach($weeklyschedule as $schedule)
                     <div class="col-md-12 d-flex flax-wrap mt-3">
                         <div class="col-md-2 text-dark">
-                            <span class="day pointernone">{{ $schedule->day }}</span>
+                            <span class="day pointernone">{{ ucfirst($schedule->day) }}
+                            </span>
                         </div>
                         <div class="col-md-10 ps-sm-0">
                             <div class="row">
@@ -130,7 +131,7 @@
                     </div>
                     <div class="col">
                         <p class="fw_600 col3A mb-2">Location</p>
-                        <p class="col3A">{{ $availabilitie->address ?? '--' }}</p>
+                        <p class="col3A">{{ $availabilitie->locationSchedule->address ?? '--' }}</p>
                     </div>
                     <div class="col">
                         <p class="fw_600 col3A mb-2">Morning Availability</p>
