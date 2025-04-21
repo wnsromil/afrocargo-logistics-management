@@ -14,6 +14,7 @@
                         <th>License Number</th>
                         <th>License Expiry Date</th>
                         <th>License Doc</th>
+                        <th>Schedule</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -45,6 +46,11 @@
                                 @endif
                             </td>
                             <td>
+                                <a class="btn btn-primary icon_btn"
+                                    href="{{ route('admin.drivers.schedule', $warehouse->id) }}">
+                                    <i class="ti ti-calendar-clock"></i></a>
+                            </td>
+                            <td>
                                 @if ($warehouse->status == 'Active')
                                     <div class="container">
                                         <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
@@ -59,12 +65,12 @@
                             </td>
                             <td class="d-flex align-items-center">
                                 {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
-                                    class="fa fa-plus-circle me-1"></i> Invoice</a>
-                            <a href="customers-ledger.html" class="btn btn-greys me-2"><i
-                                    class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
+                                        class="fa fa-plus-circle me-1"></i> Invoice</a>
+                                <a href="customers-ledger.html" class="btn btn-greys me-2"><i
+                                        class="fa-regular fa-eye me-1"></i> Ledger</a> --}}
                                 <div class="dropdown dropdown-action">
-                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i
+                                            class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
@@ -78,21 +84,21 @@
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
                                             @if($warehouse->status == 'Active')
-                                            <li>
-                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
-                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                </a>
-                                            </li>
-                                        @elseif($warehouse->status == 'Inactive')
-                                            <li>
-                                                <a class="dropdown-item activate" href="javascript:void(0)"
-                                                    data-id="{{ $warehouse->id }}" data-status="Active">
-                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                </a>
-                                            </li>
-                                        @endif
-                                        
+                                                <li>
+                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                        data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                    </a>
+                                                </li>
+                                            @elseif($warehouse->status == 'Inactive')
+                                                <li>
+                                                    <a class="dropdown-item activate" href="javascript:void(0)"
+                                                        data-id="{{ $warehouse->id }}" data-status="Active">
+                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                    </a>
+                                                </li>
+                                            @endif
+
                                         </ul>
                                     </div>
                                 </div>
@@ -115,7 +121,8 @@
 <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
     <div class="col-md-6 d-flex p-2 align-items-center">
         <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+            id="pageSizeSelect">
             <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
             <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
             <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
