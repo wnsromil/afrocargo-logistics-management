@@ -187,7 +187,7 @@
                             <label>By Date</label>
                             <div class="daterangepicker-wrap mannual cal-icon cal-icon-info">
                                 <input type="text" class="btn-filters form-control form-cs info" name="datetimes"
-                                    placeholder="From Date - To Date" style="border:none" />
+                                    placeholder="From Date - To Date"  />
                             </div>
                         </div>
 

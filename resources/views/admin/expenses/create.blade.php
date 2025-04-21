@@ -22,7 +22,7 @@
             <div class="form-group-customer customer-additional-form">
                 <!-- first row end  -->
                 <div class="row mt-0 g-3 align-items-stretch">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-sm-0 mt-3 align-items-stretch">
                         <div class="borderset">
                             <div class="row gx-3 gy-2">
 
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-sm-0 mt-3 align-items-stretch">
                         <div class="borderset">
                             <div class="row gx-3 gy-2">
                                 <div class="col-md-12 mb-1">

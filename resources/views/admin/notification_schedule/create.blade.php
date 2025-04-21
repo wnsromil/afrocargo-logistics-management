@@ -27,11 +27,11 @@
     <label for="tab4" class="tab-title">Driver</label>
   </div> -->
 
-        <div class="tab-titles">
+        <div class="tab-titles mt-1">
             <label for="tab1" class="tab-title">All</label>
             <label for="tab2" class="tab-title">Warehouses</label>
             <label for="tab3" class="tab-title">Users</label>
-            <label for="tab4" class="tab-title">Driver</label>
+            <label for="tab4" class="tab-title">Drivers</label>
         </div>
 
 
@@ -40,7 +40,139 @@
             <!-- <h2>Content for Tab 1</h2>
     <p>This is the content of the first tab.</p> -->
             <div class="row">
-                <div class="col-lg-5 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
+                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
+                    </div>
+                </div>
+                <div class="col-lg-9 me-lg-5 col-md-12 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
+                        <input type="text" name="notification_message" class="form-control inp" style="height: 98px !important;width: 677px;" placeholder="Enter Your Notification Message">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content2" style="padding:0">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
+                        <select name="warehouse_name" class="form-control inp select2">
+                            <option value="">Select Warehouse </option>
+                            <option></option>
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-6 mt-3 col-sm-12">
+                    <div class="tabs m-0 mw-100">
+                        <input type="radio" id="tab5" name="tab1" checked>
+                        <input type="radio" id="tab6" name="tab1">
+                        <div class="tab-titles">
+                            <label for="tab5" class="tab-title">Manager</label>
+                            <label for="tab6" class="tab-title">Driver</label>
+                        </div>
+                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content5">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12 pe-sm-0">
+                                    <div class="input-block mb-3">
+                                        <label for="Manager_name" class="foncolor">Manager <i class="text-danger">*</i></label>
+                                        <select name="Manager_name" class="form-control inp select2">
+                                            <option value="">Select Managers </option>
+                                            <option>Peter </option>
+                                            <option>Markus</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 me-sm-5 col-md-6 col-sm-12 pe-sm-0">
+                                    <div class="input-block mb-3">
+                                        <label class="col737 fw-medium mb-1">Notification Title<i class="text-danger">*</i></label>
+                                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label for="notification_message" class="col737 fw-medium mb-1">Notification Message<i class="text-danger">*</i></label>
+                                        <textarea type="text" name="notification_message" class="form-control textarea-w" id="notification_message" rows="4" placeholder="Enter Your Notification Message"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content6">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12 pe-sm-0">
+                                    <div class="input-block mb-3">
+                                        <label for="Driver_name" class="foncolor">Driver <i class="text-danger">*</i></label>
+                                        <select name="Driver_name" class="form-control inp select2">
+                                            <option value="">Select Drivers </option>
+                                            <option>Peter </option>
+                                            <option>Markus</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 me-sm-5 col-md-6 col-sm-12 pe-sm-0">
+                                    <div class="input-block mb-3">
+                                        <label class="col737 fw-medium mb-1">Notification Title<i class="text-danger">*</i></label>
+                                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label for="notification_message" class="col737 fw-medium mb-1">Notification Message<i class="text-danger">*</i></label>
+                                        <textarea type="text" name="notification_message" class="form-control textarea-w" id="notification_message" rows="4" placeholder="Enter Your Notification Message"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content3">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
+                        <select name="Warehouse_name" class="form-control inp select2">
+                            <option value="" disabled hidden>Select Warehouses </option>
+                            <option>San Andrease </option>
+                            <option>California</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="User_name" class="foncolor">User <i class="text-danger">*</i></label>
+                        <select name="User_name" class="form-control inp select2">
+                            <option value="" disabled hidden>Select Users </option>
+                            <option>Lucas</option>
+                            <option>Kiran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Container_name" class="foncolor">Container <i class="text-danger">*</i></label>
+                        <select name="Container_name" class="form-control inp select2">
+                            <option value="" disabled hidden>Select Containers </option>
+                            <option>000128</option>
+                            <option>000129</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
                     <div class="input-block mb-3">
                         <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
                         <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
@@ -54,27 +186,43 @@
                 </div>
             </div>
         </div>
-
-        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content2" style="padding:0">
-            <div class="col-lg-7 col-md-6 col-sm-12">
-                <div class="input-block mb-3">
-                    <label for="warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
-                    <select name="warehouse_name" class="form-control inp select2">
-                        <option value="">Select Warehouse </option>
-                        <option></option>
-                        <option></option>
-                    </select>
+        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content4">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
+                        <select name="Warehouse_name" class="form-control inp select2">
+                            <option value="" disabled hidden>Select Warehouses </option>
+                            <option>San Andrease </option>
+                            <option>California</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Driver_name" class="foncolor">Driver <i class="text-danger">*</i></label>
+                        <select name="Driver_name" class="form-control inp select2">
+                            <option value="" disabled hidden>Select Drivers </option>
+                            <option>Lucas</option>
+                            <option>Kiran</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content3">
-            <h2>Content for Tab 3</h2>
-            <p>This is the content of the third tab.</p>
-        </div>
-        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content4">
-            <h2>Content for Tab 4</h2>
-            <p>This is the content of the four tab.</p>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
+                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
+                        <input type="text" name="notification_message" class="form-control inp" style="height: 98px !important;width: 677px;" placeholder="Enter Your Notification Message">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="ptop d-flex align-items-center">
             <div>
