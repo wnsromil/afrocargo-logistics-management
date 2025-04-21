@@ -251,8 +251,10 @@ Version      : 1.0
 
         $(".bookingrange").daterangepicker(
             {
-                startDate: start,
+                // startDate: start,
                 endDate: end,
+                minDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
                 // ranges: {
                 //     Today: [moment(), moment()],
                 //     Yesterday: [
@@ -645,7 +647,7 @@ Version      : 1.0
             startDate: moment().startOf("day"), // Default Today Selected
             autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
-                format: "M/DD/YYYY", // Date Format
+                format: "MM/DD/YYYY", // Date Format
             },
         });
 
@@ -653,7 +655,7 @@ Version      : 1.0
         $('input[name="signature_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
-                $(this).val(picker.startDate.format("M/DD/YYYY"));
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
             }
         );
     }
@@ -1472,38 +1474,38 @@ Version      : 1.0
             input.attr("type", "password");
         }
     });
-    if ($(".datatable").length > 0) {
-        $(".datatable").DataTable({
-            bFilter: false,
-            // "scrollX": true,
-            autoWidth: false,
-            sDom: "fBtlpi",
-            ordering: true,
-            columnDefs: [
-                {
-                    targets: "no-sort",
-                    orderable: false,
-                },
-            ],
-            language: {
-                search: " ",
-                sLengthMenu: "_MENU_",
-                paginate: {
-                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
-                    previous:
-                        '<i class="fa fa-angle-double-left me-2"></i> Previous',
-                },
-            },
-            initComplete: (settings, json) => {
-                $(".dataTables_filter").appendTo("#tableSearch");
-                $(".dataTables_filter").appendTo(".search-input");
-            },
-        });
+    // if ($(".datatable").length > 0) {
+    //     $(".datatable").DataTable({
+    //         bFilter: false,
+    //         // "scrollX": true,
+    //         autoWidth: false,
+    //         sDom: "fBtlpi",
+    //         ordering: true,
+    //         columnDefs: [
+    //             {
+    //                 targets: "no-sort",
+    //                 orderable: false,
+    //             },
+    //         ],
+    //         language: {
+    //             search: " ",
+    //             sLengthMenu: "_MENU_",
+    //             paginate: {
+    //                 next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+    //                 previous:
+    //                     '<i class="fa fa-angle-double-left me-2"></i> Previous',
+    //             },
+    //         },
+    //         initComplete: (settings, json) => {
+    //             $(".dataTables_filter").appendTo("#tableSearch");
+    //             $(".dataTables_filter").appendTo(".search-input");
+    //         },
+    //     });
 
-        $(".modal").on("shown.bs.modal", function (e) {
-            $.fn.dataTable
-                .tables({ visible: true, api: true })
-                .columns.adjust();
-        });
-    }
+    //     $(".modal").on("shown.bs.modal", function (e) {
+    //         $.fn.dataTable
+    //             .tables({ visible: true, api: true })
+    //             .columns.adjust();
+    //     });
+    // }
 })(jQuery);

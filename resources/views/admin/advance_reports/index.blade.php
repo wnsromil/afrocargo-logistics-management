@@ -13,74 +13,86 @@
         </div>
     </x-slot>
 
-    <form>
-        <div class="row gx-3 searchFilters">
-            <div class="col-md-3 dposition">
-                <label>Invoice Date</label>
-                <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                    <input type="text" class="btn-filters form-control form-cs" name="datetimes" placeholder="From Date - To Date" />
+    <div class="row">
+        <form class="p-0">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 gx-2 searchFilters smallInputs">
+                <div class="col mb-3">
+                    <label>Search</label>
+                    <img class="imgc" src="assets/img/icons/search.svg" alt="img">
+                    <input type="text" class="form-control form-cs" placeholder="Search">
+                </div>
+                <div class="col mb-3">
+                    <label>Invoice Date</label>
+                    <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                        <input type="text" class="btn-filters daterangeInput form-control form-cs" name="invoiceDate" placeholder="From Date - To Date" />
+                    </div>
+                </div>
+
+                <div class="col mb-3">
+                    <label>By warehouse</label>
+                    <select class="js-example-basic-single select2 form-cs">
+                        <option selected="selected " style="color:#737B8B">Select Warehouse</option>
+                        <option>white</option>
+                        <option>purple</option>
+                    </select>
+                </div>
+                <div class="col mb-3">
+                    <label>By Tracking ID</label>
+                    <img class="imgc" src="assets/img/icons/search.svg" alt="img">
+                    <input type="text" class="form-control form-cs" placeholder="Enter Tracking ID">
+                </div>
+
+                <div class="col mb-3">
+                    <label>By Customer </label>
+                    <img class="imgc" src="assets/img/icons/search.svg" alt="img">
+                    <input type="text" class="form-control form-cs" placeholder="Enter Customer Name">
+                </div>
+
+                <div class="col mb-3">
+                    <!-- Moment.js (required for daterangepicker) -->
+                    <label>By Driver</label>
+                    <select class="js-example-basic-single select2">
+                        <option selected="selected" style="color:#737B8B">Select Driver</option>
+                        <option>white</option>
+                        <option>purple</option>
+                    </select>
+                </div>
+
+                <div class="col mb-3">
+                    <label>By Hub</label>
+                    <select class="js-example-basic-single select2">
+                        <option selected="selected">Select Hub</option>
+                        <option>white</option>
+                        <option>purple</option>
+                    </select>
+                </div>
+
+                <div class="col mb-3">
+                    <label>By Container</label>
+                    <select class="js-example-basic-single select2">
+                        <option selected="selected">Select Container</option>
+                        <option>000125</option>
+                        <option>000126</option>
+                    </select>
+                </div>
+
+                <div class="col mb-3">
+                    <label>By Order Status</label>
+                    <select class="js-example-basic-single select2">
+                        <option selected="selected">Select Order Status</option>
+                        <option>white</option>
+                        <option>purple</option>
+                    </select>
+                </div>
+
+                <div class="col mb-3 d-flex justify-content-end align-items-end">
+                    <button class="btn btn-outline-danger btnr me-sm-2">Reset</button>
+                    <button class="btn btn-primary btnf">Filter</button>
                 </div>
             </div>
 
-            <div class="col-md-3 dposition">
-                <label>By warehouse</label>
-                <select class="js-example-basic-single select2 form-cs">
-                    <option selected="selected " style="color:#737B8B">Select Warehouse</option>
-                    <option>white</option>
-                    <option>purple</option>
-
-
-
-                </select>
-            </div>
-            <div class="col-md-3 dposition">
-                <label>By Tracking ID</label>
-                <img class="imgc" src="assets/img/icons/search.svg" alt="img">
-                <input type="text" class="form-control form-cs" placeholder="Enter Tracking ID">
-            </div>
-
-            <div class="col-md-3 dposition">
-                <label>By Customer </label>
-                <img class="imgc" src="assets/img/icons/search.svg" alt="img">
-                <input type="text" class="form-control form-cs" placeholder="Enter Customer Name">
-            </div>
-
-            <div class="col-md-3 dmargin">
-                <!-- Moment.js (required for daterangepicker) -->
-                <label>By Driver</label>
-                <select class="js-example-basic-single select2">
-                    <option selected="selected" style="color:#737B8B">Select Driver</option>
-                    <option>white</option>
-                    <option>purple</option>
-                </select>
-            </div>
-
-            <div class="col-md-3 dmargin">
-                <label>By Hub</label>
-                <select class="js-example-basic-single select2">
-                    <option selected="selected">Select Hub</option>
-                    <option>white</option>
-                    <option>purple</option>
-                </select>
-            </div>
-
-
-            <div class="col-md-3 dmargin">
-                <label>By Order Status</label>
-                <select class="js-example-basic-single select2">
-                    <option selected="selected">Select Order Status</option>
-                    <option>white</option>
-                    <option>purple</option>
-                </select>
-            </div>
-
-            <div class="col-md-3 twobutton">
-                <button class="btn btn-primary btnf">Filter</button>
-                <button class="btn btn-outline-danger btnr ">Reset</button>
-            </div>
-        </div>
-
-    </form>
+        </form>
+    </div>
 
 
     <div>

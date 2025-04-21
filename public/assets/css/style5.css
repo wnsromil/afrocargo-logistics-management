@@ -715,7 +715,6 @@ table tbody {
 .tabs {
   width: 100%;
   max-width: 600px;
-  margin-left: 5px;
 }
 
 
@@ -789,12 +788,21 @@ input[type="radio"] {
 #tab4:checked~.tab-titles~#content4 {
   display: block;
 }
+#tab5:checked~.tab-titles~#content5 {
+  display: block;
+}
+
+#tab6:checked~.tab-titles~#content6 {
+  display: block;
+}
 
 /* Highlight the active tab */
 #tab1:checked~.tab-titles label[for="tab1"],
 #tab2:checked~.tab-titles label[for="tab2"],
 #tab3:checked~.tab-titles label[for="tab3"],
-#tab4:checked~.tab-titles label[for="tab4"] {
+#tab4:checked~.tab-titles label[for="tab4"],
+#tab5:checked~.tab-titles label[for="tab5"],
+#tab6:checked~.tab-titles label[for="tab6"] {
   background-color: #203A5F;
   font-weight: 400;
   font-size: 14px;

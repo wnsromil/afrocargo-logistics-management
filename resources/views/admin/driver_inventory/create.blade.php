@@ -28,7 +28,7 @@
                     <div class="input-block mb-3">
                         <label for="inventory_name">Inventory Name <i class="text-danger">*</i></label>
                         <select name="inventory_name" class="form-control select2Tags">
-                            <option value="">Select Warehouse Name</option>
+                            <option value="">Select Inventory Name</option>
                             @foreach($categories as $category)
                             <option {{ old('inventory_name') == $category->name ? 'selected' :'' }} value="{{ $category->name }}">{{ ucfirst($category->name) }}</option>
                             @endforeach
