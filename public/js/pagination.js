@@ -30,14 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 🔹 2. Handle Per-Page Change
-    pageSizeSelect.addEventListener("change", function () {
-        // let selectedValue = this.value;
-        let selectedValue = document.getElementById("pageSizeSelect").value;
-        let url = new URL(window.location.href);
+    pageSizeSelect.addEventListener("change", function (event) {
 
-        url.searchParams.set("per_page", selectedValue);
-        url.searchParams.set("page", 1); // Reset pagination on page size change
-        updateTable(url);
+        if (event.target.closest(".form-select")) {
+            // let selectedValue = this.value;
+            let selectedValue = document.getElementById("pageSizeSelect").value;
+            let url = new URL(window.location.href);
+
+            url.searchParams.set("per_page", selectedValue);
+            url.searchParams.set("page", 1); // Reset pagination on page size change
+            updateTable(url);
+        }
+        
     });
 
     // 🔹 3. Handle Pagination Clicks (Event Delegation)

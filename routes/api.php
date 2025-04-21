@@ -47,6 +47,8 @@ Route::post('forgetPassword', [ForgetPassword::class, 'forgetPassword']);
 Route::post('/warehouse-list', [WarehouseController::class, 'index']);
 Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
+Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus']);
+Route::get('/vehicle/getAdminActiveContainer', [ContainerController::class, 'getAdminActiveContainers']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

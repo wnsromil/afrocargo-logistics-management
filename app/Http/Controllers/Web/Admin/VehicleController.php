@@ -26,6 +26,7 @@ class VehicleController extends Controller
         $currentPage = $request->input('page', 1); // ✅ Current page number
 
         $vehicles = Vehicle::with(['driver', 'warehouse'])->where('vehicle_type', '!=', 'Container')
+            ->withCount('parcelsCount')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
@@ -130,7 +131,6 @@ class VehicleController extends Controller
         // }
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -187,7 +187,6 @@ class VehicleController extends Controller
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -198,6 +197,7 @@ class VehicleController extends Controller
         return redirect()->route('admin.vehicle.index')
             ->with('success', 'Vehicle deleted successfully');
     }
+
 
     public function changeStatus(Request $request, $id)
     {

@@ -81,64 +81,36 @@
                                     <td>{{ $vehicle->booking_number ?? '-' }}</td>
                                     <td>{{ $vehicle->seal_no ?? '-' }}</td>
                                     <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
-                                  
+
                                     <td>-</td>
                                     <td>-</td>
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
                                     <td>-</td>
-                                    <td>-</td>
+                                    <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
                                     <td>
                                         <p><label class="amountfont">Recieved:</label> $0</p>
                                         <p><label class="amountfont">Due:</label> $0</p>
                                         <p><label class="amountfont">Total:</label> $0</p>
                                     </td>
                                     <td>
-                                        <label class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                        <label
+                                            class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
                                             for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>
                                     </td>
                                     <td>
                                         <div class="status-toggle toggles togglep">
-                                            <input id="rating_8" class="check" type="checkbox" value="Inactive">
-                                            <label for="rating_8" class="checktoggle log checkbox-bg">checkbox</label>
+                                            <input
+                                                onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}')"
+                                                id="rating_{{$index}}" class="check" type="checkbox"
+                                                value="{{$vehicle->status}}" {{$vehicle->status == 'Active' ? 'checked' : '' }}>
+                                            <label for="rating_{{$index}}"
+                                                class="checktoggle log checkbox-bg">checkbox</label>
                                         </div>
                                     </td>
-                                    {{-- <td class="d-flex align-items-center"> -->
-                                        <a href="add-invoice.html" class="btn btn-greys me-2"><i
-                                                class="fa fa-plus-circle me-1"></i> Invoice</a>
-                                        <a href="customers-ledger.html" class="btn btn-greys me-2"><i
-                                                class="fa-regular fa-eye me-1"></i> Ledger</a>
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.vehicle.edit', $vehicle->id) }}"><i
-                                                                class="far fa-edit me-2"></i>Edit</a>
-                                                    </li>
-
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
-                                                                class="far fa-eye me-2"></i>View</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="active-customers.html"><i
-                                                                class="fa-solid fa-power-off me-2"></i>Activate</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="deactive-customers.html"><i
-                                                                class="far fa-bell-slash me-2"></i>Deactivate</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td> --}}
                                     <td class="btntext">
                                         <button class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                                     </td>
@@ -148,261 +120,6 @@
                                     <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
                                 </tr>
                             @endforelse
-                            {{-- <tr>
-                                <td>1</td>
-                                <td>Container</td>
-                                <td>Location ABC</td>
-                                <td>2E 5777</td>
-                                <td>5855</td>
-                                <td>887</td>
-                                <td>40”</td>
-                                <td>5-12-2024</td>
-                                <td>6-12-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>-</td>
-                                <td>12-12-2024</td>
-                                <td>120</td>
-                                <td>
-                                    <p><label class="amountfont">Recieved:</label> $1500</p>
-                                    <p><label class="amountfont">Due:</label> $120</p>
-                                    <p><label class="amountfont">Total:</label> $2120</p>
-
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">Inactive</label></td>
-                                <td>
-
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_8" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_8" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-
-
-
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{ asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td>Container</td>
-                                <td>Location CSA</td>
-                                <td>5T 789</td>
-                                <td>4555</td>
-                                <td>474</td>
-                                <td>20 feet</td>
-                                <td>6-12-2024</td>
-                                <td>7-12-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>Don John</td>
-                                <td>02-21-2024</td>
-                                <td>555</td>
-                                <td>
-                                    <p><label class="amountfont">Recieved:</label> $5000</p>
-                                    <p><label class="amountfont">Due:</label> $555</p>
-                                    <p><label class="amountfont">Total:</label> $5555</p>
-                                </td>
-                                <td><label class="labelstatusw" for="partial_status"> Active</label></td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_9" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_9" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{ route('admin.container.show', 1) }}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>3</td>
-                                <td>Container</td>
-                                <td>Location QWQ</td>
-                                <td>2E 577</td>
-                                <td>585</td>
-                                <td>442</td>
-                                <td>20 feet</td>
-                                <td>5-12-2024</td>
-                                <td>6-12-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>-</td>
-                                <td>06-16-2024</td>
-                                <td>200</td>
-                                <td>
-                                    <p><label class="amountfont">Recieved:</label> $900</p>
-                                    <p><label class="amountfont">Due:</label> $300</p>
-                                    <p><label class="amountfont">Total:</label> $1200</p>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">Inactive</label></td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_1" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_1" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{ route('admin.container.show', 1) }}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>4</td>
-                                <td>Container</td>
-                                <td>Location TTT</td>
-                                <td>5T 739</td>
-                                <td>658</td>
-                                <td>2100</td>
-                                <td>40”</td>
-                                <td>5-12-2024</td>
-                                <td>6-12-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>-</td>
-                                <td>06-16-2024</td>
-                                <td>300</td>
-                                <td>
-                                    <p><label class="amountfont">Recieved:</label> $100</p>
-                                    <p><label class="amountfont">Due:</label> $300</p>
-                                    <p><label class="amountfont">Total:</label> $1300</p>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">Inactive</label></td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_2" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_2" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{ route('admin.container.show', 1) }}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>5</td>
-                                <td>Container</td>
-                                <td>Location GGG</td>
-                                <td>2E 5757</td>
-                                <td>485</td>
-                                <td>125</td>
-                                <td>40”</td>
-                                <td>5-12-2024</td>
-                                <td>6-12-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>Peter Duke</td>
-                                <td>12-4-2024</td>
-                                <td>450</td>
-                                <td>
-                                    <p><label class="amountfont">Recieved:</label> $1500</p>
-                                    <p><label class="amountfont">Due:</label> $120</p>
-                                    <p><label class="amountfont">Total:</label> $2120</p>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">Inactive</label></td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_3" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_3" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{ route('admin.container.show', 1) }}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>6</td>
-                                <td>Container</td>
-                                <td>Location DDD </td>
-                                <td>5T 7319</td>
-                                <td>474</td>
-                                <td>555</td>
-                                <td>20 feet</td>
-                                <td>12-4-2024</td>
-                                <td>12-4-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>-</td>
-                                <td>12-4-2024</td>
-                                <td>110</td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row amountfont">Received:</div>
-                                            <div class="row amountfont">Due:</div>
-                                            <div class="row amountfont">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$5000</div>
-                                            <div class="row">$555</div>
-                                            <div class="row">$5555</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">Inactive</label></td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_4" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_4" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{ route('admin.container.show', 1) }}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>7</td>
-                                <td>Container</td>
-                                <td>Location SSSS</td>
-                                <td>2E 56777</td>
-                                <td>658</td>
-                                <td>450</td>
-                                <td>20 feet</td>
-                                <td>8-12-2024</td>
-                                <td>9-12-2024</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>-</td>
-                                <td>12-4-2024</td>
-                                <td>554</td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row amountfont">Received:</div>
-                                            <div class="row amountfont">Due:</div>
-                                            <div class="row amountfont">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$900</div>
-                                            <div class="row">$300</div>
-                                            <div class="row">$1200</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">Inactive</label></td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input id="rating_5" class="check" type="checkbox" value="Inactive">
-                                        <label for="rating_5" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{ route('admin.container.show', 1) }}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr> --}}
                         </tbody>
 
                     </table>
@@ -430,4 +147,63 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function handleContainerClick(containerId, containerNumber) {
+            // Step 1: First fetch current active container
+            axios.get('/api/vehicle/getAdminActiveContainer')
+                .then(response => {
+                    const activeContainer = response.data.container;
+
+                    let message = '';  // To hold the message
+
+                    // Condition 1: If active container is the same as the one to open
+                    if (activeContainer?.container_no_1 === containerNumber) {
+                        message = `That you need to close this <b>${containerNumber}</b> container`;
+                    }
+                    // Condition 2: If there's no active container
+                    else if (!activeContainer?.container_no_1) {
+                        message = `That you need to open this <b>${containerNumber}</b> container`;
+                    }
+                    // Condition 3: If active container is different from the one to open
+                    else {
+                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                    }
+
+                    // Show the Swal message based on the conditions
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        html: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, confirm',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Step 3: Now call POST to toggle status
+                            axios.post('/api/vehicle/toggle-status', {
+                                open_id: containerId, // New container to open (Active)
+                                close_id: activeContainer?.id // Old container to close (Inactive)
+                            })
+                                .then((res) => {
+                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                        location.reload();
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.fire('Error', 'Failed to update container status.', 'error');
+                                });
+                        } else {
+                            // User cancelled → reload the page
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+                });
+        }
+    </script>
+
 </x-app-layout>
