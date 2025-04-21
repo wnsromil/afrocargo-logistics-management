@@ -19,9 +19,10 @@ class DashboardController extends Controller
     {
         // Latest 4 vehicles where type is 'Container'
         $latestContainers = Vehicle::where('vehicle_type', 'Container')
-                                ->latest()
-                                ->take(4)
-                                ->get();
+            ->withCount('parcelsCount')
+            ->latest()
+            ->take(4)
+            ->get();
 
         return view('dashboard', compact('latestContainers'));
     }

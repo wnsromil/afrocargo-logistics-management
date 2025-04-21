@@ -531,7 +531,8 @@
             <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
                 @forelse ($latestContainers as $index => $latestContainer)
                     <div class="col-md-5 col-xl-3 col-sm-6">
-                        <div class="card innerCards w-100 setCard setCardSize rounded">
+                        <div class="card innerCards w-100 setCard setCardSize rounded 
+                                                    {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -541,17 +542,16 @@
                                     </h5>
                                     <div class="cardFontSize mt-2 fw-medium">
                                         <span class="fw-regular col737">Total Order :</span>
-                                        --<br>
-                                        <span class="fw-regular col737">Total Amt : </span>-<br>
-                                        <span class="fw-regular text-success">Received Amt : </span>-<br>
-                                        <span class="fw-regular text-danger">Due Amt : </span>-<br>
+                                        {{$latestContainer->parcelsCount->first()->count ?? 0}}<br>
+
                                     </div>
                                 </div>
 
-                                <div class="col-3 justify-content-end">
+                                <div class="col-3 justify-content-end mt-1">
                                     <div class="status-toggle float-end me-0">
-
-                                        <input id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $index === 1 ? 'checked' : '' }}>
+                                        <input
+                                            onclick="handleContainerClick('{{ $latestContainer->id }}', '{{ $latestContainer->container_no_1 }}')"
+                                            id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
                                         <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -559,10 +559,10 @@
                         </div>
                     </div>
                 @empty
-                    <p colspan="7" class="px-4 py-4 text-center text-gray-500">No container found.
-                    </p>
+                    <p colspan="7" class="px-4 py-4 text-center text-gray-500">No container found.</p>
                 @endforelse
             </div>
+
         </div>
     </div>
 
@@ -715,8 +715,7 @@
                                         <td class="table-content">$167.00</td>
                                         <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
                                             style="color:red;"></i>Canceled</td> -->
-                                        <td><span
-                                                class="orderstatus pending">Pending</span>
+                                        <td><span class="orderstatus pending">Pending</span>
                                         </td>
                                         <td class="d-flex">
                                             <div class="dropdown dropdown-action">
@@ -748,7 +747,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -773,8 +772,7 @@
                                         <td>12-12-2024</td>
                                         <td class="text-truncate width">Household Set, Cards </td>
                                         <td>$863.00</td>
-                                        <td><span
-                                                class="orderstatus Schedule Pickup">Schedule
+                                        <td><span class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -819,7 +817,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -883,7 +881,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -908,15 +906,14 @@
                                         <td class="text-truncate width">Household Set, Card...</td>
                                         <td>$751.00</td>
 
-                                        <td><span
-                                                class="orderstatus Received By Pickup Man">Received
+                                        <td><span class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -979,7 +976,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1004,15 +1001,14 @@
                                         <td class="text-truncate width">Cards</td>
                                         <td>$940.00</td>
 
-                                        <td><span
-                                                class="orderstatus Received By Pickup Man">Received
+                                        <td><span class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1037,8 +1033,7 @@
                                         <td class="text-truncate width">Books</td>
                                         <td>$125.00</td>
 
-                                        <td><span
-                                                class="orderstatus Schedule Pickup">Schedule
+                                        <td><span class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -1086,7 +1081,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1109,15 +1104,14 @@
                                         <td>12-12-2024</td>
                                         <td class="text-truncate width">Received By Pickup Man</td>
                                         <td>$759.00</td>
-                                        <td><span
-                                                class="orderstatus Received By Pickup Man">Received
+                                        <td><span class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
-                                            </td>
+                                        </td>
                                         <td class="align-center mt-2">
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1141,8 +1135,7 @@
                                         <td class="text-truncate width">Electronics</td>
                                         <td>$300.00</td>
 
-                                        <td><span
-                                                class="orderstatus Pending">Pending</span>
+                                        <td><span class="orderstatus Pending">Pending</span>
                                         </td>
                                         <td class="d-flex">
                                             <div class="dropdown dropdown-action">
@@ -1175,7 +1168,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1199,8 +1192,7 @@
                                         <td class="text-truncate width">Household</td>
                                         <td>$456.00</td>
 
-                                        <td><span
-                                                class="orderstatus Schedule Pickup">Schedule
+                                        <td><span class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -1248,7 +1240,7 @@
                                             </div>
                                             <div>
                                                 <a class="btn btn-primary align-center veiwBtn rounded-1"
-                                                        style="height:26px; width:36px;"
+                                                    style="height:26px; width:36px;"
                                                     onClick="redirectTo('{{route('admin.orderdetails')}}')"
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1769,6 +1761,7 @@
     <!-- ---------------------------------------------------------------------------------------------------- -->
 
 
+    {{--
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const allToggles = document.querySelectorAll('.toggle-btn1');
@@ -1794,7 +1787,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
 
     <!-- <script>
@@ -1978,7 +1971,7 @@
         </div>
         <!-- /Received_Warehouse Modal -->
         <!-- ---------------------------------------------------------------------------------------------------- -->
-         
+
         <!-- schedule_pickup_cancel Modal -->
         <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md">
@@ -2146,5 +2139,65 @@
     @endsection
     @section('bottomContent')
     @endsection
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function handleContainerClick(containerId, containerNumber) {
+            // Step 1: First fetch current active container
+            axios.get('/api/vehicle/getAdminActiveContainer')
+                .then(response => {
+                    const activeContainer = response.data.container;
+
+                    let message = '';  // To hold the message
+
+                    // Condition 1: If active container is the same as the one to open
+                    if (activeContainer?.container_no_1 === containerNumber) {
+                        message = `That you need to close this <b>${containerNumber}</b> container`;
+                    }
+                    // Condition 2: If there's no active container
+                    else if (!activeContainer?.container_no_1) {
+                        message = `That you need to open this <b>${containerNumber}</b> container`;
+                    }
+                    // Condition 3: If active container is different from the one to open
+                    else {
+                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                    }
+
+                    // Show the Swal message based on the conditions
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        html: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, confirm',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Step 3: Now call POST to toggle status
+                            axios.post('/api/vehicle/toggle-status', {
+                                open_id: containerId, // New container to open (Active)
+                                close_id: activeContainer?.id // Old container to close (Inactive)
+                            })
+                                .then((res) => {
+                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                        location.reload();
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.fire('Error', 'Failed to update container status.', 'error');
+                                });
+                        } else {
+                            // User cancelled → reload the page
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+                });
+        }
+    </script>
 
 </x-app-layout>

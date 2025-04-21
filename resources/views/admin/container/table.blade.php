@@ -46,7 +46,7 @@
                             <td class="tabletext"><input type="checkbox"></td>
                             <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
                             <td>-</td>
-                            <td>-</td>
+                            <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
                             <td>
                                 <p><label class="amountfont">Recieved:</label> $0</p>
                                 <p><label class="amountfont">Due:</label> $0</p>
@@ -60,8 +60,12 @@
                             </td>
                             <td>
                                 <div class="status-toggle toggles togglep">
-                                    <input id="rating_8" class="check" type="checkbox" value="Inactive">
-                                    <label for="rating_8" class="checktoggle log checkbox-bg">checkbox</label>
+                                    <input
+                                        onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}')"
+                                        id="rating_{{$index}}" class="check" type="checkbox"
+                                        value="{{$vehicle->status}}" {{$vehicle->status == 'Active' ? 'checked' : '' }}>
+                                    <label for="rating_{{$index}}"
+                                        class="checktoggle log checkbox-bg">checkbox</label>
                                 </div>
                             </td>
                             {{-- <td class="d-flex align-items-center"> -->

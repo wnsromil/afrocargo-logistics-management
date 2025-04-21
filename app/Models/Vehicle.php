@@ -19,4 +19,11 @@ class Vehicle extends Model
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
+
+    public function parcelsCount()
+    {
+        return $this->hasMany(Parcel::class, 'container_id')
+            ->selectRaw('container_id, COUNT(*) as count')
+            ->groupBy('container_id');
+    }
 }

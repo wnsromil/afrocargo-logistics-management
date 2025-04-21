@@ -151,7 +151,7 @@ class DriversController extends Controller
             // Email Send Karna
             Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
         }
-
+        $this->storeDefaultWeeklySchedule($driver->id);
         // Redirect with success message
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Driver created successfully.');
@@ -181,7 +181,7 @@ class DriversController extends Controller
         $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('user_id', $id)->get();
         $locationschedule = LocationSchedule::where('is_active', 1)->where('user_id', $id)->get();
         // print_r(json_encode($locationschedule));dd();
-        return view('admin.drivers.schedule', compact('user', 'availabilities','weeklyschedule','locationschedule'));
+        return view('admin.drivers.schedule', compact('user', 'availabilities', 'weeklyschedule', 'locationschedule'));
     }
 
     public function scheduleshow($id)
@@ -299,5 +299,42 @@ class DriversController extends Controller
         }
 
         return response()->json(['error' => 'Driver Not Found']);
+    }
+
+    public function storeDefaultWeeklySchedule($userId)
+    {
+        $days = [
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
+            'sunday',
+        ];
+
+        $defaultTimes = [
+            'morning_start' => '06:00:00',
+            'morning_end' => '11:59:00',
+            'afternoon_start' => '12:00:00',
+            'afternoon_end' => '17:59:00',
+            'evening_start' => '18:00:00',
+            'evening_end' => '21:00:00',
+        ];
+
+        foreach ($days as $day) {
+            WeeklySchedule::create([
+                'user_id' => $userId,
+                'day' => $day,
+                'creates_by' => 1,
+                'morning_start' => $defaultTimes['morning_start'],
+                'morning_end' => $defaultTimes['morning_end'],
+                'afternoon_start' => $defaultTimes['afternoon_start'],
+                'afternoon_end' => $defaultTimes['afternoon_end'],
+                'evening_start' => $defaultTimes['evening_start'],
+                'evening_end' => $defaultTimes['evening_end'],
+                'is_active' => 1,
+            ]);
+        }
     }
 }
