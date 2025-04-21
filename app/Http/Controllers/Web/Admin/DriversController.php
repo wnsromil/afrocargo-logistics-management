@@ -15,7 +15,8 @@ use App\Models\{
     Country,
     Vehicle,
     Availability,
-    WeeklySchedule
+    WeeklySchedule,
+    LocationSchedule
 };
 use DB;
 use Illuminate\Support\Facades\Mail;
@@ -178,8 +179,9 @@ class DriversController extends Controller
         // Get all active availabilities
         $availabilities = Availability::where('is_active', 1)->where('user_id', $id)->get();
         $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('user_id', $id)->get();
-      // print_r(json_encode($weeklyschedule));dd();
-        return view('admin.drivers.schedule', compact('user', 'availabilities','weeklyschedule'));
+        $locationschedule = LocationSchedule::where('is_active', 1)->where('user_id', $id)->get();
+        // print_r(json_encode($locationschedule));dd();
+        return view('admin.drivers.schedule', compact('user', 'availabilities','weeklyschedule','locationschedule'));
     }
 
     public function scheduleshow($id)

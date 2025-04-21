@@ -103,7 +103,7 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont required">Contact No. 1</p>
-                                    <input type="text" id="mobile_code" name="phone"
+                                    <input type="text" id="edit_mobile_code" name="phone"
                                         value="{{ old('phone', $user->phone) }}" class="form-control" placeholder=""
                                         required maxlength="10" oninput="validatePhone(this)">
                                     <span class="error text-danger">
@@ -113,11 +113,13 @@
                                     </span>
                                 </div>
                             </div>
+                            <input type="hidden" id="country_code" name="country_code"
+                            value="{{ old('country_code', $user->country_code) }}">
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Contact No. 2</p>
-                                    <input type="number" name="phone_2"
+                                    <input type="number" name="phone_2" id="edit_mobile"
                                         value="{{ old('phone_2', $user->phone_2) }}" class="flagInput form-control"
                                         placeholder="">
                                     <span class="error text-danger">
@@ -127,6 +129,9 @@
                                     </span>
                                 </div>
                             </div>
+
+                            <input type="hidden" id="country_code_2" name="country_code_2"
+                            value="{{ old('country_code_2', $user->country_code_2) }}">
 
                             {{-- <div class="col-md-6">
                                 <label>Email</label> <span class="text-danger">*</span>
@@ -322,6 +327,40 @@
                 });
             }
         });
-    </script>
+  
+        $(document).ready(function () {
+                function getIsoCodeFromDialCode(dialCode) {
+                    const allCountries = window.intlTelInputGlobals.getCountryData();
+                    dialCode = dialCode.replace('+', '');
+                    const match = allCountries.find(c => c.dialCode === dialCode);
+                    return match ? match.iso2 : 'us'; // fallback to India
+                }
+
+                function initializeIntlTelInput(inputId, hiddenInputId, userDialCode) {
+                    const isoCode = getIsoCodeFromDialCode(userDialCode);
+                    const input = document.querySelector(inputId);
+
+                    const iti = window.intlTelInput(input, {
+                        initialCountry: isoCode,
+                        separateDialCode: true,
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                    });
+
+                    // Update country code when country changes
+                    input.addEventListener("countrychange", function () {
+                        const dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    });
+
+                    // Also update immediately on page load
+                    const initialDialCode = iti.getSelectedCountryData().dialCode;
+                    $(hiddenInputId).val("+" + initialDialCode);
+                }
+
+                // Pass dial code like '+91' from Laravel
+                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+1' }}");
+                initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+1' }}");
+            });
+  </script>
 
 </x-app-layout>

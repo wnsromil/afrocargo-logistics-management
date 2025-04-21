@@ -54,8 +54,6 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
-
         //  // Find the warehouse by ID
         $profile = User::find(auth()->id());
 
@@ -72,6 +70,8 @@ class ProfileController extends Controller
             'pincode' => $request->pincode,
             'address' => $request->address,
             'address_2' => $request->address_2,
+            'country_code'        => $request->country_code ?? null,
+            'country_code_2'        => $request->country_code_2 ?? null,
         ]);
         return Redirect::route('profile.index')->with('success', 'Profile updated successfully!');
     }

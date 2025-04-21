@@ -118,14 +118,13 @@
 
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block cal-icon cal-icon-info mannualInput mb-3">
-
-
-
-                        <label class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                            <input type="text" name="license_expiry_date" class="datetimepicker form-control inp" style="cursor: pointer;" placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="license_expiry_date">License Expiry Date<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="license_expiry_date" class="form-control inp"
+                        readonly style="cursor: pointer;"  placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
-                        <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -147,7 +146,7 @@
                         <label class="foncolor" for="status">Status <i class="text-danger">*</i></label>
                         <div class="status-toggle">
                             <span>Active</span>
-                            <input id="rating_1" class="check" type="checkbox" value="Active">
+                            <input id="rating_1"  name="status" class="check" type="checkbox" value="Active">
                             <label for="rating_1" class="checktoggle checkbox-bg"></label>
                             <span class="inactive">Inactive</span>
                         </div>

@@ -327,8 +327,24 @@ Version      : 1.0
 
     $(".onlyTimePickerSchedule").each(function () {
         const $this = $(this);
+        const name = $this.attr("name");
+        const timeType = name.split("_")[1]; // morning / afternoon / evening
 
-        // ✅ Make input completely read-only (no typing)
+        let minTime, maxTime;
+
+        // Define allowed time ranges for each timeType
+        if (timeType === "morning") {
+            minTime = moment().set({ hour: 6, minute: 0, second: 0 });
+            maxTime = moment().set({ hour: 11, minute: 59, second: 0 });
+        } else if (timeType === "afternoon") {
+            minTime = moment().set({ hour: 12, minute: 0, second: 0 });
+            maxTime = moment().set({ hour: 16, minute: 59, second: 0 });
+        } else if (timeType === "evening") {
+            minTime = moment().set({ hour: 17, minute: 0, second: 0 });
+            maxTime = moment().set({ hour: 21, minute: 59, second: 0 });
+        }
+
+        // ✅ Prevent manual typing
         $this.attr("readonly", "readonly");
         $this.on("keydown paste", function (e) {
             e.preventDefault();
@@ -349,7 +365,9 @@ Version      : 1.0
                 locale: {
                     format: "hh:mm A",
                 },
-                timePickerIncrement: 15,
+                timePickerIncrement: 1,
+                minDate: minTime,
+                maxDate: maxTime,
             },
             function (start) {
                 $this.val(start.format("hh:mm A"));
@@ -364,14 +382,14 @@ Version      : 1.0
         });
 
         $this.on("cancel.daterangepicker", function () {
-            $this.val(""); // Clear input
+            $this.val("");
         });
 
         $this.on("show.daterangepicker", function (ev, picker) {
             picker.container.addClass("myCustomPopup");
         });
 
-        $this.val(""); // Default empty
+        $this.val("");
     });
 
     // 🔐 Function to validate time logic between fields
@@ -393,10 +411,18 @@ Version      : 1.0
         // Validation logic
         if (startField.val() && endField.val()) {
             if (endTime.isBefore(startTime)) {
-                alert("⛔ End time can't be before start time!");
+                Swal.fire({
+                    title: "Oops...",
+                    text: "End time can't be before start time!",
+                    icon: "error"
+                });
                 endField.val(""); // Clear invalid input
             } else if (endTime.isSame(startTime)) {
-                alert("⛔ Start time and End time can't be same!");
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Start time and End time can't be same!",
+                    icon: "error"
+                });
                 endField.val(""); // Clear invalid input
             }
         }
@@ -679,25 +705,27 @@ Version      : 1.0
         );
     }
 
-    if ($('input[name="edit_license_expiry_date"]').length > 0) {
-        $('input[name="edit_license_expiry_date"]').daterangepicker({
+    if ($('input[name="license_expiry_date"]').length > 0) {
+        $('input[name="license_expiry_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
             minDate: moment().startOf("day"), // Past Dates Disabled
-            // startDate: moment().startOf("day"), // Default Today Selected (COMMENTED)
-            autoUpdateInput: true, // Auto Update Input With Default Date
+            autoUpdateInput: false, // Default Date Auto Set Na Ho
             locale: {
                 format: "M/DD/YYYY", // Date Format
             },
         });
-
+    
         // Date Select Hone Ke Baad Input Me Value Set Karo
-        $('input[name="edit_license_expiry_date"]').on(
+        $('input[name="license_expiry_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
+    
+        // Placeholder Set Karne Ke Liye
+        $('input[name="license_expiry_date"]').attr("placeholder", "MM-DD-YYYY");
     }
 
     // Sidebar Slimscroll
