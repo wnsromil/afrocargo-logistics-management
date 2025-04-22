@@ -40,8 +40,8 @@
                             <td>{{ $vehicle->seal_no ?? '-' }}</td>
                             <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
                           
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}</td>
+                            <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>                            
                             <td class="tabletext"><input type="checkbox"></td>
                             <td class="tabletext"><input type="checkbox"></td>
                             <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
@@ -53,7 +53,8 @@
                                 <p><label class="amountfont">Total:</label> $0</p>
                             </td>
                             <td>
-                                <label class="labelstatus"
+                                <label
+                                    class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
                                     for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                     {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
                                 </label>
