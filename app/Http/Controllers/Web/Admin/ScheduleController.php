@@ -118,7 +118,6 @@ class ScheduleController extends Controller
             ->header('Location', route('admin.drivers.schedule', ['id' => $request->user_id]) . '?tab=weekly');
     }
 
-
     public function locationStore(Request $request)
     {
         $rules = [
@@ -153,6 +152,8 @@ class ScheduleController extends Controller
                 ->header('Location', route('admin.drivers.schedule', ['id' => $request->user_id]) . '?tab=location');
         }
     }
+
+
     function convertTo24HourFormat($time)
     {
         return \Carbon\Carbon::createFromFormat('h:i A', $time)->format('H:i:s');
@@ -183,9 +184,37 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $rules = [
+            'id' => 'required|integer',
+            'morning' => 'nullable|string',
+            'afternoon' => 'nullable|string',
+            'evening' => 'nullable|string',
+        ];
+
+        $validated = $request->validate($rules);
+
+        // Record ko ID se fetch karo
+        $availability = Availability::find($request->id);
+
+        if (!$availability) {
+            return redirect()->back()->with('error', 'Availability record not found.');
+        }
+
+        // Update fields (date ko touch nahi karna)
+        $availability->update([
+            'morning' => $request->input('morning') === 'Inactive' ? 0 : 1,
+            'afternoon' => $request->input('afternoon') === 'Inactive' ? 0 : 1,
+            'evening' => $request->input('evening') === 'Inactive' ? 0 : 1,
+            'is_active' => 1,
+            'creates_by' => auth()->id(),
+        ]);
+
+        return redirect()->route('admin.drivers.schedule', [
+            'id' => $availability->user_id,
+        ])->with('success', 'Schedule updated successfully.')
+            ->header('Location', route('admin.drivers.schedule', ['id' => $availability->user_id]) . '?tab=availability');
     }
 
     /**

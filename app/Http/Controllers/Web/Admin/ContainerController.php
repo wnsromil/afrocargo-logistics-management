@@ -32,8 +32,9 @@ class ContainerController extends Controller
             })
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($subQuery) use ($query) {
-                    $subQuery->where('vehicle_model', 'like', '%' . $query . '%')
-                        ->orWhere('vehicle_year', 'like', '%' . $query . '%')
+                    $subQuery->where('container_no_1', 'like', '%' . $query . '%')
+                        ->orWhere('container_no_2', 'like', '%' . $query . '%')
+                        ->orWhere('seal_no', 'like', '%' . $query . '%')
                         ->orWhereHas('driver', function ($q) use ($query) {
                             $q->where('name', 'like', '%' . $query . '%');
                         })

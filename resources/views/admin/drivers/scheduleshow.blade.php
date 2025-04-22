@@ -61,59 +61,49 @@
                         </div>
                     </div>
                 </div>
-                @foreach($weeklyschedule as $schedule)
-                    <div class="col-md-12 d-flex flax-wrap mt-3">
-                        <div class="col-md-2 text-dark">
-                            <span class="day pointernone">{{ ucfirst($schedule->day) }}
-                            </span>
-                        </div>
-                        <div class="col-md-10 ps-sm-0">
-                            <div class="row">
-                                @if($schedule->morning_start || $schedule->morning_end)
-                                    <div class="col-md-3">
-                                        <p class="timedata">
-                                            {{ $schedule->morning_start ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->morning_start)->format('h:i A') : '-' }}
-                                            -
-                                            {{ $schedule->morning_end ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->morning_end)->format('h:i A') : '-' }}
-                                        </p>
-                                    </div>
-                                @else
-                                    <div class="col-md-3">
-                                        <p class="timedata">-</p>
-                                    </div>
-                                @endif
+                @php
+                    $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    $scheduleByDay = collect($weeklyschedule)->keyBy('day');
+                @endphp
 
-                                @if($schedule->afternoon_start || $schedule->afternoon_end)
-                                    <div class="col-md-3">
-                                        <p class="timedata">
-                                            {{$schedule->afternoon_start ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->afternoon_start)->format('h:i A') : '-'  }}
-                                            -
-                                            {{ $schedule->afternoon_end ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->afternoon_end)->format('h:i A') : '-'  }}
-                                        </p>
-                                    </div>
-                                @else
-                                    <div class="col-md-3">
-                                        <p class="timedata">-</p>
-                                    </div>
-                                @endif
+                @foreach($weekdays as $day)
+                                    @php
+                                        $schedule = $scheduleByDay->get(strtolower($day));
+                                    @endphp
+                                    <div class="col-md-12 d-flex flax-wrap mt-3">
+                                        <div class="col-md-2 text-dark">
+                                            <span class="day pointernone">{{ $day }}</span>
+                                        </div>
+                                        <div class="col-md-10 ps-sm-0">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <p class="timedata">
+                                                        {{ $schedule && $schedule->morning_start ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->morning_start)->format('h:i A') : 'NA' }}
+                                                        -
+                                                        {{ $schedule && $schedule->morning_end ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->morning_end)->format('h:i A') : 'NA' }}
+                                                    </p>
+                                                </div>
 
-                                @if($schedule->evening_start || $schedule->evening_end)
-                                    <div class="col-md-3">
-                                        <p class="timedata">
-                                            {{ $schedule->evening_start ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->evening_start)->format('h:i A') : '-'  }}
-                                            -
-                                            {{ $schedule->evening_end ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->evening_end)->format('h:i A') : '-'  }}
-                                        </p>
+                                                <div class="col-md-3">
+                                                    <p class="timedata">
+                                                        {{ $schedule && $schedule->afternoon_start ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->afternoon_start)->format('h:i A') : 'NA' }}
+                                                        -
+                                                        {{ $schedule && $schedule->afternoon_end ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->afternoon_end)->format('h:i A') : 'NA' }}
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <p class="timedata">
+                                                        {{ $schedule && $schedule->evening_start ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->evening_start)->format('h:i A') : 'NA' }}
+                                                        -
+                                                        {{ $schedule && $schedule->evening_end ? \Carbon\Carbon::createFromFormat('H:i:s', $schedule->evening_end)->format('h:i A') : 'NA' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                @else
-                                    <div class="col-md-3">
-                                        <p class="timedata">-</p>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
                 @endforeach
+
 
                 @if($weeklyschedule->isEmpty())
                     <p class="mt-3">No weekly schedule available.</p>

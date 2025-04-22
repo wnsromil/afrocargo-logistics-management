@@ -10,7 +10,7 @@ class AvailabilityController extends Controller
 {
     public function index()
     {
-        $data = Availability::where('user_id',auth()->id())->get();
+        $data = Availability::where('is_active',1)->where('user_id',auth()->id())->get();
 
         return response()->json([
             'success' => true,
