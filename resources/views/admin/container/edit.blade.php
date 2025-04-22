@@ -99,7 +99,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="status">Status <i class="text-danger">*</i></label>
                         <div class="toggle-switch">
@@ -114,7 +114,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>

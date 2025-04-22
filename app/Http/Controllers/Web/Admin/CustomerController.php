@@ -335,11 +335,11 @@ class CustomerController extends Controller
 
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {
-            $userData['edit_license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
+            $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
         }
 
         if (!empty($request->edit_signature_date)) {
-            $userData['edit_signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
+            $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
         }
 
         // 🔹 Password Handling (Agar diya gaya hai tabhi update karo)

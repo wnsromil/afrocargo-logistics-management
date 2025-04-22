@@ -222,32 +222,59 @@ class DriversController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Custom validation rules
-        $validator = Validator::make($request->all(), [
+       
+        $rules = [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
             'edit_mobile_code' => 'required|string|max:15',
             'address' => 'required|string|max:500',
             'country_code' => 'required|string',
-            // 'vehicle_type' => 'required',
-            // 'email' => 'nullable|email|unique:users,email,' . $id, // Ignore current user ID
-            // 'license_number' => 'required',
-            // 'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
-            // 'license_expiry_date' => 'required',
+            'vehicle_type' => 'required',
+            'email' => 'nullable|email|unique:users,email,' . $id,
+            'license_number' => 'required',
+            'edit_license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
-        ]);
+        ];
 
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)  // Send errors to the session
-                ->withInput();  // Keep old input data
+        // Image validation agar remove ya naya upload hua ho
+        if ($request->license_image_removed == '1') {
+            $rules['license_document'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
         }
 
-        // Find the warehouse by ID
-        $warehouse = User::find($id);
+        $validator = Validator::make($request->all(), $rules);
 
-        // Update warehouse with validated data
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        
+
+        $warehouse = User::find($id);
+        $status  = !empty($request->status) ? $request->status : 'Active';
+
+        if (!empty($request->edit_license_expiry_date)) {
+            $license_expiry_date = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
+        } else {
+            $license_expiry_date = $warehouse->license_expiry_date; // fallback
+        }
+
+        // Handle license document update
+        $licenseDocumentPath = $warehouse->license_document; // by default old image
+
+        if ($request->license_image_removed == '1') {
+            // Image removed
+            $licenseDocumentPath = null;
+
+            // Optionally: Delete old image from storage
+            // Storage::disk('public')->delete(str_replace('storage/', '', $warehouse->license_document));
+        }
+
+        if ($request->hasFile('license_document')) {
+            $file = $request->file('license_document');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/licenses', $filename, 'public');
+            $licenseDocumentPath = 'storage/' . $filePath;
+        }
+
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
             'vehicle_id' => $request->vehicle_type,
@@ -255,18 +282,14 @@ class DriversController extends Controller
             'address' => $request->address,
             'phone' => $request->edit_mobile_code,
             'license_number' => $request->license_number,
-            'license_expiry_date' => $request->license_expiry_date,
-            // 'license_document' => $licenseDocumentPath, // Store Image URL
-            'status' => $request->status, // Status ko handle karna
+            'license_expiry_date' => $license_expiry_date,
+            'license_document' => $licenseDocumentPath,
+            'status' => $status,
             'country_code' => $request->country_code,
         ]);
 
-
-        // Redirect to the warehouse index page with a success message
-        return redirect()->route('admin.drivers.index')
-            ->with('success', 'Driver updated successfully');
+        return redirect()->route('admin.drivers.index')->with('success', 'Driver updated successfully');
     }
-
 
     /**
      * Remove the specified resource from storage.

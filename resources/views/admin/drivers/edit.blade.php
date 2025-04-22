@@ -19,7 +19,7 @@
                         <select name="warehouse_name" class="form-control inp select2">
                             <option value="">Select Warehouse Name</option>
                             @foreach($warehouses as $warehouse)
-                                <option {{ $manager_data->warehouse_id ?? old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                <option {{ $manager_data->warehouse_id == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
 
@@ -63,14 +63,16 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+
                 </div>
+                
                 <input type="hidden" id="country_code" name="country_code"
                         value="{{ old('country_code', $manager_data->country_code) }}">
 
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="address">Address </label>
+                        <label for="address">Address<i class="text-danger">*</i> </label>
                         <input type="text" name="address" class="form-control" placeholder="Enter Address"
                             value="{{$manager_data->address ?? old('address') }}">
                         @error('address')
@@ -104,7 +106,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type">Vehicle</label>
+                        <label for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
                         <select name="vehicle_type" class="form-control">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
@@ -121,7 +123,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_number">License Number</label>
+                        <label for="license_number">License Number<i class="text-danger">*</i></label>
                         <input type="text" name="license_number" class="form-control" placeholder="Enter Address"
                             value="{{ $manager_data->license_number }}">
                         @error('license_number')
@@ -133,28 +135,37 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_expiry_date">License Expiry Date</label>
-                        <input type="date" name="license_expiry_date" class="form-control" placeholder="Enter Address"
-                            value="{{ $manager_data->license_expiry_date  }}">
-                        @error('license_expiry_date')
+                        <label for="edit_license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
+                        <input type="text" name="edit_license_expiry_date" class="form-control" placeholder="MM-DD-YYYY" readonly style="cursor: pointer;"
+                             value="{{ old('edit_license_expiry_date', $manager_data->license_expiry_date ? \Carbon\Carbon::parse($manager_data->license_expiry_date)->format('n/j/Y') : '') }}">
+                        @error('edit_license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Address -->
+                <!-- License Document -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_document">License Document</label>
-                        <input type="file" name="license_document" class="form-control" placeholder="Enter Address"
-                            value="{{ old('license_document') }}" accept=".png, .jpg, .jpeg">
+                        <label for="license_document">License Document <i class="text-danger">*</i></label>
+                        <input type="file" name="license_document" id="license_document" class="form-control"
+                            accept=".png, .jpg, .jpeg">
+                
                         @error('license_document')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                
+                        {{-- Image Preview Area --}}
+                        <div id="license_preview_area" class="mt-2" style="{{ $manager_data->license_document ? '' : 'display:none;' }}">
+                            <img id="license_preview_img"
+                                src="{{ $manager_data->license_document ? asset($manager_data->license_document) : '' }}"
+                                alt="Preview"
+                                style="max-width: 200px; max-height: 150px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                            <button type="button" class="btn btn-sm btn-danger ms-2" id="remove_license_btn">✕</button>
+                        </div>
                     </div>
                 </div>
-
-
+                <input type="hidden" name="license_image_removed" id="license_image_removed" value="0">
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="mb-3">
@@ -200,6 +211,37 @@
             <button type="submit" class="btn customer-btn-save">Update</button>
         </div> -->
     </form>
+    <script>
+        const fileInput = document.querySelector('input[name="license_document"]');
+        const previewArea = document.getElementById('license_preview_area');
+        const previewImg = document.getElementById('license_preview_img');
+        const removeBtn = document.getElementById('remove_license_btn');
+        const imageRemovedInput = document.getElementById('license_image_removed'); // Hidden input
+    
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewArea.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+    
+                // Nayi file aayi to imageRemovedInput reset karo
+                imageRemovedInput.value = '0';
+            }
+        });
+    
+        removeBtn.addEventListener('click', function () {
+            fileInput.value = ''; // Remove selected file
+            previewImg.src = '';
+            previewArea.style.display = 'none';
+            imageRemovedInput.value = '1'; // Mark image as removed
+        });
+    </script>
+    
+    
     <script>
         $('#country_code').val($('.edit_mobile_code_driver').find('.iti__selected-dial-code').text());
         $('.col-md-12').on('click', () => {            
