@@ -229,7 +229,9 @@
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Year_to_Date">Year to Date</label>
                             <input type="text" name="year_to_date" id="Year to Date" class="form-control inp"
-                                placeholder="0" value="{{ old('year_to_date', $user->year_to_date) }}">
+                                maxlength="4" pattern="\d*" inputmode="numeric"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" placeholder="0"
+                                value="{{ old('year_to_date', $user->year_to_date) }}">
                         </div>
 
                         <div class="col-md-12 mb-2">
@@ -282,7 +284,7 @@
                 <div class="col-md-3">
                     <div class="d-flex align-items-center justify-content-center avtard">
                         <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                            }}</label>
+                                                }}</label>
                         <div class="avtarset" style="position: relative;">
                             <!-- Image Preview -->
                             <img id="preview_{{ $imageType }}" class="avtars avtarc"

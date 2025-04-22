@@ -1508,4 +1508,23 @@ Version      : 1.0
     //             .columns.adjust();
     //     });
     // }
+
+    function initAutocomplete() {
+        const inputs = document.querySelectorAll('.google-address-autocomplete');
+        
+        inputs.forEach((input) => {
+          new google.maps.places.Autocomplete(input, {
+            types: ['geocode'], // You can also use: ['establishment'] for businesses
+           // componentRestrictions: { country: "in" } // Optional: restrict to India
+          });
+        });
+      }
+  
+      // Wait for Google API to load
+      if (typeof google !== "undefined" && google.maps) {
+        google.maps.event.addDomListener(window, 'load', initAutocomplete);
+      } else {
+        console.error("Google Maps API not loaded properly.");
+      }
+
 })(jQuery);

@@ -190,12 +190,6 @@ class CustomerController extends Controller
             $password = 12345678;
             $loginUrl = route('login');
 
-            // Send the email
-
-            // Mail::to($email)->send(
-            //     (new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl))
-            //         ->from('no-reply@afrocargo.com', 'Afro Cargo')   
-            //     );
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
             return redirect()->route('admin.customer.index')

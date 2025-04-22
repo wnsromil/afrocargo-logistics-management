@@ -250,9 +250,16 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor " for="Year_to_Date">Year to Date</label>
-                            <input type="text" name="year_to_date" id="Year to Date"
-                                class="form-control inp inputbackground" placeholder="0"
-                                value="{{ old('year_to_date') }}">
+                            <input type="text"
+                            name="year_to_date"
+                            id="Year_to_Date"
+                            class="form-control inp inputbackground"
+                            placeholder="0"
+                            maxlength="4"
+                            pattern="\d*"
+                            inputmode="numeric"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"
+                            value="{{ old('year_to_date') }}" />
                         </div>
 
                         <div class="col-md-12 mb-2">
