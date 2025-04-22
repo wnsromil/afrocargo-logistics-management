@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Container;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ContainerController extends Controller
 {
@@ -35,11 +36,11 @@ class ContainerController extends Controller
         ]);
     }
 
-
     public function toggleStatus(Request $request)
     {
         $openId = $request->input('open_id');
         $closeId = $request->input('close_id');
+        $checkbox_status = $request->input('checkbox_status');
 
         // Initialize response tracking
         $response = [
@@ -48,16 +49,23 @@ class ContainerController extends Controller
             'toggled' => [],
         ];
 
+        $today = Carbon::now()->toDateString(); // current date
+        // $today = "2025-04-25"; // for testing purpose
         // Toggle status for open container (if ID given)
         if ($openId) {
             $openVehicle = Vehicle::find($openId);
             if ($openVehicle) {
-                $openVehicle->status = $openVehicle->status === 'Active' ? 'Inactive' : 'Active';
+                $openVehicle->status = 'Active';
+                if ($checkbox_status == 'only_open' || $checkbox_status == 'both_open_close') {
+                    $openVehicle->open_date = $today;
+                }
+
                 $openVehicle->save();
 
                 $response['toggled'][] = [
                     'id' => $openVehicle->id,
-                    'new_status' => $openVehicle->status
+                    'status' => $openVehicle->status,
+                    'open_date' => $openVehicle->open_date
                 ];
             }
         }
@@ -67,11 +75,15 @@ class ContainerController extends Controller
             $closeVehicle = Vehicle::find($closeId);
             if ($closeVehicle) {
                 $closeVehicle->status = 'Inactive';
+                if ($checkbox_status == 'only_close' || $checkbox_status == 'both_open_close') {
+                    $closeVehicle->close_date = $today;
+                }
                 $closeVehicle->save();
 
                 $response['toggled'][] = [
                     'id' => $closeVehicle->id,
-                    'new_status' => $closeVehicle->status
+                    'status' => $closeVehicle->status,
+                    'close_date' => $closeVehicle->close_date
                 ];
             }
         }

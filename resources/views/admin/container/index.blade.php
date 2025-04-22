@@ -82,8 +82,8 @@
                                     <td>{{ $vehicle->seal_no ?? '-' }}</td>
                                     <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
 
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}</td>
+                                    <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>                                    
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
@@ -157,18 +157,22 @@
                     const activeContainer = response.data.container;
 
                     let message = '';  // To hold the message
+                    let checkbox_status = '';
 
                     // Condition 1: If active container is the same as the one to open
                     if (activeContainer?.container_no_1 === containerNumber) {
                         message = `That you need to close this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_close";
                     }
                     // Condition 2: If there's no active container
                     else if (!activeContainer?.container_no_1) {
                         message = `That you need to open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_open";
                     }
                     // Condition 3: If active container is different from the one to open
                     else {
                         message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "both_open_close";
                     }
 
                     // Show the Swal message based on the conditions
@@ -184,7 +188,8 @@
                             // Step 3: Now call POST to toggle status
                             axios.post('/api/vehicle/toggle-status', {
                                 open_id: containerId, // New container to open (Active)
-                                close_id: activeContainer?.id // Old container to close (Inactive)
+                                close_id: activeContainer?.id, // Old container to close (Inactive)
+                                checkbox_status:checkbox_status
                             })
                                 .then((res) => {
                                     Swal.fire('Success', 'Container status updated.', 'success').then(() => {

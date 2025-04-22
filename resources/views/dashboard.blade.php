@@ -532,7 +532,7 @@
                 @forelse ($latestContainers as $index => $latestContainer)
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div class="card innerCards w-100 setCard setCardSize rounded 
-                                                    {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
+                                                        {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -2151,18 +2151,22 @@
                     const activeContainer = response.data.container;
 
                     let message = '';  // To hold the message
+                    let checkbox_status = '';
 
                     // Condition 1: If active container is the same as the one to open
                     if (activeContainer?.container_no_1 === containerNumber) {
                         message = `That you need to close this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_close";
                     }
                     // Condition 2: If there's no active container
                     else if (!activeContainer?.container_no_1) {
                         message = `That you need to open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_open";
                     }
                     // Condition 3: If active container is different from the one to open
                     else {
                         message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "both_open_close";
                     }
 
                     // Show the Swal message based on the conditions
@@ -2178,7 +2182,8 @@
                             // Step 3: Now call POST to toggle status
                             axios.post('/api/vehicle/toggle-status', {
                                 open_id: containerId, // New container to open (Active)
-                                close_id: activeContainer?.id // Old container to close (Inactive)
+                                close_id: activeContainer?.id, // Old container to close (Inactive)
+                                checkbox_status: checkbox_status
                             })
                                 .then((res) => {
                                     Swal.fire('Success', 'Container status updated.', 'success').then(() => {
