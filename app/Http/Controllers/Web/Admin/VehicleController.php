@@ -59,13 +59,13 @@ class VehicleController extends Controller
     public function create()
     {
 
-        $vehicle = Vehicle::when($this->user->role_id != 1, function ($q) {
+        $vehicle = Vehicle::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get();
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
-        $drivers = User::where('role_id', '=', '4')
+        $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
             ->Where('is_deleted', 'no')->select('id', 'name')->get();
         return view('admin.vehicles.create', compact('vehicle', 'warehouses', 'drivers'));
     }
@@ -150,7 +150,7 @@ class VehicleController extends Controller
         $vehicle = Vehicle::where('id', $id)->first();
         $drivers = User::where('role_id', '=', '4')->get();
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 

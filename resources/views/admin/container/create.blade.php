@@ -105,7 +105,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12 ps-5">
+                {{-- <div class="col-lg-4 col-md-6 col-sm-12 ps-5">
                     <div class="col-lg-4 col-md-6 col-sm-12 align-center">
                         <div class="mb-3 float-end">
                             <label for="in_status">Status</label>
@@ -117,7 +117,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 

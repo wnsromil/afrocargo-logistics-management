@@ -222,14 +222,18 @@
                         <div class="col-md-12 mb-2">
                             <label class="foncolor">Signature Date </label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" name="edit_license_expiry_date" class="btn-filters  form-cs inp "
-                                    value="{{ old('edit_license_expiry_date') }}" placeholder="mm-dd-yy" />
+                                <input type="text" name="edit_signature_date" class="btn-filters  form-cs inp" readonly
+                                    style="cursor: pointer;" placeholder="MM-DD-YYYY"
+                                    value="{{ old('edit_signature_date', $user->signature_date ? \Carbon\Carbon::parse($user->signature_date)->format('n/j/Y') : '') }}" />
                             </div>
                         </div>
+
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Year_to_Date">Year to Date</label>
                             <input type="text" name="year_to_date" id="Year to Date" class="form-control inp"
-                                placeholder="0" value="{{ old('year_to_date', $user->year_to_date) }}">
+                                maxlength="4" pattern="\d*" inputmode="numeric"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" placeholder="0"
+                                value="{{ old('year_to_date', $user->year_to_date) }}">
                         </div>
 
                         <div class="col-md-12 mb-2">
@@ -243,8 +247,9 @@
                             <label class="foncolor">License Expiry Date </label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
                                 <input type="text" name="edit_license_expiry_date" class="btn-filters form-cs inp"
+                                    readonly style="cursor: pointer;"
                                     value="{{ old('edit_license_expiry_date', $user->license_expiry_date ? \Carbon\Carbon::parse($user->license_expiry_date)->format('n/j/Y') : '') }}"
-                                    placeholder="m/d/yyyy" />
+                                    placeholder="MM-DD-YYYY" />
                             </div>
                         </div>
 
@@ -282,7 +287,7 @@
                 <div class="col-md-3">
                     <div class="d-flex align-items-center justify-content-center avtard">
                         <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                            }}</label>
+                                                        }}</label>
                         <div class="avtarset" style="position: relative;">
                             <!-- Image Preview -->
                             <img id="preview_{{ $imageType }}" class="avtars avtarc"

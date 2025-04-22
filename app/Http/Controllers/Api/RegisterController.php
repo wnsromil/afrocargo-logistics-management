@@ -12,6 +12,8 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Mail\ForgetPasswordMail;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -41,7 +43,7 @@ class RegisterController extends Controller
                 'city_id' => 'required|string|max:255',
                 'pincode' => 'required|numeric',
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
@@ -49,7 +51,7 @@ class RegisterController extends Controller
                     'errors' => $validator->errors()
                 ], 422);
             }
-    
+
             $userRole = Role::where('name', $request->user_type)->first();
             if (!$userRole) {
                 return response()->json([
@@ -58,7 +60,7 @@ class RegisterController extends Controller
                     'error' => 'Role does not exist in database'
                 ], 404);
             }
-    
+
             DB::beginTransaction();
             try {
                 $user = User::create([
@@ -74,9 +76,9 @@ class RegisterController extends Controller
                     'city_id' => $request->city_id,
                     'pincode' => $request->pincode,
                 ]);
-    
+
                 $success['token'] = $user->createToken('MyApp')->accessToken;
-    
+
                 VerifyAuthIP::updateOrCreate(
                     [
                         'user_id' => $user->id,
@@ -89,9 +91,9 @@ class RegisterController extends Controller
                         'verify_type' => 'auth'
                     ]
                 );
-    
+
                 DB::commit();
-    
+
                 return response()->json([
                     'success' => true,
                     'message' => 'User registered successfully',
@@ -143,16 +145,27 @@ class RegisterController extends Controller
 
         $user = Auth::user();
 
-        if(!empty($request->warehouse_code) && !in_array($user->role_id,[4]) ){
+        if (!empty($request->warehouse_code) && !in_array($user->role_id, [4])) {
             Auth::logout();
             return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
         }
-
         // Role-based warehouse validation
         if ($user->role_id == 4) {
             if (!$request->filled('warehouse_code') || !$user->warehouse || $user->warehouse->warehouse_code !== $request->warehouse_code) {
                 Auth::logout();
                 return $this->sendError('Unauthorized.', ['error' => 'Invalid warehouse access.']);
+            }
+        }
+
+        if ($user->status == "Inactive") {
+            Auth::logout();
+            return $this->sendError('Unauthorized.', ['error' => 'Your account is currently inactive. Please contact the administrator for assistance.']);
+        }
+
+        if (!empty($request->warehouse_code && $user->role_id == 4)) {
+            if ($user->warehouse->status == "Inactive") {
+                Auth::logout();
+                return $this->sendError('Unauthorized.', ['error' => 'Warehouse is currently inactive. Please contact the administrator for assistance.']);
             }
         }
 
@@ -178,25 +191,30 @@ class RegisterController extends Controller
 
     public function resendOtp(Request $request): JsonResponse
     {
-   
+
         if (auth()->check()) {
             $user = auth()->user();
-    
+            $otp = rand(1000, 9999);
             VerifyAuthIP::updateOrCreate(
                 [
                     'user_id' => $user->id,
                     'ip_address' => $request->ip(),
                 ],
                 [
-                    'otp' => 1234,
+                    'otp' => $otp,
                     'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
                     'otp_varify_at' => null
                 ]
             );
-    
+
+            $userName = $user->name;
+            $email = $user->email;
+
+            Mail::to($email)->send(new ForgetPasswordMail($userName, $otp));
+
             return $this->sendResponse(false, 'Otp resend successfully.');
         }
-    
+
         return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt.']);
     }
 
@@ -206,37 +224,37 @@ class RegisterController extends Controller
         $request->validate([
             'otp' => 'required|numeric',
         ]);
-    
+
         if (auth()->check()) {
             $user = auth()->user();
-    
+
             // Retrieve the IP verification record
             $data = VerifyAuthIP::where([
                 'user_id' => $user->id,
                 'ip_address' => $request->ip(),
             ])->first();
-    
+
             // Check if OTP exists
             if (!$data || $data->otp !== $request->otp) {
                 return $this->sendError('Unauthorized.', ['error' => 'Invalid OTP. Please try again.']);
             }
-    
+
             // Check if OTP is expired
             if (Carbon::now()->gt(Carbon::parse($data->otp_expire_at))) {
                 return $this->sendError('Unauthorized.', ['error' => 'OTP expired. Please request a new one.']);
             }
-    
+
             // OTP is valid, proceed with verification
             $success['userData'] = $user->load('userRole');
-    
+
             $data->otp = null;
             $data->otp_expire_at = null;
             $data->otp_varify_at = Carbon::now();
-    
+
             $data->save();
             return $this->sendResponse($success, 'OTP verified successfully.');
         }
-    
+
         return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt.']);
     }
     /**
@@ -267,7 +285,6 @@ class RegisterController extends Controller
             return $this->sendResponse([], 'User logged out successfully.');
         }
 
-        return $this->sendError('Unauthorized.', ['error' => 'User is not logged in.'],422);
+        return $this->sendError('Unauthorized.', ['error' => 'User is not logged in.'], 422);
     }
-
 }

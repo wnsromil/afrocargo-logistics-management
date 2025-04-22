@@ -52,10 +52,6 @@ class WarehouseManagerController extends Controller
         return view('admin.warehouse_manager.index', compact('warehouses', 'serialStart', 'search', 'perPage'));
     }
 
-
-
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -65,7 +61,7 @@ class WarehouseManagerController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        $warehouses = Warehouse::select('id', 'warehouse_name')->get();
+        $warehouses = Warehouse::select('id', 'warehouse_name')->where('status', 'Active')->get();
         return view('admin.warehouse_manager.create', compact('roles', 'countries', 'warehouses'));
     }
 
@@ -161,7 +157,7 @@ class WarehouseManagerController extends Controller
         $manager_data = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        $warehouses = Warehouse::select('id', 'warehouse_name')->get();
+        $warehouses = Warehouse::select('id', 'warehouse_name')->where('status', 'Active')->get();
         return view('admin.warehouse_manager.edit', compact('manager_data', 'roles', 'countries', 'warehouses'));
     }
 

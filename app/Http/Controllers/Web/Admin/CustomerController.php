@@ -148,7 +148,7 @@ class CustomerController extends Controller
                 'state_id'       => $validated['state'],
                 'city_id'        => $validated['city'],
                 'pincode'            => $validated['Zip_code'],
-                'password'       => Hash::make(1235678),
+                'password'       => Hash::make(12345678),
                 'status' => $request->status ?? 'Active',
                 'company_name'        => $request->company_name ?? null,
                 'apartment'        => $request->apartment ?? null,
@@ -190,12 +190,6 @@ class CustomerController extends Controller
             $password = 12345678;
             $loginUrl = route('login');
 
-            // Send the email
-
-            // Mail::to($email)->send(
-            //     (new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl))
-            //         ->from('no-reply@afrocargo.com', 'Afro Cargo')   
-            //     );
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
             return redirect()->route('admin.customer.index')
@@ -341,11 +335,11 @@ class CustomerController extends Controller
 
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {
-            $userData['edit_license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
+            $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
         }
 
         if (!empty($request->edit_signature_date)) {
-            $userData['edit_signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
+            $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
         }
 
         // 🔹 Password Handling (Agar diya gaya hai tabhi update karo)
