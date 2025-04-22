@@ -148,7 +148,7 @@ class CustomerController extends Controller
                 'state_id'       => $validated['state'],
                 'city_id'        => $validated['city'],
                 'pincode'            => $validated['Zip_code'],
-                'password'       => Hash::make(1235678),
+                'password'       => Hash::make(12345678),
                 'status' => $request->status ?? 'Active',
                 'company_name'        => $request->company_name ?? null,
                 'apartment'        => $request->apartment ?? null,
