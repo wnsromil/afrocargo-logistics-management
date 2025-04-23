@@ -628,12 +628,13 @@ table tbody {
 }
 
 .service-upload {
-  border: 2px dashed #E5E5E5;
+  border: 1px dashed #00000042;
   text-align: center;
   background-color: #fff;
   position: relative;
   padding: 0px !important;
   min-height: 180px;
+  border-radius: 4px;
 }
 
 .modal-content {
