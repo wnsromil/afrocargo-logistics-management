@@ -204,12 +204,13 @@ class ScheduleController extends Controller
 
         // Update fields (date ko touch nahi karna)
         $availability->update([
-            'morning' => $request->input('morning') === 'Inactive' ? 0 : 1,
-            'afternoon' => $request->input('afternoon') === 'Inactive' ? 0 : 1,
-            'evening' => $request->input('evening') === 'Inactive' ? 0 : 1,
+            'morning' => $request->has('morning') && $request->input('morning') == 0 ? 0 : 1,
+            'afternoon' => $request->has('afternoon') && $request->input('afternoon') == 0 ? 0 : 1,
+            'evening' => $request->has('evening') && $request->input('evening') == 0 ? 0 : 1,
             'is_active' => 1,
             'creates_by' => auth()->id(),
         ]);
+
 
         return redirect()->route('admin.drivers.schedule', [
             'id' => $availability->user_id,

@@ -713,13 +713,14 @@
                                                                                                         class="far fa-eye me-2"></i>View</a>
                                                                                             </li>
                                                                                             <li>
-                                                                                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); showEditSchedule(
-                                                                                                                                        '{{ $availabilitie->id }}', 
-                                                                                                                                        '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
-                                                                                                                                        '{{ $availabilitie->morning }}', 
-                                                                                                                                        '{{ $availabilitie->afternoon }}', 
-                                                                                                                                        '{{ $availabilitie->evening }}'
-                                                                                                                                    );">
+                                                                                                <a class="dropdown-item" href="#"
+                                                                                                    onclick="event.preventDefault(); showEditSchedule(
+                                                                                                                                                                                                                '{{ $availabilitie->id }}', 
+                                                                                                                                                                                                                '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
+                                                                                                                                                                                                                '{{ $availabilitie->morning }}', 
+                                                                                                                                                                                                                '{{ $availabilitie->afternoon }}', 
+                                                                                                                                                                                                                '{{ $availabilitie->evening }}'
+                                                                                                                                                                                                            );">
                                                                                                     <i class="far fa-edit me-2"></i>Update
                                                                                                 </a>
                                                                                             </li>
@@ -1000,6 +1001,8 @@
     </script>
 
     <script>
+        const updateScheduleRoute = "{{ route('admin.schedules.update', ['schedule' => '__ID__']) }}";
+
         async function showEditSchedule(id, date, morning, afternoon, evening) {
             // Format date to MM-DD-YYYY
             const formattedDate = new Date(date).toLocaleDateString('en-US');
@@ -1007,8 +1010,9 @@
             const { value: formValues } = await Swal.fire({
                 title: `Edit Schedule For This ${formattedDate}`,
                 html: `
-                <form id="scheduleForm" action="{{ route('admin.schedules.update') }}" method="POST">
+                <form id="scheduleForm" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="id" value="${id}">
                     <input type="hidden" name="date" value="${date}">
 
@@ -1049,27 +1053,26 @@
                 showCancelButton: true,
                 confirmButtonText: 'Submit',
                 didOpen: () => {
-                    const fullUnavailable = Swal.getPopup().querySelector('input[name="full_unavailable"]');
-                    const morningCb = Swal.getPopup().querySelector('input[name="morning"]');
-                    const afternoonCb = Swal.getPopup().querySelector('input[name="afternoon"]');
-                    const eveningCb = Swal.getPopup().querySelector('input[name="evening"]');
+                    const form = Swal.getPopup().querySelector('#scheduleForm');
+                    form.action = updateScheduleRoute.replace('__ID__', id); // Laravel route
 
-                    // Set initial checked values
+                    const fullUnavailable = form.querySelector('input[name="full_unavailable"]');
+                    const morningCb = form.querySelector('input[name="morning"]');
+                    const afternoonCb = form.querySelector('input[name="afternoon"]');
+                    const eveningCb = form.querySelector('input[name="evening"]');
+
                     if (morning == 0) morningCb.checked = true;
                     if (afternoon == 0) afternoonCb.checked = true;
                     if (evening == 0) eveningCb.checked = true;
 
-                    // If all are unavailable, mark full_unavailable
                     if (morning == 0 && afternoon == 0 && evening == 0) {
                         fullUnavailable.checked = true;
                     }
 
-                    // Update checkbox value on change
                     function updateCheckboxValue(checkbox) {
                         checkbox.value = checkbox.checked ? 0 : 1;
                     }
 
-                    // Full unavailable controls others
                     fullUnavailable.addEventListener("change", function () {
                         morningCb.checked = this.checked;
                         afternoonCb.checked = this.checked;
@@ -1080,7 +1083,6 @@
                         updateCheckboxValue(eveningCb);
                     });
 
-                    // Individual control updates full_unavailable
                     [morningCb, afternoonCb, eveningCb].forEach(cb => {
                         cb.addEventListener("change", function () {
                             updateCheckboxValue(cb);
@@ -1090,7 +1092,6 @@
                     });
                 },
                 preConfirm: () => {
-                    // Manually submit the form
                     document.getElementById('scheduleForm').submit();
                 }
             });
