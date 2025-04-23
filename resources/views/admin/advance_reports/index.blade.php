@@ -7,8 +7,8 @@
         <p class="head">Advance Reports</p>
         <div class="usersearch d-flex">
             <div>
-                <button class="btn btn-primary" style="background:#33B469;border-color:#203A5F!important; font-weight:300; height:37px;text-color:white;"><img style="width:10px; margin-right:5px;" src="../assets/images/Export.png">Export</button>
-                <button class="btn btn-primary" style="background:#203A5F; font-weight:300;"><img style="margin-right:5px;" src="../assets/images/Print.png">Print</button>
+                <button class="btn buttons btn-primary btn-success" ><i class="ti ti-file-arrow-right me-1"></i> Export</button>
+                <button class="btn buttons btn-primary"><i class="ti ti-printer me-1"></i> Print</button>
             </div>
         </div>
     </x-slot>
