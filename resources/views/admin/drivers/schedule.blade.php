@@ -21,7 +21,6 @@
             margin-top: -5px;
             justify-content: normal;
         }
-
     </style>
     <x-slot name="cardTitle">
         <p class="subhead login-logo-font fw-semibold me-sm-5">Add Schedule</p>
@@ -58,7 +57,8 @@
                             <div class="col-md-6">
                                 <label for="LacationInput1" class="form-label">Enter Location</label>
                                 <input type="text" class="form-control" id="LacationInput1" placeholder="Location"
-                                    name="address" value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
+                                    name="address"
+                                    value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -69,8 +69,8 @@
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
-                    <button type="button"
-                        class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
+                        <button type="button"
+                            class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
                     <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
                 </div>
             </div>
@@ -103,14 +103,15 @@
                                 </div>
                             </div>
                             @error('date')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-8">
                             <div class="my-3">
                                 <div class="status-toggle togglewrapper">
                                     <div class="status-toggle px-2 ps-0">
-                                        <input id="rating_21" class="check" type="checkbox" name="full_unavailable" value="full_unavailable">
+                                        <input id="rating_21" class="check" type="checkbox" name="full_unavailable"
+                                            value="full_unavailable">
                                         <label for="rating_21" class="checktoggle log checkbox-bg ms-0">checkbox</label>
                                     </div>
                                     <p class="profileUpdateFont text-dark">Full Unavailable</p>
@@ -120,12 +121,15 @@
                             <div class="col-md-12 marginTopBottom">
                                 <div class="d-flex">
                                     <div class="col-md-4">
-                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
+                                        <button type="button"
+                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2 ps-0">
-                                                    <input id="rating_24" class="check" name="morning" type="checkbox" value="0">
-                                                    <label for="rating_24" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                                                    <input id="rating_24" class="check" name="morning" type="checkbox"
+                                                        value="0">
+                                                    <label for="rating_24"
+                                                        class="checktoggle log checkbox-bg ms-0">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -133,12 +137,15 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
+                                        <button type="button"
+                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2">
-                                                    <input id="rating_22" class="check" name="afternoon" type="checkbox" value="0">
-                                                    <label for="rating_22" class="checktoggle log checkbox-bg">checkbox</label>
+                                                    <input id="rating_22" class="check" name="afternoon" type="checkbox"
+                                                        value="0">
+                                                    <label for="rating_22"
+                                                        class="checktoggle log checkbox-bg">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -146,12 +153,15 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
+                                        <button type="button"
+                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2">
-                                                    <input id="rating_23" class="check" name="evening" type="checkbox" value="0">
-                                                    <label for="rating_23" class="checktoggle log checkbox-bg">checkbox</label>
+                                                    <input id="rating_23" class="check" name="evening" type="checkbox"
+                                                        value="0">
+                                                    <label for="rating_23"
+                                                        class="checktoggle log checkbox-bg">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -165,8 +175,8 @@
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
-                    <button type="button"
-                        class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
+                        <button type="button"
+                            class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
                     <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
                 </div>
             </div>
@@ -182,13 +192,16 @@
                     <div class="col-md-9 offset-md-3">
                         <div class="row">
                             <div class="col-md-4">
-                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Morning</button>
+                                <button type="button"
+                                    class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Morning</button>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Afternoon</button>
+                                <button type="button"
+                                    class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Afternoon</button>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Evening</button>
+                                <button type="button"
+                                    class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Evening</button>
                             </div>
                         </div>
                     </div>
@@ -196,7 +209,8 @@
             </div>
             <div class="timePickersSLots">
                 <div class="col-md-12 d-flex flax-wrap">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Monday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Monday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
                                 <input id="monday" name="monday" class="check dayToggle" type="checkbox" value="monday">
@@ -253,10 +267,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Tuesday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Tuesday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="tuesday" name="tuesday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="tuesday" name="tuesday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="tuesday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -310,10 +326,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Wednesday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Wednesday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="wednesday" name="wednesday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="wednesday" name="wednesday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="wednesday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -367,10 +385,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Thursday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Thursday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="thursday" name="thursday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="thursday" name="thursday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="thursday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -424,10 +444,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Friday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Friday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="friday" name="friday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="friday" name="friday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="friday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -481,10 +503,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Saturday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Saturday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="saturday" name="saturday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="saturday" name="saturday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="saturday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -538,10 +562,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Sunday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Sunday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="sunday" name="sunday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="sunday" name="sunday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="sunday" class="checktoggle log checkbox-bg"> </label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -598,12 +624,13 @@
             <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
             <div class="text-end mt-4">
                 <a href="{{ route('admin.drivers.index', $user->id) }}">
-                <button type="button"
-                    class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
+                    <button type="button"
+                        class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
                 <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
             </div>
         </div>
     </form>
+
     <div class="col-md-12 mt-5">
         <form>
             <div class="row">
@@ -614,13 +641,17 @@
                     <div class="usersearch d-flex justify-content-end">
                         <div class="top-nav-search">
                             <form>
-                                <input type="text" id="searchInput" class="form-control forms me-2" placeholder="Search ">
+                                <input type="text" id="searchInput" class="form-control forms me-2"
+                                    placeholder="Search ">
                             </form>
                         </div>
 
                         <div class="">
-                            <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                                <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+                            <button type="button"
+                                class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                                <a class="btn-filters d-flex justify-content-center align-items-center"
+                                    href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                    title="Refresh">
                                     <span><i class="fe fe-refresh-ccw"></i></span>
                                 </a>
                             </button>
@@ -646,7 +677,7 @@
                                     @forelse ($availabilities as $index => $availabilitie)
                                                                         <tr>
                                                                             <td class="text-start">{{ $index + 1 }}</td>
-                                                                            <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('d-m-Y') ?? '--' }}
+                                                                            <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}
                                                                             </td>
                                                                             <td>{{ $availabilitie->locationSchedule->address ?? '--' }}</td>
                                                                             <td>
@@ -676,16 +707,28 @@
                                                                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                                                     <div class="dropdown-menu dropdown-menu-end">
                                                                                         <ul>
-                                                                                            {{-- <li>
-                                                                                                <a class="dropdown-item"><i
-                                                                                                        class="far fa-edit me-2"></i>Update</a>
-                                                                                            </li> --}}
                                                                                             <li>
                                                                                                 <a class="dropdown-item"
                                                                                                     href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}"><i
                                                                                                         class="far fa-eye me-2"></i>View</a>
                                                                                             </li>
-
+                                                                                            <li>
+                                                                                                <a class="dropdown-item" href="#"
+                                                                                                    onclick="event.preventDefault(); showEditSchedule(
+                                                                                                                                                                                                                '{{ $availabilitie->id }}', 
+                                                                                                                                                                                                                '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
+                                                                                                                                                                                                                '{{ $availabilitie->morning }}', 
+                                                                                                                                                                                                                '{{ $availabilitie->afternoon }}', 
+                                                                                                                                                                                                                '{{ $availabilitie->evening }}'
+                                                                                                                                                                                                            );">
+                                                                                                    <i class="far fa-edit me-2"></i>Update
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a class="dropdown-item"
+                                                                                                    href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}"><i
+                                                                                                        class="fa fa-trash me-2"></i>Delete</a>
+                                                                                            </li>
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
@@ -712,7 +755,7 @@
 
     <!-- -------------------------------------------------------------------------- -->
     <script>
-         const scheduleData = @json($weeklyschedule);
+        const scheduleData = @json($weeklyschedule);
     </script>
 
 
@@ -758,10 +801,10 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.toggle-switch').forEach(switchBtn => {
 
-                switchBtn.addEventListener("change", function() {
+                switchBtn.addEventListener("change", function () {
                     let buttonsContainer = this.closest('.form-check').querySelector('.schedule-buttons');
                     let buttons = buttonsContainer.querySelectorAll('button');
                     buttons.forEach(button => {
@@ -858,7 +901,7 @@
         }
 
         // Optional: generate current month on load
-        window.onload = function() {
+        window.onload = function () {
             const today = new Date();
             generateCalendar(today.getFullYear(), today.getMonth());
         };
@@ -941,9 +984,9 @@
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll('.dayToggle').forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.dayToggle').forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
                     const day = this.name;
                     const targetDiv = document.querySelector('.disablesection.' + day);
                     if (this.checked) {
@@ -955,6 +998,104 @@
             });
         });
 
+    </script>
+
+    <script>
+        const updateScheduleRoute = "{{ route('admin.schedules.update', ['schedule' => '__ID__']) }}";
+
+        async function showEditSchedule(id, date, morning, afternoon, evening) {
+            // Format date to MM-DD-YYYY
+            const formattedDate = new Date(date).toLocaleDateString('en-US');
+
+            const { value: formValues } = await Swal.fire({
+                title: `Edit Schedule For This ${formattedDate}`,
+                html: `
+                <form id="scheduleForm" method="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id" value="${id}">
+                    <input type="hidden" name="date" value="${date}">
+
+                    <div class="status-toggle togglewrapper px-2 ps-0">
+                        <input id="rating_35" class="check" type="checkbox" name="full_unavailable">
+                        <label for="rating_35" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                        <p class="profileUpdateFont text-dark">Full Unavailable</p>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_30" class="check" name="morning" type="checkbox">
+                            <label for="rating_30" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
+                        </div>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_31" class="check" name="afternoon" type="checkbox">
+                            <label for="rating_31" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
+                        </div>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_32" class="check" name="evening" type="checkbox">
+                            <label for="rating_32" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
+                        </div>
+                    </div>
+                </form>
+            `,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                didOpen: () => {
+                    const form = Swal.getPopup().querySelector('#scheduleForm');
+                    form.action = updateScheduleRoute.replace('__ID__', id); // Laravel route
+
+                    const fullUnavailable = form.querySelector('input[name="full_unavailable"]');
+                    const morningCb = form.querySelector('input[name="morning"]');
+                    const afternoonCb = form.querySelector('input[name="afternoon"]');
+                    const eveningCb = form.querySelector('input[name="evening"]');
+
+                    if (morning == 0) morningCb.checked = true;
+                    if (afternoon == 0) afternoonCb.checked = true;
+                    if (evening == 0) eveningCb.checked = true;
+
+                    if (morning == 0 && afternoon == 0 && evening == 0) {
+                        fullUnavailable.checked = true;
+                    }
+
+                    function updateCheckboxValue(checkbox) {
+                        checkbox.value = checkbox.checked ? 0 : 1;
+                    }
+
+                    fullUnavailable.addEventListener("change", function () {
+                        morningCb.checked = this.checked;
+                        afternoonCb.checked = this.checked;
+                        eveningCb.checked = this.checked;
+
+                        updateCheckboxValue(morningCb);
+                        updateCheckboxValue(afternoonCb);
+                        updateCheckboxValue(eveningCb);
+                    });
+
+                    [morningCb, afternoonCb, eveningCb].forEach(cb => {
+                        cb.addEventListener("change", function () {
+                            updateCheckboxValue(cb);
+                            fullUnavailable.checked = morningCb.checked && afternoonCb.checked && eveningCb.checked;
+                        });
+                        updateCheckboxValue(cb);
+                    });
+                },
+                preConfirm: () => {
+                    document.getElementById('scheduleForm').submit();
+                }
+            });
+        }
     </script>
 
 </x-app-layout>

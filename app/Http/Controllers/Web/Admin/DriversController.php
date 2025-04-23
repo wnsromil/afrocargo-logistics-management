@@ -192,6 +192,19 @@ class DriversController extends Controller
         return view('admin.drivers.scheduleshow', compact('availabilitie', 'weeklyschedule'));
     }
 
+    public function scheduleDestroy($id)
+    {
+        $user = Availability::find($id);
+        if ($user) {
+            $user->update(['is_active' => 0]); // is_deleted ko 'Yes' update karna
+            return redirect()->route('admin.drivers.schedule', $user->user_id)
+                ->with('success', 'Schedule deleted successfully');
+        }
+
+        return redirect()->route('admin.drivers.schedule', $user->user_id)
+            ->with('error', 'Schedule not found');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
