@@ -1,11 +1,11 @@
 <x-app-layout>
     @section('style')
-    <style>
-        .form-group-customer.customer-additional-form {
-            border: 0;
-            margin: 0;
-        }
-    </style>
+        <style>
+            .form-group-customer.customer-additional-form {
+                border: 0;
+                margin: 0;
+            }
+        </style>
     @endsection
     <x-slot name="header">
         Add New Expenses
@@ -17,7 +17,7 @@
 
     <div class="">
 
-        <form id="expenses" method="POST" enctype="multipart/form-data">
+        <form id="expenses" action="{{ route('admin.expenses.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group-customer customer-additional-form">
                 <!-- first row end  -->
@@ -26,45 +26,85 @@
                         <div class="borderset">
                             <div class="row gx-3 gy-2">
 
+                                @php
+                                    $isSingleWarehouse = count($warehouses) === 1;
+                                @endphp
+
+                                @if($isSingleWarehouse)
+                                    {{-- ✅ Readonly Input for Single Warehouse --}}
+                                    <div class="col-md-12 mb-1">
+                                        <label class="foncolor" for="warehouse"> Warehouse </label>
+                                        <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}"
+                                            readonly style="background-color: #e9ecef; color: #6c757d;">
+                                        <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
+                                    </div>
+                                @else
+                                    {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+                                    <div class="col-md-12 mb-1">
+                                        <label class="foncolor" for="warehouse"> Warehouse </label>
+                                        <select class="js-example-basic-single select2 form-control" name="warehouse"
+                                            style="" value="{{ old('address_1') }}">
+                                            <option value="">Select Warehouse</option>
+                                            @foreach ($warehouses as $warehouse)
+                                                <option value="{{ $warehouse->id }}" {{ old('warehouse') == $warehouse->id ? 'selected' : '' }}>
+                                                    {{ $warehouse->warehouse_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('warehouse')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                @endif
+
                                 <div class="col-md-12 mb-1">
-                                    <label class="foncolor" for="country">Warehouse <i class="text-danger">*</i></label>
-                                    <select class="js-example-basic-single select2">
-                                        <option selected="selected">Select Warehouse</option>
-                                        <option>white</option>
-                                        <option>purple</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-12 mb-1">
-                                    <label> Due Date <i class="text-danger">*</i></label>
-                                    <div class="cal-icon onlyDatetime little cal-icon-info">
-                                        <input type="text" class="btn-filters datetimepicker form-control form-cs inp " name="dateTime" placeholder="MM-DD-YYYY" />
+                                    <label> Date <i class="text-danger">*</i></label>
+                                    <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                        <input type="text" name="expense_date" readonly style="cursor: pointer;"
+                                            class="btn-filters  form-cs inp  inputbackground"
+                                            value="{{ old('expense_date') }}" placeholder="MM-DD-YYYY" />
+                                        @error('expense_date')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-1">
                                     <label> Description <i class="text-danger">*</i></label>
-                                    <input type="text" class="form-control inp" name="description" placeholder="Enter Description" />
+                                    <input type="text" class="form-control inp" name="description" value="{{ old('description') }}"
+                                        placeholder="Enter Description" />
+                                    @error('description')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="col-md-12 mb-1">
-                                    <label class="foncolor" for="User">User <i class="text-danger">*</i></label>
-                                    <select class="js-example-basic-single select2">
-                                        <option hidden disabled selected="selected">Select User</option>
-                                        <option>Peter Park</option>
-                                        <option>Liam Nelson</option>
-                                        <option>Mac Warth</option>
+                                    <label class="foncolor" for="User">User</label>
+                                    <select class="js-example-basic-single select2" name="user_id">
+                                        <option selected="selected" value="">Select User</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-12 mb-1">
-                                    <label class="foncolor" for="Container">Container <i class="text-danger">*</i></label>
-                                    <select class="js-example-basic-single select2">
-                                        <option hidden disabled selected="selected">Select Container</option>
-                                        <option>Container 1</option>
-                                        <option>Container 2</option>
-                                        <option>Container 3</option>
+                                    <label class="foncolor" for="Container">Container</label>
+                                    <select class="js-example-basic-single select2" name="container_id" >
+                                        <option selected="selected" value="">Select Container</option>
+                                        @foreach ($containers as $container)
+                                            <option value="{{ $container->id }}" {{ old('container_id') == $container->id ? 'selected' : '' }}>
+                                                {{ $container->container_no_1 }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-12 mb-1">
                                     <label> Amount <i class="text-danger">*</i></label>
-                                    <input type="text" class="form-control inp" name="Amount" placeholder="Enter Amount" />
+                                    <input type="number" class="form-control inp" name="amount" value="{{ old('amount') }}"
+                                        placeholder="Enter Amount" />
+                                    @error('amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                             </div>
@@ -74,37 +114,50 @@
                         <div class="borderset">
                             <div class="row gx-3 gy-2">
                                 <div class="col-md-12 mb-1">
-                                    <label class="foncolor" for="Category">Expense Category <i class="text-danger">*</i></label>
-                                    <select class="js-example-basic-single select2">
-                                        <option hidden disabled selected="selected">Select Category</option>
-                                        <option>Category 1</option>
-                                        <option>Category 2</option>
-                                        <option>Category 3</option>
-                                    </select>
+                                    <label class="foncolor" for="Category">Expense Category <i
+                                            class="text-danger">*</i></label>
+                                            <select class="js-example-basic-single select2" name="category">
+                                                <option value="">Select Category</option>
+                                                <option value="Expense" {{ old('category') == 'Expense' ? 'selected' : '' }}>Expense</option>
+                                                <option value="Deposit" {{ old('category') == 'Deposit' ? 'selected' : '' }}>Deposit</option>
+                                            </select>
+                                    @error('category')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                                 </div>
                                 <div class="col-md-12 mb-1">
                                     <div class="d-flex align-items-center justify-content-center pt-4">
                                         <label class="foncolor set me-3" for="img">Image</label>
                                         <div class="avtarset oneonly" style="position: relative;">
                                             <!-- Image Preview -->
-                                            <img id="preview_image" class="avtars" src="{{ asset('assets/img.png') }}" alt="avatar">
+                                            <img id="preview_image" class="avtars" src="{{ asset('assets/img.png') }}"
+                                                alt="avatar">
 
                                             <!-- File Input (Hidden by Default) -->
-                                            <input type="file" id="file_image" name="image" accept="image/png, image/jpeg" style="display: none;" onchange="previewImage(this, 'image')">
+                                            <input type="file" id="file_image" name="image"
+                                                accept="image/png, image/jpeg" style="display: none;"
+                                                onchange="previewImage(this, 'preview_image')">
 
                                             <div class="divedit">
                                                 <!-- Edit Button -->
-                                                <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit" style="cursor: pointer;">
+                                                <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}"
+                                                    alt="edit" style="cursor: pointer;"
+                                                    onclick="document.getElementById('file_image').click();">
 
                                                 <!-- Delete Button -->
-                                                <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete" style="cursor: pointer;">
+                                                <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}"
+                                                    alt="delete" style="cursor: pointer;"
+                                                    onclick="removeImage('preview_image', 'file_image')">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-1">
-                                    <label class="foncolor" for="warehouse_name">Creator User Name <i class="text-danger">*</i></label>
-                                    <input type="text" name="first_name" readonly class="form-control inp" placeholder="Enter First Name" value="Mark Henry">
+                                    <label class="foncolor" for="warehouse_name">Creator User Name <i
+                                            class="text-danger">*</i></label>
+                                    <input type="text" name="first_name" readonly class="form-control inp"
+                                        placeholder="Enter First Name" value="{{ Auth::user()->name }}">
+                                    <input type="hidden" name="creator_user_id" value="{{ Auth::user()->id }}">
 
                                 </div>
                                 <div class="col-md-12 mb-1">
@@ -115,7 +168,7 @@
 
                                                 <div class="status-toggle">
                                                     <span>Active</span>
-                                                    <input id="status" class="check" type="checkbox" name="status">
+                                                    <input id="status" class="check" type="checkbox" name="status" value="Active">
                                                     <label for="status" class="checktoggle checkbox-bg togc"></label>
                                                     <span class="">Inactive</span>
                                                 </div>
@@ -126,7 +179,8 @@
                                         <div>
                                             <div class="add-customer-btns ">
 
-                                                <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                                                <button type="button"
+                                                    class="btn btn-outline-primary custom-btn">Cancel</button>
 
                                                 <button type="submit" class="btn btn-primary ">Submit</button>
 
@@ -142,8 +196,32 @@
             </div>
 
         </form>
-
     </div>
 
+    <script>
+        // Function to preview the selected image
+        function previewImage(input, previewId) {
+            const previewElement = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewElement.src = e.target.result; // Set the image source to the uploaded file
+                };
+                reader.readAsDataURL(input.files[0]); // Read the file as a data URL
+            }
+        }
+
+        // Function to remove the image preview and clear the file input
+        function removeImage(previewId, inputId) {
+            const previewElement = document.getElementById(previewId);
+            const fileInput = document.getElementById(inputId);
+
+            // Reset the image preview to the default image
+            previewElement.src = "{{ asset('assets/img.png') }}";
+
+            // Clear the file input value
+            fileInput.value = '';
+        }
+    </script>
 
 </x-app-layout>

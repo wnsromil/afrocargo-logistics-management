@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\{
@@ -14,7 +15,8 @@ use App\Models\{
     Parcel,
     Vehicle,
     ParcelHistory,
-    HubTracking
+    HubTracking,
+    Expense,
 };
 
 class ExpensesController extends Controller
@@ -22,23 +24,66 @@ class ExpensesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Get input parameters
+        $search = $request->input('search');
+        $warehouse_id = $request->input('warehouse_id');
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+        $category = $request->input('category');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
 
-        $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest()->paginate(10);
-        $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->get());
+        // Start building the query
+        $query = Expense::with(['creatorUser', 'warehouse'])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            });
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
-        })->get();
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('description', 'LIKE', "%$search%")
+                    ->orWhere('category', 'LIKE', "%$search%")
+                    ->orWhere('amount', 'LIKE', "%$search%");
+            });
+        }
 
-        $drivers = $user->where('role_id', 4)->values();
-        return view('admin.expenses.index', compact('parcels', 'drivers', 'warehouses'));
+        // Apply warehouse filter
+        if ($warehouse_id) {
+            $query->where('warehouse_id', $warehouse_id);
+        }
+
+        // Apply date range filter
+        if ($start_date && $end_date) {
+            $query->whereBetween('date', [$start_date, $end_date]);
+        }
+
+        // Apply category filter
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        // Paginate the results
+        $expenses = $query->latest()->paginate($perPage)->appends([
+            'search' => $search,
+            'warehouse_id' => $warehouse_id,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'category' => $category,
+            'per_page' => $perPage,
+        ]);
+
+        // Calculate serial number start
+        $serialStart = ($currentPage - 1) * $perPage;
+
+        // Return view or AJAX response
+        if ($request->ajax()) {
+            return view('admin.expenses.table', compact('expenses', 'serialStart'))->render();
+        }
+
+        return view('admin.expenses.index', compact('expenses', 'search', 'warehouse_id', 'start_date', 'end_date', 'category', 'perPage', 'serialStart'));
     }
 
     /**
@@ -48,22 +93,27 @@ class ExpensesController extends Controller
     {
         //
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->get());
+        $users = collect(User::where('status', 'Active')
+            ->whereIn('role_id', [1, 2, 4])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get());
 
-        $customers = $user->where('role_id', 3)->values();
+        $customers = $users->where('role_id', 3)->values();
 
-        $drivers = $user->where('role_id', 4)->values();
+        $drivers = $users->where('role_id', 4)->values();
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
+        $containers = Vehicle::where('vehicle_type', 'Container')->get();
 
-        return view('admin.expenses.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes'));
+
+        return view('admin.expenses.create', compact('warehouses', 'users', 'customers', 'containers', 'drivers', 'parcelTpyes'));
     }
 
     /**
@@ -71,41 +121,35 @@ class ExpensesController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
-        // Validate incoming request data
         $validatedData = $request->validate([
-            'tracking_number' => 'required|string|max:255|unique:parcels,tracking_number',
-            'customer_id' => 'required|exists:users,id',
-            'driver_id' => 'nullable|exists:users,id',
-            'warehouse_id' => 'nullable|exists:warehouses,id',
-            'weight' => 'required|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
-            'partial_payment' => 'required|numeric|min:0',
-            'remaining_payment' => 'required|numeric|min:0',
-            'payment_type' => 'required|in:COD,Online',
-            'descriptions' => 'nullable|string',
-            'source_address' => 'required|string|max:255',
-            'destination_address' => 'required|string|max:255',
-            'status' => 'required|in:Pending,Pickup Assign,Pickup Re-Schedule,Received By Pickup Man,Received Warehouse,Transfer to hub,Received by hub,Delivery Man Assign,Return to Courier,Delivered,Cancelled',
-            'parcel_car_ids' => 'required|array',
+            'warehouse' => 'required|exists:warehouses,id',
+            'expense_date' => 'required|date_format:m/d/Y',
+            'description' => 'required|string',
+            'amount' => 'required|numeric|min:0',
+            'category' => 'required|string',
+            'creator_user_id' => 'required|exists:users,id',
         ]);
 
-        $inventory = Parcel::create($validatedData);
+        $status  = !empty($request->status) ? $request->status : 'Active';
+        $validatedData['status'] = $status;
+        $validatedData['date'] = \Carbon\Carbon::createFromFormat('m/d/Y', $request->expense_date)->format('Y-m-d');
+        $validatedData['warehouse_id'] = $request->warehouse;
+        $validatedData['time'] = "06:00 AM";
+        $allData = $request->except('_token');
+        $dataToStore = array_merge($allData, $validatedData);
 
-        ParcelHistory::create([
-            'parcel_id' => $inventory->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $validatedData['customer_id'],
-            'warehouse_id' => $validatedData['warehouse_id'],
-            'status' => 'Created',
-            'parcel_status' => $validatedData['status'],
-            'description' => collect($validatedData)
-        ]);
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/expenses', $filename, 'public'); // Store in 'storage/app/public/uploads/licenses'
+            $dataToStore['img'] = 'storage/' . $filePath; // Get full URL
+        }
+
+        $expense = Expense::create($dataToStore);
 
         return redirect()->route('admin.expenses.index')
-            ->with('success', 'Order added successfully.');
+            ->with('success', 'Expense added successfully.');
     }
-
 
     /**
      * Display the specified resource.
@@ -226,9 +270,9 @@ class ExpensesController extends Controller
             unset($validatedData['ParcelId']);
 
             // Fetch the parcel record
-            $parcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
+            $parcel = Parcel::when($ParcelId, function ($q) use ($ParcelId) {
+                if (is_array($ParcelId)) {
+                    return $q->whereIn('id', $ParcelId);
                 }
                 return $q->where('id', $ParcelId);
             })->get();
@@ -239,20 +283,20 @@ class ExpensesController extends Controller
                     'message' => 'Parcel not found.'
                 ], 404);
             }
-            
+
             // Update parcel status and driver_id if provided
-            $objParcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
+            $objParcel = Parcel::when($ParcelId, function ($q) use ($ParcelId) {
+                if (is_array($ParcelId)) {
+                    return $q->whereIn('id', $ParcelId);
                 }
                 return $q->where('id', $ParcelId);
             });
 
-            
+
 
 
             $warehouse_id = null;
-            if($validatedData['status'] == "Received Warehouse"){
+            if ($validatedData['status'] == "Received Warehouse") {
                 $warehouse_id =  $request->warehouse_id;
 
                 // $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
@@ -281,30 +325,30 @@ class ExpensesController extends Controller
                 // $validatedData['hub_tracking_id'] = $hubTracking->id;
             }
 
-            if($validatedData['status'] == "Received By Pickup Man"){
+            if ($validatedData['status'] == "Received By Pickup Man") {
 
-                $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-                    return $q->where('warehouse_id',$this->user->warehouse_id);
+                $vehicles = Vehicle::when($this->user->role_id != 1, function ($q) {
+                    return $q->where('warehouse_id', $this->user->warehouse_id);
                 })->get();
 
                 $warehouse_id =  $vehicles->first()->warehouse_id;
 
                 // ready to hub
-                $hubTrackings = HubTracking::where('status','pending')
-                ->withCount(['parcels'])
-                ->with('vehicle')
-                ->where(['from_warehouse_id'=>$warehouse_id])
-                ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get();
+                $hubTrackings = HubTracking::where('status', 'pending')
+                    ->withCount(['parcels'])
+                    ->with('vehicle')
+                    ->where(['from_warehouse_id' => $warehouse_id])
+                    ->whereIn('vehicle_id', $vehicles->pluck('id')->toArray())->latest()->get();
 
-                $hubTracking = collect($hubTrackings)->filter(function($item){
+                $hubTracking = collect($hubTrackings)->filter(function ($item) {
                     return $item->parcels_count < $item->vehicle->capacity;
                 })->first();
-                
+
                 // return collect($hubTrackings)->pluck('vehicle_id')->toArray();
 
-                if(empty($hubTracking)){
+                if (empty($hubTracking)) {
                     $hubTracking = HubTracking::create([
-                        'vehicle_id' => $vehicles->whereNotIn('id',collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
+                        'vehicle_id' => $vehicles->whereNotIn('id', collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
                         'from_warehouse_id' => $warehouse_id,
                         'created_by' => $this->user->id
                     ]);
@@ -317,7 +361,7 @@ class ExpensesController extends Controller
             $objParcel->update($validatedData);
 
 
-            $history = $parcel->map(function($item) use($validatedData,$warehouse_id){
+            $history = $parcel->map(function ($item) use ($validatedData, $warehouse_id) {
                 return [
                     'parcel_id' => $item->id,
                     'created_user_id' => $this->user->id,
@@ -327,11 +371,11 @@ class ExpensesController extends Controller
                     'parcel_status' => $validatedData['status'],
                     'description' => collect($item),
                     'note' => $request->note ?? null,
-                    'created_at'=> Carbon::now()
+                    'created_at' => Carbon::now()
                 ];
             });
 
-            
+
 
             // Store history in ParcelHistory table
             ParcelHistory::insert(collect($history)->toArray());
