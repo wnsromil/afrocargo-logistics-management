@@ -138,8 +138,8 @@ Version      : 1.0
             for (var i = 0; i < $(this)[0].files.length; i++) {
                 $("#frames").append(
                     '<img src="' +
-                    window.URL.createObjectURL(this.files[i]) +
-                    '" width="100px" height="100px">'
+                        window.URL.createObjectURL(this.files[i]) +
+                        '" width="100px" height="100px">'
                 );
             }
         });
@@ -148,8 +148,8 @@ Version      : 1.0
             for (var i = 0; i < $(this)[0].files.length; i++) {
                 $("#frames2").append(
                     '<img src="' +
-                    window.URL.createObjectURL(this.files[i]) +
-                    '" width="100px" height="100px">'
+                        window.URL.createObjectURL(this.files[i]) +
+                        '" width="100px" height="100px">'
                 );
             }
         });
@@ -280,6 +280,49 @@ Version      : 1.0
         );
 
         booking_range(start, end);
+    }
+
+    if ($(".Expensefillterdate").length > 0) {
+        var start = moment().subtract(6, "days"); // 7 din pahle ka date
+        var end = moment(); // Aaj ka date
+
+        // Set input as readonly, placeholder, styles
+        $(".Expensefillterdate")
+            .attr("readonly", true)
+            .attr(
+                "placeholder",
+                start.format("MM-DD-YYYY") + " - " + end.format("MM-DD-YYYY")
+            )
+            .css({
+                cursor: "pointer",
+                backgroundColor: "#ffffff",
+            });
+
+        function booking_range(start, end) {
+            $(".Expensefillterdate").val(
+                start.format("MM/DD/YYYY") + " - " + end.format("MM/DD/YYYY")
+            );
+        }
+
+        $(".Expensefillterdate").daterangepicker(
+            {
+                autoUpdateInput: false,
+                startDate: start,
+                endDate: end,
+                maxDate: moment().startOf("day"),
+                locale: {
+                    format: "MM/DD/YYYY",
+                    cancelLabel: "Clear",
+                },
+            },
+            function (start, end) {
+                booking_range(start, end);
+            }
+        );
+
+        $(".Expensefillterdate").on("cancel.daterangepicker", function () {
+            $(this).val("");
+        });
     }
 
     // Date Range Picker
@@ -638,7 +681,6 @@ Version      : 1.0
         });
     }
 
-
     if ($('input[name="license_expiry_date"]').length > 0) {
         $('input[name="license_expiry_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
@@ -680,6 +722,27 @@ Version      : 1.0
 
         // Date Select Hone Ke Baad Input Me Value Set Karo
         $('input[name="expense_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="edit_expense_date"]').length > 0) {
+        $('input[name="edit_expense_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            maxDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: false, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="edit_expense_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
                 $(this).val(picker.startDate.format("MM/DD/YYYY"));

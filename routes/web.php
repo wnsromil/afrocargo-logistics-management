@@ -201,6 +201,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         // Schedule
         Route::post('weekly_schedule_store', [ScheduleController::class, 'weeklyScheduleStore'])->name('schedule.weeklyschedulestore');
         Route::post('location_schedule_store', [ScheduleController::class, 'locationStore'])->name('schedule.locationstore');
+       
+        //Expenses
+        Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
 
 
         Route::get('/orderdetails', function () {

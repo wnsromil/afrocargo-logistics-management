@@ -43,7 +43,7 @@
                                     <div class="col-md-12 mb-1">
                                         <label class="foncolor" for="warehouse"> Warehouse </label>
                                         <select class="js-example-basic-single select2 form-control" name="warehouse"
-                                            style="" value="{{ old('address_1') }}">
+                                            style="" value="{{ old('warehouse') }}">
                                             <option value="">Select Warehouse</option>
                                             @foreach ($warehouses as $warehouse)
                                                 <option value="{{ $warehouse->id }}" {{ old('warehouse') == $warehouse->id ? 'selected' : '' }}>
@@ -60,7 +60,7 @@
                                 <div class="col-md-12 mb-1">
                                     <label> Date <i class="text-danger">*</i></label>
                                     <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                        <input type="text" name="expense_date" readonly style="cursor: pointer;"
+                                        <input type="text" name="expense_date" readonly style="cursor: pointer; background-color: #ffffff;"
                                             class="btn-filters  form-cs inp  inputbackground"
                                             value="{{ old('expense_date') }}" placeholder="MM-DD-YYYY" />
                                         @error('expense_date')
@@ -157,7 +157,7 @@
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" readonly class="form-control inp"
                                         placeholder="Enter First Name" value="{{ Auth::user()->name }}">
-                                    <input type="hidden" name="creator_user_id" value="{{ Auth::user()->id }}">
+                                    <input type="hidden" name="creator_id" value="{{ Auth::user()->id }}">
 
                                 </div>
                                 <div class="col-md-12 mb-1">

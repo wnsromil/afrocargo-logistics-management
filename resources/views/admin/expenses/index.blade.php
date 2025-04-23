@@ -18,7 +18,7 @@
         </div>
     </x-slot>
 
-    <form action="{{ route('admin.expenses.index') }}" method="GET">
+    <form id="expenseFilterForm" action="{{ route('admin.expenses.index') }}" method="GET">
         <div class="row gx-3 inputheight40">
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
@@ -28,55 +28,86 @@
                         placeholder="Search" name="search" value="{{ request('search') }}">
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <label>By Warehouse</label>
-                <select class="js-example-basic-single select2">
-                    <option selected="selected" style="color:#737B8B">Select Warehouse</option>
-                </select>
-            </div>
+            @php
+                $isSingleWarehouse = count($warehouses) === 1;
+                $warehouseIdFromUrl = request()->query('warehouse_id');
+            @endphp
+
+            @if($isSingleWarehouse)
+                {{-- ✅ Readonly Input for Single Warehouse --}}
+                <div class="col-md-3 mb-3">
+                    <label>By Warehouse</label>
+                    <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $warehouses[0]->id }}">
+                </div>
+            @else
+                {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+                <div class="col-md-3 mb-3">
+                    <label>By Warehouse</label>
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('warehouse_id')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            @endif
+
+
             <div class="col-md-3 mb-3">
                 <label>Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
-                    <input type="text" class="btn-filters form-cs inp bookingrange"
-                        placeholder="02-21-2024 - 02-21-2024" />
+                    <input type="text" name="daterangepicker" class="btn-filters form-cs inp Expensefillterdate"
+                        value="{{ old('daterangepicker', request()->query('daterangepicker')) }}" />
                 </div>
             </div>
+
             <div class="col-md-3 mb-3">
                 <label>By Category</label>
-                <select class="js-example-basic-single select2">
-                    <option selected="selected" style="color:#737B8B">Select Category</option>
+                <select class="js-example-basic-single select2" name="category">
+                    <option value="">Select Category</option>
+                    <option value="Expense" {{ request()->query('category') == "Expense" ? 'selected' : '' }}>Expense
+                    </option>
+                    <option value="Deposit" {{ request()->query('category') == "Deposit" ? 'selected' : '' }}>Deposit
+                    </option>
                 </select>
             </div>
             <div class="col-12">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>
-                    <a href="{{ route('admin.expenses.index') }}"><button
-                            class="btn btn-outline-danger btnr">Reset</button></a>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
                 </div>
             </div>
         </div>
     </form>
-    <div class="card-table">
-        <div class="card-body">
-            <div class="table-responsive smpadding mt-5">
-                <table class="table table-stripped table-hover datatable">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>S. No.</th>
-                            <th>User</th>
-                            <th>Warehouse Name</th>
-                            <th>Date</th>
-                            <th>Category</th>
-                            <th>Amount</th>
-                            <th>Image</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+    <div id='ajexTable'>
+        <div class="card-table">
+            <div class="card-body">
+                <div class="table-responsive smpadding mt-5">
+                    <table class="table table-stripped table-hover datatable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>S. No.</th>
+                                <th>User</th>
+                                <th>Warehouse Name</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Image</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        @foreach ($expenses as $key => $expense)
+                        <tbody>
+                            @forelse ($expenses as $key => $expense)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $expense->creatorUser->name ?? '--' }}</td>
@@ -112,21 +143,94 @@
                                                         <i class="far fa-edit me-2"></i>Update
                                                     </a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.expenses.show', $expense->id) }}">
                                                         <i class="far fa-eye me-2"></i>View
                                                     </a>
-                                                </li>
+                                                </li> --}}
+                                                @if($expense->status == 'Active')
+                                                    <li>
+                                                        <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                            data-id="{{ $expense->id }}" data-status="Inactive">
+                                                            <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                        </a>
+                                                    </li>
+                                                @elseif($expense->status == 'Inactive')
+                                                    <li>
+                                                        <a class="dropdown-item activate" href="javascript:void(0)"
+                                                            data-id="{{ $expense->id }}" data-status="Active">
+                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                        </a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @empty
+                            <tr>
+                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 p-2 input-box align-items-center">
+            <div class="col-md-6 d-flex p-2 align-items-center">
+                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
+                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                </select>
+                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Delegate click on dynamically updated table
+            $('#ajexTable').on('click', '.activate, .deactivate', function () {
+                let id = $(this).data('id');
+                let status = $(this).data('status');
+
+                $.ajax({
+                    url: "{{ route('admin.expenses.status', '') }}/" + id
+                    , type: 'POST'
+                    , data: {
+                        _token: '{{ csrf_token() }}'
+                        , status: status
+                    }
+                    , success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success'
+                                , title: 'Status Updated'
+                                , text: response.success
+                            });
+
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        // Function to reset the form fields
+        function resetForm() {
+            window.location.href = "{{ route('admin.expenses.index') }}";
+        }
+    </script>
+
 </x-app-layout>
