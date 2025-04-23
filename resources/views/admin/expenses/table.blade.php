@@ -34,7 +34,12 @@
                                         style="max-width: 50px;">
                                 @endif
                             </td>
-                            <td>{{ $expense->description ?? '--' }}</td>
+                            <td>
+                                <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="{{  $expense->description ?? '--' }}">
+                                    {{  $expense->description ?? '--' }}
+                                </p>
+                            </td>
                             <td>
                                 <div class="statusFor {{ $expense->status == 'Active' ? 'active' : 'inactive' }}">
                                     <p>{{ $expense->status }}</p>
@@ -42,8 +47,7 @@
                             </td>
                             <td>
                                 <div class="dropdown dropdown-action">
-                                    <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                    <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
@@ -61,29 +65,31 @@
                                                 </a>
                                             </li> --}}
                                             @if($expense->status == 'Active')
-                                            <li>
-                                                <a class="dropdown-item deactivate" href="javascript:void(0)" data-id="{{ $expense->id }}" data-status="Inactive">
-                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                </a>
-                                            </li>
+                                                <li>
+                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                        data-id="{{ $expense->id }}" data-status="Inactive">
+                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                    </a>
+                                                </li>
                                             @elseif($expense->status == 'Inactive')
-                                            <li>
-                                                <a class="dropdown-item activate" href="javascript:void(0)" data-id="{{ $expense->id }}" data-status="Active">
-                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                </a>
-                                            </li>
+                                                <li>
+                                                    <a class="dropdown-item activate" href="javascript:void(0)"
+                                                        data-id="{{ $expense->id }}" data-status="Active">
+                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                    </a>
+                                                </li>
                                             @endif
                                         </ul>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        @empty
+                    @empty
                         <tr>
                             <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
                             </td>
                         </tr>
-                        @endforelse
+                    @endforelse
                 </tbody>
             </table>
         </div>

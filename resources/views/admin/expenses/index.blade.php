@@ -108,72 +108,77 @@
 
                         <tbody>
                             @forelse ($expenses as $key => $expense)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $expense->creatorUser->name ?? '--' }}</td>
-                                <td>{{ $expense->warehouse->warehouse_name ?? '--' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($expense->date)->format('m-d-Y') }}</td>
-                                <td>{{ $expense->category ?? '--' }}</td>
-                                <td>${{ $expense->amount ?? '--' }}</td>
-                                <td>
-                                    @if ($expense->img)
-                                        <img src="{{ asset($expense->img) }}" alt="Expense Image" style="max-width: 50px;">
-                                    @else
-                                        <img src="../assets/images/userPlaceholderImg.png" alt="Default Image"
-                                            style="max-width: 50px;">
-                                    @endif
-                                </td>
-                                <td>{{ $expense->description ?? '--' }}</td>
-                                <td>
-                                    <div class="statusFor {{ $expense->status == 'Active' ? 'active' : 'inactive' }}">
-                                        <p>{{ $expense->status }}</p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.expenses.edit', $expense->id) }}">
-                                                        <i class="far fa-edit me-2"></i>Update
-                                                    </a>
-                                                </li>
-                                                {{-- <li>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.expenses.show', $expense->id) }}">
-                                                        <i class="far fa-eye me-2"></i>View
-                                                    </a>
-                                                </li> --}}
-                                                @if($expense->status == 'Active')
-                                                    <li>
-                                                        <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                            data-id="{{ $expense->id }}" data-status="Inactive">
-                                                            <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                        </a>
-                                                    </li>
-                                                @elseif($expense->status == 'Inactive')
-                                                    <li>
-                                                        <a class="dropdown-item activate" href="javascript:void(0)"
-                                                            data-id="{{ $expense->id }}" data-status="Active">
-                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                            </ul>
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $expense->creatorUser->name ?? '--' }}</td>
+                                    <td>{{ $expense->warehouse->warehouse_name ?? '--' }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($expense->date)->format('m-d-Y') }}</td>
+                                    <td>{{ $expense->category ?? '--' }}</td>
+                                    <td>${{ $expense->amount ?? '--' }}</td>
+                                    <td>
+                                        @if ($expense->img)
+                                            <img src="{{ asset($expense->img) }}" alt="Expense Image" style="max-width: 50px;">
+                                        @else
+                                            <img src="../assets/images/userPlaceholderImg.png" alt="Default Image"
+                                                style="max-width: 50px;">
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{  $expense->description ?? '--' }}">
+                                            {{  $expense->description ?? '--' }}</p>
+
+                                    </td>
+                                    <td>
+                                        <div class="statusFor {{ $expense->status == 'Active' ? 'active' : 'inactive' }}">
+                                            <p>{{ $expense->status }}</p>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.expenses.edit', $expense->id) }}">
+                                                            <i class="far fa-edit me-2"></i>Update
+                                                        </a>
+                                                    </li>
+                                                    {{-- <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.expenses.show', $expense->id) }}">
+                                                            <i class="far fa-eye me-2"></i>View
+                                                        </a>
+                                                    </li> --}}
+                                                    @if($expense->status == 'Active')
+                                                        <li>
+                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                                data-id="{{ $expense->id }}" data-status="Inactive">
+                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                            </a>
+                                                        </li>
+                                                    @elseif($expense->status == 'Inactive')
+                                                        <li>
+                                                            <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                data-id="{{ $expense->id }}" data-status="Active">
+                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
+                                    </td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
