@@ -138,8 +138,8 @@ Version      : 1.0
             for (var i = 0; i < $(this)[0].files.length; i++) {
                 $("#frames").append(
                     '<img src="' +
-                        window.URL.createObjectURL(this.files[i]) +
-                        '" width="100px" height="100px">'
+                    window.URL.createObjectURL(this.files[i]) +
+                    '" width="100px" height="100px">'
                 );
             }
         });
@@ -148,8 +148,8 @@ Version      : 1.0
             for (var i = 0; i < $(this)[0].files.length; i++) {
                 $("#frames2").append(
                     '<img src="' +
-                        window.URL.createObjectURL(this.files[i]) +
-                        '" width="100px" height="100px">'
+                    window.URL.createObjectURL(this.files[i]) +
+                    '" width="100px" height="100px">'
                 );
             }
         });
@@ -251,7 +251,7 @@ Version      : 1.0
 
         $(".bookingrange").daterangepicker(
             {
-                // startDate: start,
+                startDate: start,
                 endDate: end,
                 minDate: moment().startOf("day"), // Past Dates Disabled
                 startDate: moment().startOf("day"), // Default Today Selected
@@ -329,24 +329,8 @@ Version      : 1.0
 
     $(".onlyTimePickerSchedule").each(function () {
         const $this = $(this);
-        const name = $this.attr("name");
-        const timeType = name.split("_")[1]; // morning / afternoon / evening
 
-        let minTime, maxTime;
-
-        // Define allowed time ranges for each timeType
-        if (timeType === "morning") {
-            minTime = moment().set({ hour: 6, minute: 0, second: 0 });
-            maxTime = moment().set({ hour: 11, minute: 59, second: 0 });
-        } else if (timeType === "afternoon") {
-            minTime = moment().set({ hour: 12, minute: 0, second: 0 });
-            maxTime = moment().set({ hour: 16, minute: 59, second: 0 });
-        } else if (timeType === "evening") {
-            minTime = moment().set({ hour: 17, minute: 0, second: 0 });
-            maxTime = moment().set({ hour: 21, minute: 59, second: 0 });
-        }
-
-        // ✅ Prevent manual typing
+        // ✅ Make input completely read-only (no typing)
         $this.attr("readonly", "readonly");
         $this.on("keydown paste", function (e) {
             e.preventDefault();
@@ -367,9 +351,7 @@ Version      : 1.0
                 locale: {
                     format: "hh:mm A",
                 },
-                timePickerIncrement: 1,
-                minDate: minTime,
-                maxDate: maxTime,
+                timePickerIncrement: 15,
             },
             function (start) {
                 $this.val(start.format("hh:mm A"));
@@ -384,14 +366,14 @@ Version      : 1.0
         });
 
         $this.on("cancel.daterangepicker", function () {
-            $this.val("");
+            $this.val(""); // Clear input
         });
 
         $this.on("show.daterangepicker", function (ev, picker) {
             picker.container.addClass("myCustomPopup");
         });
 
-        $this.val("");
+        $this.val(""); // Default empty
     });
 
     // 🔐 Function to validate time logic between fields
@@ -589,7 +571,7 @@ Version      : 1.0
             startDate: moment().startOf("day"), // Default Today Selected
             autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
-                format: "MM/DD/YYYY", // Date Format
+                format: "M/DD/YYYY", // Date Format
             },
         });
 
@@ -597,7 +579,7 @@ Version      : 1.0
         $('input[name="signature_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
-                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
     }
@@ -655,20 +637,22 @@ Version      : 1.0
             $(this).val(picker.startDate.format("M/DD/YYYY"));
         });
     }
-    
+
+
     if ($('input[name="license_expiry_date"]').length > 0) {
         $('input[name="license_expiry_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
             minDate: moment().startOf("day"), // Past Dates Disabled
-            autoUpdateInput: false, // Default Date Auto Set Na Ho
+            // startDate: moment().startOf("day"), // Default Today Selected (COMMENTED)
+            autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
                 format: "M/DD/YYYY", // Date Format
             },
         });
 
         // Date Select Hone Ke Baad Input Me Value Set Karo
-        $('input[name="license_expiry_date"]').on(
+        $('input[name="edit_license_expiry_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
@@ -1447,40 +1431,40 @@ Version      : 1.0
             input.attr("type", "password");
         }
     });
-    // if ($(".datatable").length > 0) {
-    //     $(".datatable").DataTable({
-    //         bFilter: false,
-    //         // "scrollX": true,
-    //         autoWidth: false,
-    //         sDom: "fBtlpi",
-    //         ordering: true,
-    //         columnDefs: [
-    //             {
-    //                 targets: "no-sort",
-    //                 orderable: false,
-    //             },
-    //         ],
-    //         language: {
-    //             search: " ",
-    //             sLengthMenu: "_MENU_",
-    //             paginate: {
-    //                 next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
-    //                 previous:
-    //                     '<i class="fa fa-angle-double-left me-2"></i> Previous',
-    //             },
-    //         },
-    //         initComplete: (settings, json) => {
-    //             $(".dataTables_filter").appendTo("#tableSearch");
-    //             $(".dataTables_filter").appendTo(".search-input");
-    //         },
-    //     });
+    if ($(".datatable").length > 0) {
+        $(".datatable").DataTable({
+            bFilter: false,
+            // "scrollX": true,
+            autoWidth: false,
+            sDom: "fBtlpi",
+            ordering: true,
+            columnDefs: [
+                {
+                    targets: "no-sort",
+                    orderable: false,
+                },
+            ],
+            language: {
+                search: " ",
+                sLengthMenu: "_MENU_",
+                paginate: {
+                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+                    previous:
+                        '<i class="fa fa-angle-double-left me-2"></i> Previous',
+                },
+            },
+            initComplete: (settings, json) => {
+                $(".dataTables_filter").appendTo("#tableSearch");
+                $(".dataTables_filter").appendTo(".search-input");
+            },
+        });
 
-    //     $(".modal").on("shown.bs.modal", function (e) {
-    //         $.fn.dataTable
-    //             .tables({ visible: true, api: true })
-    //             .columns.adjust();
-    //     });
-    // }
+        // $(".modal").on("shown.bs.modal", function (e) {
+        //     $.fn.dataTable
+        //         .tables({ visible: true, api: true })
+        //         .columns.adjust();
+        // });
+    }
 
     function initAutocomplete() {
         const inputs = document.querySelectorAll(

@@ -537,7 +537,7 @@
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
                                         {{$latestContainer->seal_no ?? "-"}}</p>
-                                    <h5 class='text-black countFontSize fw-medium my-3'>
+                                    <h5 class='text-black countFontSize fw-medium'>
                                         {{$latestContainer->container_no_1 ?? "-"}}
                                     </h5>
                                     <div class="cardFontSize mt-2 fw-medium">
