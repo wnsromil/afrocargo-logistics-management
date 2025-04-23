@@ -161,8 +161,8 @@ class MenuSeeder extends Seeder
         if ($orderShip) {
             Menu::create([
                 'title' => 'Order',
-                'route' => 'admin.OrderShipment.index',
-                'active' => 'OrderShipment*',
+                'route' => 'admin.service_orders.index',
+                'active' => 'service_orders*',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);

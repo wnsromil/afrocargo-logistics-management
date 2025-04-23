@@ -12,10 +12,12 @@ use App\Models\{
     Inventory,
     Parcel,
     ParcelHistory,
-    Invoice
+    Invoice,
+    ParcelInventorie
 };
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CustomerController;
+use Illuminate\Validation\Rule;
 
 
 class OrderShipmentController extends Controller
@@ -25,7 +27,7 @@ class OrderShipmentController extends Controller
      */
     public function index(Request $request)
     {
-        $parcels = Parcel::where('parcel_type', $request->parcel_type)->select('id', 'tracking_number','driver_id','warehouse_id','customer_id')->when($this->user->role_id != 1, function ($q) {
+        $parcels = Parcel::where('parcel_type', $request->parcel_type)->select('id', 'tracking_number', 'driver_id', 'warehouse_id', 'customer_id')->when($this->user->role_id != 1, function ($q) {
             // return $q->where('warehouse_id', $this->user->warehouse_id);
         })->when($this->user->role_id == 3, function ($q) {
             return $q->where('customer_id', $this->user->id);
@@ -37,7 +39,7 @@ class OrderShipmentController extends Controller
             })
             ->when(!empty($request->order_type), function ($q) use ($request) {
                 $today = now()->format('Y-m-d'); // Aaj ki date
-                
+
                 if ($request->order_type == 'Pending') {
 
                     return $q->whereDate('created_at', '<', $today); // Aaj se pehle ki date ka data
@@ -73,7 +75,7 @@ class OrderShipmentController extends Controller
                 'destination_address' => 'required|string|max:255',
                 'destination_user_name' => 'required|string|max:255',
                 'destination_user_phone' => 'required|digits:10',
-                'parcel_card_ids' => 'required|array',
+                'parcel_card_ids' => 'nullable|array',
                 'customer_subcategories_data' => 'nullable', // JSON format required
                 'driver_subcategories_data' => 'nullable',   // JSON format required
                 'pickup_address_id' => 'required|numeric',
@@ -92,8 +94,8 @@ class OrderShipmentController extends Controller
             $validatedData['customer_id'] = $this->user->id;
 
             // Convert parcel_card_ids to parcel_car_ids
-            $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
-            unset($validatedData['parcel_card_ids']);
+            // $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
+            // unset($validatedData['parcel_card_ids']);
 
             // **JSON Encode Arrays Properly**
             if (!empty($request->customer_subcategories_data)) {
@@ -149,7 +151,7 @@ class OrderShipmentController extends Controller
     public function OrderHistory(string $id)
     {
         //
-        $parcel= Parcel::where('id', $id)->orWhere('tracking_number',$id)->first();
+        $parcel = Parcel::where('id', $id)->orWhere('tracking_number', $id)->first();
         $ParcelHistories = ParcelHistory::where('parcel_id', $parcel->id)
             ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
 
@@ -361,8 +363,8 @@ class OrderShipmentController extends Controller
         $distance_rate = setting()->get('distance_rate');
         $distance_unit = setting()->get('distance_unit');
 
-        $data = calculatePrice($request->input('weight',0),$weight_unit,$weight_rate) +
-        calculatePrice($request->input('distance',0),$distance_unit,$distance_rate);
+        $data = calculatePrice($request->input('weight', 0), $weight_unit, $weight_rate) +
+            calculatePrice($request->input('distance', 0), $distance_unit, $distance_rate);
 
         return $this->sendResponse($data, 'Estimate Price fetched successfully.');
     }
@@ -385,7 +387,7 @@ class OrderShipmentController extends Controller
             ]);
 
             // Assign customer ID
-            $validatedData['driver_id'] = $this->user->id; 
+            $validatedData['driver_id'] = $this->user->id;
             $validatedData['parcel_type'] = 'Service';
             $validatedData['add_order'] = 'driver';
             $validatedData['estimate_cost'] = $request->estimate_cost ?? null;
@@ -422,14 +424,14 @@ class OrderShipmentController extends Controller
             Invoice::create([
                 'generated_by' => 'driver',
                 'generated_status' => 'view_only',
-                'issue_date' => now()->format('Y-m-d'), 
-                'parcel_id' => $Parcel->id,             
+                'issue_date' => now()->format('Y-m-d'),
+                'parcel_id' => $Parcel->id,
                 'user_id' => $this->user->id,
                 'total_amount' => $request->total_amount,
                 'is_paid' => $request->payment_status === 'Paid' ? 1 : 0,
                 'invoice_no' => 'INV-' . rand(1000000, 9999999),
             ]);
-            
+
             return $this->sendResponse($Parcel, 'Order added successfully.');
         } catch (Exception $e) {
             // Log the error
@@ -496,15 +498,82 @@ class OrderShipmentController extends Controller
             Invoice::create([
                 'generated_by' => 'driver',
                 'generated_status' => 'view_only',
-                'issue_date' => now()->format('Y-m-d'), 
-                'parcel_id' => $Parcel->id,             
+                'issue_date' => now()->format('Y-m-d'),
+                'parcel_id' => $Parcel->id,
                 'user_id' => $this->user->id,
                 'total_amount' => $request->total_amount,
                 'is_paid' => $request->payment_status === 'Paid' ? 1 : 0,
                 'invoice_no' => 'INV-' . rand(1000000, 9999999),
             ]);
-            
+
             return $this->sendResponse($Parcel, 'Order added successfully.');
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Parcel Store Error: ' . $e->getMessage());
+
+            // Return error response
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while creating the parcel.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function storeSupply(Request $request)
+    {
+        try {
+            // Validate incoming request data
+            $validatedData = $request->validate([
+                'delivery_address_id' => 'required|numeric',
+                'inventorie_data' => 'required|array', // Ensure inventorie_data is an array
+                'inventorie_data.*.inventorie_id' => [
+                    'required',
+                    'numeric',
+                    Rule::exists('inventories', 'id'), // Ensure each inventorie_id exists in the inventories table
+                ],
+                'inventorie_data.*.inventorie_item_quantity' => 'required|numeric|min:0', // Validate quantity
+                'total_amount' => 'required|numeric|min:0',
+                'partial_payment' => 'required|numeric|min:0',
+                'remaining_payment' => 'required|numeric|min:0',
+                'payment_type' => 'required|in:COD,Online',
+            ]);
+
+            // Remaining Payment Check
+            if ($request->remaining_payment > 0) {
+                $validatedData['payment_status'] = 'Partial';
+            }
+
+            // Assign customer ID
+            $validatedData['customer_id'] = $this->user->id;
+            $validatedData['parcel_type'] = 'Supply';
+
+            // Remove unnecessary fields
+            unset($validatedData['inventorie_data']);
+
+            // Create Parcel
+            $parcel = Parcel::create($validatedData);
+
+            // Store Parcel Inventories
+            foreach ($request->inventorie_data as $item) {
+                ParcelInventorie::create([
+                    'parcel_id' => $parcel->id,
+                    'inventorie_id' => $item['inventorie_id'],
+                    'inventorie_item_quantity' => $item['inventorie_item_quantity'],
+                ]);
+            }
+
+            // Create Parcel History
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => $this->user->id,
+                'customer_id' => $validatedData['customer_id'],
+                'status' => 'Created',
+                'parcel_status' => 'Pending',
+                'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
+            ]);
+
+            return $this->sendResponse($parcel, 'Order added successfully.');
         } catch (Exception $e) {
             // Log the error
             Log::error('Parcel Store Error: ' . $e->getMessage());

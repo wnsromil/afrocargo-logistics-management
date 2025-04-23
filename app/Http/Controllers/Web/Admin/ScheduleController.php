@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Availability;
 use App\Models\LocationSchedule;
 use App\Models\WeeklySchedule;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 
 class ScheduleController extends Controller
@@ -32,14 +34,33 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->merge([
+            'date' => $request->input('date') ?? Carbon::today()->format('Y-m-d')
+        ]);
+
         $rules = [
-            'date' => 'nullable|date',
+            'date' => 'required|date',
             'morning' => 'nullable|string',
             'afternoon' => 'nullable|string',
             'evening' => 'nullable|string',
         ];
-        $availabilityData = $request->validate($rules);
 
+        $validator = Validator::make($request->all(), $rules);
+
+        // Add custom rule for checking duplicate active date
+        $validator->after(function ($validator) use ($request) {
+            $exists = Availability::where('date', $request->date)
+                ->where('is_active', 1)
+                ->where('user_id', $request->user_id)
+                ->exists();
+
+            if ($exists) {
+                $validator->errors()->add('date', 'Already scheduled for this date.');
+            }
+        });
+
+        $availabilityData = $validator->validate();
         // Additional data
         $availabilityData['creates_by'] = auth()->id();
         $availabilityData['user_id'] = $request->user_id;
