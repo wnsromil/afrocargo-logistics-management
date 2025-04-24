@@ -124,25 +124,28 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        //
+        // Warehouses list with role check
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })->get();
 
-        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
-        })->get();
-
-        $users = collect(User::where('status', 'Active')
+        // Users list with role check
+        $users = User::where('status', 'Active')
             ->whereIn('role_id', [2, 4])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
-            })
-            ->get());
+            })->get();
 
-        $customers = $users->where('role_id', 3)->values();
+        // Containers list with role check
+        $containers = Vehicle::where('vehicle_type', 'Container')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })->get();
 
-        $containers = Vehicle::where('vehicle_type', 'Container')->get();
-
-        return view('admin.expenses.create', compact('warehouses', 'users', 'customers', 'containers'));
+        return view('admin.expenses.create', compact('warehouses', 'users', 'containers'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -198,27 +201,28 @@ class ExpensesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $expense = Expense::find($id);
+        $expense = Expense::findOrFail($id);
 
-        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
+        $warehouses = Warehouse::where('status', 'Active')->when(auth()->user()->role_id != 1, function ($q) {
+            return $q->where('id', auth()->user()->warehouse_id);
         })->get();
 
-        $users = collect(User::where('status', 'Active')
+        $users = User::where('status', 'Active')
             ->whereIn('role_id', [2, 4])
-            ->when($this->user->role_id != 1, function ($q) {
-                return $q->where('warehouse_id', $this->user->warehouse_id);
-            })
-            ->get());
+            ->when(auth()->user()->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', auth()->user()->warehouse_id);
+            })->get();
 
-        $customers = $users->where('role_id', 3)->values();
+        $containers = Vehicle::where('vehicle_type', 'Container')
+            ->when(auth()->user()->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', auth()->user()->warehouse_id);
+            })->get();
 
-        $containers = Vehicle::where('vehicle_type', 'Container')->get();
-
-        return view('admin.expenses.edit', compact('containers', 'expense', 'users', 'warehouses', 'customers'));
+        return view('admin.expenses.edit', compact('expense', 'warehouses', 'users', 'containers'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -227,13 +231,14 @@ class ExpensesController extends Controller
     {
         $request->validate([
             'edit_expense_date' => 'required|date',
+            'warehouse' => 'required|exists:warehouses,id',
             'description' => 'required|string|max:255',
             'user_id' => 'nullable|exists:users,id',
             'container_id' => 'nullable|exists:vehicles,id',
             'amount' => 'required|numeric',
             'category' => 'required|in:Expense,Deposit',
             'img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-           // 'status' => 'nullable|in:Active'
+            // 'status' => 'nullable|in:Active'
         ]);
 
         $expense = Expense::findOrFail($id);
@@ -244,6 +249,7 @@ class ExpensesController extends Controller
         $expense->container_id = $request->container_id;
         $expense->amount = $request->amount;
         $expense->category = $request->category;
+        $expense->warehouse_id = $request->warehouse;
         $expense->status = !empty($request->status) ? $request->status : 'Active';
 
         if ($request->hasFile('image')) {

@@ -15,6 +15,7 @@ use App\Models\{
     Invoice,
     ParcelInventorie
 };
+use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CustomerController;
 use Illuminate\Validation\Rule;
@@ -68,6 +69,7 @@ class OrderShipmentController extends Controller
             $validatedData = $request->validate([
                 'weight' => 'required|numeric|min:0',
                 'total_amount' => 'required|numeric|min:0',
+                'estimate_cost' => 'required|numeric|min:0',
                 'partial_payment' => 'required|numeric|min:0',
                 'remaining_payment' => 'required|numeric|min:0',
                 'payment_type' => 'required|in:COD,Online',
@@ -139,14 +141,29 @@ class OrderShipmentController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show(string $id)
     {
-        //
-        $ParcelHistories = Parcel::where('id', $id)
-            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress'])->first();
+        $parcel = Parcel::where('id', $id)
+            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress'])
+            ->first();
 
-        return $this->sendResponse($ParcelHistories, 'Order data fetch  successfully.');
+        if (!$parcel) {
+            return $this->sendError('Parcel not found!', [], 404);
+        }
+
+        // Format pickup_date
+        $formattedPickupDate = $parcel->pickup_date
+            ? Carbon::parse($parcel->pickup_date)->format('m-d-Y')
+            : null;
+
+        // Parcel data ko array me convert karke pickup_date replace karein
+        $parcelData = $parcel->toArray();
+        $parcelData['pickup_date'] = $formattedPickupDate;
+
+        return $this->sendResponse($parcelData, 'Order data fetched successfully.');
     }
+
 
     public function OrderHistory(string $id)
     {

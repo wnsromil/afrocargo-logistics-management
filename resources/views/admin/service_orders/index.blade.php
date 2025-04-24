@@ -68,7 +68,7 @@
                                 <th>To</th>
                                 <th>Pickup Date</th>
                                 <th>Capture Image</th>
-                                <th>Item List</th>
+                                <th>Items</th>
                                 <th>Estimate cost</th>
                                 <th>Driver Name</th>
                                 <th>Vehicle Type</th>
@@ -148,7 +148,9 @@
                                                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                                                             </td>
                                                             <td>
-                                                                <div>Household Set,Card..</div>
+                                                                <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                title="{{  $parcel->descriptions ?? '-' }}">
+                                                                {{  $parcel->descriptions ?? '-' }}</p>
                                                             </td>
                                                             <td>
                                                                 <div>${{ $parcel->estimate_cost ?? "0"}}</div>

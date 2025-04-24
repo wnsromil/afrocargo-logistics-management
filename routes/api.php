@@ -49,6 +49,9 @@ Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
 Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus']);
 Route::get('/vehicle/getAdminActiveContainer', [ContainerController::class, 'getAdminActiveContainers']);
+Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'getUsersByWarehouse']);
+Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
