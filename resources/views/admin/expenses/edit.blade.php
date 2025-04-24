@@ -60,6 +60,7 @@
                                             class="btn-filters form-cs inp inputbackground"
                                             value="{{ \Carbon\Carbon::parse($expense->date)->format('m/d/Y') }}"
                                             placeholder="MM-DD-YYYY" />
+                                            <input type="text" class="form-control inp inputs text-center timeOnlyInput" readonly value="{{$expense->time}}" name="currentTIme">
                                         @error('edit_expense_date') <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>

@@ -18,30 +18,41 @@ class WarehouseController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        if (collect([$request->warehouse_code, $request->address, $request->country_id,$request->state_id,$request->city_id])->every(fn($value) => empty($value))) {
-            return $this->sendResponse([], 'Warehouses fetch successfully.');
+        // Check if all filters are empty
+        if (collect([
+            $request->warehouse_code,
+            $request->address,
+            $request->country_id,
+            $request->state_id,
+            $request->city_id
+        ])->every(fn($value) => empty($value))) {
+            
+            // Return all active warehouses if no filters are provided
+            $warehouses = Warehouse::where('status', 'Active')->get();
+            return $this->sendResponse($warehouses, 'All active warehouses fetched successfully.');
         }
-        
-        
-        $warehouses = Warehouse::when($request->warehouse_code,function($q)use($request){
-            return $q->where('warehouse_code',"like","%".$request->warehouse_code."%");
-        })
-        ->when($request->address,function($q)use($request){
-            return $q->where('address',"like","%".$request->address."%");
-        })
-        ->when($request->country_id,function($q)use($request){
-            return $q->where('country_id',"like","%".$request->country_id."%");
-        })
-        ->when($request->state_id,function($q)use($request){
-            return $q->where('state_id',"like","%".$request->state_id."%");
-        })
-        ->when($request->city_id,function($q)use($request){
-            return $q->where('city_id',"like","%".$request->city_id."%");
-        })
-        ->get();
-        return $this->sendResponse($warehouses, 'Warehouses fetch successfully.');
+    
+        // Filtered search
+        $warehouses = Warehouse::when($request->warehouse_code, function ($q) use ($request) {
+                return $q->where('warehouse_code', 'like', "%" . $request->warehouse_code . "%");
+            })
+            ->when($request->address, function ($q) use ($request) {
+                return $q->where('address', 'like', "%" . $request->address . "%");
+            })
+            ->when($request->country_id, function ($q) use ($request) {
+                return $q->where('country_id', $request->country_id);
+            })
+            ->when($request->state_id, function ($q) use ($request) {
+                return $q->where('state_id', $request->state_id);
+            })
+            ->when($request->city_id, function ($q) use ($request) {
+                return $q->where('city_id', $request->city_id);
+            })
+            ->get();
+    
+        return $this->sendResponse($warehouses, 'Warehouses fetched successfully.');
     }
+    
 
     /**
      * Store a newly created resource in storage.

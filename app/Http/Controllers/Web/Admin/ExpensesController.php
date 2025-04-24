@@ -142,8 +142,8 @@ class ExpensesController extends Controller
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })->get();
-
-        return view('admin.expenses.create', compact('warehouses', 'users', 'containers'));
+        $time = Carbon::now()->format('h:i A');
+        return view('admin.expenses.create', compact('time', 'warehouses', 'users', 'containers'));
     }
 
 
@@ -167,7 +167,7 @@ class ExpensesController extends Controller
         $validatedData['creator_user_id'] = $request->user_id;
         $validatedData['creator_id'] = $request->creator_id;
         $validatedData['container_id'] = $request->container_id;
-        $validatedData['time'] = "06:00 AM";
+        $validatedData['time'] = $request->currentTIme; 
         $allData = $request->except('_token');
         $dataToStore = array_merge($allData, $validatedData);
 

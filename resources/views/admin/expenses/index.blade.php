@@ -109,7 +109,7 @@
                         <tbody>
                             @forelse ($expenses as $key => $expense)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $serialStart + $key + 1 }}</td>
                                     <td>{{ $expense->creatorUser->name ?? '--' }}</td>
                                     <td>{{ $expense->warehouse->warehouse_name ?? '--' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($expense->date)->format('m-d-Y') }}</td>

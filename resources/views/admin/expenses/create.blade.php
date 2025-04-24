@@ -63,6 +63,7 @@
                                         <input type="text" name="expense_date" readonly style="cursor: pointer; background-color: #ffffff;"
                                             class="btn-filters  form-cs inp  inputbackground"
                                             value="{{ old('expense_date') }}" placeholder="MM-DD-YYYY" />
+                                            <input type="text" class="form-control inp inputs text-center timeOnlyInput" readonly value="{{$time}}" name="currentTIme">
                                         @error('expense_date')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror

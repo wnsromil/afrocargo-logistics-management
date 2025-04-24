@@ -20,7 +20,8 @@ use App\Http\Controllers\Api\{
     AvailabilityController,
     WeeklySchedulesController,
     InventoryController,
-    ScheduleController
+    ScheduleController,
+    ExpensesController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -117,6 +118,11 @@ Route::middleware('auth:api')->group(function () {
       
         // Available slots Routes
        Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
+
+       // Expenses
+       Route::post('/add-expenses', [ExpensesController::class, 'store']);
+       Route::post('/update-expenses/{id}', [ExpensesController::class, 'update']);
+       Route::get('/get-expenses', [ExpensesController::class, 'getExpensesByUser']);
 
     });
 
