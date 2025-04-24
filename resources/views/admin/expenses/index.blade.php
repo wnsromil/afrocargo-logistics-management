@@ -8,7 +8,8 @@
         <div class="d-flex align-items-center justify-content-end mb-0">
             <div class="usersearch d-flex">
                 <div class="">
-                    <a href="{{ route('admin.expenses.create') }}" class="btn btn-primary buttons" style="background:#203A5F">
+                    <a href="{{ route('admin.expenses.create') }}" class="btn btn-primary buttons"
+                        style="background:#203A5F">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
                         Add Expense
                     </a>
@@ -17,13 +18,14 @@
         </div>
     </x-slot>
 
-    <form>
+    <form action="{{ route('admin.expenses.index') }}" method="GET">
         <div class="row gx-3 inputheight40">
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
                 <div class="inputGroup height40 position-relative">
                     <i class="ti ti-search"></i>
-                    <input type="text" id="searchInput" class="form-control height40 form-cs" placeholder="Search">
+                    <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                        placeholder="Search" name="search" value="{{ request('search') }}">
                 </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -35,7 +37,8 @@
             <div class="col-md-3 mb-3">
                 <label>Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
-                    <input type="text" name="daterangeOnly" class="btn-filters form-cs inp bookingrange" placeholder="02-21-2024 - 02-21-2024" />
+                    <input type="text" class="btn-filters form-cs inp bookingrange"
+                        placeholder="02-21-2024 - 02-21-2024" />
                 </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -46,100 +49,84 @@
             </div>
             <div class="col-12">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary btnf me-2">Search</button>
-                    <button class="btn btn-outline-danger btnr">Reset</button>
+                    <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                    <a href="{{ route('admin.expenses.index') }}"><button
+                            class="btn btn-outline-danger btnr">Reset</button></a>
                 </div>
             </div>
         </div>
+    </form>
+    <div class="card-table">
+        <div class="card-body">
+            <div class="table-responsive smpadding mt-5">
+                <table class="table table-stripped table-hover datatable">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>S. No.</th>
+                            <th>User</th>
+                            <th>Warehouse Name</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
 
-        <div>
-            <div class="card-table">
-                <div class="card-body">
-                    <div class="table-responsive smpadding mt-5">
-                        <table class="table table-stripped table-hover datatable">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>S. No.</th>
-                                    <th>User</th>
-                                    <th>Warehouse Name</th>
-                                    <th>Date</th>
-                                    <th>Category</th>
-                                    <th>Amount</th>
-                                    <th>Image</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Peter Denk</td>
-                                    <td>Star GST</td>
-                                    <td>02-12-2024</td>
-                                    <td>Category 1</td>
-                                    <td>$ 100</td>
-                                    <td><img src="../assets/images/userPlaceholderImg.png" alt="Image" /></td>
-                                    <td>
-                                        <div class="statusFor active">
-                                            <p>Active</p>
+                    <tbody>
+                        @foreach ($expenses as $key => $expense)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $expense->creatorUser->name ?? '--' }}</td>
+                                <td>{{ $expense->warehouse->warehouse_name ?? '--' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($expense->date)->format('m-d-Y') }}</td>
+                                <td>{{ $expense->category ?? '--' }}</td>
+                                <td>${{ $expense->amount ?? '--' }}</td>
+                                <td>
+                                    @if ($expense->img)
+                                        <img src="{{ asset($expense->img) }}" alt="Expense Image" style="max-width: 50px;">
+                                    @else
+                                        <img src="../assets/images/userPlaceholderImg.png" alt="Default Image"
+                                            style="max-width: 50px;">
+                                    @endif
+                                </td>
+                                <td>{{ $expense->description ?? '--' }}</td>
+                                <td>
+                                    <div class="statusFor {{ $expense->status == 'Active' ? 'active' : 'inactive' }}">
+                                        <p>{{ $expense->status }}</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.expenses.edit', $expense->id) }}">
+                                                        <i class="far fa-edit me-2"></i>Update
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.expenses.show', $expense->id) }}">
+                                                        <i class="far fa-eye me-2"></i>View
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#"><i class="far fa-edit me-2"></i>Update</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#"><i class="far fa-eye me-2"></i>View</a>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2</td>
-                                    <td>Max Cunnig</td>
-                                    <td>Star GST</td>
-                                    <td>03-12-2024</td>
-                                    <td>Category 2</td>
-                                    <td>$ 105</td>
-                                    <td><img src="../assets/images/userPlaceholderImg.png" alt="Image" /></td>
-                                    <td>
-                                        <div class="statusFor inactive">
-                                            <p>Inactive</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#"><i class="far fa-edit me-2"></i>Update</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#"><i class="far fa-eye me-2"></i>View</a>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-
-
-                        </table>
-                    </div>
-                </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-
+    </div>
 </x-app-layout>

@@ -666,6 +666,27 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="expense_date"]').length > 0) {
+        $('input[name="expense_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            maxDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="expense_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
     // Sidebar Slimscroll
 
     if ($slimScrolls.length > 0) {
