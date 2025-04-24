@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Address;
+use App\Models\Address; 
 use App\Models\Parcel;
+use App\Models\Vehicle;
 use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -23,12 +24,12 @@ class CustomerController extends Controller
             'invoice_custmore_id' => 'nullable|integer',
             'search' => 'nullable|string|max:255',
         ]);
-    
+
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query('invoice_custmore_id');
-    
+
         $query = User::where('role', 'customer');
-    
+
         if ($invoiceCustomerId) {
             // Only fetch this specific customer by ID
             $query->where('invoice_custmore_id', $invoiceCustomerId);
@@ -38,25 +39,25 @@ class CustomerController extends Controller
                 $query->where('invoice_custmore_type', $type);
             }
         }
-    
+
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%$search%")
-                  ->orWhere('email', 'LIKE', "%$search%");
+                    ->orWhere('email', 'LIKE', "%$search%");
             });
         }
-    
-        $customers = $query->orderBy(column: 'name')->get(['id', 'name', 'phone', 'phone_2', 'email', 'profile_pic','signature_img','contract_signature_img', 'license_document']);
-    
+
+        $customers = $query->orderBy(column: 'name')->get(['id', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
             $customer->address = $address ?? null;
         }
-    
+
         return response()->json(['customers' => $customers], 200);
     }
-    
+
     public function getCustomersDetails(Request $request)
     {
         if ($request->has('id') && !empty($request->id)) {
@@ -279,5 +280,47 @@ class CustomerController extends Controller
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
+    }
+
+    public function getUsersByWarehouse(Request $request)
+    {
+        $warehouseId = $request->warehouse_id;
+
+        if (!$warehouseId) {
+            return response()->json(['message' => 'Warehouse ID is required'], 400);
+        }
+
+        // Step 1: Get user IDs from given warehouse
+        $userIdsFromWarehouse = User::where('warehouse_id', $warehouseId)->pluck('id');
+
+        // Step 2: Filter those users with conditions
+        $users = User::whereIn('id', $userIdsFromWarehouse)
+            ->where('status', 'Active')
+            ->whereIn('role_id', [2, 4])
+            ->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found for the given warehouse.'], 404);
+        }
+
+        return response()->json(['users' => $users], 200);
+    }
+
+    public function getVehiclesByWarehouse(Request $request)
+    {
+        $warehouseId = $request->warehouse_id;
+
+        if (!$warehouseId) {
+            return response()->json(['message' => 'Warehouse ID is required'], 400);
+        }
+
+        // Step 1: Get vehicles based on warehouse_id
+        $vehicles = Vehicle::where('vehicle_type', 'Container')->where('warehouse_id', $warehouseId)->get();
+
+        if ($vehicles->isEmpty()) {
+            return response()->json(['message' => 'No vehicles found for the given warehouse.'], 404);
+        }
+
+        return response()->json(['vehicles' => $vehicles], 200);
     }
 }

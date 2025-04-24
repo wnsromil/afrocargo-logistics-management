@@ -14,6 +14,8 @@ class Expense extends Model
         'amount',
         'category',
         'creator_user_id', // User relationship
+        'creator_id',
+        'container_id',
         'status',
         'time',
         'img', // Image path

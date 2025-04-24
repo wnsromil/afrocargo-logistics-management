@@ -8,12 +8,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // ✅ Fetch updated data using AJAX
         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-            .then(response => response.text())
-            .then(html => {
+            .then((response) => response.text())
+            .then((html) => {
                 document.getElementById("ajexTable").innerHTML = html;
             })
-            .catch(error => console.error("Error fetching data:", error));
+            .catch((error) => console.error("Error fetching data:", error));
     }
+    
+    // 🔹 2. Handle Per-Page Change
+    pageSizeSelect.addEventListener("change", function (event) {
+        console.log("Page size changed");
+        if (event.target.closest(".form-select")) {
+            // let selectedValue = this.value;
+            let selectedValue = document.getElementById("pageSizeSelect").value;
+            let url = new URL(window.location.href);
+
+            url.searchParams.set("per_page", selectedValue);
+            url.searchParams.set("page", 1); // Reset pagination on page size change
+            updateTable(url);
+        }
+    });
+
+    // 🔹 3. Handle Pagination Clicks (Event Delegation)
+    document.addEventListener("click", function (event) {
+        if (event.target.closest(".pagination a")) {
+            event.preventDefault();
+            let url = event.target.getAttribute("href");
+            updateTable(url);
+        }
+    });
 
     // 🔹 1. Handle Search Input
     searchInput.addEventListener("input", function () {
@@ -27,29 +50,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         url.searchParams.set("page", 1); // Reset pagination on new search
         updateTable(url);
-    });
-
-    // 🔹 2. Handle Per-Page Change
-    pageSizeSelect.addEventListener("change", function (event) {
-
-        if (event.target.closest(".form-select")) {
-            // let selectedValue = this.value;
-            let selectedValue = document.getElementById("pageSizeSelect").value;
-            let url = new URL(window.location.href);
-
-            url.searchParams.set("per_page", selectedValue);
-            url.searchParams.set("page", 1); // Reset pagination on page size change
-            updateTable(url);
-        }
-        
-    });
-
-    // 🔹 3. Handle Pagination Clicks (Event Delegation)
-    document.addEventListener("click", function (event) {
-        if (event.target.closest(".pagination a")) {
-            event.preventDefault();
-            let url = event.target.getAttribute("href");
-            updateTable(url);
-        }
     });
 });

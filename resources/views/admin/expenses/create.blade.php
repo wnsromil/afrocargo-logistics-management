@@ -27,13 +27,13 @@
                             <div class="row gx-3 gy-2">
 
                                 @php
-                                    $isSingleWarehouse = count($warehouses) === 1;
+                                    $role_id = Auth::user()->role_id;
                                 @endphp
-
-                                @if($isSingleWarehouse)
+                               
+                                @if($role_id == 2 || $role_id == 4)
                                     {{-- ✅ Readonly Input for Single Warehouse --}}
                                     <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="warehouse"> Warehouse </label>
+                                        <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
                                         <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}"
                                             readonly style="background-color: #e9ecef; color: #6c757d;">
                                         <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
@@ -41,9 +41,9 @@
                                 @else
                                     {{-- ✅ Select Dropdown for Multiple Warehouses --}}
                                     <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="warehouse"> Warehouse </label>
-                                        <select class="js-example-basic-single select2 form-control" name="warehouse"
-                                            style="" value="{{ old('address_1') }}">
+                                        <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
+                                        <select id="warehouse" class="js-example-basic-single select2 form-control" name="warehouse"
+                                            style="" value="{{ old('warehouse') }}">
                                             <option value="">Select Warehouse</option>
                                             @foreach ($warehouses as $warehouse)
                                                 <option value="{{ $warehouse->id }}" {{ old('warehouse') == $warehouse->id ? 'selected' : '' }}>
@@ -56,18 +56,20 @@
                                         @enderror
                                     </div>
                                 @endif
-
+                               
                                 <div class="col-md-12 mb-1">
                                     <label> Date <i class="text-danger">*</i></label>
                                     <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                        <input type="text" name="expense_date" readonly style="cursor: pointer;"
+                                        <input type="text" name="expense_date" readonly style="cursor: pointer; background-color: #ffffff;"
                                             class="btn-filters  form-cs inp  inputbackground"
                                             value="{{ old('expense_date') }}" placeholder="MM-DD-YYYY" />
+                                            <input type="text" class="form-control inp inputs text-center timeOnlyInput" readonly value="{{$time}}" name="currentTIme">
                                         @error('expense_date')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-md-12 mb-1">
                                     <label> Description <i class="text-danger">*</i></label>
                                     <input type="text" class="form-control inp" name="description" value="{{ old('description') }}"
@@ -76,6 +78,8 @@
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+
+                                @if($role_id == 2 || $role_id == 4)
                                 <div class="col-md-12 mb-1">
                                     <label class="foncolor" for="User">User</label>
                                     <select class="js-example-basic-single select2" name="user_id">
@@ -87,6 +91,16 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @else
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="User">User</label>
+                                    <select class="js-example-basic-single select2 form-control" name="user_id">
+                                        <option value="">Select User</option>
+                                        <!-- उपयोगकर्ता विकल्प AJAX के माध्यम से लोड होंगे -->
+                                    </select>
+                                </div>
+                                @endif
+                                @if($role_id == 2 || $role_id == 4)
                                 <div class="col-md-12 mb-1">
                                     <label class="foncolor" for="Container">Container</label>
                                     <select class="js-example-basic-single select2" name="container_id" >
@@ -98,6 +112,16 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @else
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="Container">Container</label>
+                                    <select class="js-example-basic-single select2 form-control" name="container_id">
+                                        <option value="">Select Container</option>
+                                     
+                                    </select>
+                                </div>
+                                @endif
+
                                 <div class="col-md-12 mb-1">
                                     <label> Amount <i class="text-danger">*</i></label>
                                     <input type="number" class="form-control inp" name="amount" value="{{ old('amount') }}"
@@ -157,7 +181,7 @@
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" readonly class="form-control inp"
                                         placeholder="Enter First Name" value="{{ Auth::user()->name }}">
-                                    <input type="hidden" name="creator_user_id" value="{{ Auth::user()->id }}">
+                                    <input type="hidden" name="creator_id" value="{{ Auth::user()->id }}">
 
                                 </div>
                                 <div class="col-md-12 mb-1">
@@ -223,5 +247,60 @@
             fileInput.value = '';
         }
     </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#warehouse').on('change', function() {
+            var warehouseId = $(this).val();
+            if (warehouseId) {
+                $.ajax({
+                    url: `/api/user-by-warehouse/${warehouseId}`,
+                    type: 'GET',
+                    success: function(response) {
+                        var userSelect = $('select[name="user_id"]');
+                        userSelect.empty();
+                        userSelect.append('<option value="">Select User</option>');
+                        $.each(response.users, function(key, user) {
+                            userSelect.append('<option value="' + user.id + '">' + user.name + '</option>');
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                $('select[name="user_id"]').empty().append('<option value="">Select User</option>');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#warehouse').on('change', function() {
+            var warehouseId = $(this).val();
+
+            if (warehouseId) {
+                // ✅ Fetch containers
+                $.ajax({
+                    url: `/api/container-by-warehouse/${warehouseId}`,
+                    type: 'GET',
+                    success: function(response) {
+                        var containerSelect = $('select[name="container_id"]');
+                        containerSelect.empty().append('<option value="">Select Container</option>');
+                        $.each(response.vehicles, function(index, container) {
+                            containerSelect.append('<option value="' + container.id + '">' + container.container_no_1 + '</option>');
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                $('select[name="container_id"]').empty().append('<option value="">Select Container</option>');
+            }
+        });
+    });
+</script>
+
 
 </x-app-layout>

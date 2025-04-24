@@ -20,7 +20,8 @@ use App\Http\Controllers\Api\{
     AvailabilityController,
     WeeklySchedulesController,
     InventoryController,
-    ScheduleController
+    ScheduleController,
+    ExpensesController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -49,6 +50,9 @@ Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
 Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus']);
 Route::get('/vehicle/getAdminActiveContainer', [ContainerController::class, 'getAdminActiveContainers']);
+Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'getUsersByWarehouse']);
+Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -114,6 +118,11 @@ Route::middleware('auth:api')->group(function () {
       
         // Available slots Routes
        Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
+
+       // Expenses
+       Route::post('/add-expenses', [ExpensesController::class, 'store']);
+       Route::post('/update-expenses/{id}', [ExpensesController::class, 'update']);
+       Route::get('/get-expenses', [ExpensesController::class, 'getExpensesByUser']);
 
     });
 
