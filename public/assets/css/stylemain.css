@@ -2492,6 +2492,12 @@ p.overflowEllipse {
         cursor: pointer;
     }
 }
+.form-check-input {
+    background-color: #ffffff;
+    display: inline-block!important;
+    border-color: #898989;
+    cursor: pointer;
+}
 
 .foncolor.col3A {
     color: #3a3a3a !important;
@@ -2771,6 +2777,18 @@ a.btn-action-icon.profileBg {
 .editScheduelPopup {
     width: 100%;
     max-width: 700px;
+}
+.inp.timeOnlyInput {
+    cursor: unset !important;
+    background: #ffffff00 !important;
+    border: 0 !important;
+    width: 80px !important;
+    padding: 0 !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-left: 1px solid #bdbdbd !important;
+    border-radius: 0 !important;
 }
 
 /* WNSshubham */
