@@ -46,7 +46,7 @@
                                 @enderror
                             </div>
                             <div class="last">
-                                <a href="#" class="btn btn-primary buttons">
+                                <a id="addCustomer" class="btn btn-primary buttons">
                                     Add New Customer
                                 </a>
                             </div>
@@ -66,7 +66,7 @@
                                 </select>
                             </div>
                             <div class="last">
-                                <a href="#" class="btn btn-primary buttons">
+                                <a id="addShiptoAddress" class="btn btn-primary buttons">
                                     Add Ship to Address
                                 </a>
                             </div>
@@ -79,7 +79,7 @@
                 <!-- first row end  -->
                 <div class="row mt-5 g-3">
                     <div class="col-md-6">
-                        <div class="borderset">
+                        <div class="borderset position-relative newCustomerAdd disablesectionnew">
                             <div class="row gx-3 gy-2">
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i class="text-danger">*</i></label>
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="borderset">
+                        <div class="borderset position-relative newShipmentAddress disablesectionnew">
                             <div class="row gx-3 gy-2">
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">Reciever First Name <i class="text-danger">*</i></label>
@@ -196,7 +196,8 @@
                         <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters form-control form-cs inp " name="datetimes" placeholder="From Date - To Date" />
+                                <input type="text" class="btn-filters datetimepicker form-control form-cs inp " name="invoice date" placeholder="mm-dd-yyyy" />
+                                <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput" readonly value="08:30 AM" name="currentTIme">
                             </div>
                         </div>
 
@@ -220,13 +221,13 @@
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Due Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters daterangeInput form-cs inp " name="duedaterange" placeholder="From Date - To Date" />
+                                <input type="text" class="btn-filters daterangeInput form-cs inp readonly" readonly name="duedaterange" placeholder="From Date - To Date" />
                             </div>
                         </div>
 
@@ -234,13 +235,13 @@
                             <label>Payment</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
                         <div class="col-md-3 ">
                             <label>User</label>
-                            <input type="text" class="form-control inp" placeholder="John Duo">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="John Duo">
                         </div>
                         <div class="col-md-3">
                             <label>Container<i class="text-danger">*</i></label>
@@ -252,19 +253,19 @@
                         </div>
                         <div class="col-md-3 ">
                             <label>Status<i class="text-danger">*</i></label>
-                            <input type="text" class="form-control inp" placeholder="Pending">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="Pending">
                         </div>
                         <div class="col-md-3">
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
                         <div class="col-md-3 ">
                             <label>Total Items</label>
-                            <input type="text" class="form-control inp" placeholder="0">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="0">
                         </div>
                         <div class="col-md-3 ">
 
@@ -663,7 +664,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="d-sm-flex align-items-center">
+                        <div class="d-sm-flex align-items-center position-relative disablesectionnew">
                             <div class="first">
                                 <label for="customer_id">Ship To <i class="text-danger">*</i></label>
                             </div>
@@ -688,7 +689,7 @@
                 <!-- first row end  -->
                 <div class="row mt-5 g-3">
                     <div class="col-md-6">
-                        <div class="borderset">
+                        <div class="borderset position-relative newCustomerAdd disablesectionnew">
                             <div class="row gx-3 gy-2">
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i class="text-danger">*</i></label>
@@ -748,7 +749,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="borderset">
+                        <div class="borderset position-relative disablesectionnew">
                             <div class="row gx-3 gy-2">
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">Reciever First Name <i class="text-danger">*</i></label>
@@ -805,7 +806,8 @@
                         <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters form-control form-cs inp " name="datetimes" placeholder="From Date - To Date" />
+                                <input type="text" class="btn-filters datetimepicker form-control form-cs inp " name="invoice date" placeholder="mm-dd-yyyy" />
+                                <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput" readonly value="08:30 AM" name="currentTIme">
                             </div>
                         </div>
 
@@ -829,13 +831,13 @@
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Due Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters daterangeInput form-cs inp " name="duedaterange" placeholder="From Date - To Date" />
+                                <input type="text" class="btn-filters daterangeInput form-cs inp readonly" readonly name="duedaterange" placeholder="From Date - To Date" />
                             </div>
                         </div>
 
@@ -843,17 +845,17 @@
                             <label>Payment</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
                         <div class="col-md-3 ">
                             <label>User</label>
-                            <input type="text" class="form-control inp" placeholder="John Duo">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="John Duo">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 readonly">
                             <label>Container<i class="text-danger">*</i></label>
-                            <select class="js-example-basic-single select2 ">
+                            <select class="js-example-basic-single select2" readonly >
                                 <option selected="selected " class="form-cs">Select Container</option>
                                 <option>white</option>
                                 <option>purple</option>
@@ -861,19 +863,19 @@
                         </div>
                         <div class="col-md-3 ">
                             <label>Status<i class="text-danger">*</i></label>
-                            <input type="text" class="form-control inp" placeholder="Pending">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="Pending">
                         </div>
                         <div class="col-md-3">
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp" placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
                         <div class="col-md-3 ">
                             <label>Total Items</label>
-                            <input type="text" class="form-control inp" placeholder="0">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="0">
                         </div>
                         <div class="col-md-3 ">
 
@@ -1263,6 +1265,12 @@
             const formType = urlParams.get('id') || 'services';
             toggleLoginForm(formType);
         };
+
+    </script>
+    <script>
+        document.getElementById('addCustomer').onclick = () => document.querySelector('.newCustomerAdd').classList.toggle('none');
+
+        document.getElementById('addShiptoAddress').onclick = () => document.querySelector('.newShipmentAddress').classList.toggle('none');
 
     </script>
 </x-app-layout>
