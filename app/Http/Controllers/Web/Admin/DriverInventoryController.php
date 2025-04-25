@@ -9,23 +9,112 @@ use App\Models\{
     Category,
     Warehouse,
     Stock,
-    Inventory
+    Inventory,
+    DriverInventory,
+    DriverInventoriesSolde
 };
+use Carbon\Carbon;
 
 class DriverInventoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        
-        $inventories = Inventory::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->paginate(10);
-        return view('admin.driver_inventory.index', compact('inventories'));
+        $driver_id = $request->input('driver_id');
+        $perPage = $request->input('per_page', 10); // same per page for both
+        $currentPage = $request->input('page', 1); // shared page number
+
+        // Date Range
+        $start_date = null;
+        $end_date = null;
+        $dateRange = $request->input('daterangepicker');
+
+        if ($dateRange) {
+            try {
+                [$start_date, $end_date] = explode(' - ', $dateRange);
+                $start_date = \Carbon\Carbon::createFromFormat('m/d/Y', trim($start_date))->format('Y-m-d');
+                $end_date = \Carbon\Carbon::createFromFormat('m/d/Y', trim($end_date))->format('Y-m-d');
+            } catch (\Exception $e) {
+                $start_date = null;
+                $end_date = null;
+            }
+        }
+
+        // Items
+        $itemsQuery = DriverInventory::where('status', 'Active');
+
+        if ($driver_id) {
+            $itemsQuery->where('driver_id', $driver_id);
+        }
+
+        if ($start_date && $end_date) {
+            $itemsQuery->whereBetween('date', [$start_date, $end_date]);
+        }
+
+        $items = $itemsQuery->latest()->paginate($perPage)
+            ->appends([
+                'driver_id' => $driver_id,
+                'daterangepicker' => $dateRange,
+                'per_page' => $perPage,
+            ]);
+
+        $serialStartItems = ($items->currentPage() - 1) * $perPage;
+
+        // Sold Items
+        $soldQuery = DriverInventoriesSolde::query();
+
+        if ($driver_id) {
+            $soldQuery->where('driver_id', $driver_id);
+        }
+
+        if ($start_date && $end_date) {
+            $soldQuery->whereBetween('date', [$start_date, $end_date]);
+        }
+
+        $driver_details = $soldQuery->latest()->paginate($perPage)
+            ->appends([
+                'driver_id' => $driver_id,
+                'daterangepicker' => $dateRange,
+                'per_page' => $perPage,
+            ]);
+
+        $serialStartSold = ($driver_details->currentPage() - 1) * $perPage;
+
+        $users = User::where('role_id', 4)
+            ->where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
+
+        if ($request->ajax()) {
+            return view('admin.driver_inventory.table', compact(
+                'items',
+                'driver_details',
+                'users',
+                'driver_id',
+                'dateRange',
+                'perPage',
+                'serialStartItems',
+                'serialStartSold'
+            ))->render();
+        }
+
+        return view('admin.driver_inventory.index', compact(
+            'items',
+            'driver_details',
+            'users',
+            'driver_id',
+            'dateRange',
+            'perPage',
+            'serialStartItems',
+            'serialStartSold'
+        ));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -33,12 +122,23 @@ class DriverInventoryController extends Controller
     public function create()
     {
         //
-        
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->get();
-        $categories = Category::get();
-        return view('admin.driver_inventory.create', compact('warehouses','categories'));
+
+        $users = User::where('role_id', 4)
+            ->where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
+
+        $items = Inventory::where('inventory_type', 'Supply')
+            ->where('status', 'Active')
+            ->get();
+        $time = Carbon::now()->format('h:i A');
+        return view('admin.driver_inventory.create', compact('warehouses', 'time', 'users', 'items'));
     }
 
     /**
@@ -46,49 +146,61 @@ class DriverInventoryController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // Validate incoming request data
+        // ✅ Validation
         $request->validate([
-            'warehouse_id'      => 'required|exists:warehouses,id',
-            'inventory_name'    => 'required|string',
-            'in_stock_quantity' => 'required|numeric',
-            'low_stock_warning' => 'required|numeric',
-            // 'status'           => 'in:Active,Inactive',
+            'driverInventoryDate' => 'required|date',
+            'currentTIme'         => 'required',
+            'driver_id'           => 'required|exists:users,id',
+            'InOutType'           => 'required|in:In,Out',
+            'item_id'             => 'required|exists:inventories,id',
+            'in_stock_quantity'   => 'required|numeric|min:1',
+        ], [
+            'driverInventoryDate.required' => 'Please select a valid date for the inventory.',
+            'driver_id.required'           => 'Driver is required.',
+            'InOutType.required'           => 'Please choose the In/Out type.',
+            'item_id.required'             => 'Item selection is required.',
+            'in_stock_quantity.required'   => 'Please enter the quantity.',
         ]);
 
-        $category_id = $this->getCategoryIdByName($request->inventory_name);
+        // Format the date
+        $formattedDate = \Carbon\Carbon::createFromFormat('m/d/Y', $request->driverInventoryDate)->format('Y-m-d');
 
-        $inventory = Inventory::firstOrCreate(
-            [
+        // ✅ Check if record exists for same date, driver_id, item_id and Active status
+        $existingRecord = DriverInventory::where('date', $formattedDate)
+            ->where('driver_id', $request->driver_id)
+            ->where('items_id', $request->item_id)
+            ->where('status', 'Active')
+            ->first();
+
+        if ($existingRecord) {
+            // ✅ Update existing record
+            $existingRecord->update([
+                'time'        => $request->currentTIme,
+                'in_out'      => $request->InOutType,
+                'quantity'    => $request->in_stock_quantity,
+                'creator_id'  => auth()->id(),
+            ]);
+
+            return redirect()->route('admin.driver_inventory.index')
+            ->with('success', 'Driver Inventory update successfully.');
+        } else {
+            // ✅ Create new record
+            DriverInventory::create([
+                'date'         => $formattedDate,
                 'warehouse_id' => $request->warehouse_id,
-                'category_id'  => $category_id,
-            ],
-            [
-                'total_quantity'    => 0,
-                'in_stock_quantity' => 0,
-                'low_stock_warning' => $request->low_stock_warning
-            ]
-        );
-
-        $inventory->update([
-            'total_quantity'      => $inventory->total_quantity + $request->in_stock_quantity,
-            'in_stock_quantity'   => $inventory->in_stock_quantity + $request->in_stock_quantity,
-            'low_stock_warning'   => $request->low_stock_warning
-        ]);
-
-        // Create a new stock entry
-        Stock::create([
-            'warehouse_id'    => $request->warehouse_id,
-            'category_id'     => $category_id,
-            'inventory_id'    => $inventory->id,
-            'user_id'         => auth()->id(),
-            'in_stock_quantity' => $request->in_stock_quantity,
-            'low_stock_warning' => $request->low_stock_warning
-        ]);
+                'time'         => $request->currentTIme,
+                'driver_id'    => $request->driver_id,
+                'in_out'       => $request->InOutType,
+                'items_id'     => $request->item_id,
+                'quantity'     => $request->in_stock_quantity,
+                'creator_id'   => auth()->id(),
+            ]);
+        }
 
         return redirect()->route('admin.driver_inventory.index')
-        ->with('success', 'Inventory added successfully.');
+            ->with('success', 'Driver Inventory saved successfully.');
     }
+
 
 
     /**
@@ -97,8 +209,8 @@ class DriverInventoryController extends Controller
     public function show(string $id)
     {
         //
-        $inventories = Stock::where('inventory_id',$id)->paginate(10);
-        return view('admin.driver_inventory.show',compact('inventories'));
+        $inventories = Stock::where('inventory_id', $id)->paginate(10);
+        return view('admin.driver_inventory.show', compact('inventories'));
     }
 
     /**
@@ -107,15 +219,15 @@ class DriverInventoryController extends Controller
     public function edit(string $id)
     {
         //
-        
-        $warehouses = Warehouse::when($this->user->role_id!=1,function($q){
-            return $q->where('id',$this->user->warehouse_id);
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
         })->get();
         $categories = Category::get();
-        $inventory = Inventory::when($this->user->role_id!=1,function($q){
-            return $q->where('warehouse_id',$this->user->warehouse_id);
-        })->where('id',$id)->first();
-        return view('admin.driver_inventory.edit',compact('inventory','warehouses','categories'));
+        $inventory = Inventory::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->where('id', $id)->first();
+        return view('admin.driver_inventory.edit', compact('inventory', 'warehouses', 'categories'));
     }
 
     /**
@@ -123,7 +235,7 @@ class DriverInventoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-    
+
         // Validate incoming request data
         $request->validate([
             'warehouse_id'      => 'required|exists:warehouses,id',
@@ -136,7 +248,7 @@ class DriverInventoryController extends Controller
         $category_id = $this->getCategoryIdByName($request->inventory_name);
 
         $inventory = Inventory::where([
-            'id'=>$id
+            'id' => $id
         ])->first();
 
         $inventory->update([
@@ -153,11 +265,12 @@ class DriverInventoryController extends Controller
             'user_id'         => auth()->id(),
             'in_stock_quantity' => $request->in_stock_quantity,
             'low_stock_warning' => $request->low_stock_warning,
-            'status'=>'updated'
+            'status' => 'updated'
         ]);
 
         return redirect()->route('admin.driver_inventory.index')
-        ->with('success', 'Inventory added successfully.');
+            ->with('success', 'Driver Inventory added successfully.')
+            ->withInput();
     }
 
     /**
@@ -165,15 +278,26 @@ class DriverInventoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Inventory::find($id)->delete();
+        $driverInventory = DriverInventory::find($id);
+
+        if ($driverInventory) {
+            $driverInventory->status = 'Inactive'; // 1 = Active, 0 = Deactive
+            $driverInventory->save();
+
+            return redirect()->route('admin.driver_inventory.index')
+                ->with('success', 'Inventory deleted successfully.')
+                ->withInput();
+        }
+
         return redirect()->route('admin.driver_inventory.index')
-                        ->with('success','Inventory deleted successfully');
+            ->with('error', 'Inventory not found.');
     }
+
 
     public function getCategoryIdByName($name)
     {
         $category = Category::whereRaw('LOWER(name) = ?', [strtolower($name)])->first();
-        
+
         if ($category) {
             return $category->id;
         }

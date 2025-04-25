@@ -5,7 +5,7 @@
             <table class="table table-stripped table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        <th>Sn no.</th>
+                        <th>Driver ID</th>
                         <th>Warehouse Name</th>
                         <th>Driver Name</th>
                         <th>Phone</th>
@@ -23,7 +23,7 @@
                     @forelse ($warehouses as $index => $warehouse)
                         <tr>
                             <td>
-                                {{ $serialStart + $index + 1 }}
+                                {{ $warehouse->unique_id }}
                             </td>
                             <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '--') }}</td>
                             <td><span>{{ ucfirst($warehouse->name ?? '--') }}</span></td>

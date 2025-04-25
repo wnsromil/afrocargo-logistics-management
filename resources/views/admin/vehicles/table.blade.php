@@ -5,7 +5,7 @@
             <table class="table table-stripped table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        <th>S. No.</th>
+                        <th>Vehicle ID</th>
                         <th>Vehicle Type</th>
                         <th>Warehouse Name</th>
                         <th>Driver Name</th>
@@ -20,7 +20,7 @@
                     @forelse ($vehicles as $index => $vehicle)
                         <tr>
                             <td>
-                                {{ $serialStart + $index + 1 }}
+                                {{ $vehicle->unique_id ?? '-' }}
                             </td>
 
                             <td><span>{{ $vehicle->vehicle_type ?? '-' }}</span></td>

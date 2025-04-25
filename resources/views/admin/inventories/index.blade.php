@@ -51,7 +51,7 @@
                     <table class="table table-stripped table-hover datatable" id="setBackground">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
+                                <th>Item No</th>
                                 <th>Inventory Type</th>
                                 <th>Supply Image</th>
                                 <th>Inventory Name</th>
@@ -79,7 +79,7 @@
                                 @endif
                             ">
                                 <td>
-                                    {{ $loop->iteration }}
+                                    {{ $inventory->unique_id }}
                                 </td>
 
                                 <td class="text-dark">{{ ucfirst($inventory->inventory_type ?? '') }}</td>

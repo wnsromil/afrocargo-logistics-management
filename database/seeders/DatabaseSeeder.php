@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             StateSeeder::class,
             CitySeeder::class,
+            DriverInventorySoldSeeder::class,
 
             // MenuSeeder::class,
             // TermsConditionSeeder::class,

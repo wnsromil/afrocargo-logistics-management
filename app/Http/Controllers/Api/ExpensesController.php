@@ -22,29 +22,34 @@ class ExpensesController extends Controller
 {
     //
 
-    public function getExpensesByUser()
+    public function getExpensesByUser(Request $request)
     {
-        // Authenticated user ID se expenses fetch karenge
         $userId = auth()->id();
-
-        // Expenses ko fetch karenge jo user ke `creator_user_id` ke saath match karte ho
-        $expenses = Expense::where('creator_user_id', $userId)->get();
-
-        // Agar records nahi milte
+    
+        // Query start karo user ID ke saath
+        $query = Expense::where('creator_id', $userId);
+    
+        // Agar request me date di gayi ho to usi date ke expenses filter karo
+        if ($request->has('date')) {
+            $query->whereDate('date', $request->date);
+        }
+    
+        $expenses = $query->get();
+    
         if ($expenses->isEmpty()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No expenses found for this user.',
-            ], 404); // 404 Not Found
+            ], 404);
         }
-
-        // Agar records milte hain
+    
         return response()->json([
             'status' => 'success',
             'message' => 'Expenses fetched successfully.',
             'data' => $expenses
-        ], 200); // 200 OK
+        ], 200);
     }
+    
 
     public function store(Request $request)
     {

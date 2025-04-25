@@ -39,4 +39,33 @@ class Inventory extends Model
             get: fn($value) => !empty($value) ? url($value):null,
         );
     }
+
+
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::creating(function ($inventory) {
+            // Generate unique_id when creating a new inventory
+            $inventory->unique_id = self::generateUniqueId();
+        });
+    }
+
+    public static function generateUniqueId()
+    {
+        // Get the last inventory record, ordered by unique_id
+        $lastInventory = Inventory::orderByDesc('unique_id')->first();
+
+        // Get the last number from unique_id (assuming it follows the format "TIT-XXXXXX")
+        $lastNumber = 0;
+        if ($lastInventory && preg_match('/(\d+)$/', $lastInventory->unique_id, $matches)) {
+            $lastNumber = (int)$matches[0];
+        }
+
+        // Increment the number for the new unique_id
+        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+
+        // Return the generated unique_id with TIT- prefix
+        return 'TIT-' . $newNumber;
+    }
 }
