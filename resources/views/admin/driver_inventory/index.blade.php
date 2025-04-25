@@ -27,8 +27,9 @@
                     <select name="driver_id" class="form-control select2">
                         <option value="">Select Driver</option>
                         @foreach($users as $user)
-                            <option {{ old('driver_id') == $user->id ? 'selected' : '' }}
-                                value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $user->id }}" {{ request()->query('driver_id') == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -73,7 +74,7 @@
                                     <td>{{ $serialStartItems + $key + 1 }}</td>
                                     <td>{{ \Carbon\Carbon::parse($item->date)->format('m-d-Y') }}</td>
                                     <td>{{ $item->driver->name ?? '--' }}</td>
-                                    <td>--</td>
+                                    <td>{{ $item->items->unique_id ?? '--' }}</td>
                                     <td>{{ $item->items->name ?? '--' }}</td>
                                     <td>{{ $item->in_out ?? '--' }}</td>
                                     <td>{{ $item->quantity ?? '--' }}</td>
@@ -126,7 +127,7 @@
                                 <th>Date</th>
                                 <th>Customer</th>
                                 <th>Invoice No.</th>
-                                <th>Item No.</th>
+                                <th>Item Number</th>
                                 <th>Item</th>
                                 <th>Type</th>
                                 <th>Quantity</th>
@@ -141,7 +142,7 @@
                                 <td>{{ \Carbon\Carbon::parse($driver_detail->date)->format('m-d-Y') }}</td>
                                 <td>{{ $driver_detail->customer->name ?? '--' }}</td>
                                 <td>{{ $driver_detail->invoice_no ?? '--' }}</td>
-                                <td>--</td>
+                                <td>{{ $item->items->unique_id ?? '--' }}</td>
                                 <td>{{ $driver_detail->items->items->name ?? '--' }}</td>
                                 <td>{{ $driver_detail->type ?? '--' }}</td>
                                 <td>{{ $driver_detail->quantity ?? '--' }}</td>

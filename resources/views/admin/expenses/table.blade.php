@@ -4,7 +4,7 @@
             <table class="table table-stripped table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        <th>S. No.</th>
+                        <th>Expense ID</th>
                         <th>User</th>
                         <th>Warehouse Name</th>
                         <th>Date</th>
@@ -20,7 +20,7 @@
                 <tbody>
                     @forelse ($expenses as $key => $expense)
                         <tr>
-                            <td>{{$serialStart + $key + 1 }}</td>
+                            <td>{{ $expense->unique_id ?? '--' }}</td>
                             <td>{{ $expense->creatorUser->name ?? '--' }}</td>
                             <td>{{ $expense->warehouse->warehouse_name ?? '--' }}</td>
                             <td>{{ \Carbon\Carbon::parse($expense->date)->format('m-d-Y') }}</td>

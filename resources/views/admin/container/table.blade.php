@@ -5,7 +5,7 @@
             <table class="table table-stripped table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        <th>S. No.</th>
+                        <th>Container ID</th>
                         <th>Warehouse</th>
                         <th>Size</th>
                         <th>Container No. 1</th>
@@ -30,7 +30,7 @@
                     @forelse ($vehicles as $index => $vehicle)
                         <tr>
                             <td>
-                                {{ ++$index }}
+                                {{ $vehicle->unique_id ?? '-' }}
                             </td>
                             <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
                             <td>{{ $vehicle->container_size ?? '-' }}</td>

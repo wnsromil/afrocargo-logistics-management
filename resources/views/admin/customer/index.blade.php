@@ -78,7 +78,7 @@
                             <thead class="thead-light">
 
                                 <tr>
-                                    <th>S. No.</th>
+                                    <th>Customer ID</th>
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Username</th>
@@ -97,7 +97,7 @@
                             <tbody>
                                 @forelse ($customers as $index => $customer)
                                 <tr>
-                                    <td> {{ $serialStart + $index + 1 }}</td>
+                                    <td> {{ $customer->unique_id }}</td>
                                     <td>
                                         <h2 {{-- class="table-avatar" --}}>
                                             <a href="{{ route('admin.customer.show', $customer->id) }}" class="avatar avatar-sm me-2">

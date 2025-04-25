@@ -118,7 +118,67 @@ class User extends Authenticatable
     protected function profilePic(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => !empty($value) ? url('storage/'.$value):null,
+            get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
         );
+    }
+
+
+    public static function generateUniqueId($role_id)
+    {
+        // Set the prefix based on the role_id
+        if (empty($role_id)) {
+            $role_id = 3;  // Default role_id is 3 (CUS-)
+        }
+
+        // Set the prefix based on the role_id
+        $prefix = '';
+        switch ($role_id) {
+            case 2:
+                $prefix = 'WMUS-';
+                break;
+            case 3:
+                $prefix = 'CUS-';
+                break;
+            case 4:
+                $prefix = 'DUS-';
+                break;
+                // Add other cases if needed
+        }
+
+        // If no valid prefix is set, default to 'CUS-'
+        if (empty($prefix)) {
+            $prefix = 'CUS-';
+        }
+
+        // Get the last row with this role_id, ordered by unique_id
+        $lastUser = User::where('role_id', $role_id)
+            ->orderByDesc('unique_id') // Order by unique_id in descending order
+            ->first();
+
+        // If there are no existing users for this role_id, start from 1
+        $lastNumber = 0;
+        if ($lastUser && preg_match('/(\d+)$/', $lastUser->unique_id, $matches)) {
+            $lastNumber = (int)$matches[0];
+        }
+
+        // Increment the number for the new unique_id
+        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+
+        // Return the generated unique_id
+        return $prefix . $newNumber;
+    }
+
+    /**
+     * Overriding the create method to automatically assign unique_id.
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Generate unique_id when creating a new user based on their role_id
+            // This will not throw an error if no users exist for the role_id
+            $user->unique_id = self::generateUniqueId($user->role_id);
+        });
     }
 }

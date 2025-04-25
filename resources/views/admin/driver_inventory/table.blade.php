@@ -21,7 +21,7 @@
                             <td>{{ $serialStartItems + $key + 1 }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->date)->format('m-d-Y') }}</td>
                             <td>{{ $item->driver->name ?? '--' }}</td>
-                            <td>--</td>
+                            <td>{{ $item->items->unique_id ?? '--' }}</td>
                             <td>{{ $item->items->name ?? '--' }}</td>
                             <td>{{ $item->in_out ?? '--' }}</td>
                             <td>{{ $item->quantity ?? '--' }}</td>
@@ -73,7 +73,7 @@ padding: 0 10px;">
                         <th>Date</th>
                         <th>Customer</th>
                         <th>Invoice No.</th>
-                        <th>Item No.</th>
+                        <th>Item Number</th>
                         <th>Item</th>
                         <th>Type</th>
                         <th>Quantity</th>
@@ -88,7 +88,7 @@ padding: 0 10px;">
                             <td>{{ \Carbon\Carbon::parse($driver_detail->date)->format('m-d-Y') }}</td>
                             <td>{{ $driver_detail->customer->name ?? '--' }}</td>
                             <td>{{ $driver_detail->invoice_no ?? '--' }}</td>
-                            <td>--</td>
+                            <td>{{ $item->items->unique_id ?? '--' }}</td>
                             <td>{{ $driver_detail->items->items->name ?? '--' }}</td>
                             <td>{{ $driver_detail->type ?? '--' }}</td>
                             <td>{{ $driver_detail->quantity ?? '--' }}</td>
