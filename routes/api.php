@@ -21,7 +21,8 @@ use App\Http\Controllers\Api\{
     WeeklySchedulesController,
     InventoryController,
     ScheduleController,
-    ExpensesController
+    ExpensesController,
+    DriverInventoryController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -115,15 +116,17 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/invoice-order-create-service', [OrderShipmentController::class, 'invoiceOrderCreateService']);
         Route::post('/invoice-order-create-supply', [OrderShipmentController::class, 'invoiceOrderCreateSupply']);
         Route::post('/order-create-supply', [OrderShipmentController::class, 'storeSupply']);
-      
+
         // Available slots Routes
-       Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
+        Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
 
-       // Expenses
-       Route::post('/add-expenses', [ExpensesController::class, 'store']);
-       Route::post('/update-expenses/{id}', [ExpensesController::class, 'update']);
-       Route::get('/get-expenses', [ExpensesController::class, 'getExpensesByUser']);
+        // Expenses
+        Route::post('/add-expenses', [ExpensesController::class, 'store']);
+        Route::post('/update-expenses/{id}', [ExpensesController::class, 'update']);
+        Route::get('/get-expenses', [ExpensesController::class, 'getExpensesByUser']);
 
+        // Driver Inventory
+        Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventorySolde']);
     });
 
     //invoice controller
