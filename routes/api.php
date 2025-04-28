@@ -22,7 +22,8 @@ use App\Http\Controllers\Api\{
     InventoryController,
     ScheduleController,
     ExpensesController,
-    DriverInventoryController
+    DriverInventoryController,
+    DashboardController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -53,7 +54,7 @@ Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus
 Route::get('/vehicle/getAdminActiveContainer', [ContainerController::class, 'getAdminActiveContainers']);
 Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'getUsersByWarehouse']);
 Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
-
+Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

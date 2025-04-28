@@ -161,20 +161,52 @@ class OrderShipmentController extends Controller
         $parcelData = $parcel->toArray();
         $parcelData['pickup_date'] = $formattedPickupDate;
 
+        // ✅ Inventorie data add karein
+        $inventorieData = ParcelInventorie::where('parcel_id', $id)
+            ->with('inventorie:id,name')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'inventorie_name' => $item->inventorie ? $item->inventorie->name : null,
+                    'inventorie_item_quantity' => $item->inventorie_item_quantity,
+                ];
+            });
+
+        $parcelData['inventorie_data'] = $inventorieData->isEmpty() ? [] : $inventorieData;
+
         return $this->sendResponse($parcelData, 'Order data fetched successfully.');
     }
 
 
+
     public function OrderHistory(string $id)
     {
-        //
         $parcel = Parcel::where('id', $id)->orWhere('tracking_number', $id)->first();
+    
+        if (!$parcel) {
+            return $this->sendError('Parcel not found!', [], 404);
+        }
+    
         $ParcelHistories = ParcelHistory::where('parcel_id', $parcel->id)
-            ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
-
-        return $this->sendResponse($ParcelHistories, 'Order histories fetch  successfully.');
+            ->with(['warehouse', 'customer', 'createdByUser'])
+            ->paginate(10);
+    
+        // ✅ Inventorie data add karein
+        $inventorieData = ParcelInventorie::where('parcel_id', $parcel->id)
+            ->with('inventorie:id,name')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'inventorie_name' => $item->inventorie ? $item->inventorie->name : null,
+                    'inventorie_item_quantity' => $item->inventorie_item_quantity,
+                ];
+            });
+    
+        $ParcelHistories->inventorie_data = $inventorieData->isEmpty() ? [] : $inventorieData;
+    
+        return $this->sendResponse($ParcelHistories, 'Order histories fetch successfully.');
     }
-
+    
     public function OrderShipmentStatus(Request $request)
     {
         $validatedData = $request->validate([
