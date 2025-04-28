@@ -40,6 +40,7 @@ class DriversController extends Controller
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($q) use ($query) {
                     $q->where('name', 'LIKE', "%$query%")
+                        ->orWhere('unique_id', 'LIKE', '%' . $query . '%')
                         ->orWhere('email', 'LIKE', "%$query%")
                         ->orWhere('phone', 'LIKE', "%$query%")
                         ->orWhere('address', 'LIKE', "%$query%")
@@ -235,7 +236,7 @@ class DriversController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+
         $rules = [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
@@ -259,7 +260,7 @@ class DriversController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
+
 
         $warehouse = User::find($id);
         $status  = !empty($request->status) ? $request->status : 'Active';

@@ -25,7 +25,7 @@
                 <tbody>
                     @forelse ($customers as $index => $customer)
                         <tr>
-                            <td> {{ $customer->unique_id }}</td>
+                            <td> {{ $customer->unique_id ?? "--" }}</td>
                             <td>
                                 <h2 {{-- class="table-avatar" --}}>
                                     <a href="{{ route('admin.customer.show', $customer->id) }}"

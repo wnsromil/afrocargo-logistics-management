@@ -33,6 +33,7 @@ class WarehouseManagerController extends Controller
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
                         ->orWhere('email', 'like', "%$search%")
                         ->orWhere('status', 'like', "%$search%")
                         ->orWhere('phone', 'like', "%$search%");
