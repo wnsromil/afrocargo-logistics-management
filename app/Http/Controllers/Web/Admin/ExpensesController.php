@@ -60,6 +60,7 @@ class ExpensesController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('description', 'LIKE', "%$search%")
+                ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
                     ->orWhere('category', 'LIKE', "%$search%")
                     ->orWhere('amount', 'LIKE', "%$search%")
                     ->orWhereHas('creatorUser', function ($query) use ($search) {

@@ -36,6 +36,7 @@ class CustomerController extends Controller
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
                         ->orWhere('email', 'LIKE', "%$search%")
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")

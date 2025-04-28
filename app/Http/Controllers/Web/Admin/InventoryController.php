@@ -28,6 +28,7 @@ class InventoryController extends Controller
             ->when($search, function ($q) use ($search) { // 🔹 Search Query
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
+                    ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
                         ->orWhere('inventory_type', 'like', "%$search%")
                         ->orWhereHas('warehouse', function ($q) use ($search) { // 🔹 Search by Warehouse Name
                             $q->where('warehouse_name', 'like', "%$search%");

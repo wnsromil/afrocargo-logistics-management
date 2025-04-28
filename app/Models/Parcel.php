@@ -113,4 +113,9 @@ class Parcel extends Model
 
         $this->attributes['driver_subcategories_data'] = json_encode($value ?? []);
     }
+
+    public function parcelStatus()
+    {
+        return $this->belongsTo(ParcelStatus::class, 'status');
+    }
 }

@@ -2219,6 +2219,10 @@ ul.pagination {
 
 .table tbody td .dropdown-menu .dropdown-item:hover {
     color: #ffffff !important;
+    background: #3f76c4;
+}
+.dropdown-item.active, .dropdown-item:active {
+    color: #ffffff !important;
     background: #203a5f;
 }
 

@@ -32,6 +32,7 @@ class VehicleController extends Controller
             })
             ->when($query, function ($q) use ($query) {
                 return $q->where('vehicle_type', 'like', '%' . $query . '%')
+                ->orWhere('unique_id', 'like', '%' . $query . '%')
                     ->orWhereHas('driver', function ($q) use ($query) {
                         $q->where('name', 'like', '%' . $query . '%');
                     })

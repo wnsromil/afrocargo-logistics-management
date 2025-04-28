@@ -130,7 +130,7 @@
                                                 </div>
                                             </td>
                                             @php
-                                                $classValue = match ($parcel->status) {
+                                                $classValue = match ($parcel->parcelStatus->status) {
                                                     'Pickup Assign' => 'labelstatusp',
                                                     'Pending' => 'labelstatusp',
                                                     'Pickup Re-Schedule' => 'labelstatuspi',
@@ -142,7 +142,7 @@
                                             </td>
                                             <td>
                                                 <label class="{{ $classValue }}" for="status">
-                                                    {{ $parcel->status ?? '-' }}
+                                                    {{ $parcel->parcelStatus->status ?? '-' }}
                                                 </label>
                                             </td>
                                             <td>
