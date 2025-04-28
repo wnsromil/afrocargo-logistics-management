@@ -45,7 +45,7 @@ class OrderStatusManage extends Controller
         }
 
         // Step 5: Find active drivers with matching warehouse_id and role_id = 4
-        $drivers = User::select('id', 'name')->where('warehouse_id', $nearestWarehouse->id)
+        $drivers = User::select('id', 'name','warehouse_id')->where('warehouse_id', $nearestWarehouse->id)
             ->where('role_id', 4)
             ->where('status', 'Active')
             ->get();
@@ -55,6 +55,85 @@ class OrderStatusManage extends Controller
             'message' => 'Driver list retrieved successfully',
             'drivers' => $drivers,
         ]);
+    }
+
+    public function statusUpdate_PickUpWithDriver(Request $request)
+    {
+       
+            // Validate the request data
+            $request->validate([
+                'parcel_id' => 'required|exists:parcels,id',
+                'driver_id' => 'required|exists:users,id',
+                'created_user_id' => 'required|exists:users,id',
+                'warehouse_id' => 'required|exists:warehouses,id',
+                'notes' => 'nullable|string',
+            ]);
+    
+            // Find the parcel by ID
+            $parcel = Parcel::findOrFail($request->parcel_id);
+    
+            // Update the parcel details
+            $parcel->update([
+                'driver_id' => $request->driver_id,
+                'status' => 2,
+                'warehouse_id' => $request->warehouse_id,
+            ]);
+
+            // Create a new entry in ParcelHistory
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => $request->created_user_id,
+                'customer_id' => $parcel->customer_id,
+                'status' => 'Updated',
+                'parcel_status' => 2,
+                'note' => $request->notes ?? null,
+                'warehouse_id' => $request->warehouse_id,
+                'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+            ]);
+    
+            // Return success response
+            return response()->json([
+                'message' => 'Parcel and ParcelHistory updated successfully',
+                'parcel' => $parcel,
+            ]);
+    }
+
+    public function statusUpdate_ArrivedWarehouse(Request $request)
+    {
+       
+            // Validate the request data
+            $request->validate([
+                'parcel_id' => 'required|exists:parcels,id',
+                'created_user_id' => 'required|exists:users,id',
+            ]);
+    
+            // Find the parcel by ID
+            $parcel = Parcel::findOrFail($request->parcel_id);
+    
+            // Update the parcel details
+            $parcel->update([
+                'status' => 3,
+            ]);
+
+
+            $parcelHistory = ParcelHistory::where('parcel_id', $request->parcel_id)->first();
+            // Create a new entry in ParcelHistory
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => $request->created_user_id,
+                'customer_id' => $parcelHistory->customer_id,
+                'status' => 'Updated',
+                'parcel_status' => 3,
+                'note' => null,
+                'warehouse_id' => $parcelHistory->warehouse_id,
+                'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+            ]);
+    
+            // Return success response
+            return response()->json([
+                'message' => 'Parcel updated successfully',
+                'parcel' => $parcel,
+            ]);
     }
 
     /**

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Availability;
+use App\Models\LocationSchedule;
 
 class AvailabilityController extends Controller
 {
     public function index()
     {
-        $data = Availability::where('is_active',1)->where('user_id',auth()->id())->get();
+        $data = Availability::where('is_active', 1)->where('user_id', auth()->id())->get();
 
         return response()->json([
             'success' => true,
@@ -69,5 +70,39 @@ class AvailabilityController extends Controller
     {
         $availability->delete();
         return response()->json(['message' => 'Deleted successfully']);
+    }
+
+    public function locationStore(Request $request)
+    {
+        $rules = [
+            'address' => 'required|string',
+        ];
+
+        $validatedData = $request->validate($rules);
+
+        $locationData = [
+            'address' => $validatedData['address'],
+            'creates_by' => auth()->id(),
+            'user_id' => auth()->id(),
+            'lat' => "55",
+            'lng' => "86",
+            'is_active' => 1,
+        ];
+
+        $existingRecord = LocationSchedule::where('user_id', auth()->id())->first();
+
+        if ($existingRecord) {
+            $existingRecord->update($locationData);
+            return response()->json([
+                'message' => 'Location updated successfully.',
+                'data' => $existingRecord,
+            ], 200);
+        } else {
+            $newRecord = LocationSchedule::create($locationData);
+            return response()->json([
+                'message' => 'Location saved successfully.',
+                'data' => $newRecord,
+            ], 201);
+        }
     }
 }
