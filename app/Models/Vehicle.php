@@ -36,24 +36,29 @@ class Vehicle extends Model
     protected static function booted()
     {
         static::creating(function ($vehicle) {
-            // Check the vehicle type and generate unique_id accordingly
             if ($vehicle->vehicle_type == 'Container') {
-                // For 'Container', prefix will be 'CTN-'
                 $prefix = 'CTN-';
+
+                // Only find last Container
+                $lastVehicle = self::where('vehicle_type', 'Container')
+                    ->latest('id')
+                    ->first();
             } else {
-                // For other vehicle types, prefix will be 'VHL-'
                 $prefix = 'VHL-';
+
+                // Find last vehicle which is NOT Container
+                $lastVehicle = self::where('vehicle_type', '!=', 'Container')
+                    ->latest('id')
+                    ->first();
             }
 
-            // Get the last inserted id and increment the count for unique_id
-            $lastVehicle = self::where('vehicle_type', $vehicle->vehicle_type)
-                               ->latest('id')
-                               ->first();
+            // Extract last count
+            $lastCount = 0;
+            if ($lastVehicle) {
+                $lastCount = (int) substr($lastVehicle->unique_id, strlen($prefix));
+            }
 
-            // If no vehicle exists, start from 1
-            $lastCount = $lastVehicle ? (int) substr($lastVehicle->unique_id, -6) : 0;
-
-            // Increment the count, but if no vehicles exist, start at 1
+            // Generate new unique_id
             $vehicle->unique_id = $prefix . str_pad($lastCount + 1, 6, '0', STR_PAD_LEFT);
         });
     }

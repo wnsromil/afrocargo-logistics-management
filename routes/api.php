@@ -31,6 +31,9 @@ use App\Http\Controllers\Api\{
     ProductController
 };
 
+use App\Http\Controllers\Web\Admin\{
+    OrderStatusManage,
+};
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
 // })->middleware('auth:api');
@@ -55,6 +58,10 @@ Route::get('/vehicle/getAdminActiveContainer', [ContainerController::class, 'get
 Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'getUsersByWarehouse']);
 Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
 Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']);
+
+
+//Order Status Manage Apis
+Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriversByParcelId']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

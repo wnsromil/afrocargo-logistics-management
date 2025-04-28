@@ -121,7 +121,7 @@ class OrderShipmentController extends Controller
                 'created_user_id' => $this->user->id,
                 'customer_id' => $validatedData['customer_id'],
                 'status' => 'Created',
-                'parcel_status' => 'Pending',
+                'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
 
@@ -466,7 +466,7 @@ class OrderShipmentController extends Controller
                 'created_user_id' => $this->user->id,
                 'customer_id' => $validatedData['customer_id'],
                 'status' => 'Created',
-                'parcel_status' => 'Pending',
+                'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
 
@@ -540,7 +540,7 @@ class OrderShipmentController extends Controller
                 'created_user_id' => $this->user->id,
                 'customer_id' => $validatedData['customer_id'],
                 'status' => 'Created',
-                'parcel_status' => 'Pending',
+                'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
 
@@ -618,7 +618,7 @@ class OrderShipmentController extends Controller
                 'created_user_id' => $this->user->id,
                 'customer_id' => $validatedData['customer_id'],
                 'status' => 'Created',
-                'parcel_status' => 'Pending',
+                'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
 

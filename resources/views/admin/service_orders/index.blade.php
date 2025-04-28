@@ -149,8 +149,9 @@
                                                             </td>
                                                             <td>
                                                                 <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="{{  $parcel->descriptions ?? '-' }}">
-                                                                {{  $parcel->descriptions ?? '-' }}</p>
+                                                                    title="{{  $parcel->descriptions ?? '-' }}">
+                                                                    {{  $parcel->descriptions ?? '-' }}
+                                                                </p>
                                                             </td>
                                                             <td>
                                                                 <div>${{ $parcel->estimate_cost ?? "0"}}</div>
@@ -191,7 +192,7 @@
                                                                 </div>
                                                             </td>
                                                             @php
-                                                                $classValue = match ($parcel->status) {
+                                                                $classValue = match ($parcel->parcelStatus->status) {
                                                                     'Pickup Assign' => 'labelstatusp',
                                                                     'Pending' => 'labelstatusp',
                                                                     'Pickup Re-Schedule' => 'labelstatuspi',
@@ -203,7 +204,7 @@
                                                             </td>
                                                             <td>
                                                                 <label class="{{ $classValue }}" for="status">
-                                                                    {{ $parcel->status ?? '-' }}
+                                                                    {{ $parcel->parcelStatus->status ?? '-' }}
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -219,29 +220,58 @@
                                                                         <div class="profilemenu">
                                                                             <div class="subscription-menu">
                                                                                 <ul>
+                                                                                    @php
+                                                                                        // Assuming $parcel->parcelStatus->id contains the ID of the current status
+                                                                                        $currentStatusId = $parcel->parcelStatus->id ?? null;
+                                                                                    @endphp
+                                                                            
                                                                                     <li>
-                                                                                        <a class="dropdown-item" href="javascript:void(0);"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#cancel_modal">Schedule
-                                                                                            Pickup Cancel</a>
-
-
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 1 ? 'active' : '' }}"  href="javascript:void(0);">Pending</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item" href="javascript:void(0);"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#reschedule_modal"> Pickup
-                                                                                            Re-schedule</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 2 ? 'active' : '' }}" data-bs-toggle="modal" data-bs-target="#Pick_up_with_driver" href="javascript:void(0);">Pick up with driver</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item" href="javascript:void(0);"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#recieved_modal">Recieved by
-                                                                                            Pickup Man</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active' : '' }}" href="javascript:void(0);">Arrived at warehouse</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 4 ? 'active' : '' }}" href="javascript:void(0);">In transit</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active' : '' }}" href="javascript:void(0);">Full load</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 6 ? 'active' : '' }}" href="javascript:void(0);">Full discharge</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 7 ? 'active' : '' }}" href="javascript:void(0);">Arrived at final destination warehouse</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active' : '' }}" href="javascript:void(0);">Ready for pick up</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active' : '' }}" href="javascript:void(0);">Out for delivery</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active' : '' }}" href="javascript:void(0);">Delivered</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 11 ? 'active' : '' }}" href="javascript:void(0);">Re-delivery</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 12 ? 'active' : '' }}" href="javascript:void(0);">Picked up</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 13 ? 'active' : '' }}" href="javascript:void(0);">On hold</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 14 ? 'active' : '' }}" href="javascript:void(0);">Cancelled</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 15 ? 'active' : '' }}" href="javascript:void(0);">Abandoned</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
                                                                 </li>
@@ -257,1111 +287,6 @@
                                     </td>
                                 </tr>
                             @endforelse
-
-                            {{-- <tr style="border:none">
-                                <td>1</td>
-                                <td>WE97078893</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p class="ellipseText">No 295 opp.Xavier Church ground,10th
-                                                        main,39th C Cross Road,5th Block California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Books,Electronics..</div>
-                                </td>
-                                <td>
-                                    <div>$25</div>
-                                </td>
-                                <td>
-                                    <div>Jelene Largan</div>
-                                </td>
-                                <td>
-                                    <div>Two Wheeler</div>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">unpaid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$350</div>
-                                            <div class="row">$100</div>
-                                            <div class="row">$450</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cash</div>
-                                </td>
-                                <td><label class="labelstatus" for="status">Pending</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#recieved_modal">Schedule Pickup</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-                            <!-- second line -->
-                            <tr>
-                                <td>2</td>
-                                <td>WE97078891</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Household Set,Card..</div>
-                                </td>
-                                <td>
-                                    <div>$22</div>
-                                </td>
-                                <td>
-                                    <div>Alysig Tremblett</div>
-                                </td>
-                                <td>
-                                    <div>Van</div>
-                                </td>
-                                <td><label class="labelstatusy" for="partial_status">Partialy Paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$200</div>
-                                            <div class="row">$50</div>
-                                            <div class="row">$250</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Online/Card</div>
-                                </td>
-                                <td><label class="labelstatusy" for="status">Schedule Pickup</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#cancel_modal">Schedule
-                                                                Pickup Cancel</a>
-
-
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#reschedule_modal"> Pickup
-                                                                Re-schedule</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#recieved_modal">Recieved by
-                                                                Pickup Man</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <!-- third line -->
-                            <tr>
-                                <td>3</td>
-                                <td>WE97078896</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 3.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Books</div>
-                                </td>
-                                <td>
-                                    <div>$12</div>
-                                </td>
-                                <td>
-                                    <div>Norma McLarens</div>
-                                </td>
-                                <td>
-                                    <div>Two Wheeler</div>
-                                </td>
-                                <td><label class="labelstatusw" for="partial_status">Paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$350</div>
-                                            <div class="row">$100</div>
-                                            <div class="row">$450</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cheque</div>
-                                </td>
-                                <td><label class="labelstatusp" for="status">Pickup Re-Schedule</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#reschedule_modal"> Pickup
-                                                                Re-schedule</a>
-
-                                                        </li>
-
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#receivedwarehouse_modal">Recieved
-                                                                Warehouse</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <!-- fourth line -->
-                            <tr>
-                                <td>4</td>
-                                <td>WE97078897</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Household Set,card..</div>
-                                </td>
-                                <td>
-                                    <div>$35</div>
-                                </td>
-                                <td>
-                                    <div>Berting Dominico</div>
-                                </td>
-                                <td>
-                                    <div>Van</div>
-                                </td>
-                                <td><label class="labelstatusy" for="partial_status"> Partial Paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$200</div>
-                                            <div class="row">$50</div>
-                                            <div class="row">$250</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Online/Card</div>
-                                </td>
-                                <td><label class="labelstatuspi" for="status">Received By Pickup Man</label></td>
-                                <td></td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <!-- fifth line  -->
-                            <tr>
-                                <td>5</td>
-                                <td>WE97078898</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 2.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Books</div>
-                                </td>
-                                <td>
-                                    <div>$55</div>
-                                </td>
-                                <td>
-                                    <div>Amalie McLachlan</div>
-                                </td>
-                                <td>
-                                    <div>Container</div>
-                                </td>
-                                <td><label class="labelstatus" for="partial_status"> Unpaid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$200</div>
-                                            <div class="row">$50</div>
-                                            <div class="row">$250</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cash</div>
-                                </td>
-                                <td><label class="labelstatusp" for="status">Pickup Re-Schedule</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#reschedule_modal"> Pickup
-                                                                Re-schedule</a>
-
-                                                        </li>
-
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#receivedwarehouse_modal">Recieved
-                                                                Warehouse</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <!-- sixth line  -->
-                            <tr>
-                                <td>6</td>
-                                <td>WE97078899</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 3.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Cards</div>
-                                </td>
-                                <td>
-                                    <div>$12</div>
-                                </td>
-                                <td>
-                                    <div>Peterus Simondson</div>
-                                </td>
-                                <td>
-                                    <div>Container</div>
-                                </td>
-                                <td><label class="labelstatusy" for="partial_status"> Partialy paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$200</div>
-                                            <div class="row">$50</div>
-                                            <div class="row">$250</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Online/Card</div>
-                                </td>
-                                <td><label class="labelstatuspi" for="status">Received By Pickup Man</label></td>
-                                <td>
-
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-                            <!-- seven line -->
-                            <tr>
-                                <td>7</td>
-                                <td>WE97078900</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Books</div>
-                                </td>
-                                <td>
-                                    <div>$8</div>
-                                </td>
-                                <td>
-                                    <div>Gar Delagnes</div>
-                                </td>
-                                <td>
-                                    <div>Two Wheeler</div>
-                                </td>
-                                <td><label class="labelstatusw" for="partial_status"> paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$350</div>
-                                            <div class="row">$100</div>
-                                            <div class="row">$450</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cheque</div>
-                                </td>
-                                <td><label class="labelstatusy" for="status">Schedule Pickup</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#cancelcontainer_modal">Delivery Man
-                                                                Assign
-                                                                Cancel</a>
-
-
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#reschedule_modal"> Delivery
-                                                                Re-schedule</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#returncourier_modal">Return
-                                                                to Courier</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#deliveredcourier_modal">Delivered</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <!-- eight line -->
-                            <tr>
-                                <td>8</td>
-                                <td>WE97078901</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Household set,card..</div>
-                                </td>
-                                <td>
-                                    <div>$34</div>
-                                </td>
-                                <td>
-                                    <div>Bartlet Rayworth</div>
-                                </td>
-                                <td>
-                                    <div>Van</div>
-                                </td>
-                                <td><label class="labelstatusy" for="partial_status"> Partial paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$200</div>
-                                            <div class="row">$50</div>
-                                            <div class="row">$250</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cheque</div>
-                                </td>
-                                <td><label class="labelstatuspi" for="status">Recieved by PickupMan</label></td>
-                                <td>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-                            <!-- nine line -->
-                            <tr>
-                                <td>9</td>
-                                <td>WE97078894</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 3.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Electronics</div>
-                                </td>
-                                <td>
-                                    <div>$21</div>
-                                </td>
-                                <td>
-                                    <div>Saxe Fegres</div>
-                                </td>
-                                <td>
-                                    <div>Van</div>
-                                </td>
-                                <td><label class="labelstatus" for="partial_status"> Unpaid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$350</div>
-                                            <div class="row">$100</div>
-                                            <div class="row">$450</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cash</div>
-                                </td>
-                                <td><label class="labelstatus" for="status">Pending</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#recieved_modal">Schedule
-                                                                Pickup</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-
-                            <!-- ten line -->
-                            <tr>
-                                <td>10</td>
-                                <td>WE97078901</td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                    <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th
-                                                        Block
-                                                        California</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>12-12-24</div>
-                                </td>
-                                <td>
-                                    <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                </td>
-                                <td>
-                                    <div>Household</div>
-                                </td>
-                                <td>
-                                    <div>$25</div>
-                                </td>
-                                <td>
-                                    <div>Lock Gillbanks</div>
-                                </td>
-                                <td>
-                                    <div>Container</div>
-                                </td>
-                                <td><label class="labelstatusy" for="partial_status"> Partially paid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">Partial:</div>
-                                            <div class="row">Due:</div>
-                                            <div class="row">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$200</div>
-                                            <div class="row">$50</div>
-                                            <div class="row">$250</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Online/Card</div>
-                                </td>
-                                <td><label class="labelstatusy" for="status">Schedule Pickup</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content droparrow droparrow">
-                                                <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#cancelcontainer_modal">Delivery Man
-                                                                Assign
-                                                                Cancel</a>
-
-
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#reschedule_modal"> Delivery
-                                                                Re-schedule</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#returncourier_modal">Return
-                                                                to Courier</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item " href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#deliveredcourier_modal">Delivered</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
@@ -1574,6 +499,65 @@
     }
 
 </script> -->
+
+<!-- Pick_up_with_driver -->
+<div class="modal custom-modal signature-add-modal fade" id="Pick_up_with_driver" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <div class="form-header  text-start mb-0">
+                    <div class="popuph">
+                        <h4>Pickup With Driver</h4>
+                    </div>
+                </div>
+
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    src="{{asset('assets/img/cross.png')}}">
+
+            </div>
+            <form action="#">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-3">
+                                <div class="col-12">
+                                    <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                </div>
+                                <div class="col-12">
+                                    <select class="js-example-basic-single select2">
+                                        <option selected="selected">Select Pickup Man</option>
+                                        <option></option>
+                                        <option></option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block ">
+                                <label class="foncolor">Note</label>
+                                <div class="input-block mb-0">
+                                    <input type="Note" name="Note" class="form-control inp Note" placeholder="">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" data-bs-dismiss="modal"
+                        class="btn btn-outline-primary custom-btn">Cancel</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <!-- cancel model -->
 <div class="modal custom-modal signature-add-modal fade" id="cancel_modal" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -1609,62 +593,6 @@
 </div>
 
 
-<!-- recieved_modal -->
-<div class="modal custom-modal signature-add-modal fade" id="recieved_modal" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-header pb-0">
-                <div class="form-header  text-start mb-0">
-                    <div class="popuph">
-                        <h4>Pickup Man Assign</h4>
-                    </div>
-                </div>
-
-                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    src="{{asset('assets/img/cross.png')}}">
-
-            </div>
-            <form action="#">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block mb-3">
-                                <div class="col-12">
-                                    <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
-                                </div>
-                                <div class="col-12">
-                                    <select class="js-example-basic-single select2">
-                                        <option selected="selected">Select Delivery Man</option>
-                                        <option></option>
-                                        <option></option>
-                                    </select>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12">
-                            <div class="input-block ">
-                                <label class="foncolor">Note</label>
-                                <div class="input-block mb-0">
-                                    <input type="Note" name="Note" class="form-control inp Note" placeholder="">
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" data-bs-dismiss="modal"
-                        class="btn btn-outline-primary custom-btn">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- re-schedule  pickup-->
 
@@ -1990,7 +918,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!-- delivered courier -->

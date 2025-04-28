@@ -34,8 +34,6 @@
         </div>
     </x-slot>
     <div class="row">
-
-
         <div id='ajexTable'>
             <div class="card-table">
                 <div class="card-body">
