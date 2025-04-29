@@ -8,7 +8,7 @@ class ParcelHistory extends Model
 {
     //
     protected $guarded =[];
-
+    protected $table = 'parcel_histories';
     protected $casts =[
         'description'=>'object'
     ];

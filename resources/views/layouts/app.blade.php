@@ -174,6 +174,8 @@
     <script src="{{ asset('assets/plugins/timeline/horizontal-timeline.js') }}"></script>
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    <!-- Custom JS -->
+    <script src="{{ asset('assets/js/status_manage.js') }}"></script>
     <script>
         @session('success')
             Swal.fire({

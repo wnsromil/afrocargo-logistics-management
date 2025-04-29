@@ -62,6 +62,9 @@ Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']
 
 //Order Status Manage Apis
 Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriversByParcelId']);
+Route::post(uri: '/update-status-pick-up-with-driver', action: [OrderStatusManage::class, 'statusUpdate_PickUpWithDriver']);
+Route::post(uri: '/update-status-arrived-warehouse', action: [OrderStatusManage::class, 'statusUpdate_ArrivedWarehouse']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -135,6 +138,9 @@ Route::middleware('auth:api')->group(function () {
 
         // Driver Inventory
         Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventorySolde']);
+    
+       // Schedule apis
+       Route::post('/location-store', [AvailabilityController::class, 'locationStore']);
     });
 
     //invoice controller

@@ -193,10 +193,22 @@
                                                             </td>
                                                             @php
                                                                 $classValue = match ($parcel->parcelStatus->status) {
-                                                                    'Pickup Assign' => 'labelstatusp',
-                                                                    'Pending' => 'labelstatusp',
-                                                                    'Pickup Re-Schedule' => 'labelstatuspi',
-                                                                    default => 'labelstatusp',
+                                                                    'Pending' => 'badge-pending',
+                                                                    'Pick up with driver' => 'badge-pickup',
+                                                                    'Arrived at warehouse' => 'badge-arrived-warehouse',
+                                                                    'In transit' => 'badge-in-transit',
+                                                                    'Full load' => 'badge-full-load',
+                                                                    'Full discharge' => 'badge-full-discharge',
+                                                                    'Arrived at final destination warehouse' => 'badge-arrived-final',
+                                                                    'Ready for pick up' => 'badge-ready-pickup',
+                                                                    'Out for delivery' => 'badge-out-delivery',
+                                                                    'Delivered' => 'badge-delivered',
+                                                                    'Re-delivery' => 'badge-re-delivery',
+                                                                    'Picked up' => 'badge-picked-up',
+                                                                    'On hold' => 'badge-on-hold',
+                                                                    'Cancelled' => 'badge-cancelled',
+                                                                    'Abandoned' => 'badge-abandoned',
+                                                                    default => 'badge-pending', // Default class if no match found
                                                                 };
                                                             @endphp
                                                             <td>
@@ -224,51 +236,77 @@
                                                                                         // Assuming $parcel->parcelStatus->id contains the ID of the current status
                                                                                         $currentStatusId = $parcel->parcelStatus->id ?? null;
                                                                                     @endphp
-                                                                            
+
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 1 ? 'active' : '' }}"  href="javascript:void(0);">Pending</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 1 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Pending</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 2 ? 'active' : '' }}" data-bs-toggle="modal" data-bs-target="#Pick_up_with_driver" href="javascript:void(0);">Pick up with driver</a>
+                                                                                        <a onclick="{{ $currentStatusId != 2 ? 'fetchDriversByParcelId(' . $parcel->id . ')' : '' }}"
+                                                                                            class="dropdown-item {{ $currentStatusId == 2 ? 'active disabled-link' : '' }}"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#Pick_up_with_driver"
+                                                                                            href="javascript:void(0);">
+                                                                                            Pick up with driver
+                                                                                        </a>
+                                                                                    </li>
+
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active disabled-link' : '' }}"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#arrived_warehouse"
+                                                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                                            Arrived at warehouse
+                                                                                        </a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active' : '' }}" href="javascript:void(0);">Arrived at warehouse</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 4 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">In transit</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 4 ? 'active' : '' }}" href="javascript:void(0);">In transit</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Full load</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active' : '' }}" href="javascript:void(0);">Full load</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 6 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Full discharge</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 6 ? 'active' : '' }}" href="javascript:void(0);">Full discharge</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 7 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Arrived at final destination
+                                                                                            warehouse</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 7 ? 'active' : '' }}" href="javascript:void(0);">Arrived at final destination warehouse</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Ready for pick up</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active' : '' }}" href="javascript:void(0);">Ready for pick up</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Out for delivery</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active' : '' }}" href="javascript:void(0);">Out for delivery</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Delivered</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active' : '' }}" href="javascript:void(0);">Delivered</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 11 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Re-delivery</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 11 ? 'active' : '' }}" href="javascript:void(0);">Re-delivery</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 12 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Picked up</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 12 ? 'active' : '' }}" href="javascript:void(0);">Picked up</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 13 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">On hold</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 13 ? 'active' : '' }}" href="javascript:void(0);">On hold</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 14 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Cancelled</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 14 ? 'active' : '' }}" href="javascript:void(0);">Cancelled</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 15 ? 'active' : '' }}" href="javascript:void(0);">Abandoned</a>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 15 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Abandoned</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
@@ -313,244 +351,62 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="parcel_id_input_hidden" name="parcel_id_hidden" class="form-control" readonly>
+    <input type="hidden" id="warehouse_id_input_hidden" name="warehouse_id_hidden" class="form-control" readonly>
+    <input type="hidden" id="created_user_id_input_hidden" name="created_user_id_hidden" class="form-control" readonly
+        value="{{ auth()->user()->id }}">
 </x-app-layout>
-<!-- <script>
-    function handlePickupAssign(ParcelId, drivers) {
-        let options = `<option value="">Select Pickup Man</option>`;
-        drivers.forEach(driver => {
-            options += `<option value="${driver.id}">${driver.name}</option>`;
-        });
-
-        const Input_Fields = [
-            {
-                id: "pickup-man",
-                label: "Pickup Man",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
-            }
-        ];
-
-        let selectedUsers = [];
-        $(".selectCheckbox:checked").each(function () {
-            selectedUsers.push($(this).val());
-        });
-
-        if(ParcelId=="selectArr"){
-            ParcelId =selectedUsers;
-        }
-
-        const status = "Pickup Assign";
-        DynmicModel(ParcelId, status, Input_Fields);
-    }
-
-    function handlePickupReschedule(ParcelId, drivers) {
-        let options = `<option value="">Select Pickup Man</option>`;
-        drivers.forEach(driver => {
-            options += `<option value="${driver.id}">${driver.name}</option>`;
-        });
-
-        const Input_Fields = [
-            {
-                id: "pickup-man",
-                label: "Pickup Man",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "pickup_date",
-                label: "Pickup Date",
-                type: "date",
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
-            }
-            
-        ];
-
-        const status = "Pickup Re-Schedule";
-        DynmicModel(ParcelId, status, Input_Fields);
-    }
-
-    function handlePickupCancel(ParcelId) {
-        const status = "Cancelled";
-        DynmicModel(ParcelId, status, []);
-        console.log("❌ Pickup Cancel Clicked");
-    }
-
-    function handleReceivedByPickupMan(ParcelId=false) {
-        const status = "Received By Pickup Man";
-        DynmicModel(ParcelId, status, []);
-    }
-
-    function handleReceivedWarehouse(ParcelId, warehouses) {
-        let options = `<option value="">Select Warehouse</option>`;
-        warehouses.forEach(warehouse => {
-            options += `<option value="${warehouse.id}">${warehouse.warehouse_name}</option>`;
-        });
-
-        const Input_Fields = [
-            {
-                id: "warehouse_id",
-                label: "Warehouse",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
-            }
-        ];
-
-        const status = "Received Warehouse";
-        DynmicModel(ParcelId, status, Input_Fields );
-        console.log("🏢 Received Warehouse Clicked");
-    }
-
-    async function DynmicModel(ParcelId, status, Input_Fields) {
-        var _token = '{{ csrf_token() }}';
-
-        // Generate Dynamic HTML Inputs
-        let formHtml = "";
-        Input_Fields.forEach(field => {
-            if (field.type === "select") {
-                formHtml += `
-                <label for="${field.id}" style="display:block; text-align:left; font-weight:bold; margin-top: 10px;">${field.label}</label>
-                <select id="${field.id}" class="swal2-input">${field.options}</select>`;
-            } else if (field.type === "textarea") {
-                formHtml += `
-                <label for="${field.id}" style="display:block; text-align:left; font-weight:bold; margin-top: 10px;">${field.label}</label>
-                <textarea id="${field.id}" class="swal2-input textarea-swal2-input" rows="4" cols="50"></textarea>`;
-            } else if (field.type === "date") {
-                formHtml += `
-                <label for="${field.id}" style="display:block; text-align:left; font-weight:bold; margin-top: 10px;">${field.label}</label>
-                <input type="date" id="${field.id}" class="swal2-input">`;
-            }
-        });
-
-        // Show SweetAlert
-        const { value: formValues } = await Swal.fire({
-            title: "Update Status",
-            html: formHtml,
-            showCancelButton: true,
-            confirmButtonText: "Change",
-            showCloseButton: true,
-            preConfirm: () => {
-                let formData = { ParcelId: ParcelId, status: status, _token: _token };
-                let isValid = true;
-
-                // Validate and collect data
-                Input_Fields.forEach(field => {
-                    let inputValue = document.getElementById(field.id)?.value.trim() || "";
-                    if (field.required && !inputValue) {
-                        Swal.showValidationMessage(`Please fill ${field.label}!`);
-                        isValid = false;
-                    }
-                    formData[field.id] = inputValue; // Add to data object
-                });
-
-                return isValid ? formData : false;
-            }
-        });
-
-        if (formValues) {
-            // Send AJAX Request
-            $.ajax({
-                url: "{{ route('parcel.status_update') }}",
-                type: "POST",
-                data: formValues, // Dynamic data object
-                success: function (response) {
-                    if (response.status === true) {
-                    Swal.fire({
-                    title: "Good job!",
-                    text: "Status change successfully!",
-                    icon: "success"
-                   }).then(() => {
-                    location.reload(); // Page reload after OK click
-                   });
-                    } else {
-                        Swal.fire({
-                            title: "Oops...",
-                            text: "Something went to wrong!",
-                            icon: "error"
-                        });
-                    }
-                },
-                error: function (xhr) {
-                    Swal.fire('Error!', 'An error occurred while processing your request.', 'error');
-                    console.log(xhr.responseJSON);
-                }
-            });
-        }
-    }
-
-</script> -->
 
 <!-- Pick_up_with_driver -->
 <div class="modal custom-modal signature-add-modal fade" id="Pick_up_with_driver" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header pb-0">
-                <div class="form-header  text-start mb-0">
+                <div class="form-header text-start mb-0">
                     <div class="popuph">
                         <h4>Pickup With Driver</h4>
                     </div>
                 </div>
-
                 <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    src="{{asset('assets/img/cross.png')}}">
-
+                    src="{{ asset('assets/img/cross.png') }}">
             </div>
-            <form action="#">
+            <form id="pickupForm" method="POST">
+                <!-- Parcel ID Input Field -->
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block mb-3">
-                                <div class="col-12">
-                                    <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
-                                </div>
-                                <div class="col-12">
-                                    <select class="js-example-basic-single select2">
-                                        <option selected="selected">Select Pickup Man</option>
-                                        <option></option>
-                                        <option></option>
-                                    </select>
-                                </div>
-
+                                <input type="hidden" id="parcel_id_input" name="parcel_id" class="form-control"
+                                    readonly>
+                                <input type="hidden" id="warehouse_id_input" name="warehouse_id" class="form-control"
+                                    readonly>
+                                <input type="hidden" id="created_user_id_input" name="created_user_id"
+                                    class="form-control" readonly value="
+                                    {{ auth()->user()->id }}">
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12">
-                            <div class="input-block ">
-                                <label class="foncolor">Note</label>
-                                <div class="input-block mb-0">
-                                    <input type="Note" name="Note" class="form-control inp Note" placeholder="">
-
-                                </div>
-
+                            <div class="input-block mb-3">
+                                <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2" id="driverDropdown" name="driver_id">
+                                    <option selected="selected" value="">Select Pickup Man</option>
+                                </select>
+                                <div id="driverError" class="text-danger small mt-1"></div>
                             </div>
                         </div>
-
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block">
+                                <label class="foncolor">Note</label>
+                                <input type="text" name="notes" class="form-control inp Note" placeholder="Enter note">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-
+                    <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" data-bs-dismiss="modal"
                         class="btn btn-outline-primary custom-btn">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
@@ -559,34 +415,28 @@
 
 
 <!-- cancel model -->
-<div class="modal custom-modal signature-add-modal fade" id="cancel_modal" role="dialog">
+<div class="modal custom-modal signature-add-modal fade" id="arrived_warehouse" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-body confirmationpopup">
                 <div class="form-header">
 
-                    <p class="popupc">Do you want to cancel the Schedule Pickup?</p>
+                    <p class="popupc">Has the order successfully arrived at the warehouse?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-
-                            <button type="submit" data-bs-dismiss="modal"
-                                class=" w-100 btn btn-outline-primary custom-btn">No</button>
+                            <button data-bs-dismiss="modal" type="button" onclick="updatestatusarrivedwarehouse()"
+                                class="w-100 btn btn-primary paid-continue-btn customerpopup">
+                                Yes
+                            </button>
                         </div>
                         <div class="col-6">
-                            <button data-bs-dismiss="modal"
-                                class="w-100 btn btn-primary paid-continue-btn customerpopup"><a class="dropdown-item"
-                                    href="javascript:void(0);" data-bs-toggle="modal"
-                                    data-bs-target="#reason_modal">Yes</a>
-                            </button>
-
+                            <button type="button" data-bs-dismiss="modal"
+                                class=" w-100 btn btn-outline-primary custom-btn">No</button>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
     </div>
@@ -963,3 +813,99 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function fetchDriversByParcelId(parcelId) {
+        document.getElementById("parcel_id_input").value = parcelId;
+        // Show loading indicator (optional)
+        $("#driverDropdown").html('<option value="">Loading...</option>');
+
+        // Make AJAX POST request
+        $.ajax({
+            url: "/api/get-drivers-by-assign-status", // API endpoint
+            type: "POST",
+            data: {
+                parcel_id: parcelId, // Send parcel_id as parameter
+            },
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+            },
+            success: function (response) {
+                // Clear existing options
+                let dropdown = $("#driverDropdown");
+                dropdown.empty();
+
+                // Add default option
+                dropdown.append('<option value="">Select Pickup Man</option>');
+
+                // Populate dropdown with drivers from API response
+                if (response.drivers && response.drivers.length > 0) {
+                    document.getElementById("warehouse_id_input").value =
+                        response.drivers[0].warehouse_id;
+                    response.drivers.forEach(function (driver) {
+                        dropdown.append(
+                            `<option value="${driver.id}">${driver.name}</option>`
+                        );
+                    });
+                } else {
+                    dropdown.append(
+                        '<option value="">No drivers available</option>'
+                    );
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error("Error fetching drivers:", error);
+                $("#driverDropdown").html(
+                    '<option value="">Error loading drivers</option>'
+                );
+            },
+        });
+    }
+    function updatestatusarrivedwarehouse() {
+        let parcelId = $("#parcel_id_input_hidden").val();
+        let created_user_id = $("#created_user_id_input_hidden").val();
+
+        if (!parcelId) {
+            alert("Parcel ID is required.");
+            return;
+        }
+        // Show Loading Indicator
+        $(".btn-primary").html("Processing...").prop("disabled", true);
+
+        // Make AJAX POST Request
+        $.ajax({
+            url: "/api/update-status-arrived-warehouse", // API endpoint
+            type: "POST",
+            data: {
+                parcel_id: parcelId,
+                created_user_id: created_user_id,
+            },
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+            },
+            success: function (response) {
+                document
+                    .querySelector("#arrived_warehouse .custom-btn")
+                    .click();
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Status changed successfully!",
+                    icon: "success",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle Server-Side Validation Errors
+                let errors = xhr.responseJSON?.errors || {};
+            },
+            complete: function () {
+                // Re-enable Save Button
+                $(".btn-primary").html("Save").prop("disabled", false);
+            },
+        });
+    }
+</script>
