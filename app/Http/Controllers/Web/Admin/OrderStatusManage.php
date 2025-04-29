@@ -16,6 +16,7 @@ use App\Models\{
     HubTracking,
     Address
 };
+use \Carbon\Carbon;
 
 class OrderStatusManage extends Controller
 {
@@ -45,10 +46,64 @@ class OrderStatusManage extends Controller
         }
 
         // Step 5: Find active drivers with matching warehouse_id and role_id = 4
-        $drivers = User::select('id', 'name','warehouse_id')->where('warehouse_id', $nearestWarehouse->id)
-            ->where('role_id', 4)
-            ->where('status', 'Active')
-            ->get();
+        
+
+
+        $drivers = User::select('id', 'name', 'warehouse_id')
+        ->with(['availabilities', 'weeklySchedules', 'locationSchedules'])
+        ->where('warehouse_id', $nearestWarehouse->id)
+        ->where('role_id', 4)
+        ->where('status', 'Active')
+        ->get()
+        ->filter(function ($driver) use ($parcel) {
+            $pickupDate = $parcel->pickup_date->format('Y-m-d');
+            $pickupTime = $parcel->pickup_time; // e.g. "11:00 AM - 01:00 PM"
+            $day = strtolower($parcel->pickup_date->format('l'));
+
+            // Determine shift
+            $timeRange = explode('-', $pickupTime);
+            $startTime = Carbon::parse(trim($timeRange[0]));
+            $endTime = Carbon::parse(trim($timeRange[1]));
+            $hour = $startTime->hour;
+
+            $shift = false;
+            if ($hour < 12) {
+                $shift = 'morning';
+            } elseif ($hour < 17) {
+                $shift = 'afternoon';
+            } else {
+                $shift = 'evening';
+            }
+
+            // Check availability on the specific date
+            $availabilities = $driver->availabilities
+                ->where('date', $pickupDate)
+                ->values();
+
+            // Check weekly schedule for the day and shift
+            $weeklySchedules = $driver->weeklySchedules
+                ->where('day', $day)
+                ->filter(function ($schedule) use ($shift, $timeRange) {
+                    return isset($schedule[$shift.'_start'], $schedule[$shift . '_end'])
+                        && Carbon::parse(trim($schedule[$shift.'_start']))->hour <= Carbon::parse(trim($timeRange[0]))->hour 
+                        && Carbon::parse(trim($schedule[$shift.'_end']))->hour >= Carbon::parse(trim($timeRange[1]))->hour;
+                });
+                
+            // No availability record but has valid weekly schedule => include
+            if ($availabilities->isEmpty() && $weeklySchedules->isNotEmpty()) {
+                return true;
+            }
+
+            // Has availability for the shift and a valid weekly schedule => include
+            if ($shift && $availabilities->where($shift,1)->isNotEmpty() && $weeklySchedules->isNotEmpty()) {
+                return true;
+            }
+
+            return false;
+        });
+
+
+
 
         // Step 6: Return response
         return response()->json([

@@ -280,7 +280,7 @@
                 </div>
                 <div class="card-body curve_tabel p-0 mt-5">
                     <div class="table-responsive p-1">
-                        <table class="table table-bordered ">
+                        <table class="table table-bordered " id="dynamicTable">
                             <thead>
                                 <tr>
                                     <th style="width:57px;">Item</th>
@@ -296,94 +296,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="mwidth">
-                                        <select class="js-example-basic-single select2 inputcolor">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-
-                                        <div class="text-center">
-                                            <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                <tr>
-                                    <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-
-                                        <div class="text-center">
-                                            <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-
-
-                                        </div>
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-
-                                        <div class="text-center">
-                                            <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td class="mwidth"><select class="js-example-basic-single select2">
                                             <option selected="selected " class="form-cs"></option>
@@ -404,9 +316,11 @@
                                     <td><input type="text" class="form-control tdbor inputcolor " placeholder=""></td>
                                     <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                     <td>
-                                        <div class="text-center"><button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button></div>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
+                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -414,198 +328,6 @@
                         </table>
                     </div>
                 </div>
-
-
-                <!-- Tracking Number -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="tracking_number">Tracking Number <i class="text-danger">*</i></label>
-                        <input type="text" name="tracking_number" class="form-control" placeholder="Enter Tracking Number" value="{{ old('tracking_number') }}">
-                        @error('tracking_number')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Customer -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="customer_id">Customer <i class="text-danger">*</i></label>
-                        <select name="customer_id" class="form-control select2">
-                            <option value="">Select Customer</option>
-                            @foreach($customers as $customer)
-                                <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('customer_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Driver -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="driver_id">Driver</label>
-                        <select name="driver_id" class="form-control select2">
-                            <option value="">Select Driver</option>
-                            @foreach($drivers as $driver)
-                                <option {{ old('driver_id') == $driver->id ? 'selected' : '' }} value="{{ $driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('driver_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Warehouse -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="warehouse_id">Warehouse<i class="text-danger">*</i></label>
-                        <select name="warehouse_id" class="form-control select2">
-                            <option value="">Select Warehouse</option>
-                            @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('warehouse_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Weight -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="weight">Weight (kg) <i class="text-danger">*</i></label>
-                        <input type="number" step="0.01" name="weight" class="form-control" placeholder="Enter weight" value="{{ old('weight') }}">
-                        @error('weight')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="parcel_car_ids">Parcel Types<i class="text-danger">*</i></label>
-                        <select name="parcel_car_ids[]" class="form-control select2" multiple>
-                            <option value="">Select Warehouse</option>
-                            @foreach($parcelTpyes as $parcelTpye)
-                                <option value="{{ $parcelTpye->id }}" {{ in_array($parcelTpye->parcel_car_ids,old('parcel_car_ids',[])) ? 'selected' : '' }}>{{ $parcelTpye->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('parcel_car_ids')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Payment Type -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="payment_type">Payment Type <i class="text-danger">*</i></label>
-                        <select name="payment_type" class="form-control">
-                            <option value="COD" {{ old('payment_type') == 'COD' ? 'selected' : '' }}>Cash on Delivery (COD)</option>
-                            <option value="Online" {{ old('payment_type') == 'Online' ? 'selected' : '' }}>Online Payment</option>
-                        </select>
-                        @error('payment_type')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Total Amount -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="total_amount">Total Amount ($) <i class="text-danger">*</i></label>
-                        <input type="number" step="0.01" name="total_amount" class="form-control" placeholder="Enter total amount" value="{{ old('total_amount') }}">
-                        @error('total_amount')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Partial Payment -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="partial_payment">Partial Payment ($)</label>
-                        <input type="number" step="0.01" name="partial_payment" class="form-control" placeholder="Enter partial payment" value="{{ old('partial_payment') }}">
-                        @error('partial_payment')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Remaining Payment -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="remaining_payment">Remaining Payment ($)</label>
-                        <input type="number" step="0.01" name="remaining_payment" class="form-control" placeholder="Enter remaining payment" value="{{ old('remaining_payment') }}">
-                        @error('remaining_payment')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Status -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-    
-                        <select name="status" class="form-control">
-                            @foreach($parcelStatuses as $status)
-                                <option value="{{ $status }}" {{ old('status') == $status ? 'selected' : '' }} >{{ ucfirst($status) }}</option>
-                            @endforeach
-                        </select>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Source Address -->
-                <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="source_address">Source Address<i class="text-danger">*</i></label>
-                        <textarea name="source_address" class="form-control" placeholder="Enter Source Address">{{ old('source_address') }}</textarea>
-                        @error('source_address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Destination Address -->
-                <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="destination_address">Destination Address<i class="text-danger">*</i></label>
-                        <textarea name="destination_address" class="form-control" placeholder="Enter Destination Address">{{ old('destination_address') }}</textarea>
-                        @error('destination_address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-
-
-                <!-- Description -->
-                <!-- <div class="col-lg-12">
-                    <div class="input-block mb-3">
-                        <label for="descriptions">Description</label>
-                        <textarea name="descriptions" class="form-control" rows="3" placeholder="Enter parcel details">{{ old('descriptions') }}</textarea>
-                        @error('descriptions')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-            </div>
-        </div> -->
-
-                <!-- <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.OrderShipment.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save">Submit</button>
-        </div> -->
             </div>
 
             <div class="blueRibbon">
@@ -635,7 +357,7 @@
 
         <!-- ---------------------------- Supplies form ------------------------- -->
 
-        <form action="{{ route('admin.OrderShipment.store') }}" id="supplies" class="hidden" method="POST" enctype="multipart/form-data">
+        {{-- <form action="{{ route('admin.OrderShipment.store') }}" id="supplies" class="hidden" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group-customer customer-additional-form">
                 <div class="row">
@@ -890,7 +612,7 @@
                 </div>
                 <div class="card-body curve_tabel p-0 mt-5">
                     <div class="table-responsive p-1">
-                        <table class="table table-bordered ">
+                        <table class="table table-bordered" id="dynamicTable">
                             <thead>
                                 <tr>
                                     <th style="width:57px;">Item</th>
@@ -909,313 +631,63 @@
                                 <tr>
                                     <td class="mwidth">
                                         <select class="js-example-basic-single select2 inputcolor">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
+                                            <option selected="selected" class="form-cs"></option>
+                                            <option>Item 1</option>
+                                            <option>Item 2</option>
+                                            <option>Item 3</option>
                                         </select>
                                     </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                     <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-
-                                        <div class="text-center">
-                                            <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-secondary qty-minus">-</button>
+                                            <input type="text" class="form-control tdbor inputcolor qty-input" value="1">
+                                            <button class="btn btn-sm btn-secondary qty-plus">+</button>
                                         </div>
                                     </td>
-
-                                </tr>
-                                <tr>
-                                <tr>
-                                    <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor label-qty" placeholder="0"></td>
                                     <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-
-                                        <div class="text-center">
-                                            <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-
-
+                                        <div class="d-flex align-items-center priceInput">
+                                            <input type="text" class="form-control inputcolor price-input" placeholder="0.00">
+                                            <button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button>
                                         </div>
                                     </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
                                     <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
+                                        <input type="text" class="form-control tdbor inputcolor value-input" placeholder="0.00" readonly>
                                     </td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor ins-input" placeholder="0"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor discount-input" placeholder="0.00"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor tax-input" placeholder="0.00"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor total-input" placeholder="0.00" readonly></td>
                                     <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-
                                         <div class="text-center">
-                                            <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
                                         </div>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td class="mwidth"><select class="js-example-basic-single select2">
-                                            <option selected="selected " class="form-cs"></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                    <td>
-                                        <div class="text-center"><button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                            <button class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
-                                            <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button></div>
-                                    </td>
-
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-
-                <!-- Tracking Number -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="tracking_number">Tracking Number <i class="text-danger">*</i></label>
-                        <input type="text" name="tracking_number" class="form-control" placeholder="Enter Tracking Number" value="{{ old('tracking_number') }}">
-                        @error('tracking_number')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Customer -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="customer_id">Customer <i class="text-danger">*</i></label>
-                        <select name="customer_id" class="form-control select2">
-                            <option value="">Select Customer</option>
-                            @foreach($customers as $customer)
-                                <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('customer_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Driver -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="driver_id">Driver</label>
-                        <select name="driver_id" class="form-control select2">
-                            <option value="">Select Driver</option>
-                            @foreach($drivers as $driver)
-                                <option {{ old('driver_id') == $driver->id ? 'selected' : '' }} value="{{ $driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('driver_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Warehouse -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="warehouse_id">Warehouse<i class="text-danger">*</i></label>
-                        <select name="warehouse_id" class="form-control select2">
-                            <option value="">Select Warehouse</option>
-                            @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('warehouse_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Weight -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="weight">Weight (kg) <i class="text-danger">*</i></label>
-                        <input type="number" step="0.01" name="weight" class="form-control" placeholder="Enter weight" value="{{ old('weight') }}">
-                        @error('weight')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="parcel_car_ids">Parcel Types<i class="text-danger">*</i></label>
-                        <select name="parcel_car_ids[]" class="form-control select2" multiple>
-                            <option value="">Select Warehouse</option>
-                            @foreach($parcelTpyes as $parcelTpye)
-                                <option value="{{ $parcelTpye->id }}" {{ in_array($parcelTpye->parcel_car_ids,old('parcel_car_ids',[])) ? 'selected' : '' }}>{{ $parcelTpye->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('parcel_car_ids')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Payment Type -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="payment_type">Payment Type <i class="text-danger">*</i></label>
-                        <select name="payment_type" class="form-control">
-                            <option value="COD" {{ old('payment_type') == 'COD' ? 'selected' : '' }}>Cash on Delivery (COD)</option>
-                            <option value="Online" {{ old('payment_type') == 'Online' ? 'selected' : '' }}>Online Payment</option>
-                        </select>
-                        @error('payment_type')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Total Amount -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="total_amount">Total Amount ($) <i class="text-danger">*</i></label>
-                        <input type="number" step="0.01" name="total_amount" class="form-control" placeholder="Enter total amount" value="{{ old('total_amount') }}">
-                        @error('total_amount')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Partial Payment -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="partial_payment">Partial Payment ($)</label>
-                        <input type="number" step="0.01" name="partial_payment" class="form-control" placeholder="Enter partial payment" value="{{ old('partial_payment') }}">
-                        @error('partial_payment')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Remaining Payment -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="remaining_payment">Remaining Payment ($)</label>
-                        <input type="number" step="0.01" name="remaining_payment" class="form-control" placeholder="Enter remaining payment" value="{{ old('remaining_payment') }}">
-                        @error('remaining_payment')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Status -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-    
-                        <select name="status" class="form-control">
-                            @foreach($parcelStatuses as $status)
-                                <option value="{{ $status }}" {{ old('status') == $status ? 'selected' : '' }} >{{ ucfirst($status) }}</option>
-                            @endforeach
-                        </select>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Source Address -->
-                <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="source_address">Source Address<i class="text-danger">*</i></label>
-                        <textarea name="source_address" class="form-control" placeholder="Enter Source Address">{{ old('source_address') }}</textarea>
-                        @error('source_address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-                <!-- Destination Address -->
-                <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="destination_address">Destination Address<i class="text-danger">*</i></label>
-                        <textarea name="destination_address" class="form-control" placeholder="Enter Destination Address">{{ old('destination_address') }}</textarea>
-                        @error('destination_address')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-
-
-                <!-- Description -->
-                <!-- <div class="col-lg-12">
-                    <div class="input-block mb-3">
-                        <label for="descriptions">Description</label>
-                        <textarea name="descriptions" class="form-control" rows="3" placeholder="Enter parcel details">{{ old('descriptions') }}</textarea>
-                        @error('descriptions')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-            </div>
-        </div> -->
-
-                <!-- <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.OrderShipment.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save">Submit</button>
-        </div> -->
+                
+                
+                
+                <style>
+                .qty-minus, .qty-plus {
+                    width: 30px;
+                    padding: 0;
+                }
+                .qty-input {
+                    width: 50px;
+                    text-align: center;
+                    margin: 0 5px;
+                }
+                .editBtn.btn-success {
+                    background-color: #28a745;
+                    border-color: #28a745;
+                }
+                </style>
             </div>
 
             <div class="blueRibbon">
@@ -1240,37 +712,9 @@
                     <div> <button type="submit" class="btn btn-success invocebuttoncolor ">Submit</button></div>
                 </div>
             </div>
-        </form>
+        </form> --}}
     </div>
-
-    <script>
-        function toggleLoginForm(type) {
-            if (type === 'services') {
-                document.getElementById('services').style.display = 'block';
-                document.getElementById('supplies').style.display = 'none';
-                document.getElementById('servicesBtn').classList.add('active3');
-                document.getElementById('suppliesBtn').classList.remove('active3');
-
-            } else if (type === 'supplies') {
-                document.getElementById('services').style.display = 'none';
-                document.getElementById('supplies').style.display = 'block';
-                document.getElementById('servicesBtn').classList.remove('active3');
-                document.getElementById('suppliesBtn').classList.add('active3');
-
-            }
-        }
-
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const formType = urlParams.get('id') || 'services';
-            toggleLoginForm(formType);
-        };
-
-    </script>
-    <script>
-        document.getElementById('addCustomer').onclick = () => document.querySelector('.newCustomerAdd').classList.toggle('none');
-
-        document.getElementById('addShiptoAddress').onclick = () => document.querySelector('.newShipmentAddress').classList.toggle('none');
-
-    </script>
+    @section('script')
+        <script src="{{asset('js/invoice.js')}}"></script>
+    @endsection
 </x-app-layout>
