@@ -233,7 +233,7 @@
 }
 
 .badge-picked-up {
-    background-color: #17a2b8; /* Cyan */
+    background-color: #07abf7; /* Cyan */
     color: #fff;
     padding: 0.25em 0.5em;
     border-radius: 0.25rem;
@@ -258,6 +258,20 @@
 
 .badge-abandoned {
     background-color: #6c757d; /* Gray */
+    color: #fff;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+.badge-ready_to_transfer {
+    background-color: #337ab7; /* Dark Blue */
+    color: #fff;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+.badge-transfer_to_hub {
+    background-color: #e7924c; /* Green */
     color: #fff;
     padding: 0.25em 0.5em;
     border-radius: 0.25rem;

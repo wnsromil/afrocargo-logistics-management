@@ -250,9 +250,12 @@
                                                                                             Pick up with driver
                                                                                         </a>
                                                                                     </li>
-
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active disabled-link' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active ' : '' }}"
+                                                                                            href="javascript:void(0);">Picked up</a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 4 ? 'active disabled-link' : '' }}"
                                                                                             data-bs-toggle="modal"
                                                                                             data-bs-target="#arrived_warehouse"
                                                                                             data-id="{{ $parcel->id }}" href="javascript:void(0);">
@@ -260,41 +263,37 @@
                                                                                         </a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 4 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">In transit</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 6 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">Full load</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 6 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 7 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">Full discharge</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 7 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">Arrived at final destination
                                                                                             warehouse</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">Ready for pick up</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">Out for delivery</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active ' : '' }}"
+                                                                                        <a class="dropdown-item {{ $currentStatusId == 11 ? 'active ' : '' }}"
                                                                                             href="javascript:void(0);">Delivered</a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 11 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Re-delivery</a>
-                                                                                    </li>
-                                                                                    <li>
                                                                                         <a class="dropdown-item {{ $currentStatusId == 12 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Picked up</a>
+                                                                                            href="javascript:void(0);">Re-delivery</a>
                                                                                     </li>
                                                                                     <li>
                                                                                         <a class="dropdown-item {{ $currentStatusId == 13 ? 'active ' : '' }}"

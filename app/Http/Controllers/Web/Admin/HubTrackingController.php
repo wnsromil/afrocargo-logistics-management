@@ -12,9 +12,10 @@ use App\Models\{
     Inventory,
     Parcel,
     ParcelHistory,
-    HubTracking
+    HubTracking,
+    Vehicle,
 };
-
+use Carbon\Carbon;
 class HubTrackingController extends Controller
 {
     /**
@@ -22,19 +23,23 @@ class HubTrackingController extends Controller
      */
     public function transfer_hub()
     {
-        //
-        $parcels = HubTracking::when($this->user->role_id!=1,function($q){
-            return $q->where('to_warehouse_id',$this->user->warehouse_id)->orWhere('from_warehouse_id',$this->user->warehouse_id);
-        })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
-        return view('admin.hubs.transfer_hub', compact('parcels'));
+        $vehicles = Vehicle::where('vehicle_type', 'Container')
+            ->where('status', 'Active')
+            ->withSum('parcels as partial_payment_sum', 'partial_payment')
+            ->withSum('parcels as remaining_payment_sum', 'remaining_payment')
+            ->withSum('parcels as total_amount_sum', 'total_amount')
+            ->paginate(10);
+    
+        return view('admin.hubs.transfer_hub', compact('vehicles'));
     }
+    
 
     public function received_hub()
     {
         //
-        $parcels = HubTracking::when($this->user->role_id!=1,function($q){
-            return $q->where('to_warehouse_id',$this->user->warehouse_id)->orWhere('from_warehouse_id',$this->user->warehouse_id);
-        })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
+        $parcels = HubTracking::when($this->user->role_id != 1, function ($q) {
+            return $q->where('to_warehouse_id', $this->user->warehouse_id)->orWhere('from_warehouse_id', $this->user->warehouse_id);
+        })->with(['createdByUser', 'toWarehouse', 'fromWarehouse', 'vehicle'])->withCount('parcels')->paginate(10);
         return view('admin.hubs.received_hub', compact('parcels'));
     }
 
@@ -42,12 +47,12 @@ class HubTrackingController extends Controller
     public function received_orders()
     {
         //
-        $parcels = HubTracking::when($this->user->role_id!=1,function($q){
-            return $q->where('to_warehouse_id',$this->user->warehouse_id)->orWhere('from_warehouse_id',$this->user->warehouse_id);
-        })->with(['createdByUser','toWarehouse','fromWarehouse','vehicle'])->withCount('parcels')->paginate(10);
+        $parcels = HubTracking::when($this->user->role_id != 1, function ($q) {
+            return $q->where('to_warehouse_id', $this->user->warehouse_id)->orWhere('from_warehouse_id', $this->user->warehouse_id);
+        })->with(['createdByUser', 'toWarehouse', 'fromWarehouse', 'vehicle'])->withCount('parcels')->paginate(10);
         return view('admin.hubs.received_orders', compact('parcels'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -72,7 +77,7 @@ class HubTrackingController extends Controller
     {
         //
 
-        $parcels = Parcel::where('hub_tracking_id',$id)->when($this->user->role_id != 1, function ($q) {
+        $parcels = Parcel::where('hub_tracking_id', $id)->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->latest()->paginate(10);
         $user = collect(User::when($this->user->role_id != 1, function ($q) {

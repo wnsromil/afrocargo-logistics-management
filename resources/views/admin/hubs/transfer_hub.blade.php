@@ -29,8 +29,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
-                                <th>Tracking ID</th>
+                                <th>Container ID</th>
                                 <th>Transfer date</th>
                                 <th>Vehicle Type</th>
                                 <th>Seal Number</th>
@@ -38,137 +37,108 @@
                                 <th>Close Date</th>
                                 <th>No. of orders</th>
                                 <th>Driver Name</th>
-                                <th>Payment Status</th>
                                 <th>Amount</th>
-                                <th>Payment Mode</th>
                                 <th>Status</th>
                                 <th>Status Update</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @forelse ($parcels as $index => $parcel)
-                            <tr>
-                                <td><input type="checkbox" class="form-check-input selectCheckbox"
-                                        value="{{ $parcel->id }}"></td>
+                            @forelse ($vehicles as $index => $vehicle)
+                                                        <tr>
+                                                            <td>{{ $vehicle->unique_id ?? "-" }}</td>
+                                                            <td>---</td>
+                                                            <td>{{ $vehicle->vehicle_type ?? "-" }}</td>
+                                                            <td>{{ $vehicle->seal_no ?? "-" }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') }}</td>
+                                                            <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
+                                                            <td>{{ $vehicle->driver->name ?? "-" }}</td>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="row fw-medium">Partial: </div>
+                                                                        <div class="row">Due: </div>
+                                                                        <div class="row">Total: </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="row"> ${{ $vehicle->partial_payment_sum ?? '0' }}</div>
+                                                                        <div class="row"> ${{ $vehicle->remaining_payment_sum ?? '0' }}</div>
+                                                                        <div class="row"> ${{ $vehicle->total_amount_sum ?? '0' }}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            @php
+                                                                $status = $vehicle->containerStatus->status ?? null;
 
-                                <td>{{ ucfirst($parcel->driver->name ?? '-') }}</td>
-                                <td> {{ $parcel->Vehicle->vehicle_number ?? '-' }}</td>
-                                <td>{{ ucfirst($parcel->toWarehouse->warehouse_name ?? '-') }}</td>
-                                <td>{{ ucfirst($parcel->fromWarehouse->warehouse_name ?? '-') }}</td>
-                                <td><span>{{ $parcel->parcels_count ?? '-' }}</span></td>
-                                <td><span class="badge-{{ activeStatusKey($parcel->status) }}">{{ $parcel->status ?? '-'
-                                        }}</span></td>
+                                                                $classValue = match ($status) {
+                                                                    'Ready to transfer' => 'badge-ready_to_transfer',
+                                                                    'Transfer to Hub' => 'badge-transfer_to_hub',
+                                                                    'In transit' => 'badge-in-transit',
+                                                                    default => 'badge-pending',
+                                                                };
+                                                            @endphp
 
-                                <td class="d-flex align-items-center">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.hubs.show', $parcel->id) }}"><i
-                                                            class="far fa-eye me-2"></i>View Parcels</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                                            <td>
+                                                                <label class="{{ $classValue }}" for="status">
+                                                                    {{ $status ?? '-' }}
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <li class="nav-item dropdown">
+                                                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
+                                                                        data-bs-toggle="dropdown">
+
+                                                                        <span class="user-content"
+                                                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
+                                                                                                               height: 26px;align-content: center;">
+                                                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                                                        </span>
+                                                                    </a>
+                                                                    <div class="dropdown-menu menu-drop-user">
+                                                                        <div class="profilemenu">
+                                                                            <div class="subscription-menu">
+                                                                                <ul>
+
+                                                                                    <li>
+                                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#deliveryman_modal">Transfer to Hub</a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </td>
+                                                            <td class="d-flex align-items-center">
+                                                                <div class="dropdown dropdown-action">
+                                                                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <a class="dropdown-item"
+                                                                                    href="{{ route('admin.hubs.show', $vehicle->id) }}"><i
+                                                                                        class="far fa-eye me-2"></i>View Parcels</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
                             @empty
-                            <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
-                            </tr>
-                            @endforelse --}}
-                            @forelse ($parcels as $index => $parcel)
-                            <tr>
-                                <td>{{ ++$index }}</td>
-                                <td>{{ ucfirst($parcel->tracking_id ?? '-') }}</td>
-                                <td><span>{{ \Carbon\Carbon::parse($parcel->tracking_start_at)->format('d/m/y') ?? '-'
-                                        }}</span></td>
-                                <td>
-                                    <div>{{ ucfirst($parcel->Vehicle->vehicle_type ?? '-') }}</div>
-                                </td>
-                                <td>
-                                    <div>2E 5777</div>
-                                </td>
-                                <td>
-                                    <div>5-12-24</div>
-                                </td>
-                                <td>
-                                    <div>6-12-24</div>
-                                </td>
-                                <td>
-                                    <div>55</div>
-                                </td>
-                                <td>
-                                    <div>-</div>
-                                </td>
-                                <td><label class="labelstatus" for="unpaid_status">unpaid</label></td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row amountfont">Partial:</div>
-                                            <div class="row amountfont">Due:</div>
-                                            <div class="row amountfont">Total:</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">$350</div>
-                                            <div class="row">$100</div>
-                                            <div class="row">$450</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>Cash</div>
-                                </td>
-                                <td><label class="labelstatus" for="status">{{ $parcel->status ?? '-' }}</label></td>
-                                <td>
-                                    <li class="nav-item dropdown">
-                                        <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                            data-bs-toggle="dropdown">
-
-                                            <span class="user-content"
-                                                style="background-color:#203A5F;border-radius:5px;width: 30px;height: 26px;align-content: center;">
-                                                <div><img src="{{ asset('assets/img/downarrow.png')}}"></div>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu menu-drop-user">
-                                            <div class="profilemenu">
-                                                <div class="subscription-menu">
-                                                    <ul>
-
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#recieved_modal">Schedule Pickup</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                </td>
-                                <td class="btntext">
-                                    <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                        class=orderbutton><img src="{{ asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
+                                </tr>
                             @endforelse
-
                         </tbody>
                     </table>
                 </div>
 
                 <div class="bottom-user-page mt-3">
-                    {!! $parcels->links('pagination::bootstrap-5') !!}
+                    {!! $vehicles->links('pagination::bootstrap-5') !!}
                 </div>
 
             </div>

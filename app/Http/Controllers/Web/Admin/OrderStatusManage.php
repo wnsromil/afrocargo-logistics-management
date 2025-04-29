@@ -112,7 +112,7 @@ class OrderStatusManage extends Controller
     
             // Update the parcel details
             $parcel->update([
-                'status' => 3,
+                'status' => 4,
             ]);
 
 
@@ -123,7 +123,7 @@ class OrderStatusManage extends Controller
                 'created_user_id' => $request->created_user_id,
                 'customer_id' => $parcelHistory->customer_id,
                 'status' => 'Updated',
-                'parcel_status' => 3,
+                'parcel_status' => 4,
                 'note' => null,
                 'warehouse_id' => $parcelHistory->warehouse_id,
                 'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details

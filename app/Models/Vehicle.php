@@ -33,6 +33,17 @@ class Vehicle extends Model
             ->groupBy('container_id');
     }
 
+    public function parcels()
+    {
+        return $this->hasMany(Parcel::class, 'container_id', 'id');
+    }
+
+    public function containerStatus()
+    {
+        return $this->hasOne(ParcelStatus::class,'id', 'container_status');
+    }
+
+
     protected static function booted()
     {
         static::creating(function ($vehicle) {

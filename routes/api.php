@@ -23,7 +23,8 @@ use App\Http\Controllers\Api\{
     ScheduleController,
     ExpensesController,
     DriverInventoryController,
-    DashboardController
+    DashboardController,
+    ServiceOrderStatusManage
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -141,6 +142,12 @@ Route::middleware('auth:api')->group(function () {
     
        // Schedule apis
        Route::post('/location-store', [AvailabilityController::class, 'locationStore']);
+  
+      // Service Order Status Manage Driver
+        Route::post('/get-driver-service-orders-list', [ServiceOrderStatusManage::class, 'getDriverServiceOrders']);
+        Route::get('/get-driver-service-orders-details/{id}', [ServiceOrderStatusManage::class, 'getDriverServiceOrderDetails']);
+        Route::post('/update-status-pick-up', [ServiceOrderStatusManage::class, 'statusUpdate_PickUp']);
+    
     });
 
     //invoice controller
