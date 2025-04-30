@@ -91,7 +91,7 @@
 
                                                                         <span class="user-content"
                                                                             style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                               height: 26px;align-content: center;">
+                                                                                                                                                                                                                               height: 26px;align-content: center;">
                                                                             <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                                         </span>
                                                                     </a>
@@ -99,11 +99,16 @@
                                                                         <div class="profilemenu">
                                                                             <div class="subscription-menu">
                                                                                 <ul>
+                                                                                    @php
+                                                                                        // Assuming $parcel->parcelStatus->id contains the ID of the current status
+                                                                                        $currentStatusId = $parcel->parcelStatus->id ?? null;
+                                                                                    @endphp
 
                                                                                     <li>
-                                                                                        <a class="dropdown-item" href="javascript:void(0);"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#deliveryman_modal">Transfer to Hub</a>
+                                                                                        <a onclick="{{ $currentStatusId != 16 ? 'openTransferModal(' . $vehicle->id . ')' : '' }}"
+                                                                                            class="dropdown-item" href="javascript:void(0);"
+                                                                                            data-bs-toggle="modal" data-bs-target="#transfer_to_hub"
+                                                                                            vehicle-id="{{ $vehicle->id }}">Transfer to Hub</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
@@ -140,8 +145,98 @@
                 <div class="bottom-user-page mt-3">
                     {!! $vehicles->links('pagination::bootstrap-5') !!}
                 </div>
-
             </div>
         </div>
     </div>
+    <input type="text" id="vehicle_id_input_hidden" name="vehicle_id_hidden" class="form-control" readonly>
+    <div class="modal custom-modal signature-add-modal fade" id="transfer_to_hub" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header  text-start mb-0">
+                        <div class="popuph">
+                            <h4>Transfer to hub</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{asset('assets/img/cross.png')}}">
+
+
+                    </button>
+                </div>
+                <form action="#">
+                    <div class="modal-body">
+                        <div class="row">
+                      
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <div class="col-12">
+                                        <label class="foncolor">To Warehouse<i class="text-danger">*</i></label>
+                                    </div>
+                                    <div class="col-12">
+                                        <select class="js-example-basic-single select2"  name="to_warehouse_id" id="to_warehouse_id">
+                                            <option selected="selected">Select Warehouse</option>
+                                            <option >5646466</option>
+                                            <option >5646466</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                         
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openTransferModal(vehicleId) {
+            // $.ajax({
+            //     url: "/api/fetch-transfer-to-hub-data",
+            //     type: "POST",
+            //     data: { vehicleId: vehicleId },
+            //     headers: {
+            //         "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            //     },
+            //     success: function (response) {
+            //         // Fill from_warehouse_id
+            //         $('input[name="from_warehouse_id"]').val(response.vehicle.warehouse.warehouse_name);
+        
+            //         // Fill vehicle number
+            //         $('input[name="vehicle_no"]').val(response.vehicle.vehicle_number);
+        
+            //         // Populate to_warehouse_id dropdown
+            //         let warehouseDropdown = $('select[name="to_warehouse_id"]');
+            //         warehouseDropdown.empty().append('<option value="">Select Warehouse</option>');
+            //         response.warehouses.forEach(function (warehouse) {
+            //             warehouseDropdown.append(
+            //                 `<option value="${warehouse.id}">${warehouse.warehouse_name}</option>`
+            //             );
+            //         });
+        
+            //         // Populate delivery man dropdown
+            //         let deliveryDropdown = $('select[name="delivery_man"]');
+            //         deliveryDropdown.empty().append('<option value="">Select Delivery Man</option>');
+            //         response.drivers.forEach(function (driver) {
+            //             deliveryDropdown.append(
+            //                 `<option value="${driver.id}">${driver.name}</option>`
+            //             );
+            //         });
+            //     },
+            //     error: function (xhr) {
+            //         alert("Something went wrong while fetching data.");
+            //         console.error(xhr.responseText);
+            //     }
+            // });
+        }
+        </script>
+        
 </x-app-layout>

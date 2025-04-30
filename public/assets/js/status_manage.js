@@ -91,10 +91,31 @@
                     const parcelId = this.getAttribute("data-id");
 
                     // Store the ID in the hidden input field
-                    document.getElementById("parcel_id_input_hidden").value =
-                        parcelId;
+                    if (parcelId) {
+                        document.getElementById(
+                            "parcel_id_input_hidden"
+                        ).value = parcelId;
+                    }
                 });
             });
     });
-   
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Listen for all modal trigger clicks
+        document
+            .querySelectorAll('[data-bs-toggle="modal"]')
+            .forEach(function (button) {
+                button.addEventListener("click", function () {
+                    // Get the ID from the clicked button's data-id attribute
+                    const vehiclelId = this.getAttribute("vehicle-id");
+
+                    // Store the ID in the hidden input field
+                    if (vehiclelId) {
+                        document.getElementById(
+                            "vehicle_id_input_hidden"
+                        ).value = vehiclelId;
+                    }
+                });
+            });
+    });
 })(jQuery);

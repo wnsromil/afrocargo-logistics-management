@@ -623,8 +623,6 @@
     </div>
 </div>
 
-
-
 <!-- cancel container recieved -->
 
 <div class="modal custom-modal signature-add-modal fade" id="cancelcontainer_modal" role="dialog">
