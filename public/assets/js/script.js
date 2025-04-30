@@ -681,8 +681,8 @@ Version      : 1.0
         });
     }
 
-    if ($('input[name="license_expiry_date"]').length > 0) {
-        $('input[name="license_expiry_date"]').daterangepicker({
+    if ($('input[name="edit_license_expiry_date"]').length > 0) {
+        $('input[name="edit_license_expiry_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
             minDate: moment().startOf("day"), // Past Dates Disabled
