@@ -122,55 +122,53 @@ class User extends Authenticatable
         );
     }
 
-
-    public static function generateUniqueId($role_id)
+    public static function generateUniqueId($role_id, $country_id)
     {
-        // Set the prefix based on the role_id
         if (empty($role_id)) {
-            $role_id = 3;  // Default role_id is 3 (CUS-)
+            $role_id = 3;
         }
 
-        // Set the prefix based on the role_id
-        $prefix = '';
+        // Get ISO3 country code
+        $countryIso = 'XX';
+        if (!empty($country_id)) {
+            $country = \App\Models\Country::find($country_id);
+            if ($country && !empty($country->iso3)) {
+                $countryIso = strtoupper($country->iso3);
+            }
+        }
+
+        // Role prefix for filtering and display
+        $rolePrefix = '';
+        $fullPrefix = '';
         switch ($role_id) {
             case 2:
-                $prefix = 'WMUS-';
+                $rolePrefix = 'WM';
+                $fullPrefix = 'WM' . $countryIso . '-';
                 break;
             case 3:
-                $prefix = 'CUS-';
+                $rolePrefix = 'C';
+                $fullPrefix = 'C' . $countryIso . '-';
                 break;
             case 4:
-                $prefix = 'DUS-';
+                $rolePrefix = 'D';
+                $fullPrefix = 'D' . $countryIso . '-';
                 break;
-                // Add other cases if needed
+            default:
+                $rolePrefix = 'C';
+                $fullPrefix = 'C' . $countryIso . '-';
+                break;
         }
 
-        // If no valid prefix is set, default to 'CUS-'
-        if (empty($prefix)) {
-            $prefix = 'CUS-';
-        }
+        // Get last number by scanning all matching rolePrefix (not country-specific)
+        $lastNumber = User::where('unique_id', 'like', $rolePrefix . '%')
+            ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
+            ->value('max_number') ?? 0;
 
-        // Get the last row with this role_id, ordered by unique_id
-        $lastUser = User::where('role_id', $role_id)
-            ->orderByDesc('unique_id') // Order by unique_id in descending order
-            ->first();
-
-        // If there are no existing users for this role_id, start from 1
-        $lastNumber = 0;
-        if ($lastUser && preg_match('/(\d+)$/', $lastUser->unique_id, $matches)) {
-            $lastNumber = (int)$matches[0];
-        }
-
-        // Increment the number for the new unique_id
         $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
 
-        // Return the generated unique_id
-        return $prefix . $newNumber;
+        return $fullPrefix . $newNumber;
     }
 
-    /**
-     * Overriding the create method to automatically assign unique_id.
-     */
     public static function boot()
     {
         parent::boot();
@@ -178,7 +176,7 @@ class User extends Authenticatable
         static::creating(function ($user) {
             // Generate unique_id when creating a new user based on their role_id
             // This will not throw an error if no users exist for the role_id
-            $user->unique_id = self::generateUniqueId($user->role_id);
+            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id);
         });
     }
 }

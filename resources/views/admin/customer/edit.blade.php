@@ -14,6 +14,11 @@
             <div class="col-md-6 mb-2">
                 <div class="borderset">
                     <div class="row gx-3">
+                      <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="company_name"> Customer ID</label>
+                            <input type="text" class="form-control inp" style="background: #ececec;"
+                                placeholder="" value="{{ $user->unique_id }}" readonly>
+                        </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="company_name"> Company </label>
                             <input type="text" name="company_name" class="form-control inp"

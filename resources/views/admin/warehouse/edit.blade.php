@@ -18,6 +18,7 @@
         @method('PUT')
         <div class="form-group-customer customer-additional-form">
             <div class="row">
+
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -121,6 +122,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <input type="hidden" id="country_code" name="country_code"
                     value="{{ old('country_code', $warehouse->country_code) }}">
                 <!-- Status -->
