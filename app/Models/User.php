@@ -124,6 +124,9 @@ class User extends Authenticatable
     public function locationSchedules(){
         return $this->hasMany(LocationSchedule::class, 'user_id');
     }
+    public function addresses(){
+        return $this->hasOne(Address::class, 'user_id');
+    }
 
     protected function profilePic(): Attribute
     {

@@ -8,11 +8,23 @@ class Invoice extends Model
 {
     protected $guarded = [];
 
-    // App\Models\Invoice.php
+    protected $casts = [
+        'invoce_item' => 'array',
+    ];
 
     public function parcel()
     {
         return $this->belongsTo(Parcel::class, 'parcel_id');
+    }
+
+    public function deliveryAddress()
+    {
+        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user','country','city','state']);
+    }
+
+    public function pickupAddress()
+    {
+        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user','country','city','state']);
     }
 
 
@@ -101,6 +113,20 @@ class Invoice extends Model
             }
         });
     }
+
+    public static function getNextInvoiceNumber()
+    {
+        $lastInvoice = self::orderBy('id', 'desc')->first();
+
+        if ($lastInvoice) {
+            $lastNumber = intval(substr($lastInvoice->invoice_no, 4));
+            $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+            return 'INV-' . $newNumber;
+        }
+
+        return 'INV-001';
+    }
+
 
     public function customer()
     {

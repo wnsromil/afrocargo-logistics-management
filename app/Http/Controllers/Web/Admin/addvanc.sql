@@ -69,3 +69,17 @@ FROM
                     LEFT JOIN addresses ON addresses.user_id = users.id
             ) AS ship_customers ON parcels.ship_customer_id = ship_customers.ship_customerid
     ) AS order_with_invoices ON order_with_invoices.order_customer_id = users.id;
+
+
+    -- 30/04/25
+    ALTER TABLE `invoices` CHANGE `parcel_id` `parcel_id` BIGINT(20) UNSIGNED NULL, CHANGE `user_id` `user_id` BIGINT(20) UNSIGNED NULL;
+
+    ALTER TABLE `invoices` CHANGE `currentTime` `currentTime` VARCHAR(255) NULL DEFAULT NULL;
+
+    ALTER TABLE `addresses` ADD `address_2` VARCHAR(255) NULL AFTER `address`;
+
+    ALTER TABLE `addresses` CHANGE `address_2` `address_2` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+
+    ALTER TABLE `invoices` ADD `invoce_type` VARCHAR(255) NULL DEFAULT 'supplies' AFTER `is_paid`;
+
+    ALTER TABLE `invoices` ADD `status` VARCHAR(255) NULL AFTER `is_paid`;
