@@ -84,241 +84,245 @@
                         <tbody>
 
                             @forelse ($parcels as $index => $parcel)
-                                                        <tr>
-                                                            <td> {{ $serialStart + $index + 1 }}</td>
-                                                            <td>{{ $parcel->tracking_number ?? "-"}}</td>
-                                                            <td>
-                                                                <div>
-                                                                    <div class="col">
-                                                                        <div class="row">
-                                                                            <div class="td"><i
-                                                                                    class="me-2 ti ti-user"></i>{{$parcel->pickupaddress->full_name ?? "--"}}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="td"><i
-                                                                                    class="me-2 ti ti-phone"></i>{{$parcel->pickupaddress->mobile_number ?? "--"}}
-                                                                                <br> {{$parcel->pickupaddress->alternative_mobile_number ?? "--"}}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                                                <p>{{$parcel->pickupaddress->address ?? "--"}}<br>
-                                                                                    {{$parcel->pickupaddress->pincode ?? "--"}} <br>
-                                                                                    {{$parcel->pickupaddress->city->name ?? "--"}}
-                                                                                    {{$parcel->pickupaddress->state->name ?? "--"}}
-                                                                                    {{$parcel->pickupaddress->country->name ?? "--"}}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div>
-                                                                    <div class="col">
-                                                                        <div class="row">
-                                                                            <div class="td"><i
-                                                                                    class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="td"><i
-                                                                                    class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
-                                                                                <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                                                <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
-                                                                                    {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
-                                                                                    {{$parcel->deliveryaddress->city->name ?? "--"}}
-                                                                                    {{$parcel->deliveryaddress->state->name ?? "--"}}
-                                                                                    {{$parcel->deliveryaddress->country->name ?? "--"}}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
-                                                            </td>
-                                                            <td>
-                                                                <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                    title="{{  $parcel->descriptions ?? '-' }}">
-                                                                    {{  $parcel->descriptions ?? '-' }}
-                                                                </p>
-                                                            </td>
-                                                            <td>
-                                                                <div>${{ $parcel->estimate_cost ?? "0"}}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div>{{ $parcel->driver->name ?? "-"}}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
-                                                            </td>
+                                <tr>
+                                    <td> {{ $serialStart + $index + 1 }}</td>
+                                    <td>{{ $parcel->tracking_number ?? "-"}}</td>
+                                    <td>
+                                        <div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="td"><i
+                                                            class="me-2 ti ti-user"></i>{{$parcel->pickupaddress->full_name ?? "--"}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="td"><i
+                                                            class="me-2 ti ti-phone"></i>{{$parcel->pickupaddress->mobile_number ?? "--"}}
+                                                        <br> {{$parcel->pickupaddress->alternative_mobile_number ?? "--"}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                        <p>{{$parcel->pickupaddress->address ?? "--"}}<br>
+                                                            {{$parcel->pickupaddress->pincode ?? "--"}} <br>
+                                                            {{$parcel->pickupaddress->city->name ?? "--"}}
+                                                            {{$parcel->pickupaddress->state->name ?? "--"}}
+                                                            {{$parcel->pickupaddress->country->name ?? "--"}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="td"><i
+                                                            class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="td"><i
+                                                            class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
+                                                        <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                        <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
+                                                            {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
+                                                            {{$parcel->deliveryaddress->city->name ?? "--"}}
+                                                            {{$parcel->deliveryaddress->state->name ?? "--"}}
+                                                            {{$parcel->deliveryaddress->country->name ?? "--"}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
+                                    </td>
+                                    <td>
+                                        <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
+                                    </td>
+                                    <td>
+                                        <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{  $parcel->descriptions ?? '-' }}">
+                                            {{  $parcel->descriptions ?? '-' }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <div>${{ $parcel->estimate_cost ?? "0"}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ $parcel->driver->name ?? "-"}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
+                                    </td>
+                                    @php
+                                        $forValue = match ($parcel->payment_status) {
+                                            'Unpaid' => 'unpaid_status',
+                                            'Paid' => 'status',
+                                            'Completed' => 'partial_status',
+                                            'Partial' => 'partial_status',
+                                        };
+                                    @endphp
+
+
+                                    <td>
+                                        <label class="labelstatusy" for="{{ $forValue }}">
+                                            {{ $parcel->payment_status ?? '-' }}
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row">Partial:</div>
+                                                <div class="row">Due:</div>
+                                                <div class="row">Total:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
+                                                <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
+                                                <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>{{ $parcel->payment_type ?? "-"}}</div>
+                                    </td>
+                                    @php
+                                        $status_class = $parcel->status ?? null;
+                                        $parcelStatus = $parcel->parcelStatus->status ?? null;
+                                        $classValue = match ($status_class) {
+                                            1 => 'badge-pending',
+                                            2 => 'badge-pickup',
+                                            3 => 'badge-picked-up',
+                                            4 => 'badge-arrived-warehouse',
+                                            5 => 'badge-in-transit',
+                                            8 => 'badge-arrived-final',
+                                            9 => 'badge-ready-pickup',
+                                            10 => 'badge-out-delivery',
+                                            11 => 'badge-delivered',
+                                            12 => 'badge-re-delivery',
+                                            13 => 'badge-on-hold',
+                                            14 => 'badge-cancelled',
+                                            15 => 'badge-abandoned',
+                                            21 => 'badge-picked-up',
+                                            22 => 'badge-in-transit',
+                                            default => 'badge-pending', // Default class if no match found
+                                        };
+                                    @endphp
+                                    <td>
+                                        <label class="{{ $classValue }}" for="status">
+                                            {{ $parcelStatus ?? '-' }}
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <li class="nav-item dropdown">
+                                            <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
+                                                data-bs-toggle="dropdown">
+
+                                                <span class="user-content droparrow droparrow">
+                                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                                </span>
+                                            </a>
+                                            <div class="dropdown-menu menu-drop-user">
+                                                <div class="profilemenu">
+                                                    <div class="subscription-menu">
+                                                        <ul>
                                                             @php
-                                                                $forValue = match ($parcel->payment_status) {
-                                                                    'Unpaid' => 'unpaid_status',
-                                                                    'Paid' => 'status',
-                                                                    'Completed' => 'partial_status',
-                                                                    'Partial' => 'partial_status',
-                                                                };
+                                                                // Assuming $parcel->parcelStatus->id contains the ID of the current status
+                                                                $currentStatusId = $parcel->parcelStatus->id ?? null;
                                                             @endphp
 
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 1 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Pending</a>
+                                                            </li>
+                                                            <li>
+                                                                <a onclick="{{ $currentStatusId != 2 ? 'fetchDriversByParcelId(' . $parcel->id . ')' : '' }}"
+                                                                    class="dropdown-item {{ $currentStatusId == 2 ? 'active disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#Pick_up_with_driver"
+                                                                    href="javascript:void(0);">
+                                                                    Pick up with driver
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 3 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Picked up</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 4 ? 'active disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#arrived_warehouse"
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                    Arrived at warehouse
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item disabled-link {{ $currentStatusId == 5 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">In transit</a>
+                                                            </li>
 
-                                                            <td>
-                                                                <label class="labelstatusy" for="{{ $forValue }}">
-                                                                    {{ $parcel->payment_status ?? '-' }}
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="row">Partial:</div>
-                                                                        <div class="row">Due:</div>
-                                                                        <div class="row">Total:</div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                                                        <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                                                        <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            @php
-                                                                $classValue = match ($parcel->parcelStatus->status) {
-                                                                    'Pending' => 'badge-pending',
-                                                                    'Pick up with driver' => 'badge-pickup',
-                                                                    'Arrived at warehouse' => 'badge-arrived-warehouse',
-                                                                    'In transit' => 'badge-in-transit',
-                                                                    'Full load' => 'badge-full-load',
-                                                                    'Full discharge' => 'badge-full-discharge',
-                                                                    'Arrived at final destination warehouse' => 'badge-arrived-final',
-                                                                    'Ready for pick up' => 'badge-ready-pickup',
-                                                                    'Out for delivery' => 'badge-out-delivery',
-                                                                    'Delivered' => 'badge-delivered',
-                                                                    'Re-delivery' => 'badge-re-delivery',
-                                                                    'Picked up' => 'badge-picked-up',
-                                                                    'On hold' => 'badge-on-hold',
-                                                                    'Cancelled' => 'badge-cancelled',
-                                                                    'Abandoned' => 'badge-abandoned',
-                                                                    default => 'badge-pending', // Default class if no match found
-                                                                };
-                                                            @endphp
-                                                            <td>
-                                                                <div>{{ $parcel->payment_type ?? "-"}}</div>
-                                                            </td>
-                                                            <td>
-                                                                <label class="{{ $classValue }}" for="status">
-                                                                    {{ $parcel->parcelStatus->status ?? '-' }}
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <li class="nav-item dropdown">
-                                                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                                                        data-bs-toggle="dropdown">
 
-                                                                        <span class="user-content droparrow droparrow">
-                                                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                                                        </span>
-                                                                    </a>
-                                                                    <div class="dropdown-menu menu-drop-user">
-                                                                        <div class="profilemenu">
-                                                                            <div class="subscription-menu">
-                                                                                <ul>
-                                                                                    @php
-                                                                                        // Assuming $parcel->parcelStatus->id contains the ID of the current status
-                                                                                        $currentStatusId = $parcel->parcelStatus->id ?? null;
-                                                                                    @endphp
-
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 1 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Pending</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a onclick="{{ $currentStatusId != 2 ? 'fetchDriversByParcelId(' . $parcel->id . ')' : '' }}"
-                                                                                            class="dropdown-item {{ $currentStatusId == 2 ? 'active disabled-link' : '' }}"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#Pick_up_with_driver"
-                                                                                            href="javascript:void(0);">
-                                                                                            Pick up with driver
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active disabled-link' : '' }}"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#arrived_warehouse"
-                                                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
-                                                                                            Arrived at warehouse
-                                                                                        </a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 4 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">In transit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Full load</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 6 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Full discharge</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 7 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Arrived at final destination
-                                                                                            warehouse</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Ready for pick up</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Out for delivery</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Delivered</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 11 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Re-delivery</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 12 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Picked up</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 13 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">On hold</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 14 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Cancelled</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a class="dropdown-item {{ $currentStatusId == 15 ? 'active ' : '' }}"
-                                                                                            href="javascript:void(0);">Abandoned</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </td>
-                                                            <td class="btntext">
-                                                                <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                                                    class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                                            </td>
-                                                        </tr>
+                                                            <li>
+                                                                <a class="dropdown-item disabled-link {{ $currentStatusId == 8 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Arrived at final destination
+                                                                    warehouse</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item  {{ $currentStatusId == 9 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Ready for pick up</a>
+                                                            </li>
+                                                            <li>
+                                                                <a onclick="{{ $currentStatusId != 22 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
+                                                                    class="dropdown-item {{ $currentStatusId == 22 ? 'active disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#delivery_with_driver"
+                                                                    href="javascript:void(0);">
+                                                                    Assign delivery with driver
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 10 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Out for delivery</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 11 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Delivered</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 12 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Re-delivery</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 13 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">On hold</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 14 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Cancelled</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 15 ? 'active ' : '' }}"
+                                                                    href="javascript:void(0);">Abandoned</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </td>
+                                    <td class="btntext">
+                                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                            class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                    </td>
+                                </tr>
                             @empty
                                 <tr>
                                     <td colspan="7" class="px-4 py-4 text-center text-gray-500">No order found.
@@ -414,6 +418,62 @@
 </div>
 
 
+<!-- delivery_with_driver -->
+<div class="modal custom-modal signature-add-modal fade" id="delivery_with_driver" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <div class="form-header text-start mb-0">
+                    <div class="popuph">
+                        <h4>Assign delivery with driver</h4>
+                    </div>
+                </div>
+                <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    src="{{ asset('assets/img/cross.png') }}">
+            </div>
+            <form id="deliveryForm" method="POST">
+                <!-- Parcel ID Input Field -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-3">
+                                <input type="hidden" id="parcel_id_input" name="parcel_id" class="form-control"
+                                    readonly>
+                                <input type="hidden" id="warehouse_id_input" name="warehouse_id" class="form-control"
+                                    readonly>
+                                <input type="hidden" id="created_user_id_input" name="created_user_id"
+                                    class="form-control" readonly value="
+                                    {{ auth()->user()->id }}">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block mb-3">
+                                <label class="foncolor">Delivery Man<i class="text-danger">*</i></label>
+                                <select class="js-example-basic-single select2" id="deliverydriverDropdown" name="driver_id">
+                                    <option selected="selected" value="">Select delivery Man</option>
+                                </select>
+                                <div id="deliverydriverError" class="text-danger small mt-1"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="input-block">
+                                <label class="foncolor">Note</label>
+                                <input type="text" name="notes" class="form-control inp Note" placeholder="Enter note">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" data-bs-dismiss="modal"
+                        class="btn btn-outline-primary custom-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <!-- cancel model -->
 <div class="modal custom-modal signature-add-modal fade" id="arrived_warehouse" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -441,7 +501,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!-- re-schedule  pickup-->
@@ -623,8 +682,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- cancel container recieved -->
 
@@ -837,6 +894,53 @@
 
                 // Add default option
                 dropdown.append('<option value="">Select Pickup Man</option>');
+
+                // Populate dropdown with drivers from API response
+                if (response.drivers && response.drivers.length > 0) {
+                    document.getElementById("warehouse_id_input").value =
+                        response.drivers[0].warehouse_id;
+                    response.drivers.forEach(function (driver) {
+                        dropdown.append(
+                            `<option value="${driver.id}">${driver.name}</option>`
+                        );
+                    });
+                } else {
+                    dropdown.append(
+                        '<option value="">No drivers available</option>'
+                    );
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error("Error fetching drivers:", error);
+                $("#driverDropdown").html(
+                    '<option value="">Error loading drivers</option>'
+                );
+            },
+        });
+    }
+    function fetchDeliveryDriversByParcelId(parcelId) {
+        document.getElementById("parcel_id_input").value = parcelId;
+        // Show loading indicator (optional)
+        $("#deliverydriverDropdown").html('<option value="">Loading...</option>');
+
+        // Make AJAX POST request
+        $.ajax({
+            url: "/api/get-delivery-drivers-by-assign-status", // API endpoint
+            type: "POST",
+            data: {
+                parcel_id: parcelId, // Send parcel_id as parameter
+            },
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+            },
+            success: function (response) {
+                // Clear existing options
+                let dropdown = $("#deliverydriverDropdown");
+                dropdown.empty();
+
+                // Add default option
+                dropdown.append('<option value="">Select Delivery Man</option>');
 
                 // Populate dropdown with drivers from API response
                 if (response.drivers && response.drivers.length > 0) {

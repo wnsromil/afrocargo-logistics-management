@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Address; 
+use App\Models\Address;
 use App\Models\Parcel;
 use App\Models\Vehicle;
 use App\Models\ShippingUser;
@@ -28,7 +28,8 @@ class CustomerController extends Controller
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query('invoice_custmore_id');
 
-        $query = User::where('role', 'customer');
+        $query = User::where('role', 'customer')->orderBy('id', 'desc');
+
 
         if ($invoiceCustomerId) {
             // Only fetch this specific customer by ID
@@ -48,12 +49,13 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->orderBy(column: 'name')->get(['id', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
-            $customer->address = $address ?? null;
+            $customer->address = $address->address ?: $customer->address;
         }
+
 
         return response()->json(['customers' => $customers], 200);
     }
