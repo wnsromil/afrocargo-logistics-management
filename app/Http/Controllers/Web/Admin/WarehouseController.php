@@ -91,7 +91,7 @@ class WarehouseController extends Controller
             'address' => 'required|string|max:500',
             'country_id' => 'required|integer|exists:countries,id',
             'state_id' => 'required|integer|exists:states,id',
-            'city_id' => 'required|integer|exists:cities,id',
+            'city_id' => 'nullable|integer|exists:cities,id',
             'zip_code' => 'required|string|max:20',
             'mobile_code' => 'required|string|max:15',
             'country_code' => 'required|string',

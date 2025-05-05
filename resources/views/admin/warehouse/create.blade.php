@@ -248,9 +248,9 @@
                 </div>
 
                 <!-- City -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 hidden_City">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="city_id">City <i class="text-danger">*</i></label>
+                        <label class="foncolor divform" for="city_id">City </label>
                         <select name="city_id" id="city" class="form-control inp select2">
                             <option value="">Select City</option>
                             @if (old('city_id'))
@@ -325,7 +325,49 @@
             $('.col-sm-12').on('click', () => {
                 $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
             })
+            $(document).ready(function () {
+            var oldState = "{{ old('state_id') }}"; // Laravel old value
+            var oldCity = "{{ old('city_id') }}";
+            
+            // ✅ Agar old state available hai toh state ke cities load kare
+            if (oldState) {
+                $('#state').html('<option selected="selected">Loading...</option>');
+                $.ajax({
+                    url: '/api/get-states/' + $('#country').val(),
+                    type: 'GET',
+                    success: function (states) {
+                        $('#state').html('<option selected="selected">Select State</option>');
+                        $.each(states, function (key, state) {
+                            var selected = (state.id == oldState) ? 'selected' : ''; // ✅ Old value match kare
+                            $('#state').append('<option value="' + state.id + '" ' + selected + '>' + state.name + '</option>');
+                        });
+
+                        // ✅ Agar old city available hai, toh cities load kare
+                        // if (oldCity) {
+                            $('#city').html('<option selected="selected">Loading...</option>');
+                            $.ajax({
+                                url: '/api/get-cities/' + oldState,
+                                type: 'GET',
+                                success: function (cities) {
+                                    if (cities.length === 0) {
+                                        console.log("if");
+                                        $('.hidden_City').addClass('d-none'); // Bootstrap hidden class
+                                        $('#city').html('<option value="">No cities available</option>');
+                                    } else {
+                                        console.log("else");
+                                        $('.hidden_City').removeClass('d-none');
+                                        $('#city').html('<option value="">Select City</option>');
+                                        $.each(cities, function (index, city) {
+                                            $('#city').append('<option value="' + city.id + '">' + city.name + '</option>');
+                                        });
+                                    }
+                                }
+                            });
+                      //  }
+                    }
+                });
+            }
+        });
         </script>
     @endsection
-
 </x-app-layout>

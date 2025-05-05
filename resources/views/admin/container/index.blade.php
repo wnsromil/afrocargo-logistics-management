@@ -111,8 +111,13 @@
                                                 class="checktoggle log checkbox-bg">checkbox</label>
                                         </div>
                                     </td>
-                                    <td class="btntext">
+                                    <td class="btntext" style="display: flex">
+                                        <div> 
+                                            <a class="" href="{{ route('admin.container.edit', $vehicle->id)}}"><i class="far fa-edit me-2"></i></a>
+                                        </div>
+                                        <div> 
                                         <button class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
