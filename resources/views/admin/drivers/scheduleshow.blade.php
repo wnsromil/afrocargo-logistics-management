@@ -121,7 +121,7 @@
                     </div>
                     <div class="col">
                         <p class="fw_600 col3A mb-2">Location</p>
-                        <p class="col3A">{{ $availabilitie->locationSchedule->address ?? '--' }}</p>
+                        <p class="col3A">{{ $availabilitie->locationName->address ?? 'For All' }}</p>
                     </div>
                     <div class="col">
                         <p class="fw_600 col3A mb-2">Morning Availability</p>

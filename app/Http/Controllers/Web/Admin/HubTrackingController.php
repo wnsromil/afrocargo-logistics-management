@@ -14,8 +14,10 @@ use App\Models\{
     ParcelHistory,
     HubTracking,
     Vehicle,
+    ContainerHistory
 };
 use Carbon\Carbon;
+
 class HubTrackingController extends Controller
 {
     /**
@@ -23,25 +25,51 @@ class HubTrackingController extends Controller
      */
     public function transfer_hub()
     {
+        // Vehicle data
         $vehicles = Vehicle::where('vehicle_type', 'Container')
-            ->where('status', 'Active')
+            ->where(function ($query) {
+                $query->where('status', 'Active')
+                    ->orWhere('container_status', 20)
+                    ->orWhere('container_status', 6)
+                    ->orWhere('container_status', 16);
+            })
             ->withSum('parcels as partial_payment_sum', 'partial_payment')
             ->withSum('parcels as remaining_payment_sum', 'remaining_payment')
             ->withSum('parcels as total_amount_sum', 'total_amount')
             ->paginate(10);
-    
-        return view('admin.hubs.transfer_hub', compact('vehicles'));
+
+        // ContainerHistory data
+        $historyVehicles = ContainerHistory::where('type', 'Transfer')
+            ->with(['container', 'driver'])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('admin.hubs.transfer_hub', compact('vehicles', 'historyVehicles'));
     }
-    
 
     public function received_hub()
     {
-        //
-        $parcels = HubTracking::when($this->user->role_id != 1, function ($q) {
-            return $q->where('to_warehouse_id', $this->user->warehouse_id)->orWhere('from_warehouse_id', $this->user->warehouse_id);
-        })->with(['createdByUser', 'toWarehouse', 'fromWarehouse', 'vehicle'])->withCount('parcels')->paginate(10);
-        return view('admin.hubs.received_hub', compact('parcels'));
+        // 1. Incoming containers (status = 5 or 7 for 'Arrived')
+        $incoming_containers = ContainerHistory::where('type', 'Arrived')
+            ->where(function ($query) {
+                $query->where('status', 5)
+                    ->orWhere('status', 18);
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        // 2. Container history (exclude status = 5 and 7 for 'Arrived')
+        $container_historys = ContainerHistory::where('type', 'Arrived')
+            ->where(function ($query) {
+                $query->where('status', '!=', 5)
+                    ->where('status', '!=', 18);
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        return view('admin.hubs.received_hub', compact('incoming_containers', 'container_historys'));
     }
+
 
 
     public function received_orders()

@@ -63,9 +63,16 @@ Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']
 
 //Order Status Manage Apis
 Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriversByParcelId']);
+Route::post('/fetch-transfer-to-hub-data', [OrderStatusManage::class, 'fetchTransferToHubData']);
+Route::post('/get-delivery-drivers-by-assign-status', [OrderStatusManage::class, 'getDeliveryDriversByParcelId']);
+
 Route::post(uri: '/update-status-pick-up-with-driver', action: [OrderStatusManage::class, 'statusUpdate_PickUpWithDriver']);
 Route::post(uri: '/update-status-arrived-warehouse', action: [OrderStatusManage::class, 'statusUpdate_ArrivedWarehouse']);
-Route::post('/fetch-transfer-to-hub-data', [OrderStatusManage::class, 'fetchTransferToHubData']);
+Route::post('/update-status-transfer-to-hub', [OrderStatusManage::class, 'statusUpdate_transferToHub']);
+Route::post('/update-status-received-to-hub', [OrderStatusManage::class, 'statusUpdate_receivedToHub']);
+Route::post(uri: '/update-status-fully-loaded-container', action: [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
+Route::post(uri: '/update-status-fully-discharge-container', action: [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
+Route::post(uri: '/update-status-delivery-with-driver', action: [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
 
 
 Route::middleware('auth:api')->group(function () {
@@ -140,15 +147,17 @@ Route::middleware('auth:api')->group(function () {
 
         // Driver Inventory
         Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventorySolde']);
-    
-       // Schedule apis
-       Route::post('/location-store', [AvailabilityController::class, 'locationStore']);
-  
-      // Service Order Status Manage Driver
+
+        // Schedule apis
+        Route::post('/location-store', [AvailabilityController::class, 'locationStore']);
+        Route::get('/location-get', [AvailabilityController::class, 'locationGet']);
+        // Service Order Status Manage Driver
         Route::post('/get-driver-service-orders-list', [ServiceOrderStatusManage::class, 'getDriverServiceOrders']);
         Route::get('/get-driver-service-orders-details/{id}', [ServiceOrderStatusManage::class, 'getDriverServiceOrderDetails']);
         Route::post('/update-status-pick-up', [ServiceOrderStatusManage::class, 'statusUpdate_PickUp']);
-    
+        Route::post('/update-status-delivery', [ServiceOrderStatusManage::class, 'statusUpdate_Delivery']);
+        Route::post('/update-status-delivered', [ServiceOrderStatusManage::class, 'statusUpdate_Delivered']);
+
     });
 
     //invoice controller

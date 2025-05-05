@@ -98,4 +98,74 @@ class ServiceOrderStatusManage extends Controller
             'data' => $parcel
         ]);
     }
+
+    public function statusUpdate_Delivery(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+        $parcel->update([
+            'driver_id' => $this->user->id,
+            'status' => 10,
+            // 'warehouse_id' => $this->user->warehouse_id,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $this->user->id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 10,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $this->user->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
+    public function statusUpdate_Delivered(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+        $parcel->update([
+            'driver_id' => $this->user->id,
+            'status' => 11,
+            // 'warehouse_id' => $this->user->warehouse_id,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $this->user->id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 11,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $this->user->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
 }

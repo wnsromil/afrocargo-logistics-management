@@ -21,7 +21,6 @@
             margin-top: -5px;
             justify-content: normal;
         }
-
     </style>
     <x-slot name="cardTitle">
         <p class="subhead login-logo-font fw-semibold me-sm-5">Add Schedule</p>
@@ -30,11 +29,16 @@
             <div class="d-block">
                 <div class="d-flex text-center authTabDiv">
                     <div id="click"></div>
-                    <button id="locationbtn" type="button" class="btnBorder th-font fw-semiBold ms-0 me-3 p-1 activity-feed" onclick="driverscheduleform('location')">Location</button>
+                    <button id="locationbtn" type="button"
+                        class="btnBorder th-font fw-semiBold ms-0 me-3 p-1 activity-feed"
+                        onclick="driverscheduleform('location')">Location</button>
 
-                    <button id="availabilitybtn" type="button" class="btnBorder th-font fw-semiBold ms-0 me-3 p-1 activity-feed" onclick="driverscheduleform('availability')">Availability</button>
+                    <button id="availabilitybtn" type="button"
+                        class="btnBorder th-font fw-semiBold ms-0 me-3 p-1 activity-feed"
+                        onclick="driverscheduleform('availability')">Availability</button>
 
-                    <button id="weeklybtn" type="button" class="btnBorder th-font fw-semiBold p-1 activity-feed" onclick="driverscheduleform('weekly')">Weekly Schedule</button>
+                    <button id="weeklybtn" type="button" class="btnBorder th-font fw-semiBold p-1 activity-feed"
+                        onclick="driverscheduleform('weekly')">Weekly Schedule</button>
 
                 </div>
             </div>
@@ -52,9 +56,11 @@
                         <div class="col-md-8">
                             <div class="col-md-6">
                                 <label for="LacationInput1" class="form-label">Enter Location</label>
-                                <input type="text" class="form-control" id="LacationInput1" placeholder="Location" name="address" value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
+                                <input type="text" class="form-control" id="LacationInput1" placeholder="Location"
+                                    name="address"
+                                    value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
-                                <span class="text-danger">{{ $message }}</span>
+                                    <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -63,7 +69,8 @@
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
-                        <button type="button" class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
+                        <button type="button"
+                            class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
                     <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
                 </div>
             </div>
@@ -96,14 +103,19 @@
                                 </div>
                             </div>
                             @error('date')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-8">
+                            <label style="display: flex; align-items: center;" class="profileUpdateFont text-dark">
+                                <input type="checkbox" name="is_for_all_location" style="margin-right: 10px;">
+                                Is for all location
+                            </label>
                             <div class="my-3">
                                 <div class="status-toggle togglewrapper">
                                     <div class="status-toggle px-2 ps-0">
-                                        <input id="rating_21" class="check" type="checkbox" name="full_unavailable" value="full_unavailable">
+                                        <input id="rating_21" class="check" type="checkbox" name="full_unavailable"
+                                            value="full_unavailable">
                                         <label for="rating_21" class="checktoggle log checkbox-bg ms-0">checkbox</label>
                                     </div>
                                     <p class="profileUpdateFont text-dark">Full Unavailable</p>
@@ -113,12 +125,15 @@
                             <div class="col-md-12 marginTopBottom">
                                 <div class="d-flex">
                                     <div class="col-md-4">
-                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
+                                        <button type="button"
+                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2 ps-0">
-                                                    <input id="rating_24" class="check" name="morning" type="checkbox" value="0">
-                                                    <label for="rating_24" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                                                    <input id="rating_24" class="check" name="morning" type="checkbox"
+                                                        value="0">
+                                                    <label for="rating_24"
+                                                        class="checktoggle log checkbox-bg ms-0">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -126,12 +141,15 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
+                                        <button type="button"
+                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2">
-                                                    <input id="rating_22" class="check" name="afternoon" type="checkbox" value="0">
-                                                    <label for="rating_22" class="checktoggle log checkbox-bg">checkbox</label>
+                                                    <input id="rating_22" class="check" name="afternoon" type="checkbox"
+                                                        value="0">
+                                                    <label for="rating_22"
+                                                        class="checktoggle log checkbox-bg">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -139,12 +157,15 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
+                                        <button type="button"
+                                            class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
                                         <div class="my-3">
                                             <div class="status-toggle togglewrapper">
                                                 <div class="status-toggle px-2">
-                                                    <input id="rating_23" class="check" name="evening" type="checkbox" value="0">
-                                                    <label for="rating_23" class="checktoggle log checkbox-bg">checkbox</label>
+                                                    <input id="rating_23" class="check" name="evening" type="checkbox"
+                                                        value="0">
+                                                    <label for="rating_23"
+                                                        class="checktoggle log checkbox-bg">checkbox</label>
                                                 </div>
                                                 <p class="profileUpdateFont text-dark">Unavailable</p>
                                             </div>
@@ -158,7 +179,8 @@
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
-                        <button type="button" class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
+                        <button type="button"
+                            class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
                     <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
                 </div>
             </div>
@@ -174,13 +196,16 @@
                     <div class="col-md-9 offset-md-3">
                         <div class="row">
                             <div class="col-md-4">
-                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Morning</button>
+                                <button type="button"
+                                    class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Morning</button>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Afternoon</button>
+                                <button type="button"
+                                    class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Afternoon</button>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Evening</button>
+                                <button type="button"
+                                    class="btn profileUpdateFont btn-size pointernone align-items-center fw-medium p-1 px-3">Evening</button>
                             </div>
                         </div>
                     </div>
@@ -188,7 +213,8 @@
             </div>
             <div class="timePickersSLots">
                 <div class="col-md-12 d-flex flax-wrap">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Monday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Monday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
                                 <input id="monday" name="monday" class="check dayToggle" type="checkbox" value="monday">
@@ -202,30 +228,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="monday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="monday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="monday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="monday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="monday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="monday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="monday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="monday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="monday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="monday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="monday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="monday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -233,10 +271,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Tuesday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Tuesday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="tuesday" name="tuesday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="tuesday" name="tuesday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="tuesday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -247,30 +287,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="tuesday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="tuesday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="tuesday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="tuesday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="tuesday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="tuesday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="tuesday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="tuesday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="tuesday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="tuesday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="tuesday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="tuesday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -278,10 +330,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Wednesday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Wednesday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="wednesday" name="wednesday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="wednesday" name="wednesday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="wednesday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -292,30 +346,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="wednesday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="wednesday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="wednesday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="wednesday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="wednesday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="wednesday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="wednesday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="wednesday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="wednesday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="wednesday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="wednesday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="wednesday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -323,10 +389,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Thursday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Thursday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="thursday" name="thursday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="thursday" name="thursday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="thursday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -337,30 +405,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="thursday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="thursday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="thursday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="thursday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="thursday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="thursday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="thursday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="thursday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="thursday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="thursday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="thursday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="thursday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -368,10 +448,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Friday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Friday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="friday" name="friday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="friday" name="friday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="friday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -382,30 +464,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="friday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="friday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="friday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="friday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="friday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="friday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="friday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="friday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="friday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="friday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="friday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="friday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -413,10 +507,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Saturday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Saturday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="saturday" name="saturday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="saturday" name="saturday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="saturday" class="checktoggle log checkbox-bg">checkbox</label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -427,30 +523,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="saturday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="saturday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="saturday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="saturday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="saturday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="saturday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="saturday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="saturday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="saturday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="saturday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="saturday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="saturday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -458,10 +566,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex flax-wrap margin-margin">
-                    <div class="col-md-3 text-dark d-flex align-items-center"><span class="day pointernone">Sunday</span>
+                    <div class="col-md-3 text-dark d-flex align-items-center"><span
+                            class="day pointernone">Sunday</span>
                         <div class="me-3">
                             <div class="status-toggle togglewrapper">
-                                <input id="sunday" name="sunday" class="check dayToggle" type="checkbox" value="Inactive">
+                                <input id="sunday" name="sunday" class="check dayToggle" type="checkbox"
+                                    value="Inactive">
                                 <label for="sunday" class="checktoggle log checkbox-bg"> </label>
                                 <p class="profileUpdateFont text-dark">On</p>
                             </div>
@@ -472,30 +582,42 @@
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="sunday_morning_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="sunday_morning_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="sunday_morning_end">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="sunday_afternoon_start">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="sunday_afternoon_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="sunday_morning_end">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Opening Time" name="sunday_evening_start">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="sunday_afternoon_start">
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control inp inputs text-center onlyTimePickerSchedule" placeholder="Closing Time" name="sunday_evening_end">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="sunday_afternoon_end">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Opening Time" name="sunday_evening_start">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text"
+                                            class="form-control inp inputs text-center onlyTimePickerSchedule"
+                                            placeholder="Closing Time" name="sunday_evening_end">
                                     </div>
                                 </div>
                             </div>
@@ -506,7 +628,8 @@
             <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
             <div class="text-end mt-4">
                 <a href="{{ route('admin.drivers.index', $user->id) }}">
-                    <button type="button" class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
+                    <button type="button"
+                        class="btn profileUpdateFont me-2 btn-outline-dark align-items-center fw-medium px-4">Cancel</button></a>
                 <button type="submit" class="btn btn-primary text-light fw-medium px-4">Submit</button>
             </div>
         </div>
@@ -522,13 +645,17 @@
                     <div class="usersearch d-flex justify-content-end">
                         <div class="top-nav-search">
                             <form>
-                                <input type="text" id="searchInput" class="form-control forms me-2" placeholder="Search ">
+                                <input type="text" id="searchInput" class="form-control forms me-2"
+                                    placeholder="Search ">
                             </form>
                         </div>
 
                         <div class="">
-                            <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                                <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+                            <button type="button"
+                                class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                                <a class="btn-filters d-flex justify-content-center align-items-center"
+                                    href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                    title="Refresh">
                                     <span><i class="fe fe-refresh-ccw"></i></span>
                                 </a>
                             </button>
@@ -552,64 +679,70 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($availabilities as $index => $availabilitie)
-                                    <tr>
-                                        <td class="text-start">{{ $index + 1 }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}
-                                        </td>
-                                        <td>{{ $availabilitie->locationSchedule->address ?? '--' }}</td>
-                                        <td>
-                                            @php
-                                            $slots = [];
-                                            if (isset($availabilitie->morning) && $availabilitie->morning == 1)
-                                            $slots[] = 'Morning';
-                                            if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
-                                            $slots[] = 'Afternoon';
-                                            if (isset($availabilitie->evening) && $availabilitie->evening == 1)
-                                            $slots[] = 'Evening';
+                                        <tr>
+                                            <td class="text-start">{{ $index + 1 }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}
+                                            </td>
+                                            <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td>
+                                            <td>
+                                                @php
+                                                    $slots = [];
+                                                    if (isset($availabilitie->morning) && $availabilitie->morning == 1)
+                                                        $slots[] = 'Morning';
+                                                    if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
+                                                        $slots[] = 'Afternoon';
+                                                    if (isset($availabilitie->evening) && $availabilitie->evening == 1)
+                                                        $slots[] = 'Evening';
 
-                                            $allSlots = ['Morning', 'Afternoon', 'Evening'];
-                                            @endphp
+                                                    $allSlots = ['Morning', 'Afternoon', 'Evening'];
+                                                @endphp
 
-                                            @if (count($slots) === 0)
-                                            Full Unavailable
-                                            @elseif (count($slots) === 3)
-                                            Available
-                                            @else
-                                            {{ implode(', ', $slots) }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}"><i class="far fa-eye me-2"></i>View</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); showEditSchedule(
-                                                                                                                                                                                                                '{{ $availabilitie->id }}', 
-                                                                                                                                                                                                                '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
-                                                                                                                                                                                                                '{{ $availabilitie->morning }}', 
-                                                                                                                                                                                                                '{{ $availabilitie->afternoon }}', 
-                                                                                                                                                                                                                '{{ $availabilitie->evening }}'
-                                                                                                                                                                                                            );">
-                                                                <i class="far fa-edit me-2"></i>Update
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}"><i class="fa fa-trash me-2"></i>Delete</a>
-                                                        </li>
-                                                    </ul>
+                                                @if (count($slots) === 0)
+                                                    Full Unavailable
+                                                @elseif (count($slots) === 3)
+                                                    Available
+                                                @else
+                                                    {{ implode(', ', $slots) }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}"><i
+                                                                        class="far fa-eye me-2"></i>View</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"
+                                                                    onclick="event.preventDefault(); showEditSchedule(
+                                                                                                                                                                                                                    '{{ $availabilitie->id }}', 
+                                                                                                                                                                                                                    '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
+                                                                                                                                                                                                                    '{{ $availabilitie->morning }}', 
+                                                                                                                                                                                                                    '{{ $availabilitie->afternoon }}', 
+                                                                                                                                                                                                                    '{{ $availabilitie->evening }}'
+                                                                                                                                                                                                                );">
+                                                                    <i class="far fa-edit me-2"></i>Update
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}"><i
+                                                                        class="fa fa-trash me-2"></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
+                                            </td>
+                                        </tr>
                                     @endforelse
 
                                 </tbody>
@@ -662,7 +795,7 @@
         }
 
         // Show correct tab based on URL query on page load
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const urlParams = new URLSearchParams(window.location.search);
             const activeTab = urlParams.get('tab') || 'availability'; // Default 'availability' tab
             driverscheduleform(activeTab);
@@ -672,10 +805,10 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.toggle-switch').forEach(switchBtn => {
 
-                switchBtn.addEventListener("change", function() {
+                switchBtn.addEventListener("change", function () {
                     let buttonsContainer = this.closest('.form-check').querySelector('.schedule-buttons');
                     let buttons = buttonsContainer.querySelectorAll('button');
                     buttons.forEach(button => {
@@ -689,7 +822,7 @@
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const fullUnavailable = document.querySelector('input[name="full_unavailable"]');
             const timeCheckboxes = [
                 document.querySelector('input[name="morning"]')
@@ -698,7 +831,7 @@
             ];
 
             // When "Full Unavailable" is toggled
-            fullUnavailable.addEventListener("change", function() {
+            fullUnavailable.addEventListener("change", function () {
                 timeCheckboxes.forEach(checkbox => {
                     checkbox.checked = fullUnavailable.checked;
                     updateCheckboxValue(checkbox);
@@ -707,7 +840,7 @@
 
             // When any of the Morning/Afternoon/Evening is changed
             timeCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", function() {
+                checkbox.addEventListener("change", function () {
                     if (!checkbox.checked) {
                         fullUnavailable.checked = false;
                     } else {
@@ -772,7 +905,7 @@
         }
 
         // Optional: generate current month on load
-        window.onload = function() {
+        window.onload = function () {
             const today = new Date();
             generateCalendar(today.getFullYear(), today.getMonth());
         };
@@ -855,9 +988,9 @@
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll('.dayToggle').forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.dayToggle').forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
                     const day = this.name;
                     const targetDiv = document.querySelector('.disablesection.' + day);
                     if (this.checked) {
@@ -957,7 +1090,7 @@
                         checkbox.value = checkbox.checked ? 0 : 1;
                     }
 
-                    fullUnavailable.addEventListener("change", function() {
+                    fullUnavailable.addEventListener("change", function () {
                         morningCb.checked = this.checked;
                         afternoonCb.checked = this.checked;
                         eveningCb.checked = this.checked;
@@ -968,7 +1101,7 @@
                     });
 
                     [morningCb, afternoonCb, eveningCb].forEach(cb => {
-                        cb.addEventListener("change", function() {
+                        cb.addEventListener("change", function () {
                             updateCheckboxValue(cb);
                             fullUnavailable.checked = morningCb.checked && afternoonCb.checked && eveningCb.checked;
                         });

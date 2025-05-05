@@ -10,8 +10,15 @@ class Vehicle extends Model
 
     protected $fillable = [
         'vehicle_type', // other fields you have in the vehicle model
+        'transfer_date',
+        'close_date',
+        'note',
+        'arrived_warehouse_id',
+        'container_status',
+        'status',
         // add other fillable fields
     ];
+
 
 
     protected $guarded = [];
@@ -20,6 +27,12 @@ class Vehicle extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
+
+    public function arrived_warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'arrived_warehouse_id');
+    }
+
 
     public function driver()
     {
