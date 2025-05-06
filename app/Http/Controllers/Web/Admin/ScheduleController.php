@@ -61,10 +61,18 @@ class ScheduleController extends Controller
         });
 
         $availabilityData = $validator->validate();
+        $existingLocationId = LocationSchedule::where('user_id', $request->user_id)
+            ->latest()
+            ->value('id');
+
         // Additional data
         $availabilityData['creates_by'] = auth()->id();
         $availabilityData['user_id'] = $request->user_id;
         $availabilityData['is_active'] = 1;
+        if(!$request->is_for_all_location){
+            $availabilityData['location_id'] = $existingLocationId;
+        }
+       
 
         // Time slot availability processing
         $availabilityData['morning'] = $request->input('morning') === 'Inactive' ? 0 : 1;
@@ -157,21 +165,13 @@ class ScheduleController extends Controller
         // Check if record exists for the user_id
         $existing = LocationSchedule::where('user_id', $request->user_id)->first();
 
-        if ($existing) {
-            // Update existing record
-            $existing->update($availabilityData);
-            return redirect()->route('admin.drivers.schedule', [
-                'id' => $request->user_id,
-            ])->with('success', 'Location update successfully.')
-                ->header('Location', route('admin.drivers.schedule', ['id' => $request->user_id]) . '?tab=location');
-        } else {
-            // Create new record
-            LocationSchedule::create($availabilityData);
-            return redirect()->route('admin.drivers.schedule', [
-                'id' => $request->user_id,
-            ])->with('success', 'Location saved successfully.')
-                ->header('Location', route('admin.drivers.schedule', ['id' => $request->user_id]) . '?tab=location');
-        }
+
+        // Create new record
+        LocationSchedule::create($availabilityData);
+        return redirect()->route('admin.drivers.schedule', [
+            'id' => $request->user_id,
+        ])->with('success', 'Location saved successfully.')
+            ->header('Location', route('admin.drivers.schedule', ['id' => $request->user_id]) . '?tab=location');
     }
 
 

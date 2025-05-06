@@ -38,6 +38,7 @@ class ContainerController extends Controller
 
     public function toggleStatus(Request $request)
     {
+       
         $openId = $request->input('open_id');
         $closeId = $request->input('close_id');
         $checkbox_status = $request->input('checkbox_status');
@@ -58,6 +59,7 @@ class ContainerController extends Controller
                 $openVehicle->status = 'Active';
                 if ($checkbox_status == 'only_open' || $checkbox_status == 'both_open_close') {
                     $openVehicle->open_date = $today;
+                    $openVehicle->container_status = 20;
                 }
 
                 $openVehicle->save();
@@ -75,8 +77,10 @@ class ContainerController extends Controller
             $closeVehicle = Vehicle::find($closeId);
             if ($closeVehicle) {
                 $closeVehicle->status = 'Inactive';
+                
                 if ($checkbox_status == 'only_close' || $checkbox_status == 'both_open_close') {
                     $closeVehicle->close_date = $today;
+                    $closeVehicle->container_status = 0;
                 }
                 $closeVehicle->save();
 

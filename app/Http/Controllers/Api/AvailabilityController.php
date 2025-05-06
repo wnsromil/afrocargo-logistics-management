@@ -11,7 +11,11 @@ class AvailabilityController extends Controller
 {
     public function index()
     {
-        $data = Availability::where('is_active', 1)->where('user_id', auth()->id())->get();
+        $data = Availability::where('is_active', 1)
+            ->where('user_id', auth()->id())
+            ->with('locationName') // Relationship load karne ke liye
+            ->orderBy('id', 'desc') // Sort by start_time ascending
+            ->get();
 
         return response()->json([
             'success' => true,
@@ -33,7 +37,12 @@ class AvailabilityController extends Controller
             'is_active' => 'nullable|boolean',
         ]);
 
+        $existingLocationId = LocationSchedule::where('user_id', auth()->id())
+            ->latest()
+            ->value('id');
+
         $data['user_id'] = auth()->id();
+        $data['location_id'] = $existingLocationId;
 
         $availability = Availability::updateOrCreate(
             ['user_id' => $data['user_id'], 'date' => $data['date']], // match condition
@@ -90,19 +99,28 @@ class AvailabilityController extends Controller
         ];
 
         $existingRecord = LocationSchedule::where('user_id', auth()->id())->first();
+        $newRecord = LocationSchedule::create($locationData);
+        return response()->json([
+            'message' => 'Location saved successfully.',
+            'data' => $newRecord,
+        ], 201);
+    }
 
-        if ($existingRecord) {
-            $existingRecord->update($locationData);
+    public function locationGet()
+    {
+        $userId = auth()->id();
+
+        $location = LocationSchedule::where('user_id', $userId)->latest()->get();
+
+        if ($location) {
             return response()->json([
-                'message' => 'Location updated successfully.',
-                'data' => $existingRecord,
+                'message' => 'Location fetched successfully.',
+                'data' => $location,
             ], 200);
         } else {
-            $newRecord = LocationSchedule::create($locationData);
             return response()->json([
-                'message' => 'Location saved successfully.',
-                'data' => $newRecord,
-            ], 201);
+                'message' => 'No location found for this user.',
+            ], 404);
         }
     }
 }

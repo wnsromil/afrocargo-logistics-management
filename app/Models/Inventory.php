@@ -53,19 +53,22 @@ class Inventory extends Model
 
     public static function generateUniqueId()
     {
-        // Get the last inventory record, ordered by unique_id
-        $lastInventory = Inventory::orderByDesc('unique_id')->first();
-
+        // Get the last inventory record with status 'Active', ordered by unique_id
+        $lastInventory = Inventory::where('status', 'Active')
+            ->orderByDesc('unique_id')
+            ->first();
+    
         // Get the last number from unique_id (assuming it follows the format "TIT-XXXXXX")
         $lastNumber = 0;
         if ($lastInventory && preg_match('/(\d+)$/', $lastInventory->unique_id, $matches)) {
             $lastNumber = (int)$matches[0];
         }
-
+    
         // Increment the number for the new unique_id
         $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
-
+    
         // Return the generated unique_id with TIT- prefix
         return 'TIT-' . $newNumber;
     }
+    
 }

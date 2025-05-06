@@ -13,4 +13,9 @@ class Availability extends Model
     {
         return $this->belongsTo(LocationSchedule::class, 'user_id', 'user_id');
     }
+
+    public function locationName()
+    {
+        return $this->hasOne(LocationSchedule::class, 'id', 'location_id');
+    }
 }

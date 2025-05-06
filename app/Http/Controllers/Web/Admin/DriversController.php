@@ -178,9 +178,13 @@ class DriversController extends Controller
         $user = User::find($id);
 
         // Get all active availabilities
-        $availabilities = Availability::where('is_active', 1)->where('user_id', $id)->get();
+        $availabilities = Availability::where('is_active', 1)
+            ->where('user_id', $id)
+            ->orderBy('id', 'desc') // ya 'desc' for descending
+            ->get();
+
         $weeklyschedule = WeeklySchedule::where('is_active', 1)->where('user_id', $id)->get();
-        $locationschedule = LocationSchedule::where('is_active', 1)->where('user_id', $id)->get();
+        $locationschedule = LocationSchedule::where('is_active', 1)->where('user_id', $id)->latest()->get();
         // print_r(json_encode($locationschedule));dd();
         return view('admin.drivers.schedule', compact('user', 'availabilities', 'weeklyschedule', 'locationschedule'));
     }
