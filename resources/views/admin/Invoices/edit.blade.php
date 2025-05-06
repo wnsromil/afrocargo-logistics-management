@@ -176,16 +176,35 @@
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
                                             class="text-danger">*</i></label>
                                     <!-- Contact No. 1 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 1" name="mobile_number">
-
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.2 </label>
                                     <!-- Contact No. 2 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    </div>
                                 </div>
+                                
+                                
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                                     <select name="country_id" id="country"
@@ -198,7 +217,8 @@
                                         </option>
                                         @endforeach
                                     </select>
-
+                                    
+                                        
                                     @error('country_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -277,15 +297,35 @@
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
                                             class="text-danger">*</i></label>
                                     <!-- Contact No. 1 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 1" name="mobile_number">
+
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                    </div>
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.2 </label>
                                     <!-- Contact No. 2 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="pickup_country">Country <i class="text-danger">*</i></label>
@@ -479,12 +519,20 @@
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="col-md-6 @if ($invoice->invoce_type=='supplies') d-none @endif" id="description_services_items">
+                            <label>description<i class="text-danger">*</i></label>
+                            <textarea name="descrition" class="form-control form-cs inp">{{$invoice->descrition ?? ''}}</textarea>
+                        </div>
+                        <div class="col-md-6 @if ($invoice->invoce_type=='supplies') d-none @endif" id="weight_services_items">
+                            <label>weight<i class="text-danger">*</i></label>
+                            <input type="text" name="weight" class="form-control form-cs inp" value="{{$invoice->weight ?? ''}}">
+                        </div>
                     </div>
                 </div>
 
                 <!-- total  -->
                 <div class="card-body curve_tabel p-0 mt-5">
-                    <div class="table-responsive p-1">
+                    <div class="table-responsive p-1 @if ($invoice->invoce_type!='supplies') d-none @endif" id="supplies_items">
                         <table class="table table-bordered " id="dynamicTable">
                             <thead>
                                 <tr>
@@ -659,8 +707,8 @@
             <input type="hidden" name="invoce_type" value="services" value="{{$invoice->invoce_type ?? 0}}">
             <input type="hidden" name="total_qty" value="{{$invoice->total_qty ?? 0}}">
             <input type="hidden" name="total_amount" value="{{$invoice->total_amount ?? 0}}">
-            <input type="hidden" name="pickup_address_id" value="{{$invoice->pickup_address_id ?? 0}}">
-            <input type="hidden" name="delivery_address_id" value="{{$invoice->delivery_address_id ?? 0}}">
+            <input type="hidden" name="pickup_address_id" value="{{$invoice->pickup_address_id ?? null}}">
+            <input type="hidden" name="delivery_address_id" value="{{$invoice->delivery_address_id ?? null}}">
 
             <div class="modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -709,10 +757,12 @@
                             <label class="col3A fw_500">Update Date: {{ date('m/d/Y', strtotime($invoiceHistory['updated_at'])) }}, {{ date('H:i', strtotime($invoiceHistory['updated_at'])) }}</label>
                         </div>
                     </div>
+                    @if(!empty($invoiceHistory->histry_info))
                     <div class="row border-top gx-sm-4 border-bottom py-3">
                         <div class="col-md-3">
                             <label class="col3A fw_500 mb-0">Invoice No: {{ $invoiceHistory->histry_info['invoice_no'] }}</label>
                         </div>
+                        @if(!empty($invoiceHistory->histry_info['delivery_address']))
                         <div class="col-md-3">
                             <label class="col3A fw_500 mb-0">Customer: {{ $invoiceHistory->histry_info['delivery_address']['user']['name'] }}</label>
                         </div>
@@ -722,6 +772,7 @@
                         <div class="col-md-3">
                             <label class="col3A fw_500 mb-0">Ship To Name: {{ $invoiceHistory->histry_info['delivery_address']['full_name'] }}</label>
                         </div>
+                        @endif
                     </div>
                     <div class="row gx-sm-4 border-bottom py-2">
                         <div class="col-md-12 text-center">
@@ -742,10 +793,10 @@
                             <label class="col3A fw_500">Total: {{ $invoiceHistory->histry_info['grand_total'] }}</label>
                         </div>
                         <div class="col-md-3">
-                            <label class="col3A fw_500">Due Date: {{ date('m-d-Y', strtotime(explode(' - ', $invoiceHistory->histry_info['duedaterange'])[1])) }}</label>
+                            <label class="col3A fw_500">Due Date: {{ !empty($invoiceHistory->histry_info['duedaterange']) && count(explode(' - ', $invoiceHistory->histry_info['duedaterange'])) > 1 ?  date('m-d-Y', strtotime(explode(' - ', $invoiceHistory->histry_info['duedaterange'])[1])) :'-' }}</label>
                         </div>
                         <div class="col-md-3">
-                            <label class="col3A fw_500">Address1: {{ $invoiceHistory->histry_info['pickup_address']['address'] }}</label>
+                            <label class="col3A fw_500">Address1: {{ !empty($invoiceHistory->histry_info['pickup_address']) ? $invoiceHistory->histry_info['pickup_address']['address'] :'-' }}</label>
                         </div>
                         <div class="col-md-3">
                             <label class="col3A fw_500">Payments: {{ $invoiceHistory->histry_info['payment'] }}</label>
@@ -766,6 +817,7 @@
                             <label class="col3A fw_500">Total Box: {{ $invoiceHistory->histry_info['total_qty'] }}</label>
                         </div>
                     </div>
+                    @endif
                     <div class="row gx-sm-4 py-3">
                         <div class="col-12">
                             <div class="table-responsive nopadding notMinheight nocolor">
@@ -1373,6 +1425,8 @@
     <!--/Note Modal -->
 
     @section('script')
+    
+
     <script src="https://rawgit.com/DoersGuild/jQuery.print/master/jQuery.print.js"></script>
     <script src="{{asset('js/invoice.js')}}"></script>
     <script>

@@ -176,6 +176,9 @@
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/status_manage.js') }}"></script>
+
+    @yield('script')
+    
     <script>
         @session('success')
             Swal.fire({
@@ -316,11 +319,41 @@
         //     });
         // });
 
+        $(document).ready(function () {
+            function formatOption(option) {
+                if (!option.id) return option.text;
+                var img = $(option.element).data('image');
+                var name = $(option.element).data('name');
+                var code = $(option.element).data('code');
+                return $(
+                    '<span><img src="' + img + '" class="customFlags"/> ' + name + ' +' + code + '</span>'
+                );
+            }
+    
+            function formatSelected(option) {
+                if (!option.id) return option.text;
+                var img = $(option.element).data('image');
+                var code = $(option.element).data('code');
+                return $(
+                    '<span><img src="' + img + '" class="customFlags"/> +' + code + '</span>'
+                );
+            }
+    
+            $('.flag-select').select2({
+                templateResult: formatOption,
+                templateSelection: formatSelected,
+                width: 'style'
+            }).on('select2:open', function () {
+                $('.select2-results__options').addClass('my-custom-option-class');
+            });
+    
+            $('.flag-select').on('select2:open', function () {
+                let parentContainer = $(this).data('select2').$container;
+                parentContainer.addClass('my-custom-container-class');
+            });
+        });
+
     </script>
-
-
-
-    @yield('script')
 
 </body>
 

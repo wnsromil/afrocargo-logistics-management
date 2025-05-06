@@ -23,6 +23,10 @@ function toggleLoginForm(type) {
 
         $('#ship_customer').prop('disabled', false);
 
+        $('#supplies_items').addClass('d-none');
+        $('#description_services_items').removeClass('d-none');
+        $('#weight_services_items').removeClass('d-none');
+
     } else if (type === 'supplies') {
         // document.getElementById('services').style.display = 'none';
         // document.getElementById('supplies').style.display = 'block';
@@ -37,6 +41,10 @@ function toggleLoginForm(type) {
         .css('opacity', '0.6');            // Optional: faded look
 
         $('#ship_customer').prop('disabled', true);
+
+        $('#supplies_items').removeClass('d-none');
+        $('#description_services_items').addClass('d-none');
+        $('#weight_services_items').addClass('d-none');
 
     }
 }
@@ -221,11 +229,6 @@ $(document).ready(function() {
         setPickupDeleveryFormValue(customer)
     });
 
-    // // Initialize Ship To address dropdown
-    // $('.js-example-basic-single.select2').select2({
-    //     // You can add similar AJAX functionality here for addresses
-    // });
-
     // Toggle new customer form
     $('#addCustomer').click(function() {
         $('.newCustomerAdd').toggleClass('disablesectionnew');
@@ -233,6 +236,7 @@ $(document).ready(function() {
 });
 
 function setPickupDeleveryFormValue(customer){
+    console.log("customer=>",customer);
     // Fill the form fields with customer data
     let userAddress = '';
     if (customer) {
@@ -261,12 +265,21 @@ function setPickupDeleveryFormValue(customer){
 
         
         // Fill the form fields
-        userAddress.find('input[name="first_name"]').val(customer.name);
-        userAddress.find('input[name="last_name"]').val(customer.last_name);
+        let nm = customer.name.trim().split(' ');
+
+        let last_name = nm.length > 1 ? nm[nm.length - 1] : null;
+        let first_name = nm.length > 1 ? nm.slice(0, -1).join(' ') : customer.name;
+
+        userAddress.find('input[name="first_name"]').val(first_name);
+        userAddress.find('input[name="last_name"]').val(last_name);
+
+
 
         
         // For country/state/city, you'll need to have options preloaded or make additional AJAX calls
         userAddress.find('select[name="country_id"]').val(customer.country_id).trigger('change');
+        userAddress.find('select[name="alternative_mobile_number_code_id"]').val(customer.alternative_mobile_number_code_id).trigger('change');
+        userAddress.find('select[name="mobile_number_code_id"]').val(customer.mobile_number_code_id).trigger('change');
         // Wait for states to be loaded before setting the state
         setTimeout(() => {
             userAddress.find('select[name="state_id"]')
@@ -424,7 +437,7 @@ $(document).ready(function () {
     $('#add_delevery_save').on('click', function (e) {
         e.preventDefault();
 
-        const requiredFields = ['first_name', 'last_name', 'mobile_number', 'address', 'country_id', 'state_id','city_id','zip_code'];
+        const requiredFields = ['first_name', 'last_name', 'mobile_number', 'address', 'country_id', 'state_id','city_id','zip_code','alternative_mobile_number_code_id','mobile_number_code_id'];
 
         if (!jsValidator(requiredFields)) {
             alert("Please fill all required fields.");

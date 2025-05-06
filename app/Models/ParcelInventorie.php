@@ -11,6 +11,13 @@ class ParcelInventorie extends Model
         'parcel_id',
         'inventorie_id',
         'inventorie_item_quantity',
+        'inventory_name',
+        'invoice_id',
+        'label_qty',
+        'price',
+        'ins',
+        'tax',
+        'total',
     ];
 
     // Define relationships

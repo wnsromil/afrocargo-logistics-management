@@ -141,15 +141,34 @@
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
                                             class="text-danger">*</i></label>
                                     <!-- Contact No. 1 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 1" name="mobile_number">
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                    </div> 
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.2 </label>
                                     <!-- Contact No. 2 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    </div> 
+                                        
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
@@ -242,15 +261,33 @@
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
                                             class="text-danger">*</i></label>
                                     <!-- Contact No. 1 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 1" name="mobile_number">
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                    </div> 
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.2 </label>
                                     <!-- Contact No. 2 -->
-                                    <input type="text" class="form-control flagInput inp"
-                                        placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    </div> 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="pickup_country">Country <i class="text-danger">*</i></label>
@@ -436,12 +473,20 @@
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="col-md-6 d-none" id="description_services_items">
+                            <label>description<i class="text-danger">*</i></label>
+                            <textarea name="descrition" class="form-control form-cs inp"></textarea>
+                        </div>
+                        <div class="col-md-6 d-none" id="weight_services_items">
+                            <label>weight<i class="text-danger">*</i></label>
+                            <input type="text" name="weight" class="form-control form-cs inp" value="">
+                        </div>
                     </div>
                 </div>
 
                 <!-- total  -->
                 <div class="card-body curve_tabel p-0 mt-5">
-                    <div class="table-responsive p-1">
+                    <div class="table-responsive p-1 d-none" id="supplies_items">
                         <table class="table table-bordered " id="dynamicTable">
                             <thead>
                                 <tr>
