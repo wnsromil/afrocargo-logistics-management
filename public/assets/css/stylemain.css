@@ -994,7 +994,6 @@ h6 {
 	opacity: 0.5;
 }
 
-
 .nav-head {
     color: white;
     background: #203A5F !important;
@@ -1006,6 +1005,14 @@ h6 {
         max-width: 52px;
         margin-top: 5px;
     }
+}
+.header .main-logo {
+    height: 65px;
+    .dash-logo img{
+        max-width: 52px;
+        margin-top: 5px;
+    }
+}
 
 .bg-dark {
 	background-color: #343a40;
@@ -2942,7 +2949,6 @@ img.smImg {
 .absolute { position: absolute; }
 .right-12 { right: 12px; }
 
-
 table.dataTable > thead .sorting:before, table.dataTable > thead .sorting_asc:before, table.dataTable > thead .sorting_desc:before, table.dataTable > thead .sorting_asc_disabled:before, table.dataTable > thead .sorting_desc_disabled:before {
     bottom: 17px;
     color: #252f48;
@@ -2989,7 +2995,7 @@ table.dataTable > thead .sorting:after, table.dataTable > thead .sorting_asc:aft
         font-size: 14px !important;
     }
 }
-.widthmannual 
+.widthmannual  
 {
     display: flex;
     align-items: center;
