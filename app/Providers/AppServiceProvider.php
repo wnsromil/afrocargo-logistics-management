@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use \App\Models\Country;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
             'Received Warehouse', 'Transfer to Hub', 'Received by Hub', 'Delivery Man Assign', 
             'Return to Courier', 'Delivered', 'Cancelled'
         ]);
+        View::share('coutry',Country::get());
+        
     }
 }

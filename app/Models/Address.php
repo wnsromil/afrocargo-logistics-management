@@ -11,19 +11,7 @@ class Address extends Model
     use HasFactory;
 
     // ✅ Mass Assignment ke liye allowed fields
-    protected $fillable = [
-        'address',
-        'address_type',
-        'alternative_mobile_number',
-        'city_id',
-        'country_id',
-        'full_name',
-        'mobile_number',
-        'pincode',
-        'state_id',
-        'user_id',
-        'warehouse_id'
-    ];
+    protected $guarded = [];
     public function country(){
         return $this->belongsTo(Country::class,'country_id');
     }
@@ -32,5 +20,14 @@ class Address extends Model
     }
     public function city(){
         return $this->belongsTo(City::class,'city_id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class,'user_id')->select([
+            "id","name","last_name","profile_pic","unique_id",
+            "email","phone","address","address_2",
+            "country_id","state_id","city_id","pincode",
+            "warehouse_id","role","role_id",
+            "latitude","longitude","created_at"
+        ]);
     }
 }
