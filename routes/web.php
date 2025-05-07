@@ -179,6 +179,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
+        Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
+        Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
+        Route::post('saveIndividualPayment', [IndividualPaymentController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');

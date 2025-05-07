@@ -115,12 +115,26 @@ class User extends Authenticatable
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
     }
 
+    public function availabilities(){
+        return $this->hasMany(Availability::class, 'user_id');
+    }
+    public function weeklySchedules(){
+        return $this->hasMany(WeeklySchedule::class, 'user_id');
+    }
+    public function locationSchedules(){
+        return $this->hasMany(LocationSchedule::class, 'user_id');
+    }
+    public function addresses(){
+        return $this->hasOne(Address::class, 'user_id');
+    }
+
     protected function profilePic(): Attribute
     {
         return Attribute::make(
             get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
         );
     }
+    
 
 
     public static function generateUniqueId($role_id)
