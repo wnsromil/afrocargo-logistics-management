@@ -15,10 +15,13 @@
                 <div class="borderset">
                     <div class="row gx-3">
                         <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="unique_id"> Customer ID </label>
+                            <input type="text" readonly name="unique_id" class="form-control inp"  value="{{ old('unique_id', $user->unique_id) }}">
+                        </div>
+                        <div class="col-md-12 mb-2">
                             <label class="foncolor" for="company_name"> Company </label>
                             <input type="text" name="company_name" class="form-control inp"
                                 placeholder="Enter Company Name" value="{{ old('company_name', $user->company_name) }}">
-
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="first_name">Full Name <i class="text-danger">*</i></label>

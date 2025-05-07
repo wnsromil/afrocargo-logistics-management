@@ -546,7 +546,7 @@ label.profile-img img {
     border-bottom: 5px solid #203a5f00 !important;
 }
 
-.btnBorder.active3 {
+.btnBorder.active3, .btnBorder.active {
     text-decoration: none;
     border-bottom: 5px solid #203a5f !important;
     font-weight: 800px !important;
@@ -992,8 +992,17 @@ h6 {
     opacity: 0.5;
 }
 
-.dash-logo img {
-    max-width: 100%;
+.nav-head {
+    color: white;
+    background: #203A5F !important;
+    height:65px;
+}
+.header .main-logo {
+    height: 65px;
+    .dash-logo img{
+        max-width: 52px;
+        margin-top: 5px;
+    }
 }
 
 .bg-dark {
@@ -1462,6 +1471,7 @@ span.dollarSign {
 .sidebar {
     .sidebar-menu {
         ul.sidebar-vertical {
+            margin-top: 1.5rem !important;
             li.submenu ul li {
                 margin-bottom: 0px;
                 margin-right: 10px;
@@ -2926,8 +2936,71 @@ img.smImg {
     padding-right: 6px;
     text-align: left!important;
 }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.right-12 { right: 12px; }
 
 
+table.dataTable > thead .sorting:before, table.dataTable > thead .sorting_asc:before, table.dataTable > thead .sorting_desc:before, table.dataTable > thead .sorting_asc_disabled:before, table.dataTable > thead .sorting_desc_disabled:before {
+    bottom: 17px;
+    color: #252f48;
+}
+table.dataTable > thead .sorting:after, table.dataTable > thead .sorting_asc:after, table.dataTable > thead .sorting_desc:after, table.dataTable > thead .sorting_asc_disabled:after, table.dataTable > thead .sorting_desc_disabled:after {
+    bottom: 10px;
+    color: #252f48;
+}
+.dataTables_length, .dataTables_paginate.paging_simple_numbers
+{
+    display: none;
+}
+.pagination li .page-link, .pagination li .page-link.active {
+    padding: 5px 12px!important;
+    font-size: 14px;
+}
+.customInputSearch i {
+    top: 10px;
+}
+.invoice .inputgroups 
+{
+    i {
+        left: 8px;
+        bottom: 11px;
+    }
+    input 
+    {        
+    height: 37px;
+    }
+}
+.modal .table .dropdown-item {
+    padding: 8px 20px 8px;
+}
+.mainheading
+{
+    font-size: 22px;
+    font-weight: 600;
+    color: #3a3a3a;
+}
+.lessPadding {
+    thead th, td {
+        padding: 5px 10px !important;
+        vertical-align: middle !important;
+        font-size: 14px !important;
+    }
+}
+.widthmannual 
+{
+    display: flex;
+    align-items: center;
+    
+    .select2-container {
+        min-width: unset !important;
+        width: 100% !important;
+        margin-right: 5px;
+    }
+}
+.input-block textarea.form-control {
+    height: auto !important;
+}
 /* WNSshubham */
 
 @media (min-width: 992px) {
