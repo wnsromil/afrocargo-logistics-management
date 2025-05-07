@@ -38,6 +38,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/scss/layout/select.scss') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -168,6 +169,7 @@
     <script src="{{ asset('assets/js/greedynav.js') }}"></script>
     <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/admin/select2.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 
     <!-- Intl Tell Input js -->
     <script src="{{ asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>
