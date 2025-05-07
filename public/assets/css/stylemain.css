@@ -2987,7 +2987,7 @@ table.dataTable > thead .sorting:after, table.dataTable > thead .sorting_asc:aft
         font-size: 14px !important;
     }
 }
-.widthmannual 
+.widthmannual  
 {
     display: flex;
     align-items: center;
