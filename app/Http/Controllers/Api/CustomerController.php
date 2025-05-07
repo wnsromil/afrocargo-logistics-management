@@ -143,6 +143,7 @@ class CustomerController extends Controller
                 'country_code_2' => $request->country_code_2 ?? null,
                 'invoice_custmore_type' => $request->invoice_custmore_type,
                 'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                'vehicle_id'        => $request->container_id ?? null,
             ];
 
             if (!empty($request->license_expiry_date)) {

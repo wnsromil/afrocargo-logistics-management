@@ -122,22 +122,36 @@ class User extends Authenticatable
         );
     }
 
-    public static function generateUniqueId($role_id, $country_id)
+    public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
     {
         if (empty($role_id)) {
             $role_id = 3;
         }
 
-        // Get ISO3 country code
+        // Default country iso2
         $countryIso = 'XX';
-        if (!empty($country_id)) {
+       
+        // Agar role_id 2 ya 4 hai to warehouse se country_id nikalna hai
+        if (in_array($role_id, [2, 4]) && !empty($warehouse_id)) {
+          
+            $warehouse = \App\Models\Warehouse::find($warehouse_id);
+            if ($warehouse && !empty($warehouse->country_id)) {
+               
+                $country = \App\Models\Country::find($warehouse->country_id);
+                if ($country && !empty($country->iso2)) {
+                    $countryIso = strtoupper($country->iso2);
+                }
+            }
+        }
+        // warna normal country_id ka use karo
+        elseif (!empty($country_id)) {
             $country = \App\Models\Country::find($country_id);
-            if ($country && !empty($country->iso3)) {
-                $countryIso = strtoupper($country->iso3);
+            if ($country && !empty($country->iso2)) {
+                $countryIso = strtoupper($country->iso2);
             }
         }
 
-        // Role prefix for filtering and display
+        // Role-wise prefix
         $rolePrefix = '';
         $fullPrefix = '';
         switch ($role_id) {
@@ -159,7 +173,7 @@ class User extends Authenticatable
                 break;
         }
 
-        // Get last number by scanning all matching rolePrefix (not country-specific)
+        // Find last used number
         $lastNumber = User::where('unique_id', 'like', $rolePrefix . '%')
             ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
             ->value('max_number') ?? 0;
@@ -169,14 +183,14 @@ class User extends Authenticatable
         return $fullPrefix . $newNumber;
     }
 
+
     public static function boot()
     {
         parent::boot();
 
         static::creating(function ($user) {
-            // Generate unique_id when creating a new user based on their role_id
-            // This will not throw an error if no users exist for the role_id
-            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id);
+            $warehouseId = in_array($user->role_id, [2, 4]) ? $user->warehouse_id : null;
+            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id, $warehouseId);
         });
     }
 }

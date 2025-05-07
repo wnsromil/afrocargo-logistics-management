@@ -19,6 +19,12 @@
         <div class="form-group-customer customer-additional-form">
             <div class="row">
 
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="foncolor" for="company_name">Warehouse ID</label>
+                    <input type="text" class="form-control inp" style="background: #ececec;"
+                        placeholder="" value="{{ $warehouse->unique_id }}" readonly>
+                </div>
+
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
