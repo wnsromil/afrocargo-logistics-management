@@ -29,16 +29,24 @@
                             <div class="row gx-3 gy-2">
                                 @php $role_id = Auth::user()->role_id; @endphp
 
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="company_name"> Expenses ID</label>
+                                    <input type="text" class="form-control inp" style="background: #ececec;"
+                                        placeholder="" value="{{ $expense->unique_id }}" readonly>
+                                </div>
+
                                 @if($role_id == 2 || $role_id == 4)
                                     <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
+                                        <label class="foncolor" for="warehouse"> Warehouse <i
+                                                class="text-danger">*</i></label>
                                         <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}"
                                             readonly style="background-color: #e9ecef; color: #6c757d;">
                                         <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
                                     </div>
                                 @else
                                     <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
+                                        <label class="foncolor" for="warehouse"> Warehouse <i
+                                                class="text-danger">*</i></label>
                                         <select id="warehouse" class="js-example-basic-single select2 form-control"
                                             name="warehouse">
                                             <option value="">Select Warehouse</option>
@@ -60,7 +68,8 @@
                                             class="btn-filters form-cs inp inputbackground"
                                             value="{{ \Carbon\Carbon::parse($expense->date)->format('m/d/Y') }}"
                                             placeholder="MM-DD-YYYY" />
-                                            <input type="text" class="form-control inp inputs text-center timeOnlyInput" readonly value="{{$expense->time}}" name="currentTIme">
+                                        <input type="text" class="form-control inp inputs text-center timeOnlyInput"
+                                            readonly value="{{$expense->time}}" name="currentTIme">
                                         @error('edit_expense_date') <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>

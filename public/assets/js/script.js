@@ -721,6 +721,26 @@ Version      : 1.0
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
+    }
+
+    if ($('input[name="license_expiry_date"]').length > 0) {
+        $('input[name="license_expiry_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            autoUpdateInput: false, // Default Date Auto Set Na Ho
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="license_expiry_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
 
         // Placeholder Set Karne Ke Liye
         $('input[name="license_expiry_date"]').attr(
@@ -1539,13 +1559,16 @@ Version      : 1.0
     if ($(".datatable").length > 0) {
         $(".datatable").DataTable({
             bFilter: false,
-            // "scrollX": true,
             autoWidth: false,
             sDom: "fBtlpi",
             ordering: true,
             columnDefs: [
                 {
-                    targets: "no-sort",
+                    targets: 0, // Yaha 0 index hai jahan Customer ID column hai
+                    orderable: false,
+                },
+                {
+                    targets: "no-sort", // jise aap manually class se disable karte ho
                     orderable: false,
                 },
             ],
@@ -1563,31 +1586,74 @@ Version      : 1.0
                 $(".dataTables_filter").appendTo(".search-input");
             },
         });
-
-        // $(".modal").on("shown.bs.modal", function (e) {
-        //     $.fn.dataTable
-        //         .tables({ visible: true, api: true })
-        //         .columns.adjust();
-        // });
     }
 
     function initAutocomplete() {
-        const inputs = document.querySelectorAll(
-            ".google-address-autocomplete"
-        );
+        const input = document.getElementsByName("address_1")[0];
+        if (!input) return; // Input not found, exit safely
 
-        inputs.forEach((input) => {
-            new google.maps.places.Autocomplete(input, {
-                types: ["geocode"], // You can also use: ['establishment'] for businesses
-                // componentRestrictions: { country: "in" } // Optional: restrict to India
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let postalCode = "",
+                country = "",
+                state = "",
+                city = "",
+                lat = "",
+                lng = "";
+
+            addressComponents.forEach((component) => {
+                const types = component.types || [];
+
+                if (types.includes("postal_code")) {
+                    postalCode = component.long_name || "";
+                }
+                if (types.includes("country")) {
+                    country = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_1")) {
+                    state = component.long_name || "";
+                }
+                if (types.includes("locality")) {
+                    city = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_2") && !city) {
+                    city = component.long_name || "";
+                }
             });
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("Zip_code", postalCode);
+            setField("country", country);
+            setField("state", state);
+            setField("city", city);
+            setField("latitude", lat);
+            setField("longitude", lng);
         });
     }
 
-    // Wait for Google API to load
-    if (typeof google !== "undefined" && google.maps) {
-        google.maps.event.addDomListener(window, "load", initAutocomplete);
-    } else {
-        console.error("Google Maps API not loaded properly.");
-    }
+    window.addEventListener("load", function () {
+        initAutocomplete();
+    });
 })(jQuery);

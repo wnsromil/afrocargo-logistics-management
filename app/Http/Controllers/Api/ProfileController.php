@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -15,8 +16,19 @@ class ProfileController extends Controller
     public function profile()
     {
         $user = $this->user->load(['warehouse', 'vehicle', 'country', 'state', 'city']);
-        return $this->sendResponse($user, 'User updated successfully.');
+    
+        // Get only active vehicles for the user's warehouse
+        $activeVehicles = Vehicle::where('warehouse_id', $user->warehouse_id)
+            ->where('status', 'Active')
+            ->get();
+    
+        // Convert user to array and embed active vehicles inside
+        $userData = $user->toArray();
+        $userData['active_vehicles'] = $activeVehicles;
+    
+        return $this->sendResponse($userData, 'User profile data.');
     }
+    
     
     public function update(Request $request)
     {
@@ -33,6 +45,7 @@ class ProfileController extends Controller
             'country_id' => 'nullable',
             'state_id' => 'nullable',
             'city_id' => 'nullable',
+            'pincode' => 'nullable',
         ]);
 
         // Update user with validated data
@@ -50,6 +63,9 @@ class ProfileController extends Controller
         }
         if (!empty($request->city_id)) {
             $user->city_id = $request->city_id;
+        }
+        if (!empty($request->pincode)) {
+            $user->pincode = $request->pincode;
         }
         if (!empty($request->phone)) {
             $user->phone = $request->phone;

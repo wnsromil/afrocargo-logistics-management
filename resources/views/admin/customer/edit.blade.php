@@ -14,6 +14,11 @@
             <div class="col-md-6 mb-2">
                 <div class="borderset">
                     <div class="row gx-3">
+                      <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="company_name"> Customer ID</label>
+                            <input type="text" class="form-control inp" style="background: #ececec;"
+                                placeholder="" value="{{ $user->unique_id }}" readonly>
+                        </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="unique_id"> Customer ID </label>
                             <input type="text" readonly name="unique_id" class="form-control inp"  value="{{ old('unique_id', $user->unique_id) }}">
@@ -71,57 +76,41 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                            <select id="country" name="country" class="js-example-basic-single select2">
-                                <option value="">Select Country</option>
-                                @foreach ($countries as $country)
-                                                            <option value="{{ $country->id }}" {{ old('country', $user->country_id) == $country->id ?
-                                    'selected' : '' }}>
-                                                                {{ $country->name }}
-                                                            </option>
-                                @endforeach
-                            </select>
-
+                            <input type="text" name="country" value="{{ old('country', $user->country_id) }}" class="form-control inp" readonly style="background: #ececec;">
                             @error('country')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
-                            <select id="state" name="state" class="js-example-basic-single select2">
-                                <option value="">Select State</option>
-                                @if (old('state'))
-                                    <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
-                                @endif
-                            </select>
+                            <input type="text" name="state" value="{{ old('country', $user->state_id) }}" class="form-control inp" readonly style="background: #ececec;">
                             @error('state')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                            <select id="city" name="city" class="js-example-basic-single select2">
-                                <option value="">Select City</option>
-                                @if (old('city'))
-                                    <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
-                                @endif
-                            </select>
+                            <input type="text" name="city" value="{{ old('country', $user->city_id) }}" class="form-control inp" readonly style="background: #ececec;">
                             @error('city')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="Apartment">Apartment </label>
                             <input type="text" name="Apartment" value="{{ old('apartment', $user->apartment) }}"
                                 class="form-control inp" placeholder="Enter Apartment">
                         </div>
+
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                            <label class="foncolor" for="Zip_code">Zip code</label>
                             <input type="text" name="Zip_code" value="{{ old('Zip_code', $user->pincode) }}"
                                 class="form-control inp" placeholder="Enter Zip">
                             @error('Zip_code')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="username">Username <i class="text-danger">*</i></label>
                             <input type="text" name="username" value="{{ old('Username', $user->username) }}"
@@ -131,36 +120,11 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="password">Password <i class="text-danger">*</i></label>
-                            <div class="d-flex" style="border: 1px solid #00000042 !important; border-radius: 4px;">
-                                <input type="password" name="password" class="form-control inp"
-                                    style="border: none !important" placeholder="Enter Password">
-                                <i class="fe fe-eye passeye" data-bs-toggle="tooltip" title="Show/Hide Password"></i>
-                            </div>
-                            @error('password')
-                            <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="password_confirmation">Confirm New Password <i
-                                    class="text-danger">*</i></label>
-                            <div class="d-flex" style="border: 1px solid #00000042 !important; border-radius: 4px;">
-                                <input type="password" name="password_confirmation" class="form-control inp"
-                                    style="border: none !important" placeholder="Enter Confirm New Password">
-                                <i class="fe fe-eye passeye" data-bs-toggle="tooltip" title="Show/Hide Password"></i>
-                            </div>
-                            @error('password_confirmation')
-                            <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div> --}}
-
-
+                    
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="latitude">Latitude <i class="text-danger">*</i></label>
                             <input type="number" name="latitude" value="{{ old('latitude', $user->latitude) }}"
-                                class="form-control inp" placeholder="0">
+                                class="form-control inp" placeholder="0" readonly style="background: #ececec;">
                             @error('latitude')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -168,7 +132,7 @@
                         <div class="col-md-6 mb-2">
                             <label class="foncolor" for="longitude">Longitude <i class="text-danger">*</i></label>
                             <input type="number" name="longitude" value="{{ old('longitude', $user->longitude) }}"
-                                class="form-control inp" placeholder="0">
+                                class="form-control inp" placeholder="0" readonly style="background: #ececec;">
                             @error('longitude')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

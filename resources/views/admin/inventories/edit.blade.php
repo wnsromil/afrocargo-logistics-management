@@ -16,6 +16,12 @@
             <div class="row">
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="foncolor" for="company_name">Item No</label>
+                    <input type="text" class="form-control inp" style="background: #ececec;"
+                        placeholder="" value="{{ $inventory->unique_id }}" readonly>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="inventory_type" class="table-content col737 fw-medium">Inventory Type<i
                                 class="text-danger"> *</i></label>
@@ -47,8 +53,6 @@
                         @enderror
                     </div>
                 </div>
-
-
 
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -204,7 +208,6 @@
                         </div>
                     </div>
                 </div>
-
 
             </div>
         </div>

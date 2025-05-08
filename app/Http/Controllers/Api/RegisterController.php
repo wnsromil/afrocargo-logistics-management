@@ -42,6 +42,8 @@ class RegisterController extends Controller
                 'state_id' => 'required|string|max:255',
                 'city_id' => 'required|string|max:255',
                 'pincode' => 'required|numeric',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -67,6 +69,8 @@ class RegisterController extends Controller
                     'name' => $request->name,
                     'email' => $request->email ?? null,
                     'phone' => $request->phone,
+                    'latitude' => $request->latitude ?? null,
+                    'longitude' => $request->longitude ?? null,
                     'password' => bcrypt($request->password),
                     'role' => $userRole->name,
                     'role_id' => $userRole->id,

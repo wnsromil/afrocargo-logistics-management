@@ -149,7 +149,12 @@ class ServiceOrdersController extends Controller
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        return view('admin.service_orders.show', compact('ParcelHistories', 'parcelTpyes'));
+        $parcel = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->where('id', $id)->first();
+
+
+        return view('admin.service_orders.orderdetails', compact('ParcelHistories', 'parcelTpyes', 'parcel'));
     }
 
     /**
@@ -386,4 +391,5 @@ class ServiceOrdersController extends Controller
             ], 500);
         }
     }
+    
 }

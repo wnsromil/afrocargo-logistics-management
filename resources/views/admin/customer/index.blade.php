@@ -65,7 +65,7 @@
                         <thead class="thead-light">
 
                             <tr>
-                                <th>Customer ID</th>
+                                <th class="no-sort">Customer ID</th>
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Username</th>

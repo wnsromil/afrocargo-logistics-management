@@ -115,16 +115,25 @@ class User extends Authenticatable
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
     }
 
-    public function availabilities(){
+    public function container()
+    {
+        return $this->hasOne(Vehicle::class, 'vehicle_id'); // ya hasMany agar ek se zyada ho
+    }
+
+    public function availabilities()
+    {
         return $this->hasMany(Availability::class, 'user_id');
     }
-    public function weeklySchedules(){
+    public function weeklySchedules()
+    {
         return $this->hasMany(WeeklySchedule::class, 'user_id');
     }
-    public function locationSchedules(){
+    public function locationSchedules()
+    {
         return $this->hasMany(LocationSchedule::class, 'user_id');
     }
-    public function addresses(){
+    public function addresses()
+    {
         return $this->hasOne(Address::class, 'user_id');
     }
 
@@ -134,65 +143,63 @@ class User extends Authenticatable
             get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
         );
     }
-    
 
 
-    public static function generateUniqueId($role_id)
+    public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
     {
-        // Set the prefix based on the role_id
         if (empty($role_id)) {
-            $role_id = 3;  // Default role_id is 3 (CUS-)
+            $role_id = 3;
         }
 
-        // Set the prefix based on the role_id
-        $prefix = '';
+        // Default country iso2
+        $countryIso = 'XX';
+
+        if (!empty($country_id)) {
+            $country = \App\Models\Country::where('name', $country_id)->first();
+                if ($country && !empty($country->iso2)) {
+                    $countryIso = strtoupper($country->iso2);
+                }
+        }
+
+        // Role-wise prefix
+        $rolePrefix = '';
+        $fullPrefix = '';
         switch ($role_id) {
             case 2:
-                $prefix = 'WMUS-';
+                $rolePrefix = 'WM';
+                $fullPrefix = 'WM' . $countryIso . '-';
                 break;
             case 3:
-                $prefix = 'CUS-';
+                $rolePrefix = 'C';
+                $fullPrefix = 'C' . $countryIso . '-';
                 break;
             case 4:
-                $prefix = 'DUS-';
+                $rolePrefix = 'D';
+                $fullPrefix = 'D' . $countryIso . '-';
                 break;
-                // Add other cases if needed
+            default:
+                $rolePrefix = 'C';
+                $fullPrefix = 'C' . $countryIso . '-';
+                break;
         }
 
-        // If no valid prefix is set, default to 'CUS-'
-        if (empty($prefix)) {
-            $prefix = 'CUS-';
-        }
+        // Find last used number
+        $lastNumber = User::where('unique_id', 'like', $rolePrefix . '%')
+            ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
+            ->value('max_number') ?? 0;
 
-        // Get the last row with this role_id, ordered by unique_id
-        $lastUser = User::where('role_id', $role_id)
-            ->orderByDesc('unique_id') // Order by unique_id in descending order
-            ->first();
-
-        // If there are no existing users for this role_id, start from 1
-        $lastNumber = 0;
-        if ($lastUser && preg_match('/(\d+)$/', $lastUser->unique_id, $matches)) {
-            $lastNumber = (int)$matches[0];
-        }
-
-        // Increment the number for the new unique_id
         $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
 
-        // Return the generated unique_id
-        return $prefix . $newNumber;
+        return $fullPrefix . $newNumber;
     }
 
-    /**
-     * Overriding the create method to automatically assign unique_id.
-     */
+
     public static function boot()
     {
         parent::boot();
 
         static::creating(function ($user) {
-            // Generate unique_id when creating a new user based on their role_id
-            // This will not throw an error if no users exist for the role_id
-            $user->unique_id = self::generateUniqueId($user->role_id);
+            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id);
         });
     }
 }

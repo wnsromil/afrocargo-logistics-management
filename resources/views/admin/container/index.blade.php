@@ -83,33 +83,44 @@
                                 <td>{{ $vehicle->seal_no ?? '-' }}</td>
                                 <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
 
-                                <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}</td>
-                                <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td class="tabletext"><input type="checkbox"></td>
-                                <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
-                                <td>-</td>
-                                <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
-                                <td>
-                                    <p><label class="amountfont">Recieved:</label> $0</p>
-                                    <p><label class="amountfont">Due:</label> $0</p>
-                                    <p><label class="amountfont">Total:</label> $0</p>
-                                </td>
-                                <td>
-                                    <label class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
-                                        {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
-                                    </label>
-                                </td>
-                                <td>
-                                    <div class="status-toggle toggles togglep">
-                                        <input onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}')" id="rating_{{$index}}" class="check" type="checkbox" value="{{$vehicle->status}}" {{$vehicle->status == 'Active' ? 'checked' : '' }}>
-                                        <label for="rating_{{$index}}" class="checktoggle log checkbox-bg">checkbox</label>
-                                    </div>
-                                </td>
-                                <td class="btntext">
-                                    <button class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                </td>
-                            </tr>
+                                    <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}</td>
+                                    <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>                                    
+                                    <td class="tabletext"><input type="checkbox"></td>
+                                    <td class="tabletext"><input type="checkbox"></td>
+                                    <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
+                                    <td>-</td>
+                                    <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
+                                    <td>
+                                        <p><label class="amountfont">Recieved:</label> $0</p>
+                                        <p><label class="amountfont">Due:</label> $0</p>
+                                        <p><label class="amountfont">Total:</label> $0</p>
+                                    </td>
+                                    <td>
+                                        <label
+                                            class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                            for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                            {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="status-toggle toggles togglep">
+                                            <input
+                                                onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}')"
+                                                id="rating_{{$index}}" class="check" type="checkbox"
+                                                value="{{$vehicle->status}}" {{$vehicle->status == 'Active' ? 'checked' : '' }}>
+                                            <label for="rating_{{$index}}"
+                                                class="checktoggle log checkbox-bg">checkbox</label>
+                                        </div>
+                                    </td>
+                                    <td class="btntext" style="display: flex">
+                                        <div> 
+                                            <a class="" href="{{ route('admin.container.edit', $vehicle->id)}}"><i class="far fa-edit me-2"></i></a>
+                                        </div>
+                                        <div> 
+                                        <button class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                        </div>
+                                    </td>
+                                </tr>
                             @empty
                             <tr>
                                 <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
