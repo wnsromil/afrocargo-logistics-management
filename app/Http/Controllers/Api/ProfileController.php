@@ -45,6 +45,7 @@ class ProfileController extends Controller
             'country_id' => 'nullable',
             'state_id' => 'nullable',
             'city_id' => 'nullable',
+            'pincode' => 'nullable',
         ]);
 
         // Update user with validated data
@@ -62,6 +63,9 @@ class ProfileController extends Controller
         }
         if (!empty($request->city_id)) {
             $user->city_id = $request->city_id;
+        }
+        if (!empty($request->pincode)) {
+            $user->pincode = $request->pincode;
         }
         if (!empty($request->phone)) {
             $user->phone = $request->phone;

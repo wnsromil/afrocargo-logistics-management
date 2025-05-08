@@ -27,10 +27,10 @@ class Warehouse extends Model
           
             // Get country ISO based on warehouse_id (if provided)
             $countryIso = 'XX';
-            $country = \App\Models\Country::find($warehouse->country_id);
-                    if ($country && !empty($country->iso2)) {
-                        $countryIso = strtoupper($country->iso2);
-                    }
+            $country = \App\Models\Country::where('name', $warehouse->country_id)->first();
+            if ($country && !empty($country->iso2)) {
+                $countryIso = strtoupper($country->iso2);
+            }
             $fullPrefix = $rolePrefix . $countryIso . '-';
     
             // Get last vehicle with similar prefix

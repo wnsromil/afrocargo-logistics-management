@@ -53,8 +53,7 @@
     <script src="{{ asset('assets/js/layout.js') }}"></script>
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy8ZtqQEZrpb7rLrDdk6eNQihf2I8LpJY&libraries=places"
-        async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
 

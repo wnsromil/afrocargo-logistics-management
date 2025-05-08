@@ -78,7 +78,7 @@ class WarehouseManagerController extends Controller
             'warehouse_name' => 'required|exists:warehouses,id', // Ensure ID exists
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'address' => 'required|string|max:500',
+            'address_1' => 'required|string|max:500',
             'mobile_code' => 'required|string|max:15|unique:users,phone',
             'status' => 'nullable|in:Active,Inactive',
             'country_code' => 'required|string',
@@ -106,7 +106,8 @@ class WarehouseManagerController extends Controller
         $user = User::create([
             'warehouse_id' => $request->warehouse_name,
             'name' => $request->manager_name,
-            'address' => $request->address,
+            'address' => $request->address_1,
+            'country_id' => $request->country,
             'email' => $request->email,
             'password' => $hashedPassword,
             'phone' => $request->mobile_code,
@@ -177,7 +178,7 @@ class WarehouseManagerController extends Controller
             'warehouse_name' => 'required',
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
-            'address' => 'required|string|max:500',
+            'address_1' => 'required|string|max:500',
             'edit_mobile_code' => 'required|string|max:15',
             'status' => 'in:Active,Inactive',
             'country_code' => 'required|string',
@@ -197,7 +198,7 @@ class WarehouseManagerController extends Controller
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
             'name' => $request->manager_name,
-            'address' => $request->address,
+            'address' => $request->address_1,
             'email' => $request->email,
             'phone' => $request->edit_mobile_code,
             'status' => $request->status ?? 'Active', // Status ko handle karna

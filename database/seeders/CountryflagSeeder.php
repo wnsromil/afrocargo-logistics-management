@@ -14,7 +14,7 @@ class CountryflagSeeder extends Seeder
     {
         //
 
-        // \DB::statement("ALTER TABLE countries ADD flag_url VARCHAR(255) NOT NULL AFTER emoji");
+        \DB::statement("ALTER TABLE countries ADD flag_url VARCHAR(255) NOT NULL AFTER emoji");
 
         $flags = [
             "AD" => "https://flagpedia.net/data/flags/w1160/ad.webp",

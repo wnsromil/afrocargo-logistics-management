@@ -72,9 +72,9 @@
                                 <td>
                                     <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $warehouse->address ?? '-' }}">{{ $warehouse->address ?? '-' }}</p>
                                 </td>
-                                <td>{{ $warehouse->city->name ?? '-' }}</td>
-                                <td>{{ $warehouse->state->name ?? '-' }}</td>
-                                <td>{{ $warehouse->country->name ?? '-' }}</td>
+                                <td>{{ $warehouse->city_id ?? '-' }}</td>
+                                <td>{{ $warehouse->state_id ?? '-' }}</td>
+                                <td>{{ $warehouse->country_id ?? '-' }}</td>
                                 <td>{{ $warehouse->zip_code ?? '-' }}</td>
                                 <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                                 <td>

@@ -59,7 +59,7 @@
                                     <input type="hidden" id="country_code_2" name="country_code_2">
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
-                                        <input type="text" name="address_1" value="{{ old('address_1') }}" class="form-control inp" placeholder="Enter Address 1">
+                                        <input type="text" id="address_1" name="address_1" value="{{ old('address_1') }}" class="form-control inp" placeholder="Enter Address 1">
                                         @error('address_1')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -77,14 +77,7 @@
 
                                     <div class="col-md-6 mb-2">
                                         <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                        <select id="country" name="country" class="js-example-basic-single select2">
-                                            <option value="">Select Country</option>
-                                            @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}" {{ old('country') == $country->id ? 'selected' : '' }}>
-                                                {{ $country->name }}
-                                            </option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text" name="country" value="{{ old('country') }}" class="form-control inp" readonly style="background: #ececec;">
                                         @error('country')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -92,12 +85,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
-                                        <select id="state" name="state" class="js-example-basic-single select2">
-                                            <option value="">Select State</option>
-                                            @if (old('state'))
-                                            <option value="{{ old('state') }}" selected>{{ old('state') }}</option>
-                                            @endif
-                                        </select>
+                                        <input type="text" name="state" value="{{ old('state') }}" class="form-control inp" placeholder="" readonly style="background: #ececec;">
                                         @error('state')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -105,24 +93,20 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                        <select id="city" name="city" class="js-example-basic-single select2">
-                                            <option value="">Select City</option>
-                                            @if (old('city'))
-                                            <option value="{{ old('city') }}" selected>{{ old('city') }}</option>
-                                            @endif
-                                        </select>
+                                        <input type="text" name="city" value="{{ old('city') }}" class="form-control inp" placeholder="" readonly style="background: #ececec;">
                                         @error('city')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
                                     <div class="col-md-4 mb-2">
-                                        <label class="foncolor" for="Zip_code">Zipcode <i class="text-danger">*</i></label>
+                                        <label class="foncolor" for="Zip_code">Zipcode</label>
                                         <input type="text" name="Zip_code" value="{{ old('Zip_code') }}" class="form-control inp" placeholder="Enter Zip">
                                         @error('Zip_code')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                    
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor " for="username">Username <i class="text-danger">*</i></label>
                                         <input type="text" name="username" value="{{ old('username') }}" class="form-control inp inputbackground" placeholder="Enter User Name">
@@ -158,7 +142,7 @@
 
                                 <div class="col-md-6 mb-2">
                                     <label class="foncolor " for="latitude">Latitude <i class="text-danger">*</i></label>
-                                    <input type="number" name="latitude" value="{{ old('latitude') }}" class="form-control inp inputbackground" placeholder="0">
+                                    <input type="text" name="latitude" value="{{ old('latitude') }}" class="form-control inp inputbackground" placeholder="0" readonly style="background: #ececec;">
                                     @error('latitude')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -166,7 +150,7 @@
 
                                 <div class="col-md-6 mb-2">
                                     <label class="foncolor " for="longitude">Longitude <i class="text-danger">*</i></label>
-                                    <input type="number" name="longitude" value="{{ old('longitude') }}" class="form-control inp inputbackground" placeholder="0">
+                                    <input type="text" name="longitude" value="{{ old('longitude') }}" class="form-control inp inputbackground" placeholder="0" readonly style="background: #ececec;">
                                     @error('longitude')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -1155,3 +1139,6 @@
     });
 
 </script>
+
+
+

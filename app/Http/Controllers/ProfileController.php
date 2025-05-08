@@ -26,17 +26,11 @@ class ProfileController extends Controller
 
     public function edit(Request $request): View
     {
-        $countries = Country::get();
-        $states = State::get();
-        $cities = City::get();
         return view('profile.edit', [
-            'user' => $request->user(),
-            'countries' => $countries,
-            'states' => $states,
-            'cities' => $cities
+            'user' => $request->user()
         ]);
     }
-
+    
     public function change(Request $request): View
     {
         return view('profile.update-password', [
@@ -47,9 +41,21 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+   
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
+            'country' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'required|string',
+            'Zip_code' => 'nullable|string|max:10',
+            'phone' => 'required|digits:10',
+            'phone_2' => 'required|digits:10',
+            'address_2' => 'nullable|string|max:255',
+        ]);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -64,11 +70,11 @@ class ProfileController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'phone_2' => $request->phone_2,
-            'country_id' => $request->country_id,
-            'state_id' => $request->state_id,
-            'city_id' => $request->city_id,
-            'pincode' => $request->pincode,
-            'address' => $request->address,
+            'country_id' => $request->country,
+            'state_id' => $request->state,
+            'city_id' => $request->city,
+            'pincode' => $request->Zip_code,
+            'address' => $request->address_1,
             'address_2' => $request->address_2,
             'country_code'        => $request->country_code ?? null,
             'country_code_2'        => $request->country_code_2 ?? null,

@@ -115,16 +115,25 @@ class User extends Authenticatable
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
     }
 
-    public function availabilities(){
+    public function container()
+    {
+        return $this->hasOne(Vehicle::class, 'vehicle_id'); // ya hasMany agar ek se zyada ho
+    }
+
+    public function availabilities()
+    {
         return $this->hasMany(Availability::class, 'user_id');
     }
-    public function weeklySchedules(){
+    public function weeklySchedules()
+    {
         return $this->hasMany(WeeklySchedule::class, 'user_id');
     }
-    public function locationSchedules(){
+    public function locationSchedules()
+    {
         return $this->hasMany(LocationSchedule::class, 'user_id');
     }
-    public function addresses(){
+    public function addresses()
+    {
         return $this->hasOne(Address::class, 'user_id');
     }
 
@@ -134,7 +143,7 @@ class User extends Authenticatable
             get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
         );
     }
-    
+
 
     public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
     {
@@ -144,25 +153,12 @@ class User extends Authenticatable
 
         // Default country iso2
         $countryIso = 'XX';
-       
-        // Agar role_id 2 ya 4 hai to warehouse se country_id nikalna hai
-        if (in_array($role_id, [2, 4]) && !empty($warehouse_id)) {
-          
-            $warehouse = \App\Models\Warehouse::find($warehouse_id);
-            if ($warehouse && !empty($warehouse->country_id)) {
-               
-                $country = \App\Models\Country::find($warehouse->country_id);
+
+        if (!empty($country_id)) {
+            $country = \App\Models\Country::where('name', $country_id)->first();
                 if ($country && !empty($country->iso2)) {
                     $countryIso = strtoupper($country->iso2);
                 }
-            }
-        }
-        // warna normal country_id ka use karo
-        elseif (!empty($country_id)) {
-            $country = \App\Models\Country::find($country_id);
-            if ($country && !empty($country->iso2)) {
-                $countryIso = strtoupper($country->iso2);
-            }
         }
 
         // Role-wise prefix
@@ -203,8 +199,7 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user) {
-            $warehouseId = in_array($user->role_id, [2, 4]) ? $user->warehouse_id : null;
-            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id, $warehouseId);
+            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id);
         });
     }
 }

@@ -28,9 +28,9 @@
                             <td>{{ ucfirst($warehouse->warehouse_name ?? '') }}</td>
                             <td><span>{{ $warehouse->warehouse_code ?? '-' }}</span></td>
                             <td>{{ $warehouse->address ?? '-' }}</td>
-                            <td>{{ $warehouse->city->name ?? '-' }}</td>
-                            <td>{{ $warehouse->state->name ?? '-' }}</td>
-                            <td>{{ $warehouse->country->name ?? '-' }}</td>
+                            <td>{{ $warehouse->city_id ?? '-' }}</td>
+                            <td>{{ $warehouse->state_id ?? '-' }}</td>
+                            <td>{{ $warehouse->country_id ?? '-' }}</td>
                             <td>{{ $warehouse->zip_code ?? '-' }}</td>
                             <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                             <td>

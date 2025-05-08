@@ -62,17 +62,19 @@ class CustomerController extends Controller
 
     public function getCustomersDetails(Request $request)
     {
-        if ($request->has('id') && !empty($request->id)) {
-            $customer = User::where('role', 'customer')->where('id', $request->id)->first();
+        $id = $request->id;
 
-            if (!$customer) {
-                return response()->json(['message' => 'No customer found'], 404);
-            }
-
-            return response()->json(['customer' => $customer], 200);
+        if (!$id) {
+            return response()->json(['message' => 'ID is required'], 400);
         }
 
-        return response()->json(['message' => 'ID is required'], 400);
+        $customer = User::where('role', 'customer')->where('id', $id)->with('vehicle')->first();
+
+        if (!$customer) {
+            return response()->json(['message' => 'No customer found'], 404);
+        }
+
+        return response()->json(['customer' => $customer], 200);
     }
 
     public function createCustomer(Request $request)
@@ -101,21 +103,25 @@ class CustomerController extends Controller
                 if ($request->hasFile($imageType)) {
                     $file = $request->file($imageType);
                     $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
-
+            
                     $folder = ($imageType === 'profile_pics') ? 'uploads/profile_pics' : 'uploads/customer';
                     $filePath = $file->storeAs($folder, $fileName, 'public');
-
+            
+                    // Yahan condition laga do
+                    if ($imageType === 'license_picture') {
+                        $filePath = 'storage/' . $filePath;
+                    }
+            
                     $imagePaths[$imageType] = $filePath;
                 }
-            }
-
+            }            
             $userData = [
                 'name' => $validated['first_name'],
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['mobile_code'],
                 'phone_2' => $validated['alternate_mobile_no'] ?? null,
                 'address' => $validated['address_1'],
-                'address_2' => $request->Address_2,
+                'address_2' => $request->address_2,
                 'country_id' => $validated['country'],
                 'state_id' => $validated['state'],
                 'city_id' => $validated['city'],
