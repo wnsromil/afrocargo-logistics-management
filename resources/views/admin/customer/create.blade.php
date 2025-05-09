@@ -18,7 +18,7 @@
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#ShipTo" data-bs-toggle="tab">ShipTo</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#Pickups" data-bs-toggle="tab">Pickups</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#PickupAddresss" data-bs-toggle="tab">Pickup Address</a></li>
-                <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#Deposite" data-bs-toggle="tab">Deposite</a></li>
+                <li class="nav-item"><a class="btnBorder th-font col737 bg-light" href="#Deposite" data-bs-toggle="tab">Deposite</a></li>
             </ul>
         </div>
         <div class="tab-content bg-transparent px-0 d-block">
@@ -106,7 +106,7 @@
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    
+
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor " for="username">Username <i class="text-danger">*</i></label>
                                         <input type="text" name="username" value="{{ old('username') }}" class="form-control inp inputbackground" placeholder="Enter User Name">
@@ -554,7 +554,7 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive mt-3">
-                            <table class="table table-stripped table-hover lessPadding datatable">
+                            <table class="table table-stripped table-hover lessPadding littleMore datatable">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>P.Name</th>
@@ -609,10 +609,176 @@
             </form>
         </div>
         <div class="tab-pane" id="PickupAddresss">
-            Tab content 6
+            <form class="invoice">
+                <div class="row justify-content-between mb-3">
+                    <div class="col-md-6">
+                        <p class="mainheading">Pickup Address List</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="{{ route('admin.addPickups') }}" class="btn btn-primary buttons">
+                            <i class="ti ti-circle-plus me-2 text-white"></i>
+                            Add Pickup Address
+                        </a>
+                    </div>
+                </div>
+                <div class="row justify-content-between g-3">
+                    <div class="col-md-4 dposition">
+                        <div class="d-flex align-items-center">
+                            <label for="searchInput" class="foncolor p-0 mb-0 me-3">Search</label>
+                            <div class="inputgroups relative">
+                                <i class="ti ti-search"></i>
+                                <input type="text" id="searchInput" class="form-control form-cs" placeholder="Search">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end align-content-end">
+                        <button class="btn px-4 btn-primary me-2">Search</button>
+                        <button class="btn px-4 btn-outline-danger">Reset</button>
+                    </div>
+                </div>
+                <div class="card-table">
+                    <div class="card-body">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-stripped table-hover lessPadding datatable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Pickup Id</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Telephone</th>
+                                        <th>Cellphone</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-start">SHP-000514</td>
+                                        <td>Daoud a Diarradouba</td>
+                                        <td>Abidjan</td>
+                                        <td>+225 07 07 14 8253</td>
+                                        <td>+225 07 07 14 8333</td>
+                                        <td>
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#InvoiceLabel"><i class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#"><i class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="tab-pane" id="Deposite">
-            Tab content 7
+            <form class="invoice">
+                <div class="row justify-content-between mb-3">
+                    <div class="col-md-6">
+                        <p class="mainheading">Deposit</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#depositModel">
+                            <i class="ti ti-circle-plus me-2 text-white"></i>
+                            Add Deposit
+                        </a>
+                    </div>
+                </div>
+                <div class="card-table">
+                    <div class="card-body">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-stripped table-hover lessPadding datatable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Creation Date</th>
+                                        <th>Creation User</th>
+                                        <th>Creation Branch</th>
+                                        <th>Used User</th>
+                                        <th>Used Branch</th>
+                                        <th>Invoice No</th>
+                                        <th>Amt Deposit</th>
+                                        <th>Amt Used</th>
+                                        <th>Used Date</th>
+                                        <th>IsUsed</th>
+                                        <th>P.Type</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-start">05/08/2025</td>
+                                        <td>Abijan Cargo Sacko</td>
+                                        <td>Afro Cargo NYC USA</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>2500</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>No</td>
+                                        <td>Cheque</td>
+                                        <td>
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#InvoiceLabel"><i class="ti ti-pdf fs_18 me-2"></i>Update</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#"><i class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">05/08/2025</td>
+                                        <td>Abijan Cargo Sacko</td>
+                                        <td>Afro Cargo NYC USA</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>3500</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>Yes</td>
+                                        <td>Cash</td>
+                                        <td>
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#InvoiceLabel"><i class="ti ti-pdf fs_18 me-2"></i>Update</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="#"><i class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     </div>
@@ -858,6 +1024,69 @@
                                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                                         <input type="tel" id="alternate_mobile_no" name="alternate_mobile_no" class="form-control inp" placeholder="Enter Alternate Mobile No.">
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="add-customer-btns text-end">
+                                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                                    <button type="submit" class="btn btn-primary ">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/Send Invoice Pdf Modal -->
+
+    <!-- Deposit Modal -->
+    <div class="modal custom-modal invoiceSModel fade" id="depositModel" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 border-bottom py-3">
+                    <div class="form-header modal-header-title text-start mb-0">
+                        <h4 class="mb-0">Deposit</h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                    </button>
+                </div>
+                <div class="modal-body pt-3 pb-2">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row pb-2">
+                            <div class="col-md-12">
+                                <div class="input-block mb-2">
+                                    <label class="foncolor" for="date">Date<i class="text-danger">*</i></label>
+                                    <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                        <input type="text" name="driverInventoryDate" class="btn-filters form-cs inp" placeholder="MM/DD/YYYY" />
+                                        <input type="text" class="form-control inp inputs text-center timeOnlyInput absolute" readonly name="currentTIme" value="10:45 AM">
+                                        @error('driverInventoryDate')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="input-block mb-2">
+                                    <label class="foncolor" for="PaymentType">Payment Type <i class="text-danger">*</i></label>
+                                    <select id="PaymentType" name="PaymentType" class="js-example-basic-single select2">
+                                        <option value="" disabled hidden selected>Select Payment Type</option>
+                                        <option value="Box Credit">Box Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Cheque">Cheque</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Quick Pay">Quick Pay</option>
+                                        <option value="Mannual CC">Mannual CC</option>
+                                        <option value="Deposit">Deposit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="input-block mb-2">
+                                    <label class="foncolor" for="Amount">Amount<span class="text-danger">*</span> </label>
+                                    <input type="text" name="Amount" class="form-control inp" placeholder="Enter Amount">
                                 </div>
                             </div>
                             <div class="col-12">
@@ -1139,6 +1368,3 @@
     });
 
 </script>
-
-
-

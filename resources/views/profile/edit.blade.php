@@ -209,7 +209,7 @@
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
-                                    <p class="profileUpdateFont required">Zip Code</p>
+                                    <p class="profileUpdateFont Zip_code required">Zip Code</p>
                                     <input type="text" name="Zip_code" class="form-control" placeholder="Enter Zip Code"
                                         value="{{ $user->pincode ?? old('Zip_code') }}">
                                     @error('Zip_code')

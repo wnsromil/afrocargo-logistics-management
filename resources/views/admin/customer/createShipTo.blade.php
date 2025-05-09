@@ -5,8 +5,12 @@
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-        <div class="d-flex innertopnav">
+        <div class="d-flex innertopnav w-100 justify-content-between">
             <p class="subhead pheads">Add Ship to Address</p>
+            <div class="btnwrapper">
+                <a href="{{ route('admin.addPickups') }}" class="btn btn-primary buttons me-1"> Pickup </a>
+                <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
+            </div>
         </div>
     </x-slot>
     <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
