@@ -159,6 +159,8 @@
                                 @csrf
                                 <input type="hidden" name="address_type" value="delivery">
 
+                                <input type="hidden" name="address_id">
+
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
                                             class="text-danger">*</i></label>
@@ -279,6 +281,7 @@
 
                                 @csrf
                                 <input type="hidden" name="address_type" value="pickup">
+                                <input type="hidden" name="address_id">
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
@@ -859,7 +862,7 @@
     <!-- /Invoice History Modal -->
 
     <!-- Individual Payment Modal -->
-    <div class="modal invoiceSModel fade" id="individualPayment" role="dialog">
+    <div class="modal custom-modal invoiceSModel fade" id="individualPayment" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             
             <div class="modal-content">
@@ -1382,42 +1385,45 @@
                     </button>
                 </div>
                 <div class="modal-body pt-3 pb-2">
-                    <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-12">
+                    <form action="{{ route('admin.updateNote') }}" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+                            
+                                @csrf
                                 <div class="input-block mb-3">
-                                    <textarea name="PaymentAmount" class="form-control inp" placeholder="Write Comment"></textarea>
-                                    <label class="col_000 fw-600 mb-0 mt-2">NOTE: [You can enter only 255 charcters in the above field.]</label>
+                                    <input type="hidden" name="invoice_id" value="{{$invoice->id}}">
+                                    <textarea name="notes" class="form-control inp" placeholder="Write Comment"></textarea>
+                                    <label class="col_000 fw-600 mb-0 mt-2">NOTE: [You can enter only 255 charcters in
+                                        the above field.]</label>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="table-responsive lesspadding notMinheight border mt-2">
-                                    <table class="table table-stripped table-hover datatable">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Note</th>
-                                            </tr>
-                                        </thead>
+                        </div>
+                        <div class="col-12">
+                            <div class="table-responsive lesspadding notMinheight border mt-2">
+                                <table class="table table-stripped table-hover datatable">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Note</th>
+                                        </tr>
+                                    </thead>
 
-                                        <tbody>
-                                            <tr>
-                                                <td>Fode Sacko</td>
-                                                <td>Lorem Ipsum - 04/28/2025, 08:09 am </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-3">
-                                <div class="add-customer-btns text-end">
-                                    <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
-                                    <button type="submit" class="btn btn-primary ">Submit</button>
-                                </div>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{$invoice->createdByUser->name ?? ''}}</td>
+                                            <td>{{$invoice->notes ?? ''}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </form>
+                        <div class="col-12 mt-3">
+                            <div class="add-customer-btns text-end">
+                                <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                                <button type="submit" class="btn btn-primary ">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
@@ -1428,7 +1434,14 @@
     
 
     <script src="https://rawgit.com/DoersGuild/jQuery.print/master/jQuery.print.js"></script>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script src="{{asset('js/invoice.js')}}"></script>
+    
     <script>
         var supplyItems = @json($inventories->get('Supply'));
         var pickupAddress = @json($pickupAddress);

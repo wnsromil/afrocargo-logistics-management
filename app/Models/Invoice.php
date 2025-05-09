@@ -142,4 +142,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
     }
+
+    public function createdByUser()
+    {
+        return $this->belongsTo(User::class, 'created_by')->select('id','name','last_name','role','role_id');
+    }
 }

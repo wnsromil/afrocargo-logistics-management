@@ -26,6 +26,10 @@ function toggleLoginForm(type) {
         $('#supplies_items').addClass('d-none');
         $('#description_services_items').removeClass('d-none');
         $('#weight_services_items').removeClass('d-none');
+        $('select[name="container_id"]')             // optional: if you use this class for styling
+        .prop('disabled', false)              // this is essential
+        .css('pointer-events', 'auto')        // optional: restores interaction if previously styled with pointer-events
+        .css('opacity', '1'); 
 
     } else if (type === 'supplies') {
         // document.getElementById('services').style.display = 'none';
@@ -45,6 +49,11 @@ function toggleLoginForm(type) {
         $('#supplies_items').removeClass('d-none');
         $('#description_services_items').addClass('d-none');
         $('#weight_services_items').addClass('d-none');
+        $('select[name="container_id"]')             // optional: if you use this class for styling
+        .prop('disabled', true)              // this is essential
+        .css('pointer-events', 'auto')        // optional: restores interaction if previously styled with pointer-events
+        .css('opacity', '1');                 // optional: restores visual state
+    
 
     }
 }
@@ -243,9 +252,9 @@ function setPickupDeleveryFormValue(customer){
 
         userAddress = customer.address_type == 'pickup' ? $('#ship_to_address'):$('#pick_up');
         // Split full name into first and last name
-        var names = customer.full_name.split(' ');
-        var firstName = names[0];
-        var lastName = names.length > 1 ? names.slice(1).join(' ') : '';
+        // var names = customer.full_name.split(' ');
+        // var firstName = names[0];
+        // var lastName = names.length > 1 ? names.slice(1).join(' ') : '';
         let newOption = new Option(customer.text, customer.id, true, true);
 
         if(customer.address_type == 'pickup'){
@@ -265,7 +274,7 @@ function setPickupDeleveryFormValue(customer){
 
         
         // Fill the form fields
-        let nm = customer.name.trim().split(' ');
+        let nm = customer.full_name ? customer.full_name.trim().split(' '):'';
 
         let last_name = nm.length > 1 ? nm[nm.length - 1] : null;
         let first_name = nm.length > 1 ? nm.slice(0, -1).join(' ') : customer.name;
@@ -278,8 +287,8 @@ function setPickupDeleveryFormValue(customer){
         
         // For country/state/city, you'll need to have options preloaded or make additional AJAX calls
         userAddress.find('select[name="country_id"]').val(customer.country_id).trigger('change');
-        userAddress.find('select[name="alternative_mobile_number_code_id"]').val(customer.alternative_mobile_number_code_id).trigger('change');
-        userAddress.find('select[name="mobile_number_code_id"]').val(customer.mobile_number_code_id).trigger('change');
+        userAddress.find('select[name="alternative_mobile_number_code_id"]').val(customer.alternative_mobile_number_code_id??1).trigger('change');
+        userAddress.find('select[name="mobile_number_code_id"]').val(customer.mobile_number_code_id??1).trigger('change');
         // Wait for states to be loaded before setting the state
         setTimeout(() => {
             userAddress.find('select[name="state_id"]')
@@ -299,6 +308,7 @@ function setPickupDeleveryFormValue(customer){
         userAddress.find('input[name="zip_code"]').val(customer.pincode);
         userAddress.find('input[name="address"]').val(customer.address1);
         userAddress.find('input[name="address_2"]').val(customer.address2);
+        userAddress.find('input[name="address_id"]').val(customer.id);
         // Address 2 can be left empty or filled with additional info if available
     }
 }
@@ -595,3 +605,15 @@ function printLabel() {
         deferred: $.Deferred()
     });
 }
+
+flatpickr('input[name="payment_date"]', {
+    dateFormat: "Y-m-d",
+    defaultDate: new Date()
+});
+
+flatpickr('input[name="currentTime"]', {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "h:i K",
+    defaultDate: new Date()
+});
