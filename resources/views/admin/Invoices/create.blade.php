@@ -124,6 +124,8 @@
                                 @csrf
                                 <input type="hidden" name="address_type" value="delivery">
 
+                                <input type="hidden" name="address_id">
+
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
                                             class="text-danger">*</i></label>
@@ -243,6 +245,7 @@
 
                                 @csrf
                                 <input type="hidden" name="address_type" value="pickup">
+                                <input type="hidden" name="address_id">
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
@@ -367,7 +370,7 @@
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
                                 <input type="text" class="btn-filters datetimepicker form-control form-cs inp "
-                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ date('Y-m-d') }}" />
+                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ date('m-d-Y') }}" />
                                 <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
                                     readonly value="08:30 AM" name="currentTime">
                             </div>
@@ -626,6 +629,12 @@
         <!-- ---------------------------- Supplies form ------------------------- -->
     </div>
     @section('script')
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script src="{{asset('js/invoice.js')}}"></script>
     <script>
         var supplyItems = @json($inventories->get('Supply'));

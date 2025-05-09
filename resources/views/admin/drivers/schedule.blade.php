@@ -60,7 +60,7 @@
                                     name="address"
                                     value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
-                                    <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -103,11 +103,12 @@
                                 </div>
                             </div>
                             @error('date')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-8">
-                            <label style="display: flex; align-items: center;" class="profileUpdateFont text-dark">
+                            <label style="display: flex; align-items: center;"
+                                class="profileUpdateFont text-dark d-none">
                                 <input type="checkbox" name="is_for_all_location" style="margin-right: 10px;">
                                 Is for all location
                             </label>
@@ -644,10 +645,10 @@
                 <div class="col-md-6">
                     <div class="usersearch d-flex justify-content-end">
                         <div class="top-nav-search">
-                            <form>
+                            {{-- <form>
                                 <input type="text" id="searchInput" class="form-control forms me-2"
                                     placeholder="Search ">
-                            </form>
+                            </form> --}}
                         </div>
 
                         <div class="">
@@ -671,7 +672,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>S. No.</th>
-                                        <th>Date</th>
+                                        <!-- <th>Date</th> -->
                                         <th>Location</th>
                                         <th>Availability</th>
                                         <th class="text-center">Action</th>
@@ -679,71 +680,77 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($availabilities as $index => $availabilitie)
-                                        <tr>
-                                            <td class="text-start">{{ $index + 1 }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}
-                                            </td>
-                                            <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td>
-                                            <td>
-                                                @php
-                                                    $slots = [];
-                                                    if (isset($availabilitie->morning) && $availabilitie->morning == 1)
-                                                        $slots[] = 'Morning';
-                                                    if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
-                                                        $slots[] = 'Afternoon';
-                                                    if (isset($availabilitie->evening) && $availabilitie->evening == 1)
-                                                        $slots[] = 'Evening';
+                                    @php
+                                    $i=1;
+                                    $slots = [];
+                                    if (isset($availabilitie->morning) && $availabilitie->morning == 1)
+                                    $slots[] = 'Morning';
+                                    if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
+                                    $slots[] = 'Afternoon';
+                                    if (isset($availabilitie->evening) && $availabilitie->evening == 1)
+                                    $slots[] = 'Evening';
 
-                                                    $allSlots = ['Morning', 'Afternoon', 'Evening'];
-                                                @endphp
+                                    $isFullyAvailable = count($slots) === 3;
+                                    @endphp
 
-                                                @if (count($slots) === 0)
-                                                    Full Unavailable
-                                                @elseif (count($slots) === 3)
-                                                    Available
-                                                @else
-                                                    {{ implode(', ', $slots) }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}"><i
-                                                                        class="far fa-eye me-2"></i>View</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#"
-                                                                    onclick="event.preventDefault(); showEditSchedule(
-                                                                                                                                                                                                                    '{{ $availabilitie->id }}', 
-                                                                                                                                                                                                                    '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
-                                                                                                                                                                                                                    '{{ $availabilitie->morning }}', 
-                                                                                                                                                                                                                    '{{ $availabilitie->afternoon }}', 
-                                                                                                                                                                                                                    '{{ $availabilitie->evening }}'
-                                                                                                                                                                                                                );">
-                                                                    <i class="far fa-edit me-2"></i>Update
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}"><i
-                                                                        class="fa fa-trash me-2"></i>Delete</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                    @if ($isFullyAvailable)
+                                    @continue
+                                    @endif
+
+                                    <tr>
+                                        <td class="text-start">{{ $index + 1 }}</td>
+                                        @php $i++; @endphp
+                                        <!-- <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</td> -->
+                                        <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td>
+                                        <td>
+                                            @if (count($slots) === 0)
+                                            Full Unavailable
+                                            @else
+                                            {{ implode(', ', $slots) }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul>
+                                                        <!-- <li>
+                                                            <a class="dropdown-item" href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}">
+                                                                <i class="far fa-eye me-2"></i>View
+                                                            </a>
+                                                        </li> -->
+                                                                                        <!-- <li>
+                                                            <a class="dropdown-item" href="#"
+                                                                onclick="event.preventDefault(); showEditSchedule(
+                                                                    '{{ $availabilitie->id }}', 
+                                                                    '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
+                                                                    '{{ $availabilitie->morning }}', 
+                                                                    '{{ $availabilitie->afternoon }}', 
+                                                                    '{{ $availabilitie->evening }}'
+                                                                );">
+                                                                <i class="far fa-edit me-2"></i>Update
+                                                            </a>
+                                                        </li> -->
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}">
+                                                                <i class="fa fa-trash me-2"></i>Delete
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.</td>
+                                    </tr>
                                     @endforelse
+
 
                                 </tbody>
                             </table>
@@ -760,7 +767,6 @@
     <!-- -------------------------------------------------------------------------- -->
     <script>
         const scheduleData = @json($weeklyschedule);
-
     </script>
 
 
@@ -801,6 +807,7 @@
             driverscheduleform(activeTab);
         });
 
+
     </script>
 
 
@@ -825,9 +832,9 @@
         document.addEventListener("DOMContentLoaded", function () {
             const fullUnavailable = document.querySelector('input[name="full_unavailable"]');
             const timeCheckboxes = [
-                document.querySelector('input[name="morning"]')
-                , document.querySelector('input[name="afternoon"]')
-                , document.querySelector('input[name="evening"]')
+                document.querySelector('input[name="morning"]'),
+                document.querySelector('input[name="afternoon"]'),
+                document.querySelector('input[name="evening"]')
             ];
 
             // When "Full Unavailable" is toggled
@@ -855,9 +862,9 @@
             // Function to update checkbox value (Active/Inactive)
             function updateCheckboxValue(checkbox) {
                 if (checkbox.checked) {
-                    checkbox.value = 'Inactive'; // Active if checked
+                    checkbox.value = 'Inactive';  // Active if checked
                 } else {
-                    checkbox.value = ''; // Inactive if unchecked
+                    checkbox.value = '';  // Inactive if unchecked
                 }
             }
 
@@ -1011,11 +1018,9 @@
             // Format date to MM-DD-YYYY
             const formattedDate = new Date(date).toLocaleDateString('en-US');
 
-            const {
-                value: formValues
-            } = await Swal.fire({
-                title: `Edit Schedule For This ${formattedDate}`
-                , html: `
+            const { value: formValues } = await Swal.fire({
+                title: `Edit Schedule For This ${formattedDate}`,
+                html: `
                 <form id="scheduleForm" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="_method" value="PUT">
@@ -1028,48 +1033,37 @@
                         <p class="profileUpdateFont text-dark">Full Unavailable</p>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
-                                <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
-                                <div class="my-2" style="display: flex;">
-                                    <input id="rating_30" class="check" name="morning" type="checkbox">
-                                    <label for="rating_30" class="checktoggle log checkbox-bg ms-0">checkbox</label>
-                                    <p class="profileUpdateFont text-dark">Unavailable</p>
-                                </div>
-                            </div>
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_30" class="check" name="morning" type="checkbox">
+                            <label for="rating_30" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
                         </div>
-                        <div class="col-md-4">
-                            <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
-                                <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
-                                <div class="my-2" style="display: flex;">
-                                    <input id="rating_31" class="check" name="afternoon" type="checkbox">
-                                    <label for="rating_31" class="checktoggle log checkbox-bg ms-0">checkbox</label>
-                                    <p class="profileUpdateFont text-dark">Unavailable</p>
-                                </div>
-                            </div>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_31" class="check" name="afternoon" type="checkbox">
+                            <label for="rating_31" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
                         </div>
-                        <div class="col-md-4">
-                            <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
-                                <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
-                                <div class="my-2" style="display: flex;">
-                                    <input id="rating_32" class="check" name="evening" type="checkbox">
-                                    <label for="rating_32" class="checktoggle log checkbox-bg ms-0">checkbox</label>
-                                    <p class="profileUpdateFont text-dark">Unavailable</p>
-                                </div>
-                            </div>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_32" class="check" name="evening" type="checkbox">
+                            <label for="rating_32" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
                         </div>
                     </div>
                 </form>
-            `
-                , showCancelButton: true
-                , customClass: {
-                    popup: 'editScheduelPopup'
-                    , title: 'custom-swal-title'
-                    , htmlContainer: 'custom-swal-content'
-                }
-                , confirmButtonText: 'Submit'
-                , didOpen: () => {
+            `,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                didOpen: () => {
                     const form = Swal.getPopup().querySelector('#scheduleForm');
                     form.action = updateScheduleRoute.replace('__ID__', id); // Laravel route
 
@@ -1107,13 +1101,12 @@
                         });
                         updateCheckboxValue(cb);
                     });
-                }
-                , preConfirm: () => {
+                },
+                preConfirm: () => {
                     document.getElementById('scheduleForm').submit();
                 }
             });
         }
-
     </script>
 
 </x-app-layout>

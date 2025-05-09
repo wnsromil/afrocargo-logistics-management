@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class IndividualPayment extends Model
 {
     //
+    protected $guarded=[];
 }

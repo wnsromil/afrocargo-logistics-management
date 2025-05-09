@@ -31,30 +31,58 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex align-items-center tooltipSections">
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Invoice History" data-bs-toggle="modal" data-bs-target="#invoiceHistory"><i class="ti ti-history-toggle"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Individual Payment" data-bs-toggle="modal" data-bs-target="#individualPayment"><i class="ti ti-cash"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Send Invoice pdf" data-bs-toggle="modal" data-bs-target="#sendinvoicepdf"><i class="ti ti-mail"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Claim" data-bs-toggle="modal" data-bs-target="#addnewClaim"><i class="ti ti-report-money"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Print" data-bs-toggle="modal" data-bs-target="#"><i class="ti ti-printer"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Labels" data-bs-toggle="modal" data-bs-target="#InvoiceLabel"><i class="ti ti-tag-starred"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Tracking" data-bs-toggle="modal" data-bs-target="#trackingDetails"><i class="ti ti-route"></i></a>
-                <a class="circleIconBtn" data-bs-placement="bottom" title="Notes" data-bs-toggle="modal" data-bs-target="#addnewNote"><i class="ti ti-notebook"></i></a>
-            </div>
-        </x-slot>
 
         <div class="invoiceForm">
             <!-- ------------------------------- Services form ------------------------------------- -->
 
-            <form action="{{ route('admin.OrderShipment.store') }}" id="services" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group-customer customer-additional-form">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="d-sm-flex align-items-center">
-                                <div class="first">
-                                    <label for="customer_id">Customer <i class="text-danger">*</i></label>
+                                @csrf
+                                <input type="hidden" name="address_type" value="delivery">
+
+                                <input type="hidden" name="address_id">
+
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="warehouse_name">First Name <i
+                                            class="text-danger">*</i></label>
+                                    <input type="text" name="first_name" class="form-control inp"
+                                        placeholder="Enter First Name">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="last_name">Last Name <i
+                                            class="text-danger">*</i></label>
+                                    <input type="text" name="last_name" class="form-control inp"
+                                        placeholder="Enter Last Name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="contact_no1">Contact No.1 <i
+                                            class="text-danger">*</i></label>
+                                    <!-- Contact No. 1 -->
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="contact_no1">Contact No.2 </label>
+                                    <!-- Contact No. 2 -->
+                                    <div class="flaginputwrap">
+                                        <div class="customflagselect">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                @foreach ($coutry as $key => $item)
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control flagInput inp"
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                    </div>
                                 </div>
                                 <div class="middleDiv">
                                     <select name="customer_id" class="form-control select2">
@@ -75,10 +103,6 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="d-sm-flex align-items-center">
-                                <div class="first">
-                                    <label for="customer_id">Ship To <i class="text-danger">*</i></label>
                                 </div>
                                 <div class="middleDiv">
                                     <select class="js-example-basic-single select2">
@@ -95,68 +119,16 @@
                             </div>
                         </div>
 
-                    </div>
+                                @csrf
+                                <input type="hidden" name="address_type" value="pickup">
+                                <input type="hidden" name="address_id">
 
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="warehouse_name">First Name <i
+                                            class="text-danger">*</i></label>
+                                    <input type="text" name="first_name" class="form-control inp"
+                                        placeholder="Enter First Name">
 
-                    <!-- first row end  -->
-                    <div class="row mt-5 g-3">
-                        <div class="col-md-6">
-                            <div class="borderset position-relative newCustomerAdd disablesectionnew">
-                                <div class="row gx-3 gy-2">
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="warehouse_name">First Name <i class="text-danger">*</i></label>
-                                        <input type="text" name="first_name" class="form-control inp" placeholder="Enter First Name">
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="last_name">Last Name <i class="text-danger">*</i></label>
-                                        <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="contact_no1">Contact No.1 <i class="text-danger">*</i></label>
-                                        <input type="text" class="form-control flagInput inp" placeholder="Enter Contact No. 1" name="name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="contact_no1">Contact No.2 </label>
-                                        <input type="text" class="form-control flagInput inp" placeholder="Enter Contact No. 2" name="name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                        <select class="js-example-basic-single select2">
-                                            <option selected="selected">orange</option>
-                                            <option>white</option>
-                                            <option>purple</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                        <select class="js-example-basic-single select2">
-                                            <option selected="selected">orange</option>
-                                            <option>white</option>
-                                            <option>purple</option>
-                                        </select>
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                        <select class="js-example-basic-single select2">
-                                            <option selected="selected">orange</option>
-                                            <option>white</option>
-                                            <option>purple</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
-                                        <input type="text" name="Zip_code" class="form-control inp" placeholder="Enter Zip">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="Address.1">Address 1 <i class="text-danger">*</i></label>
-                                        <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 1">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="foncolor" for="Address.2">Address 2 </label>
-                                        <input type="text" name="Address.1" class="form-control inp" placeholder="Enter Address 2">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -289,7 +261,7 @@
                                 <label>Total Items</label>
                                 <input type="text" class="form-control inp readonly" readonly placeholder="0">
                             </div>
-                            <div class="col-md-3 ">
+                        </div>
 
                                 <label> Warehouse</label>
                                 <select class="js-example-basic-single select2 ">
@@ -299,143 +271,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body curve_tabel p-0 mt-5">
-                        <div class="table-responsive p-1">
-                            <table class="table table-bordered ">
-                                <thead>
-                                    <tr>
-                                        <th style="width:57px;">Item</th>
-                                        <th class="thwidth">Qty</th>
-                                        <th class="thwidth">Label Qty</th>
-                                        <th class="thwidth">Price</th>
-                                        <th class="thwidth">Value</th>
-                                        <th class="thwidth">Ins</th>
-                                        <th class="thwidth">Discount</th>
-                                        <th class="thwidth">Tax%</th>
-                                        <th class="thwidth">Total</th>
-                                        <th style="width:100px">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="mwidth">
-                                            <select class="js-example-basic-single select2 inputcolor">
-                                                <option selected="selected " class="form-cs"></option>
-                                                <option></option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-                                            <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-
-                                            <div class="text-center">
-                                                <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                                <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                    <tr>
-                                        <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
-                                                <option selected="selected " class="form-cs"></option>
-                                                <option></option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-                                            <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-
-                                            <div class="text-center">
-                                                <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                                <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-
-
-                                            </div>
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td class="mwidth"><select class="js-example-basic-single select2 inputcolor">
-                                                <option selected="selected " class="form-cs"></option>
-                                                <option></option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-                                            <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-
-                                            <div class="text-center">
-                                                <button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                                <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="mwidth"><select class="js-example-basic-single select2">
-                                                <option selected="selected " class="form-cs"></option>
-                                                <option></option>
-                                                <option></option>
-                                            </select>
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-                                            <div class="d-flex align-items-center priceInput"><input type="text" class="form-control inputcolor" placeholder=""><button class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control tdbor inputcolor" placeholder="">
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor " placeholder=""></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""></td>
-                                        <td>
-                                            <div class="text-center"><button class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                                                <button class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
-                                                <button class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button></div>
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
 
 
                     <!-- Tracking Number -->
@@ -506,7 +341,6 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
 
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
@@ -635,21 +469,6 @@
                         <div><label>Subtotal</label>
                             <input type="text" class="form-control bigInput" placeholder="0">
                         </div>
-                        <div><label>Value</label>
-                            <input type="text" class="form-control smInput" placeholder="0"></div>
-                        <div><label>Tax</label>
-                            <input type="text" class="form-control smInput" placeholder="0"></div>
-                        <div><label>Discount</label>
-                            <input type="text" class="form-control smInput" placeholder="0"></div>
-                        <div><label>Ins</label>
-                            <input type="text" class="form-control smInput" placeholder="0"></div>
-                        <div><label>Payment</label>
-                            <input type="text" class="form-control" placeholder="0"></div>
-                        <div><label>Service Fee</label>
-                            <input type="text" class="form-control" placeholder="0"></div>
-                        <div><label>Balance</label>
-                            <input type="text" class="form-control" placeholder="0"></div>
-                        <div> <button type="submit" class="btn btn-success invocebuttoncolor ">Submit</button></div>
                     </div>
                 </div>
             </form>
@@ -1381,17 +1200,19 @@
                 </div>
             </div>
         </div>
-        <!-- /Invoice History Modal -->
+    </div>
+    <!-- /Invoice History Modal -->
 
-        <!-- Individual Payment Modal -->
-        <div class="modal custom-modal invoiceSModel fade" id="individualPayment" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header border-0 border-bottom py-3">
-                        <div class="form-header modal-header-title text-start mb-0">
-                            <h4 class="mb-0">individual Payment</h4>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+    <!-- Individual Payment Modal -->
+    <div class="modal custom-modal invoiceSModel fade" id="individualPayment" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            
+            <div class="modal-content">
+                <div class="modal-header border-0 border-bottom py-3">
+                    <div class="form-header modal-header-title text-start mb-0">
+                        <h4 class="mb-0">individual Payment</h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
                         </button>
                     </div>
@@ -1424,16 +1245,17 @@
                                         <input type="text" name="userName" class="form-control inp inputbackground" readonly value="Abigel Miyagi" />
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="input-block flexblockInput mb-3">
-                                        <label for="driver_id">Currency<i class="text-danger">*</i></label>
-                                        <select class="js-example-basic-single select2  form-cs">
-                                            <option selected="selected" disabled hidden>Select Currency</option>
-                                            <option value="USD">United States - USD</option>
-                                            <option value="DKK">Greenland - DKK</option>
-                                            <option value="EUR">European Union - EUR</option>
-                                        </select>
-                                    </div>
+                            </div>
+                    
+                            <div class="col-lg-6">
+                                <div class="input-block flexblockInput mb-3">
+                                    <label>Currency <i class="text-danger">*</i></label>
+                                    <select name="currency" class="select2 form-cs" required>
+                                        <option value="">Select Currency</option>
+                                        <option value="USD">United States - USD</option>
+                                        <option value="DKK">Greenland - DKK</option>
+                                        <option value="EUR">European Union - EUR</option>
+                                    </select>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="input-block flexblockInput mb-3">
@@ -1730,123 +1552,7 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
-                        </button>
-                    </div>
-                    <div class="modal-body px-0">
-                        <body style="font-family: 'Poppins', sans-serif; margin: 0; padding: 0; font-size: 12px; color: #000;">
-                            <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; max-width:460px; margin: 0 auto; background: #fff; border: 1px solid #ffffff;">
-                                <tr>
-                                    <td>
-                                        <table aria-describedby="table-description" style="width: 100%; table-layout: fixed;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="height: unset!important; vertical-align: top;">
-                                                        <table>
-                                                            <tr>
-                                                                <td>
-                                                                    <img style="max-width: 60px; margin-right: 5px;" src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
-                                                                </td>
-                                                                <td style="height: unset!important; vertical-align: top;">
-                                                                    Afro Cargo Express Llc NY<br> 366 Concord Ave<br>
-                                                                    <!----> NY The Bronx
-                                                                    <br>
-                                                                    646-468-4135<br> 718-954-9093
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-
-                                                    <td style="height: unset!important; text-align: right;"> Afro Cargo Express Llc Abidjan<br> Avenue
-                                                        21<br>
-                                                        Rue 15 Treichville<br>
-                                                        <!----> Abidjan Autonomous District Abidjan <br> 07 09 04
-                                                        1250<br> 07 89 49 2486 </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="height: unset!important; height: 5px;"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold; font-size: 30px; color: #000; text-align: center; height: unset;"> TIV-000982
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="height: unset!important; height: 5px;"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table aria-describedby="table-description" style="width: 100%; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="height: unset!important; padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px;"> 04/11/2025</td>
-                                                    <td style="height: unset!important; padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px; text-align: right;"> Afro Cargo
-                                                        Express Llc NY </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table aria-describedby="table-description" style="width: 100%; table-layout: fixed; border-bottom: 1px solid #000;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr></tr>
-                                                <tr>
-                                                    <td><b style="font-size: 13px;">Ship To:</b><br> Fatoumata <br> 1042 Oaks Dr<br>
-                                                        <!----> Ohio Columbus 42228 <br></td>
-                                                    <td style="height: unset!important; text-align: right; font-size: 15px; font-weight: 700;"> Tracking Items: 2 </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="height: unset!important; height:0px;"></td>
-                                                </tr>
-                                                <tr></tr>
-                                                <tr>
-                                                    <td> Zeinabou <br> Abidjan<br>
-                                                        <!---->
-                                                        <!---->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="height: 5px;"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="height: unset!important; text-align: left; font-weight: 500; font-size: 14px;"> Barrel large </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="height: unset!important; height:5px;"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table aria-describedby="table-description" style="width: 100%; border-radius: 4px; border-bottom: 1px solid #000000;">
-                                            <thead>
-                                                <th></th>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="height: unset!important; text-align: center;"><img width="300px" alt="Logo" src="https://d9wi98su9qvhp.cloudfront.net/production/kroC02.png"><span style="display: block; padding-top: 5px; font-weight: bold; font-size: 16px; text-align: center;">
-                                                            Abidjam
-                                                        </span><span style="display: block; font-weight: bold; font-size: 16px; text-align: center;"> AbidjaM
-                                                        </span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="height: unset!important; height: 20px;"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </body>
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1862,181 +1568,72 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
-                        </button>
-                    </div>
-                    <div class="modal-body pt-3">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="table-responsive onlyxpadding notMinheight border">
-                                    <table class="table table-stripped table-hover datatable">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Barcode</th>
-                                                <th>Date</th>
-                                                <th>Package Type</th>
-                                                <th>Img1</th>
-                                                <th>Img2</th>
-                                                <th>Package Status</th>
-                                                <th>Warehouse</th>
-                                                <th>Container</th>
-                                                <th>User</th>
-                                                <th>Driver</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <td>060000529I1001</td>
-                                                <td>02/28/2025, 17:36</td>
-                                                <td>Imported</td>
-                                                <td>
-                                                    <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="<img style='max-width: 200px;' src='{{ asset('assets/img.png') }}'>" src="{{ asset('assets/img.png') }}">
-                                                </td>
-                                                <td>
-                                                    <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="<img style='max-width: 200px;' src='{{ asset('assets/img.png') }}'>" src="{{ asset('assets/img.png') }}">
-                                                </td>
-                                                <td>
-                                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="Out For Delivery(it is for batch creation only.)"> Out For Delivery(it is for batch creation only.)</p>
-                                                </td>
-                                                <td>Afro Cargo Bronx NYC</td>
-                                                <td>-</td>
-                                                <td>Fode Sacko</td>
-                                                <td>Fode Sacko</td>
-                                            </tr>
-                                            <tr>
-                                                <td>060000529I1002</td>
-                                                <td>03/18/2025, 11:36</td>
-                                                <td>Imported</td>
-                                                <td>
-                                                    <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="<img style='max-width: 200px;' src='{{ asset('assets/img.png') }}'>" src="{{ asset('assets/img.png') }}">
-
-                                                </td>
-                                                <td>
-                                                    <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="<img style='max-width: 200px;' src='{{ asset('assets/img.png') }}'>" src="{{ asset('assets/img.png') }}">
-                                                </td>
-                                                <td>
-                                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="Out For Delivery(it is for batch creation only.)"> WH</p>
-                                                </td>
-                                                <td>Afro Cargo Bronx NYC</td>
-                                                <td>-</td>
-                                                <td>Fode Sacko</td>
-                                                <td>Fode Sacko</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                    </button>
+                </div>
+                <div class="modal-body pt-3 pb-2">
+                    <form action="{{ route('admin.updateNote') }}" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+                            
+                                @csrf
+                                <div class="input-block mb-3">
+                                    <input type="hidden" name="invoice_id" value="{{$invoice->id}}">
+                                    <textarea name="notes" class="form-control inp" placeholder="Write Comment"></textarea>
+                                    <label class="col_000 fw-600 mb-0 mt-2">NOTE: [You can enter only 255 charcters in
+                                        the above field.]</label>
                                 </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="table-responsive lesspadding notMinheight border mt-2">
+                                <table class="table table-stripped table-hover datatable">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Note</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>{{$invoice->createdByUser->name ?? ''}}</td>
+                                            <td>{{$invoice->notes ?? ''}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="add-customer-btns text-end">
+                                <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
+                                <button type="submit" class="btn btn-primary ">Submit</button>
                             </div>
                         </div>
                     </div>
+                </form>
                 </div>
             </div>
         </div>
-        <!-- /Tracking Details Modal -->
+    </div>
+    <!--/Note Modal -->
 
-        <!-- Note Modal -->
-        <div class="modal custom-modal invoiceSModel fade" id="addnewNote" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header border-0 border-bottom py-3">
-                        <div class="form-header modal-header-title text-start mb-0">
-                            <h4 class="mb-0">Add New Note</h4>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+    @section('script')
+    
 
-                        </button>
-                    </div>
-                    <div class="modal-body pt-3 pb-2">
-                        <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="input-block mb-3">
-                                        <textarea name="PaymentAmount" class="form-control inp" placeholder="Write Comment"></textarea>
-                                        <label class="col_000 fw-600 mb-0 mt-2">NOTE: [You can enter only 255 charcters in the above field.]</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="table-responsive lesspadding notMinheight border mt-2">
-                                        <table class="table table-stripped table-hover datatable">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Note</th>
-                                                </tr>
-                                            </thead>
+    <script src="https://rawgit.com/DoersGuild/jQuery.print/master/jQuery.print.js"></script>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-                                            <tbody>
-                                                <tr>
-                                                    <td>Fode Sacko</td>
-                                                    <td>Lorem Ipsum - 04/28/2025, 08:09 am </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-3">
-                                    <div class="add-customer-btns text-end">
-                                        <button type="button" class="btn btn-outline-primary custom-btn">Cancel</button>
-                                        <button type="submit" class="btn btn-primary ">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--/Note Modal -->
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-
-        <script>
-            document.querySelectorAll('input[name="sentInvoicePdf"]').forEach(function(radio) {
-                radio.addEventListener('change', function() {
-                    document.getElementById('emailDiv').style.display = this.value === 'email' ? 'block' : 'none';
-                    document.getElementById('textorsmsDiv').style.display = this.value === 'textorsms' ? 'block' : 'none';
-                });
-            });
-
-            function toggleLoginForm(type) {
-                if (type === 'services') {
-                    document.getElementById('services').style.display = 'block';
-                    document.getElementById('supplies').style.display = 'none';
-                    document.getElementById('servicesBtn').classList.add('active3');
-                    document.getElementById('suppliesBtn').classList.remove('active3');
-
-                } else if (type === 'supplies') {
-                    document.getElementById('services').style.display = 'none';
-                    document.getElementById('supplies').style.display = 'block';
-                    document.getElementById('servicesBtn').classList.remove('active3');
-                    document.getElementById('suppliesBtn').classList.add('active3');
-
-                }
-            }
-
-            window.onload = function() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const formType = urlParams.get('id') || 'services';
-                toggleLoginForm(formType);
-            };
-
-        </script>
-        <script>
-            document.getElementById('addCustomer').onclick = () => document.querySelector('.newCustomerAdd').classList.toggle('none');
-
-            document.getElementById('addShiptoAddress').onclick = () => document.querySelector('.newShipmentAddress').classList.toggle('none');
-
-        </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var parent = document.querySelector('.tooltipSections'); // <-- only parent
-                if (parent) {
-                    var tooltipTriggerList = [].slice.call(parent.querySelectorAll('[title]'));
-                    tooltipTriggerList.forEach(function(el) {
-                        new bootstrap.Tooltip(el);
-                    });
-                }
-            });
-
-        </script>
-
-    </x-app-layout>
+    <script src="{{asset('js/invoice.js')}}"></script>
+    
+    <script>
+        var supplyItems = @json($inventories->get('Supply'));
+        var pickupAddress = @json($pickupAddress);
+        var deliveryAddress = @json($deliveryAddress);
+        var currentRow = null;
+        var invoce_type ='{{$invoice->invoce_type}}';
+    </script>
+    @endsection
+</x-app-layout>

@@ -201,9 +201,11 @@ class InvoiceController extends Controller
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
         $invoice->weight = $request->weight ?? 0;
+        $invoice->price = $request->value ?? 0;
         $invoice->balance = $request->balance ?? 0;
         $invoice->total_price = $request->total_price;
         $invoice->total_qty = $request->total_qty ?? 0;
+        $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
         $invoice->duedaterange = Carbon::createFromFormat('m-d-Y', $request->currentdate)->format('Y-m-d');
         $invoice->currentdate = Carbon::createFromFormat('m-d-Y', $request->currentdate)->format('Y-m-d'); 
@@ -227,59 +229,32 @@ class InvoiceController extends Controller
     
         $invoice->save();
 
+        $validated =[
+            'invoice_id' => $invoice->id,
+            'created_by' => auth()->id,
+            'personal' => 'Yes',
+            'currency' => 'USD',
+            'payment_type' => 'boxcredit',
+            'payment_amount' => $invoice->payment,
+            'reference' => 'NA',
+            'comment' => 'NA',
+            'invoice_amount' => $invoice->grand_total,
+            'total_balance' => $invoice->balance,
+            'exchange_rate_balance' => '0',
+            'applied_payments' => '0',
+            'applied_total_usd' => '0',
+            'current_balance' => '0',
+            'exchange_rate' => '0',
+            'balance_after_exchange_rate' => '0',
+            'payment_date' => now(),
+        ];
+        if($invoice->payment>0){
+            $data = $this->individualPayment($validated);
+        }
+
         $this->saveInvoiceHistory($invoice->id,"created");
         return redirect()->route('admin.invoices.index')->with('success', 'Invoice saved successfully.');
    
-    }
-
-    public function saveIndividualPayment(Request $request)
-    {
-        $request->validate([
-            'invoice_id' => 'nullable|exists:invoices,id',
-            'created_by' => 'nullable|exists:users,id',
-            'personal' => 'nullable|string',
-            'currency' => 'required|string',
-            'payment_type' => 'required|in:boxcredit,cash,cheque,CreditCard',
-            'payment_amount' => 'required|numeric',
-            'reference' => 'nullable|string',
-            'comment' => 'nullable|string',
-            'invoice_amount' => 'required|numeric',
-            'total_balance' => 'required|numeric',
-            'exchange_rate_balance' => 'nullable|numeric',
-            'applied_payments' => 'nullable|numeric',
-            'applied_total_usd' => 'nullable|numeric',
-            'current_balance' => 'nullable|numeric',
-            'exchange_rate' => 'nullable|numeric',
-            'balance_after_exchange_rate' => 'nullable|numeric',
-            'payment_date' => 'required|date',
-        ]);
-
-        // Save individual payment
-        $payment = IndividualPayment::create($request->all());
-
-        // Update the associated invoice
-        if ($request->invoice_id) {
-            $invoice = Invoice::find($request->invoice_id);
-            if ($invoice) {
-                // Subtract payment from invoice balance
-                $newBalance = $invoice->balance - $request->payment_amount;
-
-                $invoice->balance = $newBalance;
-
-                // Optional: update payment field (total paid so far)
-                $invoice->payment = ($invoice->payment ?? 0) + $request->payment_amount;
-
-                // If fully paid, update is_paid and status
-                if ($newBalance <= 0) {
-                    $invoice->is_paid = 1;
-                    $invoice->status = 'paid'; // or whatever status indicates payment completion
-                }
-
-                $invoice->save();
-            }
-        }
-
-        return redirect()->back()->with('success', 'Payment saved successfully!');
     }
 
 
@@ -303,7 +278,7 @@ class InvoiceController extends Controller
     public function edit(string $id)
     {
         //
-        $invoice = Invoice::with(['deliveryAddress','pickupAddress'])->findOrFail($id);
+        $invoice = Invoice::with(['deliveryAddress','pickupAddress','createdByUser'])->findOrFail($id);
 
         $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id',$id)->latest()->first();
 
@@ -408,9 +383,11 @@ class InvoiceController extends Controller
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
         $invoice->weight = $request->weight ?? 0;
+        $invoice->price = $request->value ?? 0;
         $invoice->balance = $request->balance ?? 0;
         $invoice->total_price = $request->total_price;
         $invoice->total_qty = $request->total_qty ?? 0;
+        $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems;
         $invoice->duedaterange = $request->duedaterange;
         if($request->currentdate){
@@ -440,6 +417,18 @@ class InvoiceController extends Controller
         $this->saveInvoiceHistory($invoice->id,"updated");
 
         return redirect()->route('admin.invoices.index')->with('success', 'Invoice updated successfully.');
+    }
+
+    public function updateNote(Request $request)
+    {
+        // return $request->all();
+
+        Invoice::where('id',$request->invoice_id)->update([
+            'notes'=>$request->notes,
+            'created_by'=>auth()->id()
+        ]);
+        
+        return redirect()->back()->with('success', 'Note updated successfully.');
     }
 
 
@@ -507,6 +496,8 @@ class InvoiceController extends Controller
                     'full_name' => $user->full_name,
                     'mobile_number' => $user->mobile_number,
                     'alternative_mobile_number' => $user->alternative_mobile_number,
+                    'mobile_number_code_id' => $user->mobile_number_code_id ?? 1,
+                    'alternative_mobile_number_code_id' => $user->alternative_mobile_number_code_id ?? 1,
                     'address1' => $user->address,
                     'address2' => $user->address_2,
                     'pincode' => $user->pincode,
@@ -560,13 +551,17 @@ class InvoiceController extends Controller
                 'password' => bcrypt('password'), // Set a default password
             ]
         );
-
-        $address = Address::updateOrCreate(
-            [
-                // 'user_id' => $user->id,
+        if(!empty($request->address_id)){
+           $check['id'] =  $request->address_id;
+        }else{
+            $check = [
                 'mobile_number' => $validatedData['mobile_number'],
                 'address_type' => $validatedData['address_type'],
-            ],
+            ];
+        }
+
+        $address = Address::updateOrCreate(
+            $check,
             [
                 'full_name' => $validatedData['first_name'] . " " . $validatedData['last_name'],
                 'alternative_mobile_number_code_id' => $validatedData['alternative_mobile_number_code_id'] ?? null,
@@ -612,6 +607,62 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function saveIndividualPayment(Request $request)
+    {
+        
+        $validated =$request->validate([
+            'invoice_id' => 'nullable|exists:invoices,id',
+            'created_by' => 'nullable|exists:users,id',
+            'personal' => 'nullable|string',
+            'currency' => 'required|string',
+            'payment_type' => 'required|in:boxcredit,cash,cheque,CreditCard',
+            'payment_amount' => 'required|numeric',
+            'reference' => 'nullable|string',
+            'comment' => 'nullable|string',
+            'invoice_amount' => 'required|numeric',
+            'total_balance' => 'required|numeric',
+            'exchange_rate_balance' => 'nullable|numeric',
+            'applied_payments' => 'nullable|numeric',
+            'applied_total_usd' => 'nullable|numeric',
+            'current_balance' => 'nullable|numeric',
+            'exchange_rate' => 'nullable|numeric',
+            'balance_after_exchange_rate' => 'nullable|numeric',
+            'payment_date' => 'required|date',
+        ]);
+
+        $data = $this->individualPayment($validated);
+        return redirect()->back()->with('success', 'Payment saved successfully!');
+    }
+    
+    protected function individualPayment($validated){
+        // Save individual payment
+        $payment = IndividualPayment::create($validated);
+
+        // Update the associated invoice
+        if ($validated['invoice_id']) {
+            $invoice = Invoice::find($validated['invoice_id']);
+            if ($invoice) {
+                // Subtract payment from invoice balance
+                $newBalance = $invoice->balance - $validated['payment_amount'];
+
+                $invoice->balance = $newBalance;
+
+                // Optional: update payment field (total paid so far)
+                $invoice->payment = ($invoice->payment ?? 0) + $validated['payment_amount'];
+
+                // If fully paid, update is_paid and status
+                if ($newBalance <= 0) {
+                    $invoice->is_paid = 1;
+                    $invoice->status = 'paid'; // or whatever status indicates payment completion
+                }
+
+                $invoice->save();
+            }
+        }
+
+        return $payment;
+    }
+
     protected function saveInvoiceHistory($invoice_id, $status, $orderData = [])
     {
         $invoice = Invoice::with(['deliveryAddress', 'pickupAddress'])->findOrFail($invoice_id);
@@ -632,7 +683,8 @@ class InvoiceController extends Controller
             'total_amount' => $invoice->total_amount,
             'partial_payment' => $invoice->total_amount,
             'remaining_payment' => $invoice->total_amount,
-            'descriptions' => $invoice->descriptions ?? null,
+            'descriptions' => $invoice->descrition ?? null,
+            'weight' => $invoice->weight ?? null,
             'destination_address' => optional($invoice->deliveryAddress)->address,
             'destination_user_name' => optional($invoice->deliveryAddress)->full_name,
             'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
@@ -661,22 +713,24 @@ class InvoiceController extends Controller
 
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
-            ParcelInventorie::updateOrCreate(
-                [
-                    'parcel_id' => $invoice->parcel_id,
-                    'invoice_id' => $invoice->id,
-                    'inventorie_id' => $item['supply_id'],
-                ],
-                [
-                    'inventorie_item_quantity' => $item['qty'],
-                    'inventory_name' => $item['supply_name'],
-                    'label_qty' => $item['label_qty'],
-                    'price' => $item['price'],
-                    'ins' => $item['ins'],
-                    'tax' => $item['tax'],
-                    'total' => $item['total'],
-                ]
-            );
+            if(!empty($item['supply_id'])){
+                ParcelInventorie::updateOrCreate(
+                    [
+                        'parcel_id' => $invoice->parcel_id,
+                        'invoice_id' => $invoice->id,
+                        'inventorie_id' => $item['supply_id'],
+                    ],
+                    [
+                        'inventorie_item_quantity' => $item['qty'],
+                        'inventory_name' => $item['supply_name'],
+                        'label_qty' => $item['label_qty'],
+                        'price' => $item['price'],
+                        'ins' => $item['ins'],
+                        'tax' => $item['tax'],
+                        'total' => $item['total'],
+                    ]
+                );
+            }
         }
 
         // Create parcel history (if parcel was created or exists)
