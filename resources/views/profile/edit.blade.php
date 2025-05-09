@@ -4,12 +4,12 @@
             {{ __('Profile') }}
         </h2>
         @section('style')
-        <style>
-            .card.mainCardGlobal:before {
-                display: none;
-            }
-        </style>
-    @endsection
+            <style>
+                .card.mainCardGlobal:before {
+                    display: none;
+                }
+            </style>
+        @endsection
     </x-slot>
 
     <section>
@@ -38,11 +38,13 @@
                         <div class="upload-profile me-2 align-items-center mt-4">
                             <label class="profile-img avatar avatar-xxl profileImg profile-cover-avatar">
                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
-                                    <img class="avatar-img" src="{{ asset($user->profile_pic) }}" alt="Profile Image" id="blah">
+                                    <img class="avatar-img" src="{{ asset($user->profile_pic) }}" alt="Profile Image"
+                                        id="blah">
                                 @else
-                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-icon.png') }}" alt="Profile Image" id="blah">
+                                    <img class="avatar-img" src="{{ asset('assets/img/profiles/avatar-icon.png') }}"
+                                        alt="Profile Image" id="blah">
                                 @endif
-                            
+
                                 <!-- Only this icon will trigger input -->
                                 <span class="avatar-edit iconResize">
                                     <label for="file-input" style="margin-bottom: 0; cursor: pointer;">
@@ -50,16 +52,17 @@
                                     </label>
                                 </span>
                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
-                                <span class="avatar-trash iconResize bg-danger" style="cursor: pointer;" onclick="deleteImage()">
-                                    <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
-                                </span>
+                                    <span class="avatar-trash iconResize bg-danger" style="cursor: pointer;"
+                                        onclick="deleteImage()">
+                                        <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
+                                    </span>
                                 @endif
                             </label>
-                            
+
                             <!-- Hidden File Input -->
                             <input id="file-input" type="file" name="profile_pic" style="display:none;"
-                            onchange="readURL(this);" accept="image/png, image/jpeg">
-                            
+                                onchange="readURL(this);" accept="image/png, image/jpeg">
+
                         </div>
                     </form>
                 </div>
@@ -88,9 +91,8 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3 profileUpdateFont">
                                     <p class="profileUpdateFont required">Last Name</p>
-                                    <input type="text" name="last_name"
-                                        value="{{ old('last_name', $user->last_name) }}" class="form-control"
-                                        placeholder="Enter Last Name" required>
+                                    <input type="text" name="last_name" value="{{ old('last_name', $user->last_name) }}"
+                                        class="form-control" placeholder="Enter Last Name" required>
                                     <span class="error text-danger">
                                         @error('last_name')
                                             {{ $message }}
@@ -114,7 +116,7 @@
                                 </div>
                             </div>
                             <input type="hidden" id="country_code" name="country_code"
-                            value="{{ old('country_code', $user->country_code) }}">
+                                value="{{ old('country_code', $user->country_code) }}">
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
@@ -131,7 +133,7 @@
                             </div>
 
                             <input type="hidden" id="country_code_2" name="country_code_2"
-                            value="{{ old('country_code_2', $user->country_code_2) }}">
+                                value="{{ old('country_code_2', $user->country_code_2) }}">
 
                             {{-- <div class="col-md-6">
                                 <label>Email</label> <span class="text-danger">*</span>
@@ -139,77 +141,18 @@
                                     class="form-control" readonly placeholder="Enter Email Address">
                                 <span class="error text-danger">
                                     @error('email')
-                                        {{ $message }}
+                                    {{ $message }}
                                     @enderror
                                     </spa n>
                             </div> --}}
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
-                                    <p class="profileUpdateFont required">Country</p>
-                                    <select name="country_id" id="country" class="form-control dropdown select2">
-                                        <option value="" readonly>Select Country</option>
-                                        @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}"
-                                                {{ old('country_id', $user->country_id) == $country->id ? 'selected' : '' }}>
-                                                {{ $country->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error text-danger">
-                                        @error('country_id')
-                                            {{ $message }}
-                                        @enderror
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 col-12">
-                                <div class="input-block mb-3">
-                                    <p class="profileUpdateFont required">State</p>
-                                    <select name="state_id" id="state" class="form-control select2">
-                                        <option value="">Select State</option>
-                                    </select>
-                                    <span class="error text-danger">
-                                        @error('state_id')
-                                            {{ $message }}
-                                        @enderror
-                                    </span>
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-6 col-12">
-                                <div class="input-block mb-3">
-                                    <p class="profileUpdateFont required">City</p>
-                                    <select name="city_id" id="city" class="form-control select2">
-                                        <option value="">Select City</option>
-                                    </select>
-                                    <span class="error text-danger">
-                                        @error('city_id')
-                                            {{ $message }}
-                                        @enderror
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 col-12">
-                                <div class="input-block mb-3">
-                                    <p class="profileUpdateFont required">Zip Code</p>
-                                    <input type="text" name="pincode"
-                                        value="{{ old('pincode', $user->pincode) }}" class="form-control"
-                                        placeholder="Enter Your Zip Code">
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-6 col-12">
-                                <div class="input-block mb-3">
                                     <p class="profileUpdateFont required">Address 1</p>
-                                    <input type="text" name="address"
-                                        value="{{ old('address', $user->address) }}" class="form-control"
-                                        placeholder="Enter your Address">
+                                    <input type="text" name="address_1" value="{{ old('address_1', $user->address) }}"
+                                        class="form-control" placeholder="Enter your Address">
                                     <span class="error text-danger">
-                                        @error('address')
+                                        @error('address_1')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -219,9 +162,8 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Address 2</p>
-                                    <input type="text" name="address_2"
-                                        value="{{ old('address_2', $user->address_2) }}" class="form-control"
-                                        placeholder="Enter your Address">
+                                    <input type="text" name="address_2" value="{{ old('address_2', $user->address_2) }}"
+                                        class="form-control" placeholder="Enter your Address">
                                     <span class="error text-danger">
                                         @error('address_2')
                                             {{ $message }}
@@ -229,6 +171,56 @@
                                     </span>
                                 </div>
                             </div>
+
+                            <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+                                    <p class="profileUpdateFont required">Country</p>
+                                    <input type="text" name="country"
+                                        value="{{ old('country', $user->country_id) }}" class="form-control inp"
+                                        readonly style="background: #ececec;">
+                                    @error('country')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+                                    <p class="profileUpdateFont required">State</p>
+                                    <input type="text" name="state" value="{{ old('country', $user->state_id) }}"
+                                        class="form-control inp" readonly style="background: #ececec;">
+                                    @error('state')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+                                    <p class="profileUpdateFont required">City</p>
+                                    <input type="text" name="city" value="{{ old('country', $user->city_id) }}"
+                                        class="form-control inp" readonly style="background: #ececec;">
+                                    @error('city')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-12">
+                                <div class="input-block mb-3">
+                                    <p class="profileUpdateFont required">Zip Code</p>
+                                    <input type="text" name="Zip_code" class="form-control" placeholder="Enter Zip Code"
+                                        value="{{ $user->pincode ?? old('Zip_code') }}">
+                                    @error('Zip_code')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+
+
                             <div class="col-lg-12">
                                 <div class="btn-path text-end">
                                     <a href="{{ route('profile.index') }}"
@@ -255,7 +247,7 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('blah').src = e.target.result;
                     setTimeout(() => {
                         document.getElementById('profileForm').submit();
@@ -277,7 +269,7 @@
             // }
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             var selectedCountry = "{{ $user->country_id }}";
             var selectedState = "{{ $user->state_id }}";
             var selectedCity = "{{ $user->city_id }}";
@@ -288,9 +280,9 @@
                 $.ajax({
                     url: "{{ url('api/get-states') }}/" + selectedCountry,
                     method: "GET",
-                    success: function(response) {
+                    success: function (response) {
                         // $('#state').append('<option value="">Select State</option>');
-                        $.each(response, function(key, value) {
+                        $.each(response, function (key, value) {
                             let selected = (value.id == selectedState) ? 'selected' : '';
                             $('#state').append(
                                 `<option value="${value.id}" ${selected}>${value.name}</option>`
@@ -306,7 +298,7 @@
             }
 
             //  On State Change Load Cities
-            $('#state').on('change', function() {
+            $('#state').on('change', function () {
                 var stateId = $(this).val();
                 loadCities(stateId);
             });
@@ -315,9 +307,9 @@
                 $.ajax({
                     url: "{{ url('api/get-cities') }}/" + stateId,
                     method: "GET",
-                    success: function(response) {
+                    success: function (response) {
                         $('#city').html('<option value="">Select City</option>');
-                        $.each(response, function(key, value) {
+                        $.each(response, function (key, value) {
                             let selected = (value.id == selectedCity) ? 'selected' : '';
                             $('#city').append(
                                 `<option value="${value.id}" ${selected}>${value.name}</option>`
@@ -327,40 +319,40 @@
                 });
             }
         });
-  
+
         $(document).ready(function () {
-                function getIsoCodeFromDialCode(dialCode) {
-                    const allCountries = window.intlTelInputGlobals.getCountryData();
-                    dialCode = dialCode.replace('+', '');
-                    const match = allCountries.find(c => c.dialCode === dialCode);
-                    return match ? match.iso2 : 'us'; // fallback to India
-                }
+            function getIsoCodeFromDialCode(dialCode) {
+                const allCountries = window.intlTelInputGlobals.getCountryData();
+                dialCode = dialCode.replace('+', '');
+                const match = allCountries.find(c => c.dialCode === dialCode);
+                return match ? match.iso2 : 'us'; // fallback to India
+            }
 
-                function initializeIntlTelInput(inputId, hiddenInputId, userDialCode) {
-                    const isoCode = getIsoCodeFromDialCode(userDialCode);
-                    const input = document.querySelector(inputId);
+            function initializeIntlTelInput(inputId, hiddenInputId, userDialCode) {
+                const isoCode = getIsoCodeFromDialCode(userDialCode);
+                const input = document.querySelector(inputId);
 
-                    const iti = window.intlTelInput(input, {
-                        initialCountry: isoCode,
-                        separateDialCode: true,
-                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-                    });
+                const iti = window.intlTelInput(input, {
+                    initialCountry: isoCode,
+                    separateDialCode: true,
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                });
 
-                    // Update country code when country changes
-                    input.addEventListener("countrychange", function () {
-                        const dialCode = iti.getSelectedCountryData().dialCode;
-                        $(hiddenInputId).val("+" + dialCode);
-                    });
+                // Update country code when country changes
+                input.addEventListener("countrychange", function () {
+                    const dialCode = iti.getSelectedCountryData().dialCode;
+                    $(hiddenInputId).val("+" + dialCode);
+                });
 
-                    // Also update immediately on page load
-                    const initialDialCode = iti.getSelectedCountryData().dialCode;
-                    $(hiddenInputId).val("+" + initialDialCode);
-                }
+                // Also update immediately on page load
+                const initialDialCode = iti.getSelectedCountryData().dialCode;
+                $(hiddenInputId).val("+" + initialDialCode);
+            }
 
-                // Pass dial code like '+91' from Laravel
-                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+1' }}");
-                initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+1' }}");
-            });
-  </script>
+            // Pass dial code like '+91' from Laravel
+            initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+1' }}");
+            initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+1' }}");
+        });
+    </script>
 
 </x-app-layout>

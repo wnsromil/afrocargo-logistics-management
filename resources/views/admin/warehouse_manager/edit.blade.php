@@ -18,6 +18,13 @@
         @method('PUT')
         <div class="form-group-customer customer-additional-form">
             <div class="row">
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="foncolor" for="company_name">Manager ID</label>
+                    <input type="text" class="form-control inp" style="background: #ececec;"
+                        placeholder="" value="{{ $manager_data->unique_id }}" readonly>
+                </div>
+
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -76,9 +83,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="address">Address <i class="text-danger">*</i></label>
-                        <input type="text" name="address" class="form-control" placeholder="Enter Address"
-                        value="{{$manager_data->address ?? old('address') }}">
-                        @error('address')
+                        <input type="text" name="address_1" class="form-control" placeholder="Enter Address"
+                        value="{{$manager_data->address ?? old('address_1') }}">
+                        @error('address_1')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

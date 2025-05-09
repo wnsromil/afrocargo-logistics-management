@@ -41,15 +41,6 @@ class CustomerController extends Controller
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%");
-                    // ->orWhereHas('warehouse.country', function ($q) use ($search) {
-                    //     $q->where('name', 'LIKE', "%$search%");
-                    // })
-                    // ->orWhereHas('warehouse.state', function ($q) use ($search) {
-                    //     $q->where('name', 'LIKE', "%$search%");
-                    // })
-                    // ->orWhereHas('warehouse.city', function ($q) use ($search) {
-                    //     $q->where('name', 'LIKE', "%$search%");
-                    // });
                 });
             })
             ->latest('id')
@@ -97,20 +88,15 @@ class CustomerController extends Controller
             ],
             'alternate_mobile_no' => 'nullable|max:10',
             'address_1' => 'required|string|max:255',
-            'country' => 'required|string|exists:countries,id',
+            'country' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
-            'Zip_code' => 'required|string|max:10',
+            'Zip_code' => 'nullable|string|max:10',
             'username' => 'required|string|max:255|unique:users,username',
-            // 'password' => 'required|string|min:6|confirmed',
-            // 'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
             'country_code' => 'required',
             'country_code_2' => 'required|string',
-            // 'signature_date' => 'nullable|date_format:m/d/Y',
-            // 'license_expiry_date' => 'nullable|date_format:m/d/Y'
-
         ]);
 
 
@@ -256,10 +242,10 @@ class CustomerController extends Controller
             ],
             'alternate_mobile_no' => 'nullable',
             'address_1' => 'required|string|max:255',
-            'country' => 'required|string|exists:countries,id',
+            'country' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
-            'Zip_code' => 'required|string|max:10',
+            'Zip_code' => 'nullable|string|max:10',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             // 'password' => 'nullable|string|min:6|confirmed',
             // 'password_confirmation' => 'nullable|string',

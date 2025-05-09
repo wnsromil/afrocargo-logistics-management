@@ -29,6 +29,7 @@ use App\Http\Controllers\Web\Admin\{
     ContainerController,
     TemplateCategoryController,
     TemplateController,
+    AutoCallBatchController,
     ScheduleController,
 };
 use App\Mail\RegistorMail;
@@ -123,6 +124,7 @@ Route::get('/notificationsend', function () {
     return view('admin.notificationsend.create');
 });
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -173,6 +175,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('user_role', RoleManagementController::class);
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
+        Route::resource('autocall', AutoCallBatchController::class);
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
@@ -220,6 +223,10 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/container/{id}', function () {
             return view('admin.container.show');
         })->name('container.show');
+        
+        Route::get('/create-shipTo', function () {
+            return view('admin.customer.createShipTo');
+        })->name('createShipTo');
     });
 });
 

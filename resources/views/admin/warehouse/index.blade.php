@@ -48,7 +48,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
+                                <th>Warehouse ID</th>
                                 <th>Warehouse Name</th>
                                 <th>Warehouse Code</th>
                                 <th>Address</th>
@@ -65,17 +65,16 @@
                             @forelse ($warehouses as $index => $warehouse)
                             <tr>
                                 <td>
-                                    {{ $serialStart + $index + 1 }}
+                                    {{ $warehouse->unique_id ?? '-' }}
                                 </td>
-
                                 <td>{{ ucfirst($warehouse->warehouse_name ?? '') }}</td>
                                 <td><span>{{ $warehouse->warehouse_code ?? '-' }}</span></td>
                                 <td>
                                     <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $warehouse->address ?? '-' }}">{{ $warehouse->address ?? '-' }}</p>
                                 </td>
-                                <td>{{ $warehouse->city->name ?? '-' }}</td>
-                                <td>{{ $warehouse->state->name ?? '-' }}</td>
-                                <td>{{ $warehouse->country->name ?? '-' }}</td>
+                                <td>{{ $warehouse->city_id ?? '-' }}</td>
+                                <td>{{ $warehouse->state_id ?? '-' }}</td>
+                                <td>{{ $warehouse->country_id ?? '-' }}</td>
                                 <td>{{ $warehouse->zip_code ?? '-' }}</td>
                                 <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                                 <td>

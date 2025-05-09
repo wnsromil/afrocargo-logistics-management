@@ -38,6 +38,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/scss/layout/select.scss') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -52,8 +53,7 @@
     <script src="{{ asset('assets/js/layout.js') }}"></script>
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy8ZtqQEZrpb7rLrDdk6eNQihf2I8LpJY&libraries=places"
-        async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
 
@@ -168,6 +168,7 @@
     <script src="{{ asset('assets/js/greedynav.js') }}"></script>
     <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/admin/select2.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 
     <!-- Intl Tell Input js -->
     <script src="{{ asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>

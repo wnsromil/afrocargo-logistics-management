@@ -18,6 +18,13 @@
         @method('PUT')
         <div class="form-group-customer customer-additional-form">
             <div class="row">
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="foncolor" for="company_name">Warehouse ID</label>
+                    <input type="text" class="form-control inp" style="background: #ececec;" placeholder=""
+                        value="{{ $warehouse->unique_id }}" readonly>
+                </div>
+
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -46,9 +53,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="address">Address <i class="text-danger">*</i></label>
-                        <input type="text" name="address" class="form-control" placeholder="Enter Address"
-                            value="{{ $warehouse->address ?? old('address') }}">
-                        @error('address')
+                        <input type="text" name="address_1" class="form-control" placeholder="Enter Address"
+                            value="{{ $warehouse->address ?? old('address_1') }}">
+                        @error('address_1')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -58,17 +65,12 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="country_id">Country <i class="text-danger">*</i></label>
-
-                        <select name="country_id" id="country" class="form-control select2">
-                            <option value="">Select Country</option>
-                            @foreach($countries as $country)
-                                <option {{$warehouse->country_id == $country->id ? 'selected' : ''}} value="{{ $country->id }}">
-                                    {{ $country->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('country_id')
-                            <span class="text-danger">{{ $message }}</span>
+                        <input type="text" name="country" value="{{ old('country', $warehouse->country_id) }}"
+                            class="form-control inp" readonly style="background: #ececec;">
+                        @error('country')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
+
                     </div>
                 </div>
 
@@ -76,11 +78,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="state_id">State <i class="text-danger">*</i></label>
-                        <select name="state_id" id="state" class="form-control select2">
-                            <option value="">Select State</option>
-                        </select>
-                        @error('state_id')
-                            <span class="text-danger">{{ $message }}</span>
+                        <input type="text" name="state" value="{{ old('country', $warehouse->state_id) }}"
+                            class="form-control inp" readonly style="background: #ececec;">
+                        @error('state')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -88,12 +89,11 @@
                 <!-- City -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="city_id">City <i class="text-danger">*</i></label>
-                        <select name="city_id" id="city" class="form-control select2">
-                            <option value="">Select City</option>
-                        </select>
-                        @error('city_id')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label for="city">City<i class="text-danger">*</i></label>
+                        <input type="text" name="city" value="{{ old('country', $warehouse->city_id) }}"
+                            class="form-control inp" readonly style="background: #ececec;">
+                        @error('city')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -101,10 +101,10 @@
                 <!-- Zip Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="zip_code">Zip Code <i class="text-danger">*</i></label>
-                        <input type="text" name="zip_code" class="form-control" placeholder="Enter Zip Code"
-                            value="{{ $warehouse->zip_code ?? old('zip_code') }}">
-                        @error('zip_code')
+                        <label for="Zip_code">Zip Code</label>
+                        <input type="text" name="Zip_code" class="form-control" placeholder="Enter Zip Code"
+                            value="{{ $warehouse->zip_code ?? old('Zip_code') }}">
+                        @error('Zip_code')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -114,13 +114,14 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="mobile_code" id="edit_mobile_code" class="form-control" placeholder="Enter Contact Number"
-                        value="{{ $warehouse->phone ?? old('phone') }}">
+                        <input type="text" name="mobile_code" id="edit_mobile_code" class="form-control"
+                            placeholder="Enter Contact Number" value="{{ $warehouse->phone ?? old('phone') }}">
                         @error('mobile_code')
-                        <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+
                 <input type="hidden" id="country_code" name="country_code"
                     value="{{ old('country_code', $warehouse->country_code) }}">
                 <!-- Status -->
@@ -216,35 +217,35 @@
         });
     </script>
     <script>
-      $(document).ready(function () {
-        function initializeIntlTelInput(inputId, hiddenInputId, defaultCountryCode) {
-            const input = document.querySelector(inputId);
+        $(document).ready(function () {
+            function initializeIntlTelInput(inputId, hiddenInputId, defaultCountryCode) {
+                const input = document.querySelector(inputId);
 
-            const iti = window.intlTelInput(input, {
-                initialCountry: defaultCountryCode ? defaultCountryCode.toLowerCase() : "us",
-                separateDialCode: true,
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-            });
+                const iti = window.intlTelInput(input, {
+                    initialCountry: defaultCountryCode ? defaultCountryCode.toLowerCase() : "us",
+                    separateDialCode: true,
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                });
 
-            // After plugin initializes, set the hidden input to the correct dial code
-            setTimeout(() => {
-                const dialCode = iti.getSelectedCountryData().dialCode;
-                if (dialCode) {
-                    $(hiddenInputId).val("+" + dialCode);
-                }
-            }, 200);
+                // After plugin initializes, set the hidden input to the correct dial code
+                setTimeout(() => {
+                    const dialCode = iti.getSelectedCountryData().dialCode;
+                    if (dialCode) {
+                        $(hiddenInputId).val("+" + dialCode);
+                    }
+                }, 200);
 
-            // Update hidden input on country change
-            input.addEventListener("countrychange", function () {
-                const dialCode = iti.getSelectedCountryData().dialCode;
-                if (dialCode) {
-                    $(hiddenInputId).val("+" + dialCode);
-                }
-            });
-        }
+                // Update hidden input on country change
+                input.addEventListener("countrychange", function () {
+                    const dialCode = iti.getSelectedCountryData().dialCode;
+                    if (dialCode) {
+                        $(hiddenInputId).val("+" + dialCode);
+                    }
+                });
+            }
 
-        // Laravel should pass 2-letter country code like 'IN', 'US', 'GB'
-        initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $warehouse->country_code ?? 'US' }}");
-    });
+            // Laravel should pass 2-letter country code like 'IN', 'US', 'GB'
+            initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $warehouse->country_code ?? 'US' }}");
+        });
     </script>
 </x-app-layout>

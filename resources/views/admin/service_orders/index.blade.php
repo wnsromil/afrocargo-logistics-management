@@ -319,8 +319,9 @@
                                         </li>
                                     </td>
                                     <td class="btntext">
-                                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                            class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                        <a href="{{ route('admin.service_orders.show', $parcel->id) }}"> <button
+                                                class=orderbutton><img
+                                                    src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
                                     </td>
                                 </tr>
                             @empty
@@ -449,7 +450,8 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="input-block mb-3">
                                 <label class="foncolor">Delivery Man<i class="text-danger">*</i></label>
-                                <select class="js-example-basic-single select2" id="deliverydriverDropdown" name="driver_id">
+                                <select class="js-example-basic-single select2" id="deliverydriverDropdown"
+                                    name="driver_id">
                                     <option selected="selected" value="">Select delivery Man</option>
                                 </select>
                                 <div id="deliverydriverError" class="text-danger small mt-1"></div>
