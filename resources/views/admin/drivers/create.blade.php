@@ -7,7 +7,7 @@
         <p class="subhead">Add Driver</p>
     </x-slot>
 
-    <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
+    {{-- <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="form-group-customer customer-additional-form">
@@ -164,23 +164,13 @@
         <button type="submit" class="btn btn-primary ">Submit</button>
 
     </div>
-    </form>
+    </form> --}}
 
-    {{-- <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group-customer customer-additional-form">
             <div class="row">
-                <!-- Driver ID -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label class="foncolor" for="driverUsername">Driver ID<i class="text-danger">*</i></label>
-                        <input type="text" name="driverUsername" class="form-control inp" readonly value="DUS001" placeholder="Enter Driver ID" value="{{ old('driverUsername') }}">
-                        @error('driverUsername')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
 
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -451,7 +441,7 @@
             <button type="submit" class="btn btn-primary ">Submit</button>
 
         </div>
-    </form> --}}
+    </form>
 
     @section('script')
     <script>
