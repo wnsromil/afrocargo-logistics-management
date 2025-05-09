@@ -226,6 +226,14 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/create-shipTo', function () {
             return view('admin.customer.createShipTo');
         })->name('createShipTo');
+
+        Route::get('/add-pickups', function () {
+            return view('admin.customer.addPickups');
+        })->name('addPickups');
+        
+        Route::get('/add-pickups', function () {
+            return view('admin.customer.addPickups');
+        })->name('addPickups');
     });
 });
 
