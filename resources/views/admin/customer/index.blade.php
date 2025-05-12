@@ -37,11 +37,13 @@
                         <div class="inputGroup w-50 position-relative customInputSearch mx-3">
                             <i class="ti ti-search"></i>
                             <input type="text" class="form-control form-cs" placeholder="Search" name="search"
-                                value="{{ request('type') === 'customer' ? request('search') : '' }}" id="customerSearch">
+                                value="{{ request('type') === 'customer' ? request('search') : '' }}"
+                                id="customerSearch">
                             <input type="hidden" name="type" value="customer">
                         </div>
                         <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"> <i class="fe fe-refresh-ccw"></i> </button>
+                        <button type="button" ="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Refresh" onclick="resetForm()"> <i class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>
             </div>
@@ -56,7 +58,8 @@
                             <input type="hidden" name="type" value="ShipTo">
                         </div>
                         <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"> <i class="fe fe-refresh-ccw"></i> </button>
+                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            title="Refresh" onclick="resetForm()"> <i class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>
             </div>
@@ -224,38 +227,38 @@
     </div>
     <!-- /Delete Items Modal -->
     @section('script')
-       <script>
-        $(document).ready(function () {
-            // Delegate click on dynamically updated table
-            $('#ajexTable').on('click', '.activate, .deactivate', function () {
-                let id = $(this).data('id');
-                let status = $(this).data('status');
+        <script>
+            $(document).ready(function () {
+                // Delegate click on dynamically updated table
+                $('#ajexTable').on('click', '.activate, .deactivate', function () {
+                    let id = $(this).data('id');
+                    let status = $(this).data('status');
 
-                $.ajax({
-                    url: "{{ route('admin.customer.status', '') }}/" + id
-                    , type: 'POST'
-                    , data: {
-                        _token: '{{ csrf_token() }}'
-                        , status: status
-                    }
-                    , success: function (response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success'
-                                , title: 'Status Updated'
-                                , text: response.success
-                            });
-
-                            // ✅ You can reload just the table here if needed:
-                            // reloadTable();
-                            location.reload();
+                    $.ajax({
+                        url: "{{ route('admin.customer.status', '') }}/" + id
+                        , type: 'POST'
+                        , data: {
+                            _token: '{{ csrf_token() }}'
+                            , status: status
                         }
-                    }
+                        , success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success'
+                                    , title: 'Status Updated'
+                                    , text: response.success
+                                });
+
+                                // ✅ You can reload just the table here if needed:
+                                // reloadTable();
+                                location.reload();
+                            }
+                        }
+                    });
                 });
             });
-        });
 
-    </script>
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 let deleteId = null;
@@ -328,6 +331,9 @@
                     .catch((error) => console.error("Error fetching data:", error));
             });
 
+            function resetForm() {
+                window.location.href = "{{ route('admin.customer.index') }}";
+            }
 
         </script>
 
