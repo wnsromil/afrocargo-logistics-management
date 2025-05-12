@@ -48,7 +48,7 @@
             <div class="card-body">
                 <div class="table-responsive mt-3">
 
-                    <table class="table table-stripped table-hover datatable" id="setBackground">
+                    <table class="table table-stripped table-hover datatable inheritbg" id="setBackground">
                         <thead class="thead-light">
                             <tr>
                                 <th>Item No</th>
@@ -112,12 +112,12 @@
                                         $inventory->stock_status ?? '-' }}</span>
                                 </td>
 
-                                <td class="align-items-center">
-
-                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fe fe-more-vertical fs-4"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <ul>
-                                            <li>
+                                <td>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
                                                 <a class="dropdown-item" href="{{ route('admin.inventories.edit', $inventory->id) }}"><i class="far fa-edit me-2"></i>Edit</a>
                                             </li>
                                             <li>
@@ -132,10 +132,9 @@
                                                 <a class="dropdown-item" href="{{ route('admin.inventories.show', $inventory->id) }}"><i class="far fa-eye me-2"></i>View History</a>
                                             </li>
 
-                                        </ul>
+                                            </ul>
+                                        </div>
                                     </div>
-
-
                                 </td>
                             </tr>
                             @empty
