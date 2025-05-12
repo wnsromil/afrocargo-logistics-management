@@ -56,6 +56,10 @@ class CustomerController extends Controller
 
         $serialStart = ($currentPage - 1) * $perPage;
 
+        if ($request->ajax() && $type == 'ShipTo') {
+            return view('admin.customer.shiptoindextable', compact('customers', 'serialStart'))->render();
+        }
+        
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart'))->render();
         }
