@@ -430,7 +430,6 @@ class CustomerController extends Controller
 
     public function createShipTo(Request $request)
     {
-
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
@@ -495,10 +494,11 @@ class CustomerController extends Controller
 
             // 📌 Create User
             $user = User::create($userData);
-
-            return redirect()->route('admin.customer.edit', $request->parent_customer_id)->with('success', 'Ship to user created successfully');
+            return redirect()
+                ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=ShipTo')
+                ->with('success', 'Ship to user created successfully.');
         } catch (\Throwable $th) {
-
+            dd($th);
             return back()->withErrors(['error' => $th->getMessage()]);
         }
     }
