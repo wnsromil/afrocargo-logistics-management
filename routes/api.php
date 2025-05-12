@@ -94,6 +94,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('availabilities', AvailabilityController::class);
     Route::apiResource('weekly-schedules', WeeklySchedulesController::class);
+    Route::get('/deletUsers', [ProfileController::class, 'deletUsers']);
+
 
 
 

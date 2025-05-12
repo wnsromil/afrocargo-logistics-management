@@ -56,7 +56,7 @@
                         <div class="col-md-8">
                             <div class="col-md-6">
                                 <label for="LacationInput1" class="form-label">Enter Location</label>
-                                <input type="text" class="form-control" id="LacationInput1" placeholder="Location"
+                                <input type="text" class="form-control address" id="LacationInput1" placeholder="Location"
                                     name="address"
                                     value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
@@ -67,6 +67,8 @@
                     </div>
                 </div>
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
+                <input type="hidden" name="latitude"  value="{{ old('latitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lat : '') }}" class="form-control inp inputbackground">
+                <input type="hidden" name="longitude" value="{{ old('longitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lng : '') }}" class="form-control inp inputbackground">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
                         <button type="button"
@@ -640,7 +642,8 @@
         <form>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="subhead login-logo-font fw-semibold me-sm-5">Schedule Availability</p>
+                    <p class="subhead login-logo-font fw-semibold me-sm-5 availability">Schedule Availability</p>
+                    <p class="subhead login-logo-font fw-semibold me-sm-5 location">Locations</p>
                 </div>
                 <div class="col-md-6">
                     <div class="usersearch d-flex justify-content-end">
@@ -668,12 +671,55 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive DriverInventoryTable mt-3">
-                            <table class="table table-stripped table-hover datatable">
+                            <table class="table table-stripped table-hover location">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>S. No.</th>
-                                        <!-- <th>Date</th> -->
                                         <th>Location</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($locationschedule as $key => $item)
+                                        <tr>
+                                            <td class="text-start">{{$key+1}}</td>
+                                            <td>{{$item->address??''}}</td>
+                                            <td>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <form method="POST" action="{{ route('admin.schedule.locationstore') }}" enctype="multipart/form-data">
+                                                                    @csrf
+                                                                    <input type="hidden" value="{{ $item->id ?? "" }}" class="form-control" name="id">
+                                                                    <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
+                                                                    <input type="hidden" value="delete" class="form-control" name="type">
+                                                                    <button class="dropdown-item" type="submit">
+                                                                        <i class="fa fa-trash me-2"></i>Delete
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        
+                                    @endforelse
+                                </tbody>
+                            </table>
+
+                            <table class="table table-stripped table-hover availability">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Date</th>
+                                        {{-- <th>Location</th> --}}
                                         <th>Availability</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -681,7 +727,6 @@
                                 <tbody>
                                     @forelse ($availabilities as $index => $availabilitie)
                                     @php
-                                    $i=1;
                                     $slots = [];
                                     if (isset($availabilitie->morning) && $availabilitie->morning == 1)
                                     $slots[] = 'Morning';
@@ -699,9 +744,8 @@
 
                                     <tr>
                                         <td class="text-start">{{ $index + 1 }}</td>
-                                        @php $i++; @endphp
-                                        <!-- <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</td> -->
-                                        <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</td>
+                                        {{-- <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td> --}}
                                         <td>
                                             @if (count($slots) === 0)
                                             Full Unavailable
@@ -771,6 +815,8 @@
 
 
     <script>
+        
+
         function driverscheduleform(type) {
             // Hide all sections
             document.getElementById('availability').style.display = 'none';
@@ -784,12 +830,18 @@
 
             // Show selected section & activate corresponding button
             if (type === 'availability') {
+                $('.availability').show();
+                $('.location').hide();
                 document.getElementById('availability').style.display = 'block';
                 document.getElementById('availabilitybtn').classList.add('active3');
             } else if (type === 'location') {
+                $('.availability').hide();
+                $('.location').show();
                 document.getElementById('location').style.display = 'block';
                 document.getElementById('locationbtn').classList.add('active3');
             } else if (type === 'weekly') {
+                $('.availability').hide();
+                $('.location').hide();
                 document.getElementById('weekly').style.display = 'block';
                 document.getElementById('weeklybtn').classList.add('active3');
             }
@@ -813,6 +865,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            
             document.querySelectorAll('.toggle-switch').forEach(switchBtn => {
 
                 switchBtn.addEventListener("change", function () {

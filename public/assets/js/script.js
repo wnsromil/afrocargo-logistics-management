@@ -1562,6 +1562,7 @@ Version      : 1.0
             autoWidth: false,
             sDom: "fBtlpi",
             ordering: true,
+            order: [],
             columnDefs: [
                 {
                     targets: 0, // Yaha 0 index hai jahan Customer ID column hai
@@ -1653,7 +1654,73 @@ Version      : 1.0
         });
     }
 
+    function initAutocompleteById() {
+        const input = document.querySelector(".address");
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let postalCode = "",
+                country = "",
+                state = "",
+                city = "",
+                lat = "",
+                lng = "";
+
+            addressComponents.forEach((component) => {
+                const types = component.types || [];
+
+                if (types.includes("postal_code")) {
+                    postalCode = component.long_name || "";
+                }
+                if (types.includes("country")) {
+                    country = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_1")) {
+                    state = component.long_name || "";
+                }
+                if (types.includes("locality")) {
+                    city = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_2") && !city) {
+                    city = component.long_name || "";
+                }
+            });
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("Zip_code", postalCode);
+            setField("country", country);
+            setField("state", state);
+            setField("city", city);
+            setField("latitude", lat);
+            setField("longitude", lng);
+        });
+    }
+
     window.addEventListener("load", function () {
         initAutocomplete();
+        initAutocompleteById();
     });
 })(jQuery);
