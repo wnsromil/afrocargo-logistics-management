@@ -27,7 +27,7 @@
             </ul>
         </div>
         <div class="tab-content bg-transparent px-0 d-block">
-            <div class="tab-pane show active" id="customerDetails">
+            <div class="tab-pane" id="customerDetails">
                 <form action="{{ route('admin.customer.update', $user->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
@@ -296,7 +296,7 @@
                             <div class="col-md-3">
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                }}</label>
+                                                                                                        }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -543,69 +543,101 @@
                         </div>
                     </div>
                     <div class="row justify-content-between g-3">
-                        <div class="col-md-4 dposition">
-                            <div class="d-flex align-items-center">
-                                <label for="searchInput" class="foncolor p-0 mb-0 me-3">Search</label>
-                                <div class="inputgroups relative">
-                                    <i class="ti ti-search"></i>
-                                    <input type="text" id="searchInput" class="form-control form-cs"
-                                        placeholder="Search">
+                        <form action="{{ route('admin.customer.edit', $user->id) }}" method="GET">
+                            <div class="col-md-4 dposition">
+                                <div class="d-flex align-items-center">
+                                    <label for="searchInput" class="foncolor p-0 mb-0 me-3">Search</label>
+                                    <div class="inputgroups relative">
+                                        <i class="ti ti-search"></i>
+                                        <input type="text" name="search" class="form-control form-cs"
+                                            placeholder="Search" value="{{ request('search') }}">
+                                        <input type="hidden" name="type" class="form-control form-cs"
+                                            placeholder="Search" value="ShipTo">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-end align-content-end">
+                                <button type="submit" class="btn px-4 btn-primary me-2">Search</button>
+                                <button id="shipto_reset" type="button"
+                                    class="btn px-4 btn-outline-danger">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id='ShipToTable'>
+                        <div class="card-table">
+                            <div class="card-body">
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-stripped table-hover lessPadding datatable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>ShipTo Id</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Cellphone</th>
+                                                <th>Telephone</th>
+                                                <th>Licence ID</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($childUsers as $child)
+                                                <tr>
+                                                    <td>{{ $child->unique_id ?? '-' }}</td>
+                                                    <td>{{ $child->name ?? '-'}}</td>
+                                                    <td>{{ $child->address ?? '-' }}</td>
+                                                    <td>+{{ $child->phone_code->phonecode ?? '' }}
+                                                        {{ $child->phone ?? '-' }}
+                                                    </td>
+                                                    <td>+{{ $child->phone_2_code->phonecode ?? '' }}
+                                                        {{ $child->phone_2 ?? '-' }}
+                                                    </td>
+                                                    <td>{{ $child->license_number ?? '-' }}</td>
+                                                    <td>
+                                                        <div class="dropdown dropdown-action">
+                                                            <a href="#" class="btn-action-icon fas"
+                                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                                    class="fas fa-ellipsis-v"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul>
+                                                                    <li>
+                                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                                            data-bs-target="#InvoiceLabel"><i
+                                                                                class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="dropdown-item" href="#"><i
+                                                                                class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 text-end align-content-end">
-                            <button class="btn px-4 btn-primary me-2">Search</button>
-                            <button class="btn px-4 btn-outline-danger">Reset</button>
-                        </div>
-                    </div>
-                    <div class="card-table">
-                        <div class="card-body">
-                            <div class="table-responsive mt-3">
-                                <table class="table table-stripped table-hover lessPadding">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>ShipTo Id</th>
-                                            <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Cellphone</th>
-                                            <th>Telephone</th>
-                                            <th>Licence ID</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($childUsers as $child)
-                                            <tr>
-                                               <td>{{ $child->unique_id  ?? '-' }}</td>
-                                                <td>{{ $child->name ?? '-'}}</td>
-                                                <td>{{ $child->address ?? '-' }}</td>
-                                                <td>+{{ $child->phone_code->phonecode ?? '' }} {{ $child->phone ?? '-' }}</td>
-                                                <td>+{{ $child->phone_2_code->phonecode ?? '' }} {{ $child->phone_2 ?? '-' }}</td>
-                                                <td>{{ $child->license_number ?? '-' }}</td>
-                                                <td>
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown"
-                                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <ul>
-                                                                <li>
-                                                                    <a class="dropdown-item" data-bs-toggle="modal"
-                                                                        data-bs-target="#InvoiceLabel"><i
-                                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#"><i
-                                                                            class="ti ti-trash fs_18 me-2"></i>Delete</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
+                        <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+                            <div class="col-md-6 d-flex p-2 align-items-center">
+                                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                                <select class="form-select input-width form-select-sm opacity-50"
+                                    aria-label="Small select example" id="ShipTopageSizeSelect">
+                                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="float-end">
+                                    <div class="bottom-user-page mt-3">
+                                        {!! $childUsers->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -869,6 +901,12 @@
     </div>
     @section('script')
         <script>
+            paginate({
+                searchIn: 'ShipTosearchInput',
+                ajexTable: 'ShipToTable',
+                pageSizeSlt: 'ShipTopageSizeSelect',
+                type: 'ShipTo'
+            })
             // 🖼 Image Preview Function
             function previewImage(input, imageType) {
                 if (input.files && input.files[0]) {
@@ -1012,5 +1050,67 @@
             });
 
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const tabs = document.querySelectorAll('.nav-tabs .nav-item a');
+                const tabContentPanes = document.querySelectorAll('.tab-pane');
+                const url = new URL(window.location.href);
+                const urlParams = url.searchParams;
+                let activeTab = urlParams.get('type');
+
+                // ✅ If 'tab' is missing in URL, default to 'customerDetails'
+                let isDefaultTab = false;
+                if (!activeTab) {
+                    activeTab = 'customerDetails';
+                    urlParams.set('type', activeTab);
+                    window.history.replaceState(null, '', url.toString());
+                    isDefaultTab = true;
+                }
+
+                // ✅ Activate Tab Link + Content
+                const tabTrigger = document.querySelector(`.nav-tabs a[href="#${activeTab}"]`);
+                const activePane = document.getElementById(activeTab);
+
+                if (tabTrigger && activePane) {
+                    new bootstrap.Tab(tabTrigger).show();
+
+                    // If tab= is missing in URL, manually show content
+                    if (isDefaultTab) {
+                        tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                        activePane.classList.add('show', 'active');
+                    }
+                }
+
+                // ✅ On tab switch: update URL + activate content div
+                tabs.forEach(tab => {
+                    tab.addEventListener('shown.bs.tab', function (e) {
+                        const newTabId = e.target.getAttribute('href').replace('#', '');
+
+                        // Update tab-pane visibility
+                        tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                        const newPane = document.getElementById(newTabId);
+                        if (newPane) newPane.classList.add('show', 'active');
+
+                        // Update URL
+                        const updatedUrl = new URL(window.location.href);
+                        updatedUrl.searchParams.set('type', newTabId);
+                        window.history.replaceState(null, '', updatedUrl.toString());
+                    });
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const resetBtn = document.getElementById('shipto_reset'); // Reset button by ID
+                const form = resetBtn.closest('form'); // Closest form
+                const searchInput = form.querySelector('input[name="search"]'); // Search input field
+
+                resetBtn.addEventListener('click', function () {
+                    searchInput.value = ''; // Clear the search input
+                    form.submit(); // Submit the form
+                });
+            });
+        </script>
+
     @endsection
 </x-app-layout>

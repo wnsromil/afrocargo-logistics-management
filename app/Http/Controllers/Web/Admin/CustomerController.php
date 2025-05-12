@@ -209,6 +209,11 @@ class CustomerController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
+
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
@@ -218,7 +223,27 @@ class CustomerController extends Controller
         $countries = Country::all();
         $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
         $page_no = $request->page;
-        $childUsers = User::where('parent_customer_id', $id)->orderBy('id', 'desc')->get();
+        $childUsers = User::where('parent_customer_id', $id)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%");
+                });
+            })
+            ->where('role_id', 5)
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+        $serialStart = ($currentPage - 1) * $perPage;
+
+
+        if ($request->ajax() && $type == "ShipTo") {
+            return view('admin.customer.shiptotable', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+        }
         return view('admin.customer.edit', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 

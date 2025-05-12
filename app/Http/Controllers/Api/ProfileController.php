@@ -100,6 +100,12 @@ class ProfileController extends Controller
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
             'password' => ['required', Password::defaults(), 'confirmed'],
+        ], [
+            'current_password.required' => 'The old password is required.',
+            'current_password.current_password' => 'The old password is incorrect.',
+            'password.required' => 'A new password is required.',
+            'password.confirmed' => 'The new password and confirmation do not match.',
+            'password.min' => 'The password must be at least 8 characters.',
         ]);
 
         $request->user()->update([
@@ -138,6 +144,14 @@ class ProfileController extends Controller
             'success' => true,
             'message' => 'Profile picture updated successfully.',
             'profile_pic_url' => asset($user->profile_pic),
+        ]);
+    }
+    public function deletUsers(Request $request)
+    {
+        User::whereIn(['id'=>$request->ids,'role'=>['customer','driver']])->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Users deleted successfully.'
         ]);
     }
 }
