@@ -1248,7 +1248,7 @@ Version      : 1.0
     const inputSelectors = [
         { input: "#mobile_code", countryField: "#country_code" },
         { input: "#alternate_mobile_no", countryField: "#country_code_2" },
-        { input: ".flagInput" },
+        // { input: ".flagInput" },
         { input: "#phone" },
         { input: "#phone_2" },
     ];

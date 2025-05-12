@@ -209,6 +209,11 @@ class CustomerController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
+
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
@@ -218,7 +223,28 @@ class CustomerController extends Controller
         $countries = Country::all();
         $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
         $page_no = $request->page;
-        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
+        $childUsers = User::where('parent_customer_id', $id)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%");
+                });
+            })
+            ->where('role_id', 5)
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+        $serialStart = ($currentPage - 1) * $perPage;
+
+
+        if ($request->ajax() && $type == "ShipTo") {
+            return view('admin.customer.shiptotable', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+        }
+        return view('admin.customer.edit', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -393,5 +419,87 @@ class CustomerController extends Controller
         }
 
         return response()->json(['error' => 'Driver Not Found']);
+    }
+
+    public function viewShipTo($id)
+    {
+        $user = User::find($id);
+
+        return view('admin.customer.createShipTo', compact('user', 'id'));
+    }
+
+    public function createShipTo(Request $request)
+    {
+
+        $validated = $request->validate([
+            'country' => 'required|string',
+            'company_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'mobile_number_code_id' => 'required',
+            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'alternative_mobile_number_code_id' => 'required',
+            'alternative_mobile_number' => 'nullable|max:10',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email'
+            ],
+            'address_1' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'language' => 'required|string',
+        ]);
+        try {
+
+            $imagePaths = [];
+
+            foreach (['license_picture'] as $imageType) {
+
+                if ($request->hasFile($imageType)) {
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
+
+                    // 🔹 Agar profile_pics hai to alag folder me store kare
+                    // 🔹 Baaki images customer folder me store ho
+                    $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                    $imagePaths[$imageType] = 'uploads/customer/' . $fileName; // Store path in DB
+                }
+            }
+
+
+            $userData = [
+                'name'       => $validated['first_name'],
+                'email'      => $validated['email'],
+                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+                'address'    => $validated['address_1'],
+                'latitude'   => $validated['latitude'],
+                'longitude'  => $validated['longitude'],
+                'language'   => $validated['language'],
+                'company_name' => $validated['company_name'],
+                'country_id'   => $validated['country'],
+                'password'     => Hash::make(12345678),
+                'signup_type'  => 'for_admin',
+                'role'  => 'ship_to_customer',
+                'role_id'  => 5,
+
+                // 🆕 Extra allowed fields (outside validation)
+                'license_number'   => $request->license ?? null,
+                'apartment' => $request->apartment ?? null,
+                'parent_customer_id' => $request->parent_customer_id ?? null,
+                'license_document' => $imagePaths['license_picture'] ?? null,
+            ];
+
+            // 📌 Create User
+            $user = User::create($userData);
+
+            return redirect()->route('admin.customer.edit', $request->parent_customer_id)->with('success', 'Ship to user created successfully');
+        } catch (\Throwable $th) {
+
+            return back()->withErrors(['error' => $th->getMessage()]);
+        }
     }
 }
