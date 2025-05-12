@@ -3230,7 +3230,7 @@ span.select2-dropdown:has(.my-custom-option-class) {
 @media (min-width: 991.98px) {
 	.mini-sidebar .sidebar .sidebar-menu ul li a {
 		padding: 10px;
-		justify-content: center;
+		justify-content: start;
 	}
 }
 
@@ -3323,4 +3323,9 @@ span.select2-dropdown:has(.my-custom-option-class) {
 	padding: 5px;
 	height: 30px;
 	width: 30px;
+}
+.disabled-tab {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
 }

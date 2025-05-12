@@ -61,7 +61,10 @@ class User extends Authenticatable
         'country_code',
         'signup_type',
         'invoice_custmore_type',
-        'invoice_custmore_id'
+        'invoice_custmore_id',
+        'phone_code_id',
+        'phone_2_code_id_id',
+        'parent_customer_id'
     ];
 
 
@@ -91,6 +94,15 @@ class User extends Authenticatable
     public function userRole()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+     public function phone_code()
+    {
+        return $this->belongsTo(Country::class, 'phone_code_id');
+    }
+
+     public function phone_2_code()
+    {
+        return $this->belongsTo(Country::class, 'phone_2_code_id_id');
     }
 
     public function country()
@@ -156,9 +168,9 @@ class User extends Authenticatable
 
         if (!empty($country_id)) {
             $country = \App\Models\Country::where('name', $country_id)->first();
-                if ($country && !empty($country->iso2)) {
-                    $countryIso = strtoupper($country->iso2);
-                }
+            if ($country && !empty($country->iso2)) {
+                $countryIso = strtoupper($country->iso2);
+            }
         }
 
         // Role-wise prefix
@@ -176,6 +188,10 @@ class User extends Authenticatable
             case 4:
                 $rolePrefix = 'D';
                 $fullPrefix = 'D' . $countryIso . '-';
+                break;
+            case 5:
+                $rolePrefix = 'S';
+                $fullPrefix = 'S' . $countryIso . '-';
                 break;
             default:
                 $rolePrefix = 'C';
