@@ -118,11 +118,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                             aria-expanded="false">
-                                            <button type="button" class="btn btn-primary align-center rounded-1"
+                                            <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                 style="height:26px; width:36px;">
                                                 <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                     data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -210,11 +210,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -301,11 +301,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -393,11 +393,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -484,11 +484,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -576,11 +576,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -667,11 +667,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -759,11 +759,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -850,11 +850,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>
@@ -941,11 +941,11 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="btntext">
                                     <div class="dropdown dropdown-action">
                                     <a href="#" class=" btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
-                                                <button type="button" class="btn btn-primary align-center rounded-1"
+                                                <button type="button" class="btn btn-primary align-center orderbutton new    rounded-1"
                                                     style="height:26px; width:36px;">
                                                     <i class="fa fa-angle-down tooltipped fs-6 fw-1"
                                                         data-position="top" data-tooltip="fa fa-angle-down"></i>

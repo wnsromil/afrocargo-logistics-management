@@ -7,7 +7,7 @@
         <p class="subhead">Add Driver</p>
     </x-slot>
 
-    {{-- <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="form-group-customer customer-additional-form">
@@ -76,7 +76,7 @@
             <!-- Address -->
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="input-block mb-3">
-                    <label class="foncolor" for="address">Address <i class="text-danger">*</i></label>
+                    <label class="foncolor" for="address_1">Address <i class="text-danger">*</i></label>
                     <input type="text" name="address_1" class="form-control inp" placeholder="Enter Address" value="{{ old('address_1') }}">
                     @error('address_1')
                     <span class="text-danger">{{ $message }}</span>
@@ -120,7 +120,7 @@
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="input-block mb-3">
                     <label class="foncolor" for="license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
-                    <input type="text" name="license_expiry_date" class="form-control inp" readonly style="cursor: pointer;" placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
+                    <input type="text" name="license_expiry_date" class="form-control inp" placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
                     @error('license_expiry_date')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -164,9 +164,9 @@
         <button type="submit" class="btn btn-primary ">Submit</button>
 
     </div>
-    </form> --}}
+    </form>
 
-    <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
+    {{-- <form action="{{ route('admin.drivers.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group-customer customer-additional-form">
@@ -441,7 +441,7 @@
             <button type="submit" class="btn btn-primary ">Submit</button>
 
         </div>
-    </form>
+    </form> --}}
 
     @section('script')
     <script>

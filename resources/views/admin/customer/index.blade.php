@@ -34,13 +34,14 @@
                 <form action="{{ route('admin.customer.index') }}" method="GET">
                     <div class="d-flex align-items-center">
                         <label class="foncolor m-0 p-0">Customer</label>
-                        <div class="inputGroup w-75 position-relative customInputSearch mx-3">
+                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
                             <i class="ti ti-search"></i>
                             <input type="text" class="form-control form-cs" placeholder="Search" name="search"
                                 value="{{ request('type') === 'customer' ? request('search') : '' }}">
                             <input type="hidden" name="type" value="customer">
                         </div>
-                        <button type="submit" class="btn px-4 btn-primary me-2">Search</button>
+                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
+                        <button class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"> <i class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>
             </div>
@@ -48,13 +49,14 @@
                 <form action="{{ route('admin.customer.index') }}" method="GET">
                     <div class="d-flex align-items-center justify-content-sm-end">
                         <label class="foncolor m-0 p-0">ShipTo</label>
-                        <div class="inputGroup w-75 position-relative customInputSearch mx-3">
+                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
                             <i class="ti ti-search"></i>
                             <input type="text" class="form-control form-cs" placeholder="Search" name="search"
                                 value="{{ request('type') === 'ShipTo' ? request('search') : '' }}">
                             <input type="hidden" name="type" value="ShipTo">
                         </div>
-                        <button type="submit" class="btn px-4 btn-primary me-2">Search</button>
+                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
+                        <button class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"> <i class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>
             </div>

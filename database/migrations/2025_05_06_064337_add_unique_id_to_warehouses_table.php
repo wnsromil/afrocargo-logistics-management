@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('warehouses', function (Blueprint $table) {
-            $table->string('unique_id')->unique()->after('id');
-        });
-    }
+    // public function up(): void
+    // {
+    //     Schema::table('warehouses', function (Blueprint $table) {
+    //         $table->string('unique_id')->unique()->after('id');
+    //     });
+    // }
 
-    public function down(): void
-    {
-        Schema::table('warehouses', function (Blueprint $table) {
-            $table->dropColumn('unique_id');
-        });
-    }
+    // public function down(): void
+    // {
+    //     Schema::table('warehouses', function (Blueprint $table) {
+    //         $table->dropColumn('unique_id');
+    //     });
+    // }
 };

@@ -69,7 +69,7 @@
                                         <span>{{ $warehouse->vehicle->vehicle_type ?? '--' }}</span>
                                         <span> ({{ $warehouse->vehicle->vehicle_number ?? '--' }})</span>
                                     </td>
-                                    <td>{{ $warehouse->address ?? '--' }}</td>
+                                    <td><p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $warehouse->address ?? '-' }}">{{ $warehouse->address ?? '-' }}</td>
                                     <td>{{ $warehouse->license_number ?? '--' }}</td>
                                     <td>{{ $warehouse->license_expiry_date ?? '--' }}</td>
                                     <td>

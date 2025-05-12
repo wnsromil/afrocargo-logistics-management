@@ -197,7 +197,7 @@
 
                             {{-- Historical Vehicles --}}
                             @foreach ($container_historys as $container_history)
-                                                        <tr style="background-color: #e9f7e9;"> {{-- Halka green background --}}
+                                                        <tr class="historyTR" style="background-color: #e9f7e9;"> {{-- Halka green background --}}
                                                             <td>{{ $container_history->container->unique_id ?? '-' }}</td>
                                                             <td>{{ $container_history->transfer_date ?? '-' }}</td>
                                                             <td>{{ $container_history->container->vehicle_type ?? '-' }}</td>

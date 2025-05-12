@@ -9,7 +9,7 @@
     <div class="card-table">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-borderless">
+                <table class="table table-borderless notposition"> 
                     <thead class="thead-light">
                         <tr>
                             <th>S.No.</th>
@@ -117,7 +117,7 @@
                 <div class="col-md-12">
                     <p class="heading mb-3">Item List</p>
                     <div class="table-responsive notMinheight smallTDs">
-                        <table class="table table-stripped table-hover datatable border1">
+                        <table class="table table-stripped table-hover datatable notposition border1">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Sn no.</th>

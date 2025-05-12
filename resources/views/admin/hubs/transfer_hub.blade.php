@@ -26,7 +26,7 @@
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable">
+                    <table class="table table-stripped table-hover transfertoHub datatable">
                         <thead class="thead-light">
                             <tr>
                                 <th>Container ID</th>
@@ -175,7 +175,7 @@
 
                             {{-- Historical Vehicles --}}
                             @foreach ($historyVehicles as $historyVehicle)
-                                                        <tr style="background-color: #e9f7e9;"> {{-- Halka green background --}}
+                                                        <tr class="historyTR" style="background-color: #e9f7e9;"> {{-- Halka green background --}}
                                                             <td>{{ $historyVehicle->container->unique_id ?? "-" }}</td>
                                                             <td>{{ $historyVehicle->transfer_date ?? "-" }}</td>
                                                             <td>{{ $historyVehicle->container->vehicle_type ?? "-" }}</td>
