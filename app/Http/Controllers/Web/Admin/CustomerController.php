@@ -24,15 +24,22 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // Default pagination
+        $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
 
-        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
+        // Determine role_id based on type
+        $roleId = 3; // default: customer
+        if ($type === 'ShipTo') {
+            $roleId = 5;
+        }
+
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->where('is_deleted', 'No')
-            ->where('role_id', 3)
+            ->where('role_id', $roleId) // ✅ role_id based on type
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%$search%")
@@ -45,14 +52,17 @@ class CustomerController extends Controller
             })
             ->latest('id')
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage]);
+            ->appends(['search' => $search, 'per_page' => $perPage, 'type' => $type]); // Include type in pagination
+
         $serialStart = ($currentPage - 1) * $perPage;
+
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart'))->render();
         }
 
         return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
     }
+
     /**
      * Show the form for creating a new resource.
      *

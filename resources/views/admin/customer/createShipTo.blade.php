@@ -155,14 +155,17 @@
                                 </option>
                                 <option value="French" {{ old('language') == 'French' ? 'selected' : '' }}>French</option>
                             </select>
-                             @error('language')
+                            @error('language')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="Email"> Email ID</label>
+                            <label class="foncolor" for="Email"> Email ID <i class="text-danger">*</i></label>
                             <input type="email" name="email" class="form-control inp" placeholder="Enter Email ID"
                                 value="{{ old('email') }}">
+                            @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="License"> License ID</label>
