@@ -95,12 +95,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
-     public function phone_code()
+    public function parent_customer()
+    {
+        return $this->belongsTo(User::class, 'parent_customer_id');
+    }
+    public function phone_code()
     {
         return $this->belongsTo(Country::class, 'phone_code_id');
     }
 
-     public function phone_2_code()
+    public function phone_2_code()
     {
         return $this->belongsTo(Country::class, 'phone_2_code_id_id');
     }

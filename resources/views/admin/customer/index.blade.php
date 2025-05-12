@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('script')
+    @section('style')
         <link rel='stylesheet' href='./css/admin/select2.css' />
 
     @endsection
@@ -37,7 +37,7 @@
                         <div class="inputGroup w-50 position-relative customInputSearch mx-3">
                             <i class="ti ti-search"></i>
                             <input type="text" class="form-control form-cs" placeholder="Search" name="search"
-                                value="{{ request('type') === 'customer' ? request('search') : '' }}">
+                                value="{{ request('type') === 'customer' ? request('search') : '' }}" id="customerSearch">
                             <input type="hidden" name="type" value="customer">
                         </div>
                         <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
@@ -46,7 +46,7 @@
                 </form>
             </div>
             <div class="col-md-6">
-                <form action="{{ route('admin.customer.index') }}" method="GET">
+                <form action="{{ route('admin.customer.index') }}" method="GET" id="shipToformSearch">
                     <div class="d-flex align-items-center justify-content-sm-end">
                         <label class="foncolor m-0 p-0">ShipTo</label>
                         <div class="inputGroup w-50 position-relative customInputSearch mx-3">
@@ -222,8 +222,9 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+    <!-- /Delete Items Modal -->
+    @section('script')
+       <script>
         $(document).ready(function () {
             // Delegate click on dynamically updated table
             $('#ajexTable').on('click', '.activate, .deactivate', function () {
@@ -255,10 +256,6 @@
         });
 
     </script>
-
-
-    <!-- /Delete Items Modal -->
-    @section('script')
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 let deleteId = null;
@@ -314,6 +311,23 @@
                     });
                 });
             });
+
+            $('#shipToformSearch').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const form = $(this);
+                const url = form.attr('action') + '?' + form.serialize(); // Construct URL with query params
+
+                fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+                    .then((response) => response.text())
+                    .then((html) => {
+                        document.getElementById('ajexTable').innerHTML = html;
+                        $('#customerSearch').val('');
+                        initializeSorting(); // Optional: If you have sorting logic
+                    })
+                    .catch((error) => console.error("Error fetching data:", error));
+            });
+
 
         </script>
 
