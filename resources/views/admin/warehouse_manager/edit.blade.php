@@ -22,7 +22,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <label class="foncolor" for="company_name">Manager ID</label>
                     <input type="text" class="form-control inp" style="background: #ececec;"
-                        placeholder="" value="{{ $manager_data->unique_id }}" readonly>
+                        placeholder="" id="unique_id" name="unique_id" value="{{ $manager_data->unique_id }}" readonly>
                 </div>
 
                 <!-- Warehouse Name -->

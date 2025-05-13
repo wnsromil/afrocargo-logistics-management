@@ -57,9 +57,9 @@ class CustomerController extends Controller
         $serialStart = ($currentPage - 1) * $perPage;
 
         if ($request->ajax() && $type == 'ShipTo') {
-            return view('admin.customer.shiptoindextable', compact('customers', 'serialStart'))->render();
+            return view('admin.customer.shipto.shiptoindextable', compact('customers', 'serialStart'))->render();
         }
-        
+
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart'))->render();
         }
@@ -256,7 +256,7 @@ class CustomerController extends Controller
 
 
         if ($request->ajax() && $type == "ShipTo") {
-            return view('admin.customer.shiptotable', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+            return view('admin.customer.shipto.shiptotable', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
         return view('admin.customer.edit', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
@@ -439,7 +439,7 @@ class CustomerController extends Controller
     {
         $user = User::find($id);
 
-        return view('admin.customer.createShipTo', compact('user', 'id'));
+        return view('admin.customer.shipto.createShipTo', compact('user', 'id'));
     }
 
     public function createShipTo(Request $request)
@@ -489,6 +489,7 @@ class CustomerController extends Controller
                 'phone_code_id'        => (int) $validated['mobile_number_code_id'],
                 'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
                 'address'    => $validated['address_1'],
+                'address_2'    => $validated['address_2'],
                 'latitude'   => $validated['latitude'],
                 'longitude'  => $validated['longitude'],
                 'language'   => $validated['language'],
@@ -515,5 +516,102 @@ class CustomerController extends Controller
             dd($th);
             return back()->withErrors(['error' => $th->getMessage()]);
         }
+    }
+
+    public function updateShipTo($id)
+    {
+        $user = User::find($id);
+        return view('admin.customer.shipto.updateShipTo', compact('user', 'id'));
+    }
+
+    public function editeShipTo(Request $request, $id)
+    {
+        // Validation
+        $validated = $request->validate([
+            'country' => 'required|string',
+            'company_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'mobile_number_code_id' => 'required|exists:countries,id',
+            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
+            'alternative_mobile_number' => 'nullable|digits:10',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email,' . $id,
+            ],
+            'address_1' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'language' => 'required|string',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+
+            $imagePaths = [];
+
+            foreach (['license_picture'] as $imageType) {
+                if ($request->hasFile($imageType)) {
+                    // Purani image delete karo agar hai
+                    if ($user->{$imageType} && \Storage::exists('public/' . $user->{$imageType})) {
+                        \Storage::delete('public/' . $user->{$imageType});
+                    }
+
+                    // Nई image upload karo
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                    $imagePaths[$imageType] = $filePath;
+                }
+            }
+
+            $userData = [
+                'name'       => $validated['first_name'],
+                'email'      => $validated['email'],
+                'phone'      => $validated['mobile_number'],
+                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'] ?? null,
+                'address'    => $validated['address_1'],
+                'address_2'    => $request->address_2,
+                'latitude'   => $validated['latitude'],
+                'longitude'  => $validated['longitude'],
+                'language'   => $validated['language'],
+                'company_name' => $validated['company_name'],
+                'country_id'   => $validated['country'],
+
+                // 🆕 Extra allowed fields
+                'license_number'   => $request->license ?? null,
+                'apartment' => $request->apartment ?? null,
+                'parent_customer_id' => $request->parent_customer_id ?? null,
+                'license_document' => $imagePaths['license_picture'] ?? $user->license_document,
+            ];
+
+            $user->update($userData);
+
+            return redirect()
+                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
+                ->with('success', 'Ship To details updated successfully.');
+        } catch (\Throwable $th) {
+            dd($th);
+            return back()->withErrors(['error' => $th->getMessage()]);
+        }
+    }
+
+    public function destroyShipTo($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            $user->update(['is_deleted' => "Yes"]); // is_deleted ko 1 set kar rahe hain
+            return redirect()
+                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
+                ->with('success', 'Ship To address delete successfully.');
+        }
+        return redirect()
+            ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
+            ->with('error', 'Ship To address not found');
     }
 }

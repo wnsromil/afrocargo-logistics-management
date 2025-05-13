@@ -1589,6 +1589,50 @@ Version      : 1.0
         });
     }
 
+    function updateCodeWithCountryPrefix(countryName) {
+        if (!countryName) return;
+
+        const url = `/api/country-by-name?name=${encodeURIComponent(
+            countryName
+        )}`;
+
+        fetch(url, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (!response.ok)
+                    throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then((data) => {
+                if (!data.success || !data.data?.iso2) return;
+
+                const inputField = document.getElementById("unique_id");
+                if (!inputField) return; // silently skip if not found
+
+                const currentValue = inputField.value.trim();
+                const dashIndex = currentValue.indexOf("-");
+
+                if (dashIndex === -1 || dashIndex < 2) return;
+
+                const iso2 = data.data.iso2.toUpperCase();
+                const beforeDash = currentValue.slice(0, dashIndex);
+                const keepRest = beforeDash.slice(0, -2); // remove last 2 letters
+                const finalPrefix = keepRest + iso2;
+                const suffix = currentValue.slice(dashIndex);
+
+                const newCode = `${finalPrefix}${suffix}`;
+                inputField.value = newCode;
+            })
+            .catch((error) => {
+                console.error("Error fetching country data:", error);
+            });
+    }
+
     function initAutocomplete() {
         const input = document.getElementsByName("address_1")[0];
         if (!input) return; // Input not found, exit safely
@@ -1621,6 +1665,7 @@ Version      : 1.0
                 }
                 if (types.includes("country")) {
                     country = component.long_name || "";
+                    updateCodeWithCountryPrefix(country);
                 }
                 if (types.includes("administrative_area_level_1")) {
                     state = component.long_name || "";

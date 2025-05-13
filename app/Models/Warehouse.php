@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Warehouse extends Model
 {
+     protected $fillable = [
+        'unique_id'
+            ];
     //
     protected $guarded=[];
 

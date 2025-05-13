@@ -194,13 +194,16 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
         Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
-       
-    
+
+
 
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
         Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
         Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
+        Route::get('/update-shipTo/{id}', [CustomerController::class, 'updateShipTo'])->name('customer.updateShipTo');
+        Route::put('/edit-shipTo/{id}', [CustomerController::class, 'editeShipTo'])->name('customer.editeShipTo');
+        Route::get('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.updateShipTo');
 
         // Warehouse 
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
@@ -211,7 +214,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         // Schedule
         Route::post('weekly_schedule_store', [ScheduleController::class, 'weeklyScheduleStore'])->name('schedule.weeklyschedulestore');
         Route::post('location_schedule_store', [ScheduleController::class, 'locationStore'])->name('schedule.locationstore');
-       
+
         //Expenses
         Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
 
@@ -226,11 +229,11 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/container/{id}', function () {
             return view('admin.container.show');
         })->name('container.show');
-        
+
         Route::get('/add-pickups', function () {
             return view('admin.customer.addPickups');
         })->name('addPickups');
-        
+
         Route::get('/add-pickups', function () {
             return view('admin.customer.addPickups');
         })->name('addPickups');

@@ -47,6 +47,7 @@ Route::get('/get-cities/{state_id}', [LocationController::class, 'getCities']);
 Route::get('/get-terms-conditions', [CommonController::class, 'getTermsConditions']);
 Route::get('/get-privacy-policies', [CommonController::class, 'getPrivacyPolicies']);
 Route::get('/get-about-us', [CommonController::class, 'getAboutUs']);
+Route::get('/country-by-name', [CommonController::class, 'getCountryByName']);
 
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
