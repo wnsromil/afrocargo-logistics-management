@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Parcel Management') }}
+        {{ __('Role Management') }}
     </x-slot>
 
     <!-- <x-slot name="cardTitle">
@@ -36,211 +36,83 @@
 
     </x-slot> -->
 
-    <x-slot name="cardTitle" >
-       <p class="head">Order Management</p>
-
-       <div class="usersearch d-flex">
-                <div class="top-nav-search">
-                    <form>
-                        <input type="text" class="form-control forms" placeholder="Search ">
-
-                    </form>
-                </div>
-                <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-											data-bs-placement="bottom" title="Refresh"><span><i
-													class="fe fe-refresh-ccw"></i></span></a></button>
-                </div>
-            </div>
+    <x-slot name="cardTitle">
+        <div class="d-flex topnavs justify-content-between">
+            <p class="head">Role Management</p>
+            <a href="{{ route('admin.user_role.create') }}" class="btn btn-primary buttons">
+                <i class="ti ti-circle-plus me-2 text-white"></i>
+                Add Roles
+            </a>
+        </div>
     </x-slot>
 
     <div>
         <div class="card-table">
             <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="d-flex align-items-center w-auto mb-3">
+                            <label for="searchbyPermission" class="col3a fw_600 mb-0 col-md-5">Search By Permission </label>
+                            <select name="searchbyPermission" class="form-control inp select2 ">
+                                <option value="" disabled hidden selected>Select Permission </option>
+                                <option>Accounting Report</option>
+                                <option>Invoice Report</option>
+                                <option>Administration</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                {{-- <th><input type="checkbox" id="selectAll"></th> --}}
-                                <th>Sn no.</th>
-                                <th>Tracking ID</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Amount</th>
-                                <th>Payment Mode</th>
-                                {{-- <th>Warehouse</th> --}}
-                                <th>Pickup Date</th>
-                                <th>Capture Image</th>
-                                <th>Item List</th>
-                                <th>Estimate cost</th>
-                                <th>Driver Name</th>
-                                <th>Vehicle Type</th>
-                                <th>Payment Status</th>
-                                <th>Delivery Date</th>
-                                <th>Status</th>
-                                <th>Status update</th>
-                                <th>Action</th>
+                                <th>S No.</th>
+                                <th>Role Name</th>
+                                <th>Created Date</th>
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($parcels as $index => $parcel)
-                                <tr>
-                                    {{-- <td><input type="checkbox" class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($parcel->status) }}" value="{{ $parcel->id }}"></td> --}}
-                                    <td>{{ ++$index }}</td>
-                                    <td>
-                                        {{ ucfirst($parcel->tracking_number ?? '-') }}
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <i class="fe fe-user"></i>{{ ucfirst($parcel->customer->name ?? '-') }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-phone"></i>{{ $parcel->customer->phone ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-map-pin"></i>{{ $parcel->customer->address ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <i class="fe fe-user"></i>{{ ucfirst($parcel->destination_user_name ?? '-') }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-phone"></i>{{ $parcel->destination_user_phone ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-map-pin"></i>{{ $parcel->destination_address ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    {{-- <td>{{ ucfirst($parcel->warehouse->warehouse_name ?? '-') }}</td> --}}
-                                    {{-- <td><span>{{ $parcel->weight ?? '-' }}</span></td> --}}
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <span class="fw-bold">Partial:</span>
-                                                <span>${{ $parcel->partial_payment ?? '-' }}</span>
-                                            </p>
-                                            <p>
-                                                <span class="fw-bold">Due:</span>
-                                                <span>${{ $parcel->remaining_payment ?? '-' }}</span>
-                                            </p>
-                                            <p>
-                                                <span class="fw-bold">Total:</span>
-                                                <span>${{ $parcel->total_amount ?? '-' }}</span>
-                                            </p>
-                                        </div>
-                                        
-                                    </td>
-                                    <td><span>{{ ucfirst($parcel->payment_type ?? '-') }}</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('d/m/Y') : '-' }}</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('d/m/Y') : '-' }}</span>
-                                    </td>
-                                    <td><span
-                                            class="badge-{{ activeStatusKey($parcel->status) }}">{{ $parcel->status ?? '-' }}</span>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <div class="dropdown">
-                                            <span class="dropdown-icon-status" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <i class="fas fa-chevron-down"></i>
-                                            </span>
-                                            <ul class="dropdown-menu">
-                                                @if($parcel->status == 'Pending')
-                                                    <li>
-                                                        <span class="dropdown-item"
-                                                            onclick="handlePickupAssign({{ $parcel->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-truck me-2"></i>Pickup Assign
-                                                        </span>
-                                                    </li>
-                                                @elseif($parcel->status == 'Pickup Assign')
-                                                    <li>
-                                                        <span class="dropdown-item" onclick="handlePickupCancel({{ $parcel->id }})">
-                                                            <i class="fas fa-times-circle me-2"></i>Pickup Cancel
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="dropdown-item" onclick="handlePickupReschedule({{ $parcel->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="dropdown-item" onclick="handleReceivedByPickupMan({{ $parcel->id }})">
-                                                            <i class="fas fa-box-open me-2"></i>Received By Pickup Man
-                                                        </span>
-                                                    </li>
-                                                @elseif($parcel->status == 'Pickup Re-Schedule')
-                                                    <li>
-                                                        <span class="dropdown-item" onclick="handlePickupReschedule({{ $parcel->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-calendar-alt me-2"></i>Pickup Re-Schedule
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="dropdown-item" onclick="handleReceivedWarehouse({{ $parcel->id }}, {{json_encode($warehouses)}})">
-                                                            <i class="fas fa-warehouse me-2"></i>Received Warehouse
-                                                        </span>
-                                                    </li>
-                                                @elseif($parcel->status == 'Received Warehouse')
-                                                    <li>
-                                                        <span class="dropdown-item" onclick="handleTransferToHub({{ $parcel->id }}, {{ json_encode($drivers) }})">
-                                                            <i class="fas fa-calendar-alt me-2"></i>Transfer To Hub
-                                                        </span>
-                                                    </li>
-                                                @endif
+                            <tr>
+                                <td class="text-start">1</td>
+                                <td>Driver</td>
+                                <td>02-15-2025</td>
+                                <td class="text-end">
+                                    <div class="dropdown dropdown-action container justify-content-end">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href=""><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                </li>
                                             </ul>
                                         </div>
-                                    </td>
-
-                                    <td class="align-items-center">
-                                        <span class="dropdown-icon-status">
-                                            <a href="{{ route('admin.OrderShipment.show', $parcel->id) }}">
-                                                <i class="far fa-eye my-1 text-white"></i>
-                                                
-                                            </a>
-                                        </span>
-                                        {{-- <div class="dropdown dropdown-action">
-                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div>
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.OrderShipment.edit', $parcel->id) }}"><i
-                                                                class="far fa-edit me-2"></i>Edit</a>
-                                                    </li>
-                                                    <li>
-                                                        <form
-                                                            action="{{ route('admin.OrderShipment.destroy', $parcel->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="dropdown-item"
-                                                                onclick="deleteData(this, 'Are you sure you want to remove this parcel? This action can’t be undone!')"><i
-                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
-                                                        </form>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.OrderShipment.show', $parcel->id) }}"><i
-                                                                class="far fa-eye me-2"></i>View History</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div> --}}
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="px-4 py-4 text-center text-gray-500">No parcels found.</td>
-                                </tr>
-                            @endforelse
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">2</td>
+                                <td>Warehouse Manager</td>
+                                <td>03-15-2025</td>
+                                <td class="text-end">
+                                    <div class="dropdown dropdown-action container justify-content-end">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href=""><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -258,29 +130,28 @@
             options += `<option value="${driver.id}">${driver.name}</option>`;
         });
 
-        const Input_Fields = [
-            {
-                id: "pickup-man",
-                label: "Pickup Man",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
+        const Input_Fields = [{
+                id: "pickup-man"
+                , label: "Pickup Man"
+                , type: "select"
+                , options: options
+                , required: true
+            }
+            , {
+                id: "note"
+                , label: "Note"
+                , type: "textarea"
+                , required: false
             }
         ];
 
         let selectedUsers = [];
-        $(".selectCheckbox:checked").each(function () {
+        $(".selectCheckbox:checked").each(function() {
             selectedUsers.push($(this).val());
         });
 
-        if(ParcelId=="selectArr"){
-            ParcelId =selectedUsers;
+        if (ParcelId == "selectArr") {
+            ParcelId = selectedUsers;
         }
 
         const status = "Pickup Assign";
@@ -293,27 +164,26 @@
             options += `<option value="${driver.id}">${driver.name}</option>`;
         });
 
-        const Input_Fields = [
-            {
-                id: "pickup-man",
-                label: "Pickup Man",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "pickup_date",
-                label: "Pickup Date",
-                type: "date",
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
+        const Input_Fields = [{
+                id: "pickup-man"
+                , label: "Pickup Man"
+                , type: "select"
+                , options: options
+                , required: true
             }
-            
+            , {
+                id: "pickup_date"
+                , label: "Pickup Date"
+                , type: "date"
+                , required: true
+            }
+            , {
+                id: "note"
+                , label: "Note"
+                , type: "textarea"
+                , required: false
+            }
+
         ];
 
         const status = "Pickup Re-Schedule";
@@ -326,7 +196,7 @@
         console.log("❌ Pickup Cancel Clicked");
     }
 
-    function handleReceivedByPickupMan(ParcelId=false) {
+    function handleReceivedByPickupMan(ParcelId = false) {
         const status = "Received By Pickup Man";
         DynmicModel(ParcelId, status, []);
     }
@@ -337,24 +207,23 @@
             options += `<option value="${warehouse.id}">${warehouse.warehouse_name}</option>`;
         });
 
-        const Input_Fields = [
-            {
-                id: "warehouse_id",
-                label: "Warehouse",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
+        const Input_Fields = [{
+                id: "warehouse_id"
+                , label: "Warehouse"
+                , type: "select"
+                , options: options
+                , required: true
+            }
+            , {
+                id: "note"
+                , label: "Note"
+                , type: "textarea"
+                , required: false
             }
         ];
 
         const status = "Received Warehouse";
-        DynmicModel(ParcelId, status, Input_Fields );
+        DynmicModel(ParcelId, status, Input_Fields);
         console.log("🏢 Received Warehouse Clicked");
     }
 
@@ -380,19 +249,25 @@
         });
 
         // Show SweetAlert
-        const { value: formValues } = await Swal.fire({
-            title: "Update Status",
-            html: formHtml,
-            showCancelButton: true,
-            confirmButtonText: "Change",
-            showCloseButton: true,
-            preConfirm: () => {
-                let formData = { ParcelId: ParcelId, status: status, _token: _token };
+        const {
+            value: formValues
+        } = await Swal.fire({
+            title: "Update Status"
+            , html: formHtml
+            , showCancelButton: true
+            , confirmButtonText: "Change"
+            , showCloseButton: true
+            , preConfirm: () => {
+                let formData = {
+                    ParcelId: ParcelId
+                    , status: status
+                    , _token: _token
+                };
                 let isValid = true;
 
                 // Validate and collect data
                 Input_Fields.forEach(field => {
-                    let inputValue = document.getElementById(field.id)?.value.trim() || "";
+                    let inputValue = document.getElementById(field.id) ? .value.trim() || "";
                     if (field.required && !inputValue) {
                         Swal.showValidationMessage(`Please fill ${field.label}!`);
                         isValid = false;
@@ -407,27 +282,27 @@
         if (formValues) {
             // Send AJAX Request
             $.ajax({
-                url: "{{ route('parcel.status_update') }}",
-                type: "POST",
-                data: formValues, // Dynamic data object
-                success: function (response) {
+                url: "{{ route('parcel.status_update') }}"
+                , type: "POST"
+                , data: formValues, // Dynamic data object
+                success: function(response) {
                     if (response.status === true) {
-                    Swal.fire({
-                    title: "Good job!",
-                    text: "Status change successfully!",
-                    icon: "success"
-                   }).then(() => {
-                    location.reload(); // Page reload after OK click
-                   });
+                        Swal.fire({
+                            title: "Good job!"
+                            , text: "Status change successfully!"
+                            , icon: "success"
+                        }).then(() => {
+                            location.reload(); // Page reload after OK click
+                        });
                     } else {
                         Swal.fire({
-                            title: "Oops...",
-                            text: "Something went to wrong!",
-                            icon: "error"
+                            title: "Oops..."
+                            , text: "Something went to wrong!"
+                            , icon: "error"
                         });
                     }
-                },
-                error: function (xhr) {
+                }
+                , error: function(xhr) {
                     Swal.fire('Error!', 'An error occurred while processing your request.', 'error');
                     console.log(xhr.responseJSON);
                 }
