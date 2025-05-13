@@ -55,11 +55,24 @@
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="input-block mb-3">
                     <label class="foncolor" for="phone">Contact Number <i class="text-danger">*</i></label>
-                    <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact Number" value="{{ old('mobile_code') }}" maxlength="10" pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
-                    @error('mobile_code')
-                    <span class="text-danger">{{ $message }}</span>
+                     <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
+                            name="mobile_number" value="{{ old('mobile_number') }}"
+                            oninput="this.value = this.value.slice(0, 10)">
+                    </div>
+                    @error('mobile_number')
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
-                    <input type="hidden" id="country_code" name="country_code">
                 </div>
             </div>
 

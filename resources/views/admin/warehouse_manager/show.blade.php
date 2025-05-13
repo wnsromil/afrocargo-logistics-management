@@ -30,7 +30,7 @@
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Contact No.</h6>
-                    <p>{{ $user->country_code ?? '' }} {{$user->phone ?? '-' }}</p>
+                    <p>+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 mb-4">

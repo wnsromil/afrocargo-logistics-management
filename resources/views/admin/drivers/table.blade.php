@@ -27,7 +27,7 @@
                             </td>
                             <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '--') }}</td>
                             <td><span>{{ ucfirst($warehouse->name ?? '--') }}</span></td>
-                            <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '--' }}</td>
+                            <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                             <td>
                                 <span>{{ $warehouse->vehicle->vehicle_type ?? '--' }}</span>
                                 <span> ({{ $warehouse->vehicle->vehicle_number ?? '--' }})</span>

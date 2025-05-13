@@ -167,6 +167,16 @@
         </div>
     </x-slot>
 
+      @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('admin.warehouses.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -263,12 +273,24 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12 custom-zindex">
                     <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
-                    <input type="tel" id="alternate_mobile_no" name="mobile_code" class="form-control inp"
-                        placeholder="Enter Contact No." value="{{old('mobile_code')}}">
-                    @error('mobile_code')
-                        <span class="text-danger">{{ $message }}</span>
+                    <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
+                            name="mobile_number" value="{{ old('mobile_number') }}"
+                            oninput="this.value = this.value.slice(0, 10)">
+                    </div>
+                    @error('mobile_number')
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
-                    <input type="hidden" id="country_code" name="country_code">
                 </div>
 
                 <!-- Status -->
