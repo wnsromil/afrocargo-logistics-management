@@ -73,8 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🔹 5. Sorting Functionality
         function initializeSorting() {
-            const headers = document.querySelectorAll("#" + ajexTable + " table th");
-            if (headers) {
+            const headers = document.querySelectorAll(`#${ajexTable} table th`);
+            if(headers){
                 headers.forEach((header, index) => {
                     let iconSpan = header.querySelector(".sort-icon");
                     if (!iconSpan) {

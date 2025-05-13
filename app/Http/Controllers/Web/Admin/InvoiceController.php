@@ -480,7 +480,24 @@ class InvoiceController extends Controller
                 return $q->where('addresses.address_type',$request->address_type);
             })
             ->select('users.*', 'addresses.*') // if needed, alias fields to avoid collisions
-            ->get();
+            ->get()->map(function ($user) {
+                $user->parcels = Parcel::with()->leftJoin('invoices', 'parcels.id', '=', 'invoices.parcel_id')
+                    ->where('parcels.customer_id', $user->id)
+                    ->whereNull('invoices.id')
+                    ->select('parcels.*', 'invoices.id as invoice_id')
+                    ->get();
+
+                return $user;
+            });
+
+            
+
+        if ($users->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No results found'
+            ], 404);
+        }
 
         return response()->json([
             'success' => true,

@@ -123,4 +123,28 @@ class AvailabilityController extends Controller
             ], 404);
         }
     }
+
+    public function locationDelete(Request $request)
+    {
+        $rules = [
+            'ids' => 'required|array',
+        ];
+
+        $validatedData = $request->validate($rules);
+        
+        $userId = auth()->id();
+
+        $location = LocationSchedule::where('user_id', $userId)->where('id',$request->ids)->latest()->get();
+
+        if ($location) {
+            return response()->json([
+                'message' => 'Location Delete successfully.',
+                'data' => $location,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No location found for this user.',
+            ], 404);
+        }
+    }
 }
