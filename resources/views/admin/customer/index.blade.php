@@ -42,7 +42,7 @@
                             <input type="hidden" name="type" value="customer">
                         </div>
                         <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" ="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             title="Refresh" onclick="resetForm()"> <i class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>

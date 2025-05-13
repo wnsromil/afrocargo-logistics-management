@@ -191,6 +191,7 @@ class WarehouseController extends Controller
         // Update warehouse with validated data
         $warehouse->update([
             'warehouse_name' => $request->warehouse_name,
+            'unique_id' => $request->unique_id,
             'warehouse_code' => $request->warehouse_code,
             'address' => $request->address_1,
             'country_id' => $request->country,
