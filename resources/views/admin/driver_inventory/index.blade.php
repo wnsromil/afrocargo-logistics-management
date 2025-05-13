@@ -54,7 +54,7 @@
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive DriverInventoryTable notMinheight mt-3">
-                    <table class="table table-stripped table-hover datatable">
+                    <table class="table table-stripped table-hover datatable notposition">
                         <thead class="thead-light">
                             <tr>
                                 <th>S. No.</th>
@@ -120,7 +120,7 @@
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive DriverInventoryTable notMinheight mt-3">
-                    <table class="table table-stripped table-hover datatable">
+                    <table class="table table-stripped table-hover datatable notposition">
                         <thead class="thead-light">
                             <tr>
                                 <th>S. No.</th>

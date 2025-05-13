@@ -194,10 +194,13 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
         Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
-
+       
+    
 
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
+        Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
+        Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
 
         // Warehouse 
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
@@ -224,10 +227,6 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.container.show');
         })->name('container.show');
         
-        Route::get('/create-shipTo', function () {
-            return view('admin.customer.createShipTo');
-        })->name('createShipTo');
-
         Route::get('/add-pickups', function () {
             return view('admin.customer.addPickups');
         })->name('addPickups');

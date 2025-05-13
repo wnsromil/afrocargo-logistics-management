@@ -13,7 +13,7 @@
             <div class="card-body">
                 <div class="table-responsive">
 
-                    <table class="table table-stripped table-hover datatable">
+                    <table class="table table-stripped table-hover datatable notposition">
                         <thead class="thead-light">
                             <tr>
                                 <th>Sn no.</th>
