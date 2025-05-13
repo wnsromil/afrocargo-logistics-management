@@ -25,7 +25,7 @@
                             <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
                             <td>{{$warehouse->email ?? '-'}}</td>
                             <td>{{$warehouse->address ?? '-'}}</td>
-                            <td>{{ $warehouse->country_code ?? '' }} {{$warehouse->phone ?? '-'}}</td>
+                            <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                             <td>
                                 @if ($warehouse->status == 'Active')
                                     <div class="container">

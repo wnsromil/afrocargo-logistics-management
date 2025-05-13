@@ -1556,38 +1556,38 @@ Version      : 1.0
             input.attr("type", "password");
         }
     });
-    if ($(".datatable").length > 0) {
-        $(".datatable").DataTable({
-            bFilter: false,
-            autoWidth: false,
-            sDom: "fBtlpi",
-            ordering: true,
-            order: [],
-            columnDefs: [
-                {
-                    targets: 0, // Yaha 0 index hai jahan Customer ID column hai
-                    orderable: false,
-                },
-                {
-                    targets: "no-sort", // jise aap manually class se disable karte ho
-                    orderable: false,
-                },
-            ],
-            language: {
-                search: " ",
-                sLengthMenu: "_MENU_",
-                paginate: {
-                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
-                    previous:
-                        '<i class="fa fa-angle-double-left me-2"></i> Previous',
-                },
-            },
-            initComplete: (settings, json) => {
-                $(".dataTables_filter").appendTo("#tableSearch");
-                $(".dataTables_filter").appendTo(".search-input");
-            },
-        });
-    }
+    // if ($(".datatable").length > 0) {
+    //     $(".datatable").DataTable({
+    //         bFilter: false,
+    //         autoWidth: false,
+    //         sDom: "fBtlpi",
+    //         ordering: true,
+    //         order: [],
+    //         columnDefs: [
+    //             {
+    //                 targets: 0, // Yaha 0 index hai jahan Customer ID column hai
+    //                 orderable: false,
+    //             },
+    //             {
+    //                 targets: "no-sort", // jise aap manually class se disable karte ho
+    //                 orderable: false,
+    //             },
+    //         ],
+    //         language: {
+    //             search: " ",
+    //             sLengthMenu: "_MENU_",
+    //             paginate: {
+    //                 next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+    //                 previous:
+    //                     '<i class="fa fa-angle-double-left me-2"></i> Previous',
+    //             },
+    //         },
+    //         initComplete: (settings, json) => {
+    //             $(".dataTables_filter").appendTo("#tableSearch");
+    //             $(".dataTables_filter").appendTo(".search-input");
+    //         },
+    //     });
+    // }
 
     function updateCodeWithCountryPrefix(countryName) {
         if (!countryName) return;

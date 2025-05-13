@@ -30,7 +30,7 @@ class ProfileController extends Controller
             'user' => $request->user()
         ]);
     }
-    
+
     public function change(Request $request): View
     {
         return view('profile.update-password', [
@@ -43,7 +43,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-   
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -52,8 +52,10 @@ class ProfileController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
-            'phone' => 'required|digits:10',
-            'phone_2' => 'required|digits:10',
+            'mobile_number_code_id' => 'required|exists:countries,id',
+            'mobile_number' => 'required|digits:10|unique:users,phone,' . auth()->id(),
+            'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
+            'alternative_mobile_number' => 'nullable|digits:10',
             'address_2' => 'nullable|string|max:255',
         ]);
 
@@ -68,16 +70,16 @@ class ProfileController extends Controller
             'name' => $request->name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'phone_2' => $request->phone_2,
+            'phone'      => $request->mobile_number ?? null,
+            'phone_2'    => $request->alternative_mobile_number  ?? null,
+            'phone_code_id'        => $request->mobile_number_code_id ?? null,
+            'phone_2_code_id_id'   => $request->alternative_mobile_number_code_id  ?? null,
             'country_id' => $request->country,
             'state_id' => $request->state,
             'city_id' => $request->city,
             'pincode' => $request->Zip_code,
             'address' => $request->address_1,
             'address_2' => $request->address_2,
-            'country_code'        => $request->country_code ?? null,
-            'country_code_2'        => $request->country_code_2 ?? null,
         ]);
         return Redirect::route('profile.index')->with('success', 'Profile updated successfully!');
     }

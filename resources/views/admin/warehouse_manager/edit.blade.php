@@ -69,10 +69,25 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 edit_mobile_code_manger">
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" id="edit_mobile_code" name="edit_mobile_code" class="form-control" placeholder="Enter Contact Number"
-                        value="{{$manager_data->phone ?? old('edit_mobile_code') }}">
-                        @error('edit_mobile_code')
-                            <span class="text-danger">{{ $message }}</span>
+                      <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        {{ $item->id == old('mobile_number_code_id', $manager_data->phone_code_id) ? 'selected' : '' }}>
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp"
+                            placeholder="Enter Mobile No" name="mobile_number"
+                            value="{{ old('mobile_number', $manager_data->phone) }}"
+                            oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('mobile_number')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>

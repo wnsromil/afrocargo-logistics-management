@@ -105,35 +105,57 @@
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont required">Contact No. 1</p>
-                                    <input type="text" id="edit_mobile_code" name="phone"
-                                        value="{{ old('phone', $user->phone) }}" class="form-control" placeholder=""
-                                        required maxlength="10" oninput="validatePhone(this)">
-                                    <span class="error text-danger">
-                                        @error('phone')
-                                            {{ $message }}
+                                  <div class="flaginputwrap">
+                                            <div class="customflagselect">
+                                                <select class="flag-select" name="mobile_number_code_id">
+                                                    @foreach ($coutry as $key => $item)
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            {{ $item->id == old('mobile_number_code_id', $user->phone_code_id) ? 'selected' : '' }}>
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="number" class="form-control flagInput inp"
+                                                placeholder="Enter Mobile No" name="mobile_number"
+                                                value="{{ old('mobile_number', $user->phone) }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
+                                        </div>
+                                        @error('mobile_number')
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                    </span>
                                 </div>
                             </div>
-                            <input type="hidden" id="country_code" name="country_code"
-                                value="{{ old('country_code', $user->country_code) }}">
+                         
 
                             <div class="col-lg-6 col-12">
                                 <div class="input-block mb-3">
                                     <p class="profileUpdateFont">Contact No. 2</p>
-                                    <input type="number" name="phone_2" id="edit_mobile"
-                                        value="{{ old('phone_2', $user->phone_2) }}" class="flagInput form-control"
-                                        placeholder="">
-                                    <span class="error text-danger">
-                                        @error('phone_2')
-                                            {{ $message }}
+                                   <div class="flaginputwrap">
+                                            <div class="customflagselect">
+                                                <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                    @foreach ($coutry as $key => $item)
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            {{ $item->id == old('alternative_mobile_number_code_id', $user->phone_2_code_id_id) ? 'selected' : '' }}>
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="number" class="form-control flagInput inp"
+                                                placeholder="Enter Mobile No. 2" name="alternative_mobile_number"
+                                                value="{{ old('alternative_mobile_number', $user->phone_2) }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
+                                        </div>
+                                          @error('alternative_mobile_number')
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                    </span>
                                 </div>
                             </div>
 
-                            <input type="hidden" id="country_code_2" name="country_code_2"
-                                value="{{ old('country_code_2', $user->country_code_2) }}">
+                          
 
                             {{-- <div class="col-md-6">
                                 <label>Email</label> <span class="text-danger">*</span>

@@ -32,7 +32,7 @@
                             <td>{{ $warehouse->state_id ?? '-' }}</td>
                             <td>{{ $warehouse->country_id ?? '-' }}</td>
                             <td>{{ $warehouse->zip_code ?? '-' }}</td>
-                            <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
+                            <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                             <td>
                                 @if ($warehouse->status == 'Active')
                                     <div class="container">

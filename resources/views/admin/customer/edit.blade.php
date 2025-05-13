@@ -60,27 +60,50 @@
                                     <div class="col-md-12 edit_mobile_code_class mb-2" style="display: grid;">
                                         <label class="foncolor" for="edit_mobile_code">Mobile No. <i
                                                 class="text-danger">*</i></label>
-                                        <input type="tel" id="edit_mobile_code"
-                                            value="{{ old('mobile_code', $user->phone) }}" class="form-control inp"
-                                            placeholder="Enter Mobile Number" name="mobile_code"
-                                            oninput="this.value = this.value.slice(0, 10)">
-                                        @error('mobile_code')
+
+                                        <div class="flaginputwrap">
+                                            <div class="customflagselect">
+                                                <select class="flag-select" name="mobile_number_code_id">
+                                                    @foreach ($coutry as $key => $item)
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            {{ $item->id == old('mobile_number_code_id', $user->phone_code_id) ? 'selected' : '' }}>
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="number" class="form-control flagInput inp"
+                                                placeholder="Enter Mobile No" name="mobile_number"
+                                                value="{{ old('mobile_number', $user->phone) }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
+                                        </div>
+                                        @error('mobile_number')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+
                                     </div>
-                                    <input type="hidden" id="country_code" name="country_code"
-                                        value="{{ old('country_code', $user->country_code) }}">
 
                                     <div class="col-md-12 alternate_mobile_no_class" style="display: grid;">
                                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                                        <input type="tel" id="edit_mobile" name="alternate_mobile_no"
-                                            value="{{ old('alternate_mobile_no', $user->phone_2) }}"
-                                            class="form-control inp" placeholder="Enter Mobile Number"
-                                            oninput="this.value = this.value.slice(0, 10)">
+                                        <div class="flaginputwrap">
+                                            <div class="customflagselect">
+                                                <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                    @foreach ($coutry as $key => $item)
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            {{ $item->id == old('alternative_mobile_number_code_id', $user->phone_2_code_id_id) ? 'selected' : '' }}>
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="number" class="form-control flagInput inp"
+                                                placeholder="Enter Mobile No. 2" name="alternative_mobile_number"
+                                                value="{{ old('alternative_mobile_number', $user->phone_2) }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
+                                        </div>
                                     </div>
-                                    <input type="hidden" id="country_code_2" name="country_code_2"
-                                        value="{{ old('country_code_2', $user->country_code_2) }}">
-
 
 
                                     <div class="col-md-12 mb-2">
@@ -296,7 +319,7 @@
                             <div class="col-md-3">
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                        }}</label>
+                                                                                                                }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -599,8 +622,9 @@
                                                                     class="fas fa-ellipsis-v"></i></a>
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul>
-                                                                    <li> 
-                                                                        <a class="dropdown-item" href="{{ route('admin.customer.updateShipTo', $child->id) }}"><i
+                                                                    <li>
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('admin.customer.updateShipTo', $child->id) }}"><i
                                                                                 class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                                     </li>
                                                                     <li>

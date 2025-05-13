@@ -93,14 +93,16 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'mobile_code' => 'required|digits:10|unique:users,phone',
             'email' => [
                 'required',
                 'email',
                 'max:255',
                 'unique:users,email'
             ],
-            'alternate_mobile_no' => 'nullable|max:10',
+            'mobile_number_code_id' => 'required',
+            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'alternative_mobile_number_code_id' => 'required',
+            'alternative_mobile_number' => 'nullable|max:10',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -109,8 +111,6 @@ class CustomerController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
-            'country_code' => 'required',
-            'country_code_2' => 'required|string',
         ]);
 
 
@@ -141,8 +141,10 @@ class CustomerController extends Controller
             $userData = [
                 'name'          => $validated['first_name'],
                 'email'          => $validated['email'] ?? null,
-                'phone'   => $validated['mobile_code'],
-                'phone_2'      => $validated['alternate_mobile_no'] ?? null, // Optional Field
+                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
                 'address'        => $validated['address_1'],
                 'address_2'        => $request->Address_2,
                 'country_id'     => $validated['country'],
@@ -187,7 +189,7 @@ class CustomerController extends Controller
             // Example dynamic data
             $userName = $validated['first_name'];
             $email = $validated['email'] ?? null;
-            $mobileNumber = $validated['mobile_code'];
+            $mobileNumber = $validated['mobile_number'];
             $password = 12345678;
             $loginUrl = route('login');
 
@@ -273,14 +275,16 @@ class CustomerController extends Controller
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'mobile_code' => 'required|digits:10',
             'email' => [
                 'required',
                 'email',
                 'max:255',
                 'unique:users,email,' . $id,
             ],
-            'alternate_mobile_no' => 'nullable',
+            'mobile_number_code_id' => 'required|exists:countries,id',
+            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
+            'alternative_mobile_number' => 'nullable|digits:10',
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -315,8 +319,10 @@ class CustomerController extends Controller
         $userData = [
             'name'        => $validated['first_name'],
             'email'       => $validated['email'],
-            'phone'       => $validated['mobile_code'],
-            'phone_2'     => $validated['alternate_mobile_no'] ?? null,
+            'phone'      => $validated['mobile_number'],
+            'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+            'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+            'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'] ?? null,
             'address'     => $validated['address_1'],
             'address_2'   => $request->Address_2,
             'country_id'  => $validated['country'],
