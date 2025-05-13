@@ -237,6 +237,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/add-pickups', function () {
             return view('admin.customer.addPickups');
         })->name('addPickups');
+        Route::get('/add-role', function () {
+            return view('admin.user_role.create');
+        })->name('create');
     });
 });
 

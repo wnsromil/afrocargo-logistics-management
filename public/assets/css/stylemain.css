@@ -47,7 +47,8 @@ h2 {
 	color: #000000;
 }
 
-.col3A {
+.col3A,
+.col3a {
 	color: #3a3a3a;
 }
 
@@ -1637,17 +1638,21 @@ span.dollarSign {
 		align-content: center;
 	}
 
-	td:has(.orderbutton):last-child {
-		/* height: 130px!important; */
+	td:has(.dropdown-menu.show) {
+		z-index: 1;
+	}
+
+	/* td:has(.orderbutton):last-child {
+		height: 130px!important;
 	}
 
 	td:has(.orderbutton.new):last-child {
-		/* height: 115px!important; */
+		height: 115px!important;
 	}
 
 	.transfertoHub td:has(.orderbutton):last-child {
-		/* height: 63px !important; */
-	}
+		height: 63px !important;
+	} */
 
 	.historyTR td:has(.orderbutton):last-child {
 		/* height: 72px !important; */
@@ -1681,6 +1686,8 @@ span.dollarSign {
 		/* background: inherit; */
 		background: #fff;
 	}
+
+
 
 	th[aria-label="Action: activate to sort column ascending"]:before,
 	th[aria-label="Action: activate to sort column ascending"]:after,
@@ -3226,12 +3233,82 @@ table.dataTable>thead .sorting_desc_disabled:after {
 	aspect-ratio: 1;
 	object-fit: cover;
 }
-.btn-danger:hover 
-{
+
+.btn-danger:hover {
 	border-color: #dc3545;
 	color: #dc3545;
 	background-color: #fff;
 }
+
+.w-auto span.select2.select2-container.select2-container--default {
+	width: 100% !important;
+	min-width: auto !important;
+}
+
+.custom_check input.d_none {
+	position: absolute;
+}
+
+.custom_check.primary {
+	border-radius: 4px;
+
+	.checkmark
+	{
+		border: 1px solid #203A5F;
+	}
+
+	input:checked~.checkmark {
+		background-color: #203A5F;
+		border-color: #203A5F;
+	}
+}
+
+.w-max-content {
+    width: 100%;
+    max-width: max-content;
+}
+
+.checkboxlable {
+	background-color: #203a5f34;
+	border-radius: 4px;
+	padding: 6px 15px;
+	border: 1px solid #203A5F;    
+	margin-bottom: 15px;
+
+	.custom_check.primary {
+		margin-bottom: 0;
+
+		.checkmark {
+			border-color: #203A5F;
+		}
+
+		input:checked~.checkmark {
+			background-color: #203A5F;
+			border-color: #203A5F;
+		}
+	}
+}
+
+.checkboxlable.active {
+	background-color: #203A5F;
+
+	.custom_check {
+		color: #fff;
+
+		input:checked~.checkmark {
+			border-color: #ffffff;
+		}
+	}
+
+	.custom_check .checkmark::after {
+		font-size: 11px;
+		top: 1px;
+	}
+}
+.twoRowsSec .d-flex {
+    flex-wrap: wrap;
+}
+
 /* WNSshubham */
 
 span.select2-dropdown:has(.my-custom-option-class) {

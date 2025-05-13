@@ -46,24 +46,7 @@ class RoleManagementController extends Controller
      */
     public function create()
     {
-        //
-
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
-        })->get();
-
-        $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->get());
-
-        $customers = $user->where('role_id', 3)->values();
-
-        $drivers = $user->where('role_id', 4)->values();
-
-        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
-
-
-        return view('admin.user_role.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes'));
+        return view('admin.user_role.create');
     }
 
     /**
