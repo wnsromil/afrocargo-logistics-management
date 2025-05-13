@@ -173,8 +173,22 @@
                                         
                                 </div>
                                 <div class="col-md-6">
+                                    <label class="foncolor" for="Address.1">Address 1 <i
+                                            class="text-danger">*</i></label>
+                                    <!-- Address 1 -->
+                                    <input type="text" name="address" class="form-control inp address"
+                                        placeholder="Enter Address 1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="Address.2">Address 2 </label>
+                                    <!-- Address 2 — optional, you may remove or merge -->
+                                    <input type="text" name="address_2" class="form-control inp"
+                                        placeholder="Enter Address 2">
+                                </div>
+                                <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                    <select name="country_id" id="country"
+                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country">
+                                    {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $country)
@@ -183,7 +197,7 @@
                                             {{ $country->name }}
                                         </option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
 
                                     @error('country_id')
                                     <span class="text-danger">{{ $message }}</span>
@@ -191,12 +205,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <select name="state_id" id="state" class="form-control inp select2">
+                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state">
+                                    {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
                                         <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('state_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -204,12 +219,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                    <select name="city_id" id="city" class="form-control inp select2">
+                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
+                                    {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
                                         <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('city_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -218,19 +234,6 @@
                                     <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.1">Address 1 <i
-                                            class="text-danger">*</i></label>
-                                    <!-- Address 1 -->
-                                    <input type="text" name="address" class="form-control inp"
-                                        placeholder="Enter Address 1">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.2">Address 2 </label>
-                                    <!-- Address 2 — optional, you may remove or merge -->
-                                    <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
                                 </div>
                             </div>
                         </div>
@@ -293,8 +296,22 @@
                                     </div> 
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="pickup_country">Country <i class="text-danger">*</i></label>
-                                    <select name="country_id" id="pickup_country"
+                                    <label class="foncolor" for="Address.1">Address 1 <i
+                                            class="text-danger">*</i></label>
+                                    <!-- Address 1 -->
+                                    <input type="text" name="address" class="form-control inp address"
+                                        placeholder="Enter Address 1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="Address.2 address">Address 2 </label>
+                                    <!-- Address 2 — optional, you may remove or merge -->
+                                    <input type="text" name="address_2" class="form-control inp"
+                                        placeholder="Enter Address 2">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country">
+                                    {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $country)
@@ -303,33 +320,35 @@
                                             {{ $country->name }}
                                         </option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
 
                                     @error('country_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-md-6">
+                                <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <select name="state_id" id="state" class="form-control inp select2">
+                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state">
+                                    {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
                                         <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('state_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                </div> --}}
+                                </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="pickup_city">City <i class="text-danger">*</i></label>
-                                    <select name="city_id" id="pickup_city" class="form-control inp select2">
+                                    <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
+                                    {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
                                         <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('city_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -339,19 +358,7 @@
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.1">Address 1 <i
-                                            class="text-danger">*</i></label>
-                                    <!-- Address 1 -->
-                                    <input type="text" name="address" class="form-control inp"
-                                        placeholder="Enter Address 1">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.2">Address 2 </label>
-                                    <!-- Address 2 — optional, you may remove or merge -->
-                                    <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
-                                </div>
+                                
                             </div>
                         </div>
                     </form>

@@ -1655,12 +1655,13 @@ Version      : 1.0
     }
 
     function initAutocompleteById() {
-        const input = document.querySelector(".address");
-        if (!input) return; // Input not found, exit safely
+    const inputs = document.querySelectorAll(".address");
+    if (!inputs.length) return;
 
+    inputs.forEach((input, index) => {
+        console.log('input=>',input);
         const autocomplete = new google.maps.places.Autocomplete(input, {
             types: ["geocode"],
-            // componentRestrictions: { country: "in" }
         });
 
         autocomplete.addListener("place_changed", function () {
@@ -1698,26 +1699,33 @@ Version      : 1.0
                 }
             });
 
-            // Get Latitude and Longitude
             if (place.geometry && place.geometry.location) {
                 lat = place.geometry.location.lat() || "";
                 lng = place.geometry.location.lng() || "";
             }
 
-            // Safely fill the fields (if they exist)
-            const setField = (name, value) => {
-                const field = document.getElementsByName(name)[0];
-                if (field) field.value = value;
-            };
+            // Scoped query to this form or container
+            const container = input.closest('.address-container') || input.closest('form') || input.parentElement;
 
-            setField("Zip_code", postalCode);
-            setField("country", country);
-            setField("state", state);
-            setField("city", city);
-            setField("latitude", lat);
-            setField("longitude", lng);
+            if (container) {
+                const setField = (name, value) => {
+                    const field = container.querySelector(`[name="${name}"]`);
+                    if (field) field.value = value;
+                };
+
+                setField("Zip_code", postalCode);
+                setField("zip_code", postalCode);
+                setField("country", country);
+                setField("state", state);
+                setField("city", city);
+                setField("latitude", lat);
+                setField("longitude", lng);
+            }
         });
-    }
+    });
+}
+
+
 
     window.addEventListener("load", function () {
         initAutocomplete();

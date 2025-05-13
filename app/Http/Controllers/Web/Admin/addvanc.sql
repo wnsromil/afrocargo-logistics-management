@@ -71,7 +71,7 @@ FROM
     ) AS order_with_invoices ON order_with_invoices.order_customer_id = users.id;
 
 
-    -- 30/04/25
+    -- 30/04/25 => done
     ALTER TABLE `invoices` CHANGE `parcel_id` `parcel_id` BIGINT(20) UNSIGNED NULL, CHANGE `user_id` `user_id` BIGINT(20) UNSIGNED NULL;
 
     ALTER TABLE `invoices` CHANGE `currentTime` `currentTime` VARCHAR(255) NULL DEFAULT NULL;
@@ -83,3 +83,7 @@ FROM
     ALTER TABLE `invoices` ADD `invoce_type` VARCHAR(255) NULL DEFAULT 'supplies' AFTER `is_paid`;
 
     ALTER TABLE `invoices` ADD `status` VARCHAR(255) NULL AFTER `is_paid`;
+
+    -- 12/05/25
+    ALTER TABLE `addresses` CHANGE `country_id` `country_id` VARCHAR(200) NULL, 
+    CHANGE `state_id` `state_id` VARCHAR(200) NULL, CHANGE `city_id` `city_id` VARCHAR(200) NULL;

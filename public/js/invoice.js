@@ -15,6 +15,7 @@ function toggleLoginForm(type) {
         document.getElementById('suppliesBtn').classList.remove('active3');
 
         $('input[name="invoce_type"]').val('services');
+        invoce_type = 'services';
 
         $('#addShiptoAddress')
         .removeClass('disabled')
@@ -38,6 +39,7 @@ function toggleLoginForm(type) {
         document.getElementById('suppliesBtn').classList.add('active3');
 
         $('input[name="invoce_type"]').val('supplies');
+        invoce_type = 'supplies';
         
         $('#addShiptoAddress')
         .addClass('disabled')               // Add a visual cue
@@ -204,23 +206,33 @@ $(document).ready(function() {
 
     $('select[name="customer_id"]').select2({
         ajax: {
-            url: 'http://127.0.0.1:8000/customerSearch',
+            url: '/customerSearch',
             dataType: 'json',
             delay: 250,
             data: function(params) {
                 return {
                     search: params.term,
-                    address_type:address_type
+                    address_type:address_type,
+                    invoice_type: invoce_type,
                 };
             },
             processResults: function(data) {
                 return {
                     results: data.data.map(function(customer) {
-                        return {
-                            id: customer.id,
-                            text: customer.text,
-                            customer: customer // Store the full customer object
-                        };
+                        if(customer.address_type == 'pickup'){
+                            return {
+                                id: customer.pickup_address.id,
+                                text: customer.pickup_address.text,
+                                customer: customer // Store the full customer object
+                            };
+                        }else{
+                            return {
+                                id: customer.delivery_address.id,
+                                text: customer.delivery_address.text,
+                                customer: customer // Store the full customer object
+                            };
+                        }
+                        
                     })
                 };
             },
@@ -234,8 +246,13 @@ $(document).ready(function() {
     $('select[name="customer_id"]').on('select2:select', function(e) {
         var data = e.params.data;
         var customer = data.customer;
+        if(customer.delivery_address){
+            setPickupDeleveryFormValue(customer.delivery_address)
+        }
+        if(customer.pickup_address){
+            setPickupDeleveryFormValue(customer.pickup_address)
+        }
         
-        setPickupDeleveryFormValue(customer)
     });
 
     // Toggle new customer form
@@ -286,29 +303,33 @@ function setPickupDeleveryFormValue(customer){
 
         
         // For country/state/city, you'll need to have options preloaded or make additional AJAX calls
-        userAddress.find('select[name="country_id"]').val(customer.country_id).trigger('change');
+        // userAddress.find('select[name="country_id"]').val(customer.country_id).trigger('change');
         userAddress.find('select[name="alternative_mobile_number_code_id"]').val(customer.alternative_mobile_number_code_id??1).trigger('change');
         userAddress.find('select[name="mobile_number_code_id"]').val(customer.mobile_number_code_id??1).trigger('change');
         // Wait for states to be loaded before setting the state
-        setTimeout(() => {
-            userAddress.find('select[name="state_id"]')
-                .val(customer.state_id)
-                .trigger('change');
+        // setTimeout(() => {
+        //     userAddress.find('select[name="state_id"]')
+        //         .val(customer.state_id)
+        //         .trigger('change');
 
-            // Wait again for cities to be loaded
-            setTimeout(() => {
-                userAddress.find('select[name="city_id"]')
-                    .val(customer.city_id)
-                    .trigger('change');
-            }, 400); // adjust if cities load slower
+        //     // Wait again for cities to be loaded
+        //     setTimeout(() => {
+        //         userAddress.find('select[name="city_id"]')
+        //             .val(customer.city_id)
+        //             .trigger('change');
+        //     }, 400); // adjust if cities load slower
 
-        }, 400); // adjust if states load slower
+        // }, 400); // adjust if states load slower
         userAddress.find('input[name="mobile_number"]').val(customer.mobile_number);
         userAddress.find('input[name="alternative_mobile_number"]').val(customer.alternative_mobile_number);
         userAddress.find('input[name="zip_code"]').val(customer.pincode);
         userAddress.find('input[name="address"]').val(customer.address1);
         userAddress.find('input[name="address_2"]').val(customer.address2);
         userAddress.find('input[name="address_id"]').val(customer.id);
+
+        userAddress.find('input[name="country"]').val(customer.country);
+        userAddress.find('input[name="state"]').val(customer.state);
+        userAddress.find('input[name="city"]').val(customer.city);
         // Address 2 can be left empty or filled with additional info if available
     }
 }
@@ -447,7 +468,7 @@ $(document).ready(function () {
     $('#add_delevery_save').on('click', function (e) {
         e.preventDefault();
 
-        const requiredFields = ['first_name', 'last_name', 'mobile_number', 'address', 'country_id', 'state_id','city_id','zip_code','alternative_mobile_number_code_id','mobile_number_code_id'];
+        const requiredFields = ['first_name', 'last_name', 'mobile_number', 'address', 'country', 'state','city','zip_code','alternative_mobile_number_code_id','mobile_number_code_id'];
 
         if (!jsValidator(requiredFields)) {
             alert("Please fill all required fields.");
@@ -461,7 +482,7 @@ $(document).ready(function () {
     $('#add_ship_save').on('click', function (e) {
         e.preventDefault();
 
-        const requiredFields = ['first_name', 'last_name', 'mobile_number', 'address', 'country_id'];
+        const requiredFields = ['first_name', 'last_name', 'mobile_number', 'address', 'country'];
 
         if (!jsValidator(requiredFields)) {
             alert("Please fill all required fields.");

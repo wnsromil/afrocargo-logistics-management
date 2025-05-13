@@ -337,6 +337,9 @@ class InvoiceController extends Controller
             'country_id' => $address->country_id,
             'state_id' => $address->state_id,
             'city_id' => $address->city_id,
+            'country' => $address->country_id,
+            'state' => $address->state_id,
+            'city' => $address->city_id,
             'address_type' => $address->address_type,
         ];
     }
@@ -454,6 +457,132 @@ class InvoiceController extends Controller
             ->with('success', 'Order deleted successfully');
     }
 
+    // public function customerSearch(Request $request)
+    // {
+    //     if (!$request->search) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Please enter a search term'
+    //         ], 400);
+    //     }
+
+    //     $searchTerm = '%' . $request->search . '%';
+    //     $invoice_type = $request->invoice_type;
+
+    //     $users = Parcel::join('addresses', 'users.id', '=', 'addresses.user_id')
+    //         ->leftJoin('parcels', 'users.id', '=', 'parcels.customer_id')
+    //         ->where('users.role_id', 2)
+    //         ->where(function($query) use ($searchTerm) {
+    //             $query->where('users.name', 'like', $searchTerm)
+    //                 ->orWhere('users.email', 'like', $searchTerm)
+    //                 ->orWhere('users.phone', 'like', $searchTerm)
+    //                 ->orWhere('addresses.full_name', 'like', $searchTerm)
+    //                 ->orWhere('addresses.mobile_number', 'like', $searchTerm)
+    //                 ->orWhere('addresses.alternative_mobile_number', 'like', $searchTerm)
+    //                 ->orWhere('addresses.address', 'like', $searchTerm)
+    //                 ->orWhere('addresses.pincode', 'like', $searchTerm);
+    //         })->when($request->address_type,function($q)use($request){
+    //             return $q->where('addresses.address_type',$request->address_type);
+    //         })
+    //         ->select(
+    //             'users.*',
+    //             'addresses.*',
+    //             'parcels.id as order_id',
+    //             'parcels.status',
+    //             'parcels.unique_id',
+    //             'parcels.parcel_type',
+    //             'parcels.add_order',
+    //             'parcels.container_id',
+    //             'parcels.arrived_warehouse_id',
+    //             'parcels.arrived_driver_id',
+    //             'parcels.percel_comment',
+    //             'parcels.hub_tracking_id',
+    //             'parcels.tracking_number',
+    //             'parcels.customer_id',
+    //             'parcels.ship_customer_id',
+    //             'parcels.driver_id',
+    //             'parcels.warehouse_id',
+    //             'parcels.parcel_car_ids',
+    //             'parcels.customer_subcategories_data',
+    //             'parcels.driver_subcategories_data',
+    //             'parcels.driver_parcel_image',
+    //             'parcels.length',
+    //             'parcels.width',
+    //             'parcels.height',
+    //             'parcels.update_role',
+    //             'parcels.weight',
+    //             'parcels.total_amount',
+    //             'parcels.estimate_cost',
+    //             'parcels.partial_payment',
+    //             'parcels.remaining_payment',
+    //             'parcels.payment_type',
+    //             'parcels.descriptions',
+    //             'parcels.source_address',
+    //             'parcels.destination_user_name',
+    //             'parcels.destination_user_phone',
+    //             'parcels.destination_address',
+    //             'parcels.payment_status',
+    //             'parcels.amount',
+    //             'parcels.source_let',
+    //             'parcels.source_long',
+    //             'parcels.dest_let',
+    //             'parcels.dest_long',
+    //             'parcels.created_at as parcel_created_at',
+    //             'parcels.updated_at as parcel_updated_at',
+    //             'parcels.pickup_date',
+    //             'parcels.delivery_date',
+    //             'parcels.pickup_address_id',
+    //             'parcels.delivery_address_id',
+    //             'parcels.pickup_time',
+    //             'parcels.pickup_type',
+    //             'parcels.delivery_type'
+    //         )
+    //         ->get();
+            
+
+            
+
+    //     if ($users->isEmpty()) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'No results found'
+    //         ], 404);
+    //     }
+
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $users->map(function ($user) {
+        //         return [
+        //             'id' => $user->id,
+        //             'role_id' => $user->role_id,
+        //             'text' => ($user->full_name ?? $user->name).", ".$user->address,
+        //             'name' => $user->name,
+        //             'last_name' => $user->last_name,
+        //             'email' => $user->email,
+        //             'phone' => $user->phone,
+        //             'full_name' => $user->full_name,
+        //             'mobile_number' => $user->mobile_number,
+        //             'alternative_mobile_number' => $user->alternative_mobile_number,
+        //             'mobile_number_code_id' => $user->mobile_number_code_id ?? 1,
+        //             'alternative_mobile_number_code_id' => $user->alternative_mobile_number_code_id ?? 1,
+        //             'address1' => $user->address,
+        //             'address2' => $user->address_2,
+        //             'pincode' => $user->pincode,
+        //             'country_id' => $user->country_id,
+        //             'state_id' => $user->state_id,
+        //             'city_id' => $user->city_id,
+        //             'country' => $user->country_id,
+        //             'state' => $user->state_id,
+        //             'city' => $user->city_id,
+        //             'address_type' => $user->address_type,
+        //             'lat' => $user->lat,
+        //             'long' => $user->long,
+        //             'invoice_type' => $invoice_type,
+        //         ];
+        //     })
+        // ]);
+    // }
+
     public function customerSearch(Request $request)
     {
         if (!$request->search) {
@@ -462,37 +591,40 @@ class InvoiceController extends Controller
                 'message' => 'Please enter a search term'
             ], 400);
         }
-
+        $parcelType = ['services'=>'Service', 'supplies'=>'Supply'];
         $searchTerm = '%' . $request->search . '%';
+        $invoice_type = $parcelType[$request->invoice_type] ?? 'Service';
 
-        $users = User::leftJoin('addresses', 'users.id', '=', 'addresses.user_id')
-            ->where('users.role_id', 2)
-            ->where(function($query) use ($searchTerm) {
-                $query->where('users.name', 'like', $searchTerm)
-                    ->orWhere('users.email', 'like', $searchTerm)
-                    ->orWhere('users.phone', 'like', $searchTerm)
-                    ->orWhere('addresses.full_name', 'like', $searchTerm)
-                    ->orWhere('addresses.mobile_number', 'like', $searchTerm)
-                    ->orWhere('addresses.alternative_mobile_number', 'like', $searchTerm)
-                    ->orWhere('addresses.address', 'like', $searchTerm)
-                    ->orWhere('addresses.pincode', 'like', $searchTerm);
-            })->when($request->address_type,function($q)use($request){
-                return $q->where('addresses.address_type',$request->address_type);
+        $parcels = Parcel::with([
+            'pickupaddress',
+            'deliveryaddress',
+        ])
+        ->where('parcel_type', ucfirst($invoice_type))
+        ->whereNotNull('delivery_address_id')
+        ->whereHas('pickupaddress',function($query) use ($searchTerm) {
+                $query
+                    ->where('full_name', 'like', $searchTerm)
+                    ->orWhere('mobile_number', 'like', $searchTerm)
+                    ->orWhere('alternative_mobile_number', 'like', $searchTerm)
+                    ->orWhere('address', 'like', $searchTerm)
+                    ->orWhere('pincode', 'like', $searchTerm);
             })
-            ->select('users.*', 'addresses.*') // if needed, alias fields to avoid collisions
-            ->get()->map(function ($user) {
-                $user->parcels = Parcel::with()->leftJoin('invoices', 'parcels.id', '=', 'invoices.parcel_id')
-                    ->where('parcels.customer_id', $user->id)
-                    ->whereNull('invoices.id')
-                    ->select('parcels.*', 'invoices.id as invoice_id')
-                    ->get();
+        ->whereHas('deliveryaddress',function($query) use ($searchTerm) {
+                $query
+                    ->where('full_name', 'like', $searchTerm)
+                    ->orWhere('mobile_number', 'like', $searchTerm)
+                    ->orWhere('alternative_mobile_number', 'like', $searchTerm)
+                    ->orWhere('address', 'like', $searchTerm)
+                    ->orWhere('pincode', 'like', $searchTerm);
+            })
+        // ->when($request->address_type, function ($query) use ($request) {
+        //     $query->whereHas('customer.addresses', function ($q) use ($request) {
+        //         $q->where('address_type', $request->address_type);
+        //     });
+        // })
+        ->get();
 
-                return $user;
-            });
-
-            
-
-        if ($users->isEmpty()) {
+        if ($parcels->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No results found'
@@ -501,33 +633,16 @@ class InvoiceController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $users->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'role_id' => $user->role_id,
-                    'text' => ($user->full_name ?? $user->name).", ".$user->address,
-                    'name' => $user->name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    'full_name' => $user->full_name,
-                    'mobile_number' => $user->mobile_number,
-                    'alternative_mobile_number' => $user->alternative_mobile_number,
-                    'mobile_number_code_id' => $user->mobile_number_code_id ?? 1,
-                    'alternative_mobile_number_code_id' => $user->alternative_mobile_number_code_id ?? 1,
-                    'address1' => $user->address,
-                    'address2' => $user->address_2,
-                    'pincode' => $user->pincode,
-                    'country_id' => $user->country_id,
-                    'state_id' => $user->state_id,
-                    'city_id' => $user->city_id,
-                    'address_type' => $user->address_type,
-                    'lat' => $user->lat,
-                    'long' => $user->long
-                ];
-            })
+            'data' => $parcels->map(function ($parcel) use ($invoice_type) {
+
+                $parcel->invoice_type = $invoice_type;
+                $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress);
+                $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress);
+                return $parcel;
+            }),
         ]);
     }
+
 
     public function saveInvoceCustomer(Request $request)
     {
@@ -542,9 +657,9 @@ class InvoiceController extends Controller
             'alternative_mobile_number_code_id' => 'required|integer',
             'address' => 'required|string|max:500',
             'address_2' => 'required|string|max:500',
-            'country_id' => 'required|integer',
-            'state_id' => 'required|integer',
-            'city_id' => 'nullable|integer',
+            'country' => 'required',
+            'state' => 'required',
+            'city' => 'nullable',
             'zip_code' => 'nullable|string|max:10',
             'address_type' => 'required|in:pickup,delivery',
         ]);
@@ -560,9 +675,9 @@ class InvoiceController extends Controller
                 'phone_code_id' => $validatedData['mobile_number_code_id'] ?? null,
                 'address' => $validatedData['address'],
                 'address_2' => $validatedData['address_2'],
-                'country_id' => $validatedData['country_id'],
-                'state_id' => $validatedData['state_id'],
-                'city_id' => $validatedData['city_id'] ?? null,
+                'country_id' => $validatedData['country'],
+                'state_id' => $validatedData['state'],
+                'city_id' => $validatedData['city'] ?? null,
                 'pincode' => $validatedData['zip_code'] ?? null,
                 'email' => 'user' . time() . '@example.com', // Dummy email if required
                 'password' => bcrypt('password'), // Set a default password
@@ -574,6 +689,7 @@ class InvoiceController extends Controller
             $check = [
                 'mobile_number' => $validatedData['mobile_number'],
                 'address_type' => $validatedData['address_type'],
+                'address' => $validatedData['address']
             ];
         }
 
@@ -584,11 +700,10 @@ class InvoiceController extends Controller
                 'alternative_mobile_number_code_id' => $validatedData['alternative_mobile_number_code_id'] ?? null,
                 'mobile_number_code_id' => $validatedData['mobile_number_code_id'] ?? null,
                 'alternative_mobile_number' => $validatedData['alternative_mobile_number'] ?? null,
-                'address' => $validatedData['address'],
                 'address_2' => $validatedData['address_2'] ?? null,
-                'country_id' => $validatedData['country_id'],
-                'state_id' => $validatedData['state_id'],
-                'city_id' => $validatedData['city_id'] ?? null,
+                'country_id' => $validatedData['country'],
+                'state_id' => $validatedData['state'],
+                'city_id' => $validatedData['city'] ?? null,
                 'pincode' => $validatedData['zip_code'] ?? null,
             ]
         );
