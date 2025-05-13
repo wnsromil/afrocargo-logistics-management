@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initializeSorting();
         //sort icon code function sort  trigger
         function initializeSorting() {
-            const headers = document.querySelectorAll("#"+ajexTable+" table th");
+            const headers = document.querySelectorAll(`#${ajexTable} table th`);
             if(headers){
                 headers.forEach((header, index) => {
                     // Add sort-icon span if not present

@@ -153,6 +153,7 @@ Route::middleware('auth:api')->group(function () {
         // Schedule apis
         Route::post('/location-store', [AvailabilityController::class, 'locationStore']);
         Route::get('/location-get', [AvailabilityController::class, 'locationGet']);
+        Route::post('/location-delete', [AvailabilityController::class, 'locationGet']);
         // Service Order Status Manage Driver
         Route::post('/get-driver-service-orders-list', [ServiceOrderStatusManage::class, 'getDriverServiceOrders']);
         Route::get('/get-driver-service-orders-details/{id}', [ServiceOrderStatusManage::class, 'getDriverServiceOrderDetails']);

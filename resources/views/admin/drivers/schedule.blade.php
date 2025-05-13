@@ -56,8 +56,8 @@
                         <div class="col-md-8">
                             <div class="col-md-6">
                                 <label for="LacationInput1" class="form-label">Enter Location</label>
-                                <input type="text" class="form-control address" id="LacationInput1" placeholder="Location"
-                                    name="address"
+                                <input type="text" class="form-control address" id="LacationInput1"
+                                    placeholder="Location" name="address"
                                     value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
                                 <span class="text-danger">{{ $message }}</span>
@@ -67,8 +67,12 @@
                     </div>
                 </div>
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
-                <input type="hidden" name="latitude"  value="{{ old('latitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lat : '') }}" class="form-control inp inputbackground">
-                <input type="hidden" name="longitude" value="{{ old('longitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lng : '') }}" class="form-control inp inputbackground">
+                <input type="hidden" name="latitude"
+                    value="{{ old('latitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lat : '') }}"
+                    class="form-control inp inputbackground">
+                <input type="hidden" name="longitude"
+                    value="{{ old('longitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lng : '') }}"
+                    class="form-control inp inputbackground">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
                         <button type="button"
@@ -639,134 +643,138 @@
     </form>
 
     <div class="col-md-12 mt-5">
-        <form>
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="subhead login-logo-font fw-semibold me-sm-5 availability">Schedule Availability</p>
-                    <p class="subhead login-logo-font fw-semibold me-sm-5 location">Locations</p>
-                </div>
-                <div class="col-md-6">
-                    <div class="usersearch d-flex justify-content-end">
-                        <div class="top-nav-search">
-                            {{-- <form>
-                                <input type="text" id="searchInput" class="form-control forms me-2"
-                                    placeholder="Search ">
-                            </form> --}}
-                        </div>
 
-                        <div class="">
-                            <button type="button"
-                                class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                                <a class="btn-filters d-flex justify-content-center align-items-center"
-                                    href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                    title="Refresh">
-                                    <span><i class="fe fe-refresh-ccw"></i></span>
-                                </a>
-                            </button>
-                        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="subhead login-logo-font fw-semibold me-sm-5 availability">Schedule Availability</p>
+                <p class="subhead login-logo-font fw-semibold me-sm-5 location">Locations</p>
+            </div>
+            <div class="col-md-6">
+                <div class="usersearch d-flex justify-content-end">
+                    <div class="top-nav-search">
+                        {{-- <form>
+                            <input type="text" id="searchInput" class="form-control forms me-2" placeholder="Search ">
+                        </form> --}}
+                    </div>
+
+                    <div class="">
+                        <button type="button"
+                            class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                            <a class="btn-filters d-flex justify-content-center align-items-center"
+                                href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Refresh">
+                                <span><i class="fe fe-refresh-ccw"></i></span>
+                            </a>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div>
-                <div class="card-table">
-                    <div class="card-body">
-                        <div class="table-responsive DriverInventoryTable mt-3">
-                            <table class="table table-stripped table-hover location">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>S. No.</th>
-                                        <th>Location</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($locationschedule as $key => $item)
-                                        <tr>
-                                            <td class="text-start">{{$key+1}}</td>
-                                            <td>{{$item->address??''}}</td>
-                                            <td>
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <form method="POST" action="{{ route('admin.schedule.locationstore') }}" enctype="multipart/form-data">
-                                                                    @csrf
-                                                                    <input type="hidden" value="{{ $item->id ?? "" }}" class="form-control" name="id">
-                                                                    <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
-                                                                    <input type="hidden" value="delete" class="form-control" name="type">
-                                                                    <button class="dropdown-item" type="submit">
-                                                                        <i class="fa fa-trash me-2"></i>Delete
-                                                                    </button>
-                                                                </form>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        
-                                    @endforelse
-                                </tbody>
-                            </table>
+        </div>
+        <div>
+            <div class="card-table">
+                <div class="card-body">
+                    <div class="table-responsive DriverInventoryTable mt-3">
+                        <table class="table table-stripped table-hover location">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Location</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($locationschedule as $key => $item)
+                                <tr>
+                                    <td class="text-start">{{$key+1}}</td>
+                                    <td>{{$item->address??''}}</td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <form method="POST"
+                                                            action="{{ route('admin.schedule.locationstore') }}"
+                                                            enctype="multipart/form-data">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $item->id ?? "" }}"
+                                                                class="form-control" name="id">
+                                                            <input type="hidden" value="{{ $user->id ?? "" }}"
+                                                                class="form-control" name="user_id">
+                                                            <input type="hidden" value="delete" class="form-control"
+                                                                name="type">
+                                                            <button class="dropdown-item" type="submit">
+                                                                <i class="fa fa-trash me-2"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
 
-                            <table class="table table-stripped table-hover availability">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>S. No.</th>
-                                        <th>Date</th>
-                                        {{-- <th>Location</th> --}}
-                                        <th>Availability</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($availabilities as $index => $availabilitie)
-                                    @php
-                                    $slots = [];
-                                    if (isset($availabilitie->morning) && $availabilitie->morning == 1)
-                                    $slots[] = 'Morning';
-                                    if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
-                                    $slots[] = 'Afternoon';
-                                    if (isset($availabilitie->evening) && $availabilitie->evening == 1)
-                                    $slots[] = 'Evening';
+                                @endforelse
+                            </tbody>
+                        </table>
 
-                                    $isFullyAvailable = count($slots) === 3;
-                                    @endphp
+                        <table class="table table-stripped table-hover availability">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Date</th>
+                                    {{-- <th>Location</th> --}}
+                                    <th>Availability</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($availabilities as $index => $availabilitie)
+                                @php
+                                $slots = [];
+                                if (isset($availabilitie->morning) && $availabilitie->morning == 1)
+                                $slots[] = 'Morning';
+                                if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
+                                $slots[] = 'Afternoon';
+                                if (isset($availabilitie->evening) && $availabilitie->evening == 1)
+                                $slots[] = 'Evening';
 
-                                    @if ($isFullyAvailable)
-                                    @continue
-                                    @endif
+                                $isFullyAvailable = count($slots) === 3;
+                                @endphp
 
-                                    <tr>
-                                        <td class="text-start">{{ $index + 1 }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</td>
-                                        {{-- <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td> --}}
-                                        <td>
-                                            @if (count($slots) === 0)
-                                            Full Unavailable
-                                            @else
-                                            {{ implode(', ', $slots) }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul>
-                                                        <!-- <li>
+                                @if ($isFullyAvailable)
+                                @continue
+                                @endif
+
+                                <tr>
+                                    <td class="text-start">{{ $index + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</td>
+                                    {{-- <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td> --}}
+                                    <td>
+                                        @if (count($slots) === 0)
+                                        Full Unavailable
+                                        @else
+                                        {{ implode(', ', $slots) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <!-- <li>
                                                             <a class="dropdown-item" href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}">
                                                                 <i class="far fa-eye me-2"></i>View
                                                             </a>
                                                         </li> -->
-                                                                                        <!-- <li>
+                                                    <!-- <li>
                                                             <a class="dropdown-item" href="#"
                                                                 onclick="event.preventDefault(); showEditSchedule(
                                                                     '{{ $availabilitie->id }}', 
@@ -778,31 +786,31 @@
                                                                 <i class="far fa-edit me-2"></i>Update
                                                             </a>
                                                         </li> -->
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}">
-                                                                <i class="fa fa-trash me-2"></i>Delete
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}">
+                                                            <i class="fa fa-trash me-2"></i>Delete
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.</td>
-                                    </tr>
-                                    @endforelse
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.</td>
+                                </tr>
+                                @endforelse
 
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+
     </div>
 
 
@@ -815,8 +823,6 @@
 
 
     <script>
-        
-
         function driverscheduleform(type) {
             // Hide all sections
             document.getElementById('availability').style.display = 'none';

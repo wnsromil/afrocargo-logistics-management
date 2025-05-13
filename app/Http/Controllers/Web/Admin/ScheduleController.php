@@ -149,17 +149,17 @@ class ScheduleController extends Controller
 
     public function locationStore(Request $request)
     {
+        if($request->id && $request->type == 'delete'){
+            LocationSchedule::where('id',$request->id)->delete();
+            return redirect()
+            ->route('admin.drivers.schedule', ['id' => $request->user_id, 'tab' => 'location'])
+            ->with('success', 'Location deleted successfully.');
+        }
+
         $rules = [
             'address' => 'required|string',
         ];
 
-        if($request->id && $request->type == 'delete'){
-            LocationSchedule::where('id',$request->id)->delete();
-            return redirect()->route('admin.drivers.schedule', [
-                'id' => $request->user_id,
-            ])->with('success', 'Location deleted successfully.')
-                ->header('Location', route('admin.drivers.schedule', ['id' => $request->user_id]) . '?tab=location');
-        }
 
         $availabilityData = $request->validate($rules);
 
