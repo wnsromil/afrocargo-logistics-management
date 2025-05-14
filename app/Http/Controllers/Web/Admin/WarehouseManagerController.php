@@ -121,7 +121,7 @@ class WarehouseManagerController extends Controller
         // Email Data Prepare Karna
         $manager_name = $request->manager_name;
         $email = $request->email;
-        $mobileNumber = $request->phone;
+        $mobileNumber = $request->mobile_number;
         $password = $randomPassword;
         $loginUrl = route('login');
 

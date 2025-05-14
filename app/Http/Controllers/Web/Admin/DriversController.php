@@ -146,7 +146,7 @@ class DriversController extends Controller
 
         $driver_name = $request->driver_name;
         $email = $request->email;
-        $mobileNumber = $request->mobile_code;
+        $mobileNumber = $request->mobile_number;
         $password = $randomPassword;
         $loginUrl = route('login');
 

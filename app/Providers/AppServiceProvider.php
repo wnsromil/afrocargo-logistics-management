@@ -21,13 +21,29 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
+
         View::share('parcelStatuses', [
-            'Pending', 'Pickup Assign', 'Pickup Re-Schedule', 'Received By Pickup Man', 
-            'Received Warehouse', 'Transfer to Hub', 'Received by Hub', 'Delivery Man Assign', 
-            'Return to Courier', 'Delivered', 'Cancelled'
+            'Pending',
+            'Pickup Assign',
+            'Pickup Re-Schedule',
+            'Received By Pickup Man',
+            'Received Warehouse',
+            'Transfer to Hub',
+            'Received by Hub',
+            'Delivery Man Assign',
+            'Return to Courier',
+            'Delivered',
+            'Cancelled'
         ]);
-        View::share('coutry',Country::get());
-        
+        $usa = Country::where('iso3', 'USA')->get();
+
+        // Then, get all other countries ordered by name
+        $otherCountries = Country::where('iso3', '!=', 'USA')->orderBy('name', 'asc')->get();
+
+        // Merge both collections
+        $countries = $usa->merge($otherCountries);
+
+        // Share with view
+        View::share('coutry', $countries);
     }
 }
