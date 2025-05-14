@@ -464,7 +464,7 @@ class InvoiceController extends Controller
             ->with('success', 'Order deleted successfully');
     }
 
-    public function customerSearch(Request $request)
+    public function customerSearchOld(Request $request)
     {
         if (!$request->search) {
             return response()->json([
@@ -540,7 +540,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function customerSearchNew(Request $request)
+    public function customerSearch(Request $request)
     {
         if (!$request->search) {
             return response()->json([
