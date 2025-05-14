@@ -141,10 +141,12 @@ class CustomerController extends Controller
             $userData = [
                 'name'          => $validated['first_name'],
                 'email'          => $validated['email'] ?? null,
-                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
-                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+                'phone'      => $validated['mobile_number'],
                 'phone_code_id'        => (int) $validated['mobile_number_code_id'],
-                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+                'phone_2' => $validated['alternative_mobile_number'] ?? null,
+                'phone_2_code_id_id' => !empty($validated['alternative_mobile_number'])
+                    ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                    : null,
                 'address'        => $validated['address_1'],
                 'address_2'        => $request->Address_2,
                 'country_id'     => $validated['country'],
@@ -320,9 +322,11 @@ class CustomerController extends Controller
             'name'        => $validated['first_name'],
             'email'       => $validated['email'],
             'phone'      => $validated['mobile_number'],
-            'phone_2'    => $validated['alternative_mobile_number'] ?? null,
             'phone_code_id'        => (int) $validated['mobile_number_code_id'],
-            'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'] ?? null,
+            'phone_2' => $validated['alternative_mobile_number'] ?? null,
+            'phone_2_code_id_id' => !empty($validated['alternative_mobile_number'])
+                ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                : null,
             'address'     => $validated['address_1'],
             'address_2'   => $request->Address_2,
             'country_id'  => $validated['country'],
