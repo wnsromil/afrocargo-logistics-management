@@ -118,4 +118,9 @@ class Parcel extends Model
     {
         return $this->belongsTo(ParcelStatus::class, 'status');
     }
+
+    public function ParcelInventory()
+    {
+        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id');
+    }
 }

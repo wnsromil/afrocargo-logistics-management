@@ -164,7 +164,7 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
-        // return $request->all();
+        return $request->all();
         
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
@@ -192,7 +192,14 @@ class InvoiceController extends Controller
             'is_paid' => 'nullable|boolean'
         ]);
         $invoiceItems = json_decode($request->input('invoce_item'), true);
-        $invoice = new Invoice();
+        $invoice = null;
+        if(!empty($request->parcel_id)){
+            $invoice = Invoice::where('parcel_id',$request->parcel_id)->first();
+        }
+        if(empty($invoice)){
+            $invoice = new Invoice();
+        }
+        
         $invoice->generated_by = \Auth::user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
         $invoice->delivery_address_id = $request->delivery_address_id;
@@ -234,7 +241,7 @@ class InvoiceController extends Controller
             'created_by' => auth()->id,
             'personal' => 'Yes',
             'currency' => 'USD',
-            'payment_type' => 'boxcredit',
+            'payment_type' => 'Cash',
             'payment_amount' => $invoice->payment,
             'reference' => 'NA',
             'comment' => 'NA',
@@ -317,12 +324,12 @@ class InvoiceController extends Controller
             'pickupAddress','invoiceHistory'));
     }
 
-    protected function formatAddress($address) {
+    protected function formatAddress($address, $parcel = null) {
         if (!$address || !$address->user) return null;
 
         return [
             'id' => $address->id,
-            'text' => $address->full_name . ", " . $address->address,
+            'text' => $address->full_name ."".($parcel->tracking_number??null).", " . $address->address,
             'name' => $address->user->name,
             'last_name' => $address->user->last_name,
             'phone' => $address->user->mobile_number,
@@ -457,133 +464,83 @@ class InvoiceController extends Controller
             ->with('success', 'Order deleted successfully');
     }
 
-    // public function customerSearch(Request $request)
-    // {
-    //     if (!$request->search) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Please enter a search term'
-    //         ], 400);
-    //     }
-
-    //     $searchTerm = '%' . $request->search . '%';
-    //     $invoice_type = $request->invoice_type;
-
-    //     $users = Parcel::join('addresses', 'users.id', '=', 'addresses.user_id')
-    //         ->leftJoin('parcels', 'users.id', '=', 'parcels.customer_id')
-    //         ->where('users.role_id', 2)
-    //         ->where(function($query) use ($searchTerm) {
-    //             $query->where('users.name', 'like', $searchTerm)
-    //                 ->orWhere('users.email', 'like', $searchTerm)
-    //                 ->orWhere('users.phone', 'like', $searchTerm)
-    //                 ->orWhere('addresses.full_name', 'like', $searchTerm)
-    //                 ->orWhere('addresses.mobile_number', 'like', $searchTerm)
-    //                 ->orWhere('addresses.alternative_mobile_number', 'like', $searchTerm)
-    //                 ->orWhere('addresses.address', 'like', $searchTerm)
-    //                 ->orWhere('addresses.pincode', 'like', $searchTerm);
-    //         })->when($request->address_type,function($q)use($request){
-    //             return $q->where('addresses.address_type',$request->address_type);
-    //         })
-    //         ->select(
-    //             'users.*',
-    //             'addresses.*',
-    //             'parcels.id as order_id',
-    //             'parcels.status',
-    //             'parcels.unique_id',
-    //             'parcels.parcel_type',
-    //             'parcels.add_order',
-    //             'parcels.container_id',
-    //             'parcels.arrived_warehouse_id',
-    //             'parcels.arrived_driver_id',
-    //             'parcels.percel_comment',
-    //             'parcels.hub_tracking_id',
-    //             'parcels.tracking_number',
-    //             'parcels.customer_id',
-    //             'parcels.ship_customer_id',
-    //             'parcels.driver_id',
-    //             'parcels.warehouse_id',
-    //             'parcels.parcel_car_ids',
-    //             'parcels.customer_subcategories_data',
-    //             'parcels.driver_subcategories_data',
-    //             'parcels.driver_parcel_image',
-    //             'parcels.length',
-    //             'parcels.width',
-    //             'parcels.height',
-    //             'parcels.update_role',
-    //             'parcels.weight',
-    //             'parcels.total_amount',
-    //             'parcels.estimate_cost',
-    //             'parcels.partial_payment',
-    //             'parcels.remaining_payment',
-    //             'parcels.payment_type',
-    //             'parcels.descriptions',
-    //             'parcels.source_address',
-    //             'parcels.destination_user_name',
-    //             'parcels.destination_user_phone',
-    //             'parcels.destination_address',
-    //             'parcels.payment_status',
-    //             'parcels.amount',
-    //             'parcels.source_let',
-    //             'parcels.source_long',
-    //             'parcels.dest_let',
-    //             'parcels.dest_long',
-    //             'parcels.created_at as parcel_created_at',
-    //             'parcels.updated_at as parcel_updated_at',
-    //             'parcels.pickup_date',
-    //             'parcels.delivery_date',
-    //             'parcels.pickup_address_id',
-    //             'parcels.delivery_address_id',
-    //             'parcels.pickup_time',
-    //             'parcels.pickup_type',
-    //             'parcels.delivery_type'
-    //         )
-    //         ->get();
-            
-
-            
-
-    //     if ($users->isEmpty()) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'No results found'
-    //         ], 404);
-    //     }
-
-        // return response()->json([
-        //     'success' => true,
-        //     'data' => $users->map(function ($user) {
-        //         return [
-        //             'id' => $user->id,
-        //             'role_id' => $user->role_id,
-        //             'text' => ($user->full_name ?? $user->name).", ".$user->address,
-        //             'name' => $user->name,
-        //             'last_name' => $user->last_name,
-        //             'email' => $user->email,
-        //             'phone' => $user->phone,
-        //             'full_name' => $user->full_name,
-        //             'mobile_number' => $user->mobile_number,
-        //             'alternative_mobile_number' => $user->alternative_mobile_number,
-        //             'mobile_number_code_id' => $user->mobile_number_code_id ?? 1,
-        //             'alternative_mobile_number_code_id' => $user->alternative_mobile_number_code_id ?? 1,
-        //             'address1' => $user->address,
-        //             'address2' => $user->address_2,
-        //             'pincode' => $user->pincode,
-        //             'country_id' => $user->country_id,
-        //             'state_id' => $user->state_id,
-        //             'city_id' => $user->city_id,
-        //             'country' => $user->country_id,
-        //             'state' => $user->state_id,
-        //             'city' => $user->city_id,
-        //             'address_type' => $user->address_type,
-        //             'lat' => $user->lat,
-        //             'long' => $user->long,
-        //             'invoice_type' => $invoice_type,
-        //         ];
-        //     })
-        // ]);
-    // }
-
     public function customerSearch(Request $request)
+    {
+        if (!$request->search) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please enter a search term'
+            ], 400);
+        }
+
+        $searchTerm = '%' . $request->search . '%';
+        $invoice_type = $request->invoice_type;
+
+        $users = User::join('addresses', 'users.id', '=', 'addresses.user_id')
+            ->where('users.role_id', 2)
+            ->where(function($query) use ($searchTerm) {
+                $query->where('users.name', 'like', $searchTerm)
+                    ->orWhere('users.email', 'like', $searchTerm)
+                    ->orWhere('users.phone', 'like', $searchTerm)
+                    ->orWhere('addresses.full_name', 'like', $searchTerm)
+                    ->orWhere('addresses.mobile_number', 'like', $searchTerm)
+                    ->orWhere('addresses.alternative_mobile_number', 'like', $searchTerm)
+                    ->orWhere('addresses.address', 'like', $searchTerm)
+                    ->orWhere('addresses.pincode', 'like', $searchTerm);
+            })->when($request->address_type,function($q)use($request){
+                return $q->where('addresses.address_type',$request->address_type);
+            })
+            ->select(
+                'users.*',
+                'addresses.*'
+            )
+            ->get();
+            
+
+            
+
+        if ($users->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No results found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $users->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'role_id' => $user->role_id,
+                    'text' => ($user->full_name ?? $user->name).", ".$user->address,
+                    'name' => $user->name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'full_name' => $user->full_name,
+                    'mobile_number' => $user->mobile_number,
+                    'alternative_mobile_number' => $user->alternative_mobile_number,
+                    'mobile_number_code_id' => $user->mobile_number_code_id ?? 1,
+                    'alternative_mobile_number_code_id' => $user->alternative_mobile_number_code_id ?? 1,
+                    'address1' => $user->address,
+                    'address2' => $user->address_2,
+                    'pincode' => $user->pincode,
+                    'country_id' => $user->country_id,
+                    'state_id' => $user->state_id,
+                    'city_id' => $user->city_id,
+                    'country' => $user->country_id,
+                    'state' => $user->state_id,
+                    'city' => $user->city_id,
+                    'address_type' => $user->address_type,
+                    'lat' => $user->lat,
+                    'long' => $user->long,
+                    'invoice_type' => $invoice_type,
+                ];
+            })
+        ]);
+    }
+
+    public function customerSearchNew(Request $request)
     {
         if (!$request->search) {
             return response()->json([
@@ -598,8 +555,9 @@ class InvoiceController extends Controller
         $parcels = Parcel::with([
             'pickupaddress',
             'deliveryaddress',
+            'ParcelInventory'
         ])
-        ->where('parcel_type', ucfirst($invoice_type))
+        ->where('parcel_type', $invoice_type)
         ->whereNotNull('delivery_address_id')
         ->whereHas('pickupaddress',function($query) use ($searchTerm) {
                 $query
@@ -609,7 +567,7 @@ class InvoiceController extends Controller
                     ->orWhere('address', 'like', $searchTerm)
                     ->orWhere('pincode', 'like', $searchTerm);
             })
-        ->whereHas('deliveryaddress',function($query) use ($searchTerm) {
+        ->orWhereHas('deliveryaddress',function($query) use ($searchTerm) {
                 $query
                     ->where('full_name', 'like', $searchTerm)
                     ->orWhere('mobile_number', 'like', $searchTerm)
@@ -622,7 +580,7 @@ class InvoiceController extends Controller
         //         $q->where('address_type', $request->address_type);
         //     });
         // })
-        ->get();
+        ->get()->filter(fn($it) => $it->parcel_type==$invoice_type && !empty($it->delivery_address_id))->values();
 
         if ($parcels->isEmpty()) {
             return response()->json([
@@ -636,8 +594,8 @@ class InvoiceController extends Controller
             'data' => $parcels->map(function ($parcel) use ($invoice_type) {
 
                 $parcel->invoice_type = $invoice_type;
-                $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress);
-                $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress);
+                $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress,$parcel);
+                $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress,$parcel);
                 return $parcel;
             }),
         ]);

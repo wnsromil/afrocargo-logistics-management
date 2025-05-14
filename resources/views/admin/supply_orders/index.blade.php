@@ -113,6 +113,7 @@
                                                                     'Unpaid' => 'unpaid_status',
                                                                     'Paid' => 'status',
                                                                     'Completed' => 'partial_status',
+                                                                    default => 'unknown_status',
                                                                 };
                                                             @endphp
                                                             <td>
