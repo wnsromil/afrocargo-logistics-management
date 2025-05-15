@@ -38,8 +38,9 @@
                                 <div class="row gx-3">
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="company_name"> Customer ID</label>
-                                        <input type="text" class="form-control inp" style="background: #ececec;"
-                                            placeholder="" value="{{ $user->unique_id }}" readonly>
+                                        <input type="text" class="form-control inp" id="unique_id" name="unique_id"
+                                            style="background: #ececec;" placeholder="" value="{{ $user->unique_id }}"
+                                            readonly>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="company_name"> Company </label>
@@ -318,8 +319,9 @@
                         @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType)
                             <div class="col-md-3">
                                 <div class="d-flex align-items-center justify-content-center avtard">
-                                    <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                }}</label>
+                                    <label class="foncolor set"
+                                        for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
+                                                                                                                    }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -628,7 +630,7 @@
                                                                                 class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                                     </li>
                                                                     <li>
-                                                                        <a class="dropdown-item"><i
+                                                                        <a class="dropdown-item" href="{{ route('admin.customer.destroyShipTo', $child->id) }}"><i
                                                                                 class="ti ti-trash fs_18 me-2"></i>Delete</a>
                                                                     </li>
                                                                 </ul>
@@ -1081,40 +1083,34 @@
                 const urlParams = url.searchParams;
                 let activeTab = urlParams.get('type');
 
-                // ✅ If 'tab' is missing in URL, default to 'customerDetails'
-                let isDefaultTab = false;
+                // If 'type' is missing in URL, default to 'customerDetails'
                 if (!activeTab) {
                     activeTab = 'customerDetails';
                     urlParams.set('type', activeTab);
                     window.history.replaceState(null, '', url.toString());
-                    isDefaultTab = true;
                 }
 
-                // ✅ Activate Tab Link + Content
+                // ✅ Always show the correct tab and tab-pane
                 const tabTrigger = document.querySelector(`.nav-tabs a[href="#${activeTab}"]`);
                 const activePane = document.getElementById(activeTab);
 
                 if (tabTrigger && activePane) {
                     new bootstrap.Tab(tabTrigger).show();
 
-                    // If tab= is missing in URL, manually show content
-                    if (isDefaultTab) {
-                        tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
-                        activePane.classList.add('show', 'active');
-                    }
+                    // ✅ Always update tab-pane classes (even on refresh)
+                    tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                    activePane.classList.add('show', 'active');
                 }
 
-                // ✅ On tab switch: update URL + activate content div
+                // On tab switch: update URL + activate content pane
                 tabs.forEach(tab => {
                     tab.addEventListener('shown.bs.tab', function (e) {
                         const newTabId = e.target.getAttribute('href').replace('#', '');
 
-                        // Update tab-pane visibility
                         tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
                         const newPane = document.getElementById(newTabId);
                         if (newPane) newPane.classList.add('show', 'active');
 
-                        // Update URL
                         const updatedUrl = new URL(window.location.href);
                         updatedUrl.searchParams.set('type', newTabId);
                         window.history.replaceState(null, '', updatedUrl.toString());
@@ -1122,6 +1118,7 @@
                 });
             });
         </script>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const resetBtn = document.getElementById('shipto_reset'); // Reset button by ID

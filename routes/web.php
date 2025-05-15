@@ -203,7 +203,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
         Route::get('/update-shipTo/{id}', [CustomerController::class, 'updateShipTo'])->name('customer.updateShipTo');
         Route::put('/edit-shipTo/{id}', [CustomerController::class, 'editeShipTo'])->name('customer.editeShipTo');
-        Route::get('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.updateShipTo');
+        Route::get('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.destroyShipTo');
 
         // Warehouse 
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');

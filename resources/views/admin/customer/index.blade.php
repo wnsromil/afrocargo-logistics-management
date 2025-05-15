@@ -42,8 +42,9 @@
                             <input type="hidden" name="type" value="customer">
                         </div>
                         <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Refresh" onclick="resetForm()"> <i class="fe fe-refresh-ccw"></i> </button>
+                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
+                                class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>
             </div>
@@ -58,8 +59,9 @@
                             <input type="hidden" name="type" value="ShipTo">
                         </div>
                         <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Refresh" onclick="resetForm()"> <i class="fe fe-refresh-ccw"></i> </button>
+                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
+                                class="fe fe-refresh-ccw"></i> </button>
                     </div>
                 </form>
             </div>
@@ -114,7 +116,11 @@
                                     <td>{{ $customer->vehicle->container_no_1 ?? '-' }}</td>
                                     <td>{{ $customer->license_number ?? '-' }}</td>
                                     <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
-                                        +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 ?? '-' }}
+                                        @if (!empty($customer->phone_2))
+                                            +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 }}
+                                        @else
+                                            -
+                                        @endif
                                     </td>
                                     <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                                         title="{!! nl2br(e($customer->address ?? '-')) . '<br>' . nl2br(e($customer->address_2 ?? '-')) !!}">

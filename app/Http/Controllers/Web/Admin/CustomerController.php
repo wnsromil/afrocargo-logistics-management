@@ -253,6 +253,7 @@ class CustomerController extends Controller
                 });
             })
             ->where('role_id', 5)
+            ->where('is_deleted', 'No')
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
@@ -322,6 +323,7 @@ class CustomerController extends Controller
             'name'        => $validated['first_name'],
             'email'       => $validated['email'],
             'phone'      => $validated['mobile_number'],
+            'unique_id' => $request->unique_id,
             'phone_code_id'        => (int) $validated['mobile_number_code_id'],
             'phone_2' => $validated['alternative_mobile_number'] ?? null,
             'phone_2_code_id_id' => !empty($validated['alternative_mobile_number'])
@@ -499,7 +501,7 @@ class CustomerController extends Controller
                 'phone_code_id'        => (int) $validated['mobile_number_code_id'],
                 'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
                 'address'    => $validated['address_1'],
-                'address_2'    => $validated['address_2'],
+                'address_2'    => $request->address_2,
                 'latitude'   => $validated['latitude'],
                 'longitude'  => $validated['longitude'],
                 'language'   => $validated['language'],
@@ -603,7 +605,7 @@ class CustomerController extends Controller
 
             return redirect()
                 ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
-                ->with('success', 'Ship To details updated successfully.');
+                ->with('success', 'Ship To address updated successfully.');
         } catch (\Throwable $th) {
             dd($th);
             return back()->withErrors(['error' => $th->getMessage()]);

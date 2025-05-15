@@ -297,6 +297,7 @@ class DriversController extends Controller
 
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
+            'unique_id' => $request->unique_id,
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address_1,

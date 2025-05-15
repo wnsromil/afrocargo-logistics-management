@@ -17,7 +17,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor" for="company_name"> Driver ID</label>
-                        <input type="text" class="form-control inp" style="background: #ececec;" placeholder=""
+                        <input type="text" class="form-control inp" id="unique_id" name="unique_id" style="background: #ececec;" placeholder=""
                             value="{{ $manager_data->unique_id }}" readonly>
                     </div>
                 </div>
