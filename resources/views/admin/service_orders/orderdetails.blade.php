@@ -173,12 +173,15 @@
                 @php
                     $statusSteps = [
                         1 => 'Pending',
-                        2 => 'Pickup Order',
-                        4 => 'Arrived Warehouse',
+                        3 => 'Pickup order',
+                        4 => 'Arrived warehouse',
                         5 => 'In transit',
-                        17 => 'Transfer to Hub',
-                        21 => 'Self Pickup',
+                        8 => 'Arrived at final destination warehouse',
+                        9 => 'Ready for pick up',
+                        //21 => 'Ready for self pick up',
+                        10 => 'Out for delivery',
                         11 => 'Delivered'
+
                     ];
 
                     $statusDates = [];

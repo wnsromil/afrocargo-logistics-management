@@ -145,7 +145,7 @@ class ServiceOrdersController extends Controller
     {
         //
         $ParcelHistories = ParcelHistory::where('parcel_id', $id)
-            ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
+            ->with(['warehouse', 'customer', 'createdByUser'])->get();
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
