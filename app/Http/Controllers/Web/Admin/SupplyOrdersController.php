@@ -14,7 +14,8 @@ use App\Models\{
     Parcel,
     Vehicle,
     ParcelHistory,
-    HubTracking
+    HubTracking,
+    ParcelInventorie
 };
 
 class SupplyOrdersController extends Controller
@@ -145,11 +146,18 @@ class SupplyOrdersController extends Controller
     {
         //
         $ParcelHistories = ParcelHistory::where('parcel_id', $id)
-            ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
+            ->with(['warehouse', 'customer', 'createdByUser'])->get();
 
-        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        return view('admin.supply_orders.show', compact('ParcelHistories', 'parcelTpyes'));
+        $parcel = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->where('id', $id)->first();
+
+        $parcelInventories = ParcelInventorie::where('parcel_id', $id)
+            ->with(['inventorie'])->get();
+
+
+        return view('admin.supply_orders.orderdetails', compact('parcelInventories', 'ParcelHistories', 'parcel'));
     }
 
     /**

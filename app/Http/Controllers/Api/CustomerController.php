@@ -236,7 +236,7 @@ class CustomerController extends Controller
         $shippingUser->customer_id = $customer_id;
         $shippingUser->created_id = $this->user->id;
         $shippingUser->country_id = $request->country_id;
-        $shippingUser->address_1 = $request->address_1;
+        $shippingUser->address = $request->address_1;
         $shippingUser->address_2 = $request->address_2;
         $shippingUser->ship_to_id = $request->ship_to_id ?? 'Done';
         $shippingUser->company_name = $request->company_name;

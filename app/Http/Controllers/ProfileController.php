@@ -71,9 +71,11 @@ class ProfileController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone'      => $request->mobile_number ?? null,
-            'phone_2'    => $request->alternative_mobile_number  ?? null,
             'phone_code_id'        => $request->mobile_number_code_id ?? null,
-            'phone_2_code_id_id'   => $request->alternative_mobile_number_code_id  ?? null,
+            'phone_2' => $request->alternative_mobile_number ?? null,
+            'phone_2_code_id_id' => !empty($request->alternative_mobile_number)
+                ? (int) ($request->alternative_mobile_number_code_id ?? null)
+                : null,
             'country_id' => $request->country,
             'state_id' => $request->state,
             'city_id' => $request->city,

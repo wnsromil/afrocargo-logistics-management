@@ -23,12 +23,12 @@ class CustomerController extends Controller
             'invoice_custmore_id' => 'nullable|integer',
             'search' => 'nullable|string|max:255',
         ]);
-    
+
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query('invoice_custmore_id');
-    
+
         $query = User::where('role', 'customer');
-    
+
         if ($invoiceCustomerId) {
             // Only fetch this specific customer by ID
             $query->where('invoice_custmore_id', $invoiceCustomerId);
@@ -38,22 +38,24 @@ class CustomerController extends Controller
                 $query->where('invoice_custmore_type', $type);
             }
         }
-    
+
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%$search%")
-                  ->orWhere('email', 'LIKE', "%$search%");
+                    ->orWhere('phone', 'LIKE', "%$search%")
+                    ->orWhere('address', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
             });
         }
-    
-        $customers = $query->orderBy(column: 'name')->get(['id', 'name', 'phone', 'phone_2', 'email', 'profile_pic','signature_img','contract_signature_img', 'license_document']);
-    
+
+        $customers = $query->orderBy(column: 'name')->get(['id', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
             $customer->address = $address ?? null;
         }
-    
+
         return response()->json(['customers' => $customers], 200);
     }
 
@@ -201,7 +203,7 @@ class CustomerController extends Controller
             ->first();
 
         if (!$existingUser) {
-            
+
             // Call createCustomer if user does not exist
             $newUser = $this->createCustomer($request->all());
             $customer_id = $newUser->id;
@@ -217,7 +219,7 @@ class CustomerController extends Controller
         $loginUrl = route('login');
 
         // Send the email
-        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password,$loginUrl));
+        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
 
         // Create new ShippingUser entry
@@ -264,21 +266,20 @@ class CustomerController extends Controller
     public function deleteCustomer(Request $request)
     {
         $user = User::find($request->id);
-    
+
         if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found'
             ], 404);
         }
-    
+
         $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
-    
+
         return response()->json([
             'success' => true,
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
     }
-    
 }
