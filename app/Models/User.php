@@ -64,7 +64,8 @@ class User extends Authenticatable
         'invoice_custmore_id',
         'phone_code_id',
         'phone_2_code_id_id',
-        'parent_customer_id'
+        'parent_customer_id',
+        'unique_id'
     ];
 
 

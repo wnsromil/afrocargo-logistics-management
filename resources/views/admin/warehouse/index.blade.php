@@ -76,7 +76,7 @@
                                 <td>{{ $warehouse->state_id ?? '-' }}</td>
                                 <td>{{ $warehouse->country_id ?? '-' }}</td>
                                 <td>{{ $warehouse->zip_code ?? '-' }}</td>
-                                <td>{{ $warehouse->country_code ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
+                                <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
                                 <td>
                                     <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                         {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}

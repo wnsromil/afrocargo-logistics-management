@@ -33,12 +33,11 @@
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
-                                                <a class="dropdown-item" data-bs-toggle="modal"
-                                                    data-bs-target="#InvoiceLabel"><i
+                                                <a class="dropdown-item" href="href="{{ route('admin.customer.updateShipTo', $child->id) }}""><i
                                                         class="ti ti-edit fs_18 me-2"></i>Update</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="#"><i
+                                                <a class="dropdown-item"><i
                                                         class="ti ti-trash fs_18 me-2"></i>Delete</a>
                                             </li>
                                         </ul>

@@ -13,7 +13,8 @@ use App\Models\{
     Parcel,
     ParcelHistory,
     Invoice,
-    ParcelInventorie
+    ParcelInventorie,
+    Vehicle
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -77,7 +78,7 @@ class OrderShipmentController extends Controller
                 'destination_address' => 'required|string|max:255',
                 'destination_user_name' => 'required|string|max:255',
                 'destination_user_phone' => 'required|digits:10',
-                'parcel_card_ids' => 'nullable|array',
+                //  'parcel_card_ids' => 'nullable|array',
                 'customer_subcategories_data' => 'nullable', // JSON format required
                 'driver_subcategories_data' => 'nullable',   // JSON format required
                 'pickup_address_id' => 'required|numeric',
@@ -95,10 +96,6 @@ class OrderShipmentController extends Controller
             // Assign customer ID
             $validatedData['customer_id'] = $this->user->id;
 
-            // Convert parcel_card_ids to parcel_car_ids
-            // $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
-            // unset($validatedData['parcel_card_ids']);
-
             // **JSON Encode Arrays Properly**
             if (!empty($request->customer_subcategories_data)) {
                 // Ensure it's an array before encoding
@@ -111,6 +108,19 @@ class OrderShipmentController extends Controller
                 $driverData = is_string($request->driver_subcategories_data) ? json_decode($request->driver_subcategories_data, true) : $request->driver_subcategories_data;
                 $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
             }
+
+            // 🟠 Check for active container vehicle
+            $activeContainer = Vehicle::where('vehicle_type', 'Container')->where('status', 'Active')->first();
+
+            if (!$activeContainer) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Container not open. Please wait for an open container.'
+                ], 400);
+            }
+
+            // Store container_id
+            $validatedData['container_id'] = $activeContainer->id;
 
             // Create Parcel
             $Parcel = Parcel::create($validatedData);
@@ -145,7 +155,7 @@ class OrderShipmentController extends Controller
     public function show(string $id)
     {
         $parcel = Parcel::where('id', $id)
-            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress'])
+            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress','parcelStatus'])
             ->first();
 
         if (!$parcel) {
@@ -182,15 +192,15 @@ class OrderShipmentController extends Controller
     public function OrderHistory(string $id)
     {
         $parcel = Parcel::where('id', $id)->orWhere('tracking_number', $id)->first();
-    
+
         if (!$parcel) {
             return $this->sendError('Parcel not found!', [], 404);
         }
-    
+
         $ParcelHistories = ParcelHistory::where('parcel_id', $parcel->id)
             ->with(['warehouse', 'customer', 'createdByUser'])
             ->paginate(10);
-    
+
         // ✅ Inventorie data add karein
         $inventorieData = ParcelInventorie::where('parcel_id', $parcel->id)
             ->with('inventorie:id,name')
@@ -201,12 +211,12 @@ class OrderShipmentController extends Controller
                     'inventorie_item_quantity' => $item->inventorie_item_quantity,
                 ];
             });
-    
+
         $ParcelHistories->inventorie_data = $inventorieData->isEmpty() ? [] : $inventorieData;
-    
+
         return $this->sendResponse($ParcelHistories, 'Order histories fetch successfully.');
     }
-    
+
     public function OrderShipmentStatus(Request $request)
     {
         $validatedData = $request->validate([
@@ -605,10 +615,16 @@ class OrderShipmentController extends Controller
 
             // Store Parcel Inventories
             foreach ($request->inventorie_data as $item) {
+                $inventory = Inventory::find($item['inventorie_id']);
+                $price = $inventory->price;
+                $quantity = $item['inventorie_item_quantity'];
+                $totalAmount = $price * $quantity;
                 ParcelInventorie::create([
                     'parcel_id' => $parcel->id,
                     'inventorie_id' => $item['inventorie_id'],
                     'inventorie_item_quantity' => $item['inventorie_item_quantity'],
+                    'price' => $price,
+                    'total' => $totalAmount,
                 ]);
             }
 

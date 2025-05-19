@@ -90,7 +90,8 @@ class DriversController extends Controller
         $validated = $request->validate([
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'mobile_code' => 'required|string|max:15|unique:users,phone',
+            'mobile_number' => 'required|string|max:15',
+            'mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             'email' => 'required|email|unique:users,email',
             'vehicle_type' => 'required',
@@ -98,7 +99,6 @@ class DriversController extends Controller
             'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
-            'country_code' => 'required|string',
         ]);
         $status  = !empty($request->status) ? $request->status : 'Active';
         // Handle License Document Upload
@@ -128,12 +128,13 @@ class DriversController extends Controller
             'address' => $request->address_1,
             'country_id' => $request->country,
             'email' => $request->email,
-            'phone' => $request->mobile_code,
+            'phone' => $request->mobile_number,
+            'phone_code_id'  => $request->mobile_number_code_id,
+            'country_code' => +0,
             'status' => $status,
             'role_id' => 4,
             'role' => "driver",
             'password' => $hashedPassword,
-            'country_code' => $request->country_code,
             'license_number' => $request->license_number,
             'license_expiry_date' => Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d'),
             'license_document' => $licenseDocumentPath,
@@ -145,7 +146,7 @@ class DriversController extends Controller
 
         $driver_name = $request->driver_name;
         $email = $request->email;
-        $mobileNumber = $request->mobile_code;
+        $mobileNumber = $request->mobile_number;
         $password = $randomPassword;
         $loginUrl = route('login');
 
@@ -245,9 +246,9 @@ class DriversController extends Controller
         $rules = [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'edit_mobile_code' => 'required|string|max:15',
+            'mobile_number' => 'required|string|max:15',
+            'mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
-            'country_code' => 'required|string',
             'vehicle_type' => 'required',
             'email' => 'nullable|email|unique:users,email,' . $id,
             'license_number' => 'required',
@@ -296,15 +297,17 @@ class DriversController extends Controller
 
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
+            'unique_id' => $request->unique_id,
             'vehicle_id' => $request->vehicle_type,
             'name' => $request->driver_name,
             'address' => $request->address_1,
-            'phone' => $request->edit_mobile_code,
+            'phone' => $request->mobile_number,
+            'phone_code_id'  => $request->mobile_number_code_id,
+            'country_code' => +0,
             'license_number' => $request->license_number,
             'license_expiry_date' => $license_expiry_date,
             'license_document' => $licenseDocumentPath,
             'status' => $status,
-            'country_code' => $request->country_code,
         ]);
 
         return redirect()->route('admin.drivers.index')->with('success', 'Driver updated successfully');

@@ -46,8 +46,12 @@
                             <td>{{ $customer->vehicle->container_no_1 ?? '-' }}</td>
                             <td>{{ $customer->license_number ?? '-' }}</td>
                             <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
-                              +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 ?? '-' }}
-                            </td>
+                               @if (!empty($customer->phone_2))
+                                +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 }}
+                            @else
+                                -
+                            @endif
+                             </td>
                             <td>{{ $customer->address ?? '-' }}<br>
                                 {{ $customer->address_2 ?? '-' }}
                             </td>

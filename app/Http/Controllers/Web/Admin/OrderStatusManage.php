@@ -279,7 +279,7 @@ class OrderStatusManage extends Controller
                 'created_user_id' => auth()->id(),
                 'customer_id' => $parcel->customer_id,
                 'status' => 'Updated',
-                'parcel_status' => 5,
+                'parcel_status' => 8,
                 'note' => $validated['note'] ?? null,
                 'warehouse_id' => $vehicle->warehouse_id,
                 'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details

@@ -38,8 +38,9 @@
                                 <div class="row gx-3">
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="company_name"> Customer ID</label>
-                                        <input type="text" class="form-control inp" style="background: #ececec;"
-                                            placeholder="" value="{{ $user->unique_id }}" readonly>
+                                        <input type="text" class="form-control inp" id="unique_id" name="unique_id"
+                                            style="background: #ececec;" placeholder="" value="{{ $user->unique_id }}"
+                                            readonly>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="company_name"> Company </label>
@@ -60,27 +61,50 @@
                                     <div class="col-md-12 edit_mobile_code_class mb-2" style="display: grid;">
                                         <label class="foncolor" for="edit_mobile_code">Mobile No. <i
                                                 class="text-danger">*</i></label>
-                                        <input type="tel" id="edit_mobile_code"
-                                            value="{{ old('mobile_code', $user->phone) }}" class="form-control inp"
-                                            placeholder="Enter Mobile Number" name="mobile_code"
-                                            oninput="this.value = this.value.slice(0, 10)">
-                                        @error('mobile_code')
+
+                                        <div class="flaginputwrap">
+                                            <div class="customflagselect">
+                                                <select class="flag-select" name="mobile_number_code_id">
+                                                    @foreach ($coutry as $key => $item)
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            {{ $item->id == old('mobile_number_code_id', $user->phone_code_id) ? 'selected' : '' }}>
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="number" class="form-control flagInput inp"
+                                                placeholder="Enter Mobile No" name="mobile_number"
+                                                value="{{ old('mobile_number', $user->phone) }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
+                                        </div>
+                                        @error('mobile_number')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+
                                     </div>
-                                    <input type="hidden" id="country_code" name="country_code"
-                                        value="{{ old('country_code', $user->country_code) }}">
 
                                     <div class="col-md-12 alternate_mobile_no_class" style="display: grid;">
                                         <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                                        <input type="tel" id="edit_mobile" name="alternate_mobile_no"
-                                            value="{{ old('alternate_mobile_no', $user->phone_2) }}"
-                                            class="form-control inp" placeholder="Enter Mobile Number"
-                                            oninput="this.value = this.value.slice(0, 10)">
+                                        <div class="flaginputwrap">
+                                            <div class="customflagselect">
+                                                <select class="flag-select" name="alternative_mobile_number_code_id">
+                                                    @foreach ($coutry as $key => $item)
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            {{ $item->id == old('alternative_mobile_number_code_id', $user->phone_2_code_id_id) ? 'selected' : '' }}>
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="number" class="form-control flagInput inp"
+                                                placeholder="Enter Mobile No. 2" name="alternative_mobile_number"
+                                                value="{{ old('alternative_mobile_number', $user->phone_2) }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
+                                        </div>
                                     </div>
-                                    <input type="hidden" id="country_code_2" name="country_code_2"
-                                        value="{{ old('country_code_2', $user->country_code_2) }}">
-
 
 
                                     <div class="col-md-12 mb-2">
@@ -295,8 +319,9 @@
                         @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType)
                             <div class="col-md-3">
                                 <div class="d-flex align-items-center justify-content-center avtard">
-                                    <label class="foncolor set" for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                        }}</label>
+                                    <label class="foncolor set"
+                                        for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
+                                                                                                                    }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -600,12 +625,12 @@
                                                             <div class="dropdown-menu dropdown-menu-end">
                                                                 <ul>
                                                                     <li>
-                                                                        <a class="dropdown-item" data-bs-toggle="modal"
-                                                                            data-bs-target="#InvoiceLabel"><i
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('admin.customer.updateShipTo', $child->id) }}"><i
                                                                                 class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                                     </li>
                                                                     <li>
-                                                                        <a class="dropdown-item" href="#"><i
+                                                                        <a class="dropdown-item" href="{{ route('admin.customer.destroyShipTo', $child->id) }}"><i
                                                                                 class="ti ti-trash fs_18 me-2"></i>Delete</a>
                                                                     </li>
                                                                 </ul>
@@ -1058,40 +1083,34 @@
                 const urlParams = url.searchParams;
                 let activeTab = urlParams.get('type');
 
-                // ✅ If 'tab' is missing in URL, default to 'customerDetails'
-                let isDefaultTab = false;
+                // If 'type' is missing in URL, default to 'customerDetails'
                 if (!activeTab) {
                     activeTab = 'customerDetails';
                     urlParams.set('type', activeTab);
                     window.history.replaceState(null, '', url.toString());
-                    isDefaultTab = true;
                 }
 
-                // ✅ Activate Tab Link + Content
+                // ✅ Always show the correct tab and tab-pane
                 const tabTrigger = document.querySelector(`.nav-tabs a[href="#${activeTab}"]`);
                 const activePane = document.getElementById(activeTab);
 
                 if (tabTrigger && activePane) {
                     new bootstrap.Tab(tabTrigger).show();
 
-                    // If tab= is missing in URL, manually show content
-                    if (isDefaultTab) {
-                        tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
-                        activePane.classList.add('show', 'active');
-                    }
+                    // ✅ Always update tab-pane classes (even on refresh)
+                    tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                    activePane.classList.add('show', 'active');
                 }
 
-                // ✅ On tab switch: update URL + activate content div
+                // On tab switch: update URL + activate content pane
                 tabs.forEach(tab => {
                     tab.addEventListener('shown.bs.tab', function (e) {
                         const newTabId = e.target.getAttribute('href').replace('#', '');
 
-                        // Update tab-pane visibility
                         tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
                         const newPane = document.getElementById(newTabId);
                         if (newPane) newPane.classList.add('show', 'active');
 
-                        // Update URL
                         const updatedUrl = new URL(window.location.href);
                         updatedUrl.searchParams.set('type', newTabId);
                         window.history.replaceState(null, '', updatedUrl.toString());
@@ -1099,6 +1118,7 @@
                 });
             });
         </script>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const resetBtn = document.getElementById('shipto_reset'); // Reset button by ID
