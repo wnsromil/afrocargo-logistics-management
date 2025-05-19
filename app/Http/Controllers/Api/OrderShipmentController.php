@@ -155,7 +155,7 @@ class OrderShipmentController extends Controller
     public function show(string $id)
     {
         $parcel = Parcel::where('id', $id)
-            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress','parcelStatus'])
+            ->with(['warehouse', 'customer', 'driver', 'pickupaddress', 'deliveryaddress', 'parcelStatus'])
             ->first();
 
         if (!$parcel) {
@@ -198,7 +198,7 @@ class OrderShipmentController extends Controller
         }
 
         $ParcelHistories = ParcelHistory::where('parcel_id', $parcel->id)
-            ->with(['warehouse', 'customer', 'createdByUser'])
+            ->with(['warehouse', 'customer', 'createdByUser', 'parcelStatus', 'parcel'])
             ->paginate(10);
 
         // ✅ Inventorie data add karein

@@ -1226,4 +1226,24 @@ input[type="checkbox"]:checked::after {
 .disabled-link {
   pointer-events: none !important; /* Disable mouse events */
   cursor: not-allowed !important; /* Change cursor to "not allowed" */
+  color: #918f8f !important; /* Light gray color for disabled look */
+  text-decoration: none !important; /* Remove underline */
+  background-color: #f0f0f0 !important; /* Light gray background */
+}
+
+.disabled-link-supply {
+    pointer-events: none !important; /* Disable mouse events */
+    cursor: not-allowed !important; /* Change cursor to "not allowed" */
+    color: #918f8f !important; /* Light gray color for disabled look */
+}
+
+.disabled-link-for-active-supply {
+  pointer-events: none;         /* Disable all mouse interactions */
+  cursor: not-allowed;          /* Show "not-allowed" cursor */
+  text-decoration: none !important;
+}
+.disabled-link-for-active-service {
+  pointer-events: none;         /* Disable all mouse interactions */
+  cursor: not-allowed;          /* Show "not-allowed" cursor */
+  text-decoration: none !important;
 }

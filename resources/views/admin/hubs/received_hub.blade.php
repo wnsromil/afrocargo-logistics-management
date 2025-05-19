@@ -3,19 +3,6 @@
         {{ __('Parcel Management') }}
     </x-slot>
 
-    <!-- <x-slot name="cardTitle">
-        All Parcels
-
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    <a href="{{ route('admin.OrderShipment.create') }}" class="btn btn-primary">
-                        Add Parcel
-                    </a>
-                </div>
-            </div>
-        </div>
-    </x-slot> -->
     <x-slot name="cardTitle">
         <p class="head">Received by Warehouse</p>
         <div class="usersearch d-flex usersserach">
@@ -167,7 +154,7 @@
                                                                 </li>
                                                             </td>
                                                             <td class="btntext">
-                                                                <button onClick="redirectTo('{{ route('admin.orderdetails') }}')"
+                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $incoming_container->container_id)}}')"
                                                                     class=orderbutton><img src="{{ asset('assets/img/ordereye.png') }}"></button>
                                                             </td>
                                                         </tr>
@@ -253,7 +240,7 @@
 
                                                             <td>---</td> {{-- Dropdowns/history actions skip kar sakte ho agar zarurat nahi --}}
                                                             <td class="btntext">
-                                                                <button onClick="redirectTo('{{ route('admin.orderdetails') }}')"
+                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $container_history->container_id)}}')"
                                                                     class=orderbutton><img src="{{ asset('assets/img/ordereye.png') }}"></button>
                                                             </td>
                                                         </tr>
