@@ -51,12 +51,19 @@
                                         <i class="fe fe-edit avatar-uploader-icon shadow-soft" id="profile_pic"></i>
                                     </label>
                                 </span>
-                                @if (!empty($user->profile_pic) && is_string($user->profile_pic))
-                                    <span class="avatar-trash iconResize bg-danger" style="cursor: pointer;"
-                                        onclick="deleteImage()">
-                                        <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
-                                    </span>
+                                 @if (!empty($user->profile_pic) && is_string($user->profile_pic))
+                                    <form id="deleteProfilePicForm" action="{{ route('profile.upload_pic') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <input type="hidden" name="delete_image" value="1">
+                                        <button type="button" class="avatar-trash iconResize bg-danger" style="cursor: pointer; border:none;"
+                                                onclick="deleteData(this, 'Wait! Are you sure you want to remove profile picture?', function() {
+                                                    document.getElementById('deleteProfilePicForm').submit();
+                                                })">
+                                            <i class="fe fe-trash-2 avatar-uploader-icon shadow-soft"></i>
+                                        </button>
+                                    </form>
                                 @endif
+                                
                             </label>
 
                             <!-- Hidden File Input -->
@@ -277,18 +284,6 @@
                 };
                 reader.readAsDataURL(input.files[0]);
             }
-        }
-
-        function deleteImage() {
-            // if (confirm('Are you sure you want to delete this image?')) {
-            let form = document.getElementById('profileForm');
-            let input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'delete_image';
-            input.value = '1';
-            form.appendChild(input);
-            form.submit();
-            // }
         }
 
         $(document).ready(function () {

@@ -26,8 +26,7 @@
 
             <div class="top-nav-search">
                 <form>
-                    <input type="text" class="form-control forms" id="searchInput" placeholder="Search ">
-
+                    <input type="text" class="form-control forms" id="searchInput" placeholder="Search" name="search" value="{{ request()->search }}">
                 </form>
             </div>
             <div class="mt-2">

@@ -43,7 +43,7 @@
 
             <div class="top-nav-search">
                 <form>
-                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search ">
+                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search" name="search" value="{{ request()->search }}">
 
                 </form>
             </div>

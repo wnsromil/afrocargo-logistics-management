@@ -16,7 +16,7 @@
             <div class="usersearch d-flex usersserach">
                 <div class="top-nav-search">
                     <form>
-                        <input id="searchInput" type="text" class="form-control forms" placeholder="Search ">
+                        <input id="searchInput" type="text" class="form-control forms" placeholder="Search" name="search" value="{{ request()->search }}">
                     </form>
                 </div>
 
