@@ -70,8 +70,6 @@ class HubTrackingController extends Controller
         return view('admin.hubs.received_hub', compact('incoming_containers', 'container_historys'));
     }
 
-
-
     public function received_orders()
     {
         //
@@ -79,6 +77,56 @@ class HubTrackingController extends Controller
             return $q->where('to_warehouse_id', $this->user->warehouse_id)->orWhere('from_warehouse_id', $this->user->warehouse_id);
         })->with(['createdByUser', 'toWarehouse', 'fromWarehouse', 'vehicle'])->withCount('parcels')->paginate(10);
         return view('admin.hubs.received_orders', compact('parcels'));
+    }
+
+   public function container_order(Request $request, $id)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default is 10
+        $currentPage = $request->input('page', 1);
+
+        $parcels = Parcel::where('parcel_type', 'Service')->where('container_id', $id)->when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    // Search by tracking_number, status, estimate_cost, and total_amount
+                    $query->where('tracking_number', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhere('estimate_cost', 'LIKE', "%$search%")
+                        ->orWhere('total_amount', 'LIKE', "%$search%");
+
+                    // Check if the search string is a valid date in the format "d-m-Y"
+                    if (\DateTime::createFromFormat('d-m-Y', $search) !== false) {
+                        // Convert the search string to the database-compatible format "Y-m-d"
+                        $formattedDate = \DateTime::createFromFormat('d-m-Y', $search)->format('Y-m-d');
+
+                        // Search for records where the created_at date matches the formatted date
+                        $query->orWhereDate('pickup_date', '=', $formattedDate);
+                    }
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+        $serialStart = ($currentPage - 1) * $perPage;
+
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+        $drivers = $user->where('role_id', 4)->values();
+
+        if ($request->ajax()) {
+            return view('admin.hubs.orderlist_table', compact('parcels', 'serialStart'))->render();
+        }
+
+        return view('admin.hubs.orderlist', compact('parcels', 'drivers', 'warehouses', 'search', 'perPage', 'serialStart'));
     }
 
 

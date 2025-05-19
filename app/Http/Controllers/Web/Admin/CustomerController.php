@@ -318,6 +318,7 @@ class CustomerController extends Controller
             }
         }
 
+
         // 🔹 Updating User Data
         $userData = [
             'name'        => $validated['first_name'],
@@ -353,6 +354,19 @@ class CustomerController extends Controller
             'country_code_2'        => $request->country_code_2 ?? null,
             // 'signup_type'    => 'for_admin'
         ];
+
+        if ($request->delete_signature_img == 1) {
+            $userData['signature_img'] = null;
+        }
+        if ($request->delete_contract_signature_img == 1) {
+            $userData['contract_signature_img'] = null;
+        }
+        if ($request->delete_license_document == 1) {
+            $userData['license_document'] = null;
+        }
+        if ($request->delete_profile_pic == 1) {
+            $userData['profile_pic'] = null;
+        }
 
         // 🔹 File Path Update
         if (!empty($imagePaths['signature_img'])) {
