@@ -56,7 +56,8 @@
 
             <a class="nav-link mt-1 me-2 pt-2" href="{{route('admin.notification.index')}}">
                 <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
-                <img src="{{asset('../assets/images/notification BTN.svg')}}" alt="..." />
+                {{-- <img src="{{asset('../assets/images/notification BTN.svg')}}" alt="..." /> --}}
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="30"  height="30"  viewBox="0 0 24 24"  fill="none"  stroke="#fff"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-bell"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
             </a>
 
 
