@@ -28,7 +28,7 @@ class InventoryController extends Controller
             ->when($search, function ($q) use ($search) { // 🔹 Search Query
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
-                    ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
                         ->orWhere('inventory_type', 'like', "%$search%")
                         ->orWhereHas('warehouse', function ($q) use ($search) { // 🔹 Search by Warehouse Name
                             $q->where('warehouse_name', 'like', "%$search%");
@@ -72,76 +72,90 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        // Common validation rules
+        $rules = [
+            'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
+            'name'                  => 'required|string',
+            'barcode'               => 'required|string',
+            'warehouse_id'          => 'required|exists:warehouses,id',
+            'in_stock_quantity'     => 'required|numeric',
+            'low_stock_warning'     => 'required|numeric',
+            'package_type'          => 'required|string',
+            'retail_shipping_price' => 'required|numeric',
+            'description'           => 'required|string',
+            'driver_app_access'     => 'required|in:Yes,No',
+            'status'                => 'required|in:Active,Inactive',
+            'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+        ];
 
-        // Validate incoming request data
-        $request->validate([
-            'warehouse_id'      => 'required|exists:warehouses,id',
-            'inventory_name'    => 'required|string',
-            'inventory_type'    => 'required|string',
-            'in_stock_quantity' => 'required|numeric',
-            'low_stock_warning' => 'required|numeric',
-            'status'           => 'in:Active,Inactive',
-            'weight' => 'nullable|numeric',
-            'width' => 'nullable|numeric',
-            'height' => 'nullable|numeric',
-            'price' => 'required|numeric',
-            'img' => 'nullable|image|mimes:jpg,png|max:2048',
-        ]);
-
-
-        $category_id = $this->getCategoryIdByName($request->inventory_name);
-
-        $inventory = Inventory::firstOrCreate(
-            [
-                'warehouse_id' => $request->warehouse_id,
-                'category_id'  => $category_id,
-                'inventory_type' => $request->inventory_type
-            ],
-            [
-                'total_quantity'    => 0,
-                'in_stock_quantity' => 0,
-                'low_stock_warning' => $request->low_stock_warning,
-                'weight' => $request->weight ?? null,
-                'width' => $request->width ?? null,
-                'height' => $request->height ?? null,
-                'price' => $request->price ?? null,
-                'status' => $request->status ?? 'Active',
-                // 'img'    => $imageName,
-                'name' => $request->inventory_name,
-                'inventory_type' => $request->inventory_type
-            ]
-        );
-
-        $inventory->update([
-            'total_quantity'      => $inventory->total_quantity + $request->in_stock_quantity,
-            'in_stock_quantity'   => $inventory->in_stock_quantity + $request->in_stock_quantity,
-            'low_stock_warning'   => $request->low_stock_warning
-        ]);
-
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $imageName = 'uploads/inventory/' . $image->getClientOriginalName(); // Generate unique name
-            $image->move(public_path('uploads/inventory'), $imageName); // Move image to the desired folder
-
-            $inventory->update([
-                'img'    => $imageName,
+        // Conditional rules for Supply type
+        if ($request->inventary_sub_type === 'Supply') {
+            $rules = array_merge($rules, [
+                'qty_on_hand'         => 'required|numeric',
+                'retail_vaule_price'  => 'required|numeric',
+                'value_price'         => 'required|numeric',
+                'last_cost_received'  => 'required|numeric',
+                'last_date_received'  => 'nullable|date',
+                'tax_percentage'      => 'nullable|numeric',
             ]);
         }
 
-        // Create a new stock entry
-        Stock::create([
-            'warehouse_id'    => $request->warehouse_id,
-            'category_id'     => $category_id,
-            'inventory_id'    => $inventory->id,
-            'name'    => $inventory->item_name,
-            'user_id'         => auth()->id(),
-            'in_stock_quantity' => $request->in_stock_quantity,
-            'low_stock_warning' => $request->low_stock_warning,
+        $validatedData = $request->validate($rules);
+
+        // Store logic here
+        $data = $request->only([
+            'inventary_sub_type',
+            'barcode',
+            'warehouse_id',
+            'name',
+            'in_stock_quantity',
+            'low_stock_warning',
+            'package_type',
+            'retail_shipping_price',
+            'description',
+            'driver_app_access',
+            'status',
+            'costprice',
+            'country',
+            'state_zone',
+            'weight',
+            'item_length_inch',
+            'width',
+            'height',
+            'weight_price',
+            'volume_total',
+            'volume_price',
+            'factor',
+            'insurance_have',
+            'insurance',
         ]);
+        $data['price'] = $request->costprice ?? null;
+        if ($request->inventary_sub_type === 'Supply') {
+            $data = array_merge($data, $request->only([
+                'qty_on_hand',
+                'retail_vaule_price',
+                'value_price',
+                'last_cost_received',
+                'last_date_received',
+                'tax_percentage',
+            ]));
+        }
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = 'uploads/inventory/' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/inventory'), $imageName);
+            $data['img'] = $imageName;
+        }
+
+        // Final store logic placeholder (you can insert to database here)
+        // Example:
+        Inventory::create($data);
 
         return redirect()->route('admin.inventories.index')
-            ->with('success', 'Inventory added successfully.');
+            ->with('success', 'Inventory add successfully.');
     }
+
 
 
     /**
@@ -168,10 +182,10 @@ class InventoryController extends Controller
             (object) ["id" => "Supply", "name" => "Supply"],
             (object) ["id" => "Service", "name" => "Service"]
         ]);
-        $inventory = Inventory::when($this->user->role_id != 1, function ($q) {
+        $editData = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
-        return view('admin.inventories.edit', compact('inventory', 'warehouses', 'categories'));
+        return view('admin.inventories.edit', compact('editData', 'warehouses', 'categories'));
     }
 
     /**
@@ -180,69 +194,87 @@ class InventoryController extends Controller
     public function update(Request $request, string $id)
     {
 
-        // Validate incoming request data
-        $request->validate([
-            'warehouse_id'      => 'required|exists:warehouses,id',
-            'inventory_name'    => 'required|string',
-            'in_stock_quantity' => 'required|numeric',
-            'low_stock_warning' => 'required|numeric',
-            // 'status'           => 'in:Active,Inactive',
-        ]);
+        // Common validation rules
+        $rules = [
+            'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
+            'name'                  => 'required|string',
+            'barcode'               => 'required|string',
+            'warehouse_id'          => 'required|exists:warehouses,id',
+            'in_stock_quantity'     => 'required|numeric',
+            'low_stock_warning'     => 'required|numeric',
+            'package_type'          => 'required|string',
+            'retail_shipping_price' => 'required|numeric',
+            'description'           => 'required|string',
+            'driver_app_access'     => 'required|in:Yes,No',
+            //'status'                => 'required|in:Active,Inactive',
+            'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+        ];
 
-        $category_id = $this->getCategoryIdByName($request->inventory_name);
-
-        $inventory = Inventory::where([
-            'id' => $id
-        ])->first();
-
-        if ($request->in_stock_quantity == 0) {
-            $stock_status = 'Out of Stock';
-        } elseif ($request->in_stock_quantity > $request->low_stock_warning) {
-            $stock_status = 'In Stock';
-        } else {
-            $stock_status = 'Low Stock';
-        }
-
-
-        $inventory->update([
-            'total_quantity'      => $request->in_stock_quantity,
-            'in_stock_quantity'   => $request->in_stock_quantity,
-            'low_stock_warning'   => $request->low_stock_warning,
-            'stock_status'        => $stock_status,
-            'weight' => $request->weight,
-            'width' => $request->width,
-            'height' => $request->height,
-            'price' => $request->price,
-            'status' => $request->status ?? 'Active',
-            // 'img'    => $imageName,
-            'name' => $request->inventory_name,
-            'inventory_type' => $request->inventory_type,
-            'warehouse_id'    => $request->warehouse_id,
-        ]);
-
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $imageName = 'uploads/inventory/' . $image->getClientOriginalName(); // Generate unique name
-            $image->move(public_path('uploads/inventory'), $imageName);
-
-            $inventory->update([
-                'img' => $imageName
+        // Conditional rules for Supply type
+        if ($request->inventary_sub_type === 'Supply') {
+            $rules = array_merge($rules, [
+                'qty_on_hand'         => 'required|numeric',
+                'retail_vaule_price'  => 'required|numeric',
+                'value_price'         => 'required|numeric',
+                'last_cost_received'  => 'required|numeric',
+                'last_date_received'  => 'nullable|date',
+                'tax_percentage'      => 'nullable|numeric',
             ]);
         }
 
-        // Create a new stock entry
-        Stock::create([
-            'warehouse_id'    => $request->warehouse_id,
-            'category_id'     => $category_id,
-            'inventory_id'    => $inventory->id,
-            'user_id'         => auth()->id(),
-            'in_stock_quantity' => $request->in_stock_quantity,
-            'low_stock_warning' => $request->low_stock_warning,
-            'status' => 'updated'
+        $validatedData = $request->validate($rules);
+
+        $inventory = Inventory::findOrFail($id);
+
+        $data = $request->only([
+            'inventary_sub_type',
+            'barcode',
+            'warehouse_id',
+            'in_stock_quantity',
+            'low_stock_warning',
+            'package_type',
+            'retail_shipping_price',
+            'description',
+            'driver_app_access',
+            'status',
+            'costprice',
+            'country',
+            'state_zone',
+            'weight',
+            'item_length_inch',
+            'width',
+            'height',
+            'weight_price',
+            'volume_total',
+            'volume_price',
+            'factor',
+            'insurance_have',
+            'insurance',
+            'name'
         ]);
+        $data['price'] = $request->costprice ?? null;
+        if ($request->inventary_sub_type === 'Supply') {
+            $data = array_merge($data, $request->only([
+                'qty_on_hand',
+                'retail_vaule_price',
+                'value_price',
+                'last_cost_received',
+                'last_date_received',
+                'tax_percentage',
+            ]));
+        }
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = 'uploads/inventory/' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/inventory'), $imageName);
+            $data['img'] = $imageName;
+        }
+
+        $inventory->update($data);
 
         return redirect()->route('admin.inventories.index')
-            ->with('success', 'Inventory update successfully.');
+            ->with('success', 'Inventory updated successfully.');
     }
 
     /**
