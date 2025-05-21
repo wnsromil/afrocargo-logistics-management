@@ -22,7 +22,7 @@
 
             <div class="top-nav-search">
                 <form>
-                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search ">
+                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search" name="search" value="{{ request()->search }}">
 
                 </form>
             </div>
@@ -52,18 +52,13 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Item No</th>
-                                <th>Inventory Type</th>
-                                <th>Supply Image</th>
-                                <th>Inventory Name</th>
-                                <th>Warehouse Name</th>
-                                <th>Weight (kg)</th>
-                                <th>Width(cm)</th>
-                                <th>Height(cm)</th>
-                                <th>Quantity</th>
+                                <th>ItemId</th>
+                                <th>Image</th>
+                                <th>description</th>
                                 <th>Price</th>
-                                <th>Low Stock Warning</th>
-                                <th>Date</th>
-                                <th>Status</th>
+                                <th>Cost</th>
+                                <th>Type</th>
+                                <th>Package Type</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -82,7 +77,7 @@
                                     {{ $inventory->unique_id }}
                                 </td>
 
-                                <td class="text-dark">{{ ucfirst($inventory->inventory_type ?? '') }}</td>
+                                <td>{{ $inventory->unique_id }}</td>
                                 <td class="product_img">
                                     @if (!empty($inventory->img))
                                     <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50" height="50">
@@ -90,28 +85,13 @@
                                     <span>-</span>
                                     @endif
                                 </td>
-                                <td class="text-dark">{{ ucfirst($inventory->name ?? '') }}</td>
-                                <td class="text-dark">{{ ucfirst($inventory->warehouse->warehouse_name ?? '') }}</td>
-                                <td class="text-dark"><span>{{ $inventory->weight ?? '-' }}</span></td>
-                                <td class="text-dark"><span>{{ $inventory->width ?? '-' }}</span></td>
-                                <td class="text-dark"><span>{{ $inventory->height ?? '-' }}</span></td>
-                                <td class="text-dark"><span>{{ $inventory->in_stock_quantity ?? '-' }}</span></td>
-                                <td class="text-dark"><span>
-                                        @if (!empty($inventory->price))
-                                        $
-                                        @endif{{ $inventory->price ?? '-' }}
-                                    </span>
+                                <td class="text-dark">
+                                     <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $inventory->description ?? '-' }}">{{ $inventory->description ?? '-' }}</p>
                                 </td>
-
-                                <td class="text-dark"><span>{{ $inventory->low_stock_warning ?? '-' }}</span></td>
-                                <td class="text-dark"><span>{{ $inventory->formatted_created_at ?? '-' }}</span></td>
-                                <td class="text-dark"><span class=" @if ($inventory->stock_status == 'In Stock') bg-light text-success @elseif($inventory->stock_status == 'Out Of Stock')
-                                    bg-light text-danger
-                                    @else
-                                    bg-light text-warning @endif  px-2 py-1 stock-font fw-medium">{{
-                                        $inventory->stock_status ?? '-' }}</span>
-                                </td>
-
+                                <td class="text-dark">{{ ($inventory->retail_shipping_price ?? '0') }}</td>
+                                <td class="text-dark"><span>{{ $inventory->price ?? '0' }}</span></td>
+                                <td class="text-dark"><span>{{ $inventory->inventary_sub_type ?? '-' }}</span></td>
+                                <td class="text-dark"><span>{{ $inventory->package_type ?? '-' }}</span></td>
                                 <td>
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -125,12 +105,12 @@
                                                 <form action="{{ route('admin.inventories.destroy', $inventory->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! 🤔 Are you sure you want to remove this inventory?')"><i class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    <button type="button" class="dropdown-item" onclick="deleteData(this,'Wait! Are you sure you want to remove this inventory?')"><i class="far fa-trash-alt me-2"></i>Delete</button>
                                                 </form>
                                             </li>
-                                            <li>
+                                            {{-- <li>
                                                 <a class="dropdown-item" href="{{ route('admin.inventories.show', $inventory->id) }}"><i class="far fa-eye me-2"></i>View History</a>
-                                            </li>
+                                            </li> --}}
 
                                             </ul>
                                         </div>

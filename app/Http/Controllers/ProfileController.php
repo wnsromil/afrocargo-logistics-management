@@ -114,25 +114,26 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-
-        if ($request->has('delete_image')) {
-            if (!empty($user->profile_pic) && file_exists(public_path($user->profile_pic))) {
-                unlink(public_path($user->profile_pic));
+        if ($request->input('delete_image') == "1") {
+            // Delete the existing image file if it exists
+            if (!empty($user->profile_pic)) {
+                $imagePath = public_path($user->profile_pic);
+                if (file_exists($imagePath)) {
+                    @unlink($imagePath);
+                }
             }
+
             $user->profile_pic = null;
             $user->save();
 
-            return redirect()->back()->with('success', 'Profile image deleted successfully!');
+            return redirect()->back()->with('success', 'Profile picture deleted successfully!');
         }
 
         if ($request->hasFile('profile_pic')) {
             $file = $request->file('profile_pic');
             $filename = time() . '_profile_pic.' . $file->getClientOriginalExtension();
-
-            // ✅ Store in: storage/app/public/uploads/profile_pics
             $filePath = $file->storeAs('uploads/profile_pics', $filename, 'public');
 
-            // ✅ Save public path: public/storage/uploads/profile_pics/filename
             $user->profile_pic = $filePath;
             $user->save();
 

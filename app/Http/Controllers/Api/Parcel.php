@@ -72,12 +72,13 @@ class Parcel extends Model
 
     public function pickupaddress()
     {
-        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user','country','city','state']);
+        return $this->belongsTo(Address::class, 'pickup_address_id');
     }
     public function deliveryaddress()
     {
-        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user','country','city','state']);
+        return $this->belongsTo(Address::class, 'delivery_address_id');
     }
+
     public function getCategoryNamesAttribute()
     {
         $ids = $this->parcel_car_ids ?? []; // Ensure it's an array
@@ -119,10 +120,5 @@ class Parcel extends Model
     public function parcelStatus()
     {
         return $this->belongsTo(ParcelStatus::class, 'status');
-    }
-
-    public function ParcelInventory()
-    {
-        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id');
     }
 }

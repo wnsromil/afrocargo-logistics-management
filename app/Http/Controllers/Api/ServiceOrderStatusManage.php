@@ -20,7 +20,7 @@ class ServiceOrderStatusManage extends Controller
 {
     public function getDriverServiceOrders(Request $request)
     {
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress','parcelStatus'])
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress','parcelStatus','customer'])
             ->where('driver_id', $this->user->id);
 
         $status = $request->status;

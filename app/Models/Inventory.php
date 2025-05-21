@@ -7,6 +7,47 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Inventory extends Model
 {
+
+    protected $fillable = [
+        'warehouse_id',
+        'category_id',
+        'inventory_type',
+        'inventary_sub_type',
+        'barcode_have',
+        'package_type',
+        'retail_shipping_price',
+        'description',
+        'driver_app_access',
+        'country',
+        'state_zone',
+        'item_length_inch',
+        'weight',
+        'width',
+        'height',
+        'weight_price',
+        'volume_total',
+        'volume_price',
+        'factor',
+        'insurance_have',
+        'insurance',
+        'qty_on_hand',
+        'retail_vaule_price',
+        'value_price',
+        'last_cost_received',
+        're_order_point',
+        're_order_quantity',
+        'last_date_received',
+        'tax_percentage',
+        'status',
+        'total_quantity',
+        'in_stock_quantity',
+        'low_stock_warning',
+        'price',
+        'img',
+        'name',
+    ];
+
+
     //
     protected $guarded = [];
 
@@ -17,26 +58,30 @@ class Inventory extends Model
         return $this->created_at ? $this->created_at->format('d-m-Y') : '-';
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function inventory(){
+    public function inventory()
+    {
         return $this->belongsTo(Inventory::class);
     }
 
-    public function warehouse(){
+    public function warehouse()
+    {
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function cart(){
-        return $this->belongsTo(Cart::class,'id','product_id');
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class, 'id', 'product_id');
     }
 
     protected function img(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => !empty($value) ? url($value):null,
+            get: fn($value) => !empty($value) ? url($value) : null,
         );
     }
 
@@ -57,18 +102,17 @@ class Inventory extends Model
         $lastInventory = Inventory::where('status', 'Active')
             ->orderByDesc('unique_id')
             ->first();
-    
+
         // Get the last number from unique_id (assuming it follows the format "TIT-XXXXXX")
         $lastNumber = 0;
         if ($lastInventory && preg_match('/(\d+)$/', $lastInventory->unique_id, $matches)) {
             $lastNumber = (int)$matches[0];
         }
-    
+
         // Increment the number for the new unique_id
         $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
-    
+
         // Return the generated unique_id with TIT- prefix
         return 'TIT-' . $newNumber;
     }
-    
 }

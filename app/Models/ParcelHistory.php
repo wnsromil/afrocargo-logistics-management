@@ -29,6 +29,11 @@ class ParcelHistory extends Model
         return $this->belongsTo(Parcel::class,'parcel_id');
     }
 
+      public function parcelStatus()
+    {
+        return $this->belongsTo(ParcelStatus::class, 'parcel_status');
+    }
+
     public function setDescriptionAttribute($value)
     {
         if (is_string($value)) {

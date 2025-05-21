@@ -188,6 +188,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
+        Route::get('container_order/{id}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
 
         Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');

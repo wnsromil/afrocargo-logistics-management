@@ -288,9 +288,9 @@
                                         <label class="foncolor" for="warehouse"> Language </label>
                                         <select class="js-example-basic-single select2" name="language">
                                             <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?
-    'selected' : '' }}>English</option>
+                                              'selected' : '' }}>English</option>
                                             <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ?
-    'selected' : '' }}>Hindi</option>
+                                               'selected' : '' }}>Hindi</option>
                                         </select>
                                     </div>
 
@@ -317,11 +317,12 @@
                             $imglabel = ['profile_pic' => 'Profile pics', 'signature_img' => 'Signature', 'contract_signature_img' => 'Contract signature', 'license_document' => 'License picture'];
                         @endphp
                         @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType)
+                            <input type="hidden" id="delete_{{ $imageType }}" name="delete_{{ $imageType }}" />
                             <div class="col-md-3">
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set"
                                         for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                    }}</label>
+                                                                                                                                                }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -339,9 +340,12 @@
                                                 style="cursor: pointer;"
                                                 onclick="document.getElementById('file_{{ $imageType }}').click();">
 
+
                                             <!-- Delete Button -->
                                             <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
-                                                style="cursor: pointer;" onclick="removeImage('{{ $imageType }}')">
+                                                style="cursor: pointer;" @if (!empty($user->{$imageType}))
+                                                onclick="removeImage('{{ $imageType }}')" @endif>
+
                                         </div>
                                     </div>
                                 </div>
@@ -630,7 +634,8 @@
                                                                                 class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                                     </li>
                                                                     <li>
-                                                                        <a class="dropdown-item" href="{{ route('admin.customer.destroyShipTo', $child->id) }}"><i
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('admin.customer.destroyShipTo', $child->id) }}"><i
                                                                                 class="ti ti-trash fs_18 me-2"></i>Delete</a>
                                                                     </li>
                                                                 </ul>
@@ -953,8 +958,30 @@
 
             // ❌ Remove Image Function
             function removeImage(imageType) {
-                document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
-                document.getElementById('file_' + imageType).value = "";
+                let title;
+                if (imageType == 'profile_pic') {
+                    title = "Are you sure you want to remove this profile pic?";
+                } else if (imageType == 'contract_signature_img') {
+                    title = "Are you sure you want to remove this contract signature?";
+                } else if (imageType == 'signature_img') {
+                    title = "Are you sure you want to remove this signature?";
+                } else if (imageType == 'license_document') {
+                    title = "Are you sure you want to remove this license document?";
+                }
+                Swal.fire({
+                    title: title,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    showCloseButton: true, // ✅ this line adds the "X" close button
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
+                        document.getElementById('file_' + imageType).value = "";
+                        document.getElementById('delete_' + imageType).value = 1;
+                    }
+                });
             }
 
         </script>
