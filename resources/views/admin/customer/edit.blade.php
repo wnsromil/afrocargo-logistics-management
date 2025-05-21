@@ -288,9 +288,9 @@
                                         <label class="foncolor" for="warehouse"> Language </label>
                                         <select class="js-example-basic-single select2" name="language">
                                             <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?
-    'selected' : '' }}>English</option>
+                                              'selected' : '' }}>English</option>
                                             <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ?
-    'selected' : '' }}>Hindi</option>
+                                               'selected' : '' }}>Hindi</option>
                                         </select>
                                     </div>
 

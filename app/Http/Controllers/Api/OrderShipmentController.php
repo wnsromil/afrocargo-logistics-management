@@ -85,7 +85,9 @@ class OrderShipmentController extends Controller
                 'delivery_address_id' => 'required|numeric',
                 'pickup_time' => 'required|string',
                 'delivery_type' => 'required|string',
+                'pickup_type' => 'required|string',
                 'pickup_date' => 'required|date',
+                'transport_type' => 'required|string',
                 'source_address' => 'required',
             ]);
 
@@ -597,6 +599,7 @@ class OrderShipmentController extends Controller
                 'partial_payment' => 'required|numeric|min:0',
                 'remaining_payment' => 'required|numeric|min:0',
                 'payment_type' => 'required|in:COD,Online',
+                'delivery_type' => 'required|string',
             ]);
 
             // Remaining Payment Check

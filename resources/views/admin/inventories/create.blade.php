@@ -300,12 +300,12 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="inventory_name" class="table-content col737 fw-medium">Item Name <i
+                        <label for="name" class="table-content col737 fw-medium">Item Name <i
                                 class="text-danger">*</i></label>
-                        <input class="form-control input-padding" name="inventory_name" type="text" value="{{ old('inventory_name') }}" 
+                        <input class="form-control input-padding" name="name" type="text" value="{{ old('name') }}" 
                             placeholder="Enter Item Name" aria-label="default input example">
 
-                        @error('inventory_name')
+                        @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

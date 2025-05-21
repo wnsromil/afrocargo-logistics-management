@@ -96,7 +96,9 @@ class InventoryController extends Controller
                 'value_price'         => 'required|numeric',
                 'last_cost_received'  => 'required|numeric',
                 'last_date_received'  => 'nullable|date',
-                'tax_percentage'      => 'nullable|numeric',
+                'tax_percentage'      => 'required|numeric',
+                're_order_point'     => 'required|numeric',
+                're_order_quantity'  => 'required|numeric',
             ]);
         }
 
@@ -137,6 +139,8 @@ class InventoryController extends Controller
                 'value_price',
                 'last_cost_received',
                 'last_date_received',
+                're_order_point',
+                're_order_quantity',
                 'tax_percentage',
             ]));
         }
@@ -193,7 +197,7 @@ class InventoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        
         // Common validation rules
         $rules = [
             'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
@@ -219,6 +223,8 @@ class InventoryController extends Controller
                 'last_cost_received'  => 'required|numeric',
                 'last_date_received'  => 'nullable|date',
                 'tax_percentage'      => 'nullable|numeric',
+                're_order_point'     => 'nullable|numeric',
+                're_order_quantity'  => 'nullable|numeric',
             ]);
         }
 
@@ -261,6 +267,8 @@ class InventoryController extends Controller
                 'last_cost_received',
                 'last_date_received',
                 'tax_percentage',
+                're_order_point',
+                're_order_quantity',
             ]));
         }
 
@@ -270,7 +278,9 @@ class InventoryController extends Controller
             $image->move(public_path('uploads/inventory'), $imageName);
             $data['img'] = $imageName;
         }
-
+        if ($request->delete_img == "1") {
+            $data['img'] = null;
+        }
         $inventory->update($data);
 
         return redirect()->route('admin.inventories.index')
