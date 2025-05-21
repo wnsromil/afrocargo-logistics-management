@@ -215,6 +215,7 @@ class User extends Authenticatable
     }
 
 
+
     public static function boot()
     {
         parent::boot();

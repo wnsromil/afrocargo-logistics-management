@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserPermissionController;
 use App\Http\Controllers\Web\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Admin\{
@@ -172,7 +173,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('expenses', ExpensesController::class);
         Route::resource('signature', SignatureController::class);
         Route::resource('notification_schedule', NotificationScheduleController::class);
-        Route::resource('user_role', RoleManagementController::class);
+       
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
@@ -218,6 +219,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         //Expenses
         Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
 
+        Route::get('user_role', [RoleManagementController::class,'index'])->name('user_role.index');
+        Route::get('user_role/create', [RoleManagementController::class,'create'])->name('user_role.create');
+        Route::post('user_role/store', [RoleManagementController::class,'store'])->name('user_role.store');
 
         Route::get('/orderdetails', function () {
             return view('admin.OrderShipment.orderdetails');
@@ -241,6 +245,12 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.user_role.create');
         })->name('create');
     });
+});
+
+// routes/web.php
+Route::prefix('users/{user}/permissions')->group(function () {
+    Route::get('edit', [RoleManagementController::class, 'edit'])->name('user-permissions.edit');
+    Route::put('update', [RoleManagementController::class, 'update'])->name('user-permissions.update');
 });
 
 require __DIR__ . '/auth.php';
