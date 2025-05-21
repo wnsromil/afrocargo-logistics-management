@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-        @if ($errors->any())
+        {{-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -17,7 +17,7 @@
                 @endforeach
             </ul>
         </div>
-        @endif
+        @endif --}}
 
     <form action="{{ route('admin.inventories.update', $editData->id ?? '') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -190,22 +190,32 @@
                 </div>
                 <!-- Inventory Image -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block">
-                        <label class="table-content col737 fw-medium">Inventory Image </label>
+                  <div class="input-block">
+                    <label>Inventory Image</label>
                         <div class="input-block mb-3 service-upload img-size2 mb-0">
-                            <span id="upload_inventory_image">
-                                @if(!empty($editData->img))
-                                    <img src="{{ ($editData->img) }}" alt="Inventory Image" class="img-thumbnail mb-2" style="max-width: 100%; height: auto;">
-                                @endif
-                                <input type="file" name="img" id="inventory_image" class="form-control mt-2">
-                              <div id="preview" class="mt-2">
-                            </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Preview Image -->
+                    <img id="inventory_img_preview"
+                        src="{{ !empty($editData->img) ? $editData->img : '' }}"
+                        alt="Inventory Image"
+                        class="img-thumbnail mb-2 {{ empty($editData->img) ? 'd-none' : '' }}"
+                        style="max-width: 150px; height: auto;">
 
-                     <div class="col-md-4 col-sm-12">
+                    <!-- Hidden File Input -->
+                    <input type="file" name="img" id="inventory_image" class="d-none">
+
+                    <!-- Action Icons -->
+                    <div>
+                        <img src="{{ asset('assets/img/edit (1).png') }}" alt="Edit" style="cursor: pointer;" onclick="openImagePicker()">
+                        <img src="{{ asset('assets/img/dlt (1).png') }}" alt="Delete" style="cursor: pointer;" onclick="removeImage()">
+                    </div>
+
+                    <!-- Delete Flag -->
+                    <input type="hidden" name="delete_img" id="delete_img" value="0">
+                      </div>
+                </div>
+                </div>
+                
+                 <div class="col-md-4 col-sm-12">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-block">
@@ -462,7 +472,7 @@
                             <div class="input-block mb-3">
                                 <label for="re_order_point" class="table-content col737 fw-medium">Re-order Point</label>
                                 <input class="form-control input-padding" type="number" name="re_order_point"
-                                    value="{{ old('re_order_point') }}" placeholder="Enter Re-order Point" aria-label="default input example">
+                                    value="{{ old('re_order_point', $editData->re_order_point ?? '') }}" placeholder="Enter Re-order Point" aria-label="default input example">
                             </div>
                         </div>
                         <!-- Re-order Quantity -->
@@ -470,7 +480,7 @@
                             <div class="input-block mb-3">
                                 <label for="re_order_quantity" class="table-content col737 fw-medium">Re-order Quantity</label>
                                 <input class="form-control input-padding" type="number" name="re_order_quantity"
-                                    value="{{ old('re_order_quantity') }}" placeholder="Enter Re-order Quantity" aria-label="default input example">
+                                    value="{{ old('re_order_quantity', $editData->re_order_quantity ?? '') }}" placeholder="Enter Re-order Quantity" aria-label="default input example">
                             </div>
                         </div>
                         <!-- Last Date Received -->
@@ -491,7 +501,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="weight" class="table-content col737 fw-medium">Tax(%)<i class="text-danger">*</i></label>
-                                <input class="form-control input-padding" value="{{ old('tax_percentage') }}" type="number" name="tax_percentage"
+                                <input class="form-control input-padding" value="{{ old('tax_percentage', $editData->tax_percentage ?? '') }}" type="number" name="tax_percentage"
                                     placeholder="Enter Tax" aria-label="default input example">
                                 @error('tax_percentage')
                                     <span class="text-danger">{{ $message }}</span>
@@ -626,6 +636,43 @@
                 }
             });
         </script>
+        <script>
+        function openImagePicker() {
+            document.getElementById('inventory_image').click();
+        }
+
+        document.getElementById('inventory_image').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.getElementById('inventory_img_preview');
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                preview.style.display = 'inline-block';
+                preview.style.maxWidth = '150px';
+                preview.style.height = 'auto';
+            };
+            reader.readAsDataURL(file);
+
+            // Reset delete flag
+            document.getElementById('delete_img').value = '0';
+         });
+
+        function removeImage() {
+            const preview = document.getElementById('inventory_img_preview');
+            const fileInput = document.getElementById('inventory_image');
+            const deleteInput = document.getElementById('delete_img');
+
+            preview.src = '';
+            preview.classList.add('d-none');
+            fileInput.value = '';
+            deleteInput.value = '1';
+          }
+        </script>
+
+
     @endsection
 
 </x-app-layout>
