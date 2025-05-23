@@ -23,10 +23,16 @@ $(document).ready(function() {
                 url: '/api/get-cities/' + stateID,
                 type: 'GET',
                 success: function(data) {
-                    $('#city').html('<option value="">Select City</option>');
-                    $.each(data, function(index, city) {
-                        $('#city').append('<option value="' + city.id + '">' + city.name + '</option>');
-                    });
+                    if (data.length === 0) {
+                        $('.hidden_City').addClass('d-none'); // Bootstrap hidden class
+                        $('#city').html('<option value="">No cities available</option>');
+                    } else {
+                        $('.hidden_City').removeClass('d-none');
+                        $('#city').html('<option value="">Select City</option>');
+                        $.each(data, function(index, city) {
+                            $('#city').append('<option value="' + city.id + '">' + city.name + '</option>');
+                        });
+                    }
                 }
             });
         }

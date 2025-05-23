@@ -59,7 +59,13 @@ class User extends Authenticatable
         'profile_pic',
         'country_code_2',
         'country_code',
-        'signup_type'
+        'signup_type',
+        'invoice_custmore_type',
+        'invoice_custmore_id',
+        'phone_code_id',
+        'phone_2_code_id_id',
+        'parent_customer_id',
+        'unique_id'
     ];
 
 
@@ -90,6 +96,19 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+    public function parent_customer()
+    {
+        return $this->belongsTo(User::class, 'parent_customer_id');
+    }
+    public function phone_code()
+    {
+        return $this->belongsTo(Country::class, 'phone_code_id');
+    }
+
+    public function phone_2_code()
+    {
+        return $this->belongsTo(Country::class, 'phone_2_code_id_id');
+    }
 
     public function country()
     {
@@ -113,10 +132,95 @@ class User extends Authenticatable
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
     }
 
+    public function container()
+    {
+        return $this->hasOne(Vehicle::class, 'vehicle_id'); // ya hasMany agar ek se zyada ho
+    }
+
+    public function availabilities()
+    {
+        return $this->hasMany(Availability::class, 'user_id');
+    }
+    public function weeklySchedules()
+    {
+        return $this->hasMany(WeeklySchedule::class, 'user_id');
+    }
+    public function locationSchedules()
+    {
+        return $this->hasMany(LocationSchedule::class, 'user_id');
+    }
+    public function addresses()
+    {
+        return $this->hasOne(Address::class, 'user_id');
+    }
+
     protected function profilePic(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => !empty($value) ? url('storage/'.$value):null,
+            get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
         );
+    }
+
+
+    public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
+    {
+        if (empty($role_id)) {
+            $role_id = 3;
+        }
+
+        // Default country iso2
+        $countryIso = 'XX';
+
+        if (!empty($country_id)) {
+            $country = \App\Models\Country::where('name', $country_id)->first();
+            if ($country && !empty($country->iso2)) {
+                $countryIso = strtoupper($country->iso2);
+            }
+        }
+
+        // Role-wise prefix
+        $rolePrefix = '';
+        $fullPrefix = '';
+        switch ($role_id) {
+            case 2:
+                $rolePrefix = 'WM';
+                $fullPrefix = 'WM' . $countryIso . '-';
+                break;
+            case 3:
+                $rolePrefix = 'C';
+                $fullPrefix = 'C' . $countryIso . '-';
+                break;
+            case 4:
+                $rolePrefix = 'D';
+                $fullPrefix = 'D' . $countryIso . '-';
+                break;
+            case 5:
+                $rolePrefix = 'S';
+                $fullPrefix = 'S' . $countryIso . '-';
+                break;
+            default:
+                $rolePrefix = 'C';
+                $fullPrefix = 'C' . $countryIso . '-';
+                break;
+        }
+
+        // Find last used number
+        $lastNumber = User::where('unique_id', 'like', $rolePrefix . '%')
+            ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
+            ->value('max_number') ?? 0;
+
+        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+
+        return $fullPrefix . $newNumber;
+    }
+
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id);
+        });
     }
 }

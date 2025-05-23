@@ -17,6 +17,14 @@
                 <!-- Vehicle Type -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
+                        <label class="foncolor" for="company_name"> Container ID</label>
+                        <input type="text" class="form-control inp" style="background: #ececec;" placeholder=""
+                            value="{{ $vehicle->unique_id }}" readonly>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle Type <i class="text-danger">*</i></label>
                         <select name="vehicle_type" class="form-control">
                             <option value="" disabled>Select Vehicle Type</option>
@@ -60,7 +68,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_year">Manufactured Year <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_year" class="form-control" placeholder="Enter Manufactured Year"
+                        <input type="text" name="vehicle_year" class="form-control"
+                            placeholder="Enter Manufactured Year"
                             value="{{ old('vehicle_year', $vehicle->vehicle_year) }}">
                         @error('vehicle_year')
                             <span class="text-danger">{{ $message }}</span>
@@ -72,7 +81,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Vehicle Capacity <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_capacity" class="form-control" placeholder="Enter Vehicle Capacity"
+                        <input type="text" name="vehicle_capacity" class="form-control"
+                            placeholder="Enter Vehicle Capacity"
                             value="{{ old('vehicle_capacity', $vehicle->vehicle_capacity) }}">
                         @error('vehicle_capacity')
                             <span class="text-danger">{{ $message }}</span>
@@ -99,22 +109,23 @@
                 </div>
 
                 <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="status">Status <i class="text-danger">*</i></label>
                         <div class="toggle-switch">
                             <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active" {{ old('status', $vehicle->status) == 'Active' ? 'checked' : '' }}>
+                                <input type="checkbox" id="cb-switch" name="status" value="Active" {{ old('status',
+                                    $vehicle->status) == 'Active' ? 'checked' : '' }}>
                                 <span>
                                     <small></small>
                                 </span>
                             </label>
                         </div>
                         @error('status')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>

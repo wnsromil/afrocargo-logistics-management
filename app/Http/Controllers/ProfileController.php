@@ -26,14 +26,8 @@ class ProfileController extends Controller
 
     public function edit(Request $request): View
     {
-        $countries = Country::get();
-        $states = State::get();
-        $cities = City::get();
         return view('profile.edit', [
-            'user' => $request->user(),
-            'countries' => $countries,
-            'states' => $states,
-            'cities' => $cities
+            'user' => $request->user()
         ]);
     }
 
@@ -47,32 +41,48 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
+            'country' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'required|string',
+            'Zip_code' => 'nullable|string|max:10',
+            'mobile_number_code_id' => 'required|exists:countries,id',
+            'mobile_number' => 'required|digits:10|unique:users,phone,' . auth()->id(),
+            'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
+            'alternative_mobile_number' => 'nullable|digits:10',
+            'address_2' => 'nullable|string|max:255',
+        ]);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
-
         //  // Find the warehouse by ID
-         $profile = User::find(auth()->id());
+        $profile = User::find(auth()->id());
 
-         // Update profile with validated data
-         $profile->update([
-             'name' => $request->name,
-             'last_name' => $request->last_name,
-             'email' => $request->email,
-             'phone' => $request->phone,
-             'phone_2' => $request->phone_2,
-             'country_id' => $request->country_id,
-             'state_id' => $request->state_id,
-             'city_id' => $request->city_id,
-             'pincode' => $request->pincode,
-             'address' => $request->address,
-             'address_2' => $request->address_2,
-         ]);
+        // Update profile with validated data
+        $profile->update([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone'      => $request->mobile_number ?? null,
+            'phone_code_id'        => $request->mobile_number_code_id ?? null,
+            'phone_2' => $request->alternative_mobile_number ?? null,
+            'phone_2_code_id_id' => !empty($request->alternative_mobile_number)
+                ? (int) ($request->alternative_mobile_number_code_id ?? null)
+                : null,
+            'country_id' => $request->country,
+            'state_id' => $request->state,
+            'city_id' => $request->city,
+            'pincode' => $request->Zip_code,
+            'address' => $request->address_1,
+            'address_2' => $request->address_2,
+        ]);
         return Redirect::route('profile.index')->with('success', 'Profile updated successfully!');
     }
 
@@ -103,24 +113,33 @@ class ProfileController extends Controller
             'profile_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        if ($request->has('delete_image')) {
-            if (!empty($user->profile_pic) && file_exists(public_path($request->user()->profile_pic))) {
-                unlink(public_path($request->user()->profile_pic));
+        $user = $request->user();
+        if ($request->input('delete_image') == "1") {
+            // Delete the existing image file if it exists
+            if (!empty($user->profile_pic)) {
+                $imagePath = public_path($user->profile_pic);
+                if (file_exists($imagePath)) {
+                    @unlink($imagePath);
+                }
             }
-            $request->user()->profile_pic = null;
-            $request->user()->save();
-            return redirect()->back()->with('success', 'Profile image deleted successfully!');
+
+            $user->profile_pic = null;
+            $user->save();
+
+            return redirect()->back()->with('success', 'Profile picture deleted successfully!');
         }
 
         if ($request->hasFile('profile_pic')) {
             $file = $request->file('profile_pic');
-            $filename = time() . '.' . $file->getClientOriginalExtension(); // Unique filename
-            $file->move(public_path('uploads/profile_pics'), $filename); // Public folder me move karein
+            $filename = time() . '_profile_pic.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('uploads/profile_pics', $filename, 'public');
 
-            // Directly user ka profile_pic update karein
-            $request->user()->profile_pic = 'uploads/profile_pics/' . $filename;
-            $request->user()->save(); // Save user record
+            $user->profile_pic = $filePath;
+            $user->save();
+
             return back()->with('success', 'Profile picture updated successfully!');
         }
+
+        return back()->with('error', 'No image uploaded.');
     }
 }

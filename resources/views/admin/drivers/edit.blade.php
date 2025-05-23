@@ -13,13 +13,22 @@
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <!-- Warehouse Name -->
+             
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="company_name"> Driver ID</label>
+                        <input type="text" class="form-control inp" id="unique_id" name="unique_id" style="background: #ececec;" placeholder=""
+                            value="{{ $manager_data->unique_id }}" readonly>
+                    </div>
+                </div>
+                    
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name">Warehouse Name<i class="text-danger">*</i></label>
-                        <select name="warehouse_name" class="form-control">
+                        <select name="warehouse_name" class="form-control inp select2">
                             <option value="">Select Warehouse Name</option>
                             @foreach($warehouses as $warehouse)
-                                <option {{ $manager_data->warehouse_id ?? old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                <option {{ $manager_data->warehouse_id == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
 
@@ -54,23 +63,39 @@
                 </div> --}}
 
                 <!-- Contact Number -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 edit_mobile_code_driver">
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control" placeholder="Enter Contact Number"
-                            value="{{$manager_data->phone ?? old('phone') }}">
-                        @error('phone')
-                            <span class="text-danger">{{ $message }}</span>
+                        <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        {{ $item->id == old('mobile_number_code_id', $manager_data->phone_code_id) ? 'selected' : '' }}>
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp"
+                            placeholder="Enter Mobile No" name="mobile_number"
+                            value="{{ old('mobile_number', $manager_data->phone) }}"
+                            oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('mobile_number')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                </div>
 
+                </div>
+                
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="address">Address </label>
-                        <input type="text" name="address" class="form-control" placeholder="Enter Address"
-                            value="{{$manager_data->address ?? old('address') }}">
+                        <label for="address">Address<i class="text-danger">*</i> </label>
+                        <input type="text" name="address_1" class="form-control" placeholder="Enter Address"
+                            value="{{$manager_data->address ?? old('address_1') }}">
                         @error('address')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -102,7 +127,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type">Vehicle</label>
+                        <label for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
                         <select name="vehicle_type" class="form-control">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)
@@ -119,7 +144,7 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_number">License Number</label>
+                        <label for="license_number">License Number<i class="text-danger">*</i></label>
                         <input type="text" name="license_number" class="form-control" placeholder="Enter Address"
                             value="{{ $manager_data->license_number }}">
                         @error('license_number')
@@ -131,28 +156,37 @@
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_expiry_date">License Expiry Date</label>
-                        <input type="date" name="license_expiry_date" class="form-control" placeholder="Enter Address"
-                            value="{{ $manager_data->license_expiry_date  }}">
-                        @error('license_expiry_date')
+                        <label for="edit_license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
+                        <input type="text" name="edit_license_expiry_date" class="form-control" placeholder="MM-DD-YYYY" readonly style="cursor: pointer;"
+                             value="{{ old('edit_license_expiry_date', $manager_data->license_expiry_date ? \Carbon\Carbon::parse($manager_data->license_expiry_date)->format('n/j/Y') : '') }}">
+                        @error('edit_license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Address -->
+                <!-- License Document -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="license_document">License Document</label>
-                        <input type="file" name="license_document" class="form-control" placeholder="Enter Address"
-                            value="{{ old('license_document') }}" accept=".png, .jpg, .jpeg">
+                        <label for="license_document">License Document <i class="text-danger">*</i></label>
+                        <input type="file" name="license_document" id="license_document" class="form-control"
+                            accept=".png, .jpg, .jpeg">
+                
                         @error('license_document')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                
+                        {{-- Image Preview Area --}}
+                        <div id="license_preview_area" class="mt-2" style="{{ $manager_data->license_document ? '' : 'display:none;' }}">
+                            <img id="license_preview_img"
+                                src="{{ $manager_data->license_document ? asset($manager_data->license_document) : '' }}"
+                                alt="Preview"
+                                style="max-width: 200px; max-height: 150px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                            <button type="button" class="btn btn-sm btn-danger ms-2" id="remove_license_btn">✕</button>
+                        </div>
                     </div>
                 </div>
-
-
+                <input type="hidden" name="license_image_removed" id="license_image_removed" value="0">
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="mb-3">
@@ -198,7 +232,69 @@
             <button type="submit" class="btn customer-btn-save">Update</button>
         </div> -->
     </form>
+    <script>
+        const fileInput = document.querySelector('input[name="license_document"]');
+        const previewArea = document.getElementById('license_preview_area');
+        const previewImg = document.getElementById('license_preview_img');
+        const removeBtn = document.getElementById('remove_license_btn');
+        const imageRemovedInput = document.getElementById('license_image_removed'); // Hidden input
+    
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewArea.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+    
+                // Nayi file aayi to imageRemovedInput reset karo
+                imageRemovedInput.value = '0';
+            }
+        });
+    
+        removeBtn.addEventListener('click', function () {
+            fileInput.value = ''; // Remove selected file
+            previewImg.src = '';
+            previewArea.style.display = 'none';
+            imageRemovedInput.value = '1'; // Mark image as removed
+        });
+    </script>
+    
+    
+    <script>
+        $('#country_code').val($('.edit_mobile_code_driver').find('.iti__selected-dial-code').text());
+        $('.col-md-12').on('click', () => {            
+            $('#country_code').val($('.edit_mobile_code_driver').find('.iti__selected-dial-code').text());
+        })
+    </script>
+    <script>
+         $(document).ready(function () {
+                function initializeIntlTelInput(inputId, hiddenInputId, defaultCountry) {
+                    let input = document.querySelector(inputId);
+                    let iti = window.intlTelInput(input, {
+                        initialCountry: defaultCountry ? defaultCountry.toLowerCase() : "us", // Default 'IN' (India)
+                        separateDialCode: true,
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                    });
 
+                    // Set hidden input value on load
+                    if (defaultCountry) {
+                        let dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    }
+
+                    // Update country code when user selects a different country
+                    input.addEventListener("countrychange", function () {
+                        let dialCode = iti.getSelectedCountryData().dialCode;
+                        $(hiddenInputId).val("+" + dialCode);
+                    });
+                }
+                // Initialize for both mobile fields
+                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $manager_data->country_code }}");
+            });
+        </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let statusToggle = document.getElementById("cb-switch");

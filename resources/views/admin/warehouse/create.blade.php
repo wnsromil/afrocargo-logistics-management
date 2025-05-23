@@ -162,10 +162,20 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-    <div class="d-flex innertopnav">
-        <p class="subhead pheads" >Add Warehouse</p>
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Add Warehouse</p>
         </div>
     </x-slot>
+
+      @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form action="{{ route('admin.warehouses.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -175,7 +185,8 @@
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3 ">
-                        <label class="foncolor divform" for="warehouse_name">Warehouse Name <i class="text-danger">*</i></label>
+                        <label class="foncolor divform" for="warehouse_name">Warehouse Name <i
+                                class="text-danger">*</i></label>
                         <input type="text" name="warehouse_name" class="form-control inp"
                             placeholder="Enter Warehouse Name" value="{{ old('warehouse_name') }}">
                         @error('warehouse_name')
@@ -188,7 +199,8 @@
                 <!-- Warehouse Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="warehouse_code">Warehouse Code <i class="text-danger">*</i></label>
+                        <label class="foncolor divform" for="warehouse_code">Warehouse Code <i
+                                class="text-danger">*</i></label>
                         <input type="text" name="warehouse_code" class="form-control inp"
                             placeholder="Enter Warehouse Code" value="{{ old('warehouse_code') }}">
                         @error('warehouse_code')
@@ -201,9 +213,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor divform" for="address">Address <i class="text-danger">*</i></label>
-                        <input type="text" name="address" class="form-control inp" placeholder="Enter Address"
-                            value="{{ old('address') }}">
-                        @error('address')
+                        <input type="text" name="address_1" class="form-control inp" placeholder="Enter Address"
+                            value="{{ old('address_1') }}">
+                        @error('address_1')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -211,17 +223,11 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="country_id">Country <i class="text-danger">*</i></label>
-                        <select name="country_id" id="country"
-                            class="form-control  form-cs js-example-basic-single select2 ">
-                            <option value="">Select Country</option>
-                            @foreach ($countries as $country)
-                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                            @endforeach
-                        </select>
-
-                        @error('country_id')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+                        <input type="text" name="country" value="{{ old('country') }}" class="form-control inp" readonly
+                            style="background: #ececec;">
+                        @error('country')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
 
                     </div>
@@ -230,25 +236,23 @@
                 <!-- State -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="state_id">State <i class="text-danger">*</i></label>
-                        <select name="state_id" id="state" class="form-control inp select2">
-                            <option value="">Select State</option>
-                        </select>
-                        @error('state_id')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
+                        <input type="text" name="state" value="{{ old('state') }}" class="form-control inp"
+                            placeholder="" readonly style="background: #ececec;">
+                        @error('state')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
 
                 <!-- City -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 hidden_City">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="city_id">City <i class="text-danger">*</i></label>
-                        <select name="city_id" id="city" class="form-control inp select2">
-                            <option value="">Select City</option>
-                        </select>
-                        @error('city_id')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                        <input type="text" name="city" value="{{ old('city') }}" class="form-control inp" placeholder=""
+                            readonly style="background: #ececec;">
+                        @error('city')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -256,46 +260,38 @@
                 <!-- Zip Code -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor divform" for="zip_code">Zip Code <i class="text-danger">*</i></label>
-                        <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip Code"
-                            value="{{ old('zip_code') }}">
-                        @error('zip_code')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label class="foncolor" for="Zip_code">Zipcode</label>
+                        <input type="text" name="Zip_code" value="{{ old('Zip_code') }}" class="form-control inp"
+                            placeholder="Enter Zip">
+                        @error('Zip_code')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Contact Number -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label class="foncolor divform" for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" name="phone" class="form-control inp" placeholder="Enter Contact No."
-                            value="{{ old('phone') }}" maxlength="10"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                        @error('phone')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+
+
+                <div class="col-lg-4 col-md-6 col-sm-12 custom-zindex">
+                    <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
+                    <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
+                            name="mobile_number" value="{{ old('mobile_number') }}"
+                            oninput="this.value = this.value.slice(0, 10)">
                     </div>
-                </div> -->
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                 
-                        <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label>
-						<input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No.">
-                        @error('mobile_code')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                        <input type="hidden" id="country_code" name="country_code">
-                    </div> -->
-
-
-                    <div class="col-lg-4 col-md-6 col-sm-12 custom-zindex">
-    <label class="foncolor" for="mobile_code">Contact Number<span class="text-danger">*</span></label> 
-    <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Contact No."> 
-    @error('mobile_code') 
-        <span class="text-danger">{{ $message }}</span> 
-    @enderror 
-    <input type="hidden" id="country_code" name="country_code">
-</div>
+                    @error('mobile_number')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -311,22 +307,22 @@
                         </div>
 
                     </div>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                    @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="add-customer-btns text-end">
+        <div class="add-customer-btns text-end">
 
-                <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
-                    class="btn btn-outline-primary custom-btn">Cancel</button>
+            <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
 
-                <button type="submit" class="btn btn-primary ">Submit</button>
+            <button type="submit" class="btn btn-primary ">Submit</button>
 
-            </div>
+        </div>
     </form>
 
     @section('script')
@@ -335,8 +331,49 @@
             $('.col-sm-12').on('click', () => {
                 $('#country_code').val($('.iti').find('.iti__selected-dial-code').text());
             })
+            $(document).ready(function () {
+                var oldState = "{{ old('state_id') }}"; // Laravel old value
+                var oldCity = "{{ old('city_id') }}";
+
+                // ✅ Agar old state available hai toh state ke cities load kare
+                if (oldState) {
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $.ajax({
+                        url: '/api/get-states/' + $('#country').val(),
+                        type: 'GET',
+                        success: function (states) {
+                            $('#state').html('<option selected="selected">Select State</option>');
+                            $.each(states, function (key, state) {
+                                var selected = (state.id == oldState) ? 'selected' : ''; // ✅ Old value match kare
+                                $('#state').append('<option value="' + state.id + '" ' + selected + '>' + state.name + '</option>');
+                            });
+
+                            // ✅ Agar old city available hai, toh cities load kare
+                            // if (oldCity) {
+                            $('#city').html('<option selected="selected">Loading...</option>');
+                            $.ajax({
+                                url: '/api/get-cities/' + oldState,
+                                type: 'GET',
+                                success: function (cities) {
+                                    if (cities.length === 0) {
+                                        console.log("if");
+                                        $('.hidden_City').addClass('d-none'); // Bootstrap hidden class
+                                        $('#city').html('<option value="">No cities available</option>');
+                                    } else {
+                                        console.log("else");
+                                        $('.hidden_City').removeClass('d-none');
+                                        $('#city').html('<option value="">Select City</option>');
+                                        $.each(cities, function (index, city) {
+                                            $('#city').append('<option value="' + city.id + '">' + city.name + '</option>');
+                                        });
+                                    }
+                                }
+                            });
+                            //  }
+                        }
+                    });
+                }
+            });
         </script>
     @endsection
-    
 </x-app-layout>
-

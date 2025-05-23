@@ -8,17 +8,85 @@ class Invoice extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'invoce_item' => 'array',
+    ];
+
     public function parcel()
     {
-        return $this->belongsTo(Parcel::class)->with(['driver', 'customer']);
+        return $this->belongsTo(Parcel::class, 'parcel_id');
+    }
+
+    public function deliveryAddress()
+    {
+        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user','country','city','state']);
+    }
+
+    public function pickupAddress()
+    {
+        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user','country','city','state']);
+    }
+
+
+    public function invoiceParcelData()
+    {
+        return $this->belongsTo(Parcel::class, 'parcel_id')
+            ->select([
+                'id',
+                'customer_id',
+                'ship_customer_id',
+                'driver_id',
+                'driver_subcategories_data',
+                'total_amount',
+                'estimate_cost',
+                'container_id',
+                'percel_comment'
+            ])->with(['driver' => function ($query) {
+                return $query->select([
+                    'id',
+                    'name',
+                    'last_name',
+                    'email',
+                    'phone',
+                    'country_code',
+                    'phone_2',
+                    'country_code_2',
+                    'address',
+                    'address_2',
+                ]);
+            }, 'customer' => function ($query) {
+                return $query->select([
+                    'id',
+                    'name',
+                    'last_name',
+                    'email',
+                    'phone',
+                    'country_code',
+                    'phone_2',
+                    'country_code_2',
+                    'address',
+                    'address_2',
+                ]);
+            }, 'ship_customer' => function ($query) {
+                return $query->select([
+                    'id',
+                    'name',
+                    'last_name',
+                    'email',
+                    'phone',
+                    'country_code',
+                    'phone_2',
+                    'country_code_2',
+                    'address',
+                    'address_2',
+                ]);
+            }]);
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-
     // Custom Invoice Number Generate karne ke liye
     public static function boot()
     {
@@ -46,6 +114,20 @@ class Invoice extends Model
         });
     }
 
+    public static function getNextInvoiceNumber()
+    {
+        $lastInvoice = self::orderBy('id', 'desc')->first();
+
+        if ($lastInvoice) {
+            $lastNumber = intval(substr($lastInvoice->invoice_no, 4));
+            $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+            return 'INV-' . $newNumber;
+        }
+
+        return 'INV-001';
+    }
+
+
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id')->with(['country', 'state', 'city']);
@@ -61,5 +143,8 @@ class Invoice extends Model
         return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
     }
 
-
+    public function createdByUser()
+    {
+        return $this->belongsTo(User::class, 'created_by')->select('id','name','last_name','role','role_id');
+    }
 }

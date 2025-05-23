@@ -22,8 +22,10 @@ class Parcel extends Model
         'delivery_address_id' => 'integer',
         'pickup_time' => 'string',
         'pickup_date' => 'date',
+        'delivery_type' => 'string',
+        'pickup_type' => 'string',
     ];
-    
+
     protected $appends = ['category_names'];
 
     // Mutator to set a default tracking number
@@ -53,20 +55,29 @@ class Parcel extends Model
         return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
     }
 
+    public function ship_customer()
+    {
+        return $this->belongsTo(User::class, 'ship_customer_id')->with(['country', 'state', 'city']);
+    }
+
+    public function driver_vehicle()
+    {
+        return $this->hasOne(Vehicle::class, 'driver_id', 'driver_id');
+    }
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
     }
-   
+
     public function pickupaddress()
     {
         return $this->belongsTo(Address::class, 'pickup_address_id');
     }
     public function deliveryaddress()
     {
-        return $this->belongsTo(Address::class,'delivery_address_id');
+        return $this->belongsTo(Address::class, 'delivery_address_id');
     }
-
     public function getCategoryNamesAttribute()
     {
         $ids = $this->parcel_car_ids ?? []; // Ensure it's an array
@@ -82,7 +93,7 @@ class Parcel extends Model
     protected function driverParcelImage(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => url($value),
+            get: fn($value) => url($value),
         );
     }
 
@@ -92,7 +103,7 @@ class Parcel extends Model
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
-        
+
         $this->attributes['customer_subcategories_data'] = json_encode($value ?? []);
     }
 
@@ -101,8 +112,12 @@ class Parcel extends Model
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
-        
+
         $this->attributes['driver_subcategories_data'] = json_encode($value ?? []);
     }
 
+    public function parcelStatus()
+    {
+        return $this->belongsTo(ParcelStatus::class, 'status');
+    }
 }

@@ -48,8 +48,8 @@
             <div class="top-nav-search">
                 <form action="{{ url()->current() }}" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput" name="search"
-                            value="{{ request()->search }}">
+                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput"
+                            name="search" value="{{ request()->search }}">
                         {{-- <button type="submit">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button> --}}
@@ -95,7 +95,7 @@
                     <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
+                                <th>Vehicle ID</th>
                                 <th>Vehicle Type</th>
                                 <th>Warehouse Name</th>
                                 <th>Driver Name</th>
@@ -110,7 +110,8 @@
                             @forelse ($vehicles as $index => $vehicle)
                                 <tr>
                                     <td>
-                                        {{ $serialStart + $index + 1 }}
+                                        {{ $vehicle->unique_id ?? '-' }}
+                                        {{-- {{ $vehicle->id ?? '-' }} --}}
                                     </td>
 
                                     <td><span>{{ $vehicle->vehicle_type ?? '-' }}</span></td>
@@ -120,19 +121,11 @@
                                     <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
                                     <td>{{ $vehicle->vehicle_year ?? '-' }}</td>
                                     <td>
-                                        @if ($vehicle->status == 'Active')
-                                            <div class="container">
-                                                <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
-                                                <p>Active</p>
-                                            </div>
-                                        @else
-                                            <div class="container">
-                                                <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
-                                                <p>Inactive</p>
-                                            </div>
-                                        @endif
+                                        <label class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                            {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
+                                        </label>
                                     </td>
-                                    <td class="d-flex align-items-center">
+                                    <td class="text-center">
 
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon profileBg" data-bs-toggle="dropdown"
@@ -149,18 +142,22 @@
                                                             href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
-                                                    <!-- <li>
-                                                        <a class="dropdown-item activate" href="javascript:void(0)"
-                                                            data-id="{{ $vehicle->id }}" data-status="Active">
-                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                        </a>
-                                                    </li>
+                                                    @if($vehicle->status == 'Active')
                                                     <li>
                                                         <a class="dropdown-item deactivate" href="javascript:void(0)"
                                                             data-id="{{ $vehicle->id }}" data-status="Inactive">
                                                             <i class="far fa-bell-slash me-2"></i>Deactivate
                                                         </a>
-                                                    </li> -->
+                                                    </li>
+                                                @elseif($vehicle->status == 'Inactive')
+                                                    <li>
+                                                        <a class="dropdown-item activate" href="javascript:void(0)"
+                                                            data-id="{{ $vehicle->id }}" data-status="Active">
+                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                
                                                 </ul>
                                             </div>
                                         </div>
@@ -221,8 +218,8 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
-                                       <p>Inactive</p>
+                                        <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
+                                        <p>Inactive</p>
                                     </div>
                                 </td>
                                 <td>
@@ -260,8 +257,8 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
-                                       
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -300,7 +297,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -339,7 +336,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -378,7 +375,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -417,7 +414,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -456,7 +453,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -495,7 +492,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -534,7 +531,7 @@
                                 <td>2025</td>
                                 <td>
                                     <div class="container">
-                                    <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 </td>
@@ -574,7 +571,8 @@
         <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                     <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                     <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -595,7 +593,9 @@
     {{-- jqury cdn --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $('.activate, .deactivate').on('click', function () {
+       $(document).ready(function () {
+                // Delegate click on dynamically updated table
+                $('#ajexTable').on('click', '.activate, .deactivate', function () {
             let id = $(this).data('id');
             let status = $(this).data('status');
 
@@ -619,5 +619,6 @@
                 }
             });
         });
+    });
     </script>
 </x-app-layout>

@@ -204,7 +204,7 @@ Version      : 1.0
 
     if ($(".datetimepicker").length > 0) {
         $(".datetimepicker").datetimepicker({
-            format: "DD-MM-YYYY",
+            format: "MM-DD-YYYY",
             icons: {
                 up: "fas fa-angle-up",
                 down: "fas fa-angle-down",
@@ -253,6 +253,8 @@ Version      : 1.0
             {
                 startDate: start,
                 endDate: end,
+                minDate: moment().startOf("day"), // Past Dates Disabled
+                startDate: moment().startOf("day"), // Default Today Selected
                 // ranges: {
                 //     Today: [moment(), moment()],
                 //     Yesterday: [
@@ -271,13 +273,56 @@ Version      : 1.0
                 //     ],
                 // },
                 locale: {
-                    format: "DD/MM/YYYY",
+                    format: "MM/DD/YYYY",
                 },
             },
             booking_range
         );
 
         booking_range(start, end);
+    }
+
+    if ($(".Expensefillterdate").length > 0) {
+        var start = moment().subtract(6, "days"); // 7 din pahle ka date
+        var end = moment(); // Aaj ka date
+
+        // Set input as readonly, placeholder, styles
+        $(".Expensefillterdate")
+            .attr("readonly", true)
+            .attr(
+                "placeholder",
+                start.format("MM-DD-YYYY") + " - " + end.format("MM-DD-YYYY")
+            )
+            .css({
+                cursor: "pointer",
+                backgroundColor: "#ffffff",
+            });
+
+        function booking_range(start, end) {
+            $(".Expensefillterdate").val(
+                start.format("MM/DD/YYYY") + " - " + end.format("MM/DD/YYYY")
+            );
+        }
+
+        $(".Expensefillterdate").daterangepicker(
+            {
+                autoUpdateInput: false,
+                startDate: start,
+                endDate: end,
+                maxDate: moment().startOf("day"),
+                locale: {
+                    format: "MM/DD/YYYY",
+                    cancelLabel: "Clear",
+                },
+            },
+            function (start, end) {
+                booking_range(start, end);
+            }
+        );
+
+        $(".Expensefillterdate").on("cancel.daterangepicker", function () {
+            $(this).val("");
+        });
     }
 
     // Date Range Picker
@@ -291,9 +336,247 @@ Version      : 1.0
             },
         });
     }
+
+    $(".onlyTimePicker").each(function () {
+        const $this = $(this);
+
+        $this.daterangepicker(
+            {
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerSeconds: false,
+                autoUpdateInput: false, // We'll handle it manually always
+                locale: {
+                    format: "hh:mm A",
+                },
+            },
+            function (start) {
+                // Always update value
+                $this.val(start.format("hh:mm A"));
+                $this.trigger("change"); // Optional: trigger change if needed
+            }
+        );
+
+        // 🔁 Force update when Apply is clicked even without change
+        $this.on("apply.daterangepicker", function (ev, picker) {
+            $this.val(picker.startDate.format("hh:mm A"));
+            $this.trigger("change");
+        });
+
+        // Optional: style
+        $this.on("show.daterangepicker", function (ev, picker) {
+            picker.container.addClass("myCustomPopup");
+        });
+    });
+
+    $(".onlyTimePickerSchedule").each(function () {
+        const $this = $(this);
+
+        // ✅ Make input completely read-only (no typing)
+        $this.attr("readonly", "readonly");
+        $this.on("keydown paste", function (e) {
+            e.preventDefault();
+        });
+        $this.attr("autocomplete", "off");
+        $this.css({
+            "background-color": "white",
+            cursor: "pointer",
+        });
+
+        $this.daterangepicker(
+            {
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerSeconds: false,
+                autoUpdateInput: false,
+                locale: {
+                    format: "hh:mm A",
+                },
+                timePickerIncrement: 15,
+            },
+            function (start) {
+                $this.val(start.format("hh:mm A"));
+                $this.trigger("change");
+            }
+        );
+
+        $this.on("apply.daterangepicker", function (ev, picker) {
+            $this.val(picker.startDate.format("hh:mm A"));
+            $this.trigger("change");
+            validateTimeLogic($this);
+        });
+
+        $this.on("cancel.daterangepicker", function () {
+            $this.val(""); // Clear input
+        });
+
+        $this.on("show.daterangepicker", function (ev, picker) {
+            picker.container.addClass("myCustomPopup");
+        });
+
+        $this.val(""); // Default empty
+    });
+
+    // 🔐 Function to validate time logic between fields
+    function validateTimeLogic($field) {
+        const name = $field.attr("name");
+
+        // Get time values of related fields
+        const day = name.split("_")[0]; // Extract day name
+        const timeType = name.split("_")[1]; // morning/afternoon/evening
+        const startOrEnd = name.split("_")[2]; // start or end
+
+        // Example: morning_start, morning_end logic
+        const startField = $(`input[name="${day}_${timeType}_start"]`);
+        const endField = $(`input[name="${day}_${timeType}_end"]`);
+
+        const startTime = moment(startField.val(), "hh:mm A");
+        const endTime = moment(endField.val(), "hh:mm A");
+
+        // Validation logic
+        if (startField.val() && endField.val()) {
+            if (endTime.isBefore(startTime)) {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "End time can't be before start time!",
+                    icon: "error",
+                });
+                endField.val(""); // Clear invalid input
+            } else if (endTime.isSame(startTime)) {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Start time and End time can't be same!",
+                    icon: "error",
+                });
+                endField.val(""); // Clear invalid input
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        // Agar schedule data hai tabhi form ke andar values bharni hain
+        if (Array.isArray(scheduleData) && scheduleData.length > 0) {
+            scheduleData.forEach(function (entry) {
+                const day = entry.day.toLowerCase();
+
+                // Checkbox enable
+                $("#" + day).prop("checked", true);
+                $(`#${day}`).val("Inactive");
+                $("." + day).removeClass("disablesection");
+
+                // Set times if available
+                if (entry.morning_start) {
+                    $(`input[name="${day}_morning_start"]`).val(
+                        moment(entry.morning_start, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.morning_end) {
+                    $(`input[name="${day}_morning_end"]`).val(
+                        moment(entry.morning_end, "HH:mm:ss").format("hh:mm A")
+                    );
+                }
+                if (entry.afternoon_start) {
+                    $(`input[name="${day}_afternoon_start"]`).val(
+                        moment(entry.afternoon_start, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.afternoon_end) {
+                    $(`input[name="${day}_afternoon_end"]`).val(
+                        moment(entry.afternoon_end, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.evening_start) {
+                    $(`input[name="${day}_evening_start"]`).val(
+                        moment(entry.evening_start, "HH:mm:ss").format(
+                            "hh:mm A"
+                        )
+                    );
+                }
+                if (entry.evening_end) {
+                    $(`input[name="${day}_evening_end"]`).val(
+                        moment(entry.evening_end, "HH:mm:ss").format("hh:mm A")
+                    );
+                }
+            });
+        }
+
+        // Checkbox change event to handle checked and unchecked actions
+        $("input[type='checkbox']").on("change", function () {
+            const day = $(this).attr("id");
+
+            if (!$(this).prop("checked")) {
+                // If unchecked, clear all fields and disable them
+                $(`input[name="${day}_morning_start"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_morning_end"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_afternoon_start"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_afternoon_end"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_evening_start"]`)
+                    .val("")
+                    .prop("disabled", true);
+                $(`input[name="${day}_evening_end"]`)
+                    .val("")
+                    .prop("disabled", true);
+
+                // Disable day section and reset its value
+                $("." + day).addClass("disablesection");
+                $(`input[name="${day}_morning_start"]`).prop("readonly", true);
+                $(`input[name="${day}_morning_end"]`).prop("readonly", true);
+                $(`input[name="${day}_afternoon_start"]`).prop(
+                    "readonly",
+                    true
+                );
+                $(`input[name="${day}_afternoon_end"]`).prop("readonly", true);
+                $(`input[name="${day}_evening_start"]`).prop("readonly", true);
+                $(`input[name="${day}_evening_end"]`).prop("readonly", true);
+
+                // Clear the value for day as well
+                $(`#${day}`).val("");
+            } else {
+                // If checked, enable the day section and fields
+                $("." + day).removeClass("disablesection");
+                $(`input[name="${day}_morning_start"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_morning_end"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_afternoon_start"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_afternoon_end"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_evening_start"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+                $(`input[name="${day}_evening_end"]`)
+                    .prop("disabled", false)
+                    .prop("readonly", false);
+            }
+        });
+
+        // Agar koi data nahi hai to default form hi dikhega (blank), jaisa abhi dikh raha hai
+    });
+
     if ($(".daterangeInput").length > 0) {
         $(".daterangeInput").daterangepicker({
-            imePicker: false,
+            timePicker: false,
             startDate: moment(),
             endDate: moment(),
             locale: {
@@ -301,10 +584,6 @@ Version      : 1.0
             },
         });
     }
-    console.log("jQuery Version: ", $.fn.jquery);
-    console.log("Moment Loaded: ", typeof moment);
-    console.log("Daterangepicker Loaded: ", typeof $.fn.daterangepicker);
-
     // Expire Date Picker
     if ($('input[name="expire_date"]').length > 0) {
         $('input[name="expire_date"]').daterangepicker({
@@ -326,64 +605,6 @@ Version      : 1.0
             }
         );
     }
-
-    // if ($('input[name="signature_date"]').length > 0) {
-    //     $('input[name="signature_date"]').daterangepicker({
-    //         singleDatePicker: true, // Single Date Picker Enable
-    //         showDropdowns: true, // Month/Year Dropdown Enable
-    //         minDate: moment().startOf("day"), // Past Dates Disabled
-    //         startDate: moment().startOf("day"), // Default Today Selected
-    //         autoUpdateInput: false, // Auto Update Input With Default Date
-    //         locale: {
-    //             format: "MM-DD-YYYY", // Date Format
-    //         },
-    //     });
-
-    //     // Date Select Hone Ke Baad Input Me Value Set Karo
-    //     $('input[name="signature_date"]').on(
-    //         "apply.daterangepicker",
-    //         function (ev, picker) {
-    //             $(this).val(picker.startDate.format("MM-DD-YYYY"));
-    //         }
-    //     );
-
-    //     // ✅ User Date Picker Open Kare Aur Select Na Kare To Placeholder Wapas Aayega
-    //     $('input[name="signature_date"]').on(
-    //         "cancel.daterangepicker",
-    //         function () {
-    //             $(this).val("").attr("placeholder", "MM-DD-YYYY");
-    //         }
-    //     );
-
-    //     // ✅ Placeholder Pehle Se Hi Set Karna
-    //     $('input[name="signature_date"]').attr("placeholder", "MM-DD-YYYY");
-    // }
-
-    // if ($('input[name="license_expiry_date"]').length > 0) {
-    //     $('input[name="license_expiry_date"]').daterangepicker({
-    //         singleDatePicker: true, // Single Date Picker Enable
-    //         showDropdowns: true, // Month/Year Dropdown Enable
-    //         minDate: moment().startOf("day"), // Past Dates Disabled
-    //         autoUpdateInput: false, // Default Date Auto Set Na Ho
-    //         locale: {
-    //             format: "M/DD/YYYY", // Date Format
-    //         },
-    //     });
-
-    //     // Date Select Hone Ke Baad Input Me Value Set Karo
-    //     $('input[name="license_expiry_date"]').on(
-    //         "apply.daterangepicker",
-    //         function (ev, picker) {
-    //             $(this).val(picker.startDate.format("M/DD/YYYY"));
-    //         }
-    //     );
-
-    //     // Placeholder Set Karne Ke Liye
-    //     $('input[name="license_expiry_date"]').attr(
-    //         "placeholder",
-    //         "MM-DD-YYYY"
-    //     );
-    // }
 
     if ($('input[name="signature_date"]').length > 0) {
         $('input[name="signature_date"]').daterangepicker({
@@ -411,29 +632,6 @@ Version      : 1.0
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
             minDate: moment().startOf("day"), // Past Dates Disabled
-            autoUpdateInput: false, // Default Date Auto Set Na Ho
-            locale: {
-                format: "M/DD/YYYY", // Date Format
-            },
-        });
-    
-        // Date Select Hone Ke Baad Input Me Value Set Karo
-        $('input[name="license_expiry_date"]').on(
-            "apply.daterangepicker",
-            function (ev, picker) {
-                $(this).val(picker.startDate.format("M/DD/YYYY"));
-            }
-        );
-    
-        // Placeholder Set Karne Ke Liye
-        $('input[name="license_expiry_date"]').attr("placeholder", "MM-DD-YYYY");
-    }
-
-    if ($('input[name="edit_signature_date"]').length > 0) {
-        $('input[name="edit_signature_date"]').daterangepicker({
-            singleDatePicker: true, // Single Date Picker Enable
-            showDropdowns: true, // Month/Year Dropdown Enable
-            minDate: moment().startOf("day"), // Past Dates Disabled
             startDate: moment().startOf("day"), // Default Today Selected
             autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
@@ -442,12 +640,66 @@ Version      : 1.0
         });
 
         // Date Select Hone Ke Baad Input Me Value Set Karo
-        $('input[name="edit_signature_date"]').on(
+        $('input[name="license_expiry_date"]').on(
             "apply.daterangepicker",
             function (ev, picker) {
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
+    }
+
+    if ($('input[name="edit_signature_date"]').length > 0) {
+        const input = $('input[name="edit_signature_date"]');
+        const inputVal = input.val(); // Get value from input
+
+        let defaultDate = moment().startOf("day"); // Default today's date
+
+        // If input value exists, parse it as moment date
+        if (inputVal) {
+            defaultDate = moment(inputVal, "M/D/YYYY");
+        }
+
+        input.daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minDate: moment().startOf("day"),
+            startDate: defaultDate, // Use parsed date from input
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY",
+            },
+        });
+
+        input.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(picker.startDate.format("M/DD/YYYY"));
+        });
+    }
+
+    if ($('input[name="edit_license_expiry_date"]').length > 0) {
+        const input = $('input[name="edit_license_expiry_date"]');
+        const inputVal = input.val(); // Get value from input
+
+        let defaultDate = moment().startOf("day"); // Default today's date
+
+        // If input value exists, parse it as moment date
+        if (inputVal) {
+            defaultDate = moment(inputVal, "M/D/YYYY");
+        }
+
+        input.daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minDate: moment().startOf("day"),
+            startDate: defaultDate, // Use parsed date from input
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY",
+            },
+        });
+
+        input.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(picker.startDate.format("M/DD/YYYY"));
+        });
     }
 
     if ($('input[name="edit_license_expiry_date"]').length > 0) {
@@ -467,6 +719,95 @@ Version      : 1.0
             "apply.daterangepicker",
             function (ev, picker) {
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="license_expiry_date"]').length > 0) {
+        $('input[name="license_expiry_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            autoUpdateInput: false, // Default Date Auto Set Na Ho
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="license_expiry_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+
+        // Placeholder Set Karne Ke Liye
+        $('input[name="license_expiry_date"]').attr(
+            "placeholder",
+            "MM-DD-YYYY"
+        );
+    }
+
+    if ($('input[name="expense_date"]').length > 0) {
+        $('input[name="expense_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            maxDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="expense_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="edit_expense_date"]').length > 0) {
+        $('input[name="edit_expense_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            maxDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: false, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="edit_expense_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="driverInventoryDate"]').length > 0) {
+        $('input[name="driverInventoryDate"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            maxDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="driverInventoryDate"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
             }
         );
     }
@@ -904,26 +1245,97 @@ Version      : 1.0
         }
     });
 
-    // Country Code Selection
-    if ($("#mobile_code").length > 0) {
-        $("#mobile_code").intlTelInput({
-            initialCountry: "us",
-            separateDialCode: true,
-        });
-    }
-    if ($(".flagInput").length > 0) {
-        $(".flagInput").intlTelInput({
-            initialCountry: "us",
-            separateDialCode: true,
-        });
-    }
+    // const inputSelectors = [
+    //     { input: "#mobile_code", countryField: "#country_code" },
+    //     { input: "#alternate_mobile_no", countryField: "#country_code_2" },
+    //     // { input: ".flagInput" },
+    //     { input: "#phone" },
+    //     { input: "#phone_2" },
+    // ];
 
-    if ($("#mobile").length > 0) {
-        $("#mobile").intlTelInput({
-            initialCountry: "us",
-            separateDialCode: true,
-        });
-    }
+    // const utilsURL =
+    //     "https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js";
+
+    // inputSelectors.forEach(({ input, countryField }) => {
+    //     const inputElement = document.querySelector(input);
+    //     if (inputElement) {
+    //         const iti = window.intlTelInput(inputElement, {
+    //             initialCountry: "us",
+    //             separateDialCode: true,
+    //             formatOnDisplay: false,
+    //             loadUtils: () => import(utilsURL),
+    //         });
+
+    //         // Input filtering: allow only digits (and max 10 digits)
+    //         inputElement.addEventListener("input", function () {
+    //             this.value = this.value.replace(/\D/g, "").slice(0, 10);
+    //         });
+
+    //         // Set country if countryField exists
+    //         if (countryField) {
+    //             const countryInput = document.querySelector(countryField);
+    //             if (countryInput) {
+    //                 setTimeout(() => {
+    //                     const code = countryInput.value;
+    //                     if (code) {
+    //                         iti.setCountry(code.toLowerCase());
+    //                     }
+    //                 }, 300);
+    //             }
+    //         }
+    //     }
+    // });
+
+    // const editinputSelectors = [
+    //     { selector: "#edit_mobile_code", countryCodeField: "#country_code" },
+    //     { selector: "#edit_mobile", countryCodeField: "#country_code_2" },
+    // ];
+
+    // editinputSelectors.forEach(({ selector, countryCodeField }) => {
+    //     const input = document.querySelector(selector);
+    //     const countryCodeInput = document.querySelector(countryCodeField);
+
+    //     if (input && countryCodeInput) {
+    //         const iti = window.intlTelInput(input, {
+    //             separateDialCode: true,
+    //             formatOnDisplay: false,
+    //             initialCountry: "auto",
+    //             geoIpLookup: function (callback) {
+    //                 callback("us");
+    //             },
+    //             utilsScript: utilsURL,
+    //         });
+
+    //         // Clean number input (only digits, max 10)
+    //         input.addEventListener("input", function () {
+    //             this.value = this.value.replace(/\D/g, "").slice(0, 10);
+    //         });
+
+    //         // Set initial country from stored `+code`
+    //         const countryCode = countryCodeInput.value;
+    //         if (countryCode && countryCode.startsWith("+")) {
+    //             // Find and set country using dial code
+    //             iti.promise.then(() => {
+    //                 const countryDataList =
+    //                     window.intlTelInputGlobals.getCountryData();
+    //                 const found = countryDataList.find(
+    //                     (c) => `+${c.dialCode}` === countryCode
+    //                 );
+    //                 if (found) {
+    //                     iti.setCountry(found.iso2);
+    //                 }
+    //             });
+    //         }
+
+    //         // Update country code in hidden input on country change
+    //         input.addEventListener("countrychange", function () {
+    //             const selectedCountryData = iti.getSelectedCountryData();
+    //             if (selectedCountryData && countryCodeInput) {
+    //                 countryCodeInput.value = `+${selectedCountryData.dialCode}`;
+    //             }
+    //         });
+    //     }
+    // });
 
     // Summernote
     if ($(".summernote").length > 0) {
@@ -1144,38 +1556,216 @@ Version      : 1.0
             input.attr("type", "password");
         }
     });
-    if ($(".datatable").length > 0) {
-        $(".datatable").DataTable({
-            bFilter: false,
-            // "scrollX": true,
-            autoWidth: false,
-            sDom: "fBtlpi",
-            ordering: true,
-            columnDefs: [
-                {
-                    targets: "no-sort",
-                    orderable: false,
-                },
-            ],
-            language: {
-                search: " ",
-                sLengthMenu: "_MENU_",
-                paginate: {
-                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
-                    previous:
-                        '<i class="fa fa-angle-double-left me-2"></i> Previous',
-                },
+    // if ($(".datatable").length > 0) {
+    //     $(".datatable").DataTable({
+    //         bFilter: false,
+    //         autoWidth: false,
+    //         sDom: "fBtlpi",
+    //         ordering: true,
+    //         order: [],
+    //         columnDefs: [
+    //             {
+    //                 targets: 0, // Yaha 0 index hai jahan Customer ID column hai
+    //                 orderable: false,
+    //             },
+    //             {
+    //                 targets: "no-sort", // jise aap manually class se disable karte ho
+    //                 orderable: false,
+    //             },
+    //         ],
+    //         language: {
+    //             search: " ",
+    //             sLengthMenu: "_MENU_",
+    //             paginate: {
+    //                 next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+    //                 previous:
+    //                     '<i class="fa fa-angle-double-left me-2"></i> Previous',
+    //             },
+    //         },
+    //         initComplete: (settings, json) => {
+    //             $(".dataTables_filter").appendTo("#tableSearch");
+    //             $(".dataTables_filter").appendTo(".search-input");
+    //         },
+    //     });
+    // }
+
+    function updateCodeWithCountryPrefix(countryName) {
+        if (!countryName) return;
+
+        const url = `/api/country-by-name?name=${encodeURIComponent(
+            countryName
+        )}`;
+
+        fetch(url, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
-            initComplete: (settings, json) => {
-                $(".dataTables_filter").appendTo("#tableSearch");
-                $(".dataTables_filter").appendTo(".search-input");
-            },
+        })
+            .then((response) => {
+                if (!response.ok)
+                    throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then((data) => {
+                if (!data.success || !data.data?.iso2) return;
+
+                const inputField = document.getElementById("unique_id");
+                if (!inputField) return; // silently skip if not found
+
+                const currentValue = inputField.value.trim();
+                const dashIndex = currentValue.indexOf("-");
+
+                if (dashIndex === -1 || dashIndex < 2) return;
+
+                const iso2 = data.data.iso2.toUpperCase();
+                const beforeDash = currentValue.slice(0, dashIndex);
+                const keepRest = beforeDash.slice(0, -2); // remove last 2 letters
+                const finalPrefix = keepRest + iso2;
+                const suffix = currentValue.slice(dashIndex);
+
+                const newCode = `${finalPrefix}${suffix}`;
+                inputField.value = newCode;
+            })
+            .catch((error) => {
+                console.error("Error fetching country data:", error);
+            });
+    }
+
+    function initAutocomplete() {
+        const input = document.getElementsByName("address_1")[0];
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
         });
 
-        $(".modal").on("shown.bs.modal", function (e) {
-            $.fn.dataTable
-                .tables({ visible: true, api: true })
-                .columns.adjust();
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let postalCode = "",
+                country = "",
+                state = "",
+                city = "",
+                lat = "",
+                lng = "";
+
+            addressComponents.forEach((component) => {
+                const types = component.types || [];
+
+                if (types.includes("postal_code")) {
+                    postalCode = component.long_name || "";
+                }
+                if (types.includes("country")) {
+                    country = component.long_name || "";
+                    updateCodeWithCountryPrefix(country);
+                }
+                if (types.includes("administrative_area_level_1")) {
+                    state = component.long_name || "";
+                }
+                if (types.includes("locality")) {
+                    city = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_2") && !city) {
+                    city = component.long_name || "";
+                }
+            });
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("Zip_code", postalCode);
+            setField("country", country);
+            setField("state", state);
+            setField("city", city);
+            setField("latitude", lat);
+            setField("longitude", lng);
         });
     }
+
+    function initAutocompleteById() {
+        const input = document.querySelector(".address");
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let postalCode = "",
+                country = "",
+                state = "",
+                city = "",
+                lat = "",
+                lng = "";
+
+            addressComponents.forEach((component) => {
+                const types = component.types || [];
+
+                if (types.includes("postal_code")) {
+                    postalCode = component.long_name || "";
+                }
+                if (types.includes("country")) {
+                    country = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_1")) {
+                    state = component.long_name || "";
+                }
+                if (types.includes("locality")) {
+                    city = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_2") && !city) {
+                    city = component.long_name || "";
+                }
+            });
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("Zip_code", postalCode);
+            setField("country", country);
+            setField("state", state);
+            setField("city", city);
+            setField("latitude", lat);
+            setField("longitude", lng);
+        });
+    }
+
+    window.addEventListener("load", function () {
+        initAutocomplete();
+        initAutocompleteById();
+    });
 })(jQuery);

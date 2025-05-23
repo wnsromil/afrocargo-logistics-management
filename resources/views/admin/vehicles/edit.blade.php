@@ -16,6 +16,13 @@
 
         <div class="form-group-customer customer-additional-form">
             <div class="row">
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="foncolor" for="company_name"> Vehicle ID</label>
+                    <input type="text" class="form-control inp" style="background: #ececec;"
+                        placeholder="" value="{{ $vehicle->unique_id }}" readonly>
+                </div>
+
                 <!-- Warehouse Location -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -64,6 +71,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_model">Vehicle Model <i class="text-danger">*</i></label>
@@ -89,6 +97,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_year">Manufactured Year <i class="text-danger">*</i></label>
@@ -114,6 +123,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_number">Vehicle Number (Plate No.) <i class="text-danger">*</i></label>

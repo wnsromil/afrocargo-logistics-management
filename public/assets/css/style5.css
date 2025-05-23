@@ -22,6 +22,7 @@
   border-radius: 8px;
   margin-top: 0;
   padding: 14px 15px !important;
+  height: 100%;
 }
 
 
@@ -36,13 +37,22 @@
   padding-top: 5px;
   margin: 2px;
 }
+.mobile_code
+{
+  .foncolor
+  {
+    margin: 0 0 8px 0;
+  }
+}
+.borderset .mobile_code .foncolor { margin: 2px; }
+
 
 .inp {
   border: 1px solid #00000042 !important;
   height: 40px !important;
   border-radius: 4px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400!important;
 }
 
 .inp::placeholder {
@@ -80,6 +90,7 @@
 .inventory{
   color:#000000;
   padding:10px !important;
+  font-weight: 500;
 }
 
 .status-toggle .checktoggle {
@@ -91,8 +102,11 @@
   margin-left: 10px;
 }
 
-.status-toggle {
+/* .status-toggle {
   margin-top: 7px;
+} */
+td .status-toggle {
+  margin-top: 0px;
 }
 
 .status-toggle .checktoggle:after {
@@ -179,7 +193,7 @@
 
 .daterangepicker-wrap input.btn-filters {
   font-weight: normal;
-  border: none !important;
+  /* border: none !important; */
 }
 
 .table thead tr th {
@@ -240,13 +254,13 @@
     .table tbody td a:hover {
       color:#3A3A3A;
   }
-  .container {
+  /* .container {
     display: flex;
-    align-items: center; /* This will align both image and text vertically in the middle */
+    align-items: center; 
   }
   .container img {
-    margin-right: 10px; /* This adds space between the image and the text */
-  }
+    margin-right: 10px; 
+  } */
 .alignt{
    text-align: center;
   }
@@ -275,7 +289,7 @@
 
 td {
   /* border: 1px solid #00000042 !important; */
- td{ height: 45px !important;}
+ /* td{ height: 45px !important;} */
   /* width:96px !important; */
 
 
@@ -448,6 +462,9 @@ table tbody {
   height: 156px;
   margin-block: auto;
 }
+.custodis .avtarset {
+  height: unset;
+}
 
 .set {
   margin-block: auto;
@@ -459,16 +476,27 @@ table tbody {
 }
 
 .labelstatus {
-  background: #FFDADA;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 5px 16px;
   height: 28px;
   border-radius: 4px;
-  color: #FF0000;
   font-size: 13px;
   font-weight: 500;
+  margin-bottom: 0;
+}
+.labelstatus.Inactive
+{
+  
+  background: #ffdada7e;
+  color: #FF0000;
+}
+.labelstatus.Active
+{
+  
+  background: #E1FFED;
+  color: #33B469;
 }
 
 .labelstatusy {
@@ -548,7 +576,7 @@ table tbody {
 .select2 {
   width: 100%;
   height: 40px;
-  /* border: 1px solid #00000042; */
+  /* border: 1px solid #00000042 !important;*/
   border: unset;
   border-radius: 4px;
   color: #737B8B;
@@ -600,12 +628,13 @@ table tbody {
 }
 
 .service-upload {
-  border: 2px dashed #E5E5E5;
+  border: 1px dashed #00000042;
   text-align: center;
   background-color: #fff;
   position: relative;
   padding: 0px !important;
   min-height: 180px;
+  border-radius: 4px;
 }
 
 .modal-content {
@@ -687,7 +716,6 @@ table tbody {
 .tabs {
   width: 100%;
   max-width: 600px;
-  margin-left: 5px;
 }
 
 
@@ -700,10 +728,11 @@ table tbody {
 }
 
 .tab-title {
-  padding: 10px;
+  padding: 5px 10px;
+  line-height: 27px;
   text-align: center;
   cursor: pointer;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   border: 1px solid #203A5F;
   margin-right: 0;
   /* Ensure no margin between elements */
@@ -760,12 +789,21 @@ input[type="radio"] {
 #tab4:checked~.tab-titles~#content4 {
   display: block;
 }
+#tab5:checked~.tab-titles~#content5 {
+  display: block;
+}
+
+#tab6:checked~.tab-titles~#content6 {
+  display: block;
+}
 
 /* Highlight the active tab */
 #tab1:checked~.tab-titles label[for="tab1"],
 #tab2:checked~.tab-titles label[for="tab2"],
 #tab3:checked~.tab-titles label[for="tab3"],
-#tab4:checked~.tab-titles label[for="tab4"] {
+#tab4:checked~.tab-titles label[for="tab4"],
+#tab5:checked~.tab-titles label[for="tab5"],
+#tab6:checked~.tab-titles label[for="tab6"] {
   background-color: #203A5F;
   font-weight: 400;
   font-size: 14px;
@@ -1175,14 +1213,37 @@ input[type="checkbox"]:checked::after {
   color:black
 }
 
-.day{
+.timePickersSLots .day{
   min-width: 85px;
   justify-content: flex-start;
-  margin-top:9px;
 }
 
 
 .inputs{
   padding: 1px;
     font-size: 13px !important;
+}
+.disabled-link {
+  pointer-events: none !important; /* Disable mouse events */
+  cursor: not-allowed !important; /* Change cursor to "not allowed" */
+  color: #918f8f !important; /* Light gray color for disabled look */
+  text-decoration: none !important; /* Remove underline */
+  background-color: #f0f0f0 !important; /* Light gray background */
+}
+
+.disabled-link-supply {
+    pointer-events: none !important; /* Disable mouse events */
+    cursor: not-allowed !important; /* Change cursor to "not allowed" */
+    color: #918f8f !important; /* Light gray color for disabled look */
+}
+
+.disabled-link-for-active-supply {
+  pointer-events: none;         /* Disable all mouse interactions */
+  cursor: not-allowed;          /* Show "not-allowed" cursor */
+  text-decoration: none !important;
+}
+.disabled-link-for-active-service {
+  pointer-events: none;         /* Disable all mouse interactions */
+  cursor: not-allowed;          /* Show "not-allowed" cursor */
+  text-decoration: none !important;
 }

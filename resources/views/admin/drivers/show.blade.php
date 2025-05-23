@@ -8,7 +8,6 @@
             .card.mainCardGlobal>.card-body>.page-header {
                 margin-bottom: -10px !important;
             }
-
         </style>
     @endsection
 
@@ -24,7 +23,8 @@
     @endsection
 
     <div class="text-end mt-n4">
-        <a class="btn update btn-primary me-2" href="{{ route('admin.drivers.edit', $user->id) }}"><i class="ti ti-edit"></i> Update
+        <a class="btn update btn-primary me-2" href="{{ route('admin.drivers.edit', $user->id) }}"><i
+                class="ti ti-edit"></i> Update
             Driver</a>
     </div>
     <section>
@@ -93,7 +93,7 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">Phone Number</h6>
                             <p class="col3A fw_500">{{ $user->country_code ?? '' }} {{ $user->phone ?? '--' }}</p>
-                            <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}</p>
+                            {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}</p> --}}
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,6 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">Address</h6>
                             <p class="col3A fw_500">{{ $user->address ?? '--' }}</p>
-                            <p class="col3A fw_500">{{ $user->address_2 ?? '--'}}</p>
                         </div>
                     </div>
                 </div>
@@ -131,8 +130,8 @@
                                 <div class="upload-profile me-2">
                                     <div class="profile-img">
                                         @if ($user->license_document)
-                                            <img id="blah" style="max-width: 150px;" src="{{ asset('' . $user->license_document) }}"
-                                                alt="license">
+                                            <img id="blah" style="max-width: 150px;"
+                                                src="{{ asset('' . $user->license_document) }}" alt="license">
                                         @else
                                             <p> - No Image</p>
                                         @endif
@@ -187,7 +186,7 @@
                             <label>By Date</label>
                             <div class="daterangepicker-wrap mannual cal-icon cal-icon-info">
                                 <input type="text" class="btn-filters form-control form-cs info" name="datetimes"
-                                    placeholder="From Date - To Date" style="border:none" />
+                                    placeholder="From Date - To Date" />
                             </div>
                         </div>
 

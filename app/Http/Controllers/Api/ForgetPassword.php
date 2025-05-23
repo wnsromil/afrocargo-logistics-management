@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
+use App\Mail\ForgetPasswordMail;
+use Illuminate\Support\Facades\Mail;
 
 class ForgetPassword extends Controller
 {
@@ -44,6 +46,7 @@ class ForgetPassword extends Controller
         // Generate access token
         $token = $userData->createToken('MyApp')->accessToken;
         $success['token'] = $token;
+        $otp = rand(1000, 9999); // e.g. 3472
 
         // Update or create OTP record
         VerifyAuthIP::updateOrCreate(
@@ -52,14 +55,20 @@ class ForgetPassword extends Controller
                 'ip_address' => $request->ip(),
             ],
             [
-                'otp' => 1234,
+                'otp' => $otp,
                 'otp_expire_at' => Carbon::now()->addMinutes(2), // OTP expires in 2 minutes
                 'otp_varify_at' => null,
                 'verify_type' => 'forget'
             ]
         );
 
-        return $this->sendResponse($success, 'Otp resend successfully.');
+        $userName = $userData->name;
+        $email = $userData->email;
+    
+        Mail::to($email)->send(new ForgetPasswordMail($userName, $otp));
+
+
+        return $this->sendResponse($success, 'Otp send successfully.');
     }
     public function resetPassword(Request $request)
     {

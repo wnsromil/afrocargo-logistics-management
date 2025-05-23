@@ -22,13 +22,39 @@ class ServiceOrdersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default is 10
+        $currentPage = $request->input('page', 1);
 
-        $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
+        $parcels = Parcel::where('parcel_type', 'Service')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest()->paginate(10);
+        })
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    // Search by tracking_number, status, estimate_cost, and total_amount
+                    $query->where('tracking_number', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhere('estimate_cost', 'LIKE', "%$search%")
+                        ->orWhere('total_amount', 'LIKE', "%$search%");
+
+                    // Check if the search string is a valid date in the format "d-m-Y"
+                    if (\DateTime::createFromFormat('d-m-Y', $search) !== false) {
+                        // Convert the search string to the database-compatible format "Y-m-d"
+                        $formattedDate = \DateTime::createFromFormat('d-m-Y', $search)->format('Y-m-d');
+
+                        // Search for records where the created_at date matches the formatted date
+                        $query->orWhereDate('pickup_date', '=', $formattedDate);
+                    }
+                });
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+        $serialStart = ($currentPage - 1) * $perPage;
+
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
@@ -38,7 +64,12 @@ class ServiceOrdersController extends Controller
         })->get();
 
         $drivers = $user->where('role_id', 4)->values();
-        return view('admin.service_orders.index', compact('parcels', 'drivers', 'warehouses'));
+
+        if ($request->ajax()) {
+            return view('admin.service_orders.table', compact('parcels', 'serialStart'))->render();
+        }
+
+        return view('admin.service_orders.index', compact('parcels', 'drivers', 'warehouses', 'search', 'perPage', 'serialStart'));
     }
 
     /**
@@ -114,11 +145,16 @@ class ServiceOrdersController extends Controller
     {
         //
         $ParcelHistories = ParcelHistory::where('parcel_id', $id)
-            ->with(['warehouse', 'customer', 'createdByUser'])->paginate(10);
+            ->with(['warehouse', 'customer', 'createdByUser'])->get();
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        return view('admin.service_orders.show', compact('ParcelHistories', 'parcelTpyes'));
+        $parcel = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->where('id', $id)->first();
+
+
+        return view('admin.service_orders.orderdetails', compact('ParcelHistories', 'parcelTpyes', 'parcel'));
     }
 
     /**
@@ -226,9 +262,9 @@ class ServiceOrdersController extends Controller
             unset($validatedData['ParcelId']);
 
             // Fetch the parcel record
-            $parcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
+            $parcel = Parcel::when($ParcelId, function ($q) use ($ParcelId) {
+                if (is_array($ParcelId)) {
+                    return $q->whereIn('id', $ParcelId);
                 }
                 return $q->where('id', $ParcelId);
             })->get();
@@ -239,20 +275,20 @@ class ServiceOrdersController extends Controller
                     'message' => 'Parcel not found.'
                 ], 404);
             }
-            
+
             // Update parcel status and driver_id if provided
-            $objParcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
+            $objParcel = Parcel::when($ParcelId, function ($q) use ($ParcelId) {
+                if (is_array($ParcelId)) {
+                    return $q->whereIn('id', $ParcelId);
                 }
                 return $q->where('id', $ParcelId);
             });
 
-            
+
 
 
             $warehouse_id = null;
-            if($validatedData['status'] == "Received Warehouse"){
+            if ($validatedData['status'] == "Received Warehouse") {
                 $warehouse_id =  $request->warehouse_id;
 
                 // $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
@@ -281,30 +317,30 @@ class ServiceOrdersController extends Controller
                 // $validatedData['hub_tracking_id'] = $hubTracking->id;
             }
 
-            if($validatedData['status'] == "Received By Pickup Man"){
+            if ($validatedData['status'] == "Received By Pickup Man") {
 
-                $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-                    return $q->where('warehouse_id',$this->user->warehouse_id);
+                $vehicles = Vehicle::when($this->user->role_id != 1, function ($q) {
+                    return $q->where('warehouse_id', $this->user->warehouse_id);
                 })->get();
 
                 $warehouse_id =  $vehicles->first()->warehouse_id;
 
                 // ready to hub
-                $hubTrackings = HubTracking::where('status','pending')
-                ->withCount(['parcels'])
-                ->with('vehicle')
-                ->where(['from_warehouse_id'=>$warehouse_id])
-                ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get();
+                $hubTrackings = HubTracking::where('status', 'pending')
+                    ->withCount(['parcels'])
+                    ->with('vehicle')
+                    ->where(['from_warehouse_id' => $warehouse_id])
+                    ->whereIn('vehicle_id', $vehicles->pluck('id')->toArray())->latest()->get();
 
-                $hubTracking = collect($hubTrackings)->filter(function($item){
+                $hubTracking = collect($hubTrackings)->filter(function ($item) {
                     return $item->parcels_count < $item->vehicle->capacity;
                 })->first();
-                
+
                 // return collect($hubTrackings)->pluck('vehicle_id')->toArray();
 
-                if(empty($hubTracking)){
+                if (empty($hubTracking)) {
                     $hubTracking = HubTracking::create([
-                        'vehicle_id' => $vehicles->whereNotIn('id',collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
+                        'vehicle_id' => $vehicles->whereNotIn('id', collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
                         'from_warehouse_id' => $warehouse_id,
                         'created_by' => $this->user->id
                     ]);
@@ -317,7 +353,7 @@ class ServiceOrdersController extends Controller
             $objParcel->update($validatedData);
 
 
-            $history = $parcel->map(function($item) use($validatedData,$warehouse_id){
+            $history = $parcel->map(function ($item) use ($validatedData, $warehouse_id) {
                 return [
                     'parcel_id' => $item->id,
                     'created_user_id' => $this->user->id,
@@ -327,11 +363,11 @@ class ServiceOrdersController extends Controller
                     'parcel_status' => $validatedData['status'],
                     'description' => collect($item),
                     'note' => $request->note ?? null,
-                    'created_at'=> Carbon::now()
+                    'created_at' => Carbon::now()
                 ];
             });
 
-            
+
 
             // Store history in ParcelHistory table
             ParcelHistory::insert(collect($history)->toArray());
@@ -355,4 +391,5 @@ class ServiceOrdersController extends Controller
             ], 500);
         }
     }
+    
 }

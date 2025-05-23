@@ -26,11 +26,13 @@ class VehicleController extends Controller
         $currentPage = $request->input('page', 1); // ✅ Current page number
 
         $vehicles = Vehicle::with(['driver', 'warehouse'])->where('vehicle_type', '!=', 'Container')
+            ->withCount('parcelsCount')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->when($query, function ($q) use ($query) {
                 return $q->where('vehicle_type', 'like', '%' . $query . '%')
+                ->orWhere('unique_id', 'like', '%' . $query . '%')
                     ->orWhereHas('driver', function ($q) use ($query) {
                         $q->where('name', 'like', '%' . $query . '%');
                     })
@@ -58,13 +60,13 @@ class VehicleController extends Controller
     public function create()
     {
 
-        $vehicle = Vehicle::when($this->user->role_id != 1, function ($q) {
+        $vehicle = Vehicle::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get();
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
-        $drivers = User::where('role_id', '=', '4')
+        $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
             ->Where('is_deleted', 'no')->select('id', 'name')->get();
         return view('admin.vehicles.create', compact('vehicle', 'warehouses', 'drivers'));
     }
@@ -130,7 +132,6 @@ class VehicleController extends Controller
         // }
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -150,7 +151,7 @@ class VehicleController extends Controller
         $vehicle = Vehicle::where('id', $id)->first();
         $drivers = User::where('role_id', '=', '4')->get();
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
@@ -187,7 +188,6 @@ class VehicleController extends Controller
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -198,6 +198,7 @@ class VehicleController extends Controller
         return redirect()->route('admin.vehicle.index')
             ->with('success', 'Vehicle deleted successfully');
     }
+
 
     public function changeStatus(Request $request, $id)
     {

@@ -3,31 +3,23 @@
         {{ __('Notifications') }}
     </x-slot>
 
-    @section('style')
-        <style>
-            .card.mainCardGlobal:before {
-                display: none;
-            }
-        </style>
-    @endsection
-    
-    <div class="nav">
-        <nav class="navbar navbar-expand-lg">
-            <div>
-                <h4 class="text-dark textSize mainFontFamily">Notifications</h4>
-            </div>
-        </nav>
+    <x-slot name="cardTitle">
+        <p class="head">Notifications</p>
 
-    </div>
-    <div class=" float-end mt-2 me-3">
-        <button class="btn btnColor font-weight-2 fw-light" type="button"><i
+        <div class="d-flex align-items-center justify-content-end mb-0">
+            <div class="usersearch d-flex">
+                <div class="">
+                    <button class="btn btnColor font-weight-2 fw-light" type="button"><i
                 class="fa-solid fa-check pe-2 iconSize"></i>Mark as Read</button>
-    </div>
+                </div>
+            </div>
+        </div>
+    </x-slot>
 
     <!-- ---------------------- msg ---------------------------------- -->
 
     <!-- ----------------  1  -------------------------- -->
-    <div class="mainFontFamily fixContainer text-dark">
+    <div class="mainFontFamily text-dark">
 
         @forelse ($notifications as $notification)
         <div class="shadow-box fontSize innerCards setTopBottomMargin">

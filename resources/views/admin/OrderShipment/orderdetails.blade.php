@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        Parcel Management
+        Order details
     </x-slot>
 
     <x-slot name="cardTitle">
@@ -9,7 +9,7 @@
     <div class="card-table">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-borderless">
+                <table class="table table-borderless notposition"> 
                     <thead class="thead-light">
                         <tr>
                             <th>S.No.</th>
@@ -113,6 +113,47 @@
                     </tbody>
                 </table>
             </div>
+            <div class="row mt-4 ">
+                <div class="col-md-12">
+                    <p class="heading mb-3">Item List</p>
+                    <div class="table-responsive notMinheight smallTDs">
+                        <table class="table table-stripped table-hover datatable notposition border1">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Sn no.</th>
+                                    <th>Supply Image</th>
+                                    <th>Supply Details</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total Amt.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <div><img class="itemImg" src="../assets/img/img2.png" alt="image"></div>
+                                    </td>
+                                    <td>Barrels XL</td>
+                                    <td>3</td>
+                                    <td>$50</td>
+                                    <td>$150</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <div><img class="itemImg" src="../assets/img/img3.png" alt="image"></div>
+                                    </td>
+                                    <td>Brown Tap</td>
+                                    <td>15</td>
+                                    <td>$5</td>
+                                    <td>$75</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div>
                 <p class="heading mt-4">Order History</p>
                 <!-- Timeline -->
@@ -148,7 +189,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#0" data-date="28/02/2014" >
+                                                    <a href="#0" data-date="28/02/2014">
                                                         <p class="bigfont">Schedule Pickup</p>
                                                         <p class="smfont">12-12-2024</p>
                                                         <div class="bottom">
@@ -158,7 +199,7 @@
                                                         </div>
                                                     </a>
                                                 </li>
-                                                 <li>
+                                                <li>
                                                     <a href="#0" data-date="16/01/2014" class="selected">
                                                         <p class="bigfont">Self Pickup</p>
                                                         <p class="smfont">12-12-2024</p>

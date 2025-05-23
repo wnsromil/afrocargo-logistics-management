@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-use App\Models\Setting;
+use App\Models\{Setting,ParcelStatus};
 
 class SettingsHelper
 {
@@ -36,6 +36,10 @@ class SettingsHelper
         );
     }
 
+    public static function statusList(){
+        return ParcelStatus::get();
+    }
+
     private static function formatValue($type, $value)
     {
         switch ($type) {
@@ -45,4 +49,5 @@ class SettingsHelper
             default: return $value;
         }
     }
+    
 }

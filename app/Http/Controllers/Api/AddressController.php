@@ -33,12 +33,12 @@ class AddressController extends Controller
             'address' => 'required|string|max:255',
             'address_type' => 'required|string|in:pickup,delivery',
             'alternative_mobile_number' => 'nullable|string|max:15',
-            'city_id' => 'required|integer',
-            'country_id' => 'required|integer',
+            'city_id' => 'required|string',
+            'country_id' => 'required|string',
             'full_name' => 'required|string|max:255',
             'mobile_number' => 'required|string|max:15',
             'pincode' => 'required|string|max:10',
-            'state_id' => 'required|integer',
+            'state_id' => 'required|string',
             'warehouse_id' => 'nullable|integer|exists:warehouses,id',
         ]);
 

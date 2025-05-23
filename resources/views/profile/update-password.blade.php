@@ -4,26 +4,30 @@
             {{ __('Change Password') }}
         </h2>
     </x-slot>
+    <x-slot name="cardTitle">
+        <div class="d-flex innertopnav">
+            <p class="subhead pheads">Change Password</p>
+        </div>
+    </x-slot>
 
     <section>
-        <div class="content-page-header mt-n5 d-block">
-            <h5 class="setting-menu">{{ __('Change Password') }}</h5>
-            <p class="mt-1 text-sm text-gray-600">
+        <div class="mt_n33">
+            <p class="mt-1 h6 text-dark">
                 {{ __('Ensure your account is using a long, random password to stay secure.') }}
             </p>
         </div>
 
-        <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+        <form method="POST" action="{{ route('password.update') }}" class="mt-6 space-y-6">
             @csrf
-            @method('put')
-
-            <!-- Current Password Field -->
+            @method('PUT')
+        
+            <!-- Current Password -->
             <div class="form-group row mb-4">
                 <label class="col-md-3 foncolor">Current Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
                         <input type="password" class="form-control inp" id="current-password" name="current_password"
-                        value="{{ old('current_password') }}" placeholder="Enter Current Password">
+                               placeholder="Enter Current Password" required>
                         <span toggle="#current-password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
                     @error('current_password')
@@ -31,14 +35,14 @@
                     @enderror
                 </div>
             </div>
-
-            <!-- New Password Field -->
+        
+            <!-- New Password -->
             <div class="form-group row mb-4">
                 <label class="col-md-3 foncolor">New Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
                         <input type="password" class="form-control inp" id="new_password" name="password"
-                            placeholder="Enter New Password" value="{{ old('password') }}">
+                               placeholder="Enter New Password" required>
                         <span toggle="#new_password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
                     @error('password')
@@ -46,14 +50,14 @@
                     @enderror
                 </div>
             </div>
-
-            <!-- Confirm New Password Field -->
+        
+            <!-- Confirm Password -->
             <div class="form-group row mb-4">
                 <label class="col-md-3 foncolor">Confirm New Password <span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="position-relative">
-                        <input type="password" class="form-control inp" id="confirm_password" value="{{ old('confirm_password') }}"
-                            name="password_confirmation" placeholder="Enter Confirm New Password">
+                        <input type="password" class="form-control inp" id="confirm_password"
+                               name="password_confirmation" placeholder="Confirm New Password" required>
                         <span toggle="#confirm_password" class="ti ti-eye field-icon toggle-password"></span>
                     </div>
                     @error('password_confirmation')
@@ -61,18 +65,19 @@
                     @enderror
                 </div>
             </div>
-
-            <!-- Submit Button -->
-            <div class="btn-path text-staart mt-5">
+        
+            <!-- Submit -->
+            <div class="btn-path text-start mt-5">
                 <button class="btn btn-primary me-2" type="submit">Update</button>
                 <a href="{{ route('profile.index') }}" class="btn btn-cancel btn-outline-dark">Cancel</a>
             </div>
-
-            <!-- Success Message -->
-            @if (session('status') === 'password-updated')
-                <p class="text-success mt-3">Password updated successfully.</p>
+        
+            <!-- Success -->
+            @if(session('success'))
+                <div class="text-success mt-3">{{ session('success') }}</div>
             @endif
         </form>
+        
     </section>
 </x-app-layout>
 <script>

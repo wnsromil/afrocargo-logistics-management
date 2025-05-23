@@ -33,10 +33,10 @@
     }
 
 
-    const activeText = document.getElementById('activeText');
-    const inactiveText = document.getElementById('inactiveText');
-    const rating_6 =document.getElementById('rating_6');
-    rating_6.addEventListener("change", function(){
-        activeText.classList.toggle("faded");
-        inactiveText.classList.toggle("faded");
-    })
+    // const activeText = document.getElementById('activeText');
+    // const inactiveText = document.getElementById('inactiveText');
+    // const rating_6 =document.getElementById('rating_6');
+    // rating_6.addEventListener("change", function(){
+    //     activeText.classList.toggle("faded");
+    //     inactiveText.classList.toggle("faded");
+    // })

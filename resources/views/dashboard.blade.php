@@ -25,7 +25,38 @@
 
     <div class="dashboardContent">
         <div class="row">
+            @php
+                $role_id = Auth::user()->role_id;
+            @endphp
 
+            @if($role_id == 2 || $role_id == 4)
+                {{-- ✅ Readonly Input for Single Warehouse --}}
+                <div class="col-md-4 mb-3">
+                    <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
+                </div>
+            @else
+                <div class="col-sm-4 mb-3">
+                    <label class="foncolor" for="warehouse"> Warehouse </label>
+                    <div class="d-flex align-items-center">
+                        <select id="warehouse" class="js-example-basic-single select2 form-control" name="warehouse"
+                            style="" value="{{ old('warehouse') }}">
+                            <option value="">Select Warehouse</option>
+                            @foreach ($warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}" {{ old('warehouse') == $warehouse->id ? 'selected' : '' }}>
+                                    {{ $warehouse->warehouse_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="btn btn-outline-danger btnr ms-2" onclick="resetForm()">Reset</button>
+                    </div>
+                    @error('warehouse')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            @endif
             <!-- <div class="d-flex justify-content-between align-items-center">
                         <div class="row"> -->
             <div class="col-md-12">
@@ -40,8 +71,8 @@
                                 <div class="col-md-9">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Today’s Orders</p>
-                                        <div class="dash-counts countFontSize2">
-                                            254
+                                        <div class="dash-counts countFontSize2" id="todays-orders">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -69,8 +100,8 @@
                                 <div class="col-md-9">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Orders</p>
-                                        <div class="dash-counts countFontSize2">
-                                            354
+                                        <div class="dash-counts countFontSize2" id="total-orders">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -98,8 +129,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <h5 class="fontSize fw-medium text-dark">Ready for Shipping</h5>
-                                        <div class="dash-counts countFontSize2">
-                                            236
+                                        <div class="dash-counts countFontSize2" id="ready-for-shipping">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -127,8 +158,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">In Transit</p>
-                                        <div class="dash-counts countFontSize2">
-                                            216
+                                        <div class="dash-counts countFontSize2" id="in-transit">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -185,8 +216,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontpize fw-medium">Delivered</p>
-                                        <div class="dash-counts countFontSize2">
-                                            189
+                                        <div class="dash-counts countFontSize2" id="total-delivered">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -216,8 +247,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Customers</p>
-                                        <div class="dash-counts countFontSize2">
-                                            220
+                                        <div class="dash-counts countFontSize2" id="total-customers">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -246,8 +277,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">New Customers</p>
-                                        <div class="dash-counts countFontSize2">
-                                            20
+                                        <div class="dash-counts countFontSize2" id="new-customers">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -277,8 +308,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Drivers</p>
-                                        <div class="dash-counts countFontSize2">
-                                            80
+                                        <div class="dash-counts countFontSize2" id="total-drivers">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -324,8 +355,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Warehouses</p>
-                                        <div class="dash-counts countFontSize2">
-                                            189
+                                        <div class="dash-counts countFontSize2" id="total-warehouses">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -354,8 +385,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Vehicles</p>
-                                        <div class="dash-counts countFontSize2">
-                                            240
+                                        <div class="dash-counts countFontSize2" id="total-vehicles">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -384,8 +415,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Earnings</p>
-                                        <div class="dash-counts countFontSize2">
-                                            $125650
+                                        <div class="dash-counts countFontSize2" id="total-earnings">
+                                            $0
                                         </div>
                                     </div>
                                 </div>
@@ -413,8 +444,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Today Earnings</p>
-                                        <div class="dash-counts countFontSize2">
-                                            4500
+                                        <div class="dash-counts countFontSize2" id="today-earnings">
+                                            $0
                                         </div>
                                     </div>
                                 </div>
@@ -450,8 +481,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">Total Supply</p>
-                                        <div class="dash-counts countFontSize2">
-                                            450
+                                        <div class="dash-counts countFontSize2" id="total-supply">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -480,8 +511,8 @@
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
                                         <p class="fontSize fw-medium">New Supply</p>
-                                        <div class="dash-counts countFontSize2">
-                                            30
+                                        <div class="dash-counts countFontSize2" id="new-supply">
+                                            0
                                         </div>
                                     </div>
                                 </div>
@@ -528,10 +559,12 @@
 
         <!-- -------------------------------- Container Cards -------------------------------- -->
         <div class="col-md-12">
-            <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
+            <div id="container-list" class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
                 @forelse ($latestContainers as $index => $latestContainer)
                     <div class="col-md-5 col-xl-3 col-sm-6">
-                        <div class="card innerCards w-100 setCard setCardSize rounded">
+                        <div
+                            class="card innerCards w-100 setCard setCardSize rounded 
+                                                                                        {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -541,17 +574,16 @@
                                     </h5>
                                     <div class="cardFontSize mt-2 fw-medium">
                                         <span class="fw-regular col737">Total Order :</span>
-                                        --<br>
-                                        <span class="fw-regular col737">Total Amt : </span>-<br>
-                                        <span class="fw-regular text-success">Received Amt : </span>-<br>
-                                        <span class="fw-regular text-danger">Due Amt : </span>-<br>
+                                        {{$latestContainer->parcelsCount->first()->count ?? 0}}<br>
+
                                     </div>
                                 </div>
 
-                                <div class="col-3 justify-content-end">
+                                <div class="col-3 justify-content-end mt-1">
                                     <div class="status-toggle float-end me-0">
-
-                                        <input id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $index === 1 ? 'checked' : '' }}>
+                                        <input
+                                            onclick="handleContainerClick('{{ $latestContainer->id }}', '{{ $latestContainer->container_no_1 }}')"
+                                            id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
                                         <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
@@ -559,8 +591,7 @@
                         </div>
                     </div>
                 @empty
-                    <p colspan="7" class="px-4 py-4 text-center text-gray-500">No container found.
-                    </p>
+                    <p colspan="7" class="px-4 py-4 text-gray-500">No container found.</p>
                 @endforelse
             </div>
         </div>
@@ -715,8 +746,7 @@
                                         <td class="table-content">$167.00</td>
                                         <!-- <td><i class="fa fa-stop pe-1" data-bs-toggle="tooltip" title="fa fa-stop"
                                             style="color:red;"></i>Canceled</td> -->
-                                        <td><span
-                                                class="bg-danger-subtle pending-text px-2 py-1 rounded cardFontSize fw-medium">Pending</span>
+                                        <td><span class="orderstatus pending">Pending</span>
                                         </td>
                                         <td class="d-flex">
                                             <div class="dropdown dropdown-action">
@@ -747,8 +777,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -772,8 +802,7 @@
                                         <td>12-12-2024</td>
                                         <td class="text-truncate width">Household Set, Cards </td>
                                         <td>$863.00</td>
-                                        <td><span
-                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                        <td><span class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -817,8 +846,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -843,7 +872,7 @@
                                         <td class="text-truncate width">Books</td>
                                         <td>$617.00</td>
 
-                                        <td><span class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Pickup
+                                        <td><span class="orderstatus Pickup Re-Schedule">Pickup
                                                 Re-Schedule</span>
                                         </td>
                                         <td class="d-flex">
@@ -880,8 +909,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -905,15 +934,14 @@
                                         <td class="text-truncate width">Household Set, Card...</td>
                                         <td>$751.00</td>
 
-                                        <td><span
-                                                class="bg-text-color2 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                        <td><span class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -937,7 +965,7 @@
                                         <td class="text-truncate width">Books</td>
                                         <td>$356.00</td>
 
-                                        <td><span class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Pickup
+                                        <td><span class="orderstatus Pickup Re-Schedule">Pickup
                                                 Re-Schedule</span>
                                         </td>
                                         <td class="d-flex">
@@ -974,8 +1002,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -999,15 +1027,14 @@
                                         <td class="text-truncate width">Cards</td>
                                         <td>$940.00</td>
 
-                                        <td><span
-                                                class="bg-text-color2 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                        <td><span class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -1031,8 +1058,7 @@
                                         <td class="text-truncate width">Books</td>
                                         <td>$125.00</td>
 
-                                        <td><span
-                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                        <td><span class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -1079,8 +1105,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -1102,15 +1128,14 @@
                                         <td>12-12-2024</td>
                                         <td class="text-truncate width">Received By Pickup Man</td>
                                         <td>$759.00</td>
-                                        <td><span
-                                                class="bg-text-color1 px-2 py-1 rounded cardFontSize fw-medium">Received
+                                        <td><span class="orderstatus Received By Pickup Man">Received
                                                 By Pickup
                                                 Man</span>
-                                            </d>
+                                        </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -1133,8 +1158,7 @@
                                         <td class="text-truncate width">Electronics</td>
                                         <td>$300.00</td>
 
-                                        <td><span
-                                                class="bg-danger-subtle pending-text px-2 py-1 rounded cardFontSize fw-medium">Pending</span>
+                                        <td><span class="orderstatus Pending">Pending</span>
                                         </td>
                                         <td class="d-flex">
                                             <div class="dropdown dropdown-action">
@@ -1166,8 +1190,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                                 <!-- <a href="#" class=" btn-action-icon ms-3" data-bs-toggle="dropdown"
@@ -1190,8 +1214,7 @@
                                         <td class="text-truncate width">Household</td>
                                         <td>$456.00</td>
 
-                                        <td><span
-                                                class="bg-warning-subtle text-warning px-2 py-1 rounded cardFontSize fw-medium">Schedule
+                                        <td><span class="orderstatus Schedule Pickup">Schedule
                                                 Pickup</span>
                                         </td>
                                         <td class="d-flex">
@@ -1238,8 +1261,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a class="btn-action-icon set btn-primary rounded-1 ms-2 px-3"
-                                                    onClick="redirectTo('{{route('admin.orderdetails')}}')"
+                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                    style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
                                             </div>
@@ -1759,6 +1782,7 @@
     <!-- ---------------------------------------------------------------------------------------------------- -->
 
 
+    {{--
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const allToggles = document.querySelectorAll('.toggle-btn1');
@@ -1784,7 +1808,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
 
     <!-- <script>
@@ -1968,7 +1992,7 @@
         </div>
         <!-- /Received_Warehouse Modal -->
         <!-- ---------------------------------------------------------------------------------------------------- -->
-         
+
         <!-- schedule_pickup_cancel Modal -->
         <div class="modal custom-modal fade" id="schedule_pickup_cancel" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-md">
@@ -2136,5 +2160,175 @@
     @endsection
     @section('bottomContent')
     @endsection
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function handleContainerClick(containerId, containerNumber) {
+            // Step 1: First fetch current active container
+            axios.get('/api/vehicle/getAdminActiveContainer')
+                .then(response => {
+                    const activeContainer = response.data.container;
+
+                    let message = '';  // To hold the message
+                    let checkbox_status = '';
+
+                    // Condition 1: If active container is the same as the one to open
+                    if (activeContainer?.container_no_1 === containerNumber) {
+                        message = `That you need to close this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_close";
+                    }
+                    // Condition 2: If there's no active container
+                    else if (!activeContainer?.container_no_1) {
+                        message = `That you need to open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_open";
+                    }
+                    // Condition 3: If active container is different from the one to open
+                    else {
+                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "both_open_close";
+                    }
+
+                    // Show the Swal message based on the conditions
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        html: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, confirm',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Step 3: Now call POST to toggle status
+                            axios.post('/api/vehicle/toggle-status', {
+                                open_id: containerId, // New container to open (Active)
+                                close_id: activeContainer?.id, // Old container to close (Inactive)
+                                checkbox_status: checkbox_status
+                            })
+                                .then((res) => {
+                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                        location.reload();
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.fire('Error', 'Failed to update container status.', 'error');
+                                });
+                        } else {
+                            // User cancelled → reload the page
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+                });
+        }
+    </script>
+
+    <script>
+        async function fetchDashboardData(warehouseId = null) {
+            try {
+                const url = `/api/dashboard-stats${warehouseId ? '?warehouse_id=' + warehouseId : ''}`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                const data = await response.json();
+
+                console.log(data); // Yahan apna dashboard update kar lena
+                document.getElementById('todays-orders').textContent = data.todays_orders ? data.todays_orders : 0;
+                document.getElementById('total-orders').textContent = data.total_orders ? data.total_orders : 0;
+                document.getElementById('ready-for-shipping').textContent = data.ready_for_shipping ? data.ready_for_shipping : 0;
+                document.getElementById('in-transit').textContent = data.in_transit ? data.in_transit : 0;
+                document.getElementById('total-delivered').textContent = data.delivered ? data.delivered : 0;
+                document.getElementById('total-customers').textContent = data.total_customers ? data.total_customers : 0;
+                document.getElementById('new-customers').textContent = data.new_customers ? data.new_customers : 0;
+                document.getElementById('total-drivers').textContent = data.total_drivers ? data.total_drivers : 0;
+                document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
+                document.getElementById('total-vehicles').textContent = data.total_vehicles ? data.total_vehicles : 0;
+                document.getElementById('total-earnings').textContent = '$' + (data.total_earnings ? data.total_earnings : 0);
+                document.getElementById('today-earnings').textContent = '$' + (data.today_earnings ? data.today_earnings : 0);
+                document.getElementById('total-supply').textContent = data.total_supply ? data.total_supply : 0;
+                document.getElementById('new-supply').textContent = data.new_supply ? data.new_supply : 0;
+                updateContainerCards(data.latest_containers || []);
+
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+
+        function updateContainerCards(containers) {
+            const containerList = document.getElementById('container-list');
+            containerList.innerHTML = ''; // purane cards hata do
+
+            if (containers.length === 0) {
+                containerList.innerHTML = `<p class="px-4 py-4 text-center text-gray-500">No container found.</p>`;
+                return;
+            }
+
+            containers.forEach((container, index) => {
+                const isActive = container.status === 'Active';
+                const card = document.createElement('div');
+                card.className = 'col-md-5 col-xl-3 col-sm-6';
+
+                card.innerHTML = `
+            <div class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1' : ''}">
+                <div class="card2 d-flex flex-row justify-content-between">
+                    <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                        <p class="font13 fw-medium">
+                            <span class="col737">Seal No :</span> ${container.seal_no ?? "-"}
+                        </p>
+                        <h5 class="text-black countFontSize fw-medium">
+                            ${container.container_no_1 ?? "-"}
+                        </h5>
+                        <div class="cardFontSize mt-2 fw-medium">
+                            <span class="fw-regular col737">Total Order :</span> ${container.parcels_count ?? 0}
+                        </div>
+                    </div>
+
+                    <div class="col-3 justify-content-end mt-1">
+                        <div class="status-toggle float-end me-0">
+                            <input 
+                                onclick="handleContainerClick('${container.id}', '${container.container_no_1}')"
+                                id="rating_${index}" 
+                                class="toggle-btn1 check" 
+                                type="checkbox" 
+                                ${isActive ? 'checked' : ''}>
+                            <label for="rating_${index}" class="checktoggle tog checkbox-bg">checkbox</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+                containerList.appendChild(card);
+            });
+        }
+
+
+        // ✅ Page Load ke time by default call
+        document.addEventListener('DOMContentLoaded', function () {
+            const warehouseSelect = document.getElementById('warehouse');
+
+            let warehouseId = warehouseSelect && warehouseSelect.value ? warehouseSelect.value : null;
+            fetchDashboardData(warehouseId);
+
+            // ✅ select2 ke liye jQuery ka change event use karo
+            $(warehouseSelect).on('change', function () {
+                let selectedWarehouseId = $(this).val() ? $(this).val() : null;
+                fetchDashboardData(selectedWarehouseId);
+            });
+        });
+
+    </script>
+
+    <script>
+        function resetForm() {
+            window.location.href = "{{ route('admin.dashboard') }}";
+        }
+    </script>
+
 
 </x-app-layout>

@@ -32,8 +32,10 @@ class ContainerController extends Controller
             })
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($subQuery) use ($query) {
-                    $subQuery->where('vehicle_model', 'like', '%' . $query . '%')
-                        ->orWhere('vehicle_year', 'like', '%' . $query . '%')
+                    $subQuery->where('container_no_1', 'like', '%' . $query . '%')
+                    ->orWhere('unique_id', 'like', '%' . $query . '%')
+                        ->orWhere('container_no_2', 'like', '%' . $query . '%')
+                        ->orWhere('seal_no', 'like', '%' . $query . '%')
                         ->orWhereHas('driver', function ($q) use ($query) {
                             $q->where('name', 'like', '%' . $query . '%');
                         })
@@ -61,13 +63,13 @@ class ContainerController extends Controller
     public function create()
     {
 
-        $vehicle = Vehicle::when($this->user->role_id != 1, function ($q) {
+        $vehicle = Vehicle::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get();
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+        $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
-        $drivers = User::where('role_id', '=', '4')
+        $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
             ->Where('is_deleted', 'no')->select('id', 'name')->get();
         return view('admin.container.create', compact('vehicle', 'warehouses', 'drivers'));
     }
@@ -82,24 +84,25 @@ class ContainerController extends Controller
         // Base rules
         $rules = [
             'warehouse_name' => 'required|exists:warehouses,id',
-            'vehicle_type'   => 'required|string|max:255',
-            // 'vehicle_model'  => 'required|string|max:255',
-            // 'vehicle_year'   => 'required|digits:4',
             'driver_id'      => 'nullable|integer',
             'container_no_1'      => 'required|string|max:100',
             'container_no_2'      => 'required|string|max:100',
             'container_size'      => 'nullable|string|max:50',
             'seal_no'      => 'required|string|max:100',
+            'booking_number'      => 'required|string|max:100',
             'bill_of_lading'      => 'required|string|max:100',
         ];
-        // Run validation
-        $validator = Validator::make($request->all(), $rules);
 
-        // Redirect back if validation fails
+        $messages = [
+            'warehouse_name.required' => 'The warehouse field is required.',
+            'warehouse_name.exists'   => 'The selected warehouse is invalid.',
+        ];
+        // Run validation
+        $validator = Validator::make($request->all(), $rules, $messages);
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
         // Create and save vehicle
         $vehicle = new Vehicle();
         $vehicle->warehouse_id   = $request->warehouse_name;
@@ -108,15 +111,15 @@ class ContainerController extends Controller
         $vehicle->vehicle_model  = $request->vehicle_model;
         $vehicle->vehicle_year   = $request->vehicle_year;
         $vehicle->driver_id      = $request->driver_id;
-        $vehicle->status         = $request->status ?? 'Active';
+        $vehicle->status         = 'Inactive';
         $vehicle->container_no_1  = $request->container_no_1;
         $vehicle->container_no_2  = $request->container_no_2;
         $vehicle->container_size  = $request->container_size;
         $vehicle->seal_no         = $request->seal_no;
+        $vehicle->booking_number         = $request->booking_number;
         $vehicle->bill_of_lading         = $request->bill_of_lading;
         $vehicle->save();
         return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
-       
     }
 
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/scss/layout/select.scss') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -43,13 +45,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style5.css') }}">
 
     <!-- Intl Tell Input CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/intlTelInput/css/intlTelInput.css') }}">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
     <!-- Layout JS -->
     <script src="{{ asset('assets/js/layout.js') }}"></script>
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
-
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
 
@@ -147,6 +147,10 @@
     <script src="{{ asset('assets/plugins/apexchart/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/apexchart/chart-data.js') }}"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places" async defer></script>
+    <!-- Sweetalert 2 -->
+    <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/sweetalert/sweetalerts.min.js') }}"></script>
 
     <script src="{{ asset('js/comman.js') }}"></script>
     <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
@@ -158,12 +162,19 @@
     <script src="{{ asset('assets/js/greedynav.js') }}"></script>
     <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/admin/select2.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script> --}}
 
     <!-- Intl Tell Input js -->
     <script src="{{ asset('assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/timeline/horizontal-timeline.js') }}"></script>
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    <!-- Custom JS -->
+    <script src="{{ asset('assets/js/status_manage.js') }}"></script>
+
+    @yield('script')
+
+
     <script>
         @session('success')
         Swal.fire({
@@ -200,20 +211,22 @@
             window.location.href = url;
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const phoneInput = document.querySelector('input[type="tel"]');
 
-            phoneInput.addEventListener("input", function (event) {
-                this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
-            });
+            if (phoneInput) {
+                phoneInput.addEventListener("input", function(event) {
+                    this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+                });
 
-            phoneInput.addEventListener("blur", function () {
-                if (!/^\d+$/.test(this.value)) {
-                    // alert("Please enter a valid phone number.");
-                    this.value = "";
-                }
-            });
+                phoneInput.addEventListener("blur", function() {
+                    if (!/^\d+$/.test(this.value)) {
+                        this.value = "";
+                    }
+                });
+            }
         });
+
 
 
         function updateStatusValue() {
@@ -223,9 +236,9 @@
             checkbox.value = checkbox.checked ? 'Inactive' : 'Active';
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".check").forEach(function (checkbox) {
-                checkbox.addEventListener("change", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".check").forEach(function(checkbox) {
+                checkbox.addEventListener("change", function() {
                     this.value = this.checked ? "Inactive" : "Active";
                 });
 
@@ -234,11 +247,11 @@
             });
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const refreshUserBtn = document.querySelector(".refeshuser");
 
             if (refreshUserBtn) {
-                refreshUserBtn.addEventListener("click", function () {
+                refreshUserBtn.addEventListener("click", function() {
                     sessionStorage.setItem("refreshTriggered", "true");
                     location.href = window.location.pathname; // Remove query parameters
                 });
@@ -304,11 +317,41 @@
         //     });
         // });
 
-    </script>
+        $(document).ready(function() {
+            function formatOption(option) {
+                if (!option.id) return option.text;
+                var img = $(option.element).data('image');
+                var name = $(option.element).data('name');
+                var code = $(option.element).data('code');
+                return $(
+                    '<span><img src="' + img + '" class="customFlags"/> ' + name + ' +' + code + '</span>'
+                );
+            }
 
-    
-    
-    @yield('script')
+            function formatSelected(option) {
+                if (!option.id) return option.text;
+                var img = $(option.element).data('image');
+                var code = $(option.element).data('code');
+                return $(
+                    '<span><img src="' + img + '" class="customFlags"/> +' + code + '</span>'
+                );
+            }
+
+            $('.flag-select').select2({
+                templateResult: formatOption
+                , templateSelection: formatSelected
+                , width: 'style'
+            }).on('select2:open', function() {
+                $('.select2-results__options').addClass('my-custom-option-class');
+            });
+
+            $('.flag-select').on('select2:open', function() {
+                let parentContainer = $(this).data('select2').$container;
+                parentContainer.addClass('my-custom-container-class');
+            });
+        });
+
+    </script>
 
 </body>
 

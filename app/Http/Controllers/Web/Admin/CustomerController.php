@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{User, Menu, Container, Warehouse, Country};
+use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle};
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -24,43 +24,49 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // Default pagination
+        $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
 
-        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city']) // ✅ Include relationships
+        // Determine role_id based on type
+        $roleId = 3; // default: customer
+        if ($type === 'ShipTo') {
+            $roleId = 5;
+        }
+
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->where('is_deleted', 'No')
-            ->where('role_id', 3)
+            ->where('role_id', $roleId) // ✅ role_id based on type
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
                         ->orWhere('email', 'LIKE', "%$search%")
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%");
-                    // ->orWhereHas('warehouse.country', function ($q) use ($search) {
-                    //     $q->where('name', 'LIKE', "%$search%");
-                    // })
-                    // ->orWhereHas('warehouse.state', function ($q) use ($search) {
-                    //     $q->where('name', 'LIKE', "%$search%");
-                    // })
-                    // ->orWhereHas('warehouse.city', function ($q) use ($search) {
-                    //     $q->where('name', 'LIKE', "%$search%");
-                    // });
                 });
             })
             ->latest('id')
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage]);
+            ->appends(['search' => $search, 'per_page' => $perPage, 'type' => $type]); // Include type in pagination
+
         $serialStart = ($currentPage - 1) * $perPage;
+
+        if ($request->ajax() && $type == 'ShipTo') {
+            return view('admin.customer.shipto.shiptoindextable', compact('customers', 'serialStart'))->render();
+        }
+
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart'))->render();
         }
 
         return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -73,7 +79,8 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        return view('admin.customer.create', compact('roles', 'warehouses', 'countries'));
+        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
+        return view('admin.customer.create', compact('roles', 'warehouses', 'countries', 'containers'));
     }
 
     /**
@@ -86,29 +93,24 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-           'mobile_code' => 'required|digits:10|unique:users,phone',
             'email' => [
                 'required',
                 'email',
                 'max:255',
                 'unique:users,email'
             ],
-            'alternate_mobile_no' => 'nullable|max:13',
+            'mobile_number_code_id' => 'required',
+            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'alternative_mobile_number_code_id' => 'required',
+            'alternative_mobile_number' => 'nullable|max:10',
             'address_1' => 'required|string|max:255',
-            'country' => 'required|string|exists:countries,id',
+            'country' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
-            'Zip_code' => 'required|string|max:10',
+            'Zip_code' => 'nullable|string|max:10',
             'username' => 'required|string|max:255|unique:users,username',
-            // 'password' => 'required|string|min:6|confirmed',
-            // 'password_confirmation' => 'required|string',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
-            'country_code' => 'required',
-            'country_code_2' => 'required|string',
-            // 'signature_date' => 'nullable|date_format:m/d/Y',
-            // 'license_expiry_date' => 'nullable|date_format:m/d/Y'
-
         ]);
 
 
@@ -125,7 +127,7 @@ class CustomerController extends Controller
                     // 🔹 Agar profile_pics hai to alag folder me store kare
                     if ($imageType === 'profile_pics') {
                         $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                        $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName; // Store path in DB
+                        $imagePaths[$imageType] = 'uploads/profile_pics/' . $fileName; // Store path in DB
                     } else {
                         // 🔹 Baaki images customer folder me store ho
                         $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
@@ -139,15 +141,19 @@ class CustomerController extends Controller
             $userData = [
                 'name'          => $validated['first_name'],
                 'email'          => $validated['email'] ?? null,
-                'phone'   => $validated['mobile_code'],
-                'phone_2'      => $validated['alternate_mobile_no'] ?? null, // Optional Field
+                'phone'      => $validated['mobile_number'],
+                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+                'phone_2' => $validated['alternative_mobile_number'] ?? null,
+                'phone_2_code_id_id' => !empty($validated['alternative_mobile_number'])
+                    ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                    : null,
                 'address'        => $validated['address_1'],
                 'address_2'        => $request->Address_2,
                 'country_id'     => $validated['country'],
                 'state_id'       => $validated['state'],
                 'city_id'        => $validated['city'],
                 'pincode'            => $validated['Zip_code'],
-                'password'       => Hash::make(1235678),
+                'password'       => Hash::make(12345678),
                 'status' => $request->status ?? 'Active',
                 'company_name'        => $request->company_name ?? null,
                 'apartment'        => $request->apartment ?? null,
@@ -168,6 +174,7 @@ class CustomerController extends Controller
                 'signup_type' => 'for_admin',
                 'country_code'        => $request->country_code ?? null,
                 'country_code_2'        => $request->country_code_2 ?? null,
+                'vehicle_id'        => $request->container_id ?? null,
             ];
             if (!empty($request->license_expiry_date)) {
                 $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -184,16 +191,10 @@ class CustomerController extends Controller
             // Example dynamic data
             $userName = $validated['first_name'];
             $email = $validated['email'] ?? null;
-            $mobileNumber = $validated['mobile_code'];
+            $mobileNumber = $validated['mobile_number'];
             $password = 12345678;
             $loginUrl = route('login');
 
-            // Send the email
-            
-            // Mail::to($email)->send(
-            //     (new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl))
-            //         ->from('no-reply@afrocargo.com', 'Afro Cargo')   
-            //     );
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
             return redirect()->route('admin.customer.index')
@@ -226,6 +227,11 @@ class CustomerController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
+
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
@@ -233,8 +239,31 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
+        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
         $page_no = $request->page;
-        return view('admin.customer.edit', compact('user', 'roles', 'userRole', 'warehouses', 'countries', 'page_no'));
+        $childUsers = User::where('parent_customer_id', $id)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%");
+                });
+            })
+            ->where('role_id', 5)
+            ->where('is_deleted', 'No')
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+        $serialStart = ($currentPage - 1) * $perPage;
+
+
+        if ($request->ajax() && $type == "ShipTo") {
+            return view('admin.customer.shipto.shiptotable', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+        }
+        return view('admin.customer.edit', compact('user', 'childUsers', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -249,19 +278,21 @@ class CustomerController extends Controller
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'mobile_code' => 'required|digits:10',
             'email' => [
                 'required',
                 'email',
                 'max:255',
                 'unique:users,email,' . $id,
             ],
-            'alternate_mobile_no' => 'nullable',
+            'mobile_number_code_id' => 'required|exists:countries,id',
+            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
+            'alternative_mobile_number' => 'nullable|digits:10',
             'address_1' => 'required|string|max:255',
-            'country' => 'required|string|exists:countries,id',
+            'country' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
-            'Zip_code' => 'required|string|max:10',
+            'Zip_code' => 'nullable|string|max:10',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             // 'password' => 'nullable|string|min:6|confirmed',
             // 'password_confirmation' => 'nullable|string',
@@ -279,7 +310,7 @@ class CustomerController extends Controller
 
                 if ($imageType === 'profile_pic') {
                     $filePath = $file->storeAs('uploads/profile_pics', $fileName, 'public');
-                    $imagePaths[$imageType] = 'storage/uploads/profile_pics/' . $fileName;
+                    $imagePaths[$imageType] = 'uploads/profile_pics/' . $fileName;
                 } else {
                     $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
                     $imagePaths[$imageType] = 'uploads/customer/' . $fileName;
@@ -287,12 +318,18 @@ class CustomerController extends Controller
             }
         }
 
+
         // 🔹 Updating User Data
         $userData = [
             'name'        => $validated['first_name'],
             'email'       => $validated['email'],
-            'phone'       => $validated['mobile_code'],
-            'phone_2'     => $validated['alternate_mobile_no'] ?? null,
+            'phone'      => $validated['mobile_number'],
+            'unique_id' => $request->unique_id,
+            'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+            'phone_2' => $validated['alternative_mobile_number'] ?? null,
+            'phone_2_code_id_id' => !empty($validated['alternative_mobile_number'])
+                ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                : null,
             'address'     => $validated['address_1'],
             'address_2'   => $request->Address_2,
             'country_id'  => $validated['country'],
@@ -312,21 +349,37 @@ class CustomerController extends Controller
             'year_to_date' => $request->year_to_date,
             'license_number' => $request->license_number,
             'warehouse_id'   => $request->warehouse_id,
-           // 'signup_type'    => 'for_admin'
+            'vehicle_id'        => $request->container_id ?? null,
+            'country_code'        => $request->country_code ?? null,
+            'country_code_2'        => $request->country_code_2 ?? null,
+            // 'signup_type'    => 'for_admin'
         ];
+
+        if ($request->delete_signature_img == 1) {
+            $userData['signature_img'] = null;
+        }
+        if ($request->delete_contract_signature_img == 1) {
+            $userData['contract_signature_img'] = null;
+        }
+        if ($request->delete_license_document == 1) {
+            $userData['license_document'] = null;
+        }
+        if ($request->delete_profile_pic == 1) {
+            $userData['profile_pic'] = null;
+        }
 
         // 🔹 File Path Update
         if (!empty($imagePaths['signature_img'])) {
             $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
         }
 
-        if (!empty($userData['contract_signature_img'])) {
+        if (!empty($imagePaths['contract_signature_img'])) {
             $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
         }
-        if (!empty($userData['license_document'])) {
+        if (!empty($imagePaths['license_document'])) {
             $userData['license_document'] = $imagePaths['license_document'] ?? $user->license_document;
         }
-        if (!empty($userData['profile_pic'])) {
+        if (!empty($imagePaths['profile_pic'])) {
             $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
         }
 
@@ -335,11 +388,11 @@ class CustomerController extends Controller
 
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {
-            $userData['edit_license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
+            $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
         }
 
         if (!empty($request->edit_signature_date)) {
-            $userData['edit_signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
+            $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->edit_signature_date)->format('Y-m-d');
         }
 
         // 🔹 Password Handling (Agar diya gaya hai tabhi update karo)
@@ -392,5 +445,199 @@ class CustomerController extends Controller
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $driver = User::find($id);
+
+        if ($driver) {
+            $driver->status = $request->status; // 1 = Active, 0 = Deactive
+            $driver->save();
+
+            return response()->json(['success' => 'Status Updated Successfully']);
+        }
+
+        return response()->json(['error' => 'Driver Not Found']);
+    }
+
+    public function viewShipTo($id)
+    {
+        $user = User::find($id);
+
+        return view('admin.customer.shipto.createShipTo', compact('user', 'id'));
+    }
+
+    public function createShipTo(Request $request)
+    {
+        $validated = $request->validate([
+            'country' => 'required|string',
+            'company_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'mobile_number_code_id' => 'required',
+            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'alternative_mobile_number_code_id' => 'required',
+            'alternative_mobile_number' => 'nullable|max:10',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email'
+            ],
+            'address_1' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'language' => 'required|string',
+        ]);
+        try {
+
+            $imagePaths = [];
+
+            foreach (['license_picture'] as $imageType) {
+
+                if ($request->hasFile($imageType)) {
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
+
+                    // 🔹 Agar profile_pics hai to alag folder me store kare
+                    // 🔹 Baaki images customer folder me store ho
+                    $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                    $imagePaths[$imageType] = 'uploads/customer/' . $fileName; // Store path in DB
+                }
+            }
+
+
+            $userData = [
+                'name'       => $validated['first_name'],
+                'email'      => $validated['email'],
+                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+                'address'    => $validated['address_1'],
+                'address_2'    => $request->address_2,
+                'latitude'   => $validated['latitude'],
+                'longitude'  => $validated['longitude'],
+                'language'   => $validated['language'],
+                'company_name' => $validated['company_name'],
+                'country_id'   => $validated['country'],
+                'password'     => Hash::make(12345678),
+                'signup_type'  => 'for_admin',
+                'role'  => 'ship_to_customer',
+                'role_id'  => 5,
+
+                // 🆕 Extra allowed fields (outside validation)
+                'license_number'   => $request->license ?? null,
+                'apartment' => $request->apartment ?? null,
+                'parent_customer_id' => $request->parent_customer_id ?? null,
+                'license_document' => $imagePaths['license_picture'] ?? null,
+            ];
+
+            // 📌 Create User
+            $user = User::create($userData);
+            return redirect()
+                ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=ShipTo')
+                ->with('success', 'Ship to user created successfully.');
+        } catch (\Throwable $th) {
+            dd($th);
+            return back()->withErrors(['error' => $th->getMessage()]);
+        }
+    }
+
+    public function updateShipTo($id)
+    {
+        $user = User::find($id);
+        return view('admin.customer.shipto.updateShipTo', compact('user', 'id'));
+    }
+
+    public function editeShipTo(Request $request, $id)
+    {
+        // Validation
+        $validated = $request->validate([
+            'country' => 'required|string',
+            'company_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'mobile_number_code_id' => 'required|exists:countries,id',
+            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
+            'alternative_mobile_number' => 'nullable|digits:10',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email,' . $id,
+            ],
+            'address_1' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'language' => 'required|string',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+
+            $imagePaths = [];
+
+            foreach (['license_picture'] as $imageType) {
+                if ($request->hasFile($imageType)) {
+                    // Purani image delete karo agar hai
+                    if ($user->{$imageType} && \Storage::exists('public/' . $user->{$imageType})) {
+                        \Storage::delete('public/' . $user->{$imageType});
+                    }
+
+                    // Nई image upload karo
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                    $imagePaths[$imageType] = $filePath;
+                }
+            }
+
+            $userData = [
+                'name'       => $validated['first_name'],
+                'email'      => $validated['email'],
+                'phone'      => $validated['mobile_number'],
+                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'] ?? null,
+                'address'    => $validated['address_1'],
+                'address_2'    => $request->address_2,
+                'latitude'   => $validated['latitude'],
+                'longitude'  => $validated['longitude'],
+                'language'   => $validated['language'],
+                'company_name' => $validated['company_name'],
+                'country_id'   => $validated['country'],
+
+                // 🆕 Extra allowed fields
+                'license_number'   => $request->license ?? null,
+                'apartment' => $request->apartment ?? null,
+                'parent_customer_id' => $request->parent_customer_id ?? null,
+                'license_document' => $imagePaths['license_picture'] ?? $user->license_document,
+            ];
+
+            $user->update($userData);
+
+            return redirect()
+                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
+                ->with('success', 'Ship To address updated successfully.');
+        } catch (\Throwable $th) {
+            dd($th);
+            return back()->withErrors(['error' => $th->getMessage()]);
+        }
+    }
+
+    public function destroyShipTo($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            $user->update(['is_deleted' => "Yes"]); // is_deleted ko 1 set kar rahe hain
+            return redirect()
+                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
+                ->with('success', 'Ship To address delete successfully.');
+        }
+        return redirect()
+            ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
+            ->with('error', 'Ship To address not found');
     }
 }

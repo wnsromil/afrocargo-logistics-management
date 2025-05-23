@@ -1,5 +1,5 @@
 <x-app-layout>
-@section('style')
+    @section('style')
         <style>
             .card.mainCardGlobal:before {
                 display: none;
@@ -12,28 +12,23 @@
         </h2>
     </x-slot>
     @section('content')
-    <div class="content-page-header mb-4">
-        <h5 class="setting-menu">User Detail</h5>
-    </div>
+        <div class="content-page-header mb-4">
+            <h5 class="setting-menu">User Detail</h5>
+        </div>
     @endsection
     <div class="customerhead">
-        <div class="d-flex">
+        <div class="d-flex align-items-center position-relative">
             <div>
-              
+
                 @if ($user->profile_pic)
-                <img src="{{ ($user->profile_pic) }}" alt="license"
-                style="margin-left: 15px; max-width: 150px; 
-                       border-top-left-radius: 50% 50%; 
-                       border-top-right-radius: 50% 50%; 
-                       border-bottom-right-radius: 50% 50%; 
-                       border-bottom-left-radius: 50% 50%;">
-            
-            @else
-                <p> - No Image</p>
-            @endif
+                    <img class="profileImg" src="{{ ($user->profile_pic) }}" alt="license">
+
+                @else
+                    <p> - No Image</p>
+                @endif
             </div>
-            <div>
-                <div style="margin-left: 30px !important;margin-top: 20px;">
+            <div class="ms-4">
+                <div>
                     <p style="font-size=22px;font-weight:600px;color:#000000">{{ $user->name }}</p>
                     <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->last_name }}</p>
                     <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->email }}</p>
@@ -55,8 +50,15 @@
     <div class="row customerbody">
         <div class="col-4 customerr">
             <p class="phead">Phone Numbers</p>
-            <p class="pdata">{{ $user->country_code ?? '' }} {{ $user->phone ?? '-' }}</p>
-            <p class="pdata">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '-' }}</p>
+            <p class="pdata">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
+            <p class="pdata">
+                @if (!empty($user->phone_2))
+                    +{{ $custuseromer->phone_2_code->phonecode ?? '' }} {{ $user->phone_2 }}
+                @else
+                    -
+                @endif
+
+            </p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Address</p>
@@ -64,7 +66,7 @@
             <p class="pdata">{{ $user->address_2 ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
-            <p class="phead">Longitude & Latitude</p>
+            <p class="phead">Latitude & Longitude</p>
             <p class="pdata">{{ $user->latitude ?? '-' }}, {{ $user->longitude ?? '-' }}</p>
         </div>
     </div>
@@ -77,8 +79,8 @@
             <p class="pdata">{{ $user->warehouse->warehouse_name ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
-            <p class="phead">Container</p>
-            <p class="pdata">-</p>
+            <p class="phead">Group Container</p>
+            <p class="pdata">{{ $user->vehicle->container_no_1 ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Company Name</p>
@@ -156,26 +158,26 @@
         <div class="col-4">
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Contract Signature </p>
-                    @if ($user->signature_img)
+                @if ($user->signature_img)
                     <img src="{{ asset('storage/' . $user->contract_signature_img) }}" alt="license"
                         style="margin-left: 15px; max-width: 150px;">
                 @else
                     <p> - No Image</p>
                 @endif
-                </div>
+            </div>
         </div>
 
 
         <div class="col-4">
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Licence Picture </p>
-                    @if ($user->license_document)
+                @if ($user->license_document)
                     <img src="{{ asset('storage/' . $user->license_document) }}" alt="license"
                         style="margin-left: 15px; max-width: 150px;">
                 @else
                     <p> - No Image</p>
                 @endif
-                </div>
+            </div>
         </div>
 
 

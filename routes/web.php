@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
@@ -26,27 +27,33 @@ use App\Http\Controllers\Web\Admin\{
     NotificationScheduleController,
     RoleManagementController,
     ContainerController,
+    TemplateCategoryController,
+    TemplateController,
+    AutoCallBatchController,
+    ScheduleController,
+    BillofLadingController,
+    LadingDetailsController,
 };
 use App\Mail\RegistorMail;
 
-Route::group(['middleware'=>'auth'],function () {
+Route::group(['middleware' => 'auth'], function () {
 
-    Route::middleware('authCheck')->group(function(){
+    Route::middleware('authCheck')->group(function () {
 
         Route::get('/seed/{class?}', function ($class = null) {
             $command = 'db:seed';
-        
+
             if ($class) {
                 $command .= " --class=$class";
             }
-        
+
             Artisan::call($command, ['--force' => true]);
-        
+
             return response()->json([
                 'message' => $class ? "$class seeding completed successfully!" : 'Database seeding completed!',
             ]);
         });
-    
+
         // Run Migrations (Optional Path)
         Route::get('/migrate/{path?}', function ($path = null) {
             $command = 'migrate';
@@ -119,6 +126,7 @@ Route::get('/notificationsend', function () {
     return view('admin.notificationsend.create');
 });
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -141,9 +149,9 @@ Route::middleware(['auth', 'authCheck'])->group(function () {
 });
 
 // admin routes
-Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
+Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
-    Route::middleware('authCheck')->group(function(){
+    Route::middleware('authCheck')->group(function () {
         Route::get('/delete-customers/{id}', [CustomerController::class, 'deleteCustomer']);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
@@ -154,6 +162,7 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('container', ContainerController::class);
         Route::resource('warehouse_manager', WarehouseManagerController::class);
         Route::resource('drivers', DriversController::class);
+        Route::resource('schedules', ScheduleController::class);
         Route::resource('inventories', InventoryController::class);
         Route::resource('advance_reports', AdvanceReportsController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
@@ -166,19 +175,54 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
         Route::resource('signature', SignatureController::class);
         Route::resource('notification_schedule', NotificationScheduleController::class);
         Route::resource('user_role', RoleManagementController::class);
+        Route::resource('template_category', TemplateCategoryController::class);
+        Route::resource('templates', TemplateController::class);
+        Route::resource('autocall', AutoCallBatchController::class);
+        Route::resource('bill_of_lading', BillofLadingController::class);
+        Route::resource('lading_details', LadingDetailsController::class);
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
-        
+        Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
+        Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
+        Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
+        Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('updateNote');
+
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
+        Route::get('container_order/{id}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
 
         Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
-        Route::get('drivers/schedule/{id}', [DriversController::class, 'schedule'])->name('drivers.schedule');
-
+        Route::get('drivers/schedule/{id}', action: [DriversController::class, 'schedule'])->name('drivers.schedule');
+        Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
+        Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
+
+
+
+        // Customer 
+        Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
+        Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
+        Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
+        Route::get('/update-shipTo/{id}', [CustomerController::class, 'updateShipTo'])->name('customer.updateShipTo');
+        Route::put('/edit-shipTo/{id}', [CustomerController::class, 'editeShipTo'])->name('customer.editeShipTo');
+        Route::get('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.destroyShipTo');
+
+        // Warehouse 
+        Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
+
+        // Warehouse manager 
+        Route::post('warehouse_manager/status/{id}', [WarehouseManagerController::class, 'changeStatus'])->name('warehouse_manager.status');
+
+        // Schedule
+        Route::post('weekly_schedule_store', [ScheduleController::class, 'weeklyScheduleStore'])->name('schedule.weeklyschedulestore');
+        Route::post('location_schedule_store', [ScheduleController::class, 'locationStore'])->name('schedule.locationstore');
+
+        //Expenses
+        Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
+
 
         Route::get('/orderdetails', function () {
             return view('admin.OrderShipment.orderdetails');
@@ -191,8 +235,17 @@ Route::group(['middleware'=>'auth','as'=>'admin.'],function () {
             return view('admin.container.show');
         })->name('container.show');
 
-        
+        Route::get('/add-pickups', function () {
+            return view('admin.customer.addPickups');
+        })->name('addPickups');
+
+        Route::get('/add-pickups', function () {
+            return view('admin.customer.addPickups');
+        })->name('addPickups');
+        Route::get('/add-role', function () {
+            return view('admin.user_role.create');
+        })->name('create');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

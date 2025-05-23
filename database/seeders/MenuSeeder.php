@@ -107,7 +107,15 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.invoices.index',
                 'active' => 'invoices*',
                 'roles' => ['admin', 'warehouse_manager']
-            ], 
+            ],
+            [
+                'title' => 'Bill of Lading',
+                'icon' => '<i class="menuIcon ti ti-truck"></i>',
+                'route' => 'admin.BillofLading.index',
+                'route' => '#',
+                'active' => 'bill_of_lading*,lading_details*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
             [
                 'title' => 'Notifications Schedule',
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
@@ -127,6 +135,14 @@ class MenuSeeder extends Seeder
                 'icon' => '<i class="menuIcon ti ti-clipboard-data"></i>',
                 'route' => 'admin.advance_reports.index',
                 'active' => 'advance_reports*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Template Management',
+                'icon' => '<i class="menuIcon ti ti-template"></i>',
+                'route' => 'admin.Categorytemplate.index',
+                'route' => '#',
+                'active' => 'template_category*,templates*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -153,8 +169,8 @@ class MenuSeeder extends Seeder
         if ($orderShip) {
             Menu::create([
                 'title' => 'Order',
-                'route' => 'admin.OrderShipment.index',
-                'active' => 'OrderShipment*',
+                'route' => 'admin.service_orders.index',
+                'active' => 'service_orders*',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
@@ -197,6 +213,46 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.container.index',
                 'active' => 'container*',
                 'parent_id' => $vehicle->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus
+        $template = Menu::where('title', 'Template Management')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'template Category',
+                'route' => 'admin.template_category.index',
+                'active' => 'template_category*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'templates',
+                'route' => 'admin.templates.index',
+                'active' => 'templates*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus
+        $template = Menu::where('title', 'Bill Of Lading')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'Bill Of Lading',
+                'route' => 'admin.bill_of_lading.index',
+                'active' => 'bill_of_lading*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Bill Of Lading Details',
+                'route' => 'admin.lading_details.index',
+                'active' => 'lading_details*',
+                'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
         }

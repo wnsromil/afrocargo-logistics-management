@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Parcel;
+use App\Models\Vehicle;
 use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,27 @@ class CustomerController extends Controller
 {
     public function getCustomers(Request $request)
     {
-        $query = User::where('role', 'customer');
+        $request->validate([
+            'invoice_custmore_type' => 'nullable|in:from_to,ship_to,all',
+            'invoice_custmore_id' => 'nullable|integer',
+            'search' => 'nullable|string|max:255',
+        ]);
+
+        $type = $request->query('invoice_custmore_type');
+        $invoiceCustomerId = $request->query('invoice_custmore_id');
+
+        $query = User::where('role', 'customer')->orderBy('id', 'desc');
+
+
+        if ($invoiceCustomerId) {
+            // Only fetch this specific customer by ID
+            $query->where('invoice_custmore_id', $invoiceCustomerId);
+        } else {
+            // Apply type filter only if invoice_custmore_id not provided
+            if ($type && in_array($type, ['from_to', 'ship_to'])) {
+                $query->where('invoice_custmore_type', $type);
+            }
+        }
 
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
@@ -28,29 +49,32 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->orderBy('name')->get(['id', 'name', 'phone', 'email', 'profile_pic']);
+        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
-            $customer->address = $address ? $address : null;
+            $customer->address = $address->address ?: $customer->address;
         }
+
 
         return response()->json(['customers' => $customers], 200);
     }
 
     public function getCustomersDetails(Request $request)
     {
-        if ($request->has('id') && !empty($request->id)) {
-            $customer = User::where('role', 'customer')->where('id', $request->id)->first();
+        $id = $request->id;
 
-            if (!$customer) {
-                return response()->json(['message' => 'No customer found'], 404);
-            }
-
-            return response()->json(['customer' => $customer], 200);
+        if (!$id) {
+            return response()->json(['message' => 'ID is required'], 400);
         }
 
-        return response()->json(['message' => 'ID is required'], 400);
+        $customer = User::where('role', 'customer')->where('id', $id)->with('vehicle')->first();
+
+        if (!$customer) {
+            return response()->json(['message' => 'No customer found'], 404);
+        }
+
+        return response()->json(['customer' => $customer], 200);
     }
 
     public function createCustomer(Request $request)
@@ -69,7 +93,8 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'country_code' => 'required',
-            'country_code_2' => 'required|string',
+            'invoice_custmore_type' => 'required|in:from_to,ship_to',
+            'invoice_custmore_id' => 'nullable|integer',
         ]);
 
         try {
@@ -78,21 +103,25 @@ class CustomerController extends Controller
                 if ($request->hasFile($imageType)) {
                     $file = $request->file($imageType);
                     $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
-
+            
                     $folder = ($imageType === 'profile_pics') ? 'uploads/profile_pics' : 'uploads/customer';
                     $filePath = $file->storeAs($folder, $fileName, 'public');
-
+            
+                    // Yahan condition laga do
+                    if ($imageType === 'license_picture') {
+                        $filePath = 'storage/' . $filePath;
+                    }
+            
                     $imagePaths[$imageType] = $filePath;
                 }
-            }
-
+            }            
             $userData = [
                 'name' => $validated['first_name'],
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['mobile_code'],
                 'phone_2' => $validated['alternate_mobile_no'] ?? null,
                 'address' => $validated['address_1'],
-                'address_2' => $request->Address_2,
+                'address_2' => $request->address_2,
                 'country_id' => $validated['country'],
                 'state_id' => $validated['state'],
                 'city_id' => $validated['city'],
@@ -118,6 +147,9 @@ class CustomerController extends Controller
                 'signup_type' => 'for_driver',
                 'country_code' => $request->country_code ?? null,
                 'country_code_2' => $request->country_code_2 ?? null,
+                'invoice_custmore_type' => $request->invoice_custmore_type,
+                'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                'vehicle_id'        => $request->container_id ?? null,
             ];
 
             if (!empty($request->license_expiry_date)) {
@@ -144,7 +176,6 @@ class CustomerController extends Controller
         }
     }
 
-
     public function createShippingCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -156,7 +187,7 @@ class CustomerController extends Controller
             'country_id' => 'required|string|max:15',
             // 'state_id' => 'required|string|max:255',
             // 'city_id' => 'required|string|max:255',
-            'address_1' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'address_2' => 'nullable|string|max:255',
             'ship_to_id' => 'nullable|string|max:255',
             'company_name' => 'nullable|string|max:255',
@@ -205,7 +236,7 @@ class CustomerController extends Controller
         $shippingUser->customer_id = $customer_id;
         $shippingUser->created_id = $this->user->id;
         $shippingUser->country_id = $request->country_id;
-        $shippingUser->address_1 = $request->address_1;
+        $shippingUser->address = $request->address_1;
         $shippingUser->address_2 = $request->address_2;
         $shippingUser->ship_to_id = $request->ship_to_id ?? 'Done';
         $shippingUser->company_name = $request->company_name;
@@ -258,5 +289,47 @@ class CustomerController extends Controller
             'message' => 'User marked as deleted successfully',
             'user' => $user
         ], 200);
+    }
+
+    public function getUsersByWarehouse(Request $request)
+    {
+        $warehouseId = $request->warehouse_id;
+
+        if (!$warehouseId) {
+            return response()->json(['message' => 'Warehouse ID is required'], 400);
+        }
+
+        // Step 1: Get user IDs from given warehouse
+        $userIdsFromWarehouse = User::where('warehouse_id', $warehouseId)->pluck('id');
+
+        // Step 2: Filter those users with conditions
+        $users = User::whereIn('id', $userIdsFromWarehouse)
+            ->where('status', 'Active')
+            ->whereIn('role_id', [2, 4])
+            ->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found for the given warehouse.'], 404);
+        }
+
+        return response()->json(['users' => $users], 200);
+    }
+
+    public function getVehiclesByWarehouse(Request $request)
+    {
+        $warehouseId = $request->warehouse_id;
+
+        if (!$warehouseId) {
+            return response()->json(['message' => 'Warehouse ID is required'], 400);
+        }
+
+        // Step 1: Get vehicles based on warehouse_id
+        $vehicles = Vehicle::where('vehicle_type', 'Container')->where('warehouse_id', $warehouseId)->get();
+
+        if ($vehicles->isEmpty()) {
+            return response()->json(['message' => 'No vehicles found for the given warehouse.'], 404);
+        }
+
+        return response()->json(['vehicles' => $vehicles], 200);
     }
 }

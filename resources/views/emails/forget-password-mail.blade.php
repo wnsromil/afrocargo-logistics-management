@@ -34,17 +34,16 @@
                                             <tbody>
                                                 <!-- END module -->
                                                 <!-- START module / header with logo -->
-                                                <tr style="background-color:#e79b10;">
+                                                <tr>
                                                     <td colspan="2"
                                                         style="border-top: none; border-right: none; border-left: none;"
                                                         align="left">
-                                                        <table width="630" border="0" cellspacing="0"
-                                                            cellpadding="0">
+                                                        <table width="630" border="0" cellspacing="0" cellpadding="0">
                                                             <tbody>
                                                                 <tr>
                                                                     <!-- table column with logo -->
                                                                     <td valign="middle" align="center"
-                                                                        style="background:#780001;">
+                                                                        >
                                                                         <table border="0" cellspacing="30"
                                                                             cellpadding="0">
                                                                             <tbody>
@@ -53,11 +52,11 @@
                                                                                     <td>
                                                                                         <a href="{{ url('/') }}"
                                                                                             target="_blank"> <img
-                                                                                                src="{{ asset('media/logo.png') }}"
-                                                                                                alt="logo header"
-                                                                                                style="margin: 0px; padding: 0px; display: block; width: 200px;"
+                                                                                                src='{{asset('assets/images/AfroCargoLogo.svg')}}'
+                                                                                                alt="Afrocargo Logo"
+                                                                                                style="display: block; width: 100px; height: 100px;"
                                                                                                 width="200px"
-                                                                                                border="no">
+                                                                                                border="0">
                                                                                         </a>
                                                                                     </td>
                                                                                 </tr>
@@ -75,8 +74,7 @@
                                                     <td colspan="2"
                                                         style="border-top: none; border-right: none; border-bottom: none; border-left: none;background-color: white;"
                                                         bgcolor="#FF6600" align="center">
-                                                        <table width="630" border="0" cellspacing="0"
-                                                            cellpadding="0">
+                                                        <table width="630" border="0" cellspacing="0" cellpadding="0">
                                                             <tbody>
                                                                 <tr>
                                                                     <!-- table row with text -->
@@ -91,7 +89,7 @@
                                                                                         <!--here goes section header text -->
                                                                                         <span
                                                                                             style="font-size: 18px;">Dear
-                                                                                            {{ $user_name }}</span>
+                                                                                            {{ $userName }}</span>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
@@ -117,7 +115,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td valign="top" align="center">
-                                                                        Please use below OTP to reset your password -
+                                                                        Please use below OTP to forget your password -
                                                                     </td>
                                                                 </tr>
 
