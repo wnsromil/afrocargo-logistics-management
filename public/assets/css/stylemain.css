@@ -1152,15 +1152,6 @@ hr.border-opac {
 
 /* - Calendar     */
 
-#calendar-container {
-    width: 90%;
-    max-width: 500px;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    height: 350px;
-    overflow: hidden;
-}
 
 .fc-toolbar {
     background: #00AEEF;
@@ -1177,10 +1168,6 @@ hr.border-opac {
 
 .fc-daygrid {
     height: 230px !important;
-}
-
-.table.calen {
-    border-collapse: separate;
 }
 
 .fc-daygrid-daynumber {
