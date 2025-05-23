@@ -31,6 +31,8 @@ use App\Http\Controllers\Web\Admin\{
     TemplateController,
     AutoCallBatchController,
     ScheduleController,
+    BillofLadingController,
+    LadingDetailsController,
 };
 use App\Mail\RegistorMail;
 
@@ -176,6 +178,8 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
+        Route::resource('bill_of_lading', BillofLadingController::class);
+        Route::resource('lading_details', LadingDetailsController::class);
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
