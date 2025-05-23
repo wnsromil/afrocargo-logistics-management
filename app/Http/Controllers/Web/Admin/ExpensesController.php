@@ -30,6 +30,8 @@ class ExpensesController extends Controller
         $search = $request->input('search');
         $warehouse_id = $request->input('warehouse_id');
         $category = $request->input('category');
+        $type = $request->input('type');
+
         $perPage = $request->input('per_page', 10); // Default pagination
         $currentPage = $request->input('page', 1);
 
@@ -57,17 +59,28 @@ class ExpensesController extends Controller
             });
 
         // Apply search filter
+        // Apply search filter
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('description', 'LIKE', "%$search%")
-                ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
-                    ->orWhere('category', 'LIKE', "%$search%")
+                    ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
                     ->orWhere('amount', 'LIKE', "%$search%")
                     ->orWhereHas('creatorUser', function ($query) use ($search) {
                         $query->where('name', 'LIKE', "%$search%");
                     });
             });
         }
+
+        // Apply category filter
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        // Apply type filter
+        if ($type) {
+            $query->where('type', $type);
+        }
+
 
         // Apply warehouse filter
         if ($warehouse_id) {
@@ -157,6 +170,7 @@ class ExpensesController extends Controller
             'warehouse' => 'required|exists:warehouses,id',
             'expense_date' => 'required|date_format:m/d/Y',
             'description' => 'required|string',
+            'type' => 'required|string',
             'amount' => 'required|numeric|min:0',
             'category' => 'required|string',
         ]);
@@ -168,7 +182,8 @@ class ExpensesController extends Controller
         $validatedData['creator_user_id'] = $request->user_id;
         $validatedData['creator_id'] = $request->creator_id;
         $validatedData['container_id'] = $request->container_id;
-        $validatedData['time'] = $request->currentTIme; 
+        $validatedData['time'] = $request->currentTIme;
+        $validatedData['type'] = $request->type;
         $allData = $request->except('_token');
         $dataToStore = array_merge($allData, $validatedData);
 

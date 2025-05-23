@@ -172,7 +172,7 @@
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Licence Picture </p>
                 @if ($user->license_document)
-                    <img src="{{ asset('storage/' . $user->license_document) }}" alt="license"
+                    <img src="{{ asset('`/' . $user->license_document) }}" alt="license"
                         style="margin-left: 15px; max-width: 150px;">
                 @else
                     <p> - No Image</p>
