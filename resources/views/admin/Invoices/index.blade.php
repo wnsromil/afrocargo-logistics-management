@@ -4,6 +4,7 @@
         .content-page-header {
             margin-top: -10px;
         }
+
     </style>
     @endsection
 
@@ -44,8 +45,7 @@
             <div class="col-md-3 dposition">
                 <label>Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange"
-                        placeholder="From Date - To Date" />
+                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange" placeholder="From Date - To Date" />
                 </div>
             </div>
 
@@ -119,7 +119,7 @@
                                 <tr>
                                     {{-- <td><input type="checkbox"
                                             class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
-                                            value="{{ $invoice->id }}"></td> --}}
+                                    value="{{ $invoice->id }}"></td> --}}
                                     <td>{{ ++$index }}</td>
                                     <td>
                                         <div>#{{ $invoice->invoice_no ?? 'INV-001' }}</div>
@@ -132,9 +132,13 @@
                                     </td>
                                     <td>
                                         <div>
+                                            @if (empty($invoice->invoce_item))
+                                            <span class="text-danger">No Items</span>
+                                            @else
                                             @foreach($invoice->invoce_item as $item)
-                                                {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}), 
+                                            {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}),
                                             @endforeach
+                                            @endif
                                         </div>
                                     </td>
                                     <td>
@@ -186,24 +190,17 @@
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{route('admin.invoices.edit',$invoice->id)}}"><i
-                                                                class="far fa-edit me-2"></i>Edit Invoice</a>
+                                                        <a class="dropdown-item" href="{{route('admin.invoices.edit',$invoice->id)}}"><i class="far fa-edit me-2"></i>Edit Invoice</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{route('admin.invoices.details',$invoice->id)}}"><i
-                                                                class="far fa-eye me-2"></i>View Invoice</a>
+                                                        <a class="dropdown-item" href="{{route('admin.invoices.details',$invoice->id)}}"><i class="far fa-eye me-2"></i>View Invoice</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{route('admin.invoices.show',$invoice->id)}}"><i
-                                                                class="far fa-eye me-2"></i>View Delivery Challans</a>
+                                                        <a class="dropdown-item" href="{{route('admin.invoices.show',$invoice->id)}}"><i class="far fa-eye me-2"></i>View Delivery Challans</a>
                                                     </li>
                                                 </ul>
                                             </div>
