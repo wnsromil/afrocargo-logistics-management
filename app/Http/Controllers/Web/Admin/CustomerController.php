@@ -148,6 +148,7 @@ class CustomerController extends Controller
                     ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
                     : null,
                 'address'        => $validated['address_1'],
+                'role' => 'customer',
                 'address_2'        => $request->Address_2,
                 'country_id'     => $validated['country'],
                 'state_id'       => $validated['state'],

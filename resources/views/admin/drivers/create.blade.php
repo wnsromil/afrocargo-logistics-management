@@ -107,7 +107,7 @@
                         <option {{ old('vehicle_type') == $Vehicle->id ? 'selected' : '' }} value="{{ $Vehicle->id }}">
                             {{ $Vehicle->vehicle_type }}
                             (
-                            {{ $Vehicle->vehicle_type == 'Container' ? $Vehicle->container_no_1 : $Vehicle->vehicle_number }}
+                            {{ $Vehicle->vehicle_type == '1' ? $Vehicle->container_no_1 : $Vehicle->vehicle_number }}
                             )
                         </option>
                         @endforeach
@@ -267,7 +267,7 @@
                             <option {{ old('vehicle_type') == $Vehicle->id ? 'selected' : '' }} value="{{ $Vehicle->id }}">
                                 {{ $Vehicle->vehicle_type }}
                                 (
-                                {{ $Vehicle->vehicle_type == 'Container' ? $Vehicle->container_no_1 : $Vehicle->vehicle_number }}
+                                {{ $Vehicle->vehicle_type == '1' ? $Vehicle->container_no_1 : $Vehicle->vehicle_number }}
                                 )
                             </option>
                             @endforeach

@@ -1,432 +1,171 @@
 <x-app-layout>
     <x-slot name="header">
-        Container Details
+        Container Management - View Container
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="head">Container Details</p>
-
-        <div class="usersearch d-flex usersserach">
-
-            <div class="top-nav-search">
-                <form>
-                    <input type="text" class="form-control forms" placeholder="Search ">
-
-                </form>
-            </div>
-            <div class="mt-2">
-                <button type="button"
-                    class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);"
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
-                        <span><i class="fe fe-refresh-ccw"></i></span>
-                    </a>
-                </button>
-            </div>
-        </div>
+        <p class="head">Container ID - {{ $vehicle->unique_id ?? '--'}}</p>
     </x-slot>
 
-
-    <div class="card-table">
+    <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_type">Warehouse Name</label>
+                        <p>{{ $vehicle->warehouse->warehouse_name ?? '--'}}</p>
+                    </div>
+                </div>
 
-                <table class="table table-stripped table-hover datatable">
-                    <thead class="thead-light">
-                        <tr>
-                            <th class="tabletext"><input type="checkbox"></th>
-                            <th>S. No.</th>
-                            <th>Tracking ID</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Pickup Date</th>
-                            <th>Amount</th>
-                            <th>Payment Mode</th>
-                            <th class="text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- ------------------- 1st ---------------------- -->
-                        <tr>
-                            <td class="tabletext"><input type="checkbox" checked></td>
-                            <td class="text-center">1</td>
-                            <td>WE97078893</td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C
-                                                    Cross Road,5th Block California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block
-                                                    California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>12-12-24</div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Parcial:<span class="opacity-75 fw-normal ps-1">$350</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Due:<span class="opacity-75 fw-normal ps-1">$100</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Total:<span class="opacity-75 fw-normal ps-1">$450</span></div>
-                            </td>
-                            <td class="fw-semibold">Cash</td>
-                            <td class="text-center">
-                                <label class="labelstatusc fw-medium px-2" for="transfer_status">
-                                    Ready to Transfer
-                                </label>
-                            </td>
-                            <!-- <td><label class="labelstatusc" for="transfer_status">Ready to Transfer</label></td> -->
-                        </tr>
-                        <!-- ------------------- 2nd ---------------------- -->
-                        <tr>
-                            <td class="tabletext"><input type="checkbox"></td>
-                            <td class="text-center">2</td>
-                            <td>WE97078891</td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C
-                                                    Cross Road,5th Block California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block
-                                                    California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>12-12-24</div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Parcial:<span class="opacity-75 fw-normal ps-1">$200</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Due:<span class="opacity-75 fw-normal ps-1">$50</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Total:<span class="opacity-75 fw-normal ps-1">$250</span></div>
-                            </td>
-                            <td class="fw-semibold">Online/Card</td>
-                            <td class="text-center">
-                                <label class="labelstatusc fw-medium px-2" for="transfer_status">
-                                    Ready to Transfer
-                                </label>
-                            </td>
-                            <!-- <td><label class="labelstatusc" for="transfer_status">Ready to Transfer</label></td> -->
-                        </tr>
-                        <!-- ------------------- 3rd ---------------------- -->
-                        <tr>
-                            <td class="tabletext"><input type="checkbox"></td>
-                            <td class="text-center">3</td>
-                            <td>WE97078895</td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C
-                                                    Cross Road,5th Block California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block
-                                                    California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>12-12-24</div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Parcial:<span class="opacity-75 fw-normal ps-1">$350</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Due:<span class="opacity-75 fw-normal ps-1">$100</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Total:<span class="opacity-75 fw-normal ps-1">$450</span></div>
-                            </td>
-                            <td class="fw-semibold">Cheque</td>
-                            <td class="text-center">
-                                <label class="labelstatusc fw-medium px-2" for="transfer_status">
-                                    Ready to Transfer
-                                </label>
-                            </td>
-                            <!-- <td><label class="labelstatusc" for="transfer_status">Ready to Transfer</label></td> -->
-                        </tr>
+                <!-- Vehicle Type -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_type">Container No</label>
+                        <p>{{ $vehicle->container_no_1 ?? '--'}}</p>
+                    </div>
+                </div>
 
-                        <!-- ------------------- 4th ---------------------- -->
+                <!-- Vehicle Type -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_type">Size</label>
+                        <p>{{ $vehicle->container_size ?? '--'}}</p>
+                    </div>
+                </div>
 
-                        <tr>
-                            <td class="tabletext"><input type="checkbox"></td>
-                            <td class="text-center">4</td>
-                            <td>WE97078896</td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C
-                                                    Cross Road,5th Block California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block
-                                                    California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>12-12-24</div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Parcial:<span class="opacity-75 fw-normal ps-1">$200</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Due:<span class="opacity-75  fw-normal ps-1">$50</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Total:<span class="opacity-75 fw-normal ps-1">$250</span></div>
-                            </td>
-                            <td class="fw-semibold">Online/Card</td>
-                            <td class="text-center">
-                                <label class="labelstatusc fw-medium px-2" for="transfer_status">
-                                    Ready to Transfer
-                                </label>
-                            </td>
-                            <!-- <td><label class="labelstatusc" for="transfer_status">Ready to Transfer</label></td> -->
-                        </tr>
-                        <!-- ------------------- 5th ---------------------- -->
+                <!-- Vehicle Type -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_type">Company For Container </label>
+                        <p>{{ $vehicle->containerCompany->name ?? '--'}}</p>
+                    </div>
+                </div>
 
-                        <tr>
-                            <td class="tabletext"><input type="checkbox"></td>
-                            <td class="text-center">5</td>
-                            <td>WE97078897</td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C
-                                                    Cross Road,5th Block California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block
-                                                    California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>12-12-24</div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Parcial:<span class="opacity-75 fw-normal ps-1">$350</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Due:<span class="opacity-75 fw-normal ps-1">$100</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Total:<span class="opacity-75 fw-normal ps-1">$450</span></div>
-                            </td>
-                            <td class="fw-semibold">Cash</td>
-                            <td class="text-center">
-                                <label class="labelstatusc fw-medium px-2" for="transfer_status">
-                                    Ready to Transfer
-                                </label>
-                            </td>
-                            <!-- <td><label class="labelstatusc" for="transfer_status">Ready to Transfer</label></td> -->
-                        </tr>
-                        <!-- ------------------- 6th ---------------------- -->
+                <!-- Vehicle Number -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_number">Booking Number </label>
+                        <p>{{ $vehicle->booking_number ?? '--'}}</p>
+                    </div>
+                </div>
 
-                        <tr>
-                            <td class="tabletext"><input type="checkbox"></td>
-                            <td class="text-center">6</td>
-                            <td>WE97078898</td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Lokesh B S</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145995</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p class="ellipseText">No 295 opp.Xavier Church ground,10th main,39th C
-                                                    Cross Road,5th Block California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-user"></i>Markham</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-phone"></i>09513145991</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>No 295 opp.Xavier Church ground,10th main,39th C Cross Road,5th Block
-                                                    California</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>12-12-24</div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Parcial:<span class="opacity-75 fw-normal ps-1">$200</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Due:<span class="opacity-75 fw-normal ps-1">$50</span></div>
-                                <div class="d-flex justify-content-between text-dark fw-semibold td-color">
-                                    Total:<span class="opacity-75 fw-normal ps-1">$250</span></div>
-                            </td>
-                            <td class="fw-semibold">Online/Card</td>
-                            <td class="text-center">
-                                <label class="labelstatusc fw-medium px-2" for="transfer_status">
-                                    Ready to Transfer
-                                </label>
-                            </td>
-                            <!-- <td><label class="labelstatusc" for="transfer_status">Ready to Transfer</label></td> -->
-                        </tr>
+                <!-- Vehicle Model -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_model">Seal Number</label>
+                        <p>{{ $vehicle->seal_no ?? '--'}}</p>
+                    </div>
+                </div>
 
-                    </tbody>
-                </table>
+                <!-- Vehicle Manufactured Year -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_year">Bill Of Lading</label>
+                        <p>{{ $vehicle->bill_of_lading ?? '--'}}</p>
+                    </div>
+                </div> 
+
+                <!-- Vehicle Capacity -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Ship To Country</label>
+                        <p>{{ $vehicle->ship_to_country ?? '--'}}</p>
+                    </div>
+                </div>
 
 
-                <script>
-                    function deleteData(self, msg) {
-                        Swal.fire({
-                            title: msg,
-                            showCancelButton: true,
-                            confirmButtonText: "Delete",
-                            cancelButtonText: "Cancel"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $(self).closest('form').submit();
-                            }
-                        });
-                    }
-                </script>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Broker</label>
+                        <p>{{ $vehicle->brokerData->name ?? '--'}}</p>
+                    </div>
+                </div>
+
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Doc Id</label>
+                        <p>{{ $vehicle->doc_id ?? '--'}}</p>
+                    </div>
+                </div>
+
+
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Volume</label>
+                        <p>{{ $vehicle->volume ?? '--'}}</p>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <p for="status">Status</p>
+                        <div
+                            class="mt-2 badge  {{$vehicle->status == 'Active' ? 'bg-success-light' : 'bg-danger-light'}}">
+                            <p>{{ $vehicle->status }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warehouse Location -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="warehouse_id">Warehouse Location</label>
+                        <p>{{ $vehicle->warehouse ? $vehicle->warehouse->warehouse_name : 'N/A' }}</p>
+                        <!-- Display additional Warehouse info -->
+                        @if($vehicle->warehouse)
+                            <p><strong>Address:</strong> {{ $vehicle->warehouse->address ?? '--'}}</p>
+                            <p><strong>Contact:</strong> {{ $vehicle->warehouse->phone ?? '--'}}</p>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Driver Information (from User table) -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="driver_id">Driver Information</label>
+                        @if($vehicle->driver)
+                            <p><strong>Name:</strong> {{ $vehicle->driver->name ?? '--'}}</p>
+                            <p><strong>Email:</strong> {{ $vehicle->driver->email ?? '--'}}</p>
+                            <p><strong>Phone:</strong> {{ $vehicle->driver->phone ?? '--'}}</p>
+                        @else
+                            <p>No driver assigned.</p>
+                        @endif
+                    </div>
+                </div>
+
+
+                <!-- Status -->
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-end">
+                <a href="{{ route('admin.container.edit', $vehicle->id) }}" class="btn btn-primary me-2">Edit</a>
+
+                <!-- Delete Button (with confirmation) -->
+                {{-- <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-danger"
+                        onclick="deleteData(this, 'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')">Delete</button>
+                </form> --}}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function deleteData(self, msg) {
+            Swal.fire({
+                title: msg,
+                showCancelButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(self).closest('form').submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>

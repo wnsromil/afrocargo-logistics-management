@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use \App\Models\Country;
+use \App\Models\VehicleType;
+use \App\Models\Broker;
+use \App\Models\ContainerCompany;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,13 +41,24 @@ class AppServiceProvider extends ServiceProvider
         ]);
         $usa = Country::where('iso3', 'USA')->get();
 
+        $vehicleType = VehicleType::where('status', 'Active')
+            ->where('id', '!=', 1)
+            ->get();
+
         // Then, get all other countries ordered by name
         $otherCountries = Country::where('iso3', '!=', 'USA')->orderBy('name', 'asc')->get();
 
         // Merge both collections
         $countries = $usa->merge($otherCountries);
 
+        $Brokers = Broker::where('status', 'Active')->get();
+
+        $Containercompanys = ContainerCompany::where('status', 'Active')->get();
+
         // Share with view
         View::share('coutry', $countries);
+        View::share('viewVehicleTypes', $vehicleType);
+         View::share('viewBrokers', $Brokers);
+          View::share('viewVContainercompanys', $Containercompanys);
     }
 }

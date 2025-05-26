@@ -10,8 +10,10 @@ use App\Models\{
     User,
     Role,
     Country,
-    Vehicle
+    Vehicle,
+    VehicleType
 };
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class VehicleController extends Controller
@@ -25,14 +27,14 @@ class VehicleController extends Controller
         $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
         $currentPage = $request->input('page', 1); // ✅ Current page number
 
-        $vehicles = Vehicle::with(['driver', 'warehouse'])->where('vehicle_type', '!=', 'Container')
+        $vehicles = Vehicle::with(['driver', 'warehouse'])->where('vehicle_type', '!=', '1')
             ->withCount('parcelsCount')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->when($query, function ($q) use ($query) {
                 return $q->where('vehicle_type', 'like', '%' . $query . '%')
-                ->orWhere('unique_id', 'like', '%' . $query . '%')
+                    ->orWhere('unique_id', 'like', '%' . $query . '%')
                     ->orWhereHas('driver', function ($q) use ($query) {
                         $q->where('name', 'like', '%' . $query . '%');
                     })
@@ -77,60 +79,70 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-
-        // Base rules
+        // ✅ Base validation rules
         $rules = [
             'warehouse_name' => 'required|exists:warehouses,id',
             'vehicle_type'   => 'required|string|max:255',
             'vehicle_model'  => 'required|string|max:255',
             'vehicle_year'   => 'required|digits:4',
             'driver_id'      => 'nullable|integer',
+            'license_expiry_date'      => 'required',
+            'licence_plate_number'      => 'required',
+            'vehicle_number' => 'required|string|max:50|unique:vehicles,vehicle_number',
+
+            // ✅ Document validations
+            'vehicle_registration_doc'         => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'vehicle_insurance_doc'             => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+
         ];
 
-        // Conditional rules
-        if ($request->vehicle_type === 'Container') {
-            $rules['container_no_1'] = 'required|string|max:100';
-            $rules['container_no_2'] = 'required|string|max:100';
-            $rules['container_size'] = 'nullable|string|max:50';
-            $rules['seal_no']        = 'required|string|max:100';
-        } else {
-            $rules['vehicle_number'] = 'required|string|max:50|unique:vehicles,vehicle_number';
-        }
-
-        // Run validation
+        // ✅ Run validation
         $validator = Validator::make($request->all(), $rules);
 
-        // Redirect back if validation fails
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Create and save vehicle
+        // ✅ Find or Create Vehicle Type
+        $vehicleType = VehicleType::firstOrCreate(
+            ['name' => $request->vehicle_type],
+            ['status' => 'Active']
+        );
+
+        // ✅ Save basic vehicle data
         $vehicle = new Vehicle();
         $vehicle->warehouse_id   = $request->warehouse_name;
-        $vehicle->vehicle_type   = $request->vehicle_type;
+        $vehicle->vehicle_type   = $vehicleType->id;
         $vehicle->vehicle_number = $request->vehicle_number;
         $vehicle->vehicle_model  = $request->vehicle_model;
         $vehicle->vehicle_year   = $request->vehicle_year;
         $vehicle->driver_id      = $request->driver_id;
+        $vehicle->licence_plate_exp_date      = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
+        $vehicle->licence_plate_number      = $request->licence_plate_number;
         $vehicle->status         = $request->status ?? 'Active';
 
-        if ($request->vehicle_type == 'Container') {
-            $vehicle->container_no_1  = $request->container_no_1;
-            $vehicle->container_no_2  = $request->container_no_2;
-            $vehicle->container_size  = $request->container_size;
-            $vehicle->seal_no         = $request->seal_no;
+        // ✅ Handle image uploads
+        $imageFields = [
+            'vehicle_registration_doc',
+            'vehicle_insurance_doc',
+        ];
+
+        foreach ($imageFields as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $fileName = time() . '_' . $field . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+
+                // ✅ Save path in vehicle model (you need to have these columns in your DB table)
+                $vehicle->{$field} = 'uploads/customer/' . $fileName;
+            }
         }
 
         $vehicle->save();
-        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
 
-        // if($request->vehicle_type === 'Container'){
-        //     return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
-        // }else{
-        //     return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
-        // }
+        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -161,32 +173,82 @@ class VehicleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        // Validate incoming request data
-        $request->validate([
-            'warehouse_id'    => 'nullable|exists:warehouses,id',
-            'vehicle_number'  => 'required|string|max:50|unique:vehicles,vehicle_number,' . $id,  // Exclude the current record's vehicle_number
-            'vehicle_model'   => 'nullable|string|max:255',
-            'vehicle_year'    => 'nullable|digits:4',
-            'driver_id'    => 'nullable|integer',
-            'status'          => 'in:Active,Inactive',
-        ]);
-
-        // Update the vehicle record
         $vehicle = Vehicle::findOrFail($id);
-        $vehicle->update([
-            'warehouse_id'    => $request->warehouse_id,
-            'vehicle_number'  => $request->vehicle_number,
-            'vehicle_model'   => $request->vehicle_model,
-            'vehicle_year'    => $request->vehicle_year,
-            'driver_id'       => $request->driver_id,
-            'status'          => $request->status ?? 'Active',
-        ]);
+        // ✅ Check if images are marked for deletion
+        $deleteRegistration = $request->input('vehicle_registration_doc_delete_img') == "1";
+        $deleteInsurance = $request->input('vehicle_insurance_doc_delete_img') == "1";
 
-        // Redirect back with success message
+        // ✅ Set validation rules dynamically
+        $rules = [
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'vehicle_type'   => 'required|string|max:255',
+            'vehicle_model'  => 'required|string|max:255',
+            'vehicle_year'   => 'required|digits:4',
+            'driver_id'      => 'nullable|integer',
+          //  'license_expiry_date' => 'required',
+            'licence_plate_number' => 'required',
+            'vehicle_number' => 'required|string|max:50|unique:vehicles,vehicle_number,' . $vehicle->id,
+        ];
+
+        // ✅ Conditional file validations
+        if ($deleteRegistration && !$request->hasFile('vehicle_registration_doc')) {
+            $rules['vehicle_registration_doc'] = 'required|file|mimes:jpeg,png,jpg,pdf|max:2048';
+        } else {
+            $rules['vehicle_registration_doc'] = 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048';
+        }
+
+        if ($deleteInsurance && !$request->hasFile('vehicle_insurance_doc')) {
+            $rules['vehicle_insurance_doc'] = 'required|file|mimes:jpeg,png,jpg,pdf|max:2048';
+        } else {
+            $rules['vehicle_insurance_doc'] = 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048';
+        }
+
+        // ✅ Validate request
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // ✅ Vehicle type update
+        $vehicleType = VehicleType::firstOrCreate(
+            ['name' => $request->vehicle_type],
+            ['status' => 'Active']
+        );
+
+        $vehicle->warehouse_id = $request->warehouse_id;
+        $vehicle->vehicle_type = $vehicleType->id;
+        $vehicle->vehicle_number = $request->vehicle_number;
+        $vehicle->vehicle_model = $request->vehicle_model;
+        $vehicle->vehicle_year = $request->vehicle_year;
+        $vehicle->driver_id = $request->driver_id;
+       if ($request->filled('license_expiry_date')) {
+       $vehicle->licence_plate_exp_date = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
+       }
+        $vehicle->licence_plate_number = $request->licence_plate_number;
+        $vehicle->status = $request->status ?? $vehicle->status;
+
+        // ✅ Handle deletion and upload of documents
+        $imageFields = [
+            'vehicle_registration_doc' => $deleteRegistration,
+            'vehicle_insurance_doc' => $deleteInsurance,
+        ];
+
+        foreach ($imageFields as $field => $shouldDelete) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $fileName = time() . '_' . $field . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                $vehicle->{$field} = 'uploads/customer/' . $fileName;
+            }
+        }
+
+        $vehicle->save();
+
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

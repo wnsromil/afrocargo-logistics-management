@@ -21,30 +21,65 @@ class InventoryController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default to 10 per page
+        $warehouse_id = $request->input('warehouse_id');
+        $main_type = $request->input('main_type');
 
-        $inventories = Inventory::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })
-            ->when($search, function ($q) use ($search) { // 🔹 Search Query
+        $inventories = Inventory::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            // 🔹 Filter by warehouse_id if passed in request
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            // 🔹 Filter by main_type and sub_type logic
+            ->when($main_type, function ($q) use ($main_type) {
+                if ($main_type === 'Supply') {
+                    return $q->where('inventary_sub_type', 'Supply');
+                } elseif ($main_type === 'Service') {
+                    return $q->whereIn('inventary_sub_type', ['Cargo', 'Air']);
+                }
+            })
+            // 🔹 Search Logic
+            ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
                         ->orWhere('unique_id', 'LIKE', '%' . $search . '%')
                         ->orWhere('inventory_type', 'like', "%$search%")
-                        ->orWhereHas('warehouse', function ($q) use ($search) { // 🔹 Search by Warehouse Name
+                        ->orWhereHas('warehouse', function ($q) use ($search) {
                             $q->where('warehouse_name', 'like', "%$search%");
                         });
                 });
             })
             ->latest('id')
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage]); // Maintain query params
+            ->appends([
+                'search' => $search,
+                'per_page' => $perPage,
+                'warehouse_id' => $warehouse_id,
+                'main_type' => $main_type,
+            ]);
+
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->get();
 
         if ($request->ajax()) {
-            return view('admin.inventories.table', compact('inventories'));
+            return view('admin.inventories.table', compact('inventories', 'warehouses'))->render();
         }
 
-        return view('admin.inventories.index', compact('inventories', 'search', 'perPage'));
+        return view('admin.inventories.index', compact(
+            'inventories',
+            'search',
+            'perPage',
+            'warehouses',
+            'warehouse_id',
+            'main_type'
+        ));
     }
+
 
 
     /**
@@ -197,7 +232,7 @@ class InventoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         // Common validation rules
         $rules = [
             'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
