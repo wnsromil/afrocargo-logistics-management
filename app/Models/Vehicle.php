@@ -53,19 +53,41 @@ class Vehicle extends Model
 
     public function containerStatus()
     {
-        return $this->hasOne(ParcelStatus::class,'id', 'container_status');
+        return $this->hasOne(ParcelStatus::class, 'id', 'container_status');
     }
 
+    public function containerCompany()
+    {
+        return $this->belongsTo(ContainerCompany::class, 'container_company_id');
+    }
+
+
+    public function brokerData()
+    {
+        return $this->belongsTo(Broker::class, 'broker');
+    }
+
+
+    public function getVehicleTypeAttribute($value)
+    {
+        if ($this->relationLoaded('type') && $this->type) {
+            return $this->type->name;
+        }
+
+        $type = VehicleType::find($value);
+        return $type ? $type->name : null;
+    }
 
     protected static function booted()
     {
         static::creating(function ($vehicle) {
+
             // Defaults
             $rolePrefix = 'V';
-            if ($vehicle->vehicle_type === 'Container') {
-                $rolePrefix = 'C';
+            if ($vehicle->vehicle_type == 'Container') {
+                $rolePrefix = 'CN';
             }
-    
+
             // Get country ISO based on warehouse_id (if provided)
             $countryIso = 'XX';
             if (!empty($vehicle->warehouse_id)) {
@@ -77,18 +99,43 @@ class Vehicle extends Model
                     }
                 }
             }
-    
+
             $fullPrefix = $rolePrefix . $countryIso . '-';
-    
-            // Get last vehicle with similar prefix
-            $lastVehicle = self::where('unique_id', 'like', $rolePrefix . '%')
-                ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
-                ->value('max_number') ?? 0;
-    
-            $newNumber = str_pad($lastVehicle + 1, 6, '0', STR_PAD_LEFT);
-    
-            $vehicle->unique_id = $fullPrefix . $newNumber;
+
+            if ($vehicle->vehicle_type == 'Container') {
+                // Normal Container logic, max number extract as usual
+                $lastNumber = self::where('vehicle_type', 1)
+                    ->selectRaw("MAX(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(unique_id, '-', -2), '-', 1) AS UNSIGNED)) as max_number")
+                    ->value('max_number') ?? 0;
+            } else {
+                // Custom logic: skip last if vehicle_type == 1
+                $lastValid = self::orderByDesc('id')
+                    ->skip(1) // Skip the last row
+                    ->first(); // Get second last
+
+                // But if lastValid is still type 1, then go further back
+                if ($lastValid && $lastValid->vehicle_type == 1) {
+                    $lastValid = self::where('vehicle_type', '!=', 1)
+                        ->orderByDesc('id')
+                        ->first();
+                }
+
+                // Extract number
+                if ($lastValid && preg_match('/-(\d+)-/', $lastValid->unique_id, $matches)) {
+                    $lastNumber = (int) $matches[1];
+                } else {
+                    $lastNumber = 0;
+                }
+            }
+
+            $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+            // Final unique ID
+            if ($vehicle->vehicle_type == 'Container') {
+                $yearSuffix = date('y'); // last 2 digits of year
+                $vehicle->unique_id = $fullPrefix . $newNumber . '-' . $yearSuffix;
+            } else {
+                $vehicle->unique_id = $fullPrefix . $newNumber;
+            }
         });
     }
-    
 }

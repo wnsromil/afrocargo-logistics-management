@@ -627,13 +627,61 @@ Version      : 1.0
         );
     }
 
+    // Open Date Picker
+    if ($('input[name="open_date"]').length > 0) {
+        $('input[name="open_date"]').daterangepicker({
+            singleDatePicker: false,
+            showDropdowns: true,
+            maxDate: moment().endOf("day"),
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY",
+            },
+        });
+
+        $('input[name="open_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(
+                    picker.startDate.format("M/DD/YYYY") +
+                        " - " +
+                        picker.endDate.format("M/DD/YYYY")
+                );
+            }
+        );
+    }
+
+    // Close Date Picker
+    if ($('input[name="close_date"]').length > 0) {
+        $('input[name="close_date"]').daterangepicker({
+            singleDatePicker: false,
+            showDropdowns: true,
+            maxDate: moment().endOf("day"),
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY",
+            },
+        });
+
+        $('input[name="close_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(
+                    picker.startDate.format("M/DD/YYYY") +
+                        " - " +
+                        picker.endDate.format("M/DD/YYYY")
+                );
+            }
+        );
+    }
+
     if ($('input[name="license_expiry_date"]').length > 0) {
         $('input[name="license_expiry_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
             minDate: moment().startOf("day"), // Past Dates Disabled
             startDate: moment().startOf("day"), // Default Today Selected
-            autoUpdateInput: true, // Auto Update Input With Default Date
+            autoUpdateInput: false, // Auto Update Input With Default Date
             locale: {
                 format: "M/DD/YYYY", // Date Format
             },

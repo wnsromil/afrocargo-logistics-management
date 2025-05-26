@@ -204,13 +204,91 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <div>$ {{ number_format($invoice->total_price, 2) }}</div>
+                                        </td>
+                                        <td>
+                                            <div>Driver Name</div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p>
+                                                    <i
+                                                        class="fe fe-user"></i>{{ $invoice->pickup_address->full_name ?? '-' }}
+                                                </p>
+                                                <p>
+                                                    <i
+                                                        class="fe fe-phone"></i>{{ $invoice->pickup_address->mobile_number ?? '-' }}
+                                                </p>
+                                                <p>
+                                                    <i
+                                                        class="fe fe-map-pin"></i>{{ $invoice->pickup_address->address ?? '-' }}
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <p>
+                                                    <i
+                                                        class="fe fe-user"></i>{{ $invoice->delivery_address->full_name ?? '-' }}
+                                                </p>
+                                                <p>
+                                                    <i
+                                                        class="fe fe-phone"></i>{{ $invoice->delivery_address->mobile_number ?? '-' }}
+                                                </p>
+                                                <p>
+                                                    <i
+                                                        class="fe fe-map-pin"></i>{{ $invoice->delivery_address->address ?? '-' }}
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>${{ number_format($invoice->grand_total, 2) }}</span>
+                                        </td>
+                                        <td>
+                                            <span>${{ number_format($invoice->payment, 2) }}</span>
+                                        </td>
+                                        <td>
+                                            <span>${{ number_format($invoice->balance, 2) }}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{ $invoice->invoce_type ?? '-' }}</span>
+                                        </td>
+                                        <td>
+                                            <label class="labelstatus"
+                                                for="{{ $invoice->status }}">{{ $invoice->status }}</label>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <ul>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{route('admin.invoices.edit', $invoice->id)}}"><i
+                                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{route('admin.invoices.details', $invoice->id)}}"><i
+                                                                    class="far fa-eye me-2"></i>View Invoice</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{route('admin.invoices.show', $invoice->id)}}"><i
+                                                                    class="far fa-eye me-2"></i>View Delivery Challans</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="15" class="px-4 py-4 text-center text-gray-500">No invoices found.</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="15" class="px-4 py-4 text-center text-gray-500">No invoices found.</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -230,22 +308,22 @@
         });
 
         const Input_Fields = [{
-                id: "pickup-man"
-                , label: "Pickup Man"
-                , type: "select"
-                , options: options
-                , required: true
-            }
+            id: "pickup-man"
+            , label: "Pickup Man"
+            , type: "select"
+            , options: options
+            , required: true
+        }
             , {
-                id: "note"
-                , label: "Note"
-                , type: "textarea"
-                , required: false
-            }
+            id: "note"
+            , label: "Note"
+            , type: "textarea"
+            , required: false
+        }
         ];
 
         let selectedUsers = [];
-        $(".selectCheckbox:checked").each(function() {
+        $(".selectCheckbox:checked").each(function () {
             selectedUsers.push($(this).val());
         });
 
@@ -264,24 +342,24 @@
         });
 
         const Input_Fields = [{
-                id: "pickup-man"
-                , label: "Pickup Man"
-                , type: "select"
-                , options: options
-                , required: true
-            }
+            id: "pickup-man"
+            , label: "Pickup Man"
+            , type: "select"
+            , options: options
+            , required: true
+        }
             , {
-                id: "pickup_date"
-                , label: "Pickup Date"
-                , type: "date"
-                , required: true
-            }
+            id: "pickup_date"
+            , label: "Pickup Date"
+            , type: "date"
+            , required: true
+        }
             , {
-                id: "note"
-                , label: "Note"
-                , type: "textarea"
-                , required: false
-            }
+            id: "note"
+            , label: "Note"
+            , type: "textarea"
+            , required: false
+        }
 
         ];
 
@@ -307,18 +385,18 @@
         });
 
         const Input_Fields = [{
-                id: "warehouse_id"
-                , label: "Warehouse"
-                , type: "select"
-                , options: options
-                , required: true
-            }
+            id: "warehouse_id"
+            , label: "Warehouse"
+            , type: "select"
+            , options: options
+            , required: true
+        }
             , {
-                id: "note"
-                , label: "Note"
-                , type: "textarea"
-                , required: false
-            }
+            id: "note"
+            , label: "Note"
+            , type: "textarea"
+            , required: false
+        }
         ];
 
         const status = "Received Warehouse";
@@ -384,7 +462,7 @@
                 url: "{{ route('parcel.status_update') }}"
                 , type: "POST"
                 , data: formValues, // Dynamic data object
-                success: function(response) {
+                success: function (response) {
                     if (response.status === true) {
                         Swal.fire({
                             title: "Good job!"
@@ -401,7 +479,7 @@
                         });
                     }
                 }
-                , error: function(xhr) {
+                , error: function (xhr) {
                     Swal.fire('Error!', 'An error occurred while processing your request.', 'error');
                     console.log(xhr.responseJSON);
                 }

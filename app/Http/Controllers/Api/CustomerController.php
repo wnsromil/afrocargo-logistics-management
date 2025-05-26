@@ -26,9 +26,9 @@ class CustomerController extends Controller
         ]);
 
         $type = $request->query('invoice_custmore_type');
-        $invoiceCustomerId = $request->query('invoice_custmore_id');
+        $invoiceCustomerId = $request->query(key: 'invoice_custmore_id');
 
-        $query = User::where('role', 'customer')->orderBy('id', 'desc');
+          $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
 
 
         if ($invoiceCustomerId) {
@@ -68,7 +68,7 @@ class CustomerController extends Controller
             return response()->json(['message' => 'ID is required'], 400);
         }
 
-        $customer = User::where('role', 'customer')->where('id', $id)->with('vehicle')->first();
+        $customer = User::where('role_id', 3)->where('id', $id)->with('vehicle')->first();
 
         if (!$customer) {
             return response()->json(['message' => 'No customer found'], 404);
@@ -126,6 +126,7 @@ class CustomerController extends Controller
                 'state_id' => $validated['state'],
                 'city_id' => $validated['city'],
                 'pincode' => $validated['Zip_code'],
+                'role' => 'customer',
                 'password' => Hash::make(12345678),
                 'status' => $request->status ?? 'Active',
                 'company_name' => $request->company_name ?? null,
