@@ -58,7 +58,7 @@
 
 
             <div class="col-md-3 mb-3">
-                <label>Date</label>
+                <label>Open Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
                     <input type="text" name="open_date" class="btn-filters form-cs inp Expensefillterdate"
                         value="{{ old('open_date', request()->query('open_date')) }}" />
@@ -66,7 +66,7 @@
             </div>
 
               <div class="col-md-3 mb-3">
-                <label>Date</label>
+                <label>Close Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
                     <input type="text" name="close_date" class="btn-filters form-cs inp Expensefillterdate"
                         value="{{ old('close_date', request()->query('close_date')) }}" />
@@ -100,21 +100,13 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Container ID</th>
-                                <th>Warehouse</th>
-                                <th>Size</th>
-                                <th>Container No. 1</th>
-                                <th>Container No. 2</th>
-                                <th>Booking Number</th>
-                                <th>Seal No.</th>
-                                <th>Bill Of Lading</th>
+                                <th>Warehouse</th>                            
+                                <th>Container</th>
                                 <th>Open Date</th>
                                 <th>Close Date</th>
                                 <th>Close Invoice</th>
                                 <th>Close Warehouse</th>
-                                <th>Driver Name</th>
-                                <th>Transfer Date</th>
-                                <th>Total Orders</th>
-                                <th>Amount</th>
+                                <th>Volume</th>
                                 <th>Status</th>
                                 <th>Status Change</th>
                                 <th Class="no-sort">Action</th>
@@ -127,25 +119,12 @@
                                     {{ $vehicle->unique_id ?? '-' }}
                                 </td>
                                 <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
-                                <td>{{ $vehicle->container_size ?? '-' }}</td>
-                                <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
-                                <td>{{ $vehicle->container_no_2 ?? '-' }}</td>
-                                <td>{{ $vehicle->booking_number ?? '-' }}</td>
-                                <td>{{ $vehicle->seal_no ?? '-' }}</td>
-                                <td>{{ $vehicle->bill_of_lading ?? '-' }}</td>
-
+                                <td>{{ $vehicle->container_no_1 ?? '-' }}</td>             
                                     <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}</td>
                                     <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>                                    
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td class="tabletext"><input type="checkbox"></td>
-                                    <td>{{ ucfirst($vehicle->driver->name ?? '-') }}</td>
-                                    <td>-</td>
-                                    <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
-                                    <td>
-                                        <p><label class="amountfont">Recieved:</label> $0</p>
-                                        <p><label class="amountfont">Due:</label> $0</p>
-                                        <p><label class="amountfont">Total:</label> $0</p>
-                                    </td>
+                                    <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>                                
                                     <td>
                                         <label
                                             class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
@@ -217,7 +196,7 @@
         </div>
     </div>
 
-  @section('script')
+@section('script')
   <script>
     function handleContainerClick(containerId, containerNumber) {
         // Step 1: First fetch current active container
