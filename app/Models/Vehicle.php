@@ -90,10 +90,11 @@ class Vehicle extends Model
 
             // Get country ISO based on warehouse_id (if provided)
             $countryIso = 'XX';
+
             if (!empty($vehicle->warehouse_id)) {
                 $warehouse = \App\Models\Warehouse::find($vehicle->warehouse_id);
                 if ($warehouse && !empty($warehouse->country_id)) {
-                    $country = \App\Models\Country::find($warehouse->country_id);
+                    $country = \App\Models\Country::where('name', $warehouse->country_id)->first();
                     if ($country && !empty($country->iso2)) {
                         $countryIso = strtoupper($country->iso2);
                     }

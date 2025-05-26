@@ -254,6 +254,7 @@ class ExpensesController extends Controller
             'amount' => 'required|numeric',
             'category' => 'required|in:Expense,Deposit',
             'img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+             'type' => 'required|string', // Uncomment if 'type' is required  
             // 'status' => 'nullable|in:Active'
         ]);
 
@@ -266,6 +267,7 @@ class ExpensesController extends Controller
         $expense->amount = $request->amount;
         $expense->category = $request->category;
         $expense->warehouse_id = $request->warehouse;
+        $expense->type = $request->type; // Ensure 'type' is set if required
         $expense->status = !empty($request->status) ? $request->status : 'Active';
 
         if ($request->hasFile('image')) {
