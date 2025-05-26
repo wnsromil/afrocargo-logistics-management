@@ -20,7 +20,7 @@ class ServiceOrderStatusManage extends Controller
 {
     public function getDriverServiceOrders(Request $request)
     {
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress','parcelStatus','customer'])
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer'])
             ->where('driver_id', $this->user->id);
 
         $status = $request->status;
@@ -46,7 +46,7 @@ class ServiceOrderStatusManage extends Controller
 
     public function getDriverServiceOrderDetails($id)
     {
-        $order = Parcel::with(['pickupaddress', 'deliveryaddress','parcelStatus'])
+        $order = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus'])
             ->where('driver_id', $this->user->id)
             ->where('id', $id)
             ->first();
@@ -64,6 +64,7 @@ class ServiceOrderStatusManage extends Controller
             'data' => $order
         ]);
     }
+
     public function statusUpdate_PickUp(Request $request)
     {
         $request->validate([
@@ -157,6 +158,78 @@ class ServiceOrderStatusManage extends Controller
             'customer_id' => $parcel->customer_id,
             'status' => 'Updated',
             'parcel_status' => 11,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $this->user->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
+    public function statusUpdate_Cancel(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+        $parcel->update([
+            'driver_id' => $this->user->id,
+            'status' => 14,
+            'warehouse_id' => $this->user->warehouse_id,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $this->user->id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 14,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $this->user->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
+    public function statusUpdate_reschedule(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+            'pickup_date' => 'required|date',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+        $parcel->update([
+            'driver_id' => $this->user->id,
+            'status' => 23,
+            'warehouse_id' => $this->user->warehouse_id,
+            'pickup_date' => $request->pickup_date,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $this->user->id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 23,
             'note' => $request->notes ?? null,
             'warehouse_id' => $this->user->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details

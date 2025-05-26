@@ -59,6 +59,7 @@ class ExpensesController extends Controller
             'description' => 'required|string',
             'amount' => 'required|numeric|min:0',
             'category' => 'required|string',
+            'type' => 'required|string',
         ]);
 
         $status  = !empty($request->status) ? $request->status : 'Active';
@@ -69,6 +70,7 @@ class ExpensesController extends Controller
         $validatedData['creator_id'] = $request->creator_id;
         $validatedData['container_id'] = $request->container_id;
         $validatedData['time'] = $request->currentTIme;
+        $validatedData['type'] = $request->type;
         $allData = $request->except('_token');
         $dataToStore = array_merge($allData, $validatedData);
 
@@ -99,6 +101,7 @@ class ExpensesController extends Controller
             'amount' => 'required|numeric',
             'category' => 'required|in:Expense,Deposit',
             'img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'type' => 'required|string',
         ]);
 
         $expense = Expense::findOrFail($id);
@@ -110,6 +113,7 @@ class ExpensesController extends Controller
         $expense->amount = $request->amount;
         $expense->category = $request->category;
         $expense->warehouse_id = $request->warehouse;
+        $expense->type = $request->type;
         $expense->status = !empty($request->status) ? $request->status : 'Active';
 
         if ($request->hasFile('image')) {

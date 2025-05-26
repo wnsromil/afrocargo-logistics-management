@@ -161,7 +161,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/update-status-pick-up', [ServiceOrderStatusManage::class, 'statusUpdate_PickUp']);
         Route::post('/update-status-delivery', [ServiceOrderStatusManage::class, 'statusUpdate_Delivery']);
         Route::post('/update-status-delivered', [ServiceOrderStatusManage::class, 'statusUpdate_Delivered']);
-
+        Route::post('/update-status-cancel', [ServiceOrderStatusManage::class, 'statusUpdate_Cancel']);
+        Route::post('/update-status-reschedule', [ServiceOrderStatusManage::class, 'statusUpdate_reschedule']);
     });
 
     //invoice controller
