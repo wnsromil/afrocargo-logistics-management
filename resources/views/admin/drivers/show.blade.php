@@ -92,10 +92,8 @@
                         </span>
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">Phone Number</h6>
-                            <p class="col3A fw_500">+{{ $user->phone_code->phonecode ?? '' }}
-                                {{ $user->phone ?? '-' }}</p>
-                            {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}
-                            </p> --}}
+                            <p class="col3A fw_500">{{ $user->country_code ?? '' }} {{ $user->phone ?? '--' }}</p>
+                            {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}</p> --}}
                         </div>
                     </div>
                 </div>

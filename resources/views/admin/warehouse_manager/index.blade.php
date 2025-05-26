@@ -73,7 +73,7 @@
                                     <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
                                     <td>{{$warehouse->email ?? '-'}}</td>
                                     <td><p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$warehouse->address ?? '-'}}">{{$warehouse->address ?? '-'}}</p></td>
-                                    <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
+                                    <td>{{ $warehouse->country_code ?? '' }} {{$warehouse->phone ?? '-'}}</td>
                                     <td>
                                         <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}

@@ -1,10 +1,11 @@
 <x-app-layout>
     @section('style')
-        <style>
-            .content-page-header {
-                margin-top: -10px;
-            }
-        </style>
+    <style>
+        .content-page-header {
+            margin-top: -10px;
+        }
+
+    </style>
     @endsection
 
     <x-slot name="header">
@@ -44,8 +45,7 @@
             <div class="col-md-3 dposition">
                 <label>Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange"
-                        placeholder="From Date - To Date" />
+                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange" placeholder="From Date - To Date" />
                 </div>
             </div>
 
@@ -116,30 +116,93 @@
                             </thead>
                             <tbody>
                                 @forelse ($invoices as $index => $invoice)
-                                    <tr>
-                                        {{-- <td><input type="checkbox"
-                                                class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
-                                                value="{{ $invoice->id }}"></td> --}}
-                                        <td>{{ ++$index }}</td>
-                                        <td>
-                                            <div>#{{ $invoice->invoice_no ?? 'INV-001' }}</div>
-                                        </td>
-                                        <td>
-                                            {{ $invoice->parcel_id ?? '-' }}
-                                        </td>
-                                        <td>
-                                            <div>2E 5777</div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                @if (empty($invoice->invoce_item))
-                                                    <span class="text-danger">No Items</span>
-                                                @else
-                                                    @foreach($invoice->invoce_item as $item)
-                                                        {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}),
-                                                    @endforeach
-                                                @endif
-
+                                <tr>
+                                    {{-- <td><input type="checkbox"
+                                            class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
+                                    value="{{ $invoice->id }}"></td> --}}
+                                    <td>{{ ++$index }}</td>
+                                    <td>
+                                        <div>#{{ $invoice->invoice_no ?? 'INV-001' }}</div>
+                                    </td>
+                                    <td>
+                                        {{ $invoice->parcel_id ?? '-' }}
+                                    </td>
+                                    <td>
+                                        <div>2E 5777</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            @if (empty($invoice->invoce_item))
+                                            <span class="text-danger">No Items</span>
+                                            @else
+                                            @foreach($invoice->invoce_item as $item)
+                                            {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}),
+                                            @endforeach
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>$ {{ number_format($invoice->total_price, 2) }}</div>
+                                    </td>
+                                    <td>
+                                        <div>Driver Name</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <p>
+                                                <i class="fe fe-user"></i>{{ $invoice->pickup_address->full_name ?? '-' }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-phone"></i>{{ $invoice->pickup_address->mobile_number ?? '-' }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-map-pin"></i>{{ $invoice->pickup_address->address ?? '-' }}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <p>
+                                                <i class="fe fe-user"></i>{{ $invoice->delivery_address->full_name ?? '-' }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-phone"></i>{{ $invoice->delivery_address->mobile_number ?? '-' }}
+                                            </p>
+                                            <p>
+                                                <i class="fe fe-map-pin"></i>{{ $invoice->delivery_address->address ?? '-' }}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span>${{ number_format($invoice->grand_total, 2) }}</span>
+                                    </td>
+                                    <td>
+                                        <span>${{ number_format($invoice->payment, 2) }}</span>
+                                    </td>
+                                    <td>
+                                        <span>${{ number_format($invoice->balance, 2) }}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{ $invoice->invoce_type ?? '-' }}</span>
+                                    </td>
+                                    <td>
+                                        <label class="labelstatus" for="{{ $invoice->status }}">{{ $invoice->status }}</label>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{route('admin.invoices.edit',$invoice->id)}}"><i class="far fa-edit me-2"></i>Edit Invoice</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{route('admin.invoices.details',$invoice->id)}}"><i class="far fa-eye me-2"></i>View Invoice</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{route('admin.invoices.show',$invoice->id)}}"><i class="far fa-eye me-2"></i>View Delivery Challans</a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </td>
                                         <td>

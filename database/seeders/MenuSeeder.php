@@ -109,6 +109,14 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
+                'title' => 'Bill of Lading',
+                'icon' => '<i class="menuIcon ti ti-truck"></i>',
+                'route' => 'admin.BillofLading.index',
+                'route' => '#',
+                'active' => 'bill_of_lading*,lading_details*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
                 'title' => 'Notifications Schedule',
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
                 'route' => 'admin.notification_schedule.index',
@@ -224,6 +232,26 @@ class MenuSeeder extends Seeder
                 'title' => 'templates',
                 'route' => 'admin.templates.index',
                 'active' => 'templates*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus
+        $template = Menu::where('title', 'Bill Of Lading')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'Bill Of Lading',
+                'route' => 'admin.bill_of_lading.index',
+                'active' => 'bill_of_lading*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Bill Of Lading Details',
+                'route' => 'admin.lading_details.index',
+                'active' => 'lading_details*',
                 'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
