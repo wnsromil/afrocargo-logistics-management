@@ -23,12 +23,13 @@ class ContainerController extends Controller
         ]);
     }
 
-    public function getAdminActiveContainers()
+    public function getAdminActiveContainers(Request $request)
     {
-        // Sirf ek hi active container chahiye
+        $warehouseId = $request->input('warehouse_id'); // warehouse_id from request
         $container = Vehicle::where('status', 'Active')
-            ->where('vehicle_type', 'Container')
-            ->first(); // <-- only first result
+            ->where('vehicle_type', 1)
+            ->where('warehouse_id', $warehouseId)
+            ->first();
 
         return response()->json([
             'message' => 'Active container fetched successfully',
@@ -36,14 +37,14 @@ class ContainerController extends Controller
         ]);
     }
 
+
     public function toggleStatus(Request $request)
     {
-       
         $openId = $request->input('open_id');
         $closeId = $request->input('close_id');
+        $warehouseId = $request->input('warehouseId');
         $checkbox_status = $request->input('checkbox_status');
 
-        // Initialize response tracking
         $response = [
             'success' => true,
             'message' => 'Status updated successfully.',
@@ -51,12 +52,20 @@ class ContainerController extends Controller
         ];
 
         $today = Carbon::now()->toDateString(); // current date
-        // $today = "2025-04-25"; // for testing purpose
-        // Toggle status for open container (if ID given)
+
+        // Step 1: If we're activating a container, first deactivate all containers in that warehouse
+        if ($warehouseId && $openId) {
+            Vehicle::where('warehouse_id', $warehouseId)
+                ->where('id', '!=', $openId)
+                ->update(['status' => 'Inactive']);
+        }
+
+        // Step 2: Activate selected open container
         if ($openId) {
             $openVehicle = Vehicle::find($openId);
             if ($openVehicle) {
                 $openVehicle->status = 'Active';
+
                 if ($checkbox_status == 'only_open' || $checkbox_status == 'both_open_close') {
                     $openVehicle->open_date = $today;
                     $openVehicle->container_status = 20;
@@ -72,16 +81,17 @@ class ContainerController extends Controller
             }
         }
 
-        // Inactivate close container (if ID given)
+        // Step 3: Close selected container (if any)
         if ($closeId) {
             $closeVehicle = Vehicle::find($closeId);
             if ($closeVehicle) {
                 $closeVehicle->status = 'Inactive';
-                
+
                 if ($checkbox_status == 'only_close' || $checkbox_status == 'both_open_close') {
                     $closeVehicle->close_date = $today;
                     $closeVehicle->container_status = 0;
                 }
+
                 $closeVehicle->save();
 
                 $response['toggled'][] = [

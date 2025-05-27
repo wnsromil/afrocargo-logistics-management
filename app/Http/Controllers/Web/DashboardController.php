@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function index()
     {
         // Latest 4 vehicles where type is 'Container'
-        $latestContainers = Vehicle::where('vehicle_type', 'Container')
+        $latestContainers = Vehicle::where('vehicle_type', 1)
             ->withCount('parcelsCount')
             ->latest()
             ->take(4)

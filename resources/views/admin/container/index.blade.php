@@ -135,7 +135,7 @@
                                     <td>
                                         <div class="status-toggle toggles togglep">
                                             <input
-                                                onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}')"
+                                                onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}' , '{{ $vehicle->warehouse_id }}')"
                                                 id="rating_{{$index}}" class="check" type="checkbox"
                                                 value="{{$vehicle->status}}" {{$vehicle->status == 'Active' ? 'checked' : '' }}>
                                             <label for="rating_{{$index}}"
@@ -197,11 +197,14 @@
     </div>
 
 @section('script')
+<!-- Axios CDN -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    function handleContainerClick(containerId, containerNumber) {
+    function handleContainerClick(containerId, containerNumber, warehouseId) {
         // Step 1: First fetch current active container
-        axios.get('/api/vehicle/getAdminActiveContainer')
-            .then(response => {
+        axios.post('/api/vehicle/getAdminActiveContainer', {
+          warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
+          }).then(response => {
                 const activeContainer = response.data.container;
 
                 let message = '';
@@ -230,7 +233,8 @@
                         axios.post('/api/vehicle/toggle-status', {
                             open_id: containerId,
                             close_id: activeContainer?.id,
-                            checkbox_status: checkbox_status
+                            checkbox_status: checkbox_status,
+                             warehouseId: warehouseId,
                         })
                         .then((res) => {
                             Swal.fire('Success', 'Container status updated.', 'success').then(() => {

@@ -412,7 +412,7 @@ td.image-cell img {
 
 
 
-table,
+/* table,
 th,
 td {
   border: none !important;
@@ -422,10 +422,10 @@ td {
 
 table thead {
   border: none !important;
-}
+} */
 
 table tbody {
-  border: none !important;
+  /* border: none !important; */
 }
 
 
