@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\InventoryHelper;
 use Illuminate\Http\Request;
 use App\Models\{
     User,
@@ -134,7 +135,7 @@ class DriverInventoryController extends Controller
             })
             ->get();
 
-        $items = Inventory::where('inventory_type', 'Supply')
+        $items = Inventory::where('inventary_sub_type', 'Supply')
             ->where('status', 'Active')
             ->get();
         $time = Carbon::now()->format('h:i A');
@@ -146,53 +147,63 @@ class DriverInventoryController extends Controller
      */
     public function store(Request $request)
     {
-        // ✅ Validation
+        // ✅ Basic Validation
         $request->validate([
-            'driverInventoryDate' => 'required|date',
-            'currentTIme'         => 'required',
-            'driver_id'           => 'required|exists:users,id',
-            'InOutType'           => 'required|in:In,Out',
-            'item_id'             => 'required|exists:inventories,id',
-            'in_stock_quantity'   => 'required|numeric|min:1',
-        ], [
-            'driverInventoryDate.required' => 'Please select a valid date for the inventory.',
-            'driver_id.required'           => 'Driver is required.',
-            'InOutType.required'           => 'Please choose the In/Out type.',
-            'item_id.required'             => 'Item selection is required.',
-            'in_stock_quantity.required'   => 'Please enter the quantity.',
+            'driverInventoryDate'   => 'required|date',
+            'currentTIme'           => 'required',
+            'driver_id'             => 'required|exists:users,id',
+            'InOutType'             => 'required|in:In,Out',
+            'item_id'               => 'required|array',
+            'item_id.*'             => 'required|exists:inventories,id',
+            'in_stock_quantity'     => 'required|array',
+            'in_stock_quantity.*'   => 'required|numeric|min:1',
         ]);
 
-        // Format the date
+        // ✅ Format Date
         $formattedDate = \Carbon\Carbon::createFromFormat('m/d/Y', $request->driverInventoryDate)->format('Y-m-d');
 
-        // ✅ Check if record exists for same date, driver_id, item_id and Active status
-        $existingRecord = DriverInventory::where('date', $formattedDate)
-            ->where('driver_id', $request->driver_id)
-            ->where('items_id', $request->item_id)
-            ->where('status', 'Active')
-            ->first();
+        // ✅ Custom Manual Validation
+        foreach ($request->item_id as $index => $itemId) {
+            $driverId   = $request->driver_id;
+            $inOutType  = $request->InOutType;
+            $quantity   = $request->in_stock_quantity[$index];
 
-        if ($existingRecord) {
-            // ✅ Update existing record
-            $existingRecord->update([
-                'time'        => $request->currentTIme,
-                'in_out'      => $request->InOutType,
-                'quantity'    => $request->in_stock_quantity,
-                'creator_id'  => auth()->id(),
-            ]);
+            // Total Out - Total In = Available
+            $totalOut = \App\Models\DriverInventory::where('driver_id', $driverId)
+                ->where('items_id', $itemId)
+                ->where('in_out', 'Out')
+                ->sum('quantity');
 
-            return redirect()->route('admin.driver_inventory.index')
-            ->with('success', 'Driver Inventory update successfully.');
-        } else {
-            // ✅ Create new record
-            DriverInventory::create([
+            $totalIn = \App\Models\DriverInventory::where('driver_id', $driverId)
+                ->where('items_id', $itemId)
+                ->where('in_out', 'In')
+                ->sum('quantity');
+
+            $availableQty = $totalOut - $totalIn;
+
+            if ($inOutType === 'In' && $totalOut == 0) {
+                return back()->withErrors([
+                    "item_id.$index" => "Please take the item out first before bringing it back in.",
+                ])->withInput();
+            }
+
+            if ($inOutType === 'In' && $quantity > $availableQty) {
+                return back()->withErrors([
+                    "in_stock_quantity.$index" => "Oops! Only $availableQty of this item (ID: $itemId) is available, but you tried to add $quantity.",
+                ])->withInput();
+            }
+        }
+
+        // ✅ Save All Items
+        foreach ($request->item_id as $index => $itemId) {
+            \App\Models\DriverInventory::create([
                 'date'         => $formattedDate,
                 'warehouse_id' => $request->warehouse_id,
                 'time'         => $request->currentTIme,
                 'driver_id'    => $request->driver_id,
                 'in_out'       => $request->InOutType,
-                'items_id'     => $request->item_id,
-                'quantity'     => $request->in_stock_quantity,
+                'items_id'     => $itemId,
+                'quantity'     => $request->in_stock_quantity[$index],
                 'creator_id'   => auth()->id(),
             ]);
         }
@@ -200,7 +211,6 @@ class DriverInventoryController extends Controller
         return redirect()->route('admin.driver_inventory.index')
             ->with('success', 'Driver Inventory saved successfully.');
     }
-
 
 
     /**

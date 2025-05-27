@@ -11,15 +11,15 @@ class InventoryController extends Controller
     public function getItems(Request $request)
     {
         $request->validate([
-            'type' => 'nullable|in:Service,Supply',
+          //  'type' => 'nullable|in:Service,Supply',
             'search' => 'nullable|string|max:255',
         ]);
 
         $query = Inventory::query();
 
-        if ($request->filled('type')) {
-            $query->where('inventory_type', $request->type);
-        }
+        // if ($request->filled('type')) {
+        //     $query->where('inventory_type', $request->type);
+        // }
 
         if ($request->filled('search')) {
             $query->where('name', 'LIKE', '%' . $request->search . '%');

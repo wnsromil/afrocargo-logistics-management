@@ -17,29 +17,19 @@ use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
-    public function getCustomers(Request $request)
+    public function getCustomersInvoice(Request $request)
     {
         $request->validate([
             'invoice_custmore_type' => 'nullable|in:from_to,ship_to,all',
-            'invoice_custmore_id' => 'nullable|integer',
+            'invoice_custmore_id' => 'required|integer',
             'search' => 'nullable|string|max:255',
         ]);
 
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query(key: 'invoice_custmore_id');
 
-          $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
-
-
-        if ($invoiceCustomerId) {
-            // Only fetch this specific customer by ID
-            $query->where('invoice_custmore_id', $invoiceCustomerId);
-        } else {
-            // Apply type filter only if invoice_custmore_id not provided
-            if ($type && in_array($type, ['from_to', 'ship_to'])) {
-                $query->where('invoice_custmore_type', $type);
-            }
-        }
+        $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
+        $query->where('invoice_custmore_id', $invoiceCustomerId);
 
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
@@ -53,7 +43,48 @@ class CustomerController extends Controller
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
-            $customer->address = $address->address ?: $customer->address;
+            if ($address && !empty($address->address)) {
+                $customer->address = $address->address;
+            } else {
+                $customer->address = $customer->address ?? null;
+            }
+        }
+
+        return response()->json(['customers' => $customers], 200);
+    }
+
+    public function getCustomersDriver(Request $request)
+    {
+        $request->validate([
+            'created_by_id' => 'required|integer',
+            'search' => 'nullable|string|max:255',
+        ]);
+
+        $DriverCustomerId = $request->query(key: 'created_by_id');
+
+        $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
+        $query->where('created_by_id', $DriverCustomerId);
+        $query->where('invoice_custmore_type', 'from_to'); // Assuming you want to filter by 'from_to' type
+        $query->where('invoice_custmore_id', null);
+
+
+        if ($request->has('search') && !empty($request->query('search'))) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+
+        foreach ($customers as $customer) {
+            $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
+            if ($address && !empty($address->address)) {
+                $customer->address = $address->address;
+            } else {
+                $customer->address = $customer->address ?? null;
+            }
         }
 
 
@@ -68,13 +99,25 @@ class CustomerController extends Controller
             return response()->json(['message' => 'ID is required'], 400);
         }
 
-        $customer = User::where('role_id', 3)->where('id', $id)->with('vehicle')->first();
+        // Step 1: Main customer record by ID
+        $customer = User::where('role_id', 3)
+            ->where('id', $id)
+            ->with('vehicle', 'invoiceCustmore')
+            ->first();
 
         if (!$customer) {
             return response()->json(['message' => 'No customer found'], 404);
         }
 
-        return response()->json(['customer' => $customer], 200);
+        // Step 2: Latest related user where invoice_custmore_id == $id
+        $latestRelated = User::where('invoice_custmore_id', $id)
+            ->orderByDesc('id') // ya ->latest() agar created_at use kar rahe ho
+            ->first();
+
+        return response()->json([
+            'customer' => $customer,
+            'latest_related' => $latestRelated,
+        ], 200);
     }
 
     public function createCustomer(Request $request)
@@ -103,18 +146,20 @@ class CustomerController extends Controller
                 if ($request->hasFile($imageType)) {
                     $file = $request->file($imageType);
                     $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
-            
+
                     $folder = ($imageType === 'profile_pics') ? 'uploads/profile_pics' : 'uploads/customer';
                     $filePath = $file->storeAs($folder, $fileName, 'public');
-            
+
                     // Yahan condition laga do
                     if ($imageType === 'license_picture') {
                         $filePath = 'storage/' . $filePath;
                     }
-            
+
                     $imagePaths[$imageType] = $filePath;
                 }
-            }            
+            }
+
+            $user = $this->user;
             $userData = [
                 'name' => $validated['first_name'],
                 'email' => $validated['email'] ?? null,
@@ -127,6 +172,7 @@ class CustomerController extends Controller
                 'city_id' => $validated['city'],
                 'pincode' => $validated['Zip_code'],
                 'role' => 'customer',
+                'created_by_id' => $user->id,
                 'password' => Hash::make(12345678),
                 'status' => $request->status ?? 'Active',
                 'company_name' => $request->company_name ?? null,
