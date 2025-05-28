@@ -76,13 +76,16 @@
                         <thead class="thead-light">
 
                             <tr>
-                                <th>Ship To ID</th>
+                                <th class="no-sort">Customer ID</th>
+                                <th>Photo</th>
                                 <th>Name</th>
+                                <th>Username</th>
                                 <th>Email</th>
+                                <th>Warehouse</th>
+                                <th>Group Container</th>
                                 <th>License ID</th>
                                 <th>Phone</th>
                                 <th>Address</th>
-                                <th>Customer ID</th>
                                 <th style="text-align: center;">Status</th>
                                 <th>Action</th>
 
@@ -92,38 +95,44 @@
                         <tbody>
                             @forelse ($customers as $index => $customer)
                                 <tr>
-                                    <td> {{ $customer->unique_id ?? "--" }}</td>
+                                    <td> {{ $customer->unique_id }}</td>
+                                    <td>
+                                        <h2 {{-- class="table-avatar" --}}>
+                                            <a href="{{ route('admin.customer.show', $customer->id) }}"
+                                                class="avatar avatar-sm me-2">
+                                                @if ($customer->profile_pic)
+                                                    <img class="avatar-img rounded-circle"
+                                                        src="{{ asset($customer->profile_pic) }}" alt="license">
+                                                @else
+                                                    <p>No Image</p>
+                                                @endif
+                                            </a>
+                                        </h2>
+                                    </td>
                                     <td>{{ ucfirst($customer->name ?? '') }}</td>
+                                    <td>{{ $customer->username ?? '' }}</td>
                                     <td>{{ $customer->email ?? '-' }}</td>
+                                    <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
+                                    <td>{{ $customer->vehicle->container_no_1 ?? '-' }}</td>
                                     <td>{{ $customer->license_number ?? '-' }}</td>
                                     <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
-                                        +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 ?? '-' }}
-                                    </td>
-                                    <td>{{ $customer->address ?? '-' }}<br>
-                                        {{ $customer->address_2 ?? '-' }}
-                                    </td>
-                                    <td>
-                                        @if($customer->parent_customer)
-                                            <a href="{{ route('admin.customer.show', $customer->parent_customer_id) }}">
-                                                {{ $customer->parent_customer->unique_id }}
-                                            </a>
+                                        @if (!empty($customer->phone_2))
+                                            +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 }}
                                         @else
                                             -
                                         @endif
-
+                                    </td>
+                                    <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                        title="{!! nl2br(e($customer->address ?? '-')) . '<br>' . nl2br(e($customer->address_2 ?? '-')) !!}">
+                                        {{ Str::limit($customer->address ?? '-', 15) }}<br>
+                                        {{ Str::limit($customer->address_2 ?? '-', 15) }}
                                     </td>
                                     <td>
-                                        @if ($customer->status == 'Active')
-                                            <div class="container">
-                                                <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
-                                                <p>Active</p>
-                                            </div>
-                                        @else
-                                            <div class="container">
-                                                <img src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
-                                                <p>Inactive</p>
-                                            </div>
-                                        @endif
+                                        <label
+                                            class="labelstatus {{ $customer->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                            for="{{ $customer->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                            {{ $customer->status == 'Active' ? 'Active' : 'Inactive' }}
+                                        </label>
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
@@ -137,12 +146,9 @@
                                                                 class="far fa-edit me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        @if($customer)
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.customer.show', $customer->id) }}">
-                                                                <i class="far fa-eye me-2"></i>View
-                                                            </a>
-                                                        @endif
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.customer.show', $customer->id) }}"><i
+                                                                class="far fa-eye me-2"></i>View</a>
                                                     </li>
                                                     @if($customer->status == 'Active')
                                                         <li>

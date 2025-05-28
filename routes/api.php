@@ -24,7 +24,8 @@ use App\Http\Controllers\Api\{
     ExpensesController,
     DriverInventoryController,
     DashboardController,
-    ServiceOrderStatusManage
+    ServiceOrderStatusManage,
+    PickupController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -75,6 +76,9 @@ Route::post(uri: '/update-status-fully-loaded-container', action: [OrderStatusMa
 Route::post(uri: '/update-status-fully-discharge-container', action: [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
 Route::post(uri: '/update-status-delivery-with-driver', action: [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
 
+// Pickup and Ship to Users
+Route::get('/pickup-users/{id}', [PickupController::class, 'getPickupUsers']);
+Route::get('/ship-to-users/{id}', [PickupController::class, 'getShipToUsers']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

@@ -65,10 +65,9 @@
                     </button>
                 </div>
                 <div class="col-md-auto p-0 mx-1">
-                    <select class="form-select form-select-sm text-truncate select-size-1"
+                    <select id="pickupUserSelect" class="form-select form-select-sm text-truncate select-size-1"
                         aria-label="Small select example">
-                        <option selected value="1">Mahamed Bakayoko - 200 W 146th St...
-                        </option>
+                        <option disabled>-- Select Pickup User --</option>
                     </select>
                 </div>
             </div>
@@ -81,40 +80,32 @@
                                 class="col-form-label font-size-label text-dark">ID</label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                placeholder="Enter ID" value="PUA-001854">
+                            <input type="text" id="unique_id" class="form-control form-control-sm"
+                                placeholder="Enter ID" value="">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 px-0 text-end">
-                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">First
-                                Name<i class="text-danger">*</i>
+                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Full
+                                Name
+                                <i class="text-danger">*</i>
                             </label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                placeholder="Enter ID" value="Mahamed" required>
+                            <input type="text" id="name" class="form-control form-control-sm" placeholder="Enter Name"
+                                value="">
                         </div>
                     </div>
-                    <div class="row align-items-center my-4">
-                        <div class="col-4 px-0 text-end">
-                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Last
-                                Name<i class="text-danger">*</i></label>
-                        </div>
-                        <div class="col-8 justify-content-end">
-                            <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                placeholder="Enter Last Name" value="Bakayoko" required>
-                        </div>
-                    </div>
+
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
                             <label for="address2" class="col-form-label font-size-label text-dark">Longitude<i
                                     class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" name="cityName" id="address2"
-                                class="form-control form-control-sm text-truncate" value="0" placeholder="Enter ID"
-                                value="0" required readonly>
+                            <input type="text" name="cityName" id="longitude"
+                                class="form-control form-control-sm text-truncate" placeholder="Enter ID" value=""
+                                readonly>
                         </div>
                     </div>
                 </div>
@@ -123,13 +114,12 @@
                     <div class="row align-items-center">
                         <div class="col-4 text-end px-0">
                             <label for="masterPickUpAddressId"
-                                class="col-form-label font-size-label danger-shade">Address1<i
+                                class="col-form-label font-size-label text-dark">Address1<i
                                     class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="masterPickUpAddressId"
-                                class="form-control form-control-sm text-truncate border-danger-shade"
-                                value="200 W 146th St" placeholder="Enter Address 1" value="200 W 146th St" required>
+                            <input type="text" id="address" class="form-control form-control-sm text-truncate" value=""
+                                placeholder="Enter Address 1" value="">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
@@ -138,8 +128,8 @@
                                 class="col-form-label font-size-label text-dark">Address2</label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="masterPickUpAddressId"
-                                class="form-control form-control-sm text-truncate" placeholder="Enter Address 2">
+                            <input type="text" id="address_2" class="form-control form-control-sm text-truncate"
+                                placeholder="Enter Address 2">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
@@ -148,9 +138,8 @@
                                 class="col-form-label font-size-label text-dark">Apartment</label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="masterPickUpAddressId"
-                                class="form-control form-control-sm text-truncate" value=""
-                                placeholder="Enter Apartment">
+                            <input type="text" id="apartment" class="form-control form-control-sm text-truncate"
+                                value="" placeholder="Enter Apartment">
                         </div>
                     </div>
                 </div>
@@ -162,9 +151,9 @@
                                     class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" name="cityName" id="address2"
-                                class="form-control form-control-sm text-truncate" value="New York"
-                                placeholder="Enter ID" value="200 W 146th St" required>
+                            <input type="text" name="cityName" id="city"
+                                class="form-control form-control-sm text-truncate" value="" placeholder="Enter ID"
+                                value="">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
@@ -173,9 +162,8 @@
                                     class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" name="cityName" id="address2"
-                                class="form-control form-control-sm text-truncate" value="NY" placeholder="Enter State"
-                                required>
+                            <input type="text" name="cityName" id="state"
+                                class="form-control form-control-sm text-truncate" value="NY" placeholder="Enter State">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
@@ -184,7 +172,7 @@
                                     class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" name="cityName" id="address2"
+                            <input type="text" name="cityName" id="zipcode"
                                 class="form-control form-control-sm text-truncate" value="10039" placeholder="Enter ID"
                                 required>
                         </div>
@@ -192,15 +180,15 @@
                 </div>
 
                 <div class="col-md-3 col-sm-6 col-lg-3 my-3">
-                    <div class="row align-items-center">
-                        <div class="col-4 text-end px-0">
-                            <label for="alternate_mobile_no" class="col-form-label font-size-label text-dark">Cell
-                                Phone<i class="text-danger">*</i></label>
+                    <div class="row align-items-center my-4">
+                        <div class="col-4 px-0 text-end">
+                            <label for="address2" class="col-form-label font-size-label text-dark">Cell Phone<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <div class="flaginputwrap">
                                 <div class="customflagselect">
-                                    <select class="flag-select" id="alternate_mobile_no" name="alternate_mobile_no">
+                                    <select class="flag-select" name="alternate_mobile_no" id="Pickup_cell_phone_id">
                                         @foreach ($coutry as $key => $item)
                                             <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                 data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -210,23 +198,23 @@
                                     </select>
                                 </div>
                                 <input type="number" class="form-control form-control-sm flagInput inp"
-                                    placeholder="646-318-4709" name="mobile_number" value="{{ old('mobile_number') }}"
-                                    oninput="this.value = this.value.slice(0, 10)">
+                                    placeholder="Enter Mobile No" id="Pickup_cell_phone" name="Pickup_cell_phone"
+                                    value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('alternate_mobile_no')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
-
                     <div class="row align-items-center my-4">
-                        <div class="col-4 text-end px-0">
-                            <label for="mobile_code" class="col-form-label font-size-label text-dark">TelePhone</label>
+                        <div class="col-4 px-0 text-end">
+                            <label for="address2" class="col-form-label font-size-label text-dark">TelePhone<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <div class="flaginputwrap">
                                 <div class="customflagselect">
-                                    <select id="mobile_code" class="flag-select" name="alternate_mobile_no">
+                                    <select class="flag-select" name="alternate_mobile_no" id="Pickup_telePhone_id">
                                         @foreach ($coutry as $key => $item)
                                             <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                 data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -236,8 +224,8 @@
                                     </select>
                                 </div>
                                 <input type="number" class="form-control form-control-sm flagInput inp"
-                                    placeholder="201-555-878" name="mobile_number" value="{{ old('mobile_number') }}"
-                                    oninput="this.value = this.value.slice(0, 10)">
+                                    placeholder="Enter Mobile No" id="Pickup_telePhone" name="Pickup_telePhone"
+                                    value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('alternate_mobile_no')
                                 <small class="text-danger">{{ $message }}</small>
@@ -250,9 +238,9 @@
                                     class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" name="cityName" id="address2"
+                            <input type="text" name="cityName" id="latitude"
                                 class="form-control form-control-sm text-truncate" placeholder="Enter ID" value="0"
-                                required readonly>
+                                readonly>
                         </div>
                     </div>
                 </div>
@@ -451,10 +439,9 @@
                         </button>
                     </div>
                     <div class="col-md-auto p-0 mx-1">
-                        <select class="form-select form-select-sm text-truncate select-size-1"
+                        <select id="shiptoUserSelect" class="form-select form-select-sm text-truncate select-size-1"
                             aria-label="Small select example">
-                            <option selected value="1">Aly Dramane - Abidjan
-                            </option>
+                            <option disabled>-- Select Ship To User --</option>
                         </select>
                     </div>
                 </div>
@@ -468,36 +455,44 @@
                                         class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
-                                <select id="country" name="country" class="form-select select2 form-select-sm" required>
-                                    <option value="" selected>Select Country</option>
-                                    <option value="us">US</option>
-                                    <option value="india">India</option>
-                                    <option value="france">France</option>
+                                <select id="shipto_country" name="shipto_country"
+                                    class="js-example-basic-single select2">
+                                    <option value="" disabled hidden {{ old('country') ? '' : 'selected' }}>Select
+                                        Country</option>
+                                    <option value="Bangladesh" {{ old('country') == 'Bangladesh' ? 'selected' : '' }}>
+                                        Bangladesh</option>
+                                    <option value="Belgium" {{ old('country') == 'Belgium' ? 'selected' : '' }}>Belgium
+                                    </option>
+                                    <option value="Kuwait" {{ old('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait
+                                    </option>
+                                    <option value="Dominica" {{ old('country') == 'Dominica' ? 'selected' : '' }}>Dominica
+                                    </option>
+                                    <option value="India" {{ old('country') == 'India' ? 'selected' : '' }}>India</option>
+                                    <option value="Dominican Republic" {{ old('country') == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
+                                    <option value="Andorra" {{ old('country') == 'Andorra' ? 'selected' : '' }}>Andorra
+                                    </option>
+                                    <option value="Chile" {{ old('country') == 'Chile' ? 'selected' : '' }}>Chile</option>
+                                    <option value="United States" {{ old('country') == 'United States' ? 'selected' : '' }}>United States</option>
+                                    <option value="Greenland" {{ old('country') == 'Greenland' ? 'selected' : '' }}>
+                                        Greenland</option>
+                                    <option value="Cabo Verde" {{ old('country') == 'Cabo Verde' ? 'selected' : '' }}>Cabo
+                                        Verde</option>
+                                    <option value="Côte d'Ivoire" {{ old('country') == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
+                                    <option value="Mali" {{ old('country') == 'Mali' ? 'selected' : '' }}>Mali</option>
+                                    <option value="European Union" {{ old('country') == 'European Union' ? 'selected' : '' }}>European Union</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
                                 <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">First
+                                    class="col-form-label font-size-label text-dark-shade">Full
                                     Name<i class="text-danger">*</i>
                                 </label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter First Name" value="Aly" required>
-                            </div>
-                        </div>
-                        <div class="row align-items-center my-3">
-                            <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Last
-                                    Name<i class="text-danger">*</i>
-                                </label>
-                            </div>
-                            <div class="col-8 justify-content-end">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Last Name" value="Dramane" required>
+                                <input type="text" id="shipto_name" class="form-control form-control-sm"
+                                    placeholder="Enter Full Name">
                             </div>
                         </div>
                     </div>
@@ -506,24 +501,24 @@
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
                                 <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Address1<i
+                                    class="col-form-label font-size-label text-dark-shade">Address 1<i
                                         class="text-danger">*</i>
                                 </label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Last Name" value="Abidjan" required>
+                                <input type="text" id="shipto_address" class="form-control form-control-sm"
+                                    placeholder="Enter Address 1" required>
                             </div>
                         </div>
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
                                 <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Address2
+                                    class="col-form-label font-size-label text-dark-shade">Address 2
                                 </label>
                             </div>
                             <div class="col-8 justify-content-end my-3">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Address 2" value="">
+                                <input type="text" id="shipto_address_2" class="form-control form-control-sm"
+                                    placeholder="Enter Address 2">
                             </div>
                         </div>
                     </div>
@@ -537,7 +532,7 @@
                             <div class="col-8 justify-content-end">
                                 <div class="flaginputwrap">
                                     <div class="customflagselect">
-                                        <select class="flag-select" name="alternate_mobile_no">
+                                        <select class="flag-select" name="shipto_cellphone_id" id="shipto_cellphone_id">
                                             @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -547,7 +542,7 @@
                                         </select>
                                     </div>
                                     <input type="number" class="form-control form-control-sm flagInput inp"
-                                        placeholder="Enter Mobile No" name="mobile_number"
+                                        placeholder="Enter Mobile No" name="shipto_cell_phone" id="shipto_cell_phone"
                                         value="{{ old('mobile_number') }}"
                                         oninput="this.value = this.value.slice(0, 10)">
                                 </div>
@@ -565,7 +560,7 @@
                             <div class="col-8 justify-content-end">
                                 <div class="flaginputwrap">
                                     <div class="customflagselect">
-                                        <select class="flag-select" name="alternate_mobile_no">
+                                        <select class="flag-select" name="alternate_mobile_no" id="shipto_telePhone_id">
                                             @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -575,7 +570,7 @@
                                         </select>
                                     </div>
                                     <input type="number" class="form-control form-control-sm flagInput inp"
-                                        placeholder="Enter Mobile No" name="mobile_number"
+                                        placeholder="Enter Mobile No" name="mobile_number" id="shipto_telePhone"
                                         value="{{ old('mobile_number') }}"
                                         oninput="this.value = this.value.slice(0, 10)">
                                 </div>
@@ -606,8 +601,8 @@
                                     class="col-form-label font-size-label text-dark">Latitude</label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Latitude" value="">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter Latitude"
+                                    id="shipto_latitude">
                             </div>
                         </div>
 
@@ -617,8 +612,8 @@
                                     class="col-form-label font-size-label text-dark">Longitude</label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Longitude" value="">
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter Longitude"
+                                    id="shipto_longitude" value="">
                             </div>
                         </div>
                     </div>
@@ -626,121 +621,14 @@
             </div>
         </div>
     </form>
+
+
     <div class="float-end mt-3">
         <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')"
             class="btn btn-outline-dark">Cancel</button>
         <button type="submit" class="btn btn-dark">Save</button>
     </div>
     <!-- ================================================================ -->
-
-    <!-- <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="row">
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="masterPickUpAddressId">Customer Pickup ID<span class="text-danger">*</span> </label>
-                    <input type="text" name="masterPickUpAddressId" class="form-control inp" readonly placeholder="Enter ID" value="PUA-001888">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="Company">Company </label>
-                    <input type="text" name="CompanyName" class="form-control inp" placeholder="Enter Company Name">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="address1">First Name<i class="text-danger">*</i></label>
-                    <input type="text" name="firstname" class="form-control inp" placeholder="Enter First Name" Value="Noura">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="address1">Last Name<i class="text-danger">*</i></label>
-                    <input type="text" name="lastname" class="form-control inp" placeholder="Enter Last Name" Value="Traore">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor">Telephone</label>
-                    <input type="tel" id="mobile_code" name="mobile_code" class="form-control inp" placeholder="Enter Telephone" value="2125252525" oninput="this.value = this.value.slice(0, 10)">
-                    @error('mobile_code')
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-            </div>
-            <input type="hidden" id="country_code" name="country_code">
-
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="alternate_mobile_no">Cellphone<span class="text-danger">*</span></label>
-                    <input type="tel" id="alternate_mobile_no" name="alternate_mobile_no" class="form-control inp" placeholder="Enter Cellphone No." value="2125252525" oninput="this.value = this.value.slice(0, 10)">
-                    @error('alternate_mobile_no')
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-                <input type="hidden" id="country_code_2" name="country_code_2">
-            </div>
-
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="address2">Address<span class="text-danger">*</span> </label>
-                    <input type="text" name="address2" class="form-control inp" placeholder="Select Address 1">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="Apartment">Apartment </label>
-                    <input type="text" name="Apartment" class="form-control inp" placeholder="Enter Apartment">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="Latitude">Latitude<i class="text-danger">*</i></label>
-                    <input type="text" name="Latitude" class="form-control inp" readonly placeholder="Enter Latitude" value="0">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="Longitude">Longitude<i class="text-danger">*</i></label>
-                    <input type="text" name="Longitude" class="form-control inp" readonly placeholder="Enter Longitude" value="0">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="address1">Country<i class="text-danger">*</i> </label>
-                    <input type="text" name="CountryName" class="form-control inp" placeholder="Enter Country">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="address1">City<i class="text-danger">*</i> </label>
-                    <input type="text" name="cityName" class="form-control inp" placeholder="Enter City">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="State">State<i class="text-danger">*</i> </label>
-                    <input type="text" name="State" class="form-control inp" placeholder="Enter State">
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="input-block mb-2">
-                    <label class="foncolor" for="zipcode">Zip Code</label>
-                    <input type="text" name="zipcode" class="form-control inp" placeholder="Enter Zip Code">
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="add-customer-btns text-end">
-
-                    <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
-
-                    <button type="submit" class="btn btn-primary ">Submit</button>
-
-                </div>
-            </div>
-        </div>
-    </form> -->
 
     <div class="modal fade" id="pickupModal" aria-labelledby="pickupModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-size">
@@ -916,7 +804,6 @@
                                             placeholder="Enter longitude" value="0" required readonly>
                                     </div>
                                 </div>
-
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
                                         <label for="country_name" class="col-form-label text-dark">Country<i
@@ -928,7 +815,6 @@
                                             placeholder="Enter Country" value="0" required>
                                     </div>
                                 </div>
-
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
                                         <label for="city_name" class="col-form-label text-dark">City<i
@@ -951,7 +837,6 @@
                                             placeholder="Enter State" value="0" required>
                                     </div>
                                 </div>
-
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
                                         <label for="country_name" class="col-form-label text-dark">Zipcode<i
@@ -976,8 +861,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- ------------------- 2nd modal ---------------------------- -->
 
@@ -1009,7 +892,7 @@
                                         </select>
                                     </div>
                                     <div class="col-2 px-0" id="location_button" style="display: none;">
-                                       <button class="btn btn-dark btn-sm" id="openLocationModal">Location</button>
+                                        <button class="btn btn-dark btn-sm" id="openLocationModal">Location</button>
 
                                     </div>
                                 </div>
@@ -1103,7 +986,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label for="masterPickUpAddressId" class="col-form-label text-dark">Address<i
@@ -1245,190 +1127,319 @@
         </div>
     </div>
 
-</x-app-layout>
-<script>
-    $(document).ready(function () {
-        $("#customBackWarning").on("click", function () {
-            Swal.fire({
-                title: "Cambios No han Sido Registrado </br> Changes have not been saved"
-                , html: "* Si Continuas se pierden Los Cambios* </br> If you continue you will loose your changes"
-                , type: "warning"
-                , allowOutsideClick: !1
-                , imageUrl: "{{ asset('assets/img/stopIcon.png') }}"
-                , imageWidth: 80
-                , imageAlt: "warning"
-                , confirmButtonClass: "btn btn-primary"
-                , showCancelButton: !0
-                , confirmButtonColor: "#3085d6"
-                , cancelButtonColor: "#d33"
-                , confirmButtonText: "Continue"
-                , cancelButtonText: "OK"
-                , cancelButtonClass: "btn btn-outline-danger ml-1"
-                , buttonsStyling: !1
-                , customClass: {
-                    popup: 'customBackWarning'
-                    ,
-                }
+    @section('script')
+        <script>
+            $(document).ready(function () {
+                $("#customBackWarning").on("click", function () {
+                    Swal.fire({
+                        title: "Cambios No han Sido Registrado </br> Changes have not been saved"
+                        , html: "* Si Continuas se pierden Los Cambios* </br> If you continue you will loose your changes"
+                        , type: "warning"
+                        , allowOutsideClick: !1
+                        , imageUrl: "{{ asset('assets/img/stopIcon.png') }}"
+                        , imageWidth: 80
+                        , imageAlt: "warning"
+                        , confirmButtonClass: "btn btn-primary"
+                        , showCancelButton: !0
+                        , confirmButtonColor: "#3085d6"
+                        , cancelButtonColor: "#d33"
+                        , confirmButtonText: "Continue"
+                        , cancelButtonText: "OK"
+                        , cancelButtonClass: "btn btn-outline-danger ml-1"
+                        , buttonsStyling: !1
+                        , customClass: {
+                            popup: 'customBackWarning'
+                            ,
+                        }
+                    })
+                })
             })
-        })
-    })
 
-    // 🖼 Image Preview Function
-    function previewImage(input, imageType) {
-        if (input.files && input.files[0]) {
-            let file = input.files[0];
+            // 🖼 Image Preview Function
+            function previewImage(input, imageType) {
+                if (input.files && input.files[0]) {
+                    let file = input.files[0];
 
-            // ✅ Sirf PNG ya JPG Allow Hai
-            if (file.type === "image/png" || file.type === "image/jpeg") {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('preview_' + imageType).src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert("Only PNG & JPG images are allowed!");
-                input.value = ""; // Invalid file ko remove karna
-            }
-        }
-    }
-
-    // ❌ Remove Image Function
-    function removeImage(imageType) {
-        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
-        document.getElementById('file_' + imageType).value = "";
-    }
-    $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
-    $('.col-md-12').on('click', () => {
-        $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
-    })
-
-    $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
-    $('.col-md-12').on('click', () => {
-        $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
-    })
-
-</script>
-<script>
-    $(document).ready(function () {
-        var oldState = "{{ old('state') }}"; // Laravel old value
-        var oldCity = "{{ old('city') }}";
-
-        // ✅ Agar old state available hai toh state ke cities load kare
-        if (oldState) {
-            $('#state').html('<option selected="selected">Loading...</option>');
-            $.ajax({
-                url: '/api/get-states/' + $('#country').val()
-                , type: 'GET'
-                , success: function (states) {
-                    $('#state').html('<option selected="selected">Select State</option>');
-                    $.each(states, function (key, state) {
-                        var selected = (state.id == oldState) ? 'selected' : ''; // ✅ Old value match kare
-                        $('#state').append('<option value="' + state.id + '" ' + selected + '>' + state.name + '</option>');
-                    });
-
-                    // ✅ Agar old city available hai, toh cities load kare
-                    if (oldCity) {
-                        $('#city').html('<option selected="selected">Loading...</option>');
-                        $.ajax({
-                            url: '/api/get-cities/' + oldState
-                            , type: 'GET'
-                            , success: function (cities) {
-                                $('#city').html('<option selected="selected">Select City</option>');
-                                $.each(cities, function (key, city) {
-                                    var selected = (city.id == oldCity) ? 'selected' : ''; // ✅ Old value match kare
-                                    $('#city').append('<option value="' + city.id + '" ' + selected + '>' + city.name + '</option>');
-                                });
-                            }
-                        });
+                    // ✅ Sirf PNG ya JPG Allow Hai
+                    if (file.type === "image/png" || file.type === "image/jpeg") {
+                        let reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById('preview_' + imageType).src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert("Only PNG & JPG images are allowed!");
+                        input.value = ""; // Invalid file ko remove karna
                     }
                 }
-            });
-        }
-        // Country Change Event
-        $('#country').change(function () {
-            var country_id = $(this).val();
-            $('#state').html('<option selected="selected">Loading...</option>');
-            $('#city').html('<option selected="selected">Select City</option>');
-
-            $.ajax({
-                url: '/api/get-states/' + country_id
-                , type: 'GET'
-                , success: function (states) {
-                    $('#state').html('<option selected="selected" value="">Select State</option>');
-                    $.each(states, function (key, state) {
-                        $('#state').append('<option value="' + state.id + '">' +
-                            state.name + '</option>');
-                    });
-                }
-            });
-        });
-
-        // State Change Event
-        $('#state').change(function () {
-            var state_id = $(this).val();
-            $('#city').html('<option selected="selected">Loading...</option>');
-
-            $.ajax({
-                url: '/api/get-cities/' + state_id
-                , type: 'GET'
-                , success: function (cities) {
-                    $('#city').html('<option selected="selected" value="">Select City</option>');
-                    $.each(cities, function (key, city) {
-                        $('#city').append('<option value="' + city.id + '">' + city
-                            .name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-</script>
-<script>
-    $(document).ready(function () {
-        $('#country').select2();
-
-        $('#country').on('change', function () {
-            const value = $(this).val();
-            if (value !== '') {
-                $('#location-block').css('display', 'flex');
-            } else {
-                $('#location-block').css('display', 'none');
             }
-        });
-    });
-</script>
-<script>
-    const countrySelect = document.getElementById('country_2');
-    const locationButton = document.getElementById('location_button');
 
-    function toggleButtonVisibility() {
-        if (countrySelect.value) {
-            locationButton.style.display = 'block';
-        } else {
-            locationButton.style.display = 'none';
-        }
-    }
+            // ❌ Remove Image Function
+            function removeImage(imageType) {
+                document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+                document.getElementById('file_' + imageType).value = "";
+            }
+            $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+            $('.col-md-12').on('click', () => {
+                $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+            })
 
-    // Initial check in case the form is pre-filled
-    toggleButtonVisibility();
+            $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            $('.col-md-12').on('click', () => {
+                $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            })
 
-    // Event listener
-    countrySelect.addEventListener('change', toggleButtonVisibility);
-</script>
+        </script>
+        <script>
+            $(document).ready(function () {
+                var oldState = "{{ old('state') }}"; // Laravel old value
+                var oldCity = "{{ old('city') }}";
+
+                // ✅ Agar old state available hai toh state ke cities load kare
+                if (oldState) {
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $.ajax({
+                        url: '/api/get-states/' + $('#country').val()
+                        , type: 'GET'
+                        , success: function (states) {
+                            $('#state').html('<option selected="selected">Select State</option>');
+                            $.each(states, function (key, state) {
+                                var selected = (state.id == oldState) ? 'selected' : ''; // ✅ Old value match kare
+                                $('#state').append('<option value="' + state.id + '" ' + selected + '>' + state.name + '</option>');
+                            });
+
+                            // ✅ Agar old city available hai, toh cities load kare
+                            if (oldCity) {
+                                $('#city').html('<option selected="selected">Loading...</option>');
+                                $.ajax({
+                                    url: '/api/get-cities/' + oldState
+                                    , type: 'GET'
+                                    , success: function (cities) {
+                                        $('#city').html('<option selected="selected">Select City</option>');
+                                        $.each(cities, function (key, city) {
+                                            var selected = (city.id == oldCity) ? 'selected' : ''; // ✅ Old value match kare
+                                            $('#city').append('<option value="' + city.id + '" ' + selected + '>' + city.name + '</option>');
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                // Country Change Event
+                $('#country').change(function () {
+                    var country_id = $(this).val();
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $('#city').html('<option selected="selected">Select City</option>');
+
+                    $.ajax({
+                        url: '/api/get-states/' + country_id
+                        , type: 'GET'
+                        , success: function (states) {
+                            $('#state').html('<option selected="selected" value="">Select State</option>');
+                            $.each(states, function (key, state) {
+                                $('#state').append('<option value="' + state.id + '">' +
+                                    state.name + '</option>');
+                            });
+                        }
+                    });
+                });
+
+                // State Change Event
+                $('#state').change(function () {
+                    var state_id = $(this).val();
+                    $('#city').html('<option selected="selected">Loading...</option>');
+
+                    $.ajax({
+                        url: '/api/get-cities/' + state_id
+                        , type: 'GET'
+                        , success: function (cities) {
+                            $('#city').html('<option selected="selected" value="">Select City</option>');
+                            $.each(cities, function (key, city) {
+                                $('#city').append('<option value="' + city.id + '">' + city
+                                    .name + '</option>');
+                            });
+                        }
+                    });
+                });
+            });
+
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#country').select2();
+
+                $('#country').on('change', function () {
+                    const value = $(this).val();
+                    if (value !== '') {
+                        $('#location-block').css('display', 'flex');
+                    } else {
+                        $('#location-block').css('display', 'none');
+                    }
+                });
+            });
+        </script>
+        <script>
+            const countrySelect = document.getElementById('country_2');
+            const locationButton = document.getElementById('location_button');
+
+            function toggleButtonVisibility() {
+                if (countrySelect.value) {
+                    locationButton.style.display = 'block';
+                } else {
+                    locationButton.style.display = 'none';
+                }
+            }
+
+            // Initial check in case the form is pre-filled
+            toggleButtonVisibility();
+
+            // Event listener
+            countrySelect.addEventListener('change', toggleButtonVisibility);
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const openLocationModalBtn = document.getElementById('openLocationModal');
+                const locationModalEl = document.getElementById('locationModal');
+
+                const locationModal = new bootstrap.Modal(locationModalEl, {
+                    backdrop: false, // Prevent closing the first modal
+                    keyboard: false
+                });
+
+                openLocationModalBtn.addEventListener('click', function () {
+                    locationModal.show();
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                const url = window.location.href;
+                const id = url.substring(url.lastIndexOf('/') + 1);
+
+                // Ye variable baahar declare karo taaki change event me use ho sake
+                let pickupUsers = [];
+
+                $.ajax({
+                    url: '/api/pickup-users/' + id,
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.status && Array.isArray(response.data) && response.data.length > 0) {
+                            pickupUsers = response.data; // store data globally
+
+                            $('#pickupUserSelect').empty().append('<option disabled>-- Select Pickup User --</option>');
+
+                            response.data.forEach(function (user, index) {
+                                $('#pickupUserSelect').append(
+                                    `<option value="${user.id}" ${index === 0 ? 'selected' : ''}>${user.name}</option>`
+                                );
+                            });
+
+                            // Initial fill for first user
+                            fillPickupUserDetails(response.data[0]);
+
+                            // Change event
+                            $('#pickupUserSelect').on('change', function () {
+                                const selectedId = $(this).val();
+                                const selectedUser = pickupUsers.find(user => user.id == selectedId);
+                                if (selectedUser) {
+                                    fillPickupUserDetails(selectedUser);
+                                }
+                            });
+
+                        } else {
+                            $('#pickupUserSelect').append('<option disabled>No active pickup users found</option>');
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching users:", xhr);
+                    }
+                });
+
+                // Function to update form fields
+                function fillPickupUserDetails(user) {
+                    document.getElementById('unique_id').value = user.unique_id || '';
+                    document.getElementById('name').value = user.name || '';
+                    document.getElementById('latitude').value = user.latitude || '';
+                    document.getElementById('longitude').value = user.longitude || '';
+                    document.getElementById('address').value = user.address || '';
+                    document.getElementById('address_2').value = user.address_2 || '';
+                    document.getElementById('apartment').value = user.apartment || '';
+                    document.getElementById('state').value = user.state_id || '';
+                    document.getElementById('city').value = user.city_id || '';
+                    document.getElementById('zipcode').value = user.pincode || '';
+                    document.getElementById('Pickup_cell_phone').value = user.phone || '';
+                    document.getElementById('Pickup_telePhone').value = user.phone_2 || '';
+
+                    $('#Pickup_cell_phone_id').val(user.phone_code_id || '').trigger('change');
+                    $('#Pickup_telePhone_id').val(user.phone_2_code_id_id || '').trigger('change');
+                }
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const openLocationModalBtn = document.getElementById('openLocationModal');
-        const locationModalEl = document.getElementById('locationModal');
+            });
 
-        const locationModal = new bootstrap.Modal(locationModalEl, {
-            backdrop: false, // Prevent closing the first modal
-            keyboard: false
-        });
+            $(document).ready(function () {
+                const url = window.location.href;
+                const id = url.substring(url.lastIndexOf('/') + 1);
 
-        openLocationModalBtn.addEventListener('click', function () {
-            locationModal.show();
-        });
-    });
-</script>
+                // Ye variable baahar declare karo taaki change event me use ho sake
+                let pickupUsers = [];
+
+                $.ajax({
+                    url: '/api/ship-to-users/' + id,
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.status && Array.isArray(response.data) && response.data.length > 0) {
+                            pickupUsers = response.data; // store data globally
+
+                            $('#shiptoUserSelect').empty().append('<option disabled>-- Select Pickup User --</option>');
+
+                            response.data.forEach(function (user, index) {
+                                $('#shiptoUserSelect').append(
+                                    `<option value="${user.id}" ${index === 0 ? 'selected' : ''}>${user.name}</option>`
+                                );
+                            });
+
+                            // Initial fill for first user
+                            fillShipToUserDetails(response.data[0]);
+
+                            // Change event
+                            $('#shiptoUserSelect').on('change', function () {
+                                const selectedId = $(this).val();
+                                const selectedUser = pickupUsers.find(user => user.id == selectedId);
+                                if (selectedUser) {
+                                    fillShipToUserDetails(selectedUser);
+                                }
+                            });
+
+                        } else {
+                            $('#shiptoUserSelect').append('<option disabled>No active pickup users found</option>');
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching users:", xhr);
+                    }
+                });
+
+                function fillShipToUserDetails(user) {
+                    // document.getElementById('shipto_country').value = user.country_id || '';
+                    document.getElementById('shipto_name').value = user.name || '';
+                    document.getElementById('shipto_latitude').value = user.latitude || '';
+                    document.getElementById('shipto_longitude').value = user.longitude || '';
+                    document.getElementById('shipto_address').value = user.address || '';
+                    document.getElementById('shipto_address_2').value = user.address_2 || '';
+                    document.getElementById('shipto_cell_phone').value = user.phone || '';
+                    document.getElementById('shipto_telePhone').value = user.phone_2 || '';
+
+                    $('#shipto_country').val(user.country_id || '').trigger('change');
+                    $('#shipto_cellphone_id').val(user.phone_code_id || '').trigger('change');
+                    $('#shipto_telePhone_id').val(user.phone_2_code_id_id || '').trigger('change');
+                }
+
+            });
+        </script>
+
+
+    @endsection
+
+</x-app-layout>
