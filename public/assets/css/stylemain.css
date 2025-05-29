@@ -3653,3 +3653,45 @@ span.select2-dropdown:has(.my-custom-option-class) {
 .modal-backdrop {
     z-index: 1050;
 }
+
+.freight-size {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.button-width {
+    width: 100%;
+    background-color: #502b2b;
+    border-radius: 4px;
+}
+
+.bg-button-color {
+    border-color: #502b2b;
+    background-color: #502b2b;
+}
+
+.input-table-width {
+    width: 70px !important;
+}
+
+.input-size {
+    width: 28%;
+}
+
+.table-bordered_2{
+    border: 1px solid black !important;
+}
+
+.decoration-text{
+    text-decoration: underline !important;
+}
+.table-last-column{
+    position: unset !important;
+}
+.btn-text-color{
+    color: #1073cf;
+}
+
+.d-none{
+    display: none;
+}
