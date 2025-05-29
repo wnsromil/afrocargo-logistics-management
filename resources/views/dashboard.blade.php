@@ -582,7 +582,7 @@
                                 <div class="col-3 justify-content-end mt-1">
                                     <div class="status-toggle float-end me-0">
                                         <input
-                                            onclick="handleContainerClick('{{ $latestContainer->id }}', '{{ $latestContainer->container_no_1 }}')"
+                                            onclick="handleContainerClick('{{ $latestContainer->id }}', '{{ $latestContainer->container_no_1 }}', '{{ $latestContainer->warehouse_id }}')"
                                             id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
                                         <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
@@ -2165,65 +2165,60 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        function handleContainerClick(containerId, containerNumber) {
-            // Step 1: First fetch current active container
-            axios.get('/api/vehicle/getAdminActiveContainer')
-                .then(response => {
-                    const activeContainer = response.data.container;
+       function handleContainerClick(containerId, containerNumber, warehouseId) {
+        // Step 1: First fetch current active container
+        axios.post('/api/vehicle/getAdminActiveContainer', {
+          warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
+          }).then(response => {
+                const activeContainer = response.data.container;
 
-                    let message = '';  // To hold the message
-                    let checkbox_status = '';
+                let message = '';
+                let checkbox_status = '';
 
-                    // Condition 1: If active container is the same as the one to open
-                    if (activeContainer?.container_no_1 === containerNumber) {
-                        message = `That you need to close this <b>${containerNumber}</b> container`;
-                        checkbox_status = "only_close";
-                    }
-                    // Condition 2: If there's no active container
-                    else if (!activeContainer?.container_no_1) {
-                        message = `That you need to open this <b>${containerNumber}</b> container`;
-                        checkbox_status = "only_open";
-                    }
-                    // Condition 3: If active container is different from the one to open
-                    else {
-                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
-                        checkbox_status = "both_open_close";
-                    }
+                if (activeContainer?.container_no_1 === containerNumber) {
+                    message = `That you need to close this <b>${containerNumber}</b> container`;
+                    checkbox_status = "only_close";
+                } else if (!activeContainer?.container_no_1) {
+                    message = `That you need to open this <b>${containerNumber}</b> container`;
+                    checkbox_status = "only_open";
+                } else {
+                    message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                    checkbox_status = "both_open_close";
+                }
 
-                    // Show the Swal message based on the conditions
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        html: message,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, confirm',
-                        cancelButtonText: 'Cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Step 3: Now call POST to toggle status
-                            axios.post('/api/vehicle/toggle-status', {
-                                open_id: containerId, // New container to open (Active)
-                                close_id: activeContainer?.id, // Old container to close (Inactive)
-                                checkbox_status: checkbox_status
-                            })
-                                .then((res) => {
-                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
-                                        location.reload();
-                                    });
-                                })
-                                .catch(error => {
-                                    Swal.fire('Error', 'Failed to update container status.', 'error');
-                                });
-                        } else {
-                            // User cancelled → reload the page
-                            location.reload();
-                        }
-                    });
-                })
-                .catch(error => {
-                    Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    html: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, confirm',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.post('/api/vehicle/toggle-status', {
+                            open_id: containerId,
+                            close_id: activeContainer?.id,
+                            checkbox_status: checkbox_status,
+                             warehouseId: warehouseId,
+                        })
+                        .then((res) => {
+                            Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                location.reload();
+                            });
+                        })
+                        .catch(error => {
+                            Swal.fire('Error', 'Failed to update container status.', 'error');
+                        });
+                    } else {
+                        location.reload();
+                    }
                 });
-        }
+            })
+            .catch(error => {
+                Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+            });
+    }
+
     </script>
 
     <script>
@@ -2291,7 +2286,7 @@
                     <div class="col-3 justify-content-end mt-1">
                         <div class="status-toggle float-end me-0">
                             <input 
-                                onclick="handleContainerClick('${container.id}', '${container.container_no_1}')"
+                                onclick="handleContainerClick('${container.id}', '${container.container_no_1}', '${container.warehouse_id}')"
                                 id="rating_${index}" 
                                 class="toggle-btn1 check" 
                                 type="checkbox" 

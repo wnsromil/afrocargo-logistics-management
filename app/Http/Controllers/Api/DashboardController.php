@@ -74,6 +74,20 @@ class DashboardController extends Controller
             ->where('parcel_type', 'Supply')
             ->count();
 
+        $totalDelivered = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })
+            ->where('status', 11)
+            ->count();
+
+
+        $totalTransit = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })
+            ->where('status', 5)
+            ->count();
+
+
         $newSupply = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })
@@ -84,7 +98,7 @@ class DashboardController extends Controller
         $latestContainers = Vehicle::when($warehouseId, function ($query, $warehouseId) {
             return $query->where('warehouse_id', $warehouseId);
         })
-            ->where('vehicle_type', 'Container')
+            ->where('vehicle_type', 1)
             ->withCount('parcelsCount')
             ->latest()
             ->take(4)
@@ -95,8 +109,8 @@ class DashboardController extends Controller
             'todays_orders' => $orderStats->todays_orders,
             'total_orders' => $orderStats->total_orders,
             'ready_for_shipping' => $orderStats->ready_for_shipping,
-            'in_transit' => $orderStats->in_transit,
-            'delivered' => $orderStats->delivered,
+            'in_transit' => $totalTransit,
+            'delivered' => $totalDelivered,
             'total_customers' => $totalCustomers,
             'new_customers' => $newCustomers,
             'total_drivers' => $totalDrivers,

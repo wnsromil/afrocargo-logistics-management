@@ -113,7 +113,7 @@ class OrderShipmentController extends Controller
             }
 
             // 🟠 Check for active container vehicle
-            $activeContainer = Vehicle::where('vehicle_type', 'Container')->where('status', 'Active')->first();
+            $activeContainer = Vehicle::where('vehicle_type', 1)->where('status', 'Active')->first();
 
             if (!$activeContainer) {
                 return response()->json([

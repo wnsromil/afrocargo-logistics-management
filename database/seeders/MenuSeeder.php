@@ -41,7 +41,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Vehicle Management',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 'route' => 'admin.vehicle.index',
-                'route' => '#',
+                //'route' => '#',
                 'active' => 'vehicle*,container*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -188,13 +188,13 @@ class MenuSeeder extends Seeder
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
-            Menu::create([
-                'title' => 'Received Orders',
-                'route' => 'admin.received.orders.hub.list',
-                'active' => 'receivedOrders*',
-                'parent_id' => $orderShip->id,
-                'roles' => ['admin', 'warehouse_manager']
-            ]);
+            // Menu::create([
+            //     'title' => 'Received Orders',
+            //     'route' => 'admin.received.orders.hub.list',
+            //     'active' => 'receivedOrders*',
+            //     'parent_id' => $orderShip->id,
+            //     'roles' => ['admin', 'warehouse_manager']
+            // ]);
         }
 
         // Add submenus
