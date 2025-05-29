@@ -8,7 +8,8 @@
         <div class="d-flex innertopnav w-100 justify-content-between">
             <p class="subhead pheads">Edit Customer</p>
             <div class="btnwrapper">
-                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
+                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1">
+                    Pickup </a>
                 <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>
@@ -328,7 +329,7 @@
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set"
                                         for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                                                            }}</label>
+                                                                                                                                                                }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -712,39 +713,43 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-start">Daoud</td>
-                                            <td>Abidjan</td>
-                                            <td>NYC</td>
-                                            <td>+225 07 07 14 8253</td>
-                                            <td>2550</td>
-                                            <td>Self Pickup</td>
-                                            <td>08-10-2025</td>
-                                            <td>452552</td>
-                                            <td>Alex Kian</td>
-                                            <td>08-10-2025 10:20 AM</td>
-                                            <td>PID88885</td>
-                                            <td>
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item" data-bs-toggle="modal"
-                                                                    data-bs-target="#InvoiceLabel"><i
-                                                                        class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#"><i
-                                                                        class="ti ti-trash fs_18 me-2"></i>Delete</a>
-                                                            </li>
+                                        @foreach($Pickups as $child)
+                                            <tr>
+                                                <td class="text-start">{{$child->pickupAddress->name ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->name ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->name ?? "-"}}</td>
+                                                  <td>+{{ $child->pickupAddress->phone_code->phonecode ?? '' }}
+                                                        {{ $child->pickupAddress->phone ?? '-' }}
+                                                    </td>
+                                                <td>{{$child->Zone ?? "-"}}</td>
+                                                <td>{{$child->pickup_type ?? "-"}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($child->Date)->format('m-d-Y') }}</td>
+                                                <td>{{$child->pickupAddress->pincode ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->driver ?? "-"}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($child->updated_at)->format('m-d-Y') }}</td>
+                                                <td>{{$child->unique_id ?? "-"}}</td>
+                                                <td>
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <ul>
+                                                                <li>
+                                                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                                                        data-bs-target="#InvoiceLabel"><i
+                                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="dropdown-item" href="#"><i
+                                                                            class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                                </li>
 
-                                                        </ul>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

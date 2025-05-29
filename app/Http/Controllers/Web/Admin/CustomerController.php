@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle};
+use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail};
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -280,6 +280,22 @@ class CustomerController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
 
+
+         $Pickups = UserPickupDetail::where('parent_customer_id', $id)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('Item1', 'LIKE', "%$search%")
+                        ->orWhere('Item2', 'LIKE', "%$search%");
+                        // ->orWhere('phone', 'LIKE', "%$search%")
+                        // ->orWhere('address', 'LIKE', "%$search%")
+                        // ->orWhere('status', 'LIKE', "%$search%");
+                });
+            })
+            ->where('status', 'Active')
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
         $serialStart = ($currentPage - 1) * $perPage;
 
 
@@ -290,7 +306,7 @@ class CustomerController extends Controller
         if ($request->ajax() && $type == "PickupAddresss") {
             return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
-        return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
+        return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -779,7 +795,7 @@ class CustomerController extends Controller
         try {
             $user = User::findOrFail($id);
 
-             $userData = [
+            $userData = [
                 'name'       => $validated['first_name'],
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -809,5 +825,69 @@ class CustomerController extends Controller
             dd($th);
             return back()->withErrors(['error' => $th->getMessage()]);
         }
+    }
+
+    public function Pickupstore(Request $request)
+    {
+        // 1. Pickup Address Update (users table)
+        $pickupUser = User::find($request->pickup_address_id);
+        if ($pickupUser) {
+            $pickupUser->update([
+                'unique_id' => $request->unique_id,
+                'longitude' => $request->Pickup_longitude,
+                'address' => $request->address_1,
+                'address_2' => $request->pickup_address_2,
+                'apartment' => $request->pickup_apartment,
+                'city_id' => $request->city,
+                'state_id' => $request->state,
+                'pincode' => $request->zipcode,
+                'phone_code_id' => $request->phone_code_id,
+                'phone' => $request->Pickup_cell_phone,
+                'phone_2_code_id_id' => $request->phone_2_code_id_id,
+                'phone_2' => $request->Pickup_telePhone,
+                'latitude' => $request->Pickup_latitude,
+            ]);
+        }
+
+        // 2. Shipto Address Update (users table)
+        if ($request->pickup_type == "Pickup") {
+            $shiptoUser = User::find($request->shipto_address_id);
+            if ($shiptoUser) {
+                $shiptoUser->update([
+                    'country_id' => $request->shipto_country,
+                    'address' => $request->shipto_address_1,
+                    'address_2' => $request->shipto_address_2,
+                    'phone_code_id' => $request->shipto_phone_code_id,
+                    'phone' => $request->shipto_cell_phone,
+                    'phone_2_code_id_id' => $request->shipto_phone_2_code_id_id,
+                    'phone_2' => $request->shipto_telePhone,
+                    'latitude' => $request->Shipto_latitude,
+                    'longitude' => $request->Shipto_longitude,
+                ]);
+            }
+        }
+        // 3. UserPickupDetail Create
+        $pickupDetail = UserPickupDetail::create([
+            'parent_customer_id' => $request->parent_customer_id,
+            'pickup_address_id' => $request->pickup_address_id,
+            'shipto_address_id' => $request->shipto_address_id,
+            'Item1' => $request->item1,
+            'Item2' => $request->item2,
+            'pickup_delivery' => $request->inlineRadioOptions,
+            'Date' => $request->pickup_date,
+            'Time' => $request->pickup_time,
+            'Done_Date' => $request->done_date,
+            'Zone' => $request->zone,
+            'Driver_id' => null, // update later if needed
+            'Note' => $request->note,
+            'Box_quantity' => $request->Box_quantity,
+            'Barrel_quantity' => $request->Barrel_quantity,
+            'Tapes_quantity' => $request->Tapes_quantity,
+            'pickup_type' => $request->pickup_type,
+        ]);
+
+        return redirect()
+            ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=Pickups')
+            ->with('success', 'Pickup address updated successfully.');
     }
 }

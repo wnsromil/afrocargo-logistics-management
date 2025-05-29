@@ -205,20 +205,23 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
 
-        // Customer Ship To
+        // Customer Ship To Address
         Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
         Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
         Route::get('/update-shipTo/{id}', [CustomerController::class, 'updateShipTo'])->name('customer.updateShipTo');
         Route::put('/edit-shipTo/{id}', [CustomerController::class, 'editeShipTo'])->name('customer.editeShipTo');
         Route::post('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.destroyShipTo');
 
-        // Customer Pickups
+        // Customer Pickups Address
         Route::get('/view-viewPickups/{id}', [CustomerController::class, 'viewPickups'])->name('customer.viewPickups');
         Route::get('/view-viewPickupAddress/{id}', [CustomerController::class, 'viewPickupAddress'])->name('customer.viewPickupAddress');
         Route::post('/create-pickupAddress', [CustomerController::class, 'createPickupAddress'])->name('customer.createPickupAddress');
         Route::get('/update-pickupAddress/{id}', [CustomerController::class, 'updatePickupAddress'])->name('customer.updatePickupAddress');
         Route::put('/edit-editpickupAddress/{id}', [CustomerController::class, 'editPickupAddress'])->name('customer.editPickupAddress');
         Route::post('/delete-pickupAddress/{id}', [CustomerController::class, 'destroyPickupAddress'])->name('customer.destroyPickupAddress');
+
+        // Customer Pickups
+        Route::post('/create-Pickup', [CustomerController::class, 'Pickupstore'])->name('customer.Pickupstore');
 
         // Warehouse 
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');

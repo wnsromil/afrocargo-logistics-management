@@ -23,7 +23,7 @@ class CartController extends Controller
         //
 
         $cart = Cart::where('user_id', auth()->id())
-        ->with('products:id,name,description,category_id,price,in_stock_quantity,img')
+        ->with('products:id,name,description,category_id,price,in_stock_quantity,img,retail_shipping_price')
         ->latest('id')
         ->get()
         ->map(function ($item) {
@@ -79,7 +79,7 @@ class CartController extends Controller
         $inventories = Inventory::with(['cart'=>function($q){
             return $q->where('user_id',auth()->id());
         }])->whereIn('warehouse_id', $warehouseIds)->when($request->inventory_type,function($q)use($request){
-            return $q->where('inventory_type',$request->inventory_type);
+            return $q->where('inventary_sub_type',$request->inventory_type);
         })->latest('id')->paginate(10);
         return $this->sendResponse($inventories, 'Fetch Product list successfully.');
     }
