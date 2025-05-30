@@ -161,6 +161,12 @@ class User extends Authenticatable
         );
     }
 
+    protected function licenseDocument(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
+        );
+    }
 
     public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
     {

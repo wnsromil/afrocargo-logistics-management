@@ -28,7 +28,7 @@ class PermissionSeeder extends Seeder
             'driver_inventory' => ['create', 'edit', 'delete','show', 'account_status', 'view'],
 
             'service_orders' => ['view'],
-            'orders' => ['create', 'edit', 'delete','show', 'order_status', 'view'],
+            'orders' => ['create', 'edit', 'delete','show', 'order_status', 'view','delivery','pickup'],
             'transfer_to_hub' => ['create', 'edit', 'delete','show', 'order_status', 'view'],
             'container_received_by_hub' => ['create', 'edit', 'delete','show', 'order_status', 'view'],
             'received_orders' => ['create', 'edit', 'delete','show', 'order_status', 'view'],

@@ -24,7 +24,8 @@ use App\Http\Controllers\Api\{
     ExpensesController,
     DriverInventoryController,
     DashboardController,
-    ServiceOrderStatusManage
+    ServiceOrderStatusManage,
+    PermissionController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -67,13 +68,13 @@ Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriv
 Route::post('/fetch-transfer-to-hub-data', [OrderStatusManage::class, 'fetchTransferToHubData']);
 Route::post('/get-delivery-drivers-by-assign-status', [OrderStatusManage::class, 'getDeliveryDriversByParcelId']);
 
-Route::post(uri: '/update-status-pick-up-with-driver', action: [OrderStatusManage::class, 'statusUpdate_PickUpWithDriver']);
-Route::post(uri: '/update-status-arrived-warehouse', action: [OrderStatusManage::class, 'statusUpdate_ArrivedWarehouse']);
+Route::post('/update-status-pick-up-with-driver', [OrderStatusManage::class, 'statusUpdate_PickUpWithDriver']);
+Route::post('/update-status-arrived-warehouse', [OrderStatusManage::class, 'statusUpdate_ArrivedWarehouse']);
 Route::post('/update-status-transfer-to-hub', [OrderStatusManage::class, 'statusUpdate_transferToHub']);
 Route::post('/update-status-received-to-hub', [OrderStatusManage::class, 'statusUpdate_receivedToHub']);
-Route::post(uri: '/update-status-fully-loaded-container', action: [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
-Route::post(uri: '/update-status-fully-discharge-container', action: [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
-Route::post(uri: '/update-status-delivery-with-driver', action: [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
+Route::post('/update-status-fully-loaded-container', [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
+Route::post('/update-status-fully-discharge-container', [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
+Route::post('/update-status-delivery-with-driver', [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
 
 
 Route::middleware('auth:api')->group(function () {
@@ -96,6 +97,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('availabilities', AvailabilityController::class);
     Route::apiResource('weekly-schedules', WeeklySchedulesController::class);
     Route::get('/deletUsers', [ProfileController::class, 'deletUsers']);
+    Route::get('/getUserPermissions', [PermissionController::class, 'getUserPermissions']);
+    Route::post('/updatePermissions', [PermissionController::class, 'updatePermissions']);
 
 
 
@@ -118,6 +121,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/customers-list', [CustomerController::class, 'getCustomers']);
 
         Route::post('/create-customer', [CustomerController::class, 'createCustomer']);
+        Route::post('/update-customer', [CustomerController::class, 'updateCustomer']);
         Route::post('/create-shipping-customer', [CustomerController::class, 'createShippingCustomer']);
         Route::get('/shipping-customer-list/{id}', [CustomerController::class, 'ShippingCustomerList']);
         // Container Routes
