@@ -1,11 +1,11 @@
 <x-app-layout>
     @section('style')
-        <style>
-            .form-group-customer.customer-additional-form {
-                border: 0;
-                margin: 0;
-            }
-        </style>
+    <style>
+        .form-group-customer.customer-additional-form {
+            border: 0;
+            margin: 0;
+        }
+    </style>
     @endsection
 
     <x-slot name="header">
@@ -24,40 +24,39 @@
 
             <div class="form-group-customer customer-additional-form">
                 <div class="row mt-0 g-3 align-items-stretch">
+
+                    <div class="col-md-6 mb-1">
+                        <label class="foncolor" for="company_name"> Expenses ID</label>
+                        <input type="text" class="form-control inp" style="background: #ececec;"
+                            placeholder="" value="{{ $expense->unique_id }}" readonly>
+                    </div>
+
                     <div class="col-md-6 mt-sm-0 mt-3">
                         <div class="borderset">
                             <div class="row gx-3 gy-2">
                                 @php $role_id = Auth::user()->role_id; @endphp
 
-                                <div class="col-md-12 mb-1">
-                                    <label class="foncolor" for="company_name"> Expenses ID</label>
-                                    <input type="text" class="form-control inp" style="background: #ececec;"
-                                        placeholder="" value="{{ $expense->unique_id }}" readonly>
-                                </div>
-
                                 @if($role_id == 2 || $role_id == 4)
-                                    <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="warehouse"> Warehouse <i
-                                                class="text-danger">*</i></label>
-                                        <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}"
-                                            readonly style="background-color: #e9ecef; color: #6c757d;">
-                                        <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
-                                    </div>
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
+                                    <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}"
+                                        readonly style="background-color: #e9ecef; color: #6c757d;">
+                                    <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
+                                </div>
                                 @else
-                                    <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="warehouse"> Warehouse <i
-                                                class="text-danger">*</i></label>
-                                        <select id="warehouse" class="js-example-basic-single select2 form-control"
-                                            name="warehouse">
-                                            <option value="">Select Warehouse</option>
-                                            @foreach ($warehouses as $warehouse)
-                                                <option value="{{ $warehouse->id }}" {{ $expense->warehouse_id == $warehouse->id ? 'selected' : '' }}>
-                                                    {{ $warehouse->warehouse_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('warehouse') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
+                                    <select id="warehouse" class="js-example-basic-single select2 form-control"
+                                        name="warehouse">
+                                        <option value="">Select Warehouse</option>
+                                        @foreach ($warehouses as $warehouse)
+                                        <option value="{{ $warehouse->id }}" {{ $expense->warehouse_id == $warehouse->id ? 'selected' : '' }}>
+                                            {{ $warehouse->warehouse_name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @error('warehouse') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
                                 @endif
 
                                 <div class="col-md-12 mb-1">
@@ -68,8 +67,7 @@
                                             class="btn-filters form-cs inp inputbackground"
                                             value="{{ \Carbon\Carbon::parse($expense->date)->format('m/d/Y') }}"
                                             placeholder="MM-DD-YYYY" />
-                                        <input type="text" class="form-control inp inputs text-center timeOnlyInput"
-                                            readonly value="{{$expense->time}}" name="currentTIme">
+                                        <input type="text" class="form-control inp inputs text-center timeOnlyInput" readonly value="{{$expense->time}}" name="currentTIme">
                                         @error('edit_expense_date') <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
@@ -82,44 +80,44 @@
                                     @error('description') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                                 @if($role_id == 2 || $role_id == 4)
-                                    <div class="col-md-12 mb-1">
-                                        <label class="foncolor">User</label>
-                                        <select class="js-example-basic-single select2" name="user_id">
-                                            <option value="">Select User</option>
-                                            @foreach ($users as $user)
-                                                <option value="{{ $user->id }}" {{ $expense->creator_user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor">User</label>
+                                    <select class="js-example-basic-single select2" name="user_id">
+                                        <option value="">Select User</option>
+                                        @foreach ($users as $user)
+                                        <option value="{{ $user->id }}" {{ $expense->creator_user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @else
-                                    <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="User">User</label>
-                                        <select class="js-example-basic-single select2 form-control" name="user_id">
-                                            <option value="">Select User</option>
-                                            <!-- उपयोगकर्ता विकल्प AJAX के माध्यम से लोड होंगे -->
-                                        </select>
-                                    </div>
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="User">User</label>
+                                    <select class="js-example-basic-single select2 form-control" name="user_id">
+                                        <option value="">Select User</option>
+                                        <!-- उपयोगकर्ता विकल्प AJAX के माध्यम से लोड होंगे -->
+                                    </select>
+                                </div>
                                 @endif
 
 
                                 @if($role_id == 2 || $role_id == 4)
-                                    <div class="col-md-12 mb-1">
-                                        <label class="foncolor">Container</label>
-                                        <select class="js-example-basic-single select2" name="container_id">
-                                            <option value="">Select Container</option>
-                                            @foreach ($containers as $container)
-                                                <option value="{{ $container->id }}" {{ $expense->container_id == $container->id ? 'selected' : '' }}>{{ $container->container_no_1 }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor">Container</label>
+                                    <select class="js-example-basic-single select2" name="container_id">
+                                        <option value="">Select Container</option>
+                                        @foreach ($containers as $container)
+                                        <option value="{{ $container->id }}" {{ $expense->container_id == $container->id ? 'selected' : '' }}>{{ $container->container_no_1 }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @else
-                                    <div class="col-md-12 mb-1">
-                                        <label class="foncolor" for="Container">Container</label>
-                                        <select class="js-example-basic-single select2 form-control" name="container_id">
-                                            <option value="">Select Container</option>
+                                <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="Container">Container</label>
+                                    <select class="js-example-basic-single select2 form-control" name="container_id">
+                                        <option value="">Select Container</option>
 
-                                        </select>
-                                    </div>
+                                    </select>
+                                </div>
                                 @endif
                                 <div class="col-md-12 mb-1">
                                     <label> Amount <i class="text-danger">*</i></label>
@@ -220,9 +218,8 @@
             document.getElementById(inputId).value = '';
         }
     </script>
-
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const warehouseSelect = $('#warehouse');
             const userSelect = $('select[name="user_id"]');
             const containerSelect = $('select[name="container_id"]');
@@ -237,14 +234,14 @@
                 $.ajax({
                     url: `/api/user-by-warehouse/${warehouseId}`,
                     type: 'GET',
-                    success: function (response) {
+                    success: function(response) {
                         userSelect.empty().append('<option value="">Select User</option>');
-                        $.each(response.users, function (_, user) {
+                        $.each(response.users, function(_, user) {
                             let selected = user.id == selectedUserId ? 'selected' : '';
                             userSelect.append(`<option value="${user.id}" ${selected}>${user.name}</option>`);
                         });
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error(xhr.responseText);
                     }
                 });
@@ -253,14 +250,14 @@
                 $.ajax({
                     url: `/api/container-by-warehouse/${warehouseId}`,
                     type: 'GET',
-                    success: function (response) {
+                    success: function(response) {
                         containerSelect.empty().append('<option value="">Select Container</option>');
-                        $.each(response.vehicles, function (_, container) {
+                        $.each(response.vehicles, function(_, container) {
                             let selected = container.id == selectedContainerId ? 'selected' : '';
                             containerSelect.append(`<option value="${container.id}" ${selected}>${container.container_no_1}</option>`);
                         });
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error(xhr.responseText);
                     }
                 });
@@ -273,7 +270,7 @@
             }
 
             // On Warehouse Change
-            warehouseSelect.on('change', function () {
+            warehouseSelect.on('change', function() {
                 // Clear selected IDs when warehouse changes
                 $('#selected_user_id').val('');
                 $('#selected_container_id').val('');
@@ -281,6 +278,4 @@
             });
         });
     </script>
-
-
 </x-app-layout>

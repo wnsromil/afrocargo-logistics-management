@@ -30,27 +30,28 @@
                 @php
                     $role_id = Auth::user()->role_id;
                 @endphp
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <div class="input-block mb-3">
-                            <label for="driver_id">Driver<i class="text-danger">*</i></label>
-                            <select name="driver_id" class="form-control select2">
-                                <option value="">Select Driver</option>
-                                @foreach($users as $user)
-                                    <option {{ old('driver_id') == $user->id ? 'selected' : '' }}
-                                        value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('driver_id')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="driver_id">Driver<i class="text-danger">*</i></label>
+                        <select name="driver_id" class="form-control select2">
+                            <option value="">Select Driver</option>
+                            @foreach($users as $user)
+                                <option {{ old('driver_id') == $user->id ? 'selected' : '' }}
+                                    value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('driver_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
+                </div>
 
                 <div class="col-12">
                     <div class="input-block mb-1">
                         <label for="InOutType">In Out<i class="text-danger">*</i></label>
                     </div>
                 </div>
+
                 <div class="col-12">
                     <div class="row">
                         <div class="col-md-1">
@@ -74,64 +75,94 @@
                     
                 </div>
 
+                 @php
+                $oldItemIds = old('item_id', ['']);
+                $oldQuantities = old('in_stock_quantity', ['']);
+                 @endphp
 
-
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="item_id">Items <i class="text-danger">*</i></label>
-                        <select name="item_id" class="form-control select2Tags">
-                            <option value="">Select Items</option>
-                            @foreach($items as $item)
-                                <option {{ old('item_id') == $item->id ? 'selected' : '' }}
-                                    value="{{ $item->id }}">{{ ucfirst($item->name) }}</option>
-                            @endforeach
-                        </select>
-
-                        @error('item_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- quantity -->
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="in_stock_quantity">Quantity <i class="text-danger">*</i></label>
-                        <input type="number" name="in_stock_quantity" class="form-control" placeholder="Enter Quantity"
-                            value="{{ old('in_stock_quantity') }}">
-                        @error('in_stock_quantity')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-
-
-                <!-- Status -->
-                {{-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active">
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
+                <div id="itemQuantityWrapper" class="col-sm-12">
+                @foreach($oldItemIds as $index => $itemId)
+                <div class="row itemRow">
+                    <!-- Item Dropdown -->
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="item_id">Items <i class="text-danger">*</i></label>
+                            <select name="item_id[]" class="form-control select2Tags">
+                                <option value="">Select Items</option>
+                                @foreach($items as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $itemId ? 'selected' : '' }}>
+                                        {{ ucfirst($item->name) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error("item_id.$index")
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-
-
-                        @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
-                </div> --}}
-            </div>
-        </div>
 
+                    <!-- Quantity -->
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="in_stock_quantity">Quantity <i class="text-danger">*</i></label>
+                            <input type="number" name="in_stock_quantity[]" class="form-control" placeholder="Enter Quantity"
+                                value="{{ $oldQuantities[$index] ?? '' }}">
+                            @error("in_stock_quantity.$index")
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 text-end">
+                        <button type="button" class="btn btn-danger iconBtn deletebutton"><i class="ti ti-minus"></i></button>
+                        <button type="button" class="btn btn-primary iconBtn addbutton"><i class="ti ti-plus"></i></button>
+                    </div>
+                </div>
+                @endforeach
+                </div>
+
+              </div>
+             </div>
         <div class="add-customer-btns text-end">
             <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel">Cancel</a>
             <button type="submit" class="btn customer-btn-save btn-primary">Submit</button>
         </div>
     </form>
+    @section('script')
+    <script>
+                $(document).ready(function () {
+                    function updateButtons() {
+                        $('.addbutton').hide(); // hide all
+                        $('.itemRow').last().find('.addbutton').show(); // show only last
+                    }
+
+                    $('#itemQuantityWrapper').on('click', '.addbutton', function () {
+                        let newRow = $(this).closest('.itemRow').clone();
+                        newRow.find('select').val('');
+                        newRow.find('input').val('');
+
+                        // Destroy old select2 to avoid duplicate DOM
+                        newRow.find('select.select2Tags').next('.select2-container').remove();
+                        
+                        $('#itemQuantityWrapper').append(newRow);
+                        
+                        // Re-initialize select2
+                        newRow.find('select.select2Tags').select2();
+
+                        updateButtons();
+                    });
+
+                    $('#itemQuantityWrapper').on('click', '.deletebutton', function () {
+                        if ($('.itemRow').length > 1) {
+                            $(this).closest('.itemRow').remove();
+                            updateButtons();
+                        }
+                    });
+
+                    // Initial init
+                    $('.select2Tags').select2();
+                    updateButtons();
+                });
+      </script>
+    @endsection
 </x-app-layout>

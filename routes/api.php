@@ -57,7 +57,7 @@ Route::post('/warehouse-list', [WarehouseController::class, 'index']);
 Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
 Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus']);
-Route::get('/vehicle/getAdminActiveContainer', [ContainerController::class, 'getAdminActiveContainers']);
+Route::post('/vehicle/getAdminActiveContainer', [ContainerController::class, 'getAdminActiveContainers']);
 Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'getUsersByWarehouse']);
 Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
 Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']);
@@ -118,7 +118,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/update-driver-parcel', [OrderShipmentController::class, 'updateDriverParcel']);
 
         Route::get('/customers-details/{id}', [CustomerController::class, 'getCustomersDetails']);
-        Route::get('/customers-list', [CustomerController::class, 'getCustomers']);
+        Route::get('/customers-list-invoice', [CustomerController::class, 'getCustomersInvoice']);
+        Route::get('/customers-list-driver', [CustomerController::class, 'getCustomersDriver']);
 
         Route::post('/create-customer', [CustomerController::class, 'createCustomer']);
         Route::post('/update-customer', [CustomerController::class, 'updateCustomer']);
@@ -165,7 +166,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/update-status-pick-up', [ServiceOrderStatusManage::class, 'statusUpdate_PickUp']);
         Route::post('/update-status-delivery', [ServiceOrderStatusManage::class, 'statusUpdate_Delivery']);
         Route::post('/update-status-delivered', [ServiceOrderStatusManage::class, 'statusUpdate_Delivered']);
-
+        Route::post('/update-status-cancel', [ServiceOrderStatusManage::class, 'statusUpdate_Cancel']);
+        Route::post('/update-status-reschedule', [ServiceOrderStatusManage::class, 'statusUpdate_reschedule']);
     });
 
     //invoice controller

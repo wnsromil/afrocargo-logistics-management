@@ -65,7 +65,8 @@ class User extends Authenticatable
         'phone_code_id',
         'phone_2_code_id_id',
         'parent_customer_id',
-        'unique_id'
+        'unique_id',
+        'created_by_id'
     ];
 
 
@@ -130,6 +131,11 @@ class User extends Authenticatable
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class, 'vehicle_id');
+    }
+
+    public function invoiceCustmore()
+    {
+        return $this->belongsTo(User::class, 'invoice_custmore_id');
     }
 
     public function container()

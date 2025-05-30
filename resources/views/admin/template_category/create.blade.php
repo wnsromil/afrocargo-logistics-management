@@ -64,7 +64,7 @@
             function toggleContainerFields() {
                 let selectedValue = $('#vehicle_type').val();
 
-                if (selectedValue === 'Container') {
+                if (selectedValue === '1') {
                     $('.seal-no-field').show();
                     $('.container-no-1-field').show();
                     $('.container-no-2-field').show();

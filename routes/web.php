@@ -32,6 +32,8 @@ use App\Http\Controllers\Web\Admin\{
     TemplateController,
     AutoCallBatchController,
     ScheduleController,
+    BillofLadingController,
+    LadingDetailsController,
 };
 use App\Mail\RegistorMail;
 
@@ -130,6 +132,19 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/freightCalculator', function () {
+    return view('admin.freightCalculator.port_wise_freight');
+});
+Route::get('/FreightContainerSize', function () {
+    return view('admin.FreightContainerSize.Freight_Container_List');
+});
+Route::get('/freightShipping', function () {
+    return view('admin.freightShipping.SingleShippingContainer');
+});
+Route::get('/freightShipping_PDF', function () {
+    return view('admin.freightShipping_PDF.Pdf_view');
+});
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -177,6 +192,8 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
+        Route::resource('bill_of_lading', BillofLadingController::class);
+        Route::resource('lading_details', LadingDetailsController::class);
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');

@@ -149,6 +149,30 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                                 </div>
+                                 <div class="col-md-12 mb-1">
+                                <div class="row justify-content-start">
+                                <div class="col-md-2">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">Type<i class="text-danger">*</i></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-block mb-3 d-flex">
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Expense</label> <input
+                                            class="form-check-input mt-0" type="radio" {{ old('type', 'Expense') === 'Expense' ? 'checked' : '' }} value="Expense" name="type">
+                                    </div>
+                                </div>
+                                    <div class="col-md-3">
+                                        <div class="input-block mb-3 d-flex">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A">Income</label> <input
+                                                class="form-check-input mt-0" {{ old('type') === 'Income' ? 'checked' : '' }} type="radio" value="Income" name="type">
+                                        </div>
+                                    </div>
+                                      @error('type')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                </div>
+                                 </div>
                                 <div class="col-md-12 mb-1">
                                     <div class="d-flex align-items-center justify-content-center pt-4">
                                         <label class="foncolor set me-3" for="img">Image</label>
