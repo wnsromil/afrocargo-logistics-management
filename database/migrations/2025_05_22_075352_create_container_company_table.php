@@ -15,11 +15,11 @@ return new class extends Migration {
         });
 
         DB::table('container_company')->insert([
-            ['name' => 'MCA', 'status' => 1],
-            ['name' => 'Maersk', 'status' => 1],
-            ['name' => 'CMA CGM', 'status' => 1],
-            ['name' => 'Evergreen', 'status' => 1],
-            ['name' => 'Hapag-Lloyd', 'status' => 0],
+            ['name' => 'MCA', 'status' => 'Active'],
+            ['name' => 'Maersk', 'status' => 'Active'],
+            ['name' => 'CMA CGM', 'status' => 'Active'],
+            ['name' => 'Evergreen', 'status' => 'Active'],
+            ['name' => 'Hapag-Lloyd', 'status' => 'Active'],
         ]);
     }
 
