@@ -82,7 +82,7 @@
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" id="unique_id" name="unique_id" class="form-control form-control-sm"
-                                placeholder="Enter ID" value="">
+                                placeholder="Enter ID" value="" readonly style="background-color: #f8f9fa;">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
@@ -106,7 +106,7 @@
                         <div class="col-8 justify-content-end">
                             <input type="text" name="Pickup_longitude" id="longitude"
                                 class="form-control form-control-sm text-truncate" placeholder="Enter ID" value=""
-                                readonly>
+                                readonly style="background-color: #f8f9fa;">
                         </div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
                                 </div>
                                 <input type="number" class="form-control form-control-sm flagInput inp"
                                     placeholder="Enter Mobile No" id="Pickup_cell_phone" name="Pickup_cell_phone"
-                                    value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
+                                    value="{{ old('Pickup_cell_phone') }}" oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('alternate_mobile_no')
                                 <small class="text-danger">{{ $message }}</small>
@@ -207,8 +207,7 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 px-0 text-end">
-                            <label for="address2" class="col-form-label font-size-label text-dark">TelePhone<i
-                                    class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">TelePhone</label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <div class="flaginputwrap">
@@ -239,7 +238,7 @@
                         <div class="col-8 justify-content-end">
                             <input type="text" name="Pickup_latitude" id="latitude"
                                 class="form-control form-control-sm text-truncate" placeholder="Enter ID" value="0"
-                                readonly>
+                                readonly style="background-color: #f8f9fa;">
                         </div>
                     </div>
                 </div>
@@ -262,6 +261,9 @@
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
                                     placeholder="Enter Item 1" value="" name="item1">
+                                @error('item1')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="row align-items-center my-3">
@@ -299,12 +301,16 @@
                                         class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
-                                <select id="status" class="form-select select2 form-select-sm">
-                                    <option value="">Not Done</option>
+                                <select id="status" name="pickup_status_type"
+                                    class="form-select select2 form-select-sm">
+                                    <option value="not_done">Not Done</option>
                                     <option value="done">Done</option>
                                     <option value="cancel">Cancel</option>
                                     <option value="reschedule">Reschedule</option>
                                 </select>
+                                @error('pickup_status_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -320,6 +326,9 @@
                             <div class="col-8 justify-content-end">
                                 <input type="date" id="masterPickUpAddressId" class="form-control form-control-sm"
                                     value="" placeholder="Enter Date" name="pickup_date">
+                                @error('pickup_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -361,6 +370,9 @@
                                     aria-label="Small select example">
                                     <option selected value="100">100</option>
                                 </select>
+                                @error('zone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -370,12 +382,15 @@
                                     class="col-form-label font-size-label text-dark-shade">Driver</label>
                             </div>
                             <div class="col-8">
-                                <select id="driver" class="form-select select2 form-select-sm">
-                                    <option value="">Select Driver</option>
-                                    <option value="us">US</option>
-                                    <option value="india">India</option>
-                                    <option value="france">France</option>
+                                <select name="Driver_id" class="js-example-basic-single select2"
+                                    style="font-weight:400px !important">
+                                    <option value="">Select Driver </option>
+                                    @foreach($drivers as $driver)
+                                                                    <option {{ old('Driver_id') == $driver->id ? 'selected' : '' }} value="{{
+                                        $driver->id }}">{{ $driver->name }}</option>
+                                    @endforeach
                                 </select>
+
                             </div>
                         </div>
 

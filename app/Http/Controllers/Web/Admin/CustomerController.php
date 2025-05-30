@@ -281,14 +281,14 @@ class CustomerController extends Controller
             ->appends(['search' => $search, 'per_page' => $perPage]);
 
 
-         $Pickups = UserPickupDetail::where('parent_customer_id', $id)
+        $Pickups = UserPickupDetail::where('parent_customer_id', $id)
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('Item1', 'LIKE', "%$search%")
                         ->orWhere('Item2', 'LIKE', "%$search%");
-                        // ->orWhere('phone', 'LIKE', "%$search%")
-                        // ->orWhere('address', 'LIKE', "%$search%")
-                        // ->orWhere('status', 'LIKE', "%$search%");
+                    // ->orWhere('phone', 'LIKE', "%$search%")
+                    // ->orWhere('address', 'LIKE', "%$search%")
+                    // ->orWhere('status', 'LIKE', "%$search%");
                 });
             })
             ->where('status', 'Active')
@@ -688,7 +688,10 @@ class CustomerController extends Controller
     {
         $user = User::find($id);
 
-        return view('admin.customer.pickups.addPickups', compact('user', 'id'));
+        $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
+            ->Where('is_deleted', 'no')->select('id', 'name')->get();
+
+        return view('admin.customer.pickups.addPickups', compact('user', 'drivers', 'id'));
     }
 
     public function viewPickupAddress($id)
@@ -829,6 +832,50 @@ class CustomerController extends Controller
 
     public function Pickupstore(Request $request)
     {
+
+        $validated = $request->validate(
+            [
+                'pickup_name' => 'required|string|max:255',
+                'address_1' => 'required|string|max:255',
+                'city' => 'required|string',
+                'state' => 'required|string',
+                'zipcode' => 'nullable|string|max:10',
+                'Pickup_cell_phone' => 'required|digits:10|unique:users,phone',
+                'item1' => 'required|string',
+                'pickup_date' => 'required|date',
+                'pickup_status_type' => 'required|string|max:255',
+                'zone' => 'required',
+                'pickup_type' => 'required|string', // pickup_type validate karna zaroori hai
+            ],
+            [
+                'pickup_name.required' => 'Full Name is required.',
+                'address_1.required' => 'Address 1 is required.',
+                'city.required' => 'City is required.',
+                'state.required' => 'State is required.',
+                'zipcode.max' => 'Zipcode is required.',
+                'Pickup_cell_phone.required' => 'Cell Phone is required.',
+                'Pickup_cell_phone.digits' => 'Cell Phone must be 10 digits.',
+                'Pickup_cell_phone.unique' => 'Cell Phone must be unique.',
+                'item1.required' => 'Item 1 is required.',
+                'pickup_date.required' => 'Date is required.',
+                'pickup_status_type.required' => 'Status is required.',
+                'zone.required' => 'Zone is required.',
+                'pickup_type.required' => 'Pickup Type is required.',
+            ]
+        );
+
+
+        if ($request->pickup_type === 'No Shipto') {
+            $request->validate([
+                'Country' => 'required|string|max:255',
+                'shipto_fullname' => 'required|string|max:255',
+            ], [
+                'Country.required' => 'Country is required for No Shipto.',
+                'shipto_fullname.required' => 'Shipto Full Name is required for No Shipto.',
+            ]);
+        }
+
+
         // 1. Pickup Address Update (users table)
         $pickupUser = User::find($request->pickup_address_id);
         if ($pickupUser) {
@@ -878,12 +925,13 @@ class CustomerController extends Controller
             'Time' => $request->pickup_time,
             'Done_Date' => $request->done_date,
             'Zone' => $request->zone,
-            'Driver_id' => null, // update later if needed
+            'Driver_id' => $request->Driver_id, // update later if needed
             'Note' => $request->note,
             'Box_quantity' => $request->Box_quantity,
             'Barrel_quantity' => $request->Barrel_quantity,
             'Tapes_quantity' => $request->Tapes_quantity,
             'pickup_type' => $request->pickup_type,
+            'pickup_status_type' => $request->pickup_status_type,
         ]);
 
         return redirect()
