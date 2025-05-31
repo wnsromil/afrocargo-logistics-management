@@ -25,33 +25,55 @@ class ServiceOrdersController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // Default is 10
+        $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
+        $driver_id = $request->input('driver_id');
+        $shipping_type = $request->input('shipping_type');
+        $status_search = $request->input('status_search');
+        $daysPickupType = $request->input('days_pickup_type'); // <-- NEW
 
-        $parcels = Parcel::where('parcel_type', 'Service')->when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })
+        $query = Parcel::where('parcel_type', 'Service')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
-                    // Search by tracking_number, status, estimate_cost, and total_amount
                     $query->where('tracking_number', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%")
                         ->orWhere('estimate_cost', 'LIKE', "%$search%")
                         ->orWhere('total_amount', 'LIKE', "%$search%");
 
-                    // Check if the search string is a valid date in the format "d-m-Y"
                     if (\DateTime::createFromFormat('d-m-Y', $search) !== false) {
-                        // Convert the search string to the database-compatible format "Y-m-d"
                         $formattedDate = \DateTime::createFromFormat('d-m-Y', $search)->format('Y-m-d');
-
-                        // Search for records where the created_at date matches the formatted date
                         $query->orWhereDate('pickup_date', '=', $formattedDate);
                     }
                 });
             })
-            ->latest('id')
-            ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage]);
+            ->when($driver_id, fn($q) => $q->where('driver_id', $driver_id))
+            ->when($shipping_type, fn($q) => $q->where('transport_type', $shipping_type))
+            ->when($status_search, fn($q) => $q->where('status', $status_search))
+
+            // ✅ Filter by pickup day
+            ->when($daysPickupType, function ($q) use ($daysPickupType) {
+                $today = now()->toDateString();
+                $yesterday = now()->subDay()->toDateString();
+                $tomorrow = now()->addDay()->toDateString();
+
+                return $q->when($daysPickupType === 'Yesterdays_pickups', fn($q) => $q->whereDate('pickup_date', $yesterday))
+                    ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
+                    ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
+            })
+
+            ->latest('id');
+
+        $parcels = $query->paginate($perPage)->appends([
+            'search' => $search,
+            'per_page' => $perPage,
+            'driver_id' => $driver_id,
+            'shipping_type' => $shipping_type,
+            'status_search' => $status_search,
+            'days_pickup_type' => $daysPickupType,
+        ]);
 
         $serialStart = ($currentPage - 1) * $perPage;
 
@@ -63,14 +85,29 @@ class ServiceOrdersController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        $drivers = $user->where('role_id', 4)->values();
+        $drivers = User::where('role_id', 4)
+            ->where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
 
         if ($request->ajax()) {
-            return view('admin.service_orders.table', compact('parcels', 'serialStart'))->render();
+            return view('admin.service_orders.table', compact('parcels', 'serialStart', 'drivers'))->render();
         }
 
-        return view('admin.service_orders.index', compact('parcels', 'drivers', 'warehouses', 'search', 'perPage', 'serialStart'));
+        return view('admin.service_orders.index', compact(
+            'parcels',
+            'drivers',
+            'warehouses',
+            'search',
+            'perPage',
+            'serialStart',
+            'daysPickupType' // optional: if you want to use this in blade
+        ));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -391,5 +428,4 @@ class ServiceOrdersController extends Controller
             ], 500);
         }
     }
-    
 }

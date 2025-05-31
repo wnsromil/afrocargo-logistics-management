@@ -627,6 +627,51 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="container_date_time"]').length > 0) {
+        $('input[name="container_date_time"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true, // ✅ Enable time
+            timePicker24Hour: false, // ✅ Use 12-hour format
+            timePickerSeconds: false, // Optional: hide seconds
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY hh:mm A", // ✅ Date + Time format
+            },
+        });
+
+        $('input[name="container_date_time"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY hh:mm A")); // ✅ Set full date-time
+            }
+        );
+    }
+
+    if ($('input[name="edit_container_date_time"]').length > 0) {
+        let input = $('input[name="edit_container_date_time"]');
+        let currentVal = input.val();
+
+        input.daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true,
+            timePicker24Hour: false,
+            timePickerSeconds: false,
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY hh:mm A",
+            },
+            startDate: currentVal
+                ? moment(currentVal, "M/DD/YYYY hh:mm A")
+                : moment(), // 🛠 Set default start date
+        });
+
+        input.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(picker.startDate.format("M/DD/YYYY hh:mm A"));
+        });
+    }
+
     // Open Date Picker
     if ($('input[name="open_date"]').length > 0) {
         $('input[name="open_date"]').daterangepicker({

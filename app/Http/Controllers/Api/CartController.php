@@ -28,9 +28,9 @@ class CartController extends Controller
         ->get()
         ->map(function ($item) {
             if(!empty($item->products)){
-                $item->products->total_price = (!empty($item->products) ? $item->products->price:0) * $item->quantity;
+                $item->products->total_price = (!empty($item->products) ? $item->products->retail_shipping_price:0) * $item->quantity;
             }
-            $item->total_price = (!empty($item->products) ? $item->products->price :0) * $item->quantity; // Attach total_price to the cart item
+            $item->total_price = (!empty($item->products) ? $item->products->retail_shipping_price :0) * $item->quantity; // Attach total_price to the cart item
             return $item;
         });
 

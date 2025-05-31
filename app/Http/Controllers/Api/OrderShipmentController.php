@@ -620,7 +620,7 @@ class OrderShipmentController extends Controller
             // Store Parcel Inventories
             foreach ($request->inventorie_data as $item) {
                 $inventory = Inventory::find($item['inventorie_id']);
-                $price = $inventory->price;
+                $price = $inventory->retail_shipping_price;
                 $quantity = $item['inventorie_item_quantity'];
                 $totalAmount = $price * $quantity;
                 ParcelInventorie::create([

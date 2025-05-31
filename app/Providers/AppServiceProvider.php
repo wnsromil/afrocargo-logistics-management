@@ -8,6 +8,8 @@ use \App\Models\Country;
 use \App\Models\VehicleType;
 use \App\Models\Broker;
 use \App\Models\ContainerCompany;
+use \App\Models\ParcelStatus;
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -55,10 +57,13 @@ class AppServiceProvider extends ServiceProvider
 
         $Containercompanys = ContainerCompany::where('status', 'Active')->get();
 
+        $ParcelStatus = ParcelStatus::get();
+
         // Share with view
         View::share('coutry', $countries);
         View::share('viewVehicleTypes', $vehicleType);
-         View::share('viewBrokers', $Brokers);
-          View::share('viewVContainercompanys', $Containercompanys);
+        View::share('viewBrokers', $Brokers);
+        View::share('viewVContainercompanys', $Containercompanys);
+        View::share('viewParcelStatus', $ParcelStatus);
     }
 }
