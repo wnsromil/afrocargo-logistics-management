@@ -1,14 +1,4 @@
 <x-app-layout>
-    <style>
-        /* Adjust z-index for stacking */
-        #locationModal {
-            z-index: 1060;
-        }
-
-        .modal-backdrop {
-            z-index: 1050;
-        }
-    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Add pickup Address') }}

@@ -131,6 +131,19 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/freightCalculator', function () {
+    return view('admin.freightCalculator.port_wise_freight');
+});
+Route::get('/FreightContainerSize', function () {
+    return view('admin.FreightContainerSize.Freight_Container_List');
+});
+Route::get('/freightShipping', function () {
+    return view('admin.freightShipping.SingleShippingContainer');
+});
+Route::get('/freightShipping_PDF', function () {
+    return view('admin.freightShipping_PDF.Pdf_view');
+});
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
