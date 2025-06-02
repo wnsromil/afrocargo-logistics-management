@@ -18,20 +18,58 @@ use App\Models\{
 
 class ServiceOrderStatusManage extends Controller
 {
-    public function getDriverServiceOrders(Request $request)
+    public function getDriverAllOrders(Request $request)
     {
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer'])
-            ->where('driver_id', $this->user->id);
-
         $status = $request->status;
-        $today = now()->format('Y-m-d'); // aaj ki date YYYY-MM-DD format me
+        $parcelType = $request->percel_type;
 
-        if ($status === 'pending') {
-            $query->whereDate('pickup_date', $today);
-        } elseif ($status === 'upcoming') {
-            $query->whereDate('pickup_date', '>', $today);
-        } elseif ($status === 'complete') {
-            $query->where('status', 4);
+        // ✅ Custom date from request or fallback to today
+        $inputDate = $request->input('date'); // date format expected: d-m-Y
+        $filterDate = $inputDate
+            ? \Carbon\Carbon::createFromFormat('d-m-Y', $inputDate)->format('Y-m-d')
+            : now()->format('Y-m-d');
+
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer']);
+
+        if ($parcelType === 'Service') {
+            $query->where('driver_id', $this->user->id);
+
+            if ($status === 'pending') {
+                $query->whereDate('pickup_date', $filterDate);
+            } elseif ($status === 'upcoming') {
+                $query->whereDate('pickup_date', '>', $filterDate);
+            } elseif ($status === 'complete') {
+                $query->where('status', 4);
+            }
+        } elseif ($parcelType === 'Supply') {
+            $query->where('arrived_driver_id', $this->user->id);
+
+            if ($status === 'pending') {
+                $query->whereDate('delivery_date', $filterDate);
+            } elseif ($status === 'upcoming') {
+                $query->whereDate('delivery_date', '>', $filterDate);
+            } elseif ($status === 'complete') {
+                $query->where('status', 4);
+            }
+        } elseif ($parcelType === 'all') {
+            $query->where(function ($q) {
+                $q->where('driver_id', $this->user->id)
+                    ->orWhere('arrived_driver_id', $this->user->id);
+            });
+
+            if ($status === 'pending') {
+                $query->where(function ($q) use ($filterDate) {
+                    $q->whereDate('pickup_date', $filterDate)
+                        ->orWhereDate('delivery_date', $filterDate);
+                });
+            } elseif ($status === 'upcoming') {
+                $query->where(function ($q) use ($filterDate) {
+                    $q->whereDate('pickup_date', '>', $filterDate)
+                        ->orWhereDate('delivery_date', '>', $filterDate);
+                });
+            } elseif ($status === 'complete') {
+                $query->where('status', 4);
+            }
         }
 
         $orders = $query->get();

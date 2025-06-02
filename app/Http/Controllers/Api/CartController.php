@@ -23,14 +23,14 @@ class CartController extends Controller
         //
 
         $cart = Cart::where('user_id', auth()->id())
-        ->with('products:id,name,description,category_id,price,in_stock_quantity,img')
+        ->with('products:id,name,description,category_id,price,in_stock_quantity,img,retail_shipping_price')
         ->latest('id')
         ->get()
         ->map(function ($item) {
             if(!empty($item->products)){
-                $item->products->total_price = (!empty($item->products) ? $item->products->price:0) * $item->quantity;
+                $item->products->total_price = (!empty($item->products) ? $item->products->retail_shipping_price:0) * $item->quantity;
             }
-            $item->total_price = (!empty($item->products) ? $item->products->price :0) * $item->quantity; // Attach total_price to the cart item
+            $item->total_price = (!empty($item->products) ? $item->products->retail_shipping_price :0) * $item->quantity; // Attach total_price to the cart item
             return $item;
         });
 
@@ -79,7 +79,7 @@ class CartController extends Controller
         $inventories = Inventory::with(['cart'=>function($q){
             return $q->where('user_id',auth()->id());
         }])->whereIn('warehouse_id', $warehouseIds)->when($request->inventory_type,function($q)use($request){
-            return $q->where('inventory_type',$request->inventory_type);
+            return $q->where('inventary_sub_type',$request->inventory_type);
         })->latest('id')->paginate(10);
         return $this->sendResponse($inventories, 'Fetch Product list successfully.');
     }
