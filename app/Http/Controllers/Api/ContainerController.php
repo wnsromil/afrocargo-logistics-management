@@ -37,7 +37,6 @@ class ContainerController extends Controller
         ]);
     }
 
-
     public function toggleStatus(Request $request)
     {
         $openId = $request->input('open_id');
@@ -103,5 +102,63 @@ class ContainerController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function updateContainerInDateTime(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'container_id' => 'required|exists:vehicles,id',
+            'container_in_date_time' => 'required|string',
+        ]);
+
+        // Vehicle model se record find karo
+        $vehicle = Vehicle::find($request->container_id);
+
+        // DateTime ko split karo (already validated)
+        if ($request->container_in_date_time) {
+            $dateTime = \Carbon\Carbon::createFromFormat('m/d/Y h:i A', $request->container_in_date_time);
+            $containerInDate = $dateTime->format('Y-m-d');
+            $containerInTime = $dateTime->format('H:i:s');
+
+            // Columns me update karo
+            $vehicle->container_in_date = $containerInDate;
+            $vehicle->container_in_time = $containerInTime;
+            $vehicle->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Container date and time updated successfully.',
+        ]);
+    }
+
+    public function updateContainerOutDateTime(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'container_id' => 'required|exists:vehicles,id',
+            'container_out_date_time' => 'required|string',
+        ]);
+
+        // Vehicle model se record find karo
+        $vehicle = Vehicle::find($request->container_id);
+
+        // DateTime ko split karo (already validated)
+        if ($request->container_out_date_time) {
+            $dateTime = \Carbon\Carbon::createFromFormat('m/d/Y h:i A', $request->container_out_date_time);
+            $containerOutDate = $dateTime->format('Y-m-d');
+            $containerOutTime = $dateTime->format('H:i:s');
+
+            // Columns me update karo
+            $vehicle->container_out_date = $containerOutDate;
+            $vehicle->container_out_time = $containerOutTime;
+            $vehicle->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Container date and time updated successfully.',
+        ]);
     }
 }

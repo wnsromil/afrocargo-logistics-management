@@ -24,7 +24,9 @@ use App\Http\Controllers\Api\{
     ExpensesController,
     DriverInventoryController,
     DashboardController,
-    ServiceOrderStatusManage
+    ServiceOrderStatusManage,
+    PickupController,
+    ShiptoController
 };
 use App\Http\Controllers\Api\{
     LocationController,
@@ -74,6 +76,19 @@ Route::post('/update-status-received-to-hub', [OrderStatusManage::class, 'status
 Route::post(uri: '/update-status-fully-loaded-container', action: [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
 Route::post(uri: '/update-status-fully-discharge-container', action: [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
 Route::post(uri: '/update-status-delivery-with-driver', action: [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
+
+// Pickup
+Route::get('/pickup-users/{id}', [PickupController::class, 'getPickupUsers']);
+Route::post('/pickup-address', [PickupController::class, 'CreatePickupAddress']);
+
+
+// Ship to
+Route::post('/shipto-address', [ShiptoController::class, 'CreateShipTo']);
+Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
+
+// Container 
+Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
+Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 
 
 Route::middleware('auth:api')->group(function () {
@@ -157,7 +172,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/location-get', [AvailabilityController::class, 'locationGet']);
         Route::post('/location-delete', [AvailabilityController::class, 'locationGet']);
         // Service Order Status Manage Driver
-        Route::post('/get-driver-service-orders-list', [ServiceOrderStatusManage::class, 'getDriverServiceOrders']);
+        Route::post('/get-driver-all-orders-list', [ServiceOrderStatusManage::class, 'getDriverAllOrders']);
         Route::get('/get-driver-service-orders-details/{id}', [ServiceOrderStatusManage::class, 'getDriverServiceOrderDetails']);
         Route::post('/update-status-pick-up', [ServiceOrderStatusManage::class, 'statusUpdate_PickUp']);
         Route::post('/update-status-delivery', [ServiceOrderStatusManage::class, 'statusUpdate_Delivery']);

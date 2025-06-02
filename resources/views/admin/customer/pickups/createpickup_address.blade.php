@@ -1,73 +1,41 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add Ship to Address') }}
+            {{ __('Add Pickup Address') }}
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-         <div class="d-flex innertopnav w-100 justify-content-between">
-            <p class="subhead pheads">Add Ship to Address</p>
-            <div class="btnwrapper">
-                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
-                <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
-            </div>
+        <div class="d-flex innertopnav w-100 justify-content-between">
+            <p class="subhead pheads">Add Pickup Address</p>
         </div>
     </x-slot>
-    <form action="{{ route('admin.customer.createShipTo') }}" method="POST" enctype="multipart/form-data">
+    {{-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
+
+    <form action="{{ route('admin.customer.createPickupAddress') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row g-3 align-items-stretch">
             <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
-
-                        <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                            <div class="widthmannual">
-                                <select id="country" name="country" class="js-example-basic-single select2">
-                                    <option value="" disabled hidden {{ old('country') ? '' : 'selected' }}>Select
-                                        Country</option>
-                                    <option value="Bangladesh" {{ old('country') == 'Bangladesh' ? 'selected' : '' }}>
-                                        Bangladesh</option>
-                                    <option value="Belgium" {{ old('country') == 'Belgium' ? 'selected' : '' }}>Belgium
-                                    </option>
-                                    <option value="Kuwait" {{ old('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait
-                                    </option>
-                                    <option value="Dominica" {{ old('country') == 'Dominica' ? 'selected' : '' }}>Dominica
-                                    </option>
-                                    <option value="India" {{ old('country') == 'India' ? 'selected' : '' }}>India</option>
-                                    <option value="Dominican Republic" {{ old('country') == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
-                                    <option value="Andorra" {{ old('country') == 'Andorra' ? 'selected' : '' }}>Andorra
-                                    </option>
-                                    <option value="Chile" {{ old('country') == 'Chile' ? 'selected' : '' }}>Chile</option>
-                                    <option value="United States" {{ old('country') == 'United States' ? 'selected' : '' }}>United States</option>
-                                    <option value="Greenland" {{ old('country') == 'Greenland' ? 'selected' : '' }}>
-                                        Greenland</option>
-                                    <option value="Cabo Verde" {{ old('country') == 'Cabo Verde' ? 'selected' : '' }}>Cabo
-                                        Verde</option>
-                                    <option value="Côte d'Ivoire" {{ old('country') == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
-                                    <option value="Mali" {{ old('country') == 'Mali' ? 'selected' : '' }}>Mali</option>
-                                    <option value="European Union" {{ old('country') == 'European Union' ? 'selected' : '' }}>European Union</option>
-                                </select>
-                                <button class="btn btn-primary">Location</button>
-                            </div>
-                            @error('country')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="company_name"> Company </label>
                             <input type="text" name="company_name" class="form-control inp"
                                 placeholder="Enter Company Name" value="{{ old('company_name') }}">
-                            @error('company_name')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="fullName">Full Name <i class="text-danger">*</i></label>
                             <input type="text" name="first_name" class="form-control inp" placeholder="Enter Full Name"
                                 value="{{ old('first_name') }}">
                             @error('first_name')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">The full name field is required.</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
@@ -92,7 +60,7 @@
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2 alternate_mobile_no">
-                            <label class="foncolor">Telephone</label>
+                             <label class="foncolor">Telephone</label>
                             <div class="flaginputwrap">
                                 <div class="customflagselect">
                                     <select class="flag-select" name="alternative_mobile_number_code_id">
@@ -115,7 +83,7 @@
                             <input type="text" name="address_1" value="{{ old('address_1') }}" class="form-control inp"
                                 placeholder="Enter Address 1">
                             @error('address_1')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">The address field is required.</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
@@ -129,7 +97,7 @@
                                 placeholder="Enter Apartment">
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="col-md-6 mb-2 align-items-stretch">
@@ -148,54 +116,36 @@
                                 style="background: #ececec;">
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="language">Language <i class="text-danger">*</i></label>
-                            <select id="language" name="language" class="js-example-basic-single select2">
-                                <option value="English" {{ old('language') == 'English' ? 'selected' : '' }}>English
-                                </option>
-                                <option value="French" {{ old('language') == 'French' ? 'selected' : '' }}>French</option>
-                            </select>
-                            @error('language')
+                            <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+                            <input type="text" name="country" value="{{ old('country') }}" class="form-control inp"
+                                readonly style="background: #ececec;">
+                            @error('country')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="Email"> Email ID <i class="text-danger">*</i></label>
-                            <input type="email" name="email" class="form-control inp" placeholder="Enter Email ID"
-                                value="{{ old('email') }}">
-                            @error('email')
+                            <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                            <input type="text" name="city" value="{{ old('city') }}" class="form-control inp"
+                                placeholder="Enter City">
+                            @error('city')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="License"> License ID</label>
-                            <input type="text" name="license" class="form-control inp" placeholder="Enter License ID"
-                                value="{{ old('license') }}">
+                            <label class="foncolor" for="state">State <i class="text-danger">*</i></label>
+                            <input type="text" name="state" value="{{ old('state') }}" class="form-control inp"
+                                placeholder="Enter State">
+                            @error('state')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        <div class="col-md-12 mt-4 mb-2">
-                            <div class="d-flex align-items-center avtard">
-                                <label class="foncolor me-2" for="license_picture">Licence Picture</label>
-                                <div class="" style="position: relative;">
-                                    <!-- Image Preview -->
-                                    <img id="preview_license_picture" class="avtars avtarc"
-                                        src="{{ asset('assets/img/licenceID_placeholder.jpg') }}" alt="avatar">
-
-                                    <!-- File Input (Hidden by Default) -->
-                                    <input type="file" id="file_license_picture" name="license_picture"
-                                        accept="image/png, image/jpeg" style="display: none;"
-                                        onchange="previewImage(this, 'license_picture')">
-
-                                    <div class="divedit">
-                                        <!-- Edit Button -->
-                                        <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
-                                            style="cursor: pointer;"
-                                            onclick="document.getElementById('file_license_picture').click();">
-
-                                        <!-- Delete Button -->
-                                        <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
-                                            style="cursor: pointer;" onclick="removeImage('license_picture')">
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="zip_code">Zip Code</label>
+                            <input type="text" name="Zip_code" value="{{ old('Zip_code') }}" class="form-control inp"
+                                placeholder="Enter Zip Code">
+                            @error('zip_code')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <input type="hidden" name="parent_customer_id" class="form-control inp"
                             placeholder="Enter License ID" value="{{ $id }}">

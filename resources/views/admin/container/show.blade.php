@@ -10,6 +10,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
+                <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Warehouse Name</label>
@@ -17,15 +18,7 @@
                     </div>
                 </div>
 
-                <!-- Vehicle Type -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type">Container No</label>
-                        <p>{{ $vehicle->container_no_1 ?? '--'}}</p>
-                    </div>
-                </div>
-
-                <!-- Vehicle Type -->
+                <!-- Size -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Size</label>
@@ -33,15 +26,7 @@
                     </div>
                 </div>
 
-                <!-- Vehicle Type -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type">Company For Container </label>
-                        <p>{{ $vehicle->containerCompany->name ?? '--'}}</p>
-                    </div>
-                </div>
-
-                <!-- Vehicle Number -->
+                <!-- Booking Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_number">Booking Number </label>
@@ -49,7 +34,15 @@
                     </div>
                 </div>
 
-                <!-- Vehicle Model -->
+                <!-- Container No -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_type">Container No</label>
+                        <p>{{ $vehicle->container_no_1 ?? '--'}}</p>
+                    </div>
+                </div>
+
+                <!-- Seal Number -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_model">Seal Number</label>
@@ -57,15 +50,96 @@
                     </div>
                 </div>
 
-                <!-- Vehicle Manufactured Year -->
+                <!-- Bill Of Lading -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_year">Bill Of Lading</label>
                         <p>{{ $vehicle->bill_of_lading ?? '--'}}</p>
                     </div>
-                </div> 
+                </div>
 
-                <!-- Vehicle Capacity -->
+                <!-- Company For Container -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_type">Company For Container </label>
+                        <p>{{ $vehicle->containerCompany->name ?? '--'}}</p>
+                    </div>
+                </div>
+
+                <!-- Broker -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Broker</label>
+                        <p>{{ $vehicle->brokerData->name ?? '--'}}</p>
+                    </div>
+                </div>
+
+                <!-- Trucking company -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Trucking company</label>
+                        <p>{{ $vehicle->trucking_company ?? '--'}}</p>
+                    </div>
+                </div>
+
+
+                <!-- In Date & Time -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Container In Date & Time</label>
+                        <p>
+                            @if ($vehicle->container_in_date && $vehicle->container_in_time)
+                                {{ \Carbon\Carbon::parse($vehicle->container_in_date . ' ' . $vehicle->container_in_time)->format('m/d/Y h:i A') }}
+                            @else
+                                --
+                            @endif
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Out Date & Time -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Container Out Date & Time</label>
+                        <p>
+                            @if ($vehicle->container_out_date && $vehicle->container_out_time)
+                                {{ \Carbon\Carbon::parse($vehicle->container_out_date . ' ' . $vehicle->container_out_time)->format('m/d/Y h:i A') }}
+                            @else
+                                --
+                            @endif
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <!-- Chassis Number -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Chassis Number</label>
+                        <p>{{ $vehicle->chassis_number ?? '--'}}</p>
+                    </div>
+                </div>
+
+
+                <!-- Vessel/Voyage -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Vessel/Voyage</label>
+                        <p>{{ $vehicle->vessel_voyage ?? '--'}}</p>
+                    </div>
+                </div>
+
+                <!-- TIR Number -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">TIR Number</label>
+                        <p>{{ $vehicle->tir_number ?? '--'}}</p>
+                    </div>
+                </div>
+
+                <!-- Ship To Country -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Ship To Country</label>
@@ -74,29 +148,23 @@
                 </div>
 
 
+                <!-- Doc Id -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_capacity">Broker</label>
-                        <p>{{ $vehicle->brokerData->name ?? '--'}}</p>
-                    </div>
-                </div>
-
-                  <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Doc Id</label>
                         <p>{{ $vehicle->doc_id ?? '--'}}</p>
                     </div>
                 </div>
 
-
-                  <div class="col-lg-4 col-md-6 col-sm-12">
+                <!-- Volume -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Volume</label>
                         <p>{{ $vehicle->volume ?? '--'}}</p>
                     </div>
                 </div>
 
-
+                <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <p for="status">Status</p>
@@ -134,38 +202,34 @@
                     </div>
                 </div>
 
+                <!-- Action Buttons -->
+                <div class="text-end">
+                    <a href="{{ route('admin.container.edit', $vehicle->id) }}" class="btn btn-primary me-2">Edit</a>
 
-                <!-- Status -->
-
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="text-end">
-                <a href="{{ route('admin.container.edit', $vehicle->id) }}" class="btn btn-primary me-2">Edit</a>
-
-                <!-- Delete Button (with confirmation) -->
-                {{-- <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-danger"
-                        onclick="deleteData(this, 'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')">Delete</button>
-                </form> --}}
+                    <!-- Delete Button (with confirmation) -->
+                    {{-- <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST"
+                        class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger"
+                            onclick="deleteData(this, 'Wait! 🤔 Are you sure you want to remove this manager? This action can’t be undone! 🚀')">Delete</button>
+                    </form> --}}
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function deleteData(self, msg) {
-            Swal.fire({
-                title: msg,
-                showCancelButton: true,
-                confirmButtonText: "Delete",
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(self).closest('form').submit();
-                }
-            });
-        }
-    </script>
+        <script>
+            function deleteData(self, msg) {
+                Swal.fire({
+                    title: msg,
+                    showCancelButton: true,
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(self).closest('form').submit();
+                    }
+                });
+            }
+        </script>
 </x-app-layout>
