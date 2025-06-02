@@ -590,8 +590,9 @@ class CustomerController extends Controller
     public function updateShipTo($id)
     {
         $user = User::find($id);
-        return view('admin.customer.shipto.updateShipTo', compact('user', 'id'));
+        return view('admin.customer.shipto.update', compact('user', 'id'));
     }
+
 
     public function editeShipTo(Request $request, $id)
     {
@@ -832,48 +833,47 @@ class CustomerController extends Controller
 
     public function Pickupstore(Request $request)
     {
-
+        $rules = [
+            'pickup_name' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'zipcode' => 'nullable|string|max:10',
+            'Pickup_cell_phone' => 'required|digits:10',
+            'item1' => 'required|string',
+            'pickup_date' => 'required|date',
+            'pickup_status_type' => 'required|string|max:255',
+            'zone' => 'required',
+            'pickup_type' => 'required|string', // pickup_type validate karna zaroori hai
+            'Country' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_name' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_address_1' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_cell_phone' => 'required_if:pickup_type,Pickup|digits:10',
+        ];
+        $message = [
+            'pickup_name.required' => 'Full name is required.',
+            'address_1.required' => 'Address 1 is required.',
+            'city.required' => 'City is required.',
+            'state.required' => 'State is required.',
+            'zipcode.max' => 'Zipcode is required.',
+            'Pickup_cell_phone.required' => 'Cell Phone is required.',
+            'Pickup_cell_phone.digits' => 'Cell Phone must be 10 digits.',
+            'item1.required' => 'Item 1 is required.',
+            'pickup_date.required' => 'Date is required.',
+            'pickup_status_type.required' => 'Status is required.',
+            'zone.required' => 'Zone is required.',
+            'pickup_type.required' => 'Pickup Type is required.',
+            'Country.required' => 'Country is required for No Shipto.',
+            'shipto_name.required_if' => 'Shipto full name is required.',
+            'shipto_address_1.required_if' => 'Shipto address  is required.',
+            'shipto_cell_phone.required_if' => 'Cell Phone is required.',
+            'shipto_cell_phone.digits' => 'Cell Phone must be 10 digits.',
+        ];
         $validated = $request->validate(
-            [
-                'pickup_name' => 'required|string|max:255',
-                'address_1' => 'required|string|max:255',
-                'city' => 'required|string',
-                'state' => 'required|string',
-                'zipcode' => 'nullable|string|max:10',
-                'Pickup_cell_phone' => 'required|digits:10|unique:users,phone',
-                'item1' => 'required|string',
-                'pickup_date' => 'required|date',
-                'pickup_status_type' => 'required|string|max:255',
-                'zone' => 'required',
-                'pickup_type' => 'required|string', // pickup_type validate karna zaroori hai
-            ],
-            [
-                'pickup_name.required' => 'Full Name is required.',
-                'address_1.required' => 'Address 1 is required.',
-                'city.required' => 'City is required.',
-                'state.required' => 'State is required.',
-                'zipcode.max' => 'Zipcode is required.',
-                'Pickup_cell_phone.required' => 'Cell Phone is required.',
-                'Pickup_cell_phone.digits' => 'Cell Phone must be 10 digits.',
-                'Pickup_cell_phone.unique' => 'Cell Phone must be unique.',
-                'item1.required' => 'Item 1 is required.',
-                'pickup_date.required' => 'Date is required.',
-                'pickup_status_type.required' => 'Status is required.',
-                'zone.required' => 'Zone is required.',
-                'pickup_type.required' => 'Pickup Type is required.',
-            ]
+            $rules,
+            $message,
         );
 
-
-        if ($request->pickup_type === 'No Shipto') {
-            $request->validate([
-                'Country' => 'required|string|max:255',
-                'shipto_fullname' => 'required|string|max:255',
-            ], [
-                'Country.required' => 'Country is required for No Shipto.',
-                'shipto_fullname.required' => 'Shipto Full Name is required for No Shipto.',
-            ]);
-        }
 
 
         // 1. Pickup Address Update (users table)
@@ -881,6 +881,7 @@ class CustomerController extends Controller
         if ($pickupUser) {
             $pickupUser->update([
                 'unique_id' => $request->unique_id,
+                'name' => $request->pickup_name,
                 'longitude' => $request->Pickup_longitude,
                 'address' => $request->address_1,
                 'address_2' => $request->pickup_address_2,
@@ -902,6 +903,7 @@ class CustomerController extends Controller
             if ($shiptoUser) {
                 $shiptoUser->update([
                     'country_id' => $request->shipto_country,
+                    'name' => $request->shipto_name,
                     'address' => $request->shipto_address_1,
                     'address_2' => $request->shipto_address_2,
                     'phone_code_id' => $request->shipto_phone_code_id,
@@ -933,6 +935,111 @@ class CustomerController extends Controller
             'pickup_type' => $request->pickup_type,
             'pickup_status_type' => $request->pickup_status_type,
         ]);
+
+        return redirect()
+            ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=Pickups')
+            ->with('success', 'Pickup address updated successfully.');
+    }
+
+    public function updatePickup($id)
+    {
+        $user = User::find($id);
+
+        $UserPickupDetail = UserPickupDetail::with('pickupAddress', 'shiptoAddress')->find($id);
+
+        $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
+            ->Where('is_deleted', 'no')->select('id', 'name')->get();
+
+        return view('admin.customer.pickups.updatePickups', compact('user', 'UserPickupDetail', 'id', 'drivers'));
+    }
+
+    public function Editupdate(Request $request, $id)
+    {
+        $rules = [
+            'pickup_name' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'zipcode' => 'nullable|string|max:10',
+            'Pickup_cell_phone' => 'required|digits:10',
+            'item1' => 'required|string',
+            'pickup_date' => 'required|date',
+            'pickup_status_type' => 'required|string|max:255',
+            'zone' => 'required',
+            'pickup_type' => 'required|string',
+            'Country' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_name' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_address_1' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_cell_phone' => 'required_if:pickup_type,Pickup|digits:10',
+        ];
+
+        $message = [ /* Same messages as in your store method */];
+
+        $validated = $request->validate($rules, $message);
+
+        // 1. Pickup Address Update
+        $pickupUser = User::find($request->pickup_address_id);
+        if ($pickupUser) {
+            $pickupUser->update([
+                'unique_id' => $request->unique_id,
+                'name' => $request->pickup_name,
+                'longitude' => $request->Pickup_longitude,
+                'address' => $request->address_1,
+                'address_2' => $request->pickup_address_2,
+                'apartment' => $request->pickup_apartment,
+                'city_id' => $request->city,
+                'state_id' => $request->state,
+                'pincode' => $request->zipcode,
+                'phone_code_id' => $request->phone_code_id,
+                'phone' => $request->Pickup_cell_phone,
+                'phone_2_code_id_id' => $request->phone_2_code_id_id,
+                'phone_2' => $request->Pickup_telePhone,
+                'latitude' => $request->Pickup_latitude,
+            ]);
+        }
+
+        // 2. Shipto Address Update
+        if ($request->pickup_type == "Pickup") {
+            $shiptoUser = User::find($request->shipto_address_id);
+            if ($shiptoUser) {
+                $shiptoUser->update([
+                    'country_id' => $request->shipto_country,
+                    'name' => $request->shipto_name,
+                    'address' => $request->shipto_address_1,
+                    'address_2' => $request->shipto_address_2,
+                    'phone_code_id' => $request->shipto_phone_code_id,
+                    'phone' => $request->shipto_cell_phone,
+                    'phone_2_code_id_id' => $request->shipto_phone_2_code_id_id,
+                    'phone_2' => $request->shipto_telePhone,
+                    'latitude' => $request->Shipto_latitude,
+                    'longitude' => $request->Shipto_longitude,
+                ]);
+            }
+        }
+
+        // 3. UserPickupDetail Update
+        $pickupDetail = UserPickupDetail::find($id);
+        if ($pickupDetail) {
+            $pickupDetail->update([
+                'parent_customer_id' => $request->parent_customer_id,
+                'pickup_address_id' => $request->pickup_address_id,
+                'shipto_address_id' => $request->shipto_address_id,
+                'Item1' => $request->item1,
+                'Item2' => $request->item2,
+                'pickup_delivery' => $request->inlineRadioOptions,
+                'Date' => $request->pickup_date,
+                'Time' => $request->pickup_time,
+                'Done_Date' => $request->done_date,
+                'Zone' => $request->zone,
+                'Driver_id' => $request->Driver_id,
+                'Note' => $request->note,
+                'Box_quantity' => $request->Box_quantity,
+                'Barrel_quantity' => $request->Barrel_quantity,
+                'Tapes_quantity' => $request->Tapes_quantity,
+                'pickup_type' => $request->pickup_type,
+                'pickup_status_type' => $request->pickup_status_type,
+            ]);
+        }
 
         return redirect()
             ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=Pickups')

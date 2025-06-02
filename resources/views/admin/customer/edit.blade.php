@@ -294,10 +294,8 @@
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="warehouse"> Language </label>
                                         <select class="js-example-basic-single select2" name="language">
-                                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?
-    'selected' : '' }}>English</option>
-                                            <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ?
-    'selected' : '' }}>Hindi</option>
+                                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?  'selected' : '' }}>English</option>
+                                            <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ? 'selected' : '' }}>Hindi</option>
                                         </select>
                                     </div>
 
@@ -329,7 +327,7 @@
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set"
                                         for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                                                                }}</label>
+                                                                                                                                                                    }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -718,9 +716,9 @@
                                                 <td class="text-start">{{$child->pickupAddress->name ?? "-"}}</td>
                                                 <td>{{$child->pickupAddress->name ?? "-"}}</td>
                                                 <td>{{$child->pickupAddress->name ?? "-"}}</td>
-                                                  <td>+{{ $child->pickupAddress->phone_code->phonecode ?? '' }}
-                                                        {{ $child->pickupAddress->phone ?? '-' }}
-                                                    </td>
+                                                <td>+{{ $child->pickupAddress->phone_code->phonecode ?? '' }}
+                                                    {{ $child->pickupAddress->phone ?? '-' }}
+                                                </td>
                                                 <td>{{$child->Zone ?? "-"}}</td>
                                                 <td>{{$child->pickup_type ?? "-"}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($child->Date)->format('m-d-Y') }}</td>
@@ -735,8 +733,8 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <ul>
                                                                 <li>
-                                                                    <a class="dropdown-item" data-bs-toggle="modal"
-                                                                        data-bs-target="#InvoiceLabel"><i
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('admin.customer.updatePickup', $child->id) }}"><i
                                                                             class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                                 </li>
                                                                 <li>
