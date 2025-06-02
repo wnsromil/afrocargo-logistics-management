@@ -144,6 +144,10 @@ Route::get('/freightShipping_PDF', function () {
     return view('admin.freightShipping_PDF.Pdf_view');
 });
 
+Route::get('/lading_details_PDF', function () {
+    return view('admin.lading_details_PDF.bill-pdf');
+});
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
