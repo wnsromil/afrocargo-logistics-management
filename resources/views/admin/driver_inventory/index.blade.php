@@ -138,11 +138,11 @@
 
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive DriverInventoryTable notMinheight mt-3">
+                <div class="table-responsive DriverInventoryTable soldItems notMinheight mt-3">
                     <table class="table table-stripped table-hover datatable notposition">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
+                                {{-- <th>S. No.</th> --}}
                                 <th>Date</th>
                                 <th>Customer</th>
                                 <th>Invoice No.</th>
@@ -157,7 +157,7 @@
                         <tbody>
                             @forelse ($driver_details as $key => $driver_detail)
                                 <tr>
-                                    <td>{{ $serialStartSold + $key + 1 }}</td>
+                                    {{-- <td>{{ $serialStartSold + $key + 1 }}</td> --}}
                                     <td>{{ \Carbon\Carbon::parse($driver_detail->date)->format('m-d-Y') }}</td>
                                     <td>{{ $driver_detail->customer->name ?? '--' }}</td>
                                     <td>{{ $driver_detail->invoice_no ?? '--' }}</td>

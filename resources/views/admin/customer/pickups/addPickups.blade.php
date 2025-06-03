@@ -1,4 +1,15 @@
 <x-app-layout>
+    <style>
+        /* Adjust z-index for stacking */
+        #locationModal {
+            z-index: 1060;
+        }
+
+        .modal-backdrop {
+            z-index: 1050;
+        }
+
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Add pickup Address') }}
@@ -15,8 +26,7 @@
 
         <div class="row">
             <div class="col-md-auto pickup-font-1 text-dark-shade">Add Pickups</div>
-            <div class="col-md-auto pickup-font-2 text-dark-shade mx-4">Customer Balance: <span
-                    class="danger-shade pickup-font-1">
+            <div class="col-md-auto pickup-font-2 text-dark-shade mx-4">Customer Balance: <span class="danger-shade pickup-font-1">
                     $
                     250</span>
             </div>
@@ -50,8 +60,7 @@
                 </div>
                 <div class="col-md-auto p-0 mx-1">
                     <!-- <button type="button" class="btn btn-primary pickup-button-size"> -->
-                    <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal"
-                        data-bs-target="#pickupModal">
+                    <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal" data-bs-target="#pickupModal">
                         Add Pickup Address
                     </button>
                 </div>
@@ -67,8 +76,7 @@
                 <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                     <div class="row align-items-center">
                         <div class="col-4 px-0 text-end">
-                            <label for="masterPickUpAddressId"
-                                class="col-form-label font-size-label text-dark">ID</label>
+                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">ID</label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" id="unique_id" name="unique_id" class="form-control form-control-sm"
@@ -90,8 +98,7 @@
 
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">Longitude<i
-                                    class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">Longitude<i class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="Pickup_longitude" id="longitude"
@@ -124,8 +131,7 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="masterPickUpAddressId"
-                                class="col-form-label font-size-label text-dark">Apartment</label>
+                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Apartment</label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="pickup_apartment" id="apartment"
@@ -138,8 +144,7 @@
                 <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                     <div class="row align-items-center">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">City<i
-                                    class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">City<i class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="city" id="city" class="form-control form-control-sm text-truncate"
@@ -148,8 +153,7 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">State<i
-                                    class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">State<i class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="state" id="state"
@@ -158,8 +162,7 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">Zipcode<i
-                                    class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">Zipcode<i class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="zipcode" id="zipcode"
@@ -179,10 +182,9 @@
                                 <div class="customflagselect">
                                     <select class="flag-select" name="phone_code_id" id="Pickup_cell_phone_id">
                                         @foreach ($coutry as $key => $item)
-                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                {{ $item->name }} +{{ $item->phonecode }}
-                                            </option>
+                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                            {{ $item->name }} +{{ $item->phonecode }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -191,7 +193,7 @@
                                     value="{{ old('Pickup_cell_phone') }}" oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('alternate_mobile_no')
-                                <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
@@ -204,10 +206,9 @@
                                 <div class="customflagselect">
                                     <select class="flag-select" name="phone_2_code_id_id" id="Pickup_telePhone_id">
                                         @foreach ($coutry as $key => $item)
-                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                {{ $item->name }} +{{ $item->phonecode }}
-                                            </option>
+                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                            {{ $item->name }} +{{ $item->phonecode }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -216,14 +217,13 @@
                                     value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('alternate_mobile_no')
-                                <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 px-0 text-end">
-                            <label for="address2" class="col-form-label font-size-label text-dark">Latitude<i
-                                    class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">Latitude<i class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="Pickup_latitude" id="latitude"
@@ -244,9 +244,7 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Item1<i
-                                        class="text-danger">*</i></label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Item1<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
@@ -258,8 +256,7 @@
                         </div>
                         <div class="row align-items-center my-3">
                             <div class="col-4">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label float-left float-end text-dark-shade">Item2</label>
+                                <label for="masterPickUpAddressId" class="col-form-label float-left float-end text-dark-shade">Item2</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
@@ -268,8 +265,7 @@
                         </div>
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Pickup Delivery</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Pickup Delivery</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <div class="form-check form-check-inline">
@@ -287,8 +283,7 @@
 
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
-                                <label for="status" class="col-form-labelfont-size-label text-dark-shade">Status<i
-                                        class="text-danger">*</i></label>
+                                <label for="status" class="col-form-labelfont-size-label text-dark-shade">Status<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
                                 <select id="status" name="pickup_status_type"
@@ -308,9 +303,7 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Date<i
-                                        class="text-danger">*</i>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Date<i class="text-danger">*</i>
                                 </label>
                             </div>
                             <div class="col-8 justify-content-end">
@@ -324,8 +317,7 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Time</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Time</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="time" id="masterPickUpAddressId" class="form-control form-control-sm"
@@ -335,8 +327,7 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Done
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Done
                                     Date</label>
                             </div>
                             <div class="col-8 justify-content-end">
@@ -349,8 +340,7 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="address2" class="col-form-label font-size-label text-dark-shade">Zone<i
-                                        class="text-danger">*</i></label>
+                                <label for="address2" class="col-form-label font-size-label text-dark-shade">Zone<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <!-- <input type="text" name="cityName" id="address2"
@@ -368,8 +358,7 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="driver"
-                                    class="col-form-label font-size-label text-dark-shade">Driver</label>
+                                <label for="driver" class="col-form-label font-size-label text-dark-shade">Driver</label>
                             </div>
                             <div class="col-8">
                                 <select name="Driver_id" class="js-example-basic-single select2"
@@ -386,8 +375,7 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Note</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Note</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input name="note" type="text" id="masterPickUpAddressId"
@@ -408,8 +396,7 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Barrel</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Barrel</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="number" id="Barrel_quantity" name="Barrel_quantity"
@@ -419,8 +406,7 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Tapes</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Tapes</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="number" id="Tapes_quantity" name="Tapes_quantity"
@@ -438,8 +424,7 @@
                     <div class="col float-start text-dark py-1 px-1">Shipto Address Details</div>
 
                     <div class="col-md-auto p-0 mx-1">
-                        <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal"
-                            data-bs-target="#shiptoAddressModal">
+                        <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal" data-bs-target="#shiptoAddressModal">
                             Add Shipto Address
                         </button>
                     </div>
@@ -457,8 +442,7 @@
                         <!-- Country Dropdown -->
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="country" class="col-form-label font-size-label text-dark-shade">Country<i
-                                        class="text-danger">*</i></label>
+                                <label for="country" class="col-form-label font-size-label text-dark-shade">Country<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
                                 <select id="shipto_country" name="shipto_country"
@@ -532,8 +516,7 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
-                                <label for="address2" class="col-form-label font-size-label text-dark">Cell Phone<i
-                                        class="text-danger">*</i></label>
+                                <label for="address2" class="col-form-label font-size-label text-dark">Cell Phone<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <div class="flaginputwrap">
@@ -541,10 +524,9 @@
                                         <select class="flag-select" name="shipto_phone_code_id"
                                             id="shipto_cellphone_id">
                                             @foreach ($coutry as $key => $item)
-                                                <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                    data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                    {{ $item->name }} +{{ $item->phonecode }}
-                                                </option>
+                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                {{ $item->name }} +{{ $item->phonecode }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -554,15 +536,14 @@
                                         oninput="this.value = this.value.slice(0, 10)">
                                 </div>
                                 @error('alternate_mobile_no')
-                                    <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
 
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
-                                <label for="address2" class="col-form-label font-size-label text-dark">Telephone<i
-                                        class="text-danger">*</i></label>
+                                <label for="address2" class="col-form-label font-size-label text-dark">Telephone<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <div class="flaginputwrap">
@@ -570,10 +551,9 @@
                                         <select class="flag-select" name="shipto_phone_2_code_id_id"
                                             id="shipto_telePhone_id">
                                             @foreach ($coutry as $key => $item)
-                                                <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                    data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                    {{ $item->name }} +{{ $item->phonecode }}
-                                                </option>
+                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                {{ $item->name }} +{{ $item->phonecode }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -592,8 +572,7 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div id="location-block" class="row align-items-center my-2" style="display: none;">
                             <div class="col-4 px-0 text-end">
-                                <label for="location" class="col-form-label font-size-label text-dark-shade">Location<i
-                                        class="text-danger">*</i></label>
+                                <label for="location" class="col-form-label font-size-label text-dark-shade">Location<i class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
                                 <select id="location" class="form-select form-select-sm">
@@ -605,8 +584,7 @@
 
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark">Latitude</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Latitude</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" class="form-control form-control-sm" name="Shipto_latitude"
@@ -616,8 +594,7 @@
 
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark">Longitude</label>
+                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Longitude</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" class="form-control form-control-sm" name="Shipto_longitude"
@@ -685,18 +662,13 @@
                                                 <select id="mobile_code_2" class="flag-select"
                                                     name="mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                            data-name="{{ $item->name }}"
-                                                            data-code="{{ $item->phonecode }}">
-                                                            {{ $item->name }} +{{ $item->phonecode }}
-                                                        </option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <input type="number" class="form-control form-control-sm flagInput inp"
-                                                placeholder="201-747-3177" name="mobile_number"
-                                                value="{{ old('mobile_number') }}"
-                                                oninput="this.value = this.value.slice(0, 10)">
+                                            <input type="number" class="form-control form-control-sm flagInput inp" placeholder="201-747-3177" name="mobile_number" value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('mobile_number')
                                             <small class="text-danger">{{ $message }}</small>
@@ -728,7 +700,7 @@
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('alternate_mobile_no')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -755,8 +727,7 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
-                                        <label for="masterPickUpAddressId"
-                                            class="col-form-label text-dark">Apartment</label>
+                                        <label for="masterPickUpAddressId" class="col-form-label text-dark">Apartment</label>
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" id="masterPickUpAddressId"
@@ -768,8 +739,7 @@
                             <div class="col-md-6 col-sm-6 col-lg-6 my-3">
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="address2" class="col-form-label text-dark">Latitude<i
-                                                class="text-danger">*</i></label>
+                                        <label for="address2" class="col-form-label text-dark">Latitude<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="latitude" id="latitude"
@@ -779,8 +749,7 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="address2" class="col-form-label text-dark">Longitude<i
-                                                class="text-danger">*</i></label>
+                                        <label for="address2" class="col-form-label text-dark">Longitude<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="longitude" id="longitude"
@@ -790,8 +759,7 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="country_name" class="col-form-label text-dark">Country<i
-                                                class="text-danger">*</i></label>
+                                        <label for="country_name" class="col-form-label text-dark">Country<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="country" value="{{ old('country') }}"
@@ -800,8 +768,7 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="city_name" class="col-form-label text-dark">City<i
-                                                class="text-danger">*</i></label>
+                                        <label for="city_name" class="col-form-label text-dark">City<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="city" value="{{ old('city') }}"
@@ -810,8 +777,7 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="country_name" class="col-form-label text-dark">State<i
-                                                class="text-danger">*</i></label>
+                                        <label for="country_name" class="col-form-label text-dark">State<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="state" value="{{ old('state') }}"
@@ -838,7 +804,6 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -937,11 +902,9 @@
                                             <div class="customflagselect">
                                                 <select class="flag-select" name="mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                            data-name="{{ $item->name }}"
-                                                            data-code="{{ $item->phonecode }}">
-                                                            {{ $item->name }} +{{ $item->phonecode }}
-                                                        </option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -951,7 +914,7 @@
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('alternate_mobile_no')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -964,11 +927,9 @@
                                             <div class="customflagselect">
                                                 <select class="flag-select" name="alternative_mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                            data-name="{{ $item->name }}"
-                                                            data-code="{{ $item->phonecode }}">
-                                                            {{ $item->name }} +{{ $item->phonecode }}
-                                                        </option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -978,7 +939,7 @@
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('alternate_mobile_no')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -1043,8 +1004,7 @@
 
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col px-0 text-end">
-                                        <label for="language"
-                                            class="col-form-label font-size-label text-dark-shade">Language</label>
+                                        <label for="language" class="col-form-label font-size-label text-dark-shade">Language</label>
                                     </div>
                                     <div class="col-9">
                                         <select id="language" name="language" class="js-example-basic-single select2">
@@ -1119,7 +1079,6 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>

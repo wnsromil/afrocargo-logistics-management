@@ -411,6 +411,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="col-md-3">
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
@@ -420,6 +421,7 @@
                                     name="grand_total">
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <label>Due Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -442,6 +444,7 @@
                             <input type="text" class="form-control inp readonly" readonly placeholder="John Duo"
                                 value="{{auth()->user()->name ?? ''}} {{auth()->user()->last_name ?? ''}}">
                         </div>
+
                         <div class="col-md-3">
                             <label>Container<i class="text-danger">*</i></label>
                             <select name="container_id" class="form-control select2">
@@ -455,11 +458,13 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="col-md-3 ">
                             <label>Status<i class="text-danger">*</i></label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="Pending"
                                 name="status" value="pending">
                         </div>
+
                         <div class="col-md-3">
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
@@ -473,6 +478,7 @@
                             <label>Total Items</label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="0">
                         </div>
+
                         <div class="col-md-3 ">
 
                             <label> Warehouse</label>
@@ -489,21 +495,22 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-md-6 d-none" id="description_services_items">
+
+                        {{-- <div class="col-md-6 d-none" id="description_services_items">
                             <label>description<i class="text-danger">*</i></label>
                             <textarea name="descrition" class="form-control form-cs inp"></textarea>
                         </div>
                         <div class="col-md-6 d-none" id="weight_services_items">
                             <label>weight<i class="text-danger">*</i></label>
                             <input type="text" name="weight" class="form-control form-cs inp" value="">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
                 <!-- total  -->
-                <div class="card-body curve_tabel p-0 mt-5">
-                    <div class="table-responsive p-1 d-none" id="supplies_items">
-                        <table class="table table-bordered " id="dynamicTable">
+                <div class="card-body curve_tabel notAction p-0 mt-5">
+                    <div class="table-responsive p-1" id="supplies_items">
+                        <table class="table table-bordered" id="dynamicTable">
                             <thead>
                                 <tr>
                                     <th style="width:57px;">Item</th>
