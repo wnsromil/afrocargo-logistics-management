@@ -132,13 +132,13 @@
                 </div>
                 <div class="col-lg-12 col-md-6 mt-3 col-sm-12">
                     <div class="tabs m-0 mw-100">
-                        <input type="radio" id="tab5" name="tab1" checked>
-                        <input type="radio" id="tab6" name="tab1">
+                        <input type="radio" id="tab6" name="tabs" checked>
+                        <input type="radio" id="tab7" name="tabs">
                         <div class="tab-titles">
-                            <label for="tab5" class="tab-title">Manager</label>
-                            <label for="tab6" class="tab-title">Driver</label>
+                            <label for="tab6" class="tab-title">Manager</label>
+                            <label for="tab7" class="tab-title">Driver</label>
                         </div>
-                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content5">
+                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content6">
                             <div class="row">
                                 <div class="col-lg-4 col-md-6 col-sm-12 pe-sm-0">
                                     <div class="input-block mb-3">
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content6">
+                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content7">
                             <div class="row">
                                 <div class="col-lg-4 col-md-6 col-sm-12 pe-sm-0">
                                     <div class="input-block mb-3">
