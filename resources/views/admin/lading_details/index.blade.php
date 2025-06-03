@@ -100,32 +100,12 @@
                                 <td
                                     class="cardFontSize text-dark text-start border-dark px-3 maxmax-width text-truncate">
                                     <div class="d-flex">
-                                        <a href="#"><i class="far fa-edit me-2"></i></a>
+                                        <a href="{{ route('admin.lading_details.create') }}"><i
+                                                class="far fa-edit me-2"></i></a>
                                         <a href="javascript:void(0);" data-bs-toggle="modal"
                                             data-bs-target="#delete_modal"><i class="far fa-trash-alt ms-1"></i></a>
                                     </div>
                                 </td>
-
-                                <!-- <td class="cardFontSize text-dark border-dark">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="far fa-edit me-2"></i>Update</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);"
-                                                        data-bs-toggle="modal" data-bs-target="#delete_modal">
-                                                        <i class="far fa-trash-alt me-2"></i>Delete</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td> -->
                             </tr>
                             <tr>
                                 <td class="cardFontSize text-start px-3 maxmax-width text-truncate">Harouan</td>
@@ -141,7 +121,8 @@
                                     646-468-4135</td>
                                 <td class="cardFontSize text-start px-3 maxmax-width text-truncate text-dark px-0">
                                     <div class="d-flex">
-                                        <a href="#"><i class="far fa-edit me-2"></i></a>
+                                        <a href="{{ route('admin.lading_details.create') }}"><i
+                                                class="far fa-edit me-2"></i></a>
                                         <a href="javascript:void(0);" data-bs-toggle="modal"
                                             data-bs-target="#delete_modal"><i class="far fa-trash-alt ms-1"></i></a>
                                     </div>
@@ -152,6 +133,28 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center p-4">
+                    <div class="modal-body">
+                        <!-- <div class="mb-3">
+                            <i class="bi bi-exclamation-circle" style="font-size: 48px; color: orange;"></i>
+                        </div> -->
+                        <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+                            <div class="swal2-icon-content">!</div>
+                        </div>
+                        <h4 class="fw-bold mb-2">Are you sure?</h4>
+                        <p class="mb-4 fs_18">You won't be able to revert this!</p>
+                        <button type="button" class="btn btn-danger me-2 rounded-1">Yes, delete it!</button>
+                        <button type="button" class="btn btn-secondary rounded-1" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         {{-- jqury cdn --}}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
