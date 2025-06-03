@@ -14,7 +14,7 @@ class ContainerController extends Controller
     {
         // Sirf active aur Container type vehicles fetch kar rahe hain
         $containers = Vehicle::where('status', 'Active')
-            ->where('vehicle_type', 'Container')
+            ->where('vehicle_type', '1')
             ->get();
 
         return response()->json([

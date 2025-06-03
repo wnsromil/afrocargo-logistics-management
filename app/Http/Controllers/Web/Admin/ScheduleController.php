@@ -166,8 +166,8 @@ class ScheduleController extends Controller
         // Common data
         $availabilityData['creates_by'] = auth()->id();
         $availabilityDataIfUpdate['user_id'] = $request->user_id;
-        $availabilityDataIfUpdate['lat'] = $request->latitude;;
-        $availabilityDataIfUpdate['lng'] = $request->longitude;;
+        $availabilityDataIfUpdate['lat'] = $request->latitude;
+        $availabilityDataIfUpdate['lng'] = $request->longitude;
         $availabilityData['is_active'] = 1;
 
         // Check if record exists for the user_id

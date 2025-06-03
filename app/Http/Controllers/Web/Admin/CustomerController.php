@@ -83,7 +83,7 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
+        $containers = Vehicle::where('vehicle_type', '1')->select('id', 'container_no_1', 'container_no_2')->get();
         return view('admin.customer.create', compact('roles', 'warehouses', 'countries', 'containers'));
     }
 
@@ -244,7 +244,7 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        $containers = Vehicle::where('vehicle_type', 'Container')->select('id', 'container_no_1', 'container_no_2')->get();
+        $containers = Vehicle::where('vehicle_type', '1')->select('id', 'container_no_1', 'container_no_2')->get();
         $page_no = $request->page;
         $ShipToCustomer = User::where('parent_customer_id', $id)
             ->when($search, function ($q) use ($search) {
