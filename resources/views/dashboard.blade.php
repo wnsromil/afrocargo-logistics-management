@@ -99,7 +99,7 @@
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-9">
                                     <div class="dash-count">
-                                        <p class="fontSize fw-medium">Total Orders</p>
+                                        <p class="fontSize fw-medium">Total Service Orders</p>
                                         <div class="dash-counts countFontSize2" id="total-orders">
                                             0
                                         </div>
@@ -480,7 +480,7 @@
                                 <!-- <div class="dash-widget-header col-md-12"> -->
                                 <div class="col-md-9 float-left">
                                     <div class="dash-count">
-                                        <p class="fontSize fw-medium">Total Supply</p>
+                                        <p class="fontSize fw-medium">Total Supply Orders</p>
                                         <div class="dash-counts countFontSize2" id="total-supply">
                                             0
                                         </div>
@@ -534,6 +534,68 @@
                         </div>
                     </div>
 
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
+                                <!-- <div class="dash-widget-header col-md-12"> -->
+                                <div class="col-md-9 float-left">
+                                    <div class="dash-count">
+                                        <p class="fontSize fw-medium">Cargo Orders</p>
+                                        <div class="dash-counts countFontSize2" id="cargo-order">
+                                            0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="49"
+                                            viewBox="0 0 44 49" fill="none" stroke="#203A5F" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-ship">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1" />
+                                            <path d="M4 18l-1 -5h18l-2 4" />
+                                            <path d="M5 13v-6h8l4 6" />
+                                            <path d="M7 7v-4h-1" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
+                                <!-- <div class="dash-widget-header col-md-12"> -->
+                                <div class="col-md-9 float-left">
+                                    <div class="dash-count">
+                                        <p class="fontSize fw-medium">Air Orders</p>
+                                        <div class="dash-counts countFontSize2" id="air-order">
+                                            0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="49"
+                                            viewBox="0 0 44 49" fill="none" stroke="#203A5F" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plane">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -564,7 +626,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                                                        {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
+                                                                                                                {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -2165,11 +2227,11 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-       function handleContainerClick(containerId, containerNumber, warehouseId) {
-        // Step 1: First fetch current active container
-        axios.post('/api/vehicle/getAdminActiveContainer', {
-          warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
-          }).then(response => {
+        function handleContainerClick(containerId, containerNumber, warehouseId) {
+            // Step 1: First fetch current active container
+            axios.post('/api/vehicle/getAdminActiveContainer', {
+                warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
+            }).then(response => {
                 const activeContainer = response.data.container;
 
                 let message = '';
@@ -2199,25 +2261,25 @@
                             open_id: containerId,
                             close_id: activeContainer?.id,
                             checkbox_status: checkbox_status,
-                             warehouseId: warehouseId,
+                            warehouseId: warehouseId,
                         })
-                        .then((res) => {
-                            Swal.fire('Success', 'Container status updated.', 'success').then(() => {
-                                location.reload();
+                            .then((res) => {
+                                Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                    location.reload();
+                                });
+                            })
+                            .catch(error => {
+                                Swal.fire('Error', 'Failed to update container status.', 'error');
                             });
-                        })
-                        .catch(error => {
-                            Swal.fire('Error', 'Failed to update container status.', 'error');
-                        });
                     } else {
                         location.reload();
                     }
                 });
             })
-            .catch(error => {
-                Swal.fire('Error', 'Failed to fetch current active container.', 'error');
-            });
-    }
+                .catch(error => {
+                    Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+                });
+        }
 
     </script>
 
@@ -2247,6 +2309,8 @@
                 document.getElementById('today-earnings').textContent = '$' + (data.today_earnings ? data.today_earnings : 0);
                 document.getElementById('total-supply').textContent = data.total_supply ? data.total_supply : 0;
                 document.getElementById('new-supply').textContent = data.new_supply ? data.new_supply : 0;
+                document.getElementById('cargo-order').textContent = data.total_Cargo ? data.total_Cargo : 0;
+                document.getElementById('air-order').textContent = data.total_Air ? data.total_Air : 0;
                 updateContainerCards(data.latest_containers || []);
 
             } catch (error) {

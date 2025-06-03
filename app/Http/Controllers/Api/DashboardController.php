@@ -104,6 +104,21 @@ class DashboardController extends Controller
             ->take(4)
             ->get();
 
+        $totalCargo = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })
+            ->where('transport_type', 'cargo')
+            ->where('parcel_type', 'Service')
+            ->count();
+
+
+        $totalAir = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })
+            ->where('transport_type', 'air')
+            ->where('parcel_type', 'Service')
+            ->count();
+
 
         return response()->json([
             'todays_orders' => $orderStats->todays_orders,
@@ -121,6 +136,8 @@ class DashboardController extends Controller
             'total_supply' => $totalSupply,
             'new_supply' => $newSupply,
             'latest_containers' => $latestContainers,
+            'total_Cargo' => $totalCargo,
+            'total_Air' => $totalAir
         ]);
     }
 }

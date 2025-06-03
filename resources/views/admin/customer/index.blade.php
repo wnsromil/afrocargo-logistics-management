@@ -87,6 +87,7 @@
                                 <th>Phone</th>
                                 <th>Address</th>
                                 <th style="text-align: center;">Status</th>
+                                <th>Add</th>
                                 <th>Action</th>
 
 
@@ -133,6 +134,12 @@
                                             for="{{ $customer->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $customer->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-light border-0 fs-5" data-bs-toggle="modal"
+                                            data-bs-target="#configurationButton">
+                                            <i class="fa-solid fa-circle-plus"></i>
+                                        </button>
                                     </td>
                                     <td>
                                         <div class="dropdown dropdown-action">
@@ -231,6 +238,187 @@
             </div>
         </div>
     </div>
+
+
+    <!-- -------------------- Configuration Modal ----------------------------- -->
+
+    <div class="modal fade" id="configurationButton" tabindex="-1" aria-labelledby="configurationButtonLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-size">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 px-3" id="configurationButtonLabel">Configuration</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-4 px-3">
+                    <div class="row px-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Contract</h6>
+                                <div class="form-check form-check-inline text-dark">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_1"
+                                        id="inlineRadio11" value="option1">
+                                    <label class="form-check-label" for="inlineRadio11">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline text-dark">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_2"
+                                        id="inlineRadio12" value="option2" checked>
+                                    <label class="form-check-label" for="inlineRadio12">No</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Text Cust</h6>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_3"
+                                        id="inlineRadio13" value="option1" checked>
+                                    <label class="form-check-label" for="inlineRadio13">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_4"
+                                        id="inlineRadio14" value="option2">
+                                    <label class="form-check-label" for="inlineRadio14">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Voice Call</h6>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_5"
+                                        id="inlineRadio15" value="option1" checked>
+                                    <label class="form-check-label" for="inlineRadio15">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_6"
+                                        id="inlineRadio16" value="option2">
+                                    <label class="form-check-label" for="inlineRadio16">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Cash Cust</h6>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_7"
+                                        id="inlineRadio17" value="option1">
+                                    <label class="form-check-label" for="inlineRadio17">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_8"
+                                        id="inlineRadio18" value="option2" checked>
+                                    <label class="form-check-label" for="inlineRadio18">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row px-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Is License Pic</h6>
+
+                                <div class="form-check form-check-inline text-dark">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_9"
+                                        id="inlineRadio19" value="option1">
+                                    <label class="form-check-label" for="inlineRadio19">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline text-dark">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_10"
+                                        id="inlineRadio20" value="option2" checked>
+                                    <label class="form-check-label" for="inlineRadio20">No</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Active</h6>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_11"
+                                        id="inlineRadio21" value="option1" checked>
+                                    <label class="form-check-label" for="inlineRadio21">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_12"
+                                        id="inlineRadio22" value="option2">
+                                    <label class="form-check-label" for="inlineRadio22">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">No Service</h6>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_13"
+                                        id="inlineRadio23" value="option1">
+                                    <label class="form-check-label" for="inlineRadio23">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_14"
+                                        id="inlineRadio24" value="option2" checked>
+                                    <label class="form-check-label" for="inlineRadio24">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Call</h6>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_15"
+                                        id="inlineRadio25" value="option1" checked>
+                                    <label class="form-check-label" for="inlineRadio25">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_16"
+                                        id="inlineRadio26" value="option2">
+                                    <label class="form-check-label" for="inlineRadio26">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row px-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="basic-info-detail">
+                                <h6 class="fw-normal mb-2">Sales Call</h6>
+
+                                <div class="form-check form-check-inline text-dark">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_17"
+                                        id="inlineRadio27" value="option1" checked>
+                                    <label class="form-check-label" for="inlineRadio27">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline text-dark">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions_18"
+                                        id="inlineRadio28" value="option2">
+                                    <label class="form-check-label" for="inlineRadio28">No</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary mx-1" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary mx-1">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- /Delete Items Modal -->
     @section('script')
         <script>

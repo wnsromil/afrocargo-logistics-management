@@ -204,6 +204,10 @@ class User extends Authenticatable
                 $rolePrefix = 'S';
                 $fullPrefix = 'S' . $countryIso . '-';
                 break;
+            case 6:
+                $rolePrefix = 'P';
+                $fullPrefix = 'P' . $countryIso . '-';
+                break;
             default:
                 $rolePrefix = 'C';
                 $fullPrefix = 'C' . $countryIso . '-';

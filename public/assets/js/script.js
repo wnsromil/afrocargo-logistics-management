@@ -627,6 +627,51 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="container_date_time"]').length > 0) {
+        $('input[name="container_date_time"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true, // ✅ Enable time
+            timePicker24Hour: false, // ✅ Use 12-hour format
+            timePickerSeconds: false, // Optional: hide seconds
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY hh:mm A", // ✅ Date + Time format
+            },
+        });
+
+        $('input[name="container_date_time"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY hh:mm A")); // ✅ Set full date-time
+            }
+        );
+    }
+
+    if ($('input[name="edit_container_date_time"]').length > 0) {
+        let input = $('input[name="edit_container_date_time"]');
+        let currentVal = input.val();
+
+        input.daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true,
+            timePicker24Hour: false,
+            timePickerSeconds: false,
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY hh:mm A",
+            },
+            startDate: currentVal
+                ? moment(currentVal, "M/DD/YYYY hh:mm A")
+                : moment(), // 🛠 Set default start date
+        });
+
+        input.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(picker.startDate.format("M/DD/YYYY hh:mm A"));
+        });
+    }
+
     // Open Date Picker
     if ($('input[name="open_date"]').length > 0) {
         $('input[name="open_date"]').daterangepicker({
@@ -1744,6 +1789,8 @@ Version      : 1.0
             setField("city", city);
             setField("latitude", lat);
             setField("longitude", lng);
+            setField("Pickup_latitude", lat);
+            setField("Pickup_longitude", lng);
         });
     }
 
@@ -1809,11 +1856,156 @@ Version      : 1.0
             setField("city", city);
             setField("latitude", lat);
             setField("longitude", lng);
+            setField("Shipto_latitude", lat);
+            setField("Shipto_longitude", lng);
+        });
+    }
+
+    function initAutocomplete_1() {
+        const input = document.getElementsByName("Model_Pickup_address_1")[0];
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let postalCode = "",
+                country = "",
+                state = "",
+                city = "",
+                lat = "",
+                lng = "";
+
+            addressComponents.forEach((component) => {
+                const types = component.types || [];
+
+                if (types.includes("postal_code")) {
+                    postalCode = component.long_name || "";
+                }
+                if (types.includes("country")) {
+                    country = component.long_name || "";
+                    updateCodeWithCountryPrefix(country);
+                }
+                if (types.includes("administrative_area_level_1")) {
+                    state = component.long_name || "";
+                }
+                if (types.includes("locality")) {
+                    city = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_2") && !city) {
+                    city = component.long_name || "";
+                }
+            });
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("Zip_code", postalCode);
+            setField("country", country);
+            setField("state", state);
+            setField("city", city);
+            setField("latitude", lat);
+            setField("longitude", lng);
+        });
+    }
+
+    function initAutocomplete_2() {
+        const input = document.getElementsByName("Model_ShipTo_address_1")[0];
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let lat = "",
+                lng = "";
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("ship_to_latitude", lat);
+            setField("ship_to_longitude", lng);
+        });
+    }
+
+    function initAutocomplete_3() {
+        const input = document.getElementsByName("shipto_address_1")[0];
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            console.log("Selected address:", place.formatted_address || "N/A");
+
+            const addressComponents = place.address_components || [];
+
+            let lat = "",
+                lng = "";
+
+            // Get Latitude and Longitude
+            if (place.geometry && place.geometry.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            // Safely fill the fields (if they exist)
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("shipto_latitude", lat);
+            setField("shipto_longitude", lng);
         });
     }
 
     window.addEventListener("load", function () {
         initAutocomplete();
         initAutocompleteById();
+        initAutocomplete_1();
+        initAutocomplete_2();
+        initAutocomplete_3();
     });
 })(jQuery);
