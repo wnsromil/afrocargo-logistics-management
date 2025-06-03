@@ -15,11 +15,11 @@ return new class extends Migration {
         });
 
         DB::table('broker')->insert([
-            ['name' => 'Global Brokers', 'status' => 1],
-            ['name' => 'Ocean Traders', 'status' => 1],
-            ['name' => 'Prime Logistics', 'status' => 1],
-            ['name' => 'Alpha Brokers', 'status' => 0],
-            ['name' => 'Skyline Freight', 'status' => 1],
+            ['name' => 'Global Brokers', 'status' => 'Active'],
+            ['name' => 'Ocean Traders', 'status' => 'Active'],
+            ['name' => 'Prime Logistics', 'status' => 'Active'],
+            ['name' => 'Alpha Brokers', 'status' => 'Active'],
+            ['name' => 'Skyline Freight', 'status' => 'Active'],
         ]);
     }
 
