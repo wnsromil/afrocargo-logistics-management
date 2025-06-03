@@ -8,7 +8,7 @@
         <div class="d-flex innertopnav w-100 justify-content-between">
             <p class="subhead pheads">Update Ship to Address</p>
             <div class="btnwrapper">
-                <a href="{{ route('admin.addPickups') }}" class="btn btn-primary buttons me-1"> Pickup </a>
+                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
                 <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>

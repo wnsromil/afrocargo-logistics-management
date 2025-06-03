@@ -152,7 +152,7 @@ class ExpensesController extends Controller
             })->get();
 
         // Containers list with role check
-        $containers = Vehicle::where('vehicle_type', 'Container')
+        $containers = Vehicle::where('vehicle_type', '1')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })->get();
@@ -231,7 +231,7 @@ class ExpensesController extends Controller
                 return $q->where('warehouse_id', auth()->user()->warehouse_id);
             })->get();
 
-        $containers = Vehicle::where('vehicle_type', 'Container')
+        $containers = Vehicle::where('vehicle_type', '1')
             ->when(auth()->user()->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', auth()->user()->warehouse_id);
             })->get();

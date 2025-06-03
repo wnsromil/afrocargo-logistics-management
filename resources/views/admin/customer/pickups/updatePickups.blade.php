@@ -1,15 +1,4 @@
 <x-app-layout>
-    <style>
-        /* Adjust z-index for stacking */
-        #locationModal {
-            z-index: 1060;
-        }
-
-        .modal-backdrop {
-            z-index: 1050;
-        }
-
-    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Add pickup Address') }}
@@ -22,11 +11,15 @@
         </div>
     </x-slot>
 
-    <div class="container p-0">
+    @php
+        $pickupDate = isset($UserPickupDetail->pickup_date) ? Carbon::parse($UserPickupDetail->Date)->format('Y-m-d') : '';
+    @endphp
 
+    <div class="container p-0">
         <div class="row">
             <div class="col-md-auto pickup-font-1 text-dark-shade">Add Pickups</div>
-            <div class="col-md-auto pickup-font-2 text-dark-shade mx-4">Customer Balance: <span class="danger-shade pickup-font-1">
+            <div class="col-md-auto pickup-font-2 text-dark-shade mx-4">Customer Balance: <span
+                    class="danger-shade pickup-font-1">
                     $
                     250</span>
             </div>
@@ -36,25 +29,25 @@
             <!-- <div class="col">col</div> -->
         </div>
         <div class="d-flex">
-            <a href="" class="text-dark px-1 pl-0">Pickup List</a> / <a href="" class="text-link px-1"> Add
+            <a href="" class="text-dark px-1 pl-0">Pickup List</a> / <a href="" class="text-link px-1"> Edit
                 Pickups</a>
         </div>
         <div class="d-flex justify-content-end pickup-margin">
             <button type="button" class="btn btn-color fw-medium">Back</button>
         </div>
     </div>
-{{-- 
+    {{--
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif --}}
 
-    <form action="{{ route('admin.customer.Pickupstore') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.customer.pickup-edit', $UserPickupDetail->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row border rounded-top px-1 py-1">
             <div class="row px-3 py-2">
@@ -64,13 +57,14 @@
                 <div class="col-md-auto p-0 mx-1">
                     <select class="form-select form-select-sm select-size-2" aria-label="Small select example"
                         name="pickup_type" id="pickup_type_select">
-                        <option selected value="Pickup">Pickup</option>
-                        <option value="No Shipto">No Shipto</option>
+                        <option value="Pickup" {{ (old('pickup_type', $UserPickupDetail->pickup_type ?? 'Pickup') == 'Pickup') ? 'selected' : '' }}>Pickup</option>
+                        <option value="No Shipto" {{ (old('pickup_type', $UserPickupDetail->pickup_type ?? 'No Shipto') == 'No Shipto') ? 'selected' : '' }}>No Shipto</option>
                     </select>
                 </div>
                 <div class="col-md-auto p-0 mx-1">
                     <!-- <button type="button" class="btn btn-primary pickup-button-size"> -->
-                    <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal" data-bs-target="#pickupModal">
+                    <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal"
+                        data-bs-target="#pickupModal">
                         Add Pickup Address
                     </button>
                 </div>
@@ -86,11 +80,14 @@
                 <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                     <div class="row align-items-center">
                         <div class="col-4 px-0 text-end">
-                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">ID</label>
+                            <label for="masterPickUpAddressId"
+                                class="col-form-label font-size-label text-dark">ID</label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="unique_id" name="unique_id" class="form-control form-control-sm"
-                                placeholder="Enter ID" value="" readonly style="background-color: #d3d3d3;">
+                            <input type="text" id="unique_id" name="unique_id"
+                                value="{{ old('unique_id', $UserPickupDetail->pickupAddress->unique_id ?? null) }}"
+                                class="form-control form-control-sm" placeholder="Enter ID" value="" readonly
+                                style="background-color: #d3d3d3;">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
@@ -101,8 +98,9 @@
                             </label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="pickup_name" name="pickup_name" class="form-control form-control-sm"
-                                placeholder="Enter Name" value="">
+                            <input type="text" id="pickup_name" name="pickup_name"
+                                value="{{ old('pickup_name', $UserPickupDetail->pickupAddress->name ?? null) }}"
+                                class="form-control form-control-sm" placeholder="Enter Name" value="">
                             @error('pickup_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -111,11 +109,13 @@
 
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">Longitude<i class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">Longitude<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="Pickup_longitude" id="longitude"
-                                class="form-control form-control-sm text-truncate" placeholder="Enter ID" value=""
+                                class="form-control form-control-sm text-truncate" placeholder="Enter ID"
+                                value="{{ old('Pickup_longitude', $UserPickupDetail->pickupAddress->longitude ?? null) }}"
                                 readonly style="background-color: #f8f9fa;">
                         </div>
                     </div>
@@ -128,8 +128,9 @@
                                 1<i class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
-                            <input type="text" id="address" class="form-control form-control-sm text-truncate" value=""
-                                name="address_1" placeholder="Enter Address 1" value="">
+                            <input type="text" id="address" class="form-control form-control-sm text-truncate"
+                                value="{{ old('address_1', $UserPickupDetail->pickupAddress->address ?? null) }}"
+                                name="address_1" placeholder="Enter Address 1">
                             @error('address_1')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -142,16 +143,19 @@
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="pickup_address_2" id="address_2"
+                                value="{{ old('pickup_address_2', $UserPickupDetail->pickupAddress->address_2 ?? null) }}"
                                 class="form-control form-control-sm text-truncate" placeholder="Enter Address 2">
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Apartment</label>
+                            <label for="masterPickUpAddressId"
+                                class="col-form-label font-size-label text-dark">Apartment</label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="pickup_apartment" id="apartment"
-                                class="form-control form-control-sm text-truncate" value=""
+                                class="form-control form-control-sm text-truncate"
+                                value="{{ old('pickup_apartment', $UserPickupDetail->pickupAddress->apartment ?? null) }}"
                                 placeholder="Enter Apartment">
                         </div>
                     </div>
@@ -160,11 +164,13 @@
                 <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                     <div class="row align-items-center">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">City<i class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">City<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="city" id="city" class="form-control form-control-sm text-truncate"
-                                value="" placeholder="Enter ID" value="">
+                                value="{{ old('city', $UserPickupDetail->pickupAddress->city_id ?? null) }}"
+                                placeholder="Enter ID">
                             @error('city')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -172,11 +178,13 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">State<i class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">State<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="state" id="state"
-                                class="form-control form-control-sm text-truncate" value="NY" placeholder="Enter State">
+                                class="form-control form-control-sm text-truncate" placeholder="Enter State"
+                                value="{{ old('state', $UserPickupDetail->pickupAddress->state_id ?? null) }}">
                             @error('state')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -184,11 +192,13 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
-                            <label for="address2" class="col-form-label font-size-label text-dark">Zipcode<i class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">Zipcode<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="zipcode" id="zipcode"
-                                class="form-control form-control-sm text-truncate" value="10039" placeholder="Enter ID">
+                                class="form-control form-control-sm text-truncate" placeholder="Enter ID"
+                                value="{{ old('zipcode', $UserPickupDetail->pickupAddress->pincode ?? null) }}">
                             @error('zipcode')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -207,15 +217,16 @@
                                 <div class="customflagselect">
                                     <select class="flag-select" name="phone_code_id" id="Pickup_cell_phone_id">
                                         @foreach ($coutry as $key => $item)
-                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                            {{ $item->name }} +{{ $item->phonecode }}
-                                        </option>
+                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                {{ $item->name }} +{{ $item->phonecode }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <input type="number" class="form-control form-control-sm flagInput inp"
                                     placeholder="Enter Mobile No" id="Pickup_cell_phone" name="Pickup_cell_phone"
-                                    value="{{ old('Pickup_cell_phone') }}"
+                                    value="{{ old('Pickup_cell_phone', $UserPickupDetail->pickupAddress->phone ?? null) }}"
                                     oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('Pickup_cell_phone')
@@ -232,31 +243,29 @@
                                 <div class="customflagselect">
                                     <select class="flag-select" name="phone_2_code_id_id" id="Pickup_telePhone_id">
                                         @foreach ($coutry as $key => $item)
-                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                            {{ $item->name }} +{{ $item->phonecode }}
-                                        </option>
+                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                {{ $item->name }} +{{ $item->phonecode }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <input type="number" class="form-control form-control-sm flagInput inp"
                                     placeholder="Enter Mobile No" id="Pickup_telePhone" name="Pickup_telePhone"
-                                    value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
+                                    value="{{ old('Pickup_telePhone', $UserPickupDetail->pickupAddress->phone_2 ?? null) }}"
+                                    oninput="this.value = this.value.slice(0, 10)">
                             </div>
-<<<<<<< HEAD
-=======
-                            @error('alternate_mobile_no')
-                            <small class="text-danger">{{ $message }}</small>
-                            @enderror
->>>>>>> 11d3fe97fe149b05edc1be1e650ce9bc20521f4e
                         </div>
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 px-0 text-end">
-                            <label for="address2" class="col-form-label font-size-label text-dark">Latitude<i class="text-danger">*</i></label>
+                            <label for="address2" class="col-form-label font-size-label text-dark">Latitude<i
+                                    class="text-danger">*</i></label>
                         </div>
                         <div class="col-8 justify-content-end">
                             <input type="text" name="Pickup_latitude" id="latitude"
-                                class="form-control form-control-sm text-truncate" placeholder="Enter ID" value="0"
+                                class="form-control form-control-sm text-truncate" placeholder="Enter ID"
+                                value="{{ old('Pickup_latitude', $UserPickupDetail->pickupAddress->latitude ?? null) }}"
                                 readonly style="background-color: #f8f9fa;">
                         </div>
                     </div>
@@ -273,11 +282,14 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Item1<i class="text-danger">*</i></label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Item1<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Item 1" value="" name="item1">
+                                    placeholder="Enter Item 1"
+                                    value="{{ old('Item1', $UserPickupDetail->Item1 ?? null) }}" name="item1">
                                 @error('item1')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -285,26 +297,29 @@
                         </div>
                         <div class="row align-items-center my-3">
                             <div class="col-4">
-                                <label for="masterPickUpAddressId" class="col-form-label float-left float-end text-dark-shade">Item2</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label float-left float-end text-dark-shade">Item2</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    placeholder="Enter Item 2" value="" name="item2">
+                                    placeholder="Enter Item 2"
+                                    value="{{ old('item2', $UserPickupDetail->item2 ?? null) }}" name="item2">
                             </div>
                         </div>
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Pickup Delivery</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Pickup Delivery</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" checked
-                                        id="inlineRadio1" value="P">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        {{(old('inlineRadioOptions', $UserPickupDetail->pickup_delivery ?? 'P') == 'P') ? 'checked' : '' }} id="inlineRadio1" value="P">
                                     <label class="form-check-label" for="inlineRadio1">P</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                        id="inlineRadio2" value="D">
+                                        {{(old('inlineRadioOptions', $UserPickupDetail->pickup_delivery ?? 'D') == 'D') ? 'checked' : '' }} id="inlineRadio2" value="D">
                                     <label class="form-check-label" for="inlineRadio2">D</label>
                                 </div>
                             </div>
@@ -312,15 +327,16 @@
 
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
-                                <label for="status" class="col-form-labelfont-size-label text-dark-shade">Status<i class="text-danger">*</i></label>
+                                <label for="status" class="col-form-labelfont-size-label text-dark-shade">Status<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
                                 <select id="status" name="pickup_status_type"
                                     class="form-select select2 form-select-sm">
-                                    <option value="not_done">Not Done</option>
-                                    <option value="done">Done</option>
-                                    <option value="cancel">Cancel</option>
-                                    <option value="reschedule">Reschedule</option>
+                                    <option value="not_done" {{ (old('pickup_type', $UserPickupDetail->pickup_status_type ?? 'not_done') == 'not_done') ? 'selected' : '' }}>Not Done</option>
+                                    <option value="done" {{ (old('pickup_type', $UserPickupDetail->pickup_status_type ?? 'done') == 'done') ? 'selected' : '' }}>Done</option>
+                                    <option value="cancel" {{ (old('pickup_type', $UserPickupDetail->pickup_status_type ?? 'cancel') == 'cancel') ? 'selected' : '' }}>Cancel</option>
+                                    <option value="reschedule" {{ (old('pickup_type', $UserPickupDetail->pickup_status_type ?? 'reschedule') == 'reschedule') ? 'selected' : '' }}>Reschedule</option>
                                 </select>
                                 @error('pickup_status_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -332,12 +348,14 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Date<i class="text-danger">*</i>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Date<i
+                                        class="text-danger">*</i>
                                 </label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="date" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    value="" placeholder="Enter Date" name="pickup_date">
+                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
+                                    value="{{ $pickupDate }}" placeholder="Enter Date" name="pickup_date" readonly style="background:#d3d3d3">
                                 @error('pickup_date')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -346,7 +364,8 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Time</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Time</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="time" id="masterPickUpAddressId" class="form-control form-control-sm"
@@ -356,12 +375,13 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Done
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Done
                                     Date</label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="date" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    value="" placeholder="Enter Date" name="done_date">
+                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
+                                    value="" placeholder="Enter Date" name="done_date" readonly style="background:#d3d3d3">
                             </div>
                         </div>
                     </div>
@@ -369,7 +389,8 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="address2" class="col-form-label font-size-label text-dark-shade">Zone<i class="text-danger">*</i></label>
+                                <label for="address2" class="col-form-label font-size-label text-dark-shade">Zone<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <select name="zone" class="form-select form-select-sm" required
@@ -384,15 +405,17 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="driver" class="col-form-label font-size-label text-dark-shade">Driver</label>
+                                <label for="driver"
+                                    class="col-form-label font-size-label text-dark-shade">Driver</label>
                             </div>
                             <div class="col-8">
                                 <select name="Driver_id" class="js-example-basic-single select2"
                                     style="font-weight:400px !important">
-                                    <option value="">Select Driver </option>
+                                    <option value="">Select Driver</option>
                                     @foreach($drivers as $driver)
-                                                                    <option {{ old('Driver_id') == $driver->id ? 'selected' : '' }} value="{{
-                                        $driver->id }}">{{ $driver->name }}</option>
+                                        <option value="{{ $driver->id }}" {{ (old('Driver_id') == $driver->id || (isset($UserPickupDetail->Driver_id) && $UserPickupDetail->Driver_id == $driver->id)) ? 'selected' : '' }}>
+                                            {{ $driver->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -400,11 +423,13 @@
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Note</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Note</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input name="note" type="text" id="masterPickUpAddressId"
-                                    class="form-control form-control-sm" value="" placeholder="Enter Notes">
+                                    value="{{ old('note', $UserPickupDetail->Note ?? null) }}"
+                                    class="form-control form-control-sm" placeholder="Enter Notes">
                             </div>
                         </div>
                     </div>
@@ -415,27 +440,34 @@
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="number" name="Box_quantity" id="Box_quantity"
-                                    class="form-control form-control-sm text-truncate" placeholder="Enter Box" value="">
+                                    class="form-control form-control-sm text-truncate" placeholder="Enter Box"
+                                    value="{{ old('Box_quantity', $UserPickupDetail->Box_quantity ?? null) }}">
                             </div>
                         </div>
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Barrel</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Barrel</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="number" id="Barrel_quantity" name="Barrel_quantity"
-                                    class="form-control form-control-sm" value="" placeholder="Enter Barrel">
+                                    class="form-control form-control-sm"
+                                    value="{{ old('Barrel_quantity', $UserPickupDetail->Barrel_quantity ?? null) }}"
+                                    placeholder="Enter Barrel">
                             </div>
                         </div>
 
                         <div class="row align-items-center my-4">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark-shade">Tapes</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Tapes</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="number" id="Tapes_quantity" name="Tapes_quantity"
-                                    class="form-control form-control-sm" value="" placeholder="Enter Tapes">
+                                    class="form-control form-control-sm"
+                                    value="{{ old('Tapes_quantity', $UserPickupDetail->Tapes_quantity ?? null) }}"
+                                    placeholder="Enter Tapes">
                             </div>
                         </div>
                     </div>
@@ -449,7 +481,8 @@
                     <div class="col float-start text-dark py-1 px-1">Shipto Address Details</div>
 
                     <div class="col-md-auto p-0 mx-1">
-                        <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal" data-bs-target="#shiptoAddressModal">
+                        <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal"
+                            data-bs-target="#shiptoAddressModal">
                             Add Shipto Address
                         </button>
                     </div>
@@ -467,7 +500,8 @@
                         <!-- Country Dropdown -->
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
-                                <label for="country" class="col-form-label font-size-label text-dark-shade">Country<i class="text-danger">*</i></label>
+                                <label for="country" class="col-form-label font-size-label text-dark-shade">Country<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
                                 <select id="shipto_country" name="shipto_country"
@@ -550,7 +584,8 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
-                                <label for="address2" class="col-form-label font-size-label text-dark">Cell Phone<i class="text-danger">*</i></label>
+                                <label for="address2" class="col-form-label font-size-label text-dark">Cell Phone<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <div class="flaginputwrap">
@@ -558,9 +593,10 @@
                                         <select class="flag-select" name="shipto_phone_code_id"
                                             id="shipto_cellphone_id">
                                             @foreach ($coutry as $key => $item)
-                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                {{ $item->name }} +{{ $item->phonecode }}
-                                            </option>
+                                                <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                    data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                    {{ $item->name }} +{{ $item->phonecode }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -577,7 +613,8 @@
 
                         <div class="row align-items-center my-2">
                             <div class="col-4 px-0 text-end">
-                                <label for="address2" class="col-form-label font-size-label text-dark">Telephone<i class="text-danger">*</i></label>
+                                <label for="address2" class="col-form-label font-size-label text-dark">Telephone<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <div class="flaginputwrap">
@@ -585,9 +622,10 @@
                                         <select class="flag-select" name="shipto_phone_2_code_id_id"
                                             id="shipto_telePhone_id">
                                             @foreach ($coutry as $key => $item)
-                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                {{ $item->name }} +{{ $item->phonecode }}
-                                            </option>
+                                                <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                    data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                    {{ $item->name }} +{{ $item->phonecode }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -606,7 +644,8 @@
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         {{-- <div id="location-block" class="row align-items-center my-2" style="display: none;">
                             <div class="col-4 px-0 text-end">
-                                <label for="location" class="col-form-label font-size-label text-dark-shade">Location<i class="text-danger">*</i></label>
+                                <label for="location" class="col-form-label font-size-label text-dark-shade">Location<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-8">
                                 <select id="location" class="form-select form-select-sm">
@@ -617,7 +656,8 @@
 
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Latitude</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark">Latitude</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" class="form-control form-control-sm" name="Shipto_latitude"
@@ -627,7 +667,8 @@
 
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
-                                <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Longitude</label>
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark">Longitude</label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" class="form-control form-control-sm" name="Shipto_longitude"
@@ -639,7 +680,11 @@
             </div>
         </div>
         <input type="hidden" name="parent_customer_id" class="form-control inp" placeholder="Enter License ID"
-            value="{{ $id }}">
+            value="{{ $UserPickupDetail->parent_customer_id }}">
+        <input type="hidden" name="pickup_address_id_defulte" class="form-control inp" placeholder="Enter License ID"
+            value="{{ $UserPickupDetail->pickup_address_id }}">
+        <input type="hidden" name="shipto_address_id_defulte" class="form-control inp" placeholder="Enter License ID"
+            value="{{ $UserPickupDetail->shipto_address_id }}">
         <div class="float-end mt-3">
             <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')"
                 class="btn btn-outline-dark">Cancel</button>
@@ -695,13 +740,18 @@
                                                 <select id="mobile_code_2" class="flag-select"
                                                     name="mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                        {{ $item->name }} +{{ $item->phonecode }}
-                                                    </option>
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}"
+                                                            data-code="{{ $item->phonecode }}">
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <input type="number" class="form-control form-control-sm flagInput inp" placeholder="201-747-3177" name="mobile_number" value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
+                                            <input type="number" class="form-control form-control-sm flagInput inp"
+                                                placeholder="201-747-3177" name="mobile_number"
+                                                value="{{ old('mobile_number') }}"
+                                                oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('mobile_number')
                                             <small class="text-danger">{{ $message }}</small>
@@ -733,7 +783,7 @@
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('alternate_mobile_no')
-                                        <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -760,7 +810,8 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
-                                        <label for="masterPickUpAddressId" class="col-form-label text-dark">Apartment</label>
+                                        <label for="masterPickUpAddressId"
+                                            class="col-form-label text-dark">Apartment</label>
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" id="masterPickUpAddressId"
@@ -772,7 +823,8 @@
                             <div class="col-md-6 col-sm-6 col-lg-6 my-3">
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="address2" class="col-form-label text-dark">Latitude<i class="text-danger">*</i></label>
+                                        <label for="address2" class="col-form-label text-dark">Latitude<i
+                                                class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="latitude" id="latitude"
@@ -782,7 +834,8 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="address2" class="col-form-label text-dark">Longitude<i class="text-danger">*</i></label>
+                                        <label for="address2" class="col-form-label text-dark">Longitude<i
+                                                class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="longitude" id="longitude"
@@ -792,7 +845,8 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="country_name" class="col-form-label text-dark">Country<i class="text-danger">*</i></label>
+                                        <label for="country_name" class="col-form-label text-dark">Country<i
+                                                class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="country" value="{{ old('country') }}"
@@ -801,7 +855,8 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="city_name" class="col-form-label text-dark">City<i class="text-danger">*</i></label>
+                                        <label for="city_name" class="col-form-label text-dark">City<i
+                                                class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="city" value="{{ old('city') }}"
@@ -810,7 +865,8 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col-4 text-end px-0">
-                                        <label for="country_name" class="col-form-label text-dark">State<i class="text-danger">*</i></label>
+                                        <label for="country_name" class="col-form-label text-dark">State<i
+                                                class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-8 justify-content-end">
                                         <input type="text" name="state" value="{{ old('state') }}"
@@ -837,6 +893,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -935,9 +992,11 @@
                                             <div class="customflagselect">
                                                 <select class="flag-select" name="mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                        {{ $item->name }} +{{ $item->phonecode }}
-                                                    </option>
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}"
+                                                            data-code="{{ $item->phonecode }}">
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -947,7 +1006,7 @@
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('alternate_mobile_no')
-                                        <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -960,9 +1019,11 @@
                                             <div class="customflagselect">
                                                 <select class="flag-select" name="alternative_mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                        {{ $item->name }} +{{ $item->phonecode }}
-                                                    </option>
+                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                            data-name="{{ $item->name }}"
+                                                            data-code="{{ $item->phonecode }}">
+                                                            {{ $item->name }} +{{ $item->phonecode }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -972,7 +1033,7 @@
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
                                         @error('alternate_mobile_no')
-                                        <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -1037,7 +1098,8 @@
 
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col px-0 text-end">
-                                        <label for="language" class="col-form-label font-size-label text-dark-shade">Language</label>
+                                        <label for="language"
+                                            class="col-form-label font-size-label text-dark-shade">Language</label>
                                     </div>
                                     <div class="col-9">
                                         <select id="language" name="language" class="js-example-basic-single select2">
@@ -1112,6 +1174,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -1328,7 +1391,8 @@
         <script>
             $(document).ready(function () {
                 const url = window.location.href;
-                const id = url.substring(url.lastIndexOf('/') + 1);
+                const id = document.querySelector('input[name="parent_customer_id"]').value;
+                const defaultPickupAddressId = document.querySelector('input[name="pickup_address_id_defulte"]').value;
 
                 // Ye variable baahar declare karo taaki change event me use ho sake
                 let pickupUsers = [];
@@ -1342,14 +1406,20 @@
 
                             $('#pickupUserSelect').empty().append('<option disabled>-- Select Pickup User --</option>');
 
-                            response.data.forEach(function (user, index) {
+                            response.data.forEach(function (user) {
+                                const isSelected = user.id == defaultPickupAddressId ? 'selected' : '';
                                 $('#pickupUserSelect').append(
-                                    `<option value="${user.id}" ${index === 0 ? 'selected' : ''}>${user.name}</option>`
+                                    `<option value="${user.id}" ${isSelected}>${user.name}</option>`
                                 );
                             });
 
-                            // Initial fill for first user
-                            fillPickupUserDetails(response.data[0]);
+                            // Fill user details according to selected user
+                            const selectedUser = pickupUsers.find(user => user.id == defaultPickupAddressId);
+                            if (selectedUser) {
+                                fillPickupUserDetails(selectedUser);
+                            } else {
+                                fillPickupUserDetails(response.data[0]); // fallback
+                            }
 
                             // Change event
                             $('#pickupUserSelect').on('change', function () {
@@ -1387,15 +1457,13 @@
                     $('#Pickup_cell_phone_id').val(user.phone_code_id || '').trigger('change');
                     $('#Pickup_telePhone_id').val(user.phone_2_code_id_id || '').trigger('change');
                 }
-
-
             });
 
             $(document).ready(function () {
                 const url = window.location.href;
-                const id = url.substring(url.lastIndexOf('/') + 1);
+                const id = document.querySelector('input[name="parent_customer_id"]').value;
+                const defaultShiptoAddressId = document.querySelector('input[name="shipto_address_id_defulte"]').value;
 
-                // Ye variable baahar declare karo taaki change event me use ho sake
                 let pickupUsers = [];
 
                 $.ajax({
@@ -1403,18 +1471,24 @@
                     type: 'GET',
                     success: function (response) {
                         if (response.status && Array.isArray(response.data) && response.data.length > 0) {
-                            pickupUsers = response.data; // store data globally
+                            pickupUsers = response.data;
 
                             $('#shiptoUserSelect').empty().append('<option disabled>-- Select Pickup User --</option>');
 
-                            response.data.forEach(function (user, index) {
+                            response.data.forEach(function (user) {
+                                const isSelected = user.id == defaultShiptoAddressId ? 'selected' : '';
                                 $('#shiptoUserSelect').append(
-                                    `<option value="${user.id}" ${index === 0 ? 'selected' : ''}>${user.name}</option>`
+                                    `<option value="${user.id}" ${isSelected}>${user.name}</option>`
                                 );
                             });
 
-                            // Initial fill for first user
-                            fillShipToUserDetails(response.data[0]);
+                            // Fill form fields based on selected/default user
+                            const selectedUser = pickupUsers.find(user => user.id == defaultShiptoAddressId);
+                            if (selectedUser) {
+                                fillShipToUserDetails(selectedUser);
+                            } else {
+                                fillShipToUserDetails(response.data[0]); // fallback to first user
+                            }
 
                             // Change event
                             $('#shiptoUserSelect').on('change', function () {
@@ -1435,7 +1509,6 @@
                 });
 
                 function fillShipToUserDetails(user) {
-                    // document.getElementById('shipto_country').value = user.country_id || '';
                     document.getElementById('shipto_name').value = user.name || '';
                     document.getElementById('shipto_latitude').value = user.latitude || '';
                     document.getElementById('shipto_longitude').value = user.longitude || '';
@@ -1448,7 +1521,6 @@
                     $('#shipto_cellphone_id').val(user.phone_code_id || '').trigger('change');
                     $('#shipto_telePhone_id').val(user.phone_2_code_id_id || '').trigger('change');
                 }
-
             });
         </script>
         <script>
