@@ -30,54 +30,13 @@
 
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
-            <div class="mt-2">
+            <div class="mt-2 pe-3">
                 <button class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#newReportModal">
                     <div class="d-flex align-items-center justify-content-center">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
                         New Report
                     </div>
                 </button>
-                <!-- <div class="dropdown"> -->
-                <button class="btn btn-primary dropdown-toggle px-2" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Column
-                </button>
-                <ul class="dropdown-menu py-2 px-3">
-                    <li>
-                        <div class="form-check border-bottom">
-                            <input class="form-check-input" type="checkbox" value="" id="checkChecked1" checked>
-                            <label class="form-check-label permission-font" for="checkChecked1">
-                                Date
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check border-bottom">
-                            <input class="form-check-input" type="checkbox" value="" id="checkChecked2" checked>
-                            <label class="form-check-label permission-font" for="checkChecked2">
-                                Category
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check border-bottom">
-                            <input class="form-check-input" type="checkbox" value="" id="checkChecked3" checked>
-                            <label class="form-check-label permission-font" for="checkChecked3">
-                                Note
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkChecked4" checked>
-                            <label class="form-check-label permission-font" for="checkChecked4">
-                                Amount
-                            </label>
-                        </div>
-                    </li>
-
-                </ul>
-                <!-- </div> -->
             </div>
         </div>
     </div>
