@@ -187,6 +187,10 @@ table thead.set {
     font-size: 12px !important;
 }
 
+.font12 {
+    font-size: 12px;
+    font-weight: medium;
+}
 
 .font13 {
     font-size: 13px;
@@ -1608,7 +1612,7 @@ span.dollarSign {
 }
 
 .card-body .table-height {
-    min-height: 250px !important;
+    min-height: 200px !important;
 }
 
 .card-body .table-responsive {
@@ -3716,6 +3720,7 @@ span.select2-dropdown:has(.my-custom-option-class) {
     margin: 1.75rem auto
 }
 
+
 .margin-top-top {
     margin-top: 14px;
 }
@@ -3824,7 +3829,7 @@ span.select2-dropdown:has(.my-custom-option-class) {
 /* text-bue1 fs_18 fw-semibold text-center border border-secondary */
 
 th.thead_2 {
-    color: #1c18f7 ;
+    color: #1c18f7;
     font-size: 18px !important;
     font-weight: 700 !important;
     text-align: center !important;
@@ -3846,7 +3851,40 @@ textarea {
     white-space: nowrap;
 }
 
-.bg-dark-shade{
+.bg-dark-shade {
     background-color: #1c30b3 !important;
     color: white !important;
+}
+
+.bg-custom {
+    background-color: #cab6b605;
+}
+
+.btn-tomato {
+    background-color: #e0292933;
+    color: red;
+}
+
+.change-color {
+    background-color: #2e3092 !important;
+}
+
+.checkbox-transform {
+    transform: translate(970px, 63px) !important;
+}
+
+.border-none{
+    border: none !important;
+}
+
+.trunk-width{
+    min-width: 80px;
+}
+
+.tracking-modal-width{
+    min-width: 510px !important;
+}
+
+.select-tag-width{
+    max-width: 155px !important;
 }

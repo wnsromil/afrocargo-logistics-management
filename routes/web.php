@@ -148,6 +148,28 @@ Route::get('/lading_details_PDF', function () {
     return view('admin.lading_details_PDF.bill-pdf');
 });
 
+Route::get('/customReport', function () {
+    return view('admin.customReport.index');
+});
+
+Route::get('/customReportEdit', function () {
+    return view('admin.customReportEdit.edit');
+});
+
+Route::get('/customReport_pdf1', function () {
+    return view('admin.customReport_pdf1.item_product_list');
+});
+
+Route::get('/customReport_pdf_2', function () {
+    return view('admin.customReport_pdf_2.containerReportList');
+});
+
+Route::get('/VerifyLicense', function () {
+    return view('admin.VerifyLicense.index');
+});
+
+
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

@@ -68,7 +68,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr class="cardFontSize border-dark">
                                 <td class="cardFontSize text-dark border-dark">TBL-000002</td>
                                 <td class="cardFontSize text-dark border-dark">Consignee</td>
@@ -89,27 +88,6 @@
                                             data-bs-target="#delete_modal"><i class="far fa-trash-alt ms-1"></i></a>
                                     </div>
                                 </td>
-
-                                <!-- <td class="cardFontSize text-dark border-dark">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="far fa-edit me-2"></i>Update</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);"
-                                                        data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td> -->
                             </tr>
                             <tr>
                                 <td class="cardFontSize">TBL-000001</td>

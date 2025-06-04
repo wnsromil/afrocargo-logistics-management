@@ -5,8 +5,8 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-            <p class="subhead pheads" >PDF Bill of Lading Detail</p>
-    
+        <p class="subhead pheads">PDF Bill of Lading Detail</p>
+
     </x-slot>
 
     <table style="width: 100%; color: black;">
@@ -216,7 +216,9 @@
                             Particulars Furnished by Shipper</th>
                     </tr>
                     <tr>
-                        <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; border-right: 2px solid white;">Make and
+                        <th
+                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; border-right: 2px solid white;">
+                            Make and
                             Number</th>
                         <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px;">No of
                             packages</th>
@@ -225,7 +227,9 @@
                             Goods</th>
                         <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px;">Gross Weight
                         </th>
-                        <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; border-left: 2px solid white;">Measurement
+                        <th
+                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; border-left: 2px solid white;">
+                            Measurement
                         </th>
                     </tr>
                     <tr>
