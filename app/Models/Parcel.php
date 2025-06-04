@@ -55,6 +55,11 @@ class Parcel extends Model
         return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
     }
 
+    public function arrivedDriver()
+    {
+        return $this->belongsTo(User::class, 'arrived_driver_id')->with(['country', 'state', 'city']);
+    }
+
     public function ship_customer()
     {
         return $this->belongsTo(User::class, 'ship_customer_id')->with(['country', 'state', 'city']);
@@ -65,9 +70,21 @@ class Parcel extends Model
         return $this->hasOne(Vehicle::class, 'driver_id', 'driver_id');
     }
 
+    public function arrivedDriverVehicle()
+    {
+        return $this->belongsTo(Vehicle::class, 'arrived_driver_id', 'driver_id');
+    }
+
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
+    }
+
+    // Parcel model
+    public function arrivedWarehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'arrived_warehouse_id')->with(['country', 'state', 'city']);
     }
 
     public function pickupaddress()

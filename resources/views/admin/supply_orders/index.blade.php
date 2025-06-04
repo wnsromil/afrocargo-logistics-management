@@ -75,7 +75,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        --
+                                       {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
                                     </td>
                                     <td>
                                         <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
@@ -84,10 +84,10 @@
                                         <div>${{ $parcel->total_amount ?? "0"}}</div>
                                     </td>
                                     <td>
-                                        <div>{{ $parcel->driver->name ?? "-"}}</div>
+                                        <div>{{ $parcel->arrivedDriver->name ?? "-"}}</div>
                                     </td>
                                     <td>
-                                        <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
+                                        <div>{{ $parcel->arrivedDriverVehicle->vehicle_type ?? "-"}}</div>
                                     </td>
                                     @php
                                         $forValue = match ($parcel->payment_status) {
@@ -116,25 +116,24 @@
                                         </div>
                                     </td>
                                     @php
-                                        $classValue = match ((string) $status_class) {
-    "1"  => 'badge-pending',
-    "2"  => 'badge-pickup',
-    "3"  => 'badge-picked-up',
-    "4"  => 'badge-arrived-warehouse',
-    "5"  => 'badge-in-transit',
-    "8"  => 'badge-arrived-final',
-    "9"  => 'badge-ready-pickup',
-    "10" => 'badge-out-delivery',
-    "11" => 'badge-delivered',
-    "12" => 'badge-re-delivery',
-    "13" => 'badge-on-hold',
-    "14" => 'badge-cancelled',
-    "15" => 'badge-abandoned',
-    "21" => 'badge-picked-up',
-    "22" => 'badge-in-transit',
-    default => 'badge-pending',
-};
-
+                                        $classValue = match ((string) $parcel->status) {
+                                        "1"  => 'badge-pending',
+                                        "2"  => 'badge-pickup',
+                                        "3"  => 'badge-picked-up',
+                                        "4"  => 'badge-arrived-warehouse',
+                                        "5"  => 'badge-in-transit',
+                                        "8"  => 'badge-arrived-final',
+                                        "9"  => 'badge-ready-pickup',
+                                        "10" => 'badge-out-delivery',
+                                        "11" => 'badge-delivered',
+                                        "12" => 'badge-re-delivery',
+                                        "13" => 'badge-on-hold',
+                                        "14" => 'badge-cancelled',
+                                        "15" => 'badge-abandoned',
+                                        "21" => 'badge-picked-up',
+                                        "22" => 'badge-in-transit',
+                                        default => 'badge-pending',
+                                    };
                                     @endphp
                                     <td>
                                         <div>{{ $parcel->payment_type ?? "-"}}</div>
