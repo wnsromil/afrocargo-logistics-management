@@ -29,71 +29,65 @@
     </x-slot>
 
 
-    <div class="container-fluid text-dark">
-        <div class="thead-light rounded-2 p-2 mt-2">
+    <div class="container-fluid">
+        <div class="rounded-2 p-2 mt-2">
             <div class="row rounded-2 bg-custom">
                 <div class="col-md-3 col-sm-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    <div class="col-3">
-                        <label for="search_id" class="col-form-label">Search</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
-                            placeholder="Search">
-                    </div>
+                    <label for="search_id" class="col-form-label me-2">Search</label>
+                    <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
+                        placeholder="Search">
                 </div>
             </div>
 
             <div class="row">
-                <div class="d-flex align-items-center justify-content-end mb-1">
+                <div class="d-flex align-items-center justify-content-end mt-2">
                     <div class="d-grid gap-2 d-md-block justify-content-end">
-                        <button class="btn btn-danger btn-sm" type="button">Search</button>
-                        <button class="btn btn-tomato btn-sm ms-2" type="button">Clear</button>
+                        <button class="btn btn-primary btn-sm" type="button">Search</button>
+                        <button class="btn btn-outline-danger btn-sm ms-2" type="button">Reset</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="my-2">
-            <button class="btn btn-primary change-color btn-sm" type="button" data-bs-toggle="modal"
+        <div class="mb-2">
+            <button class="btn btn-primary btn-sm mt-2" type="button" data-bs-toggle="modal"
                 data-bs-target="#trackingReportModal">Item Report</button>
-            <button class="btn btn-primary change-color btn-sm" type="button">Container Status Report</button>
-            <button class="btn btn-primary change-color btn-sm" type="button">Container Status Print</button>
-            <button class="btn btn-primary change-color btn-sm" type="button">Print Invoice Report</button>
+            <button class="btn btn-primary btn-sm mt-2" type="button">Container Status Report</button>
+            <button class="btn btn-primary btn-sm mt-2" type="button">Container Status Print</button>
+            <button class="btn btn-primary btn-sm mt-2" type="button">Print Invoice Report</button>
         </div>
 
         <div class="row">
             <div id='ajexTable'>
                 <div class="card-table">
-                    <div class="">
-                        <div class="table-responsive table-height border border-dark mt-2">
-
+                  <div class="card-body">
+                        <div class="table-responsive table-height mt-3">
                             <table class="table table-stripped table-hover datatable">
-                                <thead class="thead-light border-bottom border-dark text-start px-3">
+                                <thead class="thead-light text-start px-3">
                                     <tr>
-                                        <th class="fs_14 fw-semibold ">Date</th>
-                                        <th class="fs_14 fw-semibold ">Invoice No</th>
-                                        <th class="fs_14 fw-semibold ">Name</th>
-                                        <th class="fs_14 fw-semibold ">Address</th>
-                                        <th class="fs_14 fw-semibold ">Customer Lic</th>
-                                        <th class="fs_14 fw-semibold ">Shipto Lic</th>
-                                        <th class="fs_14 fw-semibold ">Items</th>
-                                        <th class="fs_14 fw-semibold bg-transparent table-last-column">
+                                        <th>Date</th>
+                                        <th>Invoice No</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Customer Lic</th>
+                                        <th>Shipto Lic</th>
+                                        <th>Items</th>
+                                        <th class=" bg-transparent table-last-column">
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
 
                                 <tbody class="px-3">
-
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001319</td>
-                                        <td class="font12 text-dark">Layee Kromah</td>
-                                        <td class="font12 text-dark">4 Upland Gardens Dr</td>
-                                        <td class="font12 text-dark">null</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Brown Box 8 With...</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001319</td>
+                                        <td>Layee Kromah</td>
+                                        <td>4 Upland Gardens Dr</td>
+                                        <td>null</td>
+                                        <td>-</td>
+                                        <td class="trunk-width text-truncate">Brown Box 8 With...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -101,16 +95,16 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001299</td>
-                                        <td class="font12 text-dark">Ahoua Kante</td>
-                                        <td class="font12 text-dark trunk-width text-truncate">796 East 163rd Street
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001299</td>
+                                        <td>Ahoua Kante</td>
+                                        <td class=" trunk-width text-truncate">796 East 163rd Street
                                         </td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Afro International...</td>
-                                        <td class="font12 text-dark">
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Afro International...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -118,32 +112,15 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001308</td>
-                                        <td class="font12 text-dark">Irene G Bagnan</td>
-                                        <td class="font12 text-dark">220 Mt Nernon PI</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Barrel Large, Home...</td>
-                                        <td class="font12 text-dark">
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001321</td>
-                                        <td class="font12 text-dark">Seydou Saumahoro</td>
-                                        <td class="font12 text-dark">3 Wells Park Dr</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Invoirien Cargo Car...</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001308</td>
+                                        <td>Irene G Bagnan</td>
+                                        <td>220 Mt Nernon PI</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Barrel Large, Home...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -152,15 +129,15 @@
                                     </tr>
 
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001309</td>
-                                        <td class="font12 text-dark">Ali Fofana</td>
-                                        <td class="font12 text-dark">1642 Park Ave</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">New Computer in B...</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001321</td>
+                                        <td>Seydou Saumahoro</td>
+                                        <td>3 Wells Park Dr</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Invoirien Cargo Car...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -169,15 +146,15 @@
                                     </tr>
 
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001316</td>
-                                        <td class="font12 text-dark">Julien Kouame</td>
-                                        <td class="font12 text-dark">6 Deerfield Rd</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Barrel Medium</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001309</td>
+                                        <td>Ali Fofana</td>
+                                        <td>1642 Park Ave</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">New Computer in B...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -185,15 +162,16 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001298</td>
-                                        <td class="font12 text-dark">Antou Diakite</td>
-                                        <td class="font12 text-dark">200 W 148th St...</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Barrel large 3 doll...</td>
-                                        <td class="font12 text-dark">
+
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001316</td>
+                                        <td>Julien Kouame</td>
+                                        <td>6 Deerfield Rd</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Barrel Medium</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -201,15 +179,15 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001296</td>
-                                        <td class="font12 text-dark">Fanta Fane</td>
-                                        <td class="font12 text-dark trunk-width text-truncate">200 Bradhurst Ave</td>
-                                        <td class="font12 text-dark">null</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Peanut Butter Case...</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001298</td>
+                                        <td>Antou Diakite</td>
+                                        <td>200 W 148th St...</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Barrel large 3 doll...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -217,15 +195,15 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001297</td>
-                                        <td class="font12 text-dark">Mansse Balogun</td>
-                                        <td class="font12 text-dark">171-14 103rd Rd</td>
-                                        <td class="font12 text-dark">null</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Barrel Large</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001296</td>
+                                        <td>Fanta Fane</td>
+                                        <td class=" trunk-width text-truncate">200 Bradhurst Ave</td>
+                                        <td>null</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Peanut Butter Case...</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -233,15 +211,15 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">05/12/2025</td>
-                                        <td class="font12 text-dark">TIV-001295</td>
-                                        <td class="font12 text-dark">Khader Gbane</td>
-                                        <td class="font12 text-dark">63 Wyckoff Aver</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 text-dark">-</td>
-                                        <td class="font12 trunk-width text-truncate">Suitecase(valise)...</td>
-                                        <td class="font12 text-dark">
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001297</td>
+                                        <td>Mansse Balogun</td>
+                                        <td>171-14 103rd Rd</td>
+                                        <td>null</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Barrel Large</td>
+                                        <td>
                                             <i class="far fa-edit mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#editInvoiceReportModal"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
@@ -249,10 +227,25 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td>05/12/2025</td>
+                                        <td>TIV-001295</td>
+                                        <td>Khader Gbane</td>
+                                        <td>63 Wyckoff Aver</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td class=" trunk-width text-truncate">Suitecase(valise)...</td>
+                                        <td>
+                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                                data-bs-target="#editInvoiceReportModal"></i>
+                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                                data-bs-target="#deleteInvoiceReportModal"></i>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                   </div>
                 </div>
             </div>
         </div>
@@ -289,7 +282,7 @@
                     <button type="button" class="btn-close ms-0 fs_18" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-dark">
+                <div class="modal-body">
                     <div class="mb-2">
                         <label for="lading_bill" class="form-label mb-0">Email Id<i class="text-danger">*</i>:</label>
                         <input type="email" id="lading_bill" class="form-control" value=""
@@ -316,7 +309,7 @@
                     <button type="button" class="btn-close fs_18" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body text-dark">
+                <div class="modal-body">
                     <form class="ng-untouched ng-invalid ng-dirty">
                         <div class="row px-2">
                             <div class="col-md-12">
