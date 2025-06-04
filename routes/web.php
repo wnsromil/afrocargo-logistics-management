@@ -145,6 +145,32 @@ Route::get('/freightShipping_PDF', function () {
     return view('admin.freightShipping_PDF.Pdf_view');
 });
 
+Route::get('/lading_details_PDF', function () {
+    return view('admin.lading_details_PDF.bill-pdf');
+});
+
+Route::get('/customReport', function () {
+    return view('admin.customReport.index');
+});
+
+Route::get('/customReportEdit', function () {
+    return view('admin.customReportEdit.edit');
+});
+
+Route::get('/customReport_pdf1', function () {
+    return view('admin.customReport_pdf1.item_product_list');
+});
+
+Route::get('/customReport_pdf_2', function () {
+    return view('admin.customReport_pdf_2.containerReportList');
+});
+
+Route::get('/VerifyLicense', function () {
+    return view('admin.VerifyLicense.index');
+});
+
+
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -218,11 +244,26 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
+
+        // Customer Ship To Address
         Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
         Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
         Route::get('/update-shipTo/{id}', [CustomerController::class, 'updateShipTo'])->name('customer.updateShipTo');
         Route::put('/edit-shipTo/{id}', [CustomerController::class, 'editeShipTo'])->name('customer.editeShipTo');
-        Route::get('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.destroyShipTo');
+        Route::post('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.destroyShipTo');
+
+        // Customer Pickups Address
+        Route::get('/view-viewPickups/{id}', [CustomerController::class, 'viewPickups'])->name('customer.viewPickups');
+        Route::get('/view-viewPickupAddress/{id}', [CustomerController::class, 'viewPickupAddress'])->name('customer.viewPickupAddress');
+        Route::post('/create-pickupAddress', [CustomerController::class, 'createPickupAddress'])->name('customer.createPickupAddress');
+        Route::get('/update-pickupAddress/{id}', [CustomerController::class, 'updatePickupAddress'])->name('customer.updatePickupAddress');
+        Route::put('/edit-editpickupAddress/{id}', [CustomerController::class, 'editPickupAddress'])->name('customer.editPickupAddress');
+        Route::post('/delete-pickupAddress/{id}', [CustomerController::class, 'destroyPickupAddress'])->name('customer.destroyPickupAddress');
+
+        // Customer Pickups
+        Route::post('/create-Pickup', [CustomerController::class, 'Pickupstore'])->name('customer.Pickupstore');
+        Route::get('/update-Pickup/{id}', [CustomerController::class, 'updatePickup'])->name('customer.updatePickup');
+        Route::post('/edit-Pickup/{id}', [CustomerController::class, 'Editupdate'])->name('customer.pickup-edit');
 
         // Warehouse 
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
@@ -252,13 +293,6 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.container.show');
         })->name('container.show');
 
-        Route::get('/add-pickups', function () {
-            return view('admin.customer.addPickups');
-        })->name('addPickups');
-
-        Route::get('/add-pickups', function () {
-            return view('admin.customer.addPickups');
-        })->name('addPickups');
         Route::get('/add-role', function () {
             return view('admin.user_role.create');
         })->name('create');

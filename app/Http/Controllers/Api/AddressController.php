@@ -40,6 +40,8 @@ class AddressController extends Controller
             'pincode' => 'required|string|max:10',
             'state_id' => 'required|string',
             'warehouse_id' => 'nullable|integer|exists:warehouses,id',
+            'lat' => 'required',
+            'long' => 'required',
         ]);
 
         // ✅ Step 2: Get Authenticated User
@@ -112,6 +114,8 @@ class AddressController extends Controller
             'pincode' => 'required|string|max:10',
             'state_id' => 'required|integer',
             'warehouse_id' => 'nullable|integer|exists:warehouses,id',
+            'lat' => 'nullable',
+            'long' => 'nullable',
         ]);
 
         // ✅ Step 5: Update Address

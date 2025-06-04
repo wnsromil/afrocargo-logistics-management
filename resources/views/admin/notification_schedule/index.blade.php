@@ -54,9 +54,9 @@
     </x-slot>
 
 
-    <div class="d-flex align-items-end justify-content-end mb-1">
+    <div class="d-flex align-items-end justify-content-end mb-3">
         <div class="usersearch d-flex">
-            <div class="mt-2">
+            <div class="mt-0">
                 <a href="{{ route('admin.notification_schedule.create') }}" class="btn btn-primary buttons">
                     <i class="ti ti-circle-plus me-2 text-white"></i>
                     Add Notification
@@ -75,6 +75,7 @@
                             <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
+                                <th>Notification ID</th>
                                 <th>Title</th>
                                 <th>Message</th>
                                 <th>Notification For</th>
@@ -86,6 +87,7 @@
                         <tbody>
                             <tr class="alignt">
                                 <td>1</td>
+                                <td>TNT-00001</td>
                                 <td>Notification #41</td>
                                 <td>Message Notification #41</td>
                                 <td>All</td>
@@ -108,6 +110,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>2</td>
+                                <td>TNT-00002</td>
                                 <td>Notification #42</td>
                                 <td>Message Notification #42</td>
                                 <td>Warehouse</td>
@@ -133,6 +136,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>3</td>
+                                <td>TNT-00003</td>
                                 <td>Notification #43</td>
                                 <td>Message Notification #43</td>
                                 <td>Users</td>
@@ -156,6 +160,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>4</td>
+                                <td>TNT-00004</td>
                                 <td>Notification #44</td>
                                 <td>Message Notification #44</td>
                                 <td>Drivers</td>
@@ -179,6 +184,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>5</td>
+                                <td>TNT-00005</td>
                                 <td>Notification #45</td>
                                 <td>Message Notification #45</td>
                                 <td>Drivers</td>
@@ -202,6 +208,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>6</td>
+                                <td>TNT-00006</td>
                                 <td>Notification #46</td>
                                 <td>Message Notification #46</td>
                                 <td>Warehouse</td>
@@ -225,6 +232,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>7</td>
+                                <td>TNT-00007</td>
                                 <td>Notification #47</td>
                                 <td>Message Notification #47</td>
                                 <td>User</td>
@@ -248,6 +256,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>8</td>
+                                <td>TNT-00008</td>
                                 <td>Notification #48</td>
                                 <td>Message Notification #48</td>
                                 <td>Drivers</td>
@@ -271,6 +280,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>9</td>
+                                <td>TNT-00009</td>
                                 <td>Notification #49</td>
                                 <td>Message Notification #40</td>
                                 <td>Drivers</td>
@@ -294,6 +304,7 @@
                             </tr>
                             <tr class="alignt">
                                 <td>10</td>
+                                <td>TNT-00010</td>
                                 <td>Notification #50</td>
                                 <td>Message Notification #50</td>
                                 <td>All</td>

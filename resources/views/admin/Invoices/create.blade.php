@@ -417,6 +417,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="col-md-3">
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
@@ -426,6 +427,7 @@
                                     name="grand_total">
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <label>Due Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -448,6 +450,7 @@
                             <input type="text" class="form-control inp readonly" readonly placeholder="John Duo"
                                 value="{{auth()->user()->name ?? ''}} {{auth()->user()->last_name ?? ''}}">
                         </div>
+
                         <div class="col-md-3">
                             <div class="row">
                                 <div class="col-lg-4 col-md-4">
@@ -482,11 +485,13 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="col-md-3 ">
                             <label>Status<i class="text-danger">*</i></label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="Pending"
                                 name="status" value="pending">
                         </div>
+
                         <div class="col-md-3">
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
@@ -500,6 +505,7 @@
                             <label>Total Items</label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="0">
                         </div>
+
                         <div class="col-md-3 ">
 
                             <label> Warehouse</label>
@@ -516,14 +522,15 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-md-6 d-none" id="description_services_items">
+
+                        {{-- <div class="col-md-6 d-none" id="description_services_items">
                             <label>description<i class="text-danger">*</i></label>
                             <textarea name="descrition" class="form-control form-cs inp"></textarea>
                         </div>
                         <div class="col-md-6 d-none" id="weight_services_items">
                             <label>weight<i class="text-danger">*</i></label>
                             <input type="text" name="weight" class="form-control form-cs inp" value="">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 

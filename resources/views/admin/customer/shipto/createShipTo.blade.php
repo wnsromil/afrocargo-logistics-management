@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-        <div class="d-flex innertopnav w-100 justify-content-between">
+         <div class="d-flex innertopnav w-100 justify-content-between">
             <p class="subhead pheads">Add Ship to Address</p>
             <div class="btnwrapper">
-                <a href="{{ route('admin.addPickups') }}" class="btn btn-primary buttons me-1"> Pickup </a>
+                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
                 <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>
@@ -19,6 +19,7 @@
             <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
+
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                             <div class="widthmannual">
@@ -70,7 +71,7 @@
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
+                            <label class="foncolor">Cellphone<span class="text-danger">*</span></label>
                             <div class="flaginputwrap">
                                 <div class="customflagselect">
                                     <select class="flag-select" name="mobile_number_code_id">
@@ -87,11 +88,11 @@
                                     oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('mobile_number')
-                                <small class="text-danger">{{ $message }}</small>
+                                  <small class="text-danger">The Cellphone field is required.</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2 alternate_mobile_no">
-                            <label class="foncolor">Mobile No. 2</label>
+                            <label class="foncolor">Telephone</label>
                             <div class="flaginputwrap">
                                 <div class="customflagselect">
                                     <select class="flag-select" name="alternative_mobile_number_code_id">
@@ -109,7 +110,6 @@
                             </div>
                         </div>
                         <input type="hidden" id="country_code_2" name="country_code_2">
-
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="address_1">Address 1 <i class="text-danger">*</i></label>
                             <input type="text" name="address_1" value="{{ old('address_1') }}" class="form-control inp"
@@ -123,14 +123,13 @@
                             <input type="text" name="address_2" value="{{ old('address_2') }}" class="form-control inp"
                                 placeholder="Enter Address 2">
                         </div>
-
-
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Apartment">Apartment </label>
                             <input type="text" name="apartment" value="{{ old('apartment') }}" class="form-control inp"
                                 placeholder="Enter Apartment">
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <div class="col-md-6 mb-2 align-items-stretch">

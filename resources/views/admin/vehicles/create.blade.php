@@ -53,7 +53,7 @@
                                 @endforeach
                             </select>
                             @error('vehicle_type')
-                                <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                     </div>
@@ -168,12 +168,12 @@
                                 <h6 class="drop-browse align-center">Upload Document</h6>
                             </span>
 
-                            <input type="file" id="vehicle_registration_doc_image" name="vehicle_registration_doc" class="form-control"
-                                accept="image/*">
+                            <input type="file" id="vehicle_registration_doc_image" name="vehicle_registration_doc"
+                                class="form-control" accept="image/*">
                             <div id="vehicle_registration_doc_preview" class="mt-2">
                             </div>
                         </div>
-                            @error('vehicle_insurance_doc')
+                        @error('vehicle_insurance_doc')
                             <span class="text-danger">{{ "The vehicle registration document is required." }}</span>
                         @enderror
                     </div>
@@ -202,8 +202,8 @@
                                 <h6 class="drop-browse align-center">Upload Document</h6>
                             </span>
 
-                            <input type="file" id="vehicle_insurance_doc_image" name="vehicle_insurance_doc" class="form-control"
-                                accept="image/*">
+                            <input type="file" id="vehicle_insurance_doc_image" name="vehicle_insurance_doc"
+                                class="form-control" accept="image/*">
                             <div id="vehicle_insurance_doc_preview" class="mt-2">
                             </div>
                         </div>
@@ -268,7 +268,7 @@
                     allowClear: true
                 });
             });
-             document.getElementById('vehicle_registration_doc_image').addEventListener('change', function (event) {
+            document.getElementById('vehicle_registration_doc_image').addEventListener('change', function (event) {
                 const preview = document.getElementById('vehicle_registration_doc_preview');
                 preview.innerHTML = ''; // Clear previous previews
                 const file = event.target.files[0];
@@ -287,7 +287,7 @@
                 }
             });
 
-             document.getElementById('vehicle_insurance_doc_image').addEventListener('change', function (event) {
+            document.getElementById('vehicle_insurance_doc_image').addEventListener('change', function (event) {
                 const preview = document.getElementById('vehicle_insurance_doc_preview');
                 preview.innerHTML = ''; // Clear previous previews
                 const file = event.target.files[0];

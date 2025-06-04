@@ -8,7 +8,7 @@
         <div class="d-flex innertopnav w-100 justify-content-between">
             <p class="subhead pheads">Update Ship to Address</p>
             <div class="btnwrapper">
-                <a href="{{ route('admin.addPickups') }}" class="btn btn-primary buttons me-1"> Pickup </a>
+                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
                 <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>
@@ -68,7 +68,7 @@
                         @enderror
                     </div>
                     <div class="col-md-12 mb-2">
-                        <label class="foncolor">Mobile No.<span class="text-danger">*</span></label>
+                        <label class="foncolor">Cellphone<span class="text-danger">*</span></label>
                         <div class="flaginputwrap">
                             <div class="customflagselect">
                                 <select class="flag-select" name="mobile_number_code_id">
@@ -86,11 +86,11 @@
                                    oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">The Cellphone field is required.</small>
                         @enderror
                     </div>
                     <div class="col-md-12 mb-2 alternate_mobile_no">
-                        <label class="foncolor">Mobile No. 2</label>
+                        <label class="foncolor">Telephone</label>
                         <div class="flaginputwrap">
                             <div class="customflagselect">
                                 <select class="flag-select" name="alternative_mobile_number_code_id">

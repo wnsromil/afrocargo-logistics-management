@@ -5,7 +5,14 @@
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-        <p class="subhead">Edit Customer</p>
+        <div class="d-flex innertopnav w-100 justify-content-between">
+            <p class="subhead pheads">Edit Customer</p>
+            <div class="btnwrapper">
+                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1">
+                    Pickup </a>
+                <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
+            </div>
+        </div>
     </x-slot>
     <div class="">
         <div class="authTabDiv">
@@ -287,10 +294,8 @@
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="warehouse"> Language </label>
                                         <select class="js-example-basic-single select2" name="language">
-                                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?
-                                              'selected' : '' }}>English</option>
-                                            <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ?
-                                               'selected' : '' }}>Hindi</option>
+                                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?  'selected' : '' }}>English</option>
+                                            <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ? 'selected' : '' }}>Hindi</option>
                                         </select>
                                     </div>
 
@@ -322,7 +327,7 @@
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set"
                                         for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                                                }}</label>
+                                                                                                                                                                    }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -609,7 +614,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($childUsers as $child)
+                                            @foreach($ShipToCustomer as $child)
                                                 <tr>
                                                     <td>{{ $child->unique_id ?? '-' }}</td>
                                                     <td>{{ $child->name ?? '-'}}</td>
@@ -634,9 +639,14 @@
                                                                                 class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                                     </li>
                                                                     <li>
-                                                                        <a class="dropdown-item"
-                                                                            href="{{ route('admin.customer.destroyShipTo', $child->id) }}"><i
-                                                                                class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                                        <form
+                                                                            action="{{ route('admin.customer.destroyShipTo', $child->id) }}"
+                                                                            method="POST" class="d-inline">
+                                                                            @csrf
+                                                                            <button type="button" class="dropdown-item"
+                                                                                onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to address?')"><i
+                                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
+                                                                        </form>
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -665,7 +675,7 @@
                             <div class="col-md-6">
                                 <div class="float-end">
                                     <div class="bottom-user-page mt-3">
-                                        {!! $childUsers->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
+                                        {!! $ShipToCustomer->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                                     </div>
                                 </div>
                             </div>
@@ -701,39 +711,43 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-start">Daoud</td>
-                                            <td>Abidjan</td>
-                                            <td>NYC</td>
-                                            <td>+225 07 07 14 8253</td>
-                                            <td>2550</td>
-                                            <td>Self Pickup</td>
-                                            <td>08-10-2025</td>
-                                            <td>452552</td>
-                                            <td>Alex Kian</td>
-                                            <td>08-10-2025 10:20 AM</td>
-                                            <td>PID88885</td>
-                                            <td>
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item" data-bs-toggle="modal"
-                                                                    data-bs-target="#InvoiceLabel"><i
-                                                                        class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#"><i
-                                                                        class="ti ti-trash fs_18 me-2"></i>Delete</a>
-                                                            </li>
+                                        @foreach($Pickups as $child)
+                                            <tr>
+                                                <td class="text-start">{{$child->pickupAddress->name ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->name ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->name ?? "-"}}</td>
+                                                <td>+{{ $child->pickupAddress->phone_code->phonecode ?? '' }}
+                                                    {{ $child->pickupAddress->phone ?? '-' }}
+                                                </td>
+                                                <td>{{$child->Zone ?? "-"}}</td>
+                                                <td>{{$child->pickup_type ?? "-"}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($child->Date)->format('m-d-Y') }}</td>
+                                                <td>{{$child->pickupAddress->pincode ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->driver ?? "-"}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($child->updated_at)->format('m-d-Y') }}</td>
+                                                <td>{{$child->unique_id ?? "-"}}</td>
+                                                <td>
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <ul>
+                                                                <li>
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('admin.customer.updatePickup', $child->id) }}"><i
+                                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="dropdown-item" href="#"><i
+                                                                            class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                                </li>
 
-                                                        </ul>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -748,72 +762,113 @@
                             <p class="mainheading">Pickup Address List</p>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a href="{{ route('admin.addPickups') }}" class="btn btn-primary buttons">
+                            <a href="{{ route('admin.customer.viewPickupAddress', $user->id) }}"
+                                class="btn btn-primary buttons">
                                 <i class="ti ti-circle-plus me-2 text-white"></i>
                                 Add Pickup Address
                             </a>
                         </div>
                     </div>
                     <div class="row justify-content-between g-3">
-                        <div class="col-md-4 dposition">
-                            <div class="d-flex align-items-center">
-                                <label for="searchInput" class="foncolor p-0 mb-0 me-3">Search</label>
-                                <div class="inputgroups relative">
-                                    <i class="ti ti-search"></i>
-                                    <input type="text" id="searchInput" class="form-control form-cs"
-                                        placeholder="Search">
+                        <form action="{{ route('admin.customer.edit', $user->id) }}" method="GET">
+                            <div class="col-md-4 dposition">
+                                <div class="d-flex align-items-center">
+                                    <label for="searchInput" class="foncolor p-0 mb-0 me-3">Search</label>
+                                    <div class="inputgroups relative">
+                                        <i class="ti ti-search"></i>
+                                        <input type="text" name="search" class="form-control form-cs"
+                                            placeholder="Search" value="{{ request('search') }}">
+                                        <input type="hidden" name="type" class="form-control form-cs"
+                                            placeholder="Search" value="PickupAddresss">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-end align-content-end">
+                                <button type="submit" class="btn px-4 btn-primary me-2">Search</button>
+                                <button id="pickup_addresss_reset" type="button"
+                                    class="btn px-4 btn-outline-danger">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id='ShipToTable'>
+                        <div class="card-table">
+                            <div class="card-body">
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-stripped table-hover lessPadding datatable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Pickup Id</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Cellphone</th>
+                                                <th>Telephone</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($PickupCustomer as $child)
+                                                <tr>
+                                                    <td>{{ $child->unique_id ?? '-' }}</td>
+                                                    <td>{{ $child->name ?? '-'}}</td>
+                                                    <td>{{ $child->address ?? '-' }}</td>
+                                                    <td>+{{ $child->phone_code->phonecode ?? '' }}
+                                                        {{ $child->phone ?? '-' }}
+                                                    </td>
+                                                    <td>+{{ $child->phone_2_code->phonecode ?? '' }}
+                                                        {{ $child->phone_2 ?? '-' }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown dropdown-action">
+                                                            <a href="#" class="btn-action-icon fas"
+                                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                                    class="fas fa-ellipsis-v"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul>
+                                                                    <li>
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('admin.customer.updatePickupAddress', $child->id) }}"><i
+                                                                                class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <form
+                                                                            action="{{ route('admin.customer.destroyPickupAddress', $child->id) }}"
+                                                                            method="POST" class="d-inline">
+                                                                            @csrf
+                                                                            <button type="button" class="dropdown-item"
+                                                                                onclick="deleteData(this,'Wait! Are you sure you want to remove this pickup address?')"><i
+                                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
+                                                                        </form>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 text-end align-content-end">
-                            <button class="btn px-4 btn-primary me-2">Search</button>
-                            <button class="btn px-4 btn-outline-danger">Reset</button>
-                        </div>
-                    </div>
-                    <div class="card-table">
-                        <div class="card-body">
-                            <div class="table-responsive mt-3">
-                                <table class="table table-stripped table-hover lessPadding datatable">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Pickup Id</th>
-                                            <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Telephone</th>
-                                            <th>Cellphone</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-start">SHP-000514</td>
-                                            <td>Daoud a Diarradouba</td>
-                                            <td>Abidjan</td>
-                                            <td>+225 07 07 14 8253</td>
-                                            <td>+225 07 07 14 8333</td>
-                                            <td>
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item" data-bs-toggle="modal"
-                                                                    data-bs-target="#InvoiceLabel"><i
-                                                                        class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#"><i
-                                                                        class="ti ti-trash fs_18 me-2"></i>Delete</a>
-                                                            </li>
-
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+                            <div class="col-md-6 d-flex p-2 align-items-center">
+                                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                                <select class="form-select input-width form-select-sm opacity-50"
+                                    aria-label="Small select example" id="ShipTopageSizeSelect">
+                                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="float-end">
+                                    <div class="bottom-user-page mt-3">
+                                        {!! $PickupCustomer->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1145,10 +1200,19 @@
                 });
             });
         </script>
-
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const resetBtn = document.getElementById('shipto_reset'); // Reset button by ID
+                const form = resetBtn.closest('form'); // Closest form
+                const searchInput = form.querySelector('input[name="search"]'); // Search input field
+
+                resetBtn.addEventListener('click', function () {
+                    searchInput.value = ''; // Clear the search input
+                    form.submit(); // Submit the form
+                });
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                const resetBtn = document.getElementById('pickup_addresss_reset'); // Reset button by ID
                 const form = resetBtn.closest('form'); // Closest form
                 const searchInput = form.querySelector('input[name="search"]'); // Search input field
 

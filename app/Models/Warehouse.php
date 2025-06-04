@@ -21,6 +21,8 @@ class Warehouse extends Model
         'phone_code_id',
         'country_code',
         'status',
+        'lat',
+        'long'
     ];
 
     //

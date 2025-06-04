@@ -15,6 +15,7 @@ use App\Models\{
     Vehicle
 };
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class ContainerController extends Controller
 {
@@ -110,26 +111,30 @@ class ContainerController extends Controller
 
     public function store(Request $request)
     {
-
         // Base rules
         $rules = [
             'warehouse_name' => 'required|exists:warehouses,id',
-            'container_no_1'      => 'required|string|max:100',
-            'container_size'      => 'required|string|max:50',
-            'seal_no'      => 'required|string|max:100',
-            'booking_number'      => 'required|string|max:100',
-            'bill_of_lading'      => 'required|string|max:100',
-            'broker'      => 'required||string|max:100',
-            'ship_to_country'      => 'required|string|max:100',
-            'doc_id'      => 'required|string|max:100',
-            // 'volume'      => 'required|string|max:100',
-            'company_for_container'      => 'required||string|max:100'
+            'container_no_1' => 'required|string|max:100',
+            'container_size' => 'required|string|max:50',
+            'seal_no' => 'required|string|max:100',
+            'booking_number' => 'required|string|max:100',
+            'bill_of_lading' => 'required|string|max:100',
+            'broker' => 'required|string|max:100',
+            'ship_to_country' => 'required|string|max:100',
+            'doc_id' => 'required|string|max:100',
+            'company_for_container' => 'required|string|max:100',
+            'container_date_time' => 'required|string',
+            'trucking_company' => 'required|string',
+            'chassis_number' => 'required|string',
+            'vessel_voyage' => 'required|string',
         ];
 
         $messages = [
             'warehouse_name.required' => 'The warehouse field is required.',
             'warehouse_name.exists'   => 'The selected warehouse is invalid.',
+            'container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM'
         ];
+
         // Run validation
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -137,32 +142,52 @@ class ContainerController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $containerInDate = null;
+        $containerInTime = null;
+
+        // Parse container date and time
+        if ($request->container_date_time) {
+            $dateTime = \Carbon\Carbon::createFromFormat('m/d/Y h:i A', $request->container_date_time);
+            $containerInDate = $dateTime->format('Y-m-d');
+            $containerInTime = $dateTime->format('H:i:s');
+        }
+
+
+        // Create broker and container company if not exist
         $broker = Broker::firstOrCreate(
             ['name' => $request->broker],
-            ['status' => 'Active'] // optional default status
+            ['status' => 'Active']
         );
 
         $containerCompany = ContainerCompany::firstOrCreate(
             ['name' => $request->company_for_container],
-            ['status' => 'Active'] // optional default status
+            ['status' => 'Active']
         );
+
         // Create and save vehicle
         $vehicle = new Vehicle();
         $vehicle->warehouse_id   = $request->warehouse_name;
         $vehicle->vehicle_type   = '1';
         $vehicle->vehicle_number = $request->vehicle_number;
         $vehicle->status         = 'Inactive';
-        $vehicle->container_no_1  = $request->container_no_1;
-        $vehicle->container_size  = $request->container_size;
-        $vehicle->seal_no         = $request->seal_no;
-        $vehicle->booking_number         = $request->booking_number;
-        $vehicle->bill_of_lading         = $request->bill_of_lading;
+        $vehicle->container_no_1 = $request->container_no_1;
+        $vehicle->container_size = $request->container_size;
+        $vehicle->seal_no        = $request->seal_no;
+        $vehicle->booking_number = $request->booking_number;
+        $vehicle->bill_of_lading = $request->bill_of_lading;
         $vehicle->broker         = $broker->id;
-        $vehicle->ship_to_country         = $request->ship_to_country;
+        $vehicle->ship_to_country = $request->ship_to_country;
         $vehicle->doc_id         = $request->doc_id;
         $vehicle->volume         = $request->volume;
-        $vehicle->container_company_id         = $containerCompany->id;
+        $vehicle->container_company_id = $containerCompany->id;
+        $vehicle->trucking_company = $request->trucking_company;
+        $vehicle->chassis_number = $request->chassis_number;
+        $vehicle->vessel_voyage = $request->vessel_voyage;
+        $vehicle->tir_number = $request->tir_number;
+        $vehicle->container_in_date = $containerInDate;
+        $vehicle->container_in_time = $containerInTime;
         $vehicle->save();
+
         return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
     }
 
@@ -210,15 +235,19 @@ class ContainerController extends Controller
             'booking_number' => 'required|string|max:100',
             'bill_of_lading' => 'required|string|max:100',
             'broker' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
+            'ship_to_country' => 'required|string|max:100',
             'doc_id' => 'required|string|max:100',
-            // 'volume' => 'required|string|max:100', // uncomment if required
-            'company_for_container' => 'required|string|max:100'
+            'company_for_container' => 'required|string|max:100',
+            //'edit_container_date_time' => 'required|string',
+            'trucking_company' => 'required|string',
+            'chassis_number' => 'required|string',
+            'vessel_voyage' => 'required|string',
         ];
 
         $messages = [
             'warehouse_name.required' => 'The warehouse field is required.',
             'warehouse_name.exists'   => 'The selected warehouse is invalid.',
+         //   'edit_container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM'
         ];
 
         // Validate the request
@@ -240,28 +269,41 @@ class ContainerController extends Controller
             ['status' => 'Active']
         );
 
+        $containerInDate = null;
+        $containerInTime = null;
+
+        // Parse container date and time
+        // if ($request->edit_container_date_time) {
+        //     $dateTime = \Carbon\Carbon::createFromFormat('m/d/Y h:i A', $request->edit_container_date_time);
+        //     $containerInDate = $dateTime->format('Y-m-d');
+        //     $containerInTime = $dateTime->format('H:i:s');
+        // }
+
         // Update the vehicle record
-        $vehicle->warehouse_id = $request->warehouse_name;
-        $vehicle->vehicle_type = '1';
+        $vehicle->warehouse_id   = $request->warehouse_name;
+        $vehicle->vehicle_type   = '1';
         $vehicle->vehicle_number = $request->vehicle_number;
-        $vehicle->status = 'Inactive'; // or keep previous status if needed
+        $vehicle->status         = 'Inactive';
         $vehicle->container_no_1 = $request->container_no_1;
         $vehicle->container_size = $request->container_size;
-        $vehicle->seal_no = $request->seal_no;
+        $vehicle->seal_no        = $request->seal_no;
         $vehicle->booking_number = $request->booking_number;
         $vehicle->bill_of_lading = $request->bill_of_lading;
-        $vehicle->broker = $broker->id;
-        $vehicle->ship_to_country = $request->country;
-        $vehicle->doc_id = $request->doc_id;
-        $vehicle->volume = $request->volume;
+        $vehicle->broker         = $broker->id;
+        $vehicle->ship_to_country = $request->ship_to_country;
+        $vehicle->doc_id         = $request->doc_id;
+        $vehicle->volume         = $request->volume;
         $vehicle->container_company_id = $containerCompany->id;
-
+        $vehicle->trucking_company = $request->trucking_company;
+        $vehicle->chassis_number = $request->chassis_number;
+        $vehicle->vessel_voyage = $request->vessel_voyage;
+        $vehicle->tir_number = $request->tir_number;
+        // $vehicle->container_in_date = $containerInDate;
+        // $vehicle->container_in_time = $containerInTime;
         $vehicle->save();
 
         return redirect()->route('admin.container.index')->with('success', 'Container updated successfully.');
     }
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -273,6 +315,7 @@ class ContainerController extends Controller
         return redirect()->route('admin.container.index')
             ->with('success', 'Container deleted successfully');
     }
+
 
     public function changeStatus(Request $request, $id)
     {

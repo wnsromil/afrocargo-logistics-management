@@ -207,6 +207,15 @@ class CustomerController extends Controller
                 $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->signature_date)->format('Y-m-d');
             }
 
+            $userName = $request->first_name;
+            $email = $request->email ?? null;
+            $mobileNumber = $request->mobile_code;
+            $password = '12345678';
+            $loginUrl = route('login');
+
+            // Send the email
+            Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
+
             $user = User::create($userData);
 
             return response()->json([
@@ -481,7 +490,7 @@ class CustomerController extends Controller
         }
 
         // Step 1: Get vehicles based on warehouse_id
-        $vehicles = Vehicle::where('vehicle_type', 'Container')->where('warehouse_id', $warehouseId)->get();
+        $vehicles = Vehicle::where('vehicle_type', '1')->where('warehouse_id', $warehouseId)->get();
 
         if ($vehicles->isEmpty()) {
             return response()->json(['message' => 'No vehicles found for the given warehouse.'], 404);

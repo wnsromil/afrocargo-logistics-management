@@ -148,7 +148,7 @@
                                                                 </li>
                                                             </td>
                                                             <td class="btntext">
-                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $vehicle->container_id)}}')"
+                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $vehicle->container_id ?? 0)}}')"
                                                                     class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                                                             </td>
                                                         </tr>
@@ -228,7 +228,7 @@
 
                                                             <td>---</td> {{-- Dropdowns/history actions skip kar sakte ho agar zarurat nahi --}}
                                                             <td class="btntext">
-                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $historyVehicle->container_id)}}')"
+                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $historyVehicle->container_id ?? 0)}}')"
                                                                     class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                                                             </td>
                                                         </tr>

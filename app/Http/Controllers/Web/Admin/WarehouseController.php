@@ -112,6 +112,8 @@ class WarehouseController extends Controller
             'phone_code_id'  => $request->mobile_number_code_id,
             'country_code' => +0,
             'status' => $status,
+            'lat' => $request->latitude,
+            'long' => $request->longitude,
         ]);
 
         // Redirect with success message

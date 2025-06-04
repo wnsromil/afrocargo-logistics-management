@@ -5,17 +5,17 @@
 
     <x-slot name="cardTitle">
         <p class="head">All Containers</p>
-       <div class="">
-                <a href="{{ route('admin.container.create') }}" class="btn btn-primary buttons">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <i class="ti ti-circle-plus me-2 text-white"></i>
-                        Add Container
-                    </div>
-                </a>
-            </div>
+        <div class="">
+            <a href="{{ route('admin.container.create') }}" class="btn btn-primary buttons">
+                <div class="d-flex align-items-center justify-content-center">
+                    <i class="ti ti-circle-plus me-2 text-white"></i>
+                    Add Container
+                </div>
+            </a>
+        </div>
     </x-slot>
 
-      <form id="expenseFilterForm" action="{{ route('admin.container.index') }}" method="GET">
+    <form id="expenseFilterForm" action="{{ route('admin.container.index') }}" method="GET">
         <div class="row gx-3 inputheight40">
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-              <div class="col-md-3 mb-3">
+            <div class="col-md-3 mb-3">
                 <label>Close Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
                     <input type="text" name="close_date" class="btn-filters form-cs inp Expensefillterdate"
@@ -80,15 +80,15 @@
                 </div>
             </div>
         </div>
-      </form>
+    </form>
 
-        <div class="usersearch d-flex align-items-center justify-content-between">
-            <div class="lablewrap d-flex text-dark">
-                <label class="me-sm-4 me-2 mb-0">Total Billed: <b>328913.5</b></label>
-                <label class="me-sm-4 me-2 mb-0">Total Collected: <b>103311.5</b></label>
-                <label class="me-sm-4 me-2 mb-0">Total Balance: <b>227389</b></label>
-            </div>
-       </div>
+    <div class="usersearch d-flex align-items-center justify-content-between">
+        <div class="lablewrap d-flex text-dark">
+            <label class="me-sm-4 me-2 mb-0">Total Billed: <b>328913.5</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Collected: <b>103311.5</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Balance: <b>227389</b></label>
+        </div>
+    </div>
 
 
     <div id='ajexTable'>
@@ -100,7 +100,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Container ID</th>
-                                <th>Warehouse</th>                            
+                                <th>Warehouse</th>
                                 <th>Container</th>
                                 <th>Open Date</th>
                                 <th>Close Date</th>
@@ -114,17 +114,19 @@
                         </thead>
                         <tbody>
                             @forelse ($vehicles as $index => $vehicle)
-                            <tr>
-                                <td>
-                                    {{ $vehicle->unique_id ?? '-' }}
-                                </td>
-                                <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
-                                <td>{{ $vehicle->container_no_1 ?? '-' }}</td>             
-                                    <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}</td>
-                                    <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>                                    
+                                <tr>
+                                    <td>
+                                        {{ $vehicle->unique_id ?? '-' }}
+                                    </td>
+                                    <td>{{ ucfirst($vehicle->warehouse->warehouse_name ?? '') }}</td>
+                                    <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
+                                    <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}
+                                    </td>
+                                    <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}
+                                    </td>
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td class="tabletext"><input type="checkbox"></td>
-                                    <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>                                
+                                    <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
                                     <td>
                                         <label
                                             class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
@@ -142,7 +144,7 @@
                                                 class="checktoggle log checkbox-bg">checkbox</label>
                                         </div>
                                     </td>
-                                   <td>
+                                    <td>
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -158,16 +160,34 @@
                                                             href="{{ route('admin.container.show', $vehicle->id) }}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
-                                                   
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#In_time_model" href="javascript:void(0);"
+                                                            onclick="setContainerId({{ $vehicle->id }})">
+                                                            <i
+                                                                class="fa-solid fa-truck fa-flip-horizontal me-2"></i>Container
+                                                            In Time
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#Out_time_model" href="javascript:void(0);"
+                                                            onclick="setContainerId({{ $vehicle->id }})">
+                                                            <i
+                                                                class="fa-solid fa-truck me-2"></i>Container
+                                                            Out Time
+                                                        </a>
+                                                    </li>
+
                                                 </ul>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
-                            <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
+                                </tr>
                             @endforelse
                         </tbody>
 
@@ -178,7 +198,8 @@
         <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                     <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                     <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -196,69 +217,348 @@
         </div>
     </div>
 
-@section('script')
-<!-- Axios CDN -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    function handleContainerClick(containerId, containerNumber, warehouseId) {
-        // Step 1: First fetch current active container
-        axios.post('/api/vehicle/getAdminActiveContainer', {
-          warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
-          }).then(response => {
-                const activeContainer = response.data.container;
+    <!-- Container In time model -->
+    <div class="modal custom-modal signature-add-modal fade" id="In_time_model" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Container In time</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="In_time_form" method="POST">
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="container_id_input" name="container_id"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor mt-0 pt-0">In Date & Time</label>
+                                    <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                        <input type="text" name="container_in_date_time" style="cursor: pointer;"
+                                            id="container_in_date_time" class="btn-filters  form-cs inp"
+                                            value="{{ old('container_in_date_time') }}" placeholder="M/DD/YYYY hh:mm A"
+                                            readonly style="background: #ececec;" />
+                                    </div>
+                                    <div id="container_in_date_time_error" class="text-danger small mt-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-                let message = '';
-                let checkbox_status = '';
+    <!-- Container Out time model -->
+    <div class="modal custom-modal signature-add-modal fade" id="Out_time_model" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Container Out time</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="Out_time_form" method="POST">
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="container_id_input" name="container_id"
+                                        class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor mt-0 pt-0">Out Date & Time</label>
+                                    <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                        <input type="text" name="container_out_date_time" style="cursor: pointer;"
+                                            id="container_out_date_time" class="btn-filters  form-cs inp"
+                                            value="{{ old('container_out_date_time') }}" placeholder="M/DD/YYYY hh:mm A"
+                                            readonly style="background: #ececec;" />
+                                    </div>
+                                    <div id="container_out_date_time_error" class="text-danger small mt-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-                if (activeContainer?.container_no_1 === containerNumber) {
-                    message = `That you need to close this <b>${containerNumber}</b> container`;
-                    checkbox_status = "only_close";
-                } else if (!activeContainer?.container_no_1) {
-                    message = `That you need to open this <b>${containerNumber}</b> container`;
-                    checkbox_status = "only_open";
-                } else {
-                    message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
-                    checkbox_status = "both_open_close";
-                }
+    @section('script')
+        <!-- Axios CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            function handleContainerClick(containerId, containerNumber, warehouseId) {
+                // Step 1: First fetch current active container
+                axios.post('/api/vehicle/getAdminActiveContainer', {
+                    warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
+                }).then(response => {
+                    const activeContainer = response.data.container;
 
-                Swal.fire({
-                    title: 'Are you sure?',
-                    html: message,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, confirm',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        axios.post('/api/vehicle/toggle-status', {
-                            open_id: containerId,
-                            close_id: activeContainer?.id,
-                            checkbox_status: checkbox_status,
-                             warehouseId: warehouseId,
-                        })
-                        .then((res) => {
-                            Swal.fire('Success', 'Container status updated.', 'success').then(() => {
-                                location.reload();
-                            });
-                        })
-                        .catch(error => {
-                            Swal.fire('Error', 'Failed to update container status.', 'error');
-                        });
+                    let message = '';
+                    let checkbox_status = '';
+
+                    if (activeContainer?.container_no_1 === containerNumber) {
+                        message = `That you need to close this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_close";
+                    } else if (!activeContainer?.container_no_1) {
+                        message = `That you need to open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "only_open";
                     } else {
-                        location.reload();
+                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
+                        checkbox_status = "both_open_close";
                     }
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        html: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, confirm',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            axios.post('/api/vehicle/toggle-status', {
+                                open_id: containerId,
+                                close_id: activeContainer?.id,
+                                checkbox_status: checkbox_status,
+                                warehouseId: warehouseId,
+                            })
+                                .then((res) => {
+                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                        location.reload();
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.fire('Error', 'Failed to update container status.', 'error');
+                                });
+                        } else {
+                            location.reload();
+                        }
+                    });
+                })
+                    .catch(error => {
+                        Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+                    });
+            }
+
+            function resetForm() {
+                window.location.href = "{{ route('admin.container.index') }}";
+            }
+        </script>
+        <script>
+            function setContainerId(id) {
+                document.getElementById('container_id_input').value = id;
+            }
+        </script>
+        <!-- In Container -->
+        <script>
+            // Bootstrap modal open hone ke baad initialize karo
+            $('#In_time_model').on('shown.bs.modal', function () {
+                $('input[name="container_in_date_time"]').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    timePicker: true, // ✅ Enable time
+                    timePicker24Hour: false, // ✅ Use 12-hour format
+                    timePickerSeconds: false, // Optional: hide seconds
+                    autoUpdateInput: false,
+                    locale: {
+                        format: "M/DD/YYYY hh:mm A", // ✅ Date + Time format
+                    },
                 });
-            })
-            .catch(error => {
-                Swal.fire('Error', 'Failed to fetch current active container.', 'error');
+
+                $('input[name="container_in_date_time"]').on(
+                    "apply.daterangepicker",
+                    function (ev, picker) {
+                        $(this).val(picker.startDate.format("M/DD/YYYY hh:mm A")); // ✅ Set full date-time
+                    }
+                );
             });
-    }
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#In_time_form").on("submit", function (e) {
+                    e.preventDefault(); // Prevent default form submission
+                    // Clear previous error messages
+                    $("#container_in_date_time_error").text("");
 
-    function resetForm() {
-        window.location.href = "{{ route('admin.container.index') }}";
-    }
-</script>
-@endsection
+                    // Get Form Data
+                    let container_id = $("#container_id_input").val();
+                    let container_in_date_time = $("#container_in_date_time").val();
+                    // Client-Side Validation
+                    let hasError = false;
 
+                    if (!container_in_date_time) {
+                        $("#container_in_date_time_error").text("Please choose date & time.");
+                        hasError = true;
+                    }
 
+                    // If there are validation errors, stop further execution
+                    if (hasError) {
+                        return;
+                    }
+
+                    // Show Loading Indicator
+                    $(".btn-primary").html("Processing...").prop("disabled", true);
+
+                    // Make AJAX POST Request
+                    $.ajax({
+                        url: "/api/update-in-container-time", // API endpoint
+                        type: "POST",
+                        data: {
+                            container_id: container_id,
+                            container_in_date_time: container_in_date_time,
+                        },
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                        },
+                        success: function (response) {
+                            document
+                                .querySelector("#In_time_model .custom-btn")
+                                .click();
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "Date & time update successfully!",
+                                icon: "success",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle Server-Side Validation Errors
+                            let errors = xhr.responseJSON?.errors || {};
+                            if (errors.driver_id) {
+                                $("#container_in_date_time_error").text(errors.driver_id[0]);
+                            }
+                        },
+                        complete: function () {
+                            // Re-enable Save Button
+                            $(".btn-primary").html("Save").prop("disabled", false);
+                        },
+                    });
+                });
+            });
+
+        </script>
+        <!-- Out Container -->
+        <script>
+            // Bootstrap modal open hone ke baad initialize karo
+            $('#Out_time_model').on('shown.bs.modal', function () {
+                $('input[name="container_out_date_time"]').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    timePicker: true, // ✅ Enable time
+                    timePicker24Hour: false, // ✅ Use 12-hour format
+                    timePickerSeconds: false, // Optional: hide seconds
+                    autoUpdateInput: false,
+                    locale: {
+                        format: "M/DD/YYYY hh:mm A", // ✅ Date + Time format
+                    },
+                });
+
+                $('input[name="container_out_date_time"]').on(
+                    "apply.daterangepicker",
+                    function (ev, picker) {
+                        $(this).val(picker.startDate.format("M/DD/YYYY hh:mm A")); // ✅ Set full date-time
+                    }
+                );
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#Out_time_form").on("submit", function (e) {
+                    e.preventDefault(); // Prevent default form submission
+                    // Clear previous error messages
+                    $("#container_out_date_time_error").text("");
+
+                    // Get Form Data
+                    let container_id = $("#container_id_input").val();
+                    let container_out_date_time = $("#container_out_date_time").val();
+                    // Client-Side Validation
+                    let hasError = false;
+
+                    if (!container_out_date_time) {
+                        $("#container_out_date_time_error").text("Please choose date & time.");
+                        hasError = true;
+                    }
+
+                    // If there are validation errors, stop further execution
+                    if (hasError) {
+                        return;
+                    }
+
+                    // Show Loading Indicator
+                    $(".btn-primary").html("Processing...").prop("disabled", true);
+
+                    // Make AJAX POST Request
+                    $.ajax({
+                        url: "/api/update-out-container-time", // API endpoint
+                        type: "POST",
+                        data: {
+                            container_id: container_id,
+                            container_out_date_time: container_out_date_time,
+                        },
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                        },
+                        success: function (response) {
+                            document
+                                .querySelector("#Out_time_model .custom-btn")
+                                .click();
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "Date & time update successfully!",
+                                icon: "success",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle Server-Side Validation Errors
+                            let errors = xhr.responseJSON?.errors || {};
+                            if (errors.driver_id) {
+                                $("#container_out_date_time_error").text(errors.driver_id[0]);
+                            }
+                        },
+                        complete: function () {
+                            // Re-enable Save Button
+                            $(".btn-primary").html("Save").prop("disabled", false);
+                        },
+                    });
+                });
+            });
+
+        </script>
+    @endsection
 </x-app-layout>

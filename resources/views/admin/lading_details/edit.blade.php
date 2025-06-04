@@ -1,189 +1,320 @@
 <x-app-layout>
 
     <x-slot name="header">
-        Vehicle Management
+        New Bill of Lading Detail
     </x-slot>
 
     <x-slot name="cardTitle">
         <div class="d-flex innertopnav">
-            <p class="subhead pheads">Update Vehicle</p>
+            <p class="subhead pheads">Edit Bill of Lading Detail</p>
         </div>
     </x-slot>
 
-    <form action="{{ route('admin.vehicle.update', $vehicle->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <div class="container">
+        <form action="" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <div class="form-group-customer customer-additional-form">
             <div class="row">
-                <!-- Warehouse Location -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="warehouse_location" class="foncolor">Warehouse Location</label>
-                        <select name="warehouse_id" class="js-example-basic-single select2">
-                            <option value="">Select Warehouse </option>
-                            @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_id', $vehicle->warehouse_id) == $warehouse->id ? 'selected' : '' }}
-                                    value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('warehouse_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                <div class="col-md-6 col-sm-12 col-lg-6 border border-secondary px-0">
+                    <div class="form-section responsiveness">
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Shipper/Exporter
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-select mb-2">
+                                        <option selected>Select Shipper</option>
+                                    </select>
+                                    <!-- <div class="border text-blue px-2">Company - <br>FullName - <br>Address -
+                                        <br>City -
+                                        <br>State -
+                                    </div> -->
+
+                                    <div class="border px-2">
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">Company: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">FullName: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">Address: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">City: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">State: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Consignee</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-select mb-2">
+                                        <option selected>Select Consignee</option>
+                                    </select>
+                                    <!-- <div class="border text-blue px-2">Company - <br>FullName - <br>Address -
+                                        <br>City -
+                                        <br>State -
+                                    </div> -->
+                                    <div class="border px-2">
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">Company: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">FullName: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">Address: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">City: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-3 col-lg-2 text-blue">State: </div>
+                                            <div class="col-md-8 col-sm-6 col-lg-6"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">NotifyParty</th>
+                            </tr>
+                            <tr>
+                                <td><textarea class="form-control" rows="6"></textarea></td>
+                            </tr>
+                        </table>
+
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Pier</th>
+                            </tr>
+                            <tr>
+                                <td><textarea class="form-control" rows="3"></textarea></td>
+                            </tr>
+                        </table>
+
+
+                        <table class="table form-section">
+                            <tr>
+                                <td class="col-md-6 col-lg-6 col-sm-12 border border-secondary p-0">
+                                    <table class="table form-section">
+
+                                        <tr>
+                                            <th class="thead-light thead_2">Vessel</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" class="form-control" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="thead-light thead_2">Port of dischard</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" class="form-control" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <td class="col-md-6 col-lg-6 col-sm-12 border border-secondary p-0">
+
+                                    <table class="table form-section">
+
+                                        <tr>
+                                            <th class="thead-light thead_2">Port of loading</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" class="form-control" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="thead-light thead_2">Place of delivery</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" class="form-control" /></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
-              
-                <!-- Vehicle Type -->
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type" class="foncolor">Vehicle Type</label>
-                        <select name="vehicle_type" class="js-example-basic-single select2">
-                            <option value="" disabled>Select Vehicle Type </option>
-                            @foreach (['Truck', 'Van', 'Bike', 'Pickup', 'Mini Truck', 'Container Truck', 'Three-Wheeler', 'SUV', 'Sedan', 'Electric Scooter', 'Cargo Plane', 'Cargo Ship', 'Train Cargo'] as $type)
-                                <option value="{{ $type }}" {{ old('vehicle_type', $vehicle->vehicle_type) == $type ? 'selected' : '' }}>
-                                    {{ $type }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('vehicle_type')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> --}}
-             
 
-                <!-- Vehicle Model -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_model" class="foncolor">Vehicle Model</label>
-                        <input type="text" name="vehicle_model" class="form-control inp"
-                            placeholder="Enter Vehicle Model"
-                            value="{{ old('vehicle_model', $vehicle->vehicle_model) }}">
-                        @error('vehicle_model')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_model">Vehicle Model <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_model" class="form-control"
-                            placeholder="Enter Vehicle Model"
-                            value="{{ old('vehicle_model', $vehicle->vehicle_model) }}">
-                        @error('vehicle_model')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
+                <div class="col-md-6 col-sm-12 col-lg-6 border border-secondary px-0">
+                    <div class="form-section responsiveness">
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Document No</th>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" /></td>
+                            </tr>
+                        </table>
 
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Expert Referent</th>
+                            </tr>
+                            <tr>
+                                <td><textarea class="form-control" rows="3"></textarea></td>
+                            </tr>
+                        </table>
 
-                <!-- Vehicle Manufactured Year -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_year" class="foncolor">Vehicle Manufactured year</label>
-                        <input type="vehicle_year" name="vehicle_year" class="form-control inp"
-                            placeholder=" Enter Vehicle Manufactured year"
-                            value="{{ old('vehicle_year', $vehicle->vehicle_year) }}">
-                        @error('vehicle_year')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_year">Manufactured Year <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_year" class="form-control"
-                            placeholder="Enter Manufactured Year"
-                            value="{{ old('vehicle_year', $vehicle->vehicle_year) }}">
-                        @error('vehicle_year')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Forwarding Agent-Reference
+                                </th>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" /></td>
+                            </tr>
+                        </table>
 
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Point and Country Of origin
+                                </th>
+                            </tr>
+                            <tr>
+                                <td><textarea class="form-control" rows="3"></textarea></td>
+                            </tr>
+                        </table>
 
-                <!-- Vehicle Number (Plate No.) -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_number" class="foncolor">Vehicle Number(Plate No.)</label>
-                        <input type="text" name="vehicle_number" class="form-control inp"
-                            placeholder=" Enter Vehicle No."
-                            value="{{ old('vehicle_number', $vehicle->vehicle_number) }}">
-                        @error('vehicle_number')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Domestic Routing/Export
+                                    Instruction</th>
+                            </tr>
+                            <tr>
+                                <td><textarea class="form-control" rows="6"></textarea></td>
+                            </tr>
+                        </table>
+
+                        <table class="table form-section">
+                            <tr>
+                                <th class="thead-light thead_2">Delivery agent</th>
+                            </tr>
+                            <tr>
+                                <td><textarea class="form-control" rows="6"></textarea></td>
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_number">Vehicle Number (Plate No.) <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_number" class="form-control"
-                            placeholder="Enter Vehicle Number"
-                            value="{{ old('vehicle_number', $vehicle->vehicle_number) }}">
-                        @error('vehicle_number')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
+            </div>
 
+            <div class="row border border-secondary">
+                <div class="form-section responsiveness px-0">
+                    <table class="table form-section">
+                        <tr>
+                            <th colspan="3" class="thead-light thead_2">Particulars Furnished by Shipper</th>
+                        </tr>
+                        <tr>
+                            <th class="thead-light thead_2">Mark and no</th>
+                            <th class="thead-light thead_2">No of packages</th>
+                            <th class="thead-light thead_2">Desc of packages</th>
 
-                <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="mb-3">
-                        <label for="in_status">Status</label>
-                        <div class="status-toggle d-flex align-items-center">
-                            <span id="inactiveText" class="bold">Active</span>
-                            <input id="cb-switch" class="check" type="checkbox" name="status" value="Active"
-                            {{ old('status', $vehicle->status) == 'Inactive' ? 'checked' : '' }}>
-                            <label for="cb-switch" class="checktoggle checkbox-bg togc"></label>
-                            <!-- <input id="status" class="check d-none" type="checkbox" name="status" checked>
-                            <label for="status" class="checktoggle checkbox-bg togc mx-2"></label> -->
-                            <span id="activeText">Inactive</span>
-                        </div>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                        </tr>
+                        <tr>
+                            <td><textarea class="form-control" rows="6"></textarea></td>
+                            <td><textarea class="form-control" rows="6"></textarea></td>
+                            <td><textarea class="form-control" rows="6"></textarea></td>
+
+                        </tr>
+                    </table>
+
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="form-section responsiveness px-0">
+                    <table class="table form-section">
+                        <tr>
+                            <th class="thead-light thead_2">DeliveryList</th>
+                        </tr>
+                        <tr>
+                            <td><textarea class="form-control" rows="6"></textarea></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </form>
+    </div>
 
 
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active"
-                                    {{ old('status', $vehicle->status) == 'Active' ? 'checked' : '' }}>
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
-                        </div>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
+    <hr>
+    <div class="px-2">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <input type="text" id="email_id" class="form-control" required>
+            </div>
+            <div class="col-auto">
+                <label for="email_id" class="col-form-label">Email</label>
             </div>
         </div>
+        <button id="email_6" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Print</button>
+        <button class="btn btn-primary btn-sm"><i class="fa-regular fa-file-lines pe-2"></i>Save</button>
+    </div>
 
-        <!-- <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.vehicle.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save text-light">Update</button>
-        </div> -->
-        <div class="add-customer-btns text-end">
-            <button type="button" onclick="redirectTo('{{route('admin.vehicle.index') }}')"
-                class="btn btn-outline-primary custom-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary ">Update</button>
-        </div>
-    </form>
 
+    {{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function toggleContainerFields() {
+                let selectedValue = $('#vehicle_type').val();
+
+                if (selectedValue === 'Container') {
+                    $('.seal-no-field').show();
+                    $('.container-no-1-field').show();
+                    $('.container-no-2-field').show();
+                    $('.container-size-field').show();
+                    $('.vehicle-number-field').hide();
+                } else {
+                    $('.seal-no-field').hide();
+                    $('.container-no-1-field').hide();
+                    $('.container-no-2-field').hide();
+                    $('.container-size-field').hide();
+                    $('.vehicle-number-field').show();
+                }
+            }
+
+            toggleContainerFields(); // On page load
+            $('#vehicle_type').on('change', toggleContainerFields); // On dropdown change
+        });
+
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let statusToggle = document.getElementById("cb-switch");
+            let statusToggle = document.getElementById("status");
             let activeText = document.getElementById("activeText");
             let inactiveText = document.getElementById("inactiveText");
+
             function updateTextColor() {
                 if (statusToggle.checked) {
                     activeText.classList.add("bold");
@@ -196,5 +327,7 @@
             updateTextColor();
             statusToggle.addEventListener("change", updateTextColor);
         });
+
     </script>
+
 </x-app-layout>
