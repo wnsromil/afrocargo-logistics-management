@@ -50,7 +50,7 @@
                         placeholder="Search">
                 </div>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
+                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
                     <label for="branch_id" class="col-form-label">Branch</label>
                     <select class="form-select select2">
                         <option selected>Select Branch</option>
@@ -66,7 +66,7 @@
                     <input type="date" id="date_id" class="form-control rounded-1 form-control-lg">
                 </div>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
+                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
                     <label for="report_id" class="col-form-label">Report Type</label>
                     <select class="form-select select2">
                         <option selected>Select Report Type</option>
@@ -309,7 +309,7 @@
                     <h1 class="modal-title fs-5" id="editContainerModalLabel">Edit Container</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body ">
+                <div class="modal-body noBorder">
 
                     <div class="mt-3">
                         <label for="exampleFormControlInput1" class="form-label mb-0">Branch<i
@@ -356,7 +356,7 @@
                     <h1 class="modal-title fs-5" id="newReportModalLabel">Add New Custom Report</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body ">
+                <div class="modal-body noBorder">
 
                     <div class="mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Date<i
@@ -475,7 +475,7 @@
                     <h1 class="modal-title fs-5" id="expensePopupModalLabel">Edit Expense</h1>
                     <button type="button" class="btn-close fs_18" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body ">
+                <div class="modal-body">
 
                     <div class="d-flex align-items-center justify-content-end mb-1 mt-3">
                         <div class="usersearch d-flex">
@@ -487,49 +487,6 @@
                                         New Report
                                     </div>
                                 </button>
-                                <button class="btn btn-primary dropdown-toggle px-2" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Column
-                                </button>
-                                <ul class="dropdown-menu checkbox-transform py-2 px-3">
-                                    <li>
-                                        <div class="form-check border-bottom">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Date
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check border-bottom">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Category
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check border-bottom">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Note
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Amount
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -537,20 +494,19 @@
                     <div id='ajexTable'>
                         <div class="card-table">
                             <div class="card-body"></div>
-                            <div class="table-responsive table-height border border-dark mt-3">
+                            <div class="table-responsive table-height mt-3">
                                 <table class="table table-stripped table-hover datatable">
-                                    <thead class="thead-light border-bottom border-dark">
+                                    <thead class="thead-light ">
                                         <tr>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Date
+                                            <th class="text-truncate text-start">Date
                                             </th>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Category
+                                            <th class="text-truncate text-start">Category
                                             </th>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Note
+                                            <th class="text-truncate text-start">Note
                                             </th>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Amount
+                                            <th class="text-truncate text-start">Amount
                                             </th>
-                                            <th
-                                                class="fs_14 fw-semibold maxmax-width text-truncate text-start bg-transparent table-last-column">
+                                            <th class="text-truncate text-start bg-transparent table-last-column">
                                                 Action</th>
                                         </tr>
                                     </thead>
