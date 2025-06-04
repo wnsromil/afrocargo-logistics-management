@@ -164,6 +164,11 @@ Route::get('/customReport_pdf_2', function () {
     return view('admin.customReport_pdf_2.containerReportList');
 });
 
+Route::get('/VerifyLicense', function () {
+    return view('admin.VerifyLicense.index');
+});
+
+
 
 
 // Route::get('/dashboard', function () {

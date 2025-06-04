@@ -4,10 +4,10 @@
     </x-slot>
 
 
-    <table style="width: 100%; color: black;">
+    <table style="width: 100%; color: black;  display: block; overflow-x: auto; white-space: nowrap;">
         <thead>
             <tr>
-                <th style="width: 60% !important; font-size: 20px; font-weight: 600; padding: 8px; text-align: center;">
+                <th style="width: 100% !important; font-size: 20px; font-weight: 600; padding: 8px; text-align: center;">
                     ITEM REPORT LIST </th>
                 <th style="font-size: 17px; font-weight: 600; padding: 8px; text-align: right;">Jun.3.2025 ---
                     10:30:15</th>

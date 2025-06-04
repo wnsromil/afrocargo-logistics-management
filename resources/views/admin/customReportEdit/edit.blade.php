@@ -28,75 +28,6 @@
         </div>
     </x-slot>
 
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <button class="btn btn-primary dropdown-toggle px-2" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Column
-                </button>
-
-                <ul class="dropdown-menu py-2 px-3">
-                    <li>
-                        <div class="form-check border-bottom">
-                            <input class="form-check-input" type="checkbox" value="" id="dateChecked" checked>
-                            <label class="form-check-label permission-font" for="dateChecked">
-                                Date
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check border-bottom">
-                            <input class="form-check-input" type="checkbox" value="" id="invoiceNoChecked" checked>
-                            <label class="form-check-label permission-font" for="invoiceNoChecked">
-                                Invoice No
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check border-bottom">
-                            <input class="form-check-input" type="checkbox" value="" id="nameChecked" checked>
-                            <label class="form-check-label permission-font" for="nameChecked">
-                                Name
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="addressChecked" checked>
-                            <label class="form-check-label permission-font" for="addressChecked">
-                                Address
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="customerChecked" checked>
-                            <label class="form-check-label permission-font" for="customerChecked">
-                                Customer Lic
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="shiptoChecked" checked>
-                            <label class="form-check-label permission-font" for="shiptoChecked">
-                                Shipto Lic
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="itemsChecked" checked>
-                            <label class="form-check-label permission-font" for="itemsChecked">
-                                Items
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <div class="container-fluid text-dark">
         <div class="thead-light rounded-2 p-2 mt-2">
@@ -105,7 +36,7 @@
                     <div class="col-3">
                         <label for="search_id" class="col-form-label">Search</label>
                     </div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
                             placeholder="Search">
                     </div>
@@ -123,10 +54,11 @@
         </div>
 
         <div class="my-2">
-            <button class="btn btn-primary change-color" type="button" data-bs-toggle="modal"
+            <button class="btn btn-primary change-color btn-sm" type="button" data-bs-toggle="modal"
                 data-bs-target="#trackingReportModal">Item Report</button>
-            <button class="btn btn-primary change-color" type="button">Container Status Report</button>
-            <button class="btn btn-primary change-color" type="button">Container Status Print</button>
+            <button class="btn btn-primary change-color btn-sm" type="button">Container Status Report</button>
+            <button class="btn btn-primary change-color btn-sm" type="button">Container Status Print</button>
+            <button class="btn btn-primary change-color btn-sm" type="button">Print Invoice Report</button>
         </div>
 
         <div class="row">
