@@ -164,7 +164,7 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
-        return $request->all();
+        // return $request->all();
         
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
@@ -233,12 +233,15 @@ class InvoiceController extends Controller
         if($request->invoice_no){
             $invoice->invoice_no = $request->invoice_no;
         }
+        if($request->transport_type){
+            $invoice->transport_type = $request->transport_type;
+        }
     
         $invoice->save();
 
         $validated =[
             'invoice_id' => $invoice->id,
-            'created_by' => auth()->id,
+            'created_by' => auth()->id(),
             'personal' => 'Yes',
             'currency' => 'USD',
             'payment_type' => 'Cash',
@@ -325,30 +328,59 @@ class InvoiceController extends Controller
     }
 
     protected function formatAddress($address, $parcel = null) {
-        if (!$address || !$address->user) return null;
+        if ((!$address || !$address->user) && empty($address->role_id)) return null;
+        
+        if(!empty($address->address_type)){
+            return [
+                'id' => $address->id,
+                'user_id' => $address->user_id ?? '',
+                'text' => ($address->full_name ?? ($address->name." ".$address->last_name)) ." ".($parcel->tracking_number??null).", " . $address->address,
+                'name' => $address->user->name ?? $address->name ?? '',
+                'last_name' => $address->user->last_name ?? $address->last_name ?? '',
+                'phone' => $address->user->mobile_number ?? $address->mobile_number ?? '',
+                'full_name' => $address->full_name ?? '',
+                'mobile_number' => $address->mobile_number,
+                'alternative_mobile_number' => $address->alternative_mobile_number,
+                'mobile_number_code_id' => $address->mobile_number_code_id ?? 1,
+                'alternative_mobile_number_code_id' => $address->alternative_mobile_number_code_id ?? 1,
+                'address1' => $address->address,
+                'address2' => $address->address_2,
+                'pincode' => $address->pincode,
+                'country_id' => $address->country_id,
+                'state_id' => $address->state_id,
+                'city_id' => $address->city_id,
+                'country' => $address->country_id,
+                'state' => $address->state_id,
+                'city' => $address->city_id,
+                'address_type' => $address->address_type,
+            ];
+        }
 
         return [
-            'id' => $address->id,
-            'text' => $address->full_name ."".($parcel->tracking_number??null).", " . $address->address,
-            'name' => $address->user->name,
-            'last_name' => $address->user->last_name,
-            'phone' => $address->user->mobile_number,
-            'full_name' => $address->full_name,
-            'mobile_number' => $address->mobile_number,
-            'alternative_mobile_number' => $address->alternative_mobile_number,
-            'mobile_number_code_id' => $address->mobile_number_code_id ?? 1,
-            'alternative_mobile_number_code_id' => $address->alternative_mobile_number_code_id ?? 1,
-            'address1' => $address->address,
-            'address2' => $address->address_2,
-            'pincode' => $address->pincode,
-            'country_id' => $address->country_id,
-            'state_id' => $address->state_id,
-            'city_id' => $address->city_id,
-            'country' => $address->country_id,
-            'state' => $address->state_id,
-            'city' => $address->city_id,
-            'address_type' => $address->address_type,
-        ];
+                'id' => $address->id,
+                'user_id' => $address->id ?? '',
+                'text' => $address->name." ".$address->last_name.", " . $address->address,
+                'name' => $address->name ?? '',
+                'last_name' => $address->last_name ?? '',
+                'phone' => $address->phone ?? '',
+                'full_name' => $address->name." ".$address->last_name,
+                'mobile_number' => $address->phone,
+                'alternative_mobile_number' => $address->phone_2,
+                'mobile_number_code_id' => $address->phone_code_id ?? 1,
+                'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? 1,
+                'address1' => $address->address,
+                'address2' => $address->address_2,
+                'pincode' => $address->pincode,
+                'country_id' => $address->country_id,
+                'state_id' => $address->state_id,
+                'city_id' => $address->city_id,
+                'country' => $address->country_id,
+                'state' => $address->state_id,
+                'city' => $address->city_id,
+                'address_type' => $address->address_type,
+                'address_type_t' => $address->address_type,
+            ];
+        
     }
 
     /**
@@ -420,6 +452,9 @@ class InvoiceController extends Controller
 
         if ($request->invoice_no) {
             $invoice->invoice_no = $request->invoice_no;
+        }
+        if($request->transport_type){
+            $invoice->transport_type = $request->transport_type;
         }
 
         $invoice->save();
@@ -575,29 +610,121 @@ class InvoiceController extends Controller
                     ->orWhere('address', 'like', $searchTerm)
                     ->orWhere('pincode', 'like', $searchTerm);
             })
-        // ->when($request->address_type, function ($query) use ($request) {
-        //     $query->whereHas('customer.addresses', function ($q) use ($request) {
-        //         $q->where('address_type', $request->address_type);
-        //     });
-        // })
         ->get()->filter(fn($it) => $it->parcel_type==$invoice_type && !empty($it->delivery_address_id))->values();
+        $parcelsHold =  $parcels;
+        $pickupIds = $parcelsHold->pluck('pickup_address_id');
+        $deliveryIds = $parcelsHold->pluck('delivery_address_id');
 
-        if ($parcels->isEmpty()) {
+        $addressUserIds = $pickupIds->merge($deliveryIds)->unique()
+            ->values();
+            
+
+        $users = User::when($searchTerm, function ($query) use ($searchTerm) {
+            $query
+                ->where('users.name', 'like', $searchTerm)
+                ->orWhere('users.last_name', 'like', $searchTerm)
+                ->orWhere('users.phone', 'like', $searchTerm)
+                ->orWhere('users.phone_2', 'like', $searchTerm)
+                ->orWhere('users.address', 'like', $searchTerm)
+                ->orWhere('users.pincode', 'like', $searchTerm);
+        })
+        ->whereNotIn('users.id', $addressUserIds)
+        ->where('users.role', 3)
+        ->select('users.*') // ensure you only select from users
+        ->distinct()
+        ->get()->map(function ($user,$id) use ($invoice_type) {
+            return [
+                "id" => 'user_'.$user->id,
+                "transport_type" => null,
+                "status" => 1,
+                "unique_id" => null,
+                "parcel_type" => $invoice_type,
+                "add_order" => null,
+                "container_id" => null,
+                "arrived_warehouse_id" => null,
+                "arrived_driver_id" => null,
+                "percel_comment" => null,
+                "hub_tracking_id" => null,
+                "tracking_number" => null,
+                "customer_id" => null,
+                "ship_customer_id" => null,
+                "driver_id" => null,
+                "warehouse_id" => null,
+                "parcel_car_ids" => [],
+                "customer_subcategories_data" => null,
+                "driver_subcategories_data" => null,
+                "driver_parcel_image" => [],
+                "length" => null,
+                "width" => null,
+                "height" => null,
+                "update_role" => null,
+                "weight" => 0,
+                "total_amount" => 0,
+                "estimate_cost" => null,
+                "partial_payment" => 0,
+                "remaining_payment" => 0,
+                "payment_type" => "COD",
+                "descriptions" => null,
+                "source_address" => null,
+                "destination_user_name" => null,
+                "destination_user_phone" => null,
+                "destination_address" => null,
+                "payment_status" => null,
+                "amount" => null,
+                "source_let" => null,
+                "source_long" => null,
+                "dest_let" => null,
+                "dest_long" => null,
+                "created_at" => null,
+                "updated_at" => null,
+                "pickup_date" => null,
+                "delivery_date" => null,
+                "pickup_address_id" => null,
+                "delivery_address_id" => null,
+                "pickup_time" => null,
+                "pickup_type" => null,
+                "delivery_type" => null,
+                "invoice_type" => $invoice_type,
+                "pickup_address" => $this->formatAddress($user),
+                "role_id" => 3,
+                "delivery_address" => $this->formatAddress($user),
+                "category_names" => [],
+                "pickupaddress" => null,
+                "deliveryaddress" => null,
+                "parcel_inventory" => null
+            ];
+        });
+
+         // Format parcel addresses
+        $formattedParcels = $parcels->map(function ($parcel) use ($invoice_type) {
+            $parcel->invoice_type = $invoice_type;
+            $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress, $parcel);
+            $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress, $parcel);
+            return $parcel;
+        })->toArray();
+
+        if(count($formattedParcels)>0){
+            // Merge users + parcels
+            $results = array_merge($formattedParcels, $users->toArray());
+            
+        }else{
+            // Merge users + parcels
+            $results = array_merge($users->toArray(),$formattedParcels);
+        }
+
+        if (collect($results)->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No results found'
             ], 404);
         }
 
+        // $results = $formattedParcels;
+        
+
         return response()->json([
             'success' => true,
-            'data' => $parcels->map(function ($parcel) use ($invoice_type) {
-
-                $parcel->invoice_type = $invoice_type;
-                $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress,$parcel);
-                $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress,$parcel);
-                return $parcel;
-            }),
+            'data' => $results,
         ]);
     }
 

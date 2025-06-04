@@ -23,7 +23,7 @@ function toggleLoginForm(type) {
 
         $("#ship_customer").prop("disabled", false);
 
-        $("#supplies_items").addClass("d-none");
+        // $("#supplies_items").addClass("d-none");
         $("#description_services_items").removeClass("d-none");
         $("#weight_services_items").removeClass("d-none");
         $('select[name="container_id"]') // optional: if you use this class for styling
@@ -46,7 +46,7 @@ function toggleLoginForm(type) {
 
         $("#ship_customer").prop("disabled", true);
 
-        $("#supplies_items").removeClass("d-none");
+        // $("#supplies_items").removeClass("d-none");
         $("#description_services_items").addClass("d-none");
         $("#weight_services_items").addClass("d-none");
         $('select[name="container_id"]') // optional: if you use this class for styling
@@ -219,18 +219,21 @@ $(document).ready(function () {
                     results: data.data.map(function (customer) {
                         if (customer.address_type == "pickup") {
                             return {
-                                id: customer.pickup_address.id,
-                                text: customer.pickup_address.text,
-                                customer: customer, // Store the full customer object
+                                id: customer.pickup_address.id ?? '',
+                                text: customer.pickup_address.text ?? '',
+                                customer: customer ?? '', // Store the full customer object
                             };
-                        } else {
+                        } else  if (customer.delivery_address){
                             return {
-                                id: customer.delivery_address.id,
-                                text: customer.delivery_address.text,
-                                customer: customer, // Store the full customer object
+                                id: customer.delivery_address.id ?? '',
+                                text: customer.delivery_address.text ?? '',
+                                customer: customer ?? '', // Store the full customer object
                             };
+                        }else{
+                            return false;
                         }
-                    }),
+                         // Return false if no address type matches
+                    }).filter((i) => i), // Filter out any empty results
                 };
             },
             cache: true,
@@ -260,17 +263,19 @@ $(document).ready(function () {
         var customer = data.customer;
          $('input[name="parcel_id"]').val(customer.id);
 
-        if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
+        // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
             $('input[name="invoce_item"]').val(customer.parcel_inventory);
+            $('input[name="transport_type"]').val(customer.transport_type);
 
             let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
 
             // Show table if hidden
-            $("#supplies_items").removeClass("d-none");
+            // $("#supplies_items").removeClass("d-none");
 
             // Clear existing rows
             $("#dynamicTable tbody").empty();
-
+            if(inventoryItems && inventoryItems.length > 0){
+                // Loop through inventory items and create rows
             inventoryItems.forEach((item, index) => {
                 let newRow = `
                 <tr>
@@ -332,6 +337,54 @@ $(document).ready(function () {
 
                 $("#dynamicTable tbody").append(newRow);
             });
+            }else{
+                $("#dynamicTable tbody").append(`<tr>
+                                    <td class="mwidth open-supply-modal">
+                                        <div class="d-flex align-items-center">
+                                            <input type="text" name="supply_name"
+                                                class="selected-supply-name form-control tdbor inputcolor">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
+                                                class="btn iconbtn p-0">
+                                                <i class="ti ti-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                        <input type="hidden" name="supply_id">
+                                    </td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="qty"></td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="label_qty"></td>
+                                    <td>
+                                        <div class="d-flex align-items-center priceInput"><input type="text"
+                                                class="form-control inputcolor" placeholder="" name="price"><button
+                                                type="button" class="btn btn-secondary p-0 flat-btn"><i
+                                                    class="ti ti-circle-plus col737"></i></button></div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="value">
+                                    </td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="ins"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="discount"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
+                                            name="tax"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="total"></td>
+                                    <td>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
+                                                    class="ti ti-minus"></i></button>
+                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i
+                                                    class="ti ti-plus"></i></button>
+                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
+                                                    class="ti ti-edit"></i></button>
+                                        </div>
+                                    </td>
+
+                                </tr>`);
+            }
 
             // Recalculate totals
             setTimeout(() => {
@@ -340,10 +393,10 @@ $(document).ready(function () {
                     syncSummary(row);
                 });
             }, 100); // Adjust the timeout as needed
-        }else{
+        // }else{
             $('input[name="descriptions"]').val(customer.descriptions);
             $('input[name="weight"]').val(customer.weight);
-        }
+        // }
 
         if (customer.delivery_address) {
             setPickupDeleveryFormValue(customer.delivery_address);

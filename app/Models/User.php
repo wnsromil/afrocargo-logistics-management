@@ -159,6 +159,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Address::class, 'user_id');
     }
+    public function parcels()
+    {
+        return $this->hasMany(Parcel::class);
+    }
 
     protected function profilePic(): Attribute
     {
