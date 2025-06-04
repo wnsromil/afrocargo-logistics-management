@@ -44,7 +44,7 @@
                     <div class="col-md-12 col-sm-6 col-lg-12">
                         <label for="report_id" class="col-form-label">Report Type</label>
                     </div>
-                    <div class="col-md-12 col-sm-6 col-lg-12">
+                    <div class="col-md-12 col-sm-6 col-lg-12 noBorder">
                         <select class="form-select select2 select-tag-width text-truncate text-dark">
                             <option selected>Report Type</option>
                             <option value="1">Invoice</option>
@@ -57,7 +57,7 @@
                     <div class="col-md-12 col-sm-6 col-lg-12">
                         <label for="branch_id" class="col-form-label">Branch</label>
                     </div>
-                    <div class="col-md-12 col-sm-6 col-lg-12">
+                    <div class="col-md-12 col-sm-6 col-lg-12 noBorder">
                         <select class="form-select select2">
                             <option selected>Select Branch</option>
                             <option value="1">Afro Cargo OH USA</option>
@@ -72,7 +72,7 @@
                     <div class="col-md-12 col-sm-6 col-lg-12">
                         <label for="user_id" class="col-form-label">User</label>
                     </div>
-                    <div class="col-md-12 col-sm-6 col-lg-12">
+                    <div class="col-md-12 col-sm-6 col-lg-12 noBorder">
                         <select class="form-select select2 text-dark">
                             <option value="1" selected>Abijan Cargo</option>
                             <option value="2">Bakary Siby</option>
@@ -94,7 +94,7 @@
                     <div class="col-md-12 col-sm-6 col-lg-12">
                         <label for="container_id" class="col-form-label">Container</label>
                     </div>
-                    <div class="col-md-12 col-sm-6 col-lg-12">
+                    <div class="col-md-12 col-sm-6 col-lg-12 noBorder">
                         <select class="form-select select2 text-dark">
                             <option value="17" selected>001-02325</option>
                             <option value="1">001-02225</option>

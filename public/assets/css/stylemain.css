@@ -3287,7 +3287,7 @@ table.dataTable>thead .sorting_desc_disabled:after {
 }
 
 .checkboxlable {
-    background-color: #203a5f34;
+    background-color: #2668c434;
     border-radius: 4px;
     padding: 6px 15px;
     border: 1px solid #203a5f;
@@ -3298,31 +3298,42 @@ table.dataTable>thead .sorting_desc_disabled:after {
 
         .checkmark {
             border-color: #203a5f;
+            color: green;
         }
 
         input:checked~.checkmark {
-            background-color: #203a5f;
-            border-color: #203a5f;
+            background-color: #d4edda;
+            border-color: green;
+            color: green;
         }
     }
 }
 
+/* ------------ Check Box Active --------- */
 .checkboxlable.active {
-    background-color: #203a5f;
+    background-color: #d4edda !important;
 
     .custom_check {
-        color: #fff;
+        color: #201f1f;
 
         input:checked~.checkmark {
-            border-color: #ffffff;
+            border-color: green;
         }
     }
 
     .custom_check .checkmark::after {
+        color: green;
+        font-weight: 800;
         font-size: 11px;
-        top: 1px;
+        top: -1px;
+        left: 1px;
     }
 }
+ /* .checkboxlable.active {
+    background-color: #d4edda !important;
+    
+} */
+
 
 .checkboxlable.bg-color {
     background-color: #f5f5fa;
@@ -3426,6 +3437,9 @@ span.select2-dropdown:has(.my-custom-option-class) {
     }
 }
 
+.noBorder .select2{
+    border: none !important;
+}
 @media (min-width: 992px) {
     #toggle_btn {
         width: 40px;
