@@ -101,7 +101,7 @@ class AdvanceReportsController extends Controller
 
         $containers = Vehicle::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->where('vehicle_type', 'Container')->get();
+        })->where('vehicle_type', '1')->get();
 
         return view('admin.advance_reports.index', compact('advanceOrderResports', 'warehouses', 'drivers', 'containers','search', 'perPage'));
     }

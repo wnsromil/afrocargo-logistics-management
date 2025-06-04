@@ -155,7 +155,20 @@ class DriversController extends Controller
             Mail::to($email)->send(new DriverMail($driver_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code));
         }
         $this->storeDefaultWeeklySchedule($driver->id);
-        // Redirect with success message
+
+        $availabilityData = [
+            'creates_by' => auth()->id(),
+            'address' => $request->address_1,
+            'lat' => $request->latitude,
+            'lng' => $request->longitude,
+            'is_active' => 1
+        ];
+
+        LocationSchedule::updateOrCreate(
+            ['user_id' => $driver->id], // condition for matching
+            $availabilityData // data to update or insert
+        );
+
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Driver created successfully.');
     }

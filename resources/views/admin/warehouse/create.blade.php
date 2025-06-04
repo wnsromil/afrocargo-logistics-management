@@ -167,7 +167,7 @@
         </div>
     </x-slot>
 
-      @if ($errors->any())
+    @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -314,12 +314,15 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="latitude" value="{{ old('latitude') }}" class="form-control inp inputbackground"
+            placeholder="0" readonly style="background: #ececec;">
+        <input type="hidden" name="longitude" value="{{ old('longitude') }}" class="form-control inp inputbackground"
+            placeholder="0" readonly style="background: #ececec;">
+
 
         <div class="add-customer-btns text-end">
-
             <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>
-
             <button type="submit" class="btn btn-primary ">Submit</button>
 
         </div>

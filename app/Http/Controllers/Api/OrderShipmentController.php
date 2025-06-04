@@ -600,6 +600,7 @@ class OrderShipmentController extends Controller
                 'remaining_payment' => 'required|numeric|min:0',
                 'payment_type' => 'required|in:COD,Online',
                 //'delivery_type' => 'required|string',
+                 'delivery_date' => 'required|date',
             ]);
 
             // Remaining Payment Check

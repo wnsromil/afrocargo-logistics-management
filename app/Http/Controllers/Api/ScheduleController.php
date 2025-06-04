@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\LocationSchedule;
 use App\Models\Availability;
 use App\Models\WeeklySchedule;
+use App\Models\Address;
 
 
 class ScheduleController extends Controller
@@ -17,18 +18,20 @@ class ScheduleController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
-            'location' => 'required|string|max:255',
+            'address_id' => 'required|integer|exists:addresses,id',
         ]);
 
         $date = $request->date;
-        $location = $request->location;
         $dayName = strtolower(Carbon::parse($date)->format('l'));
 
         $slotsSet = [];
         $availabilities = Availability::where('date', $date)->get()->keyBy('user_id');
 
-        // Location wale users nikalo
-        $userIds = LocationSchedule::where('address', $location)->pluck('user_id');
+        $address = Address::findOrFail($request->address_id);
+        $lat = $address->lat;
+        $long = $address->long;
+        $userIds = $this->getNearbyUserIds($lat, $long);
+
         foreach ($userIds as $userId) {
             $availablePeriods = [];
 
@@ -89,5 +92,16 @@ class ScheduleController extends Controller
         }
 
         return response()->json($finalSlots);
+    }
+
+    function getNearbyUserIds($lat, $lng, $radius = 50)
+    {
+        return LocationSchedule::select('user_id')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) + sin(radians(?)) * sin(radians(lat)))) AS distance',
+                [$lat, $lng, $lat]
+            )
+            ->having('distance', '<=', $radius)
+            ->pluck('user_id');
     }
 }

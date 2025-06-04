@@ -905,6 +905,69 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="pickup_date"]').length > 0) {
+        $('input[name="pickup_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            // maxDate: moment().startOf("day"), // Past Dates Disabled
+            // startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="pickup_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="done_date"]').length > 0) {
+        $('input[name="done_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            // maxDate: moment().startOf("day"), // Past Dates Disabled
+            // startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "MM/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="done_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
+    // if ($('input[name="pickup_time"]').length > 0) {
+    //     $('input[name="pickup_time"]').daterangepicker({
+    //         timePicker: true,
+    //         timePicker24Hour: false, // 12-hour format
+    //         timePickerSeconds: false,
+    //         singleDatePicker: true,
+    //         autoUpdateInput: true,
+    //         locale: {
+    //             format: "hh:mm A", // Only time with AM/PM
+    //         },
+    //     });
+
+    //     // Time select hone ke baad input me sirf time set karo
+    //     $('input[name="pickup_time"]').on(
+    //         "apply.daterangepicker",
+    //         function (ev, picker) {
+    //             $(this).val(picker.startDate.format("hh:mm A"));
+    //         }
+    //     );
+    // }
+
     // Sidebar Slimscroll
 
     if ($slimScrolls.length > 0) {

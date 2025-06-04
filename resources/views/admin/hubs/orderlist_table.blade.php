@@ -136,24 +136,24 @@
                                     @php
                                         $status_class = $parcel->status ?? null;
                                         $parcelStatus = $parcel->parcelStatus->status ?? null;
-                                        $classValue = match ($status_class) {
-                                            1 => 'badge-pending',
-                                            2 => 'badge-pickup',
-                                            3 => 'badge-picked-up',
-                                            4 => 'badge-arrived-warehouse',
-                                            5 => 'badge-in-transit',
-                                            8 => 'badge-arrived-final',
-                                            9 => 'badge-ready-pickup',
-                                            10 => 'badge-out-delivery',
-                                            11 => 'badge-delivered',
-                                            12 => 'badge-re-delivery',
-                                            13 => 'badge-on-hold',
-                                            14 => 'badge-cancelled',
-                                            15 => 'badge-abandoned',
-                                            21 => 'badge-picked-up',
-                                            22 => 'badge-in-transit',
-                                            default => 'badge-pending', // Default class if no match found
-                                        };
+                                        $classValue = match ((string) $status_class) {
+                                        "1"  => 'badge-pending',
+                                        "2"  => 'badge-pickup',
+                                        "3"  => 'badge-picked-up',
+                                        "4"  => 'badge-arrived-warehouse',
+                                        "5"  => 'badge-in-transit',
+                                        "8"  => 'badge-arrived-final',
+                                        "9"  => 'badge-ready-pickup',
+                                        "10" => 'badge-out-delivery',
+                                        "11" => 'badge-delivered',
+                                        "12" => 'badge-re-delivery',
+                                        "13" => 'badge-on-hold',
+                                        "14" => 'badge-cancelled',
+                                        "15" => 'badge-abandoned',
+                                        "21" => 'badge-picked-up',
+                                        "22" => 'badge-in-transit',
+                                        default => 'badge-pending',
+                                    };
                                     @endphp
                                     <td>
                                         <label class="{{ $classValue }}" for="status">

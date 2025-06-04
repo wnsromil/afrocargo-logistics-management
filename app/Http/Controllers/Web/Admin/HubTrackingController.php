@@ -26,7 +26,7 @@ class HubTrackingController extends Controller
     public function transfer_hub()
     {
         // Vehicle data
-        $vehicles = Vehicle::where('vehicle_type', 'Container')
+        $vehicles = Vehicle::where('vehicle_type', '1')
             ->where(function ($query) {
                 $query->where('status', 'Active')
                     ->orWhere('container_status', 20)

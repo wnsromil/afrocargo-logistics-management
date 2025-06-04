@@ -47,7 +47,7 @@ class WarehousemangerMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('no-reply@afrocargo.com', 'Afro Cargo'),
+            from: new Address('postmaster@afrocargo.senomicsecurity.in', 'Afro Cargo'),
             subject: 'Register Mail',
         );
     }
