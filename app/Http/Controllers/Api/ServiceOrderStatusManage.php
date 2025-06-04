@@ -23,8 +23,9 @@ class ServiceOrderStatusManage extends Controller
         $percelType = $request->percel_type; // Service, Supply, all
         $date = $request->date;
         $status = $request->status;
+        $search = $request->search;
 
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer']);
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse']);
 
         // Filter by driver type
         if ($percelType === 'Service') {
@@ -63,9 +64,31 @@ class ServiceOrderStatusManage extends Controller
             $query->where('status', 11);
         }
 
+        // 🔍 Search filter
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'like', '%' . $search . '%')
+                    ->orWhereHas('customer', function ($q2) use ($search) {
+                        $q2->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('warehouse', function ($q3) use ($search) {
+                        $q3->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('pickupaddress', function ($q4) use ($search) {
+                        $q4->where('address', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('deliveryaddress', function ($q5) use ($search) {
+                        $q5->where('address', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
         // Fetch and map order_type
         $orders = $query->get()->map(function ($order) {
-            if ($order->driver_id) {
+            if ($order->arrived_driver_id && $order->driver_id) {
+                $order->order_type = 'Delivery';
+            } elseif ($order->driver_id) {
                 $order->order_type = 'Pickup';
             } elseif ($order->arrived_driver_id) {
                 $order->order_type = 'Delivery';
@@ -80,6 +103,7 @@ class ServiceOrderStatusManage extends Controller
             'status_type' => $status,
             'percel_type' => $percelType,
             'date' => $date,
+            'search' => $search,
             'message' => 'Driver service orders fetched successfully.',
             'data' => $orders
         ]);

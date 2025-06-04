@@ -45,122 +45,123 @@
                         </thead>
                         <tbody>
                             @forelse ($vehicles as $index => $vehicle)
-                                                        <tr>
-                                                            <td>{{ $vehicle->unique_id ?? "-" }}</td>
-                                                            <td>{{ $vehicle->transfer_date ?? "-" }}</td>
-                                                            <td>{{ $vehicle->vehicle_type ?? "-" }}</td>
-                                                            <td>{{ $vehicle->seal_no ?? "-" }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') }}</td>
-                                                            <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
-                                                            <td>{{ $vehicle->driver->name ?? "-" }}</td>
-                                                            <td>
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="row fw-medium">Partial: </div>
-                                                                        <div class="row">Due: </div>
-                                                                        <div class="row">Total: </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="row"> ${{ $vehicle->partial_payment_sum ?? '0' }}</div>
-                                                                        <div class="row"> ${{ $vehicle->remaining_payment_sum ?? '0' }}</div>
-                                                                        <div class="row"> ${{ $vehicle->total_amount_sum ?? '0' }}</div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            @php
-                                                                $status_class = $vehicle->container_status ?? null;
-                                                                $container_status_name = $vehicle->containerStatus->status ?? null;
+                                <tr>
+                                    <td>{{ $vehicle->unique_id ?? "-" }}</td>
+                                    <td>{{ $vehicle->transfer_date ?? "-" }}</td>
+                                    <td>{{ $vehicle->vehicle_type ?? "-" }}</td>
+                                    <td>{{ $vehicle->seal_no ?? "-" }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') }}</td>
+                                    <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
+                                    <td>{{ $vehicle->driver->name ?? "-" }}</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row fw-medium">Partial: </div>
+                                                <div class="row">Due: </div>
+                                                <div class="row">Total: </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row"> ${{ $vehicle->partial_payment_sum ?? '0' }}</div>
+                                                <div class="row"> ${{ $vehicle->remaining_payment_sum ?? '0' }}</div>
+                                                <div class="row"> ${{ $vehicle->total_amount_sum ?? '0' }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @php
+                                        $status_class = $vehicle->container_status ?? null;
+                                        $container_status_name = $vehicle->containerStatus->status ?? null;
 
-                                                                $classValue = match ($status_class) {
-                                                                    16 => 'badge-ready_to_transfer',
-                                                                    17 => 'badge-transfer_to_hub',
-                                                                    5 => 'badge-in-transit',
-                                                                    20 => 'badge-re-delivery',
-                                                                    default => 'badge-pending',
-                                                                };
-                                                              @endphp
+                                        $classValue = match ($status_class) {
+                                            16 => 'badge-ready_to_transfer',
+                                            17 => 'badge-transfer_to_hub',
+                                            5 => 'badge-in-transit',
+                                            20 => 'badge-re-delivery',
+                                            default => 'badge-pending',
+                                        };
+                                      @endphp
 
-                                                            <td>
-                                                                <label class="{{ $classValue }}" for="status">
-                                                                    {{ $container_status_name ?? '-' }}
-                                                                </label>
-                                                                <br>
-                                                                @if($vehicle->container_status == 17)
-                                                                    <label class="badge-delivered" for="status">
-                                                                        {{ $vehicle->warehouse->warehouse_name . ' To ' . $vehicle->arrived_warehouse->warehouse_name}}
-                                                                    </label>
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                <li class="nav-item dropdown">
-                                                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                                                        data-bs-toggle="dropdown">
+                                    <td>
+                                        <label class="{{ $classValue }}" for="status">
+                                            {{ $container_status_name ?? '-' }}
+                                        </label>
+                                        <br>
+                                        @if($vehicle->container_status == 17)
+                                            <label class="badge-delivered" for="status">
+                                                {{ $vehicle->warehouse->warehouse_name . ' To ' . $vehicle->arrived_warehouse->warehouse_name}}
+                                            </label>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <li class="nav-item dropdown">
+                                            <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
+                                                data-bs-toggle="dropdown">
 
-                                                                        <span class="user-content"
-                                                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                   height: 26px;align-content: center;">
-                                                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                                                        </span>
-                                                                    </a>
-                                                                    @if($vehicle->container_status == 20 || $vehicle->container_status == 16)
-                                                                        <div class="dropdown-menu menu-drop-user">
-                                                                            <div class="profilemenu">
-                                                                                <div class="subscription-menu">
-                                                                                    <ul>
-                                                                                        <li>
-                                                                                            @if($vehicle->container_status == 20)
-                                                                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                                                                    data-bs-toggle="modal"
-                                                                                                    data-bs-target="#fullyloadedcontainer"
-                                                                                                    vehicle-id="{{ $vehicle->id }}">
-                                                                                                    Full load
-                                                                                                </a>
-                                                                                            @else
-                                                                                                <a class="dropdown-item text-muted disabled"
-                                                                                                    href="javascript:void(0);">
-                                                                                                    Full load
-                                                                                                </a>
-                                                                                            @endif
-                                                                                        </li>
-
-                                                                                        <li>
-                                                                                            @if($vehicle->container_status == 16)
-                                                                                                <a onclick="openTransferModal({{ $vehicle->id }})"
-                                                                                                    class="dropdown-item" href="javascript:void(0);"
-                                                                                                    data-bs-toggle="modal" data-bs-target="#transfer_to_hub"
-                                                                                                    vehicle-id="{{ $vehicle->id }}">
-                                                                                                    Transfer to Hub
-                                                                                                </a>
-                                                                                            @else
-                                                                                                <a class="dropdown-item text-muted disabled"
-                                                                                                    href="javascript:void(0);">
-                                                                                                    Transfer to Hub
-                                                                                                </a>
-                                                                                            @endif
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                <span class="user-content"
+                                                    style="background-color:#203A5F;border-radius:5px;width: 30px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                       height: 26px;align-content: center;">
+                                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                                </span>
+                                            </a>
+                                            @if($vehicle->container_status == 20 || $vehicle->container_status == 16)
+                                                <div class="dropdown-menu menu-drop-user">
+                                                    <div class="profilemenu">
+                                                        <div class="subscription-menu">
+                                                            <ul>
+                                                                <li>
+                                                                    @if($vehicle->container_status == 20)
+                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#fullyloadedcontainer"
+                                                                            vehicle-id="{{ $vehicle->id }}">
+                                                                            Full load
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item text-muted disabled"
+                                                                            href="javascript:void(0);">
+                                                                            Full load
+                                                                        </a>
                                                                     @endif
-
                                                                 </li>
-                                                            </td>
-                                                            <td class="btntext">
-                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $vehicle->container_id ?? 0)}}')"
-                                                                    class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                                            </td>
-                                                        </tr>
-                                                        <input type="hidden" id="partial_payment_sum_input_hidden" name="partial_payment_sum_hidden"
-                                                            value="{{$vehicle->partial_payment_sum ?? '0'}}" class="form-control" readonly>
-                                                        <input type="hidden" id="remaining_payment_sum_input_hidden"
-                                                            name="remaining_payment_sum_hidden" value="{{$vehicle->remaining_payment_sum ?? '0'}}"
-                                                            class="form-control" readonly>
-                                                        <input type="hidden" id="total_amount_sum_input_hidden" name="total_amount_sum_hidden"
-                                                            value="{{$vehicle->total_amount_sum ?? '0'}}" class="form-control" readonly>
-                                                        <input type="hidden" id="no_of_orders_input_hidden" name="no_of_orders_sum_hidden"
-                                                            value="{{$vehicle->parcelsCount->first()->count ?? 0}}" class="form-control" readonly>
+
+                                                                <li>
+                                                                    @if($vehicle->container_status == 16)
+                                                                        <a onclick="openTransferModal({{ $vehicle->id }})"
+                                                                            class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal" data-bs-target="#transfer_to_hub"
+                                                                            vehicle-id="{{ $vehicle->id }}">
+                                                                            Transfer to Hub
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item text-muted disabled"
+                                                                            href="javascript:void(0);">
+                                                                            Transfer to Hub
+                                                                        </a>
+                                                                    @endif
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                        </li>
+                                    </td>
+                                    <td class="btntext">
+                                        <button
+                                            onClick="redirectTo('{{route('admin.container.orders.percel.list', [$vehicle->id ?? 0, 'Transfer'])}}')"
+                                            class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                    </td>
+                                </tr>
+                                <input type="hidden" id="partial_payment_sum_input_hidden" name="partial_payment_sum_hidden"
+                                    value="{{$vehicle->partial_payment_sum ?? '0'}}" class="form-control" readonly>
+                                <input type="hidden" id="remaining_payment_sum_input_hidden"
+                                    name="remaining_payment_sum_hidden" value="{{$vehicle->remaining_payment_sum ?? '0'}}"
+                                    class="form-control" readonly>
+                                <input type="hidden" id="total_amount_sum_input_hidden" name="total_amount_sum_hidden"
+                                    value="{{$vehicle->total_amount_sum ?? '0'}}" class="form-control" readonly>
+                                <input type="hidden" id="no_of_orders_input_hidden" name="no_of_orders_sum_hidden"
+                                    value="{{$vehicle->parcelsCount->first()->count ?? 0}}" class="form-control" readonly>
                             @empty
                                 <tr>
                                     <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
@@ -175,63 +176,64 @@
 
                             {{-- Historical Vehicles --}}
                             @foreach ($historyVehicles as $historyVehicle)
-                                                        <tr class="historyTR" style="background-color: #e9f7e9;"> {{-- Halka green background --}}
-                                                            <td>{{ $historyVehicle->container->unique_id ?? "-" }}</td>
-                                                            <td>{{ $historyVehicle->transfer_date ?? "-" }}</td>
-                                                            <td>{{ $historyVehicle->container->vehicle_type ?? "-" }}</td>
-                                                            <td>{{ $historyVehicle->container->seal_no ?? "-" }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($historyVehicle->container->open_date)->format('m-d-Y') }}
-                                                            </td>
-                                                            <td>{{ \Carbon\Carbon::parse($historyVehicle->container->close_date)->format('m-d-Y') }}
-                                                            </td>
-                                                            <td>{{ $historyVehicle->no_of_orders ?? 0 }}</td>
-                                                            <td>{{ $historyVehicle->driver->name ?? "-" }}</td>
-                                                            <td>
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="row fw-medium">Partial: </div>
-                                                                        <div class="row">Due: </div>
-                                                                        <div class="row">Total: </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="row"> ${{ $historyVehicle->partial_payment ?? '0' }}</div>
-                                                                        <div class="row"> ${{ $historyVehicle->remaining_payment ?? '0' }}</div>
-                                                                        <div class="row"> ${{ $historyVehicle->total_amount ?? '0' }}</div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
+                                <tr class="historyTR" style="background-color: #e9f7e9;"> {{-- Halka green background --}}
+                                    <td>{{ $historyVehicle->container->unique_id ?? "-" }}</td>
+                                    <td>{{ $historyVehicle->transfer_date ?? "-" }}</td>
+                                    <td>{{ $historyVehicle->container->vehicle_type ?? "-" }}</td>
+                                    <td>{{ $historyVehicle->container->seal_no ?? "-" }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($historyVehicle->container->open_date)->format('m-d-Y') }}
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($historyVehicle->container->close_date)->format('m-d-Y') }}
+                                    </td>
+                                    <td>{{ $historyVehicle->no_of_orders ?? 0 }}</td>
+                                    <td>{{ $historyVehicle->driver->name ?? "-" }}</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row fw-medium">Partial: </div>
+                                                <div class="row">Due: </div>
+                                                <div class="row">Total: </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row"> ${{ $historyVehicle->partial_payment ?? '0' }}</div>
+                                                <div class="row"> ${{ $historyVehicle->remaining_payment ?? '0' }}</div>
+                                                <div class="row"> ${{ $historyVehicle->total_amount ?? '0' }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
 
-                                                            @php
-                                                                $status_class = $historyVehicle->status ?? null;
-                                                                $container_status_name = $historyVehicle->containerStatus->status ?? null;
+                                    @php
+                                        $status_class = $historyVehicle->status ?? null;
+                                        $container_status_name = $historyVehicle->containerStatus->status ?? null;
 
-                                                                $classValue = match ($status_class) {
-                                                                    '16' => 'badge-ready_to_transfer',
-                                                                    '17' => 'badge-transfer_to_hub',
-                                                                    '19' => 'badge-ready-pickup',
-                                                                    '18' => 'badge-re-delivery',
-                                                                    '5' => 'badge-in-transit',
-                                                                    '20' => 'badge-re-delivery',
-                                                                    default => 'badge-pending',
-                                                                };
-                                                              @endphp
+                                        $classValue = match ($status_class) {
+                                            '16' => 'badge-ready_to_transfer',
+                                            '17' => 'badge-transfer_to_hub',
+                                            '19' => 'badge-ready-pickup',
+                                            '18' => 'badge-re-delivery',
+                                            '5' => 'badge-in-transit',
+                                            '20' => 'badge-re-delivery',
+                                            default => 'badge-pending',
+                                        };
+                                      @endphp
 
-                                                            <td>
-                                                                <label class="{{ $classValue }}" for="status">
-                                                                    {{ $container_status_name ?? '-' }}
-                                                                </label>
-                                                                <br>
-                                                                <label class="badge-delivered" for="status">
-                                                                    {{ $historyVehicle->warehouse->warehouse_name . ' To ' . $historyVehicle->arrived_warehouse->warehouse_name}}
-                                                                </label>
-                                                            </td>
+                                    <td>
+                                        <label class="{{ $classValue }}" for="status">
+                                            {{ $container_status_name ?? '-' }}
+                                        </label>
+                                        <br>
+                                        <label class="badge-delivered" for="status">
+                                            {{ $historyVehicle->warehouse->warehouse_name . ' To ' . $historyVehicle->arrived_warehouse->warehouse_name}}
+                                        </label>
+                                    </td>
 
-                                                            <td>---</td> {{-- Dropdowns/history actions skip kar sakte ho agar zarurat nahi --}}
-                                                            <td class="btntext">
-                                                                <button onClick="redirectTo('{{route('admin.container.orders.percel.list', $historyVehicle->container_id ?? 0)}}')"
-                                                                    class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                                            </td>
-                                                        </tr>
+                                    <td>---</td> {{-- Dropdowns/history actions skip kar sakte ho agar zarurat nahi --}}
+                                    <td class="btntext">
+                                        <button
+                                            onClick="redirectTo('{{route('admin.container.orders.percel.list', [$historyVehicle->id ?? 0, 'Transfer'])}}')"
+                                            class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

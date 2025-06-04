@@ -14,7 +14,8 @@ use App\Models\{
     ParcelHistory,
     Invoice,
     ParcelInventorie,
-    Vehicle
+    Vehicle,
+    ContainerHistory
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -84,9 +85,9 @@ class OrderShipmentController extends Controller
                 'pickup_address_id' => 'required|numeric',
                 'delivery_address_id' => 'required|numeric',
                 'pickup_time' => 'required|string',
-               // 'delivery_type' => 'required|string',
+                // 'delivery_type' => 'required|string',
                 // 'pickup_type' => 'required|string',
-                 'pickup_date' => 'required|date',
+                'pickup_date' => 'required|date',
                 'transport_type' => 'required|string',
                 'source_address' => 'required',
             ]);
@@ -124,6 +125,17 @@ class OrderShipmentController extends Controller
 
             // Store container_id
             $validatedData['container_id'] = $activeContainer->id;
+
+            $containerHistory = ContainerHistory::where('container_id', $activeContainer->id)
+                ->where('status', 'Transfer')
+                ->latest() // optional: if multiple transfer records exist, get the latest
+                ->first();
+
+            if ($containerHistory) {
+                $validatedData['container_history_id'] = $containerHistory->id;
+            } else {
+                $validatedData['container_history_id'] = null; // or handle as needed
+            }
 
             // Create Parcel
             $Parcel = Parcel::create($validatedData);
@@ -600,7 +612,7 @@ class OrderShipmentController extends Controller
                 'remaining_payment' => 'required|numeric|min:0',
                 'payment_type' => 'required|in:COD,Online',
                 //'delivery_type' => 'required|string',
-                 'delivery_date' => 'required|date',
+                'delivery_date' => 'required|date',
             ]);
 
             // Remaining Payment Check

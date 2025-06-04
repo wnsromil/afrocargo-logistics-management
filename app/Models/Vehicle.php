@@ -43,8 +43,10 @@ class Vehicle extends Model
     {
         return $this->hasMany(Parcel::class, 'container_id')
             ->selectRaw('container_id, COUNT(*) as count')
+            ->where('status', 4)
             ->groupBy('container_id');
     }
+
 
     public function parcels()
     {
