@@ -95,6 +95,7 @@ class Parcel extends Model
     {
         return $this->belongsTo(Address::class, 'delivery_address_id');
     }
+
     public function getCategoryNamesAttribute()
     {
         $ids = $this->parcel_car_ids ?? []; // Ensure it's an array
@@ -105,7 +106,6 @@ class Parcel extends Model
 
         return count($ids) > 0 ? Category::whereIn('id', $ids)->pluck('name')->toArray() : [];
     }
-
 
     protected function driverParcelImage(): Attribute
     {

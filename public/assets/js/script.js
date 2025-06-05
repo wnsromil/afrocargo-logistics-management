@@ -627,6 +627,48 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="celliling_date"]').length > 0) {
+        $('input[name="celliling_date"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minDate: false,
+            startDate: false,
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="celliling_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="eta_date"]').length > 0) {
+        $('input[name="eta_date"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minDate: false,
+            startDate: false,
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="eta_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
     if ($('input[name="container_date_time"]').length > 0) {
         $('input[name="container_date_time"]').daterangepicker({
             singleDatePicker: true,
@@ -2064,11 +2106,51 @@ Version      : 1.0
         });
     }
 
+    function init_transit_Autocomplete() {
+        const input = document.getElementById("transit_country");
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["(regions)"], // fallback for regions, not perfect
+        });
+
+        autocomplete.setFields(["address_components", "formatted_address"]);
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            let country = "";
+
+            if (place.address_components) {
+                for (const component of place.address_components) {
+                    if (component.types.includes("country")) {
+                        country = component.long_name;
+                        break;
+                    }
+                }
+
+                if (country !== "") {
+                    input.value = country;
+                } else {
+                    // fallback if no country found
+                    input.value = "";
+                    alert("Please select a valid country.");
+                }
+            }
+        });
+
+        input.addEventListener("focus", function () {
+            const ev = new KeyboardEvent("keydown", {
+                keyCode: 40,
+                which: 40,
+            });
+            input.dispatchEvent(ev);
+        });
+    }
     window.addEventListener("load", function () {
         initAutocomplete();
         initAutocompleteById();
         initAutocomplete_1();
         initAutocomplete_2();
         initAutocomplete_3();
+        init_transit_Autocomplete();
     });
 })(jQuery);

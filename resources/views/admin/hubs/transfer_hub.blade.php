@@ -149,7 +149,7 @@
                                     </td>
                                     <td class="btntext">
                                         <button
-                                            onClick="redirectTo('{{route('admin.container.orders.percel.list', [$vehicle->id ?? 0, 'Transfer'])}}')"
+                                            onClick="redirectTo('{{route('admin.container.orders.percel.list', [$vehicle->id ?? 0, 'OnLoading'])}}')"
                                             class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                                     </td>
                                 </tr>

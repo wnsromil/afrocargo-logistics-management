@@ -15,7 +15,8 @@ use App\Models\{
     Invoice,
     ParcelInventorie,
     Vehicle,
-    ContainerHistory
+    ContainerHistory,
+    Cart
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -654,6 +655,22 @@ class OrderShipmentController extends Controller
                 'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
+
+            foreach ($request->inventorie_data as $item) {
+                $inventory = Inventory::find($item['inventorie_id']);
+
+                if ($inventory) {
+                    $inventoryId = $inventory->id;
+                    $user_Id = $validatedData['customer_id'];
+                    $item_quantity = $item['inventorie_item_quantity'];
+
+                    // Cart me matching record find and delete
+                    Cart::where('user_id', $user_Id)
+                        ->where('product_id', $inventoryId)
+                        ->where('quantity', $item_quantity)
+                        ->delete();
+                }
+            }
 
             return $this->sendResponse($parcel, 'Order added successfully.');
         } catch (Exception $e) {

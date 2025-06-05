@@ -92,6 +92,9 @@ class HubTrackingController extends Controller
             ->when($type === 'Transfer', function ($q) use ($id) {
                 return $q->where('container_history_id', $id);
             })
+            ->when($type === 'OnLoading', function ($q) use ($id) {
+                return $q->where('container_id', $id)->where('status', 4);
+            })
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })

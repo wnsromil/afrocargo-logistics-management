@@ -53,6 +53,15 @@ class Vehicle extends Model
         return $this->hasMany(Parcel::class, 'container_id', 'id');
     }
 
+      public function gateInDriver()
+    {
+        return $this->belongsTo(User::class, 'gate_in_driver_id');
+    }
+    public function gateOutDriver()
+    {
+        return $this->belongsTo(User::class, 'gate_out_driver_id');
+    }
+
     public function containerStatus()
     {
         return $this->hasOne(ParcelStatus::class, 'id', 'container_status');
