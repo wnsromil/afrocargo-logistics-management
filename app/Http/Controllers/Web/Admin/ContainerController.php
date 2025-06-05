@@ -123,16 +123,25 @@ class ContainerController extends Controller
             'ship_to_country' => 'required|string|max:100',
             'doc_id' => 'required|string|max:100',
             'company_for_container' => 'required|string|max:100',
-            'container_date_time' => 'required|string',
+            // 'container_date_time' => 'required|string',
             'trucking_company' => 'required|string',
             'chassis_number' => 'required|string',
-            'vessel_voyage' => 'required|string',
+
+            'gate_in_driver_id'     => 'required|integer|exists:users,id',
+            'gate_out_driver_id'    => 'required|integer|exists:users,id',
+            'port_of_loading'       => 'required|string|max:255',
+            'port_of_discharge'     => 'required|string|max:255',
+            'celliling_date'        => 'required|date',
+            'eta_date'              => 'required|date',
+            'transit_country'       => 'required|string|max:255',
         ];
 
         $messages = [
             'warehouse_name.required' => 'The warehouse field is required.',
             'warehouse_name.exists'   => 'The selected warehouse is invalid.',
-            'container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM'
+            'container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM',
+            'eta_date.required' => 'The ETA date field is required.',
+            'transit_country.required' => 'The transit field is required.',
         ];
 
         // Run validation
@@ -165,30 +174,40 @@ class ContainerController extends Controller
         );
 
         // Create and save vehicle
-        $vehicle = new Vehicle();
-        $vehicle->warehouse_id   = $request->warehouse_name;
-        $vehicle->vehicle_type   = '1';
-        $vehicle->vehicle_number = $request->vehicle_number;
-        $vehicle->status         = 'Inactive';
-        $vehicle->container_no_1 = $request->container_no_1;
-        $vehicle->container_size = $request->container_size;
-        $vehicle->seal_no        = $request->seal_no;
-        $vehicle->booking_number = $request->booking_number;
-        $vehicle->bill_of_lading = $request->bill_of_lading;
-        $vehicle->broker         = $broker->id;
-        $vehicle->ship_to_country = $request->ship_to_country;
-        $vehicle->doc_id         = $request->doc_id;
-        $vehicle->volume         = $request->volume;
-        $vehicle->container_company_id = $containerCompany->id;
-        $vehicle->trucking_company = $request->trucking_company;
-        $vehicle->chassis_number = $request->chassis_number;
-        $vehicle->vessel_voyage = $request->vessel_voyage;
-        $vehicle->tir_number = $request->tir_number;
-        $vehicle->container_in_date = $containerInDate;
-        $vehicle->container_in_time = $containerInTime;
-        $vehicle->save();
+        $vehicleStore = new Vehicle();
+        $vehicleStore->warehouse_id   = $request->warehouse_name;
+        $vehicleStore->vehicle_type   = '1';
+        $vehicleStore->vehicle_number = $request->vehicle_number;
+        $vehicleStore->status         = 'Inactive';
+        $vehicleStore->container_no_1 = $request->container_no_1;
+        $vehicleStore->container_size = $request->container_size;
+        $vehicleStore->seal_no        = $request->seal_no;
+        $vehicleStore->booking_number = $request->booking_number;
+        $vehicleStore->bill_of_lading = $request->bill_of_lading;
+        $vehicleStore->broker         = $broker->id;
+        $vehicleStore->ship_to_country = $request->ship_to_country;
+        $vehicleStore->doc_id         = $request->doc_id;
+        $vehicleStore->volume         = $request->volume;
+        $vehicleStore->container_company_id = $containerCompany->id;
+        $vehicleStore->trucking_company = $request->trucking_company;
+        $vehicleStore->chassis_number = $request->chassis_number;
+        $vehicleStore->vessel_voyage = $request->vessel_voyage;
+        $vehicleStore->tir_number = $request->tir_number;
+        $vehicleStore->container_in_date = $containerInDate;
+        $vehicleStore->container_in_time = $containerInTime;
+        $vehicleStore->gate_in_driver_id = $request->gate_in_driver_id;
+        $vehicleStore->gate_out_driver_id = $request->gate_out_driver_id;
+        $vehicleStore->port_of_loading = $request->port_of_loading;
+        $vehicleStore->port_of_discharge = $request->port_of_discharge;
+        $vehicleStore->celliling_date = Carbon::createFromFormat('m/d/Y', $request->celliling_date)->format('Y-m-d');
+        $vehicleStore->eta_date = Carbon::createFromFormat('m/d/Y', $request->eta_date)->format('Y-m-d');
+        $vehicleStore->transit_country = $request->transit_country;
+        $vehicleStore->save();
 
-        return redirect()->route('admin.container.index')->with('success', 'Container added successfully.');
+        $insertedId = $vehicleStore->id;
+        $vehicle = Vehicle::find($insertedId);
+
+        return redirect()->route('admin.container.show', ['id' => $vehicle->id])->with('success', 'Container added successfully.');
     }
 
 
@@ -247,7 +266,7 @@ class ContainerController extends Controller
         $messages = [
             'warehouse_name.required' => 'The warehouse field is required.',
             'warehouse_name.exists'   => 'The selected warehouse is invalid.',
-         //   'edit_container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM'
+            //   'edit_container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM'
         ];
 
         // Validate the request
@@ -302,7 +321,7 @@ class ContainerController extends Controller
         // $vehicle->container_in_time = $containerInTime;
         $vehicle->save();
 
-        return redirect()->route('admin.container.index')->with('success', 'Container updated successfully.');
+        return redirect()->route('admin.container.show', ['id' => $id])->with('success', 'Container added successfully.');
     }
 
     /**

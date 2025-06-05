@@ -189,6 +189,8 @@ class OrderStatusManage extends Controller
 
         $vehicleData = $vehicle->toJson(); // store full parcel data in description
 
+
+
         ContainerHistory::create([
             'container_id' => $vehicle->id,
             'transfer_date' => now()->format('Y-m-d'),
@@ -206,7 +208,7 @@ class OrderStatusManage extends Controller
         ]);
 
         // 2. Arrived record
-        ContainerHistory::create([
+        $containerHistory = ContainerHistory::create([
             'container_id' => $vehicle->id,
             'transfer_date' => now()->format('Y-m-d'),
             'driver_id' => $validated['delivery_man'],
@@ -233,10 +235,10 @@ class OrderStatusManage extends Controller
         ]);
 
         // Step 4: Find all parcels related to this container and update their status to 5
-        $parcels = Parcel::where('container_id', $vehicle->id)->get();
+        $parcels = Parcel::where('container_id', $vehicle->id)->where('status', 4)->get();
 
         foreach ($parcels as $parcel) {
-            $parcel->update(['status' => 5]);
+            $parcel->update(['status' => 5, 'arrived_container_history_id' => $containerHistory->id]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
@@ -374,14 +376,14 @@ class OrderStatusManage extends Controller
 
         foreach ($parcels as $parcel) {
             $parcel_status_id = '';
-            if($parcel->delivery_type == 'self'){
+            if ($parcel->delivery_type == 'self') {
                 $parcel->update(['status' => 21]);
                 $parcel_status_id = 21;
-            }else{
-                $parcel->update(['status' => 9]); 
+            } else {
+                $parcel->update(['status' => 9]);
                 $parcel_status_id = 9;
             }
-          
+
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),

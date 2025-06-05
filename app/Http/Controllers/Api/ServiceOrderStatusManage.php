@@ -20,63 +20,90 @@ class ServiceOrderStatusManage extends Controller
 {
     public function getDriverAllOrders(Request $request)
     {
+        $percelType = $request->percel_type; // Service, Supply, all
+        $date = $request->date;
         $status = $request->status;
-        $parcelType = $request->percel_type;
+        $search = $request->search;
 
-        // ✅ Custom date from request or fallback to today
-        $inputDate = $request->input('date'); // date format expected: d-m-Y
-        $filterDate = $inputDate
-            ? \Carbon\Carbon::createFromFormat('d-m-Y', $inputDate)->format('Y-m-d')
-            : now()->format('Y-m-d');
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse']);
 
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer']);
-
-        if ($parcelType === 'Service') {
+        // Filter by driver type
+        if ($percelType === 'Service') {
             $query->where('driver_id', $this->user->id);
-
-            if ($status === 'pending') {
-                $query->whereDate('pickup_date', $filterDate);
-            } elseif ($status === 'upcoming') {
-                $query->whereDate('pickup_date', '>', $filterDate);
-            } elseif ($status === 'complete') {
-                $query->where('status', 4);
-            }
-        } elseif ($parcelType === 'Supply') {
+        } elseif ($percelType === 'Supply') {
             $query->where('arrived_driver_id', $this->user->id);
-
-            if ($status === 'pending') {
-                $query->whereDate('delivery_date', $filterDate);
-            } elseif ($status === 'upcoming') {
-                $query->whereDate('delivery_date', '>', $filterDate);
-            } elseif ($status === 'complete') {
-                $query->where('status', 4);
-            }
-        } elseif ($parcelType === 'all') {
+        } elseif ($percelType === 'all') {
             $query->where(function ($q) {
                 $q->where('driver_id', $this->user->id)
                     ->orWhere('arrived_driver_id', $this->user->id);
             });
+        }
 
-            if ($status === 'pending') {
-                $query->where(function ($q) use ($filterDate) {
-                    $q->whereDate('pickup_date', $filterDate)
-                        ->orWhereDate('delivery_date', $filterDate);
+        // Filter by date
+        if (!empty($date)) {
+            if ($percelType === 'Service') {
+                $query->whereDate('pickup_date', $date);
+            } elseif ($percelType === 'Supply') {
+                $query->whereDate('delivery_date', $date);
+            } elseif ($percelType === 'all') {
+                $query->where(function ($q) use ($date) {
+                    $q->whereDate('pickup_date', $date)
+                        ->orWhereDate('delivery_date', $date);
                 });
-            } elseif ($status === 'upcoming') {
-                $query->where(function ($q) use ($filterDate) {
-                    $q->whereDate('pickup_date', '>', $filterDate)
-                        ->orWhereDate('delivery_date', '>', $filterDate);
-                });
-            } elseif ($status === 'complete') {
-                $query->where('status', 4);
             }
         }
 
-        $orders = $query->get();
+        // Filter by status
+        if ($status === 'pending') {
+            if ($percelType === 'Service') {
+                $query->where('status', 2);
+            } else {
+                $query->where('status', 22);
+            }
+        } elseif ($status === 'complete') {
+            $query->where('status', 11);
+        }
+
+        // 🔍 Search filter
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'like', '%' . $search . '%')
+                    ->orWhereHas('customer', function ($q2) use ($search) {
+                        $q2->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('warehouse', function ($q3) use ($search) {
+                        $q3->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('pickupaddress', function ($q4) use ($search) {
+                        $q4->where('address', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('deliveryaddress', function ($q5) use ($search) {
+                        $q5->where('address', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // Fetch and map order_type
+        $orders = $query->get()->map(function ($order) {
+            if ($order->arrived_driver_id && $order->driver_id) {
+                $order->order_type = 'Delivery';
+            } elseif ($order->driver_id) {
+                $order->order_type = 'Pickup';
+            } elseif ($order->arrived_driver_id) {
+                $order->order_type = 'Delivery';
+            } else {
+                $order->order_type = null;
+            }
+            return $order;
+        });
 
         return response()->json([
             'status' => true,
             'status_type' => $status,
+            'percel_type' => $percelType,
+            'date' => $date,
+            'search' => $search,
             'message' => 'Driver service orders fetched successfully.',
             'data' => $orders
         ]);
@@ -113,6 +140,15 @@ class ServiceOrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
         // Update the parcel details
+
+        if ($parcel->status == 3) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been picked up. Status update not allowed.',
+            ], 400);
+        }
+
+
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 3,
@@ -148,6 +184,16 @@ class ServiceOrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
         // Update the parcel details
+
+        if ($parcel->status == 10) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been delivered. Status update not allowed.',
+            ], 400);
+        }
+
+
+
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 10,
@@ -183,6 +229,13 @@ class ServiceOrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
         // Update the parcel details
+        if ($parcel->status == 11) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been marked as delivered. Status update not allowed.',
+            ], 400);
+        }
+
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 11,
@@ -218,6 +271,15 @@ class ServiceOrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
         // Update the parcel details
+
+        if ($parcel->status == 14) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been canceled. Status update not allowed.',
+            ], 400);
+        }
+
+
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 14,
@@ -254,6 +316,14 @@ class ServiceOrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
         // Update the parcel details
+
+        if ($parcel->status == 23) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been rescheduled. Status update not allowed.',
+            ], 400);
+        }
+
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 23,
