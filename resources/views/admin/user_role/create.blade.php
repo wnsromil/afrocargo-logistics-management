@@ -10,7 +10,7 @@
     <form action="{{ route('admin.user_role.index') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <div class="form-group-customer customer-additional-form">
+        <div class="form-group-customer customer-additional-form responsiveness">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -65,22 +65,22 @@
                             <span class="checkmark check-color check-size"></span>
                             [Voice guid entities]
                         </label>
-                        <div class="d-flex mt-1">
-                            <div class="checkboxlable bg-color  ms-1">
+                        <div class="row mt-1">
+                            <div class="col-auto checkboxlable bg-color  ms-1">
                                 <label class="custom_check primary font13 fw_500">
                                     <input type="checkbox" class="child-checkbox d_none" name="invoice">
                                     <span class="checkmark check-size"></span>
                                     Create new voice guide entity
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-3">
+                            <div class="col-auto checkboxlable bg-color  ms-3">
                                 <label class="custom_check primary font13 fw_500">
                                     <input type="checkbox" class="child-checkbox d_none" name="payment">
                                     <span class="checkmark check-size"></span>
                                     Delete voice guide entity
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-3">
+                            <div class="col-auto checkboxlable bg-color  ms-3">
                                 <label class="custom_check primary font13 fw_500">
                                     <input type="checkbox" class="child-checkbox d_none" name="expenses">
                                     <span class="checkmark check-size"></span>
@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="col-md-12 mt-2 ps-3">
-                    <label class="custom_check primary col3a fs_12-25 fw_500 mb-1">
+                    <label class="custom_check primary col3a  fw_500 mb-1">
                         <input type="checkbox" class="grand-checkbox d_none" name="accountingRport">
                         <span class="checkmark check-color check-size"></span>
                         Accounting Report
@@ -107,43 +107,43 @@
                                     New End Of The Day Reports
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="invoice">
                                         <span class="checkmark check-size"></span>
                                         Invoice
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="payment">
                                         <span class="checkmark check-size"></span>
                                         Payment
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="invoice">
                                         <span class="checkmark check-size"></span>
                                         Supply Invoice
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="expenses">
                                         <span class="checkmark check-size"></span>
                                         Expenses
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="invoice">
                                         <span class="checkmark check-size"></span>
                                         Void Payments
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintReport">
                                         <span class="checkmark check-size"></span>
@@ -163,29 +163,29 @@
                                     Invoice Report
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="printinvoiceReport">
                                         <span class="checkmark check-size"></span>
                                         Print Invoice Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintInvoice">
                                         <span class="checkmark check-size"></span>
                                         Print Invoice
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_description">
                                         <span class="checkmark check-size"></span>
                                         Print Description
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintReport">
                                         <span class="checkmark check-size"></span>
@@ -205,22 +205,22 @@
                                     Container Cash Report
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="printinvoiceReport">
                                         <span class="checkmark check-size"></span>
                                         Print Invoice Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintInvoice">
                                         <span class="checkmark check-size"></span>
                                         Print Invoice
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintReport">
                                         <span class="checkmark check-size"></span>
@@ -240,22 +240,22 @@
                                     Cash Received Report
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="printinvoiceReport">
                                         <span class="checkmark check-size"></span>
                                         Print Cash Received Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintInvoice">
                                         <span class="checkmark check-size"></span>
                                         Print Cash Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="PrintReport">
                                         <span class="checkmark check-size"></span>
@@ -268,7 +268,7 @@
                 </div>
 
                 <div class="col-md-12 mt-4 ps-3">
-                    <label class="custom_check primary col3a mb-2 fs_12-25 fw_500">
+                    <label class="custom_check primary col3a mb-2  fw_500">
                         <input type="checkbox" class="grand-checkbox d_none" name="Administration">
                         <span class="checkmark check-color check-size"></span>
                         Administration
@@ -294,29 +294,29 @@
                                     Languages
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="changingText">
                                         <span class="checkmark check-size"></span>
                                         Changing Text
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="newLang">
                                         <span class="checkmark check-size"></span>
                                         Creating New Language
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="deleteLang">
                                         <span class="checkmark check-size"></span>
                                         Deleting Language
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="editLang">
                                         <span class="checkmark check-size"></span>
@@ -336,22 +336,22 @@
                                     Organization Units
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="managing_manager">
                                         <span class="checkmark check-size"></span>
                                         Managing Manager
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="managingTree">
                                         <span class="checkmark check-size"></span>
                                         Managing Organization Tree
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="managing_roles">
                                         <span class="checkmark check-size"></span>
@@ -371,22 +371,22 @@
                                     Roles
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Creatingnewrole">
                                         <span class="checkmark check-size"></span>
                                         Creating new role
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Deletingrole">
                                         <span class="checkmark check-size"></span>
                                         Deleting role
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Editingrole">
                                         <span class="checkmark check-size"></span>
@@ -430,43 +430,43 @@
                                     Users
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Changingpermissions">
                                         <span class="checkmark check-size"></span>
                                         Changing permissions
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Creatingnewuser">
                                         <span class="checkmark check-size"></span>
                                         Creating new user
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Deletinguser">
                                         <span class="checkmark check-size"></span>
                                         Deleting user
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="Editinguser">
                                         <span class="checkmark check-size"></span>
                                         Editing user
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="login_users">
                                         <span class="checkmark check-size"></span>
                                         Login For Users
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="blank_grid">
                                         <span class="checkmark check-size"></span>
@@ -497,22 +497,22 @@
                         <span class="checkmark check-color check-size"></span>
                         Agents
                     </label>
-                    <div class="d-flex mt-1">
-                        <div class="checkboxlable bg-color  ms-1">
+                    <div class="row mt-1">
+                        <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_agent">
                                 <span class="checkmark check-size"></span>
                                 Add New Agent
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="delete_agent">
                                 <span class="checkmark check-size"></span>
                                 Delete Agent
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="edit_agent">
                                 <span class="checkmark check-size"></span>
@@ -528,22 +528,22 @@
                         <span class="checkmark check-color check-size"></span>
                         Autocalls
                     </label>
-                    <div class="d-flex mt-1">
-                        <div class="checkboxlable bg-color  ms-1">
+                    <div class="row mt-1">
+                        <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_autocall">
                                 <span class="checkmark check-size"></span>
                                 Create New Autocall
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="delete_autocall">
                                 <span class="checkmark check-size"></span>
                                 Delete Autocall
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="edit_autocall">
                                 <span class="checkmark check-size"></span>
@@ -559,22 +559,22 @@
                         <span class="checkmark check-color check-size"></span>
                         Bill Of Landing Details
                     </label>
-                    <div class="d-flex mt-1">
-                        <div class="checkboxlable bg-color  ms-1">
+                    <div class="row mt-1">
+                        <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_landing_detail">
                                 <span class="checkmark check-size"></span>
                                 Create New Bill Of Landing Detail
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="delete_landing_detail">
                                 <span class="checkmark check-size"></span>
                                 Delete Bill Of Landing Detail
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="edit_landing_detail">
                                 <span class="checkmark check-size"></span>
@@ -590,22 +590,22 @@
                         <span class="checkmark check-color check-size"></span>
                         Bill Of Landing Entities
                     </label>
-                    <div class="d-flex mt-1">
-                        <div class="checkboxlable bg-color  ms-1">
+                    <div class="row mt-1">
+                        <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_landing_entity">
                                 <span class="checkmark check-size"></span>
                                 Create New Bill Of Landing Entity
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="delete_landing_entity">
                                 <span class="checkmark check-size"></span>
                                 Delete Bill Of Landing Entity
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="edit_landing_entity">
                                 <span class="checkmark check-size"></span>
@@ -621,22 +621,22 @@
                         <span class="checkmark check-color check-size"></span>
                         Branches
                     </label>
-                    <div class="d-flex mt-1">
-                        <div class="checkboxlable bg-color  ms-1">
+                    <div class="row mt-1">
+                        <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_branch">
                                 <span class="checkmark check-size"></span>
                                 Create New Branch
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="delete_branch">
                                 <span class="checkmark check-size"></span>
                                 Delete Branch
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="edit_branch">
                                 <span class="checkmark check-size"></span>
@@ -652,7 +652,7 @@
                         <span class="checkmark check-color check-size"></span>
                         Claims
                     </label>
-                    <div class="d-flex mt-1">
+                    <div class="row mt-1">
                         <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="AddnewClaim">
@@ -691,7 +691,7 @@
                         <span class="checkmark check-color check-size"></span>
                         Container
                     </label>
-                    <div class="d-flex mt-1">
+                    <div class="row mt-1">
                         <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_container">
@@ -736,7 +736,7 @@
                         <span class="checkmark check-color check-size"></span>
                         Container_Expenses
                     </label>
-                    <div class="d-flex mt-1">
+                    <div class="row mt-1">
                         <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_container_expense">
@@ -767,7 +767,7 @@
                         <span class="checkmark check-color check-size"></span>
                         Container Tracking Reports
                     </label>
-                    <div class="d-flex mt-1">
+                    <div class="row mt-1">
                         <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_tracking_report">
@@ -857,22 +857,22 @@
                         <span class="checkmark check-color check-size"></span>
                         Customer Pickup
                     </label>
-                    <div class="d-flex mt-1">
-                        <div class="checkboxlable bg-color  ms-1">
+                    <div class="row mt-1">
+                        <div class="col-auto checkboxlable bg-color  ms-1">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="add_customer_pickup">
                                 <span class="checkmark check-size"></span>
                                 Create New Customer Pickup
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="delete_customer_pickup">
                                 <span class="checkmark check-size"></span>
                                 Delete Customer Pickup
                             </label>
                         </div>
-                        <div class="checkboxlable bg-color  ms-3">
+                        <div class="col-auto checkboxlable bg-color  ms-3">
                             <label class="custom_check primary font13 fw_500">
                                 <input type="checkbox" class="child-checkbox d_none" name="edit_customer_pickup">
                                 <span class="checkmark check-size"></span>
@@ -1038,7 +1038,7 @@
                 </div>
 
                 <div class="col-md-12 ms-3 mt-2 ps-0">
-                    <label class="custom_check primary col3a fw_500 mb-0 fs_12-25">
+                    <label class="custom_check primary col3a fw_500 mb-0 ">
                         <input type="checkbox" class="grand-checkbox d_none" name="ui_components">
                         <span class="checkmark check-color check-size"></span>
                         Demo UI Components
@@ -1202,7 +1202,7 @@
                 </div>
 
                 <div class="col-md-12 ms-3 mt-2 ps-0">
-                    <label class="custom_check primary col3a fw_500 mb-0 fs_12-25">
+                    <label class="custom_check primary col3a fw_500 font13 mb-0 ">
                         <input type="checkbox" class="grand-checkbox d_none" name="import_export">
                         <span class="checkmark check-color check-size"></span>
                         Import Export
@@ -1359,7 +1359,7 @@
                 </div>
 
                 <div class="col-md-12 ms-3 mt-2 ps-0">
-                    <label class="custom_check primary col3a fw_500 mb-0 fs_12-25">
+                    <label class="custom_check primary col3a font13 fw_500 mb-0 ">
                         <input type="checkbox" class="grand-checkbox d_none" name="unlock_lock_invoioces">
                         <span class="checkmark check-color check-size"></span>
                         IsUnlock Locked Invoices
@@ -2352,7 +2352,7 @@
                 </div>
 
                 <div class="col-md-12 mt-4 ps-3">
-                    <label class="custom_check primary col3a mb-2 fs_12-25 fw_500">
+                    <label class="custom_check primary col3a mb-2  fw_500">
                         <input type="checkbox" class="grand-checkbox d_none" name="Administration">
                         <span class="checkmark check-color check-size"></span>
                         Misc
@@ -2378,15 +2378,15 @@
                                     My Add Ons
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_addon">
                                         <span class="checkmark check-size"></span>
                                         Print Addon
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="cancelAutoRenewal">
                                         <span class="checkmark check-size"></span>
@@ -2406,8 +2406,8 @@
                                     Purchase Add ons
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="pay_addon2">
                                         <span class="checkmark check-size"></span>
@@ -2427,22 +2427,22 @@
                                     My Cards
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="createCard">
                                         <span class="checkmark check-size"></span>
                                         Creat Card
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="editCard">
                                         <span class="checkmark check-size"></span>
                                         Edit Card
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="deleteCard">
                                         <span class="checkmark check-size"></span>
@@ -2463,15 +2463,15 @@
                                     State Masters
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_state_tc">
                                         <span class="checkmark check-size"></span>
                                         Add State TC
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_state_tc">
                                         <span class="checkmark check-size"></span>
@@ -2491,15 +2491,15 @@
                                     City Masters
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_city_tc">
                                         <span class="checkmark check-size"></span>
                                         Add City TC
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_city_tc">
                                         <span class="checkmark check-size"></span>
@@ -2520,15 +2520,15 @@
                                     Ship To Province Masters
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_province_tc">
                                         <span class="checkmark check-size"></span>
                                         Add Province TC
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_province_tc">
                                         <span class="checkmark check-size"></span>
@@ -2550,15 +2550,15 @@
                                     Ship To Municipal Masters
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_municipal_tc">
                                         <span class="checkmark check-size"></span>
                                         Add Municipal TC
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_municipal_tc">
                                         <span class="checkmark check-size"></span>
@@ -2579,15 +2579,15 @@
                                     Ship To Sector Masters
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_sector_tc">
                                         <span class="checkmark check-size"></span>
                                         Add Sector TC
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_sector_tc">
                                         <span class="checkmark check-size"></span>
@@ -2608,22 +2608,22 @@
                                     Sales Report
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="user_srepo">
                                         <span class="checkmark check-size"></span>
                                         User Sales Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="customer_srepo">
                                         <span class="checkmark check-size"></span>
                                         Customer Sales Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="shipTo_srepo">
                                         <span class="checkmark check-size"></span>
@@ -2643,8 +2643,8 @@
                                     Package Master
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="create_package_master">
@@ -2652,14 +2652,14 @@
                                         Create Package Master
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_package_master">
                                         <span class="checkmark check-size"></span>
                                         Edit Package Master
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="delete_package_master">
@@ -2681,22 +2681,22 @@
                                     Warehouse Package Tracking
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="update_container_pt">
                                         <span class="checkmark check-size"></span>
                                         Update Container Package Tracking
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_warehouse_pt">
                                         <span class="checkmark check-size"></span>
                                         Edit Package Tracking
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_warehouse_pt">
                                         <span class="checkmark check-size"></span>
@@ -2717,8 +2717,8 @@
                                     Warehouse Package Errors
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="clear_package_error">
                                         <span class="checkmark check-size"></span>
@@ -2738,29 +2738,29 @@
                                     Warehouse Package Distribution
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_pdist">
                                         <span class="checkmark check-size"></span>
                                         Print Package Distribution
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color ms-3">
+                                <div class="col-auto checkboxlable bg-color ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="verify_pdist">
                                         <span class="checkmark check-size"></span>
                                         Verify Complete Package Distribution
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_pdist">
                                         <span class="checkmark check-size"></span>
                                         Edit Package Distribution
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_pdist">
                                         <span class="checkmark check-size"></span>
@@ -2792,50 +2792,50 @@
                                     Warehouse Prepare For Deliery
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_delivery2">
                                         <span class="checkmark check-size"></span>
                                         Edit Prepare For Delivery
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_delivery">
                                         <span class="checkmark check-size"></span>
                                         Delete Prepare For Delivery
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="missing_packs">
                                         <span class="checkmark check-size"></span>
                                         Get Missing packages
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="batch2">
                                         <span class="checkmark check-size"></span>
                                         Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="addto_batch2">
                                         <span class="checkmark check-size"></span>
                                         Add To Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_batch2">
                                         <span class="checkmark check-size"></span>
                                         Create Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="visible_driver_batch">
@@ -2843,49 +2843,49 @@
                                         Visible To Driver Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_batch">
                                         <span class="checkmark check-size"></span>
                                         Edit Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_batch">
                                         <span class="checkmark check-size"></span>
                                         Delete Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="change_driver_batch">
                                         <span class="checkmark check-size"></span>
                                         Change Driver Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_batch_packs">
                                         <span class="checkmark check-size"></span>
                                         Delete Batch Packages
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_report2">
                                         <span class="checkmark check-size"></span>
                                         Print Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_invoice">
                                         <span class="checkmark check-size"></span>
                                         Print Invoice
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_province">
                                         <span class="checkmark check-size"></span>
@@ -2905,22 +2905,22 @@
                                     Warehouse Inventory
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_batch3">
                                         <span class="checkmark check-size"></span>
                                         Create Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="batch3">
                                         <span class="checkmark check-size"></span>
                                         Batch
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="batch_packs3">
                                         <span class="checkmark check-size"></span>
@@ -2940,22 +2940,22 @@
                                     Exchange Rate
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_ex-rate">
                                         <span class="checkmark check-size"></span>
                                         Create Exchange Rate
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_ex-rate">
                                         <span class="checkmark check-size"></span>
                                         Edit Exchange Rate
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_ex-rate">
                                         <span class="checkmark check-size"></span>
@@ -2975,22 +2975,22 @@
                                     Warehouse Location Master
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_wrh_lm">
                                         <span class="checkmark check-size"></span>
                                         Create Warehouse Location Master
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_wrh_lm">
                                         <span class="checkmark check-size"></span>
                                         Edit Warehouse Location Master
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_wrh_lm">
                                         <span class="checkmark check-size"></span>
@@ -3010,22 +3010,22 @@
                                     PickUp Address
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_pickup_add">
                                         <span class="checkmark check-size"></span>
                                         Create PickUp Address
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_pickup_add">
                                         <span class="checkmark check-size"></span>
                                         Edit PickUp Address
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_pickup_add">
                                         <span class="checkmark check-size"></span>
@@ -3045,57 +3045,57 @@
                                     Tenant Users
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_tenant_user">
                                         <span class="checkmark check-size"></span>
                                         Create Tenant Users
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_tenant_user">
                                         <span class="checkmark check-size"></span>
                                         Edit Tenant Users
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_tenant_user">
                                         <span class="checkmark check-size"></span>
                                         Delete Tenant Users
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="duplicate_user">
                                         <span class="checkmark check-size"></span>
                                         Duplicate Users Created
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="unlocked_user">
                                         <span class="checkmark check-size"></span>
                                         Lock Unlock User
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="user_login">
                                         <span class="checkmark check-size"></span>
                                         Login User
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="update_role">
                                         <span class="checkmark check-size"></span>
                                         Update Role Users
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="update_shift">
                                         <span class="checkmark check-size"></span>
@@ -3134,8 +3134,8 @@
                                     Inventory Purchase Item
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="create_inventory_item">
@@ -3143,7 +3143,7 @@
                                         Create Inventory Purchase Item
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="delete_inventory_item">
@@ -3164,22 +3164,22 @@
                                     Roles & Permission
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="create_role_2">
                                         <span class="checkmark check-size"></span>
                                         Create Role
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_role_2">
                                         <span class="checkmark check-size"></span>
                                         Edit Role
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_role_2">
                                         <span class="checkmark check-size"></span>
@@ -3199,22 +3199,22 @@
                                     Driver Inventory
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_dri_invent">
                                         <span class="checkmark check-size"></span>
                                         Add Driver Inventory
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_dri_invent">
                                         <span class="checkmark check-size"></span>
                                         Delete Driver Inventory
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="send_pdf">
                                         <span class="checkmark check-size"></span>
@@ -3234,22 +3234,22 @@
                                     Custom Report
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Add Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Edit Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="edit_custRepo_container">
@@ -3257,84 +3257,84 @@
                                         Edit Custom Report Container
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Delete Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="custRepo_print">
                                         <span class="checkmark check-size"></span>
                                         Print Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="exp_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Expense Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="add_exp_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Add Expense Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_exp_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Edit Expense Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_exp_custRepo">
                                         <span class="checkmark check-size"></span>
                                         Delete Expense Custom Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="edit_cust_repo">
                                         <span class="checkmark check-size"></span>
                                         Edit Custom Report Package
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="delete_cust_repo">
                                         <span class="checkmark check-size"></span>
                                         Delete Custom Report Package
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="item_repo_print">
                                         <span class="checkmark check-size"></span>
                                         Print Item Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="status_report_print">
                                         <span class="checkmark check-size"></span>
                                         Print Container Status Report
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="verify_licen">
                                         <span class="checkmark check-size"></span>
                                         Verify License
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="edit_custLicid_verify">
@@ -3342,7 +3342,7 @@
                                         Edit CustLicId Verify License
                                     </label>
                                 </div>
-                                <div class="checkboxlable bg-color  ms-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none"
                                             name="edit_shiptoLic_verify">
@@ -3363,8 +3363,8 @@
                                     Container Compare Report
                                 </label>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="checkboxlable bg-color  ms-3">
+                            <div class="row mt-3">
+                                <div class="col-auto checkboxlable bg-color  ms-3">
                                     <label class="custom_check primary font13 fw_500">
                                         <input type="checkbox" class="child-checkbox d_none" name="print_comp_report">
                                         <span class="checkmark check-size"></span>
@@ -3456,6 +3456,5 @@
             });
         });
     </script>
-
 
 </x-app-layout>
