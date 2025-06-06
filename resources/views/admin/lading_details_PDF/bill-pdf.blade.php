@@ -9,18 +9,16 @@
 
     </x-slot>
 
-    <table style="width: 100%; color: black;">
+    <table style="width: 100%; max-width: 800px; margin: auto; color: black; border: 1px solid #000;">
         <tr>
-            <th colspan="2"
-                style="font-size: 20px; font-weight: semibold; background-color: #22392c; color: white; padding: 8px; text-align: center;">
+            <th colspan="2" style="font-size: 20px; font-weight: semibold; background-color: #203a5f; color: white; padding: 8px; text-align: center;">
                 Bill Of Lading</th>
         </tr>
         <tr>
             <td style="width: 50% !important; border: 1px solid #666; vertical-align: top;">
                 <table style="width: 100%; border-collapse: separate; border-spacing: 1px">
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; text-align: center; color: white; padding: 5px;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; text-align: center; color: white; padding: 5px;">
                             Shipper/Exporter</th>
                     </tr>
                     <tr>
@@ -50,8 +48,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Consignee
                         </th>
                     </tr>
@@ -82,16 +79,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             NotifyParty</th>
                     </tr>
                     <tr>
                         <td style="height: 5px !important; border:1px solid black;"></td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Paier</th>
                     </tr>
                     <tr>
@@ -104,16 +99,14 @@
                                     <td style="width: 50%; border: 1px solid #666; vertical-align: top;">
                                         <table style="width: 100%;">
                                             <tr>
-                                                <th
-                                                    style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                                                <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px;">
                                                     Vessel - Voyage NO.</th>
                                             </tr>
                                             <tr>
                                                 <td style="height: 5px !important; border:1px solid black;"></td>
                                             </tr>
                                             <tr>
-                                                <th
-                                                    style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                                                <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px;">
                                                     Port Of Dischard</th>
                                             </tr>
                                             <tr>
@@ -124,16 +117,14 @@
                                     <td style="width: 50%; border: 1px solid #666; vertical-align: top;">
                                         <table style="width: 100%;">
                                             <tr>
-                                                <th
-                                                    style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                                                <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px;">
                                                     Port Of Loading</th>
                                             </tr>
                                             <tr>
                                                 <td style="height: 5px !important; border:1px solid black;"></td>
                                             </tr>
                                             <tr>
-                                                <th
-                                                    style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                                                <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px;">
                                                     Place Of Delivery</th>
                                             </tr>
                                             <tr>
@@ -151,8 +142,7 @@
             <td style="width: 50% !important; border: 1px solid #666; vertical-align: top;">
                 <table style="width: 100%; border-collapse: separate; border-spacing: 1px">
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Document No
                         </th>
                     </tr>
@@ -160,8 +150,7 @@
                         <td style="height:39px !important; border: 1px solid black"></td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Expert
                             Referent</th>
                     </tr>
@@ -169,31 +158,27 @@
                         <td style="height:39px !important; border: 1px solid black"></td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Forwarding Agent-Reference</th>
                     </tr>
                     <tr>
                         <td style="height:39px !important; border: 1px solid black"></td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Point and Country Of origin</th>
                     </tr>
                     <tr>
                         <td style="height:39px !important; border: 1px solid black"></td>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Domestic
                             Routing/Export Instruction</th>
                     </tr>
                     <td style="height: 5px !important; border:1px solid black;"></td>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; text-align: center;">
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; text-align: center;">
                             Delivery Agent
                         </th>
                     </tr>
@@ -211,33 +196,28 @@
             <td colspan="2" style="border: 1px solid #000;">
                 <table style="width: 100%; border-collapse: collapse; margin-bottom:2px;">
                     <tr>
-                        <th colspan="5"
-                            style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                        <th colspan="5" style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; border-bottom: 2px solid white; padding: 5px;">
                             Particulars Furnished by Shipper</th>
                     </tr>
                     <tr>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; border-right: 2px solid white;">
-                            Make and
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; border-right: 2px solid white;">Make and
                             Number</th>
-                        <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px;">No of
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px;">No of
                             packages</th>
-                        <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px;">Description
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; border-right: 2px solid white; border-left: 2px solid white;">Description
                             of Packages And
                             Goods</th>
-                        <th style="font-size: 18px; background-color: #22392c; color: white; padding: 5px;">Gross Weight
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px;">Gross Weight
                         </th>
-                        <th
-                            style="font-size: 18px; background-color: #22392c; color: white; padding: 5px; border-left: 2px solid white;">
-                            Measurement
+                        <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; padding: 5px; border-left: 2px solid white;">Measurement
                         </th>
                     </tr>
                     <tr>
-                        <td style="border: 2px solid black; height: 20px;"></td>
-                        <td style="border: 2px solid black;"></td>
-                        <td style="border: 2px solid black;"></td>
-                        <td style="border: 2px solid black;">NA</td>
-                        <td style="border: 2px solid black;">NA</td>
+                        <td style="border: 2px solid black; padding-left: 5px; height: 20px;"></td>
+                        <td style="border: 2px solid black; padding-left: 5px;"></td>
+                        <td style="border: 2px solid black; padding-left: 5px;"></td>
+                        <td style="border: 2px solid black; padding-left: 5px;">NA</td>
+                        <td style="border: 2px solid black; padding-left: 5px;">NA</td>
                     </tr>
                 </table>
             </td>
@@ -245,18 +225,16 @@
 
         <tr>
             <td colspan="2" style="border-bottom: 3px solid black;">
-                <table style="width: 100%; margin: 0px 2px;">
+                <table style="width: 100%;">
                     <tr style="border-bottom: 10px;">
-                        <th colspan="2"
-                            style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                        <th colspan="2" style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px;">
                             Company</th>
                     </tr>
                     <tr>
                         <td style="width: 50%; vertical-align: top;">
                             <table style="width: 100%; margin-top: 2px;">
                                 <tr>
-                                    <th
-                                        style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                                    <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px;">
                                         Delivery BY</th>
                                 </tr>
                                 <tr>
@@ -279,8 +257,7 @@
                         <td style="width: 50%; vertical-align: top;">
                             <table style="width: 100%; margin-top: 2px;">
                                 <tr>
-                                    <th
-                                        style="font-size: 18px; background-color: #22392c; color: white; text-align: center; padding: 5px;">
+                                    <th style="font-size: 14px; font-weight: 500; background-color: #203a5f; color: white; text-align: center; padding: 5px; border-left: 1px solid white;">
                                         Comment</th>
                                 </tr>
                                 <tr>

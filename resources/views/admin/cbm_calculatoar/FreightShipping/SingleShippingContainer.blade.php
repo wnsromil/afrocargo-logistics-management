@@ -1,203 +1,225 @@
 <x-app-layout>
+    @section('style')
+    <style>
+        .page-wrapper .content {
+            padding: 20px 15px;
+        }
+
+    </style>
+    @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Container Wise Freight') }}
+            {{ __('CBM Calculator') }}
         </h2>
     </x-slot>
 
-    <div class="container">
-        <h6 class="fw-light">Single Shipping Container Loading Calculator</h6>
-        <form>
+    <x-slot name="cardTitle">
+        <p class="head">Single Shipping Container</p>
+    </x-slot>
+
+    <form>
+        <div class="row">
+            <div class="col-12">
+                <p class="fs_18 col3a">Single Shipping Container Loading Calculator</p>
+            </div>
             <div class="col-md-9 col-lg-9 col-sm-9">
-                <div class="row g-3 mt-3">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade ">Calculation #:</label>
+                <div class="row g-3 mt-0">
+                    <div class="col-md-6">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Calculation #</label>
+                            <input type="text" id="exampleCalculation" value="tss/1" class="form-control inp">
+                        </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <input type="text" id="exampleCalculation" value="tss/1" class="form-control rounded-0">
-                    </div>
-
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade ">Calculation
-                            Date:</label>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <input type="date" id="exampleCalculationDate" value="30/Jan/2021"
-                            class="form-control rounded-0">
-                    </div>
-                </div>
-
-                <div class="row g-3 mt-1">
-                    <div class="col-md-2 col-sm-2 col-lg-2">
-                        <label for="exampleCustomer" class="col-form-label text-dark-shade">Customer:</label>
-                    </div>
-
-                    <div class="col-md-10 col-lg-10 col-sm-12">
-                        <input type="text" id="exampleCustomer" value="tss" class="form-control rounded-0">
+                    <div class="col-md-6">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Calculation
+                                Date</label>
+                            <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                <input type="text" name="license_expiry_date" class="btn-filters form-cs inp " placeholder="mm-dd-yy" />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row g-3 mt-1">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade ">Container:</label>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Customer</label>
+                            <input type="text" id="exampleCalculation" placeholder="Enter Customer Name" class="form-control inp">
+                        </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <!-- <input type="text" id="exampleCalculation" class="form-control rounded-0"> -->
-                        <select class="form-select rounded-0">
-                            <option value="">Select Container</option>
-                            <option selected value="20_feet">Standard 20 Feet</option>
-                            <option value="40_feet">Standard 40 Feet</option>
-                            <option value="HC_40_feet">High Cube 40 Feet</option>
-                            <option value="U_20_feet">Upgraded 20 Feet</option>
-                            <option value="R_20_feet">Reefer 20 Feet</option>
-                            <option value="R_40_feet">Reefer 40 Feet</option>
-                            <option value="HR_40_feet">Reefer 40 Feet High Cube</option>
+                    <div class="col-md-6">
+                        <div class="input-block mb-2 border-0">
+                            <label for="exampleCalculation" class="foncolor">Container</label>
+                            <select class="js-example-basic-single select2 ">
+                                <option selected="selected" disabled hidden>Select Container</option>
+                                <option value="">Select Container</option>
+                                <option selected value="20_feet">Standard 20 Feet</option>
+                                <option value="40_feet">Standard 40 Feet</option>
+                                <option value="HC_40_feet">High Cube 40 Feet</option>
+                                <option value="U_20_feet">Upgraded 20 Feet</option>
+                                <option value="R_20_feet">Reefer 20 Feet</option>
+                                <option value="R_40_feet">Reefer 40 Feet</option>
+                                <option value="HR_40_feet">Reefer 40 Feet High Cube</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Dimension</label>
+                            <input type="text" id="exampleCalculation" placeholder="Enter Customer Name" class="form-control inp" value="590 * 235 * 239 cm" readonly>
+                        </div>
+                    </div>
 
-                        </select>
-                    </div>
-
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0">
-                        <label for="exampleDimention" class="col-form-label text-dark-shade ">Dimension:</label>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <input type="text" id="exampleDimention" class="form-control rounded-0"
-                            value="590 * 235 * 239 cm" readonly>
-                    </div>
                 </div>
 
                 <p class="profileUpdateFont fw-semibold text-dark-shade my-3">For Per-Unit Freight Calculation:</p>
-                <div class="row g-3">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade">From Country:</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-block mb-2 border-0">
+                            <label for="exampleCalculation" class="foncolor">From Country</label>
+                            <select class="js-example-basic-single select2 ">
+                                <option selected="selected" disabled hidden>Select Country</option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Africa">Africa</option>
+                                <option value="India">India</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <select class="form-select rounded-0">
-                            <option selected value="india">India</option>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="input-block mb-2 border-0">
+                            <label for="exampleCalculation" class="foncolor">From Port</label>
+                            <select class="js-example-basic-single select2 ">
+                                <option selected="selected" disabled hidden>Select Port</option>
+                                <option value="Aberdeen, Washington">Aberdeen, Washington</option>
+                                <option value="Atlanta, Georgia">Atlanta, Georgia</option>
+                                <option value="Baltimore, Maryland">Baltimore, Maryland</option>
+                                <option value="Beaumont, Texas">Beaumont, Texas</option>
+                            </select>
+                        </div>
                     </div>
-
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade">From Port:</label>
+                    <div class="col-md-6">
+                        <div class="input-block mb-2 border-0">
+                            <label for="exampleCalculation" class="foncolor">To Country</label>
+                            <select class="js-example-basic-single select2 ">
+                                <option selected="selected" disabled hidden>Select Country</option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Africa">Africa</option>
+                                <option value="India">India</option>
+                            </select>
+                        </div>
                     </div>
-
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <select class="form-select rounded-0">
-                            <option selected value="cochin">Cochin</option>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="input-block mb-2 border-0">
+                            <label for="exampleCalculation" class="foncolor">To Port</label>
+                            <select class="js-example-basic-single select2 ">
+                                <option selected="selected" disabled hidden>Select Port</option>
+                                <option value="Aberdeen, Washington">Aberdeen, Washington</option>
+                                <option value="Atlanta, Georgia">Atlanta, Georgia</option>
+                                <option value="Baltimore, Maryland">Baltimore, Maryland</option>
+                                <option value="Beaumont, Texas">Beaumont, Texas</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="row g-3 mt-1">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade">To Country:</label>
+                    <div class="col-md-6">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Container's Freight</label>
+                            <input type="text" id="exampleCalculation" placeholder="" class="form-control inp">
+                        </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <select class="form-select rounded-0">
-                            <option selected value="us">United States</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade">To Port:</label>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <select class="form-select rounded-0">
-                            <option selected value="texas">Houston, Texas</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row g-3 mt-2">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label class="form-label text-dark-shade">Container's Freight</label>
-                    </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <input type="text" id="exampleDimention" class="form-control rounded-0" value="1200.0000">
-                    </div>
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label class="form-label text-dark-shade">Currency</label>
-                    </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4">
-                        <select class="form-select rounded-0">
-                            <option selected value="usd">USD</option>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="input-block border-0 mb-2">
+                            <label for="exampleCalculation" class="foncolor">Currency</label>
+                            <select class="form-select select2 inp form-select-sm" id="freight_currency">
+                                <option selected hidden disabled></option>
+                                <option value="USD">USD</option>
+                                <option value="UAH">UAH</option>
+                                <option value="UGX">UGX</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-10 col-lg-10 col-sm-10">
+            <div class="col-md-11 col-lg-11 col-sm-12">
                 <p class="profileUpdateFont fw-semibold text-dark-shade my-2">Used Container Weight & Volume:</p>
 
-                <div class="row g-3">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade">Volumn (cu. mt):</label>
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-12">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Volumn (cu. mt)</label>
+                            <input type="text" id="exampleCalculation" value="0/33.2000" class="form-control inp" readonly>
+                        </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-12 ps-0 input-size">
-                        <input type="text" id="exampleCalculation" value="0/33.2000" class="form-control rounded-0"
-                            readonly>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="row gx-2 input-block mb-2">
+                            <div class="col-12">
+                                <label for="exampleCalculation" class="foncolor">Used Volume</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="progress inp">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="">
+                                    <input type="text" id="progress-input" class="form-control inp" value="40%" readonly>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade">Used Volumn:</label>
+                    <div class="col-lg-5 col-md-5 col-sm-12">
+                        <div class="input-block mb-2">
+                            <label for="exampleCalculation" class="foncolor">Weight (Kg)</label>
+                            <input type="text" id="exampleCalculation" value="0/33.2000" class="form-control inp" readonly>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-sm-12 col-lg-2 px-0 input-size">
-                        <input type="text" id="exampleCalculationDate" value="" class="form-control rounded-0" readonly>
-                        </label>
-                    </div>
-
-                    <div class="col-md-1 col-lg-1 col-sm-1 px-1">
-                        <input type="text" id="exampleCalculationDate" value="0%" class="form-control rounded-0"
-                            readonly>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="row gx-2 input-block mb-2">
+                            <div class="col-12">
+                                <label for="exampleCalculation" class="foncolor">Used Weight</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="progress inp">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="">
+                                    <input type="text" id="progress-input" class="form-control inp" value="25%" readonly>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row g-3 mt-1">
-                    <div class="col-md-2 col-sm-2 col-lg-2 pe-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade ">Weight (Kg):</label>
-                    </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4 ps-0 input-size">
-                        <input type="text" id="exampleCalculation" value="0/21770.00" class="form-control rounded-0 "
-                            readonly>
-                    </div>
-
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0">
-                        <label for="exampleCalculation" class="col-form-label text-dark-shade ">Used Weight:</label>
-                    </div>
-                    <div class="col-md-2 col-sm-2 col-lg-2 px-0 input-size">
-                        <input type="text" id="exampleCalculationDate" value="" class="form-control rounded-0" readonly>
-                        </label>
-                    </div>
-
-                    <div class="col-md-1 col-lg-1 col-sm-1 px-1">
-                        <input type="text" id="exampleCalculationDate" value="0%" class="form-control rounded-0"
-                            readonly>
-                    </div>
-                </div>
             </div>
 
 
-            <div class="table-responsive mt-3">
+            <div class="table-responsive addProductsTables mt-3 px-0">
                 <table class="table">
                     <thead>
-                        <th class="border border-dark-subtle fw-normal text-start p-5 py-4 ps-1">#</th>
-                        <th class="border border-dark-subtle fw-normal text-start p-5 py-4 ps-1">Product</th>
-                        <th class="border border-dark-subtle fw-normal text-start p-5 py-4 ps-1">Description</th>
-                        <th class="border border-dark-subtle fw-normal text-start p-2 py-4 ps-1">Quantity</th>
-                        <th class="border border-dark-subtle fw-normal text-start p-2 py-4 ps-1">Qty/Pack</th>
-                        <th class="border border-dark-subtle fw-normal text-start p-2 py-4 ps-1">No. of Cartons</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-4 py-4 pe-1">Dimentions</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">One CBM</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">All CBM</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">Product Weight</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">Packging Weight</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">Weight</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">All Weight</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1">Per Unit Freight</th>
-                        <th class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1 ">Unit Freight By Volume
+                        <th class="border border-dark-subtle fw-normal text-start">#</th>
+                        <th class="border border-dark-subtle fw-normal text-start">Product</th>
+                        <th style="max-width: 76px;" class="border border-dark-subtle fw-normal text-start">Description</th>
+                        <th class="border border-dark-subtle fw-normal text-start">Quantity</th>
+                        <th style="max-width: 65px;" class="border border-dark-subtle fw-normal text-start">Qty/Pack</th>
+                        <th class="border border-dark-subtle fw-normal text-start">No. of Cartons</th>
+                        <th style="max-width: 80px;" class="border border-dark-subtle fw-normal text-end">Dimentions</th>
+                        <th class="border border-dark-subtle fw-normal text-end">One CBM</th>
+                        <th class="border border-dark-subtle fw-normal text-end">All CBM</th>
+                        <th class="border border-dark-subtle fw-normal text-end">Product Weight</th>
+                        <th style="max-width: 65px;" class="border border-dark-subtle fw-normal text-end">Packging Weight</th>
+                        <th class="border border-dark-subtle fw-normal text-end">Weight</th>
+                        <th class="border border-dark-subtle fw-normal text-end">All Weight</th>
+                        <th class="border border-dark-subtle fw-normal text-end">Per Unit Freight</th>
+                        <th class="border border-dark-subtle fw-normal text-end ">Unit Freight By Volume
                         </th>
-                        <th
-                            class="border border-dark-subtle fw-normal text-end p-2 py-4 pe-1 bg-transparent table-last-column ">
+                        <th class="border border-dark-subtle fw-normal text-end bg-transparent table-last-column lastchildth">
                             Unit
                             Freight By
                             Weight</th>
@@ -205,167 +227,144 @@
 
                     <tbody id="update_data" class="border border-dark-subtle d-none">
                         <tr>
-                            <td colspan="6">
+                            <td colspan="8">
                                 <div class="my-2 row justify-content-between">
-                                    <label for="inputProduct"
-                                        class="col-sm-2 col-form-label fw-light font13">Product:</label>
+                                    <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Product</label>
                                     <div class="col-md-10 col-lg-10 col-sm-10 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
-                                    <label for="inputProduct"
-                                        class="col-sm-2 col-form-label fw-light font13">Description:</label>
+                                    <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Description</label>
                                     <div class="col-md-10 col-lg-10 col-sm-10 ps-4">
-                                        <textarea type="text" class="form-control rounded-0" id="inputProduct"
-                                            rows="4"></textarea>
+                                        <textarea type="text" class="form-control inp form-control-sm" id="inputProduct" rows="4"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="mb-2 row">
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Total
-                                        Quantity:</label>
+                                        Quantity</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
-                                    <label for="inputProduct"
-                                        class="col-sm-2 col-form-label fw-light font13">Qty/Pack:</label>
+                                    <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Qty/Pack</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
                                 <div class="mb-2 row">
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">
-                                        Dimensions in:</label>
+                                        Dimensions in</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
-                                    <label for="inputProduct"
-                                        class="col-sm-2 col-form-label fw-light font13">Length:</label>
+                                    <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Length</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
                                 <div class="mb-2 row">
-                                    <label for="inputProduct"
-                                        class="col-sm-2 col-form-label fw-light font13">Breadth:</label>
+                                    <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Breadth</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
-                                    <label for="inputProduct"
-                                        class="col-sm-2 col-form-label fw-light font13">Height:</label>
+                                    <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Height</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
                                 <div class="mb-2 row">
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Product
-                                        Weight:</label>
-                                    <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4">
-                                        <select class="form-select form-control-sm rounded-0">
-                                            <option vlaue=""></option>
+                                        Weight</label>
+                                    <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
+                                        <select class="form-select form-select-sm select2">
+                                            <option disabled hidden selected vlaue=""></option>
+                                            <option vlaue="Kg">Kg</option>
+                                            <option vlaue="G">G</option>
+                                            <option vlaue="Lbs">Lbs</option>
+                                            <option vlaue="Oz">Oz</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 col-lg-2 col-sm-6 mt-1 ps-1">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Packing
-                                        Weight:</label>
-                                    <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4">
-                                        <select class="form-select form-control-sm rounded-0">
-                                            <option vlaue=""></option>
+                                        Weight</label>
+                                    <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
+                                        <select class="form-select select2">
+                                            <option disabled hidden selected vlaue=""></option>
+                                            <option vlaue="Kg">Kg</option>
+                                            <option vlaue="G">G</option>
+                                            <option vlaue="Lbs">Lbs</option>
+                                            <option vlaue="Oz">Oz</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 col-lg-2 col-sm-6 mt-1 ps-1">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
                             </td>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <div class="my-1 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Total
-                                        Cartons:</label>
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
+                                        Cartons</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Single
-                                        CBM:</label>
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Single
+                                        CBM</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Total
-                                        CBM:</label>
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
+                                        CBM</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Net Weight
-                                        (kg.):</label>
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Net Weight
+                                        (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-2 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Gross
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Gross
                                         weight
-                                        (kg.):</label>
+                                        (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-2 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Total Net
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total Net
                                         weight
-                                        (kg.):</label>
+                                        (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
-                                    <label for="inputProduct"
-                                        class="col-md-4 col-lg-4 col-sm-4 col-form-label fw-light font13">Total
+                                    <label for="inputProduct" class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
                                         Gross
                                         weight (kg.):
                                     </label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control form-control-sm rounded-0"
-                                            id="inputProduct">
+                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
                                 <div class="my-1 row">
-                                    <button type="button" for="inputProduct" id="cancelUpdateBtn"
-                                        class="col-md-4 col-lg-4 col-sm-4 btn bg-transparent btn-text-color text-start btn-sm">Update
+                                    <button type="button" for="inputProduct" id="cancelUpdateBtn" class="col-md-4 col-lg-4 col-sm-4 btn bg-transparent btn-text-color text-start btn-sm">Update
                                         Cancel
                                     </button>
                                 </div>
@@ -373,11 +372,13 @@
                         </tr>
                     </tbody>
 
-                    <tbody id="product_data" class="border border-dark-subtle">
+                    <tbody id="product_data" class="border productData border-dark-subtle">
                         <tr>
-                            <td class="d-flex border-bottom border-dark-subtle text-middle fw-light">
-                                <a href="#" class="decoration-text pe-1">Edit</a>
-                                <a href="#" class="decoration-text ps-1 pt-1">Delete</a>
+                            <td class="border-bottom border-dark-subtle text-middle fw-light">
+                                <div class="d-block">
+                                    <a href="#" class="decoration-text pe-2">Edit</a>
+                                    <a href="#" class="decoration-text">Delete</a>
+                                </div>
                             </td>
                             <td class="border border-dark-subtle fw-light">Product 1</td>
                             <td class="border border-dark-subtle fw-light">Product 1 Description</td>
@@ -396,9 +397,8 @@
                             <td class="border border-dark-subtle text-end fw-light">0.3</td>
                         </tr>
                         <tr>
-                            <td>
-                                <button type="button" id="addProductBtn" for="inputProduct"
-                                    class="btn bg-transparent border-secondary rounded-0 text-dark btn-sm">Add
+                            <td colspan="4" class="py-2">
+                                <button type="button" id="addProductBtn" for="inputProduct" class="btn btn-primary">Add
                                     Product
                                 </button>
                             </td>
@@ -406,23 +406,38 @@
                     </tbody>
 
                 </table>
-                <button type="button" id="addProductBtn" for="inputProduct"
-                    class="btn bg-transparent border-secondary rounded-0 text-dark btn-sm mt-3">
-                    <img src="https://4.imimg.com/data4/WK/WC/MY-7572932/1.jpeg" alt="" class="img-size me-0">
-                    Print Calculation
-                </button>
+
 
             </div>
-        </form>
-    </div>
+            <div class="col-12">
+                <button type="button" id="addProductBtn" for="inputProduct" class="btn buttons btn-primary mt-3">
+                    <i class="ti ti-printer me-1"></i>
+                    Print Calculation
+                </button>
+            </div>
+        </div>
+    </form>
 </x-app-layout>
 
 <script>
-    document.getElementById("addProductBtn").addEventListener("click", function () {
+    document.getElementById("addProductBtn").addEventListener("click", function() {
         document.getElementById("update_data").classList.remove("d-none");
     });
 
-    document.getElementById("cancelUpdateBtn").addEventListener("click", function () {
+    document.getElementById("cancelUpdateBtn").addEventListener("click", function() {
         document.getElementById("update_data").classList.add("d-none");
     });
+
+</script>
+<script>
+    function updateProgress(percent) {
+        percent = Math.min(100, Math.max(0, percent)); // limit between 0-100
+        document.getElementById("progress-bar").style.width = percent + "%";
+        document.getElementById("progress-bar").setAttribute("aria-valuenow", percent);
+        document.getElementById("progress-input").value = percent + "%";
+    }
+
+    // Example: Dynamically set to 70%
+    updateProgress(20);
+
 </script>
