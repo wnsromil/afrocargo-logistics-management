@@ -21,7 +21,10 @@
                 </thead>
                 <tbody>
                     @forelse ($warehouses as $index => $warehouse)
-                        <tr>
+                        @php
+                            $result = checkExpiryStatus($warehouse->license_expiry_date);
+                        @endphp
+                        <tr class="{{ $result['bg_class'] ?? '' }}">
                             <td>
                                 {{ $warehouse->unique_id }}
                             </td>

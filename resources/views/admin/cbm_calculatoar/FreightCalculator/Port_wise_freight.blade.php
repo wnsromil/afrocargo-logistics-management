@@ -18,10 +18,12 @@
                     <select class="form-select inp text-secondary" id="selectPort" aria-label="Default select example">
                         <option selected disabled hidden value="">Select Option</option>
                         <option value="add">Add new freight information</option>
-                        <option value="1" data-from="India: Chennai" data-to="United States: New York" data-freight="2500" data-currency="USD">
+                        <option value="1" data-from="India: Chennai" data-to="United States: New York"
+                            data-freight="2500" data-currency="USD">
                             India: Chennai - United States: New York
                         </option>
-                        <option value="2" data-from="India: Chennai" data-to="United States: San Diego, California" data-freight="2200" data-currency="USD">
+                        <option value="2" data-from="India: Chennai" data-to="United States: San Diego, California"
+                            data-freight="2200" data-currency="USD">
                             India: Chennai - United States: San Diego, California
                         </option>
                     </select>
@@ -30,12 +32,14 @@
                     <div id="existingFreight" class="row mt-3">
                         <div class="col-md-6 col-lg-6 col-sm-12 mb-3">
                             <label for="from_country" class="form-label text-dark">From (Country, Port):</label>
-                            <input type="text" class="form-control inp" id="from_country" placeholder="Country/Port" readonly>
+                            <input type="text" class="form-control inp" id="from_country" placeholder="Country/Port"
+                                readonly>
                         </div>
 
                         <div class="col-md-6 col-lg-6 col-sm-12 mb-3">
                             <label for="to_country" class="form-label text-dark">To (Country, Port):</label>
-                            <input type="text" class="form-control inp" id="to_country" placeholder="Country/Port" readonly>
+                            <input type="text" class="form-control inp" id="to_country" placeholder="Country/Port"
+                                readonly>
                         </div>
                     </div>
 
@@ -92,118 +96,27 @@
                             <label for="to_country" class="form-label text-dark text-start">Currency</label>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" id="container_list" value="Standard 20 Feet" placeholder="Country/Port" readonly>
+                    @foreach($containerSizes as $index => $container)
+                        <div class="row mt-2">
+                            <div class="col-md-6 col-lg-6 col-sm-12">
+                                <input type="text" class="form-control inp" id="container_list" name="container_name[]"
+                                    value="{{ $container->container_name }}" placeholder="Country/Port" readonly>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3">
+                                <input type="text" class="form-control inp text-end" id="freight_price_selected"
+                                    name="freight_price[]" placeholder="">
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3 border-0">
+                                <select class="form-control inp select2" id="freight_currency"
+                                    name="currency[]">
+                                    @foreach($viewCurrencys as $index => $currency)
+                                        <option value="{{ $currency }}">{{ $currency }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_price_selected" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" id="freight_currency">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" id="container_list" value="Standard 40 Feet" placeholder="Country/Port" readonly>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_list" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" aria-label="Small select example">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" value="High Cube 40 Feet" id="container_list" readonly>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_list" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" aria-label="Small select example">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" value="Upgraded 20 Feet" id="container_list" readonly>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_list" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" aria-label="Small select example">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" value="Reefer 20 Feet" id="container_list" readonly>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_list" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" aria-label="Small select example">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" value="Reefer 40 Feet" id="container_list" readonly>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_list" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" aria-label="Small select example">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6 col-lg-6 col-sm-12">
-                            <input type="text" class="form-control inp" value="Reefer 40 Feet High Cube" id="container_list" readonly>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3">
-                            <input type="text" class="form-control inp text-end" id="freight_list" placeholder="">
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                            <select class="form-select select2 inp form-select-sm" aria-label="Small select example">
-                                <option selected hidden disabled></option>
-                                <option value="USD">USD</option>
-                                <option value="UAH">UAH</option>
-                                <option value="UGX">UGX</option>
-                            </select>
-                        </div>
-                    </div>
+                    @endforeach
+
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
@@ -220,10 +133,52 @@
         </div>
     </form>
 
+    @section('script')
+        <script>
+            document.getElementById('selectPort').addEventListener('change', function () {
+                const selectedOption = this.options[this.selectedIndex];
+
+                const from = selectedOption.getAttribute('data-from');
+                const to = selectedOption.getAttribute('data-to');
+                const freight = selectedOption.getAttribute('data-freight');
+                const currency = selectedOption.getAttribute('data-currency');
+
+                const fromInput = document.getElementById('from_country');
+                const toInput = document.getElementById('to_country');
+                const newFreightForm = document.getElementById('newFreightForm');
+                const existingFreight = document.getElementById('existingFreight');
+
+                // For standard 20 feet
+                const freightPriceInput = document.getElementById('freight_price_selected');
+                const currencySelect = document.getElementById('freight_currency_checked');
+
+                if (this.value === 'add') {
+                    fromInput.value = '';
+                    toInput.value = '';
+                    newFreightForm.style.display = 'flex';
+                    existingFreight.style.display = 'none';
+
+                    freightPriceInput.value = '';
+                    currencySelect.value = '';
+                } else {
+                    fromInput.value = from || '';
+                    toInput.value = to || '';
+                    newFreightForm.style.display = 'none';
+                    existingFreight.style.display = 'flex';
+
+                    // Set the freight & currency values
+                    freightPriceInput.value = freight || '';
+                    currencySelect.value = currency || '';
+                }
+            });
+        </script>
+    @endsection
+
 </x-app-layout>
 
-{{-- <script>
-    document.getElementById('selectPort').addEventListener('change', function() {
+{{--
+<script>
+    document.getElementById('selectPort').addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
         const from = selectedOption.getAttribute('data-from');
         const to = selectedOption.getAttribute('data-to');
@@ -249,43 +204,3 @@
     });
 
 </script> --}}
-
-<script>
-    document.getElementById('selectPort').addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-
-        const from = selectedOption.getAttribute('data-from');
-        const to = selectedOption.getAttribute('data-to');
-        const freight = selectedOption.getAttribute('data-freight');
-        const currency = selectedOption.getAttribute('data-currency');
-
-        const fromInput = document.getElementById('from_country');
-        const toInput = document.getElementById('to_country');
-        const newFreightForm = document.getElementById('newFreightForm');
-        const existingFreight = document.getElementById('existingFreight');
-
-        // For standard 20 feet
-        const freightPriceInput = document.getElementById('freight_price_selected');
-        const currencySelect = document.getElementById('freight_currency_checked');
-
-        if (this.value === 'add') {
-            fromInput.value = '';
-            toInput.value = '';
-            newFreightForm.style.display = 'flex';
-            existingFreight.style.display = 'none';
-
-            freightPriceInput.value = '';
-            currencySelect.value = '';
-        } else {
-            fromInput.value = from || '';
-            toInput.value = to || '';
-            newFreightForm.style.display = 'none';
-            existingFreight.style.display = 'flex';
-
-            // Set the freight & currency values
-            freightPriceInput.value = freight || '';
-            currencySelect.value = currency || '';
-        }
-    });
-</script>
-

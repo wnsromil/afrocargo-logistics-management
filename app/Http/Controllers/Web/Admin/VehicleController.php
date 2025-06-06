@@ -87,6 +87,8 @@ class VehicleController extends Controller
             'vehicle_year'   => 'required|digits:4',
             'driver_id'      => 'nullable|integer',
             'license_expiry_date'      => 'required',
+            'vehicle_registration_exp_date'      => 'required',
+            'vehicle_insurance_exp_date'      => 'required',
             'licence_plate_number'      => 'required',
             'vehicle_number' => 'required|string|max:50|unique:vehicles,vehicle_number',
 
@@ -118,6 +120,8 @@ class VehicleController extends Controller
         $vehicle->vehicle_year   = $request->vehicle_year;
         $vehicle->driver_id      = $request->driver_id;
         $vehicle->licence_plate_exp_date      = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
+        $vehicle->vehicle_registration_exp_date      = Carbon::createFromFormat('m/d/Y', $request->vehicle_registration_exp_date)->format('Y-m-d');
+        $vehicle->vehicle_insurance_exp_date      = Carbon::createFromFormat('m/d/Y', $request->vehicle_insurance_exp_date)->format('Y-m-d');
         $vehicle->licence_plate_number      = $request->licence_plate_number;
         $vehicle->status         = $request->status ?? 'Active';
 
@@ -142,7 +146,6 @@ class VehicleController extends Controller
 
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle added successfully.');
     }
-
 
     /**
      * Display the specified resource.
@@ -187,9 +190,11 @@ class VehicleController extends Controller
             'vehicle_model'  => 'required|string|max:255',
             'vehicle_year'   => 'required|digits:4',
             'driver_id'      => 'nullable|integer',
-          //  'license_expiry_date' => 'required',
+            //  'license_expiry_date' => 'required',
             'licence_plate_number' => 'required',
             'vehicle_number' => 'required|string|max:50|unique:vehicles,vehicle_number,' . $vehicle->id,
+            'edit_vehicle_registration_exp_date'      => 'required',
+            'edit_vehicle_insurance_exp_date'      => 'required',
         ];
 
         // ✅ Conditional file validations
@@ -223,9 +228,15 @@ class VehicleController extends Controller
         $vehicle->vehicle_model = $request->vehicle_model;
         $vehicle->vehicle_year = $request->vehicle_year;
         $vehicle->driver_id = $request->driver_id;
-       if ($request->filled('license_expiry_date')) {
-       $vehicle->licence_plate_exp_date = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
-       }
+        if ($request->filled('edit_license_expiry_date')) {
+            $vehicle->licence_plate_exp_date = Carbon::createFromFormat('m/d/Y', $request->edit_license_expiry_date)->format('Y-m-d');
+        }
+        if ($request->filled('edit_vehicle_registration_exp_date')) {
+            $vehicle->vehicle_registration_exp_date = Carbon::createFromFormat('m/d/Y', $request->edit_vehicle_registration_exp_date)->format('Y-m-d');
+        }
+        if ($request->filled('edit_vehicle_insurance_exp_date')) {
+            $vehicle->vehicle_insurance_exp_date = Carbon::createFromFormat('m/d/Y', $request->edit_vehicle_insurance_exp_date)->format('Y-m-d');
+        }
         $vehicle->licence_plate_number = $request->licence_plate_number;
         $vehicle->status = $request->status ?? $vehicle->status;
 
@@ -248,8 +259,6 @@ class VehicleController extends Controller
 
         return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');
     }
-
-
     /**
      * Remove the specified resource from storage.
      */

@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\{
 
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
+    CBMCalculatoarController,
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -90,6 +91,9 @@ Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 
+//CBM 
+
+Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

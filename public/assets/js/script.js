@@ -858,6 +858,48 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="edit_vehicle_registration_exp_date"]').length > 0) {
+        $('input[name="edit_vehicle_registration_exp_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            // startDate: moment().startOf("day"), // Default Today Selected (COMMENTED)
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="edit_vehicle_registration_exp_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="edit_vehicle_insurance_exp_date"]').length > 0) {
+        $('input[name="edit_vehicle_insurance_exp_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            // startDate: moment().startOf("day"), // Default Today Selected (COMMENTED)
+            autoUpdateInput: true, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="edit_vehicle_insurance_exp_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
     if ($('input[name="license_expiry_date"]').length > 0) {
         $('input[name="license_expiry_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
@@ -985,6 +1027,48 @@ Version      : 1.0
             "apply.daterangepicker",
             function (ev, picker) {
                 $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="vehicle_registration_exp_date"]').length > 0) {
+        $('input[name="vehicle_registration_exp_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: false, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="vehicle_registration_exp_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
+    if ($('input[name="vehicle_insurance_exp_date"]').length > 0) {
+        $('input[name="vehicle_insurance_exp_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: false, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="vehicle_insurance_exp_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
     }
@@ -2137,13 +2221,13 @@ Version      : 1.0
             }
         });
 
-        input.addEventListener("focus", function () {
-            const ev = new KeyboardEvent("keydown", {
-                keyCode: 40,
-                which: 40,
-            });
-            input.dispatchEvent(ev);
-        });
+        // input.addEventListener("focus", function () {
+        //     const ev = new KeyboardEvent("keydown", {
+        //         keyCode: 40,
+        //         which: 40,
+        //     });
+        //     input.dispatchEvent(ev);
+        // });
     }
     window.addEventListener("load", function () {
         initAutocomplete();
