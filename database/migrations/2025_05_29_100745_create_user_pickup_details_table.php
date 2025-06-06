@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('shipto_address_id');
             $table->string('Item1')->nullable();
             $table->string('Item2')->nullable();
-            $table->string('pickup_delivery')->nullable(); // e.g., pickup or delivery
-            $table->enum('status', ['Active', 'Inactive'])->default('Active')->after('pickup_type');
+            $table->string('pickup_delivery')->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active'); // FIXED
             $table->date('Date')->nullable();
             $table->time('Time')->nullable();
             $table->date('Done_Date')->nullable();
@@ -31,6 +30,7 @@ return new class extends Migration
             $table->integer('Tapes_quantity')->default(0);
             $table->timestamps();
         });
+
     }
 
     /**

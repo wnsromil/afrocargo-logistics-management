@@ -4,6 +4,7 @@
             {{ __('CBM Calculator') }}
         </h2>
     </x-slot>
+
     <x-slot name="cardTitle">
         <p class="head">Container Dimensions</p>
     </x-slot>
@@ -43,7 +44,7 @@
                                 <td class="pe-3">
                                     <input type="number" class="form-control inp" value="{{ $container->height }}">
                                 </td>
-                                <td class="ps-3">
+                                <td class="pe-3">
                                     <input type="number" class="form-control inp" value="{{ $container->volume }}" readonly style="background-color: #e9ecef;">
                                 </td>
                                 <td>
@@ -58,10 +59,14 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="col-12">
+                    <div class="text-end">
 
-                <div class="d-flex justify-content-end gap-3 mt-3">
-                    <button class="btn btn-outline-primary">Default Values</button>
-                    <button class="btn btn-primary">Update Containers</button>
+                        <button type="button" class="btn btn-outline-primary">Default Values</button>
+
+                        <button type="submit" class="btn btn-primary ">Update Containers</button>
+
+                    </div>
                 </div>
             </div>
         </div>
