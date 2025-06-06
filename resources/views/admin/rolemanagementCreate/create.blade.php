@@ -9,7 +9,6 @@
 
     <form enctype="multipart/form-data">
         @csrf
-
         <div class="form-group-customer customer-additional-form text-dark">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -91,7 +90,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-md-12 mt-2 ps-3">
                     <label class="custom_check primary col3a fs_12-25 fw_500 mb-1">
@@ -622,7 +620,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-md-12 ms-4 mt-2 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
                         <input type="checkbox" class="d_none" name="branches">
@@ -692,7 +689,6 @@
                         Commission Batch Transaction
                     </label>
                 </div>
-
 
                 <div class="col-md-12 ms-4 mt-2 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
@@ -1114,7 +1110,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
                         <input type="checkbox" class="d_none" name="estimate">
@@ -1145,7 +1140,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
@@ -1528,7 +1522,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
                         <input type="checkbox" class="d_none" name="Inventory">
@@ -1737,7 +1730,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
@@ -2253,7 +2245,7 @@
                     </div>
                 </div>
 
-                 <div class="col-md-12 ms-4 mt-1 ps-0">
+                <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
                         <input type="checkbox" class="d_none" name="vendor_payment">
                         <span class="checkmark check-color check-size"></span>
@@ -2267,7 +2259,7 @@
                                 Create New Warehouse
                             </label>
                         </div>
-                          <div class="col-auto checkboxlable bg-color ms-3">
+                        <div class="col-auto checkboxlable bg-color ms-3">
                             <label class="custom_check primary cardFontSize fw_500">
                                 <input type="checkbox" class="d_none" name="delete_bulk_delivery">
                                 <span class="checkmark check-size"></span>
@@ -2288,7 +2280,7 @@
                                 Edit Warehouse
                             </label>
                         </div>
-                          <div class="col-auto checkboxlable bg-color ms-3">
+                        <div class="col-auto checkboxlable bg-color ms-3">
                             <label class="custom_check primary cardFontSize fw_500">
                                 <input type="checkbox" class="d_none" name="update_warehouse_container">
                                 <span class="checkmark check-size"></span>
@@ -2298,7 +2290,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
                         <input type="checkbox" class="d_none" name="zone">
@@ -2330,7 +2322,7 @@
                     </div>
                 </div>
 
-                  <div class="col-md-12 ms-4 mt-1 ps-0">
+                <div class="col-md-12 ms-4 mt-1 ps-0">
                     <label class="custom_check primary col3a fw_500 mb-1 font13">
                         <input type="checkbox" class="d_none" name="zone_definition">
                         <span class="checkmark check-color check-size"></span>
@@ -2361,522 +2353,1030 @@
                     </div>
                 </div>
 
-
-
-                <!-- ------------&&&&&----------------------------------------------------------------------------------- -->
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fs_12-25 fw_500">
-                        <input type="checkbox" class="d_none" name="Warehouse">
-                        <span class="checkmark check-size"></span>
-                        Warehouse
+                <div class="col-md-12 mt-4 ps-3">
+                    <label class="custom_check primary col3a mb-2 fs_12-25 fw_500">
+                        <input type="checkbox" class="d_none" name="Administration">
+                        <span class="checkmark check-color check-size"></span>
+                        Misc
                     </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="CreatenewWarehouse">
+
+                    <div class="col-md-12 p-32 marginTopBottom mt-0">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="my_plans">
                                     <span class="checkmark check-size"></span>
-                                    Create new Warehouse
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteWarehouse">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Warehouse
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditWarehouse">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Warehouse
+                                    My Plans
                                 </label>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-12 p-32">
+                        <div class="twoRowsSec w-max-content mt-3 p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="myAddOns">
+                                    <span class="checkmark check-size"></span>
+                                    My Add Ons
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="print_addon">
+                                        <span class="checkmark check-size"></span>
+                                        Print Addon
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="cancelAutoRenewal">
+                                        <span class="checkmark check-size"></span>
+                                        Cancel Auto Renewal
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Claims">
-                        <span class="checkmark check-size"></span>
-                        Claims
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewClaim">
+                    <div class="col-md-12 mt-4 p-32">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="purchase_addons">
                                     <span class="checkmark check-size"></span>
-                                    Add new Claim
+                                    Purchase Add ons
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteClaim">
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="pay_addon2">
+                                        <span class="checkmark check-size"></span>
+                                        Pay Addon
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-4 p-32">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="myCards">
                                     <span class="checkmark check-size"></span>
-                                    Delete Claim
+                                    My Cards
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditClaim">
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="createCard">
+                                        <span class="checkmark check-size"></span>
+                                        Creat Card
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="editCard">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Card
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="deleteCard">
+                                        <span class="checkmark check-size"></span>
+                                        Delet Card
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="stateMaster">
                                     <span class="checkmark check-size"></span>
-                                    Edit Claim
+                                    State Masters
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_state_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Add State TC
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_state_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Edit State TC
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="cityMaster">
+                                    <span class="checkmark check-size"></span>
+                                    City Masters
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_city_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Add City TC
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_city_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Edit City TC
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="shipTo_province_master">
+                                    <span class="checkmark check-size"></span>
+                                    Ship To Province Masters
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_province_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Add Province TC
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_province_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Province TC
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="shipTo_municipal_master">
+                                    <span class="checkmark check-size"></span>
+                                    Ship To Municipal Masters
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_municipal_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Add Municipal TC
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_municipal_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Municipal TC
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="shipTo_sector_master">
+                                    <span class="checkmark check-size"></span>
+                                    Ship To Sector Masters
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_sector_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Add Sector TC
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_sector_tc">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Sector TC
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="sales_report">
+                                    <span class="checkmark check-size"></span>
+                                    Sales Report
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="user_srepo">
+                                        <span class="checkmark check-size"></span>
+                                        User Sales Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="customer_srepo">
+                                        <span class="checkmark check-size"></span>
+                                        Customer Sales Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="shipTo_srepo">
+                                        <span class="checkmark check-size"></span>
+                                        Ship To Sales Report
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="package_master">
+                                    <span class="checkmark check-size"></span>
+                                    Package Master
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_package_master">
+                                        <span class="checkmark check-size"></span>
+                                        Create Package Master
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_package_master">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Package Master
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_package_master">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Package Master
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="warehouse_package_tracking">
+                                    <span class="checkmark check-size"></span>
+                                    Warehouse Package Tracking
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="update_container_pt">
+                                        <span class="checkmark check-size"></span>
+                                        Update Container Package Tracking
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_warehouse_pt">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Package Tracking
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_warehouse_pt">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Package Tracking
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="warehouse_package_error">
+                                    <span class="checkmark check-size"></span>
+                                    Warehouse Package Errors
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="clear_package_error">
+                                        <span class="checkmark check-size"></span>
+                                        Clear Package Error
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="wrh_pdist">
+                                    <span class="checkmark check-size"></span>
+                                    Warehouse Package Distribution
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="print_pdist">
+                                        <span class="checkmark check-size"></span>
+                                        Print Package Distribution
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="verify_pdist">
+                                        <span class="checkmark check-size"></span>
+                                        Verify Complete Package Distribution
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_pdist">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Package Distribution
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_pdist">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Package Distribution
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="wrh_verified">
+                                    <span class="checkmark check-size"></span>
+                                    Warhouse Package Verified
                                 </label>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Vehicle">
-                        <span class="checkmark check-size"></span>
-                        Vehicle
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewVehicle">
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="wrh_prepare_delivery">
                                     <span class="checkmark check-size"></span>
-                                    Add new Vehicle
+                                    Warehouse Prepare For Deliery
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_delivery2">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Prepare For Delivery
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_delivery">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Prepare For Delivery
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="missing_packs">
+                                        <span class="checkmark check-size"></span>
+                                        Get Missing packages
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="batch2">
+                                        <span class="checkmark check-size"></span>
+                                        Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="addto_batch2">
+                                        <span class="checkmark check-size"></span>
+                                        Add To Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_batch2">
+                                        <span class="checkmark check-size"></span>
+                                        Create Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="visible_driver_batch">
+                                        <span class="checkmark check-size"></span>
+                                        Visible To Driver Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_batch">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_batch">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="change_driver_batch">
+                                        <span class="checkmark check-size"></span>
+                                        Change Driver Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_batch_packs">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Batch Packages
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="print_report2">
+                                        <span class="checkmark check-size"></span>
+                                        Print Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="print_invoice">
+                                        <span class="checkmark check-size"></span>
+                                        Print Invoice
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="print_province">
+                                        <span class="checkmark check-size"></span>
+                                        Print Province
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="wrh_inventory">
+                                    <span class="checkmark check-size"></span>
+                                    Warehouse Inventory
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_batch3">
+                                        <span class="checkmark check-size"></span>
+                                        Create Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="batch3">
+                                        <span class="checkmark check-size"></span>
+                                        Batch
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="batch_packs3">
+                                        <span class="checkmark check-size"></span>
+                                        Batch Packages
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="exchange_rate">
+                                    <span class="checkmark check-size"></span>
+                                    Exchange Rate
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_ex-rate">
+                                        <span class="checkmark check-size"></span>
+                                        Create Exchange Rate
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_ex-rate">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Exchange Rate
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_ex-rate">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Exchange Rate
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="wrh_location_master">
+                                    <span class="checkmark check-size"></span>
+                                    Warehouse Location Master
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_wrh_lm">
+                                        <span class="checkmark check-size"></span>
+                                        Create Warehouse Location Master
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_wrh_lm">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Warehouse Location Master
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_wrh_lm">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Warehouse Location Master
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="pickup_add">
+                                    <span class="checkmark check-size"></span>
+                                    PickUp Address
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_pickup_add">
+                                        <span class="checkmark check-size"></span>
+                                        Create PickUp Address
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_pickup_add">
+                                        <span class="checkmark check-size"></span>
+                                        Edit PickUp Address
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_pickup_add">
+                                        <span class="checkmark check-size"></span>
+                                        Delete PickUp Address
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="tenant_user">
+                                    <span class="checkmark check-size"></span>
+                                    Tenant Users
+                                </label>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_tenant_user">
+                                        <span class="checkmark check-size"></span>
+                                        Create Tenant Users
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_tenant_user">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Tenant Users
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_tenant_user">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Tenant Users
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="duplicate_user">
+                                        <span class="checkmark check-size"></span>
+                                        Duplicate Users Created
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="unlocked_user">
+                                        <span class="checkmark check-size"></span>
+                                        Lock Unlock User
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="user_login">
+                                        <span class="checkmark check-size"></span>
+                                        Login User
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="update_role">
+                                        <span class="checkmark check-size"></span>
+                                        Update Role Users
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="update_shift">
+                                        <span class="checkmark check-size"></span>
+                                        Update Timer Shift
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="company_settings">
+                                    <span class="checkmark check-size"></span>
+                                    Company Settings
                                 </label>
                             </div>
                             <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="Delete Vehicle">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="edit_company_settings">
                                     <span class="checkmark check-size"></span>
-                                    Delete Vehicle
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditVehicle">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Vehicle
+                                    Edit Company Settings
                                 </label>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="CustomerPickup">
-                        <span class="checkmark check-size"></span>
-                        Customer Pickup
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewCustomerPickup">
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="inventory_item">
                                     <span class="checkmark check-size"></span>
-                                    Create new Customer Pickup
+                                    Inventory Purchase Item
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteCustomerPickup">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Customer Pickup
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditCustomerPickup">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Customer Pickup
-                                </label>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_inventory_item">
+                                        <span class="checkmark check-size"></span>
+                                        Create Inventory Purchase Item
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_inventory_item">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Inventory Purchase Item
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Deliveries">
-                        <span class="checkmark check-size"></span>
-                        Deliveries
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewDelivery">
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="role&permission_2">
                                     <span class="checkmark check-size"></span>
-                                    Create new Delivery
+                                    Roles & Permission
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteDelivery">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Delivery
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditDelivery">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Delivery
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="deliveryReport">
-                                    <span class="checkmark check-size"></span>
-                                    Delivery Report
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="ispayment">
-                                    <span class="checkmark check-size"></span>
-                                    Is Payment?
-                                </label>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="create_role_2">
+                                        <span class="checkmark check-size"></span>
+                                        Create Role
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_role_2">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Role
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_role_2">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Role
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Drivers">
-                        <span class="checkmark check-size"></span>
-                        Drivers
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewDrivers">
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="driver_inventory">
                                     <span class="checkmark check-size"></span>
-                                    Create new Drivers
+                                    Driver Inventory
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteDrivers">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Drivers
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditDrivers">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Drivers
-                                </label>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_dri_invent">
+                                        <span class="checkmark check-size"></span>
+                                        Add Driver Inventory
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_dri_invent">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Driver Inventory
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="send_pdf">
+                                        <span class="checkmark check-size"></span>
+                                        Send PDF Driver Inventory
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Expense">
-                        <span class="checkmark check-size"></span>
-                        Expense
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewExpense">
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="cust_repo">
                                     <span class="checkmark check-size"></span>
-                                    Create new Expense
+                                    Custom Report
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteExpense">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Expense
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditExpense">
-                                    <span class="checkmark"></span>
-                                    Edit Expense
-                                </label>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Add Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_custRepo_container">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Custom Report Container
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="custRepo_print">
+                                        <span class="checkmark check-size"></span>
+                                        Print Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="exp_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Expense Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="add_exp_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Add Expense Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_exp_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Expense Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_exp_custRepo">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Expense Custom Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_cust_repo">
+                                        <span class="checkmark check-size"></span>
+                                        Edit Custom Report Package
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="delete_cust_repo">
+                                        <span class="checkmark check-size"></span>
+                                        Delete Custom Report Package
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="item_repo_print">
+                                        <span class="checkmark check-size"></span>
+                                        Print Item Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="status_report_print">
+                                        <span class="checkmark check-size"></span>
+                                        Print Container Status Report
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="verify_licen">
+                                        <span class="checkmark check-size"></span>
+                                        Verify License
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_custLicid_verify">
+                                        <span class="checkmark check-size"></span>
+                                        Edit CustLicId Verify License
+                                    </label>
+                                </div>
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="edit_shiptoLic_verify">
+                                        <span class="checkmark check-size"></span>
+                                        Edit ShipToLicId Verify License
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Inventory">
-                        <span class="checkmark check-size"></span>
-                        Inventory
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewInventory">
+                    <div class="col-md-12 p-32 mt-4">
+                        <div class="twoRowsSec w-max-content p-32">
+                            <div class="checkboxlable bg-color ">
+                                <label class="custom_check primary cardFontSize fw_500">
+                                    <input type="checkbox" class="d_none" name="container_comp_report">
                                     <span class="checkmark check-size"></span>
-                                    Create new Inventory
+                                    Container Compare Report
                                 </label>
                             </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteInventory">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Inventory
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditInventory">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Inventory
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Invoice">
-                        <span class="checkmark check-size"></span>
-                        Invoice
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewInvoice">
-                                    <span class="checkmark check-size"></span>
-                                    Create new Invoice
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteInvoice">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Invoice
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditInvoice">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Invoice
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="PaymentTypes">
-                        <span class="checkmark check-size"></span>
-                        Payment Types
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewPaymentTypes">
-                                    <span class="checkmark check-size"></span>
-                                    Create new Payment Types
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeletePaymentTypes">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Payment Types
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditPaymentTypes">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Payment Types
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="Pickup">
-                        <span class="checkmark check-size"></span>
-                        Pickup
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewPickup">
-                                    <span class="checkmark check-size"></span>
-                                    Create new Pickup
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeletePickup">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Pickup
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditPickup">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Pickup
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="PickupAddress">
-                        <span class="checkmark check-size"></span>
-                        Pickup Address
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewPickupAddress">
-                                    <span class="checkmark check-size"></span>
-                                    Create new Pickup Address
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeletePickupAddress">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Pickup Address
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditPickupAddress">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Pickup Address
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="RolesnPermissions">
-                        <span class="checkmark check-size"></span>
-                        Roles & Permissions
-                    </label>
-                </div>
-                <div class="col-md-12">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="CreateRole">
-                                    <span class="checkmark check-size"></span>
-                                    Create Role
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteRole">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Role
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditRole">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Role
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mt-4">
-                    <label class="custom_check primary col3a fw_500">
-                        <input type="checkbox" class="d_none" name="DriverInventory">
-                        <span class="checkmark check-size"></span>
-                        Driver Inventory
-                    </label>
-                </div>
-                <div class="col-md-12 mb-4">
-                    <div class="twoRowsSec w-max-content">
-                        <div class="d-flex">
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="AddnewDriverInventory">
-                                    <span class="checkmark check-size"></span>
-                                    Create new Driver Inventory
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="DeleteDriverInventory">
-                                    <span class="checkmark check-size"></span>
-                                    Delete Driver Inventory
-                                </label>
-                            </div>
-                            <div class="checkboxlable bg-color  ms-4">
-                                <label class="custom_check primary fw_500">
-                                    <input type="checkbox" class="d_none" name="EditDriverInventory">
-                                    <span class="checkmark check-size"></span>
-                                    Edit Driver Inventory
-                                </label>
+                            <div class="d-flex mt-3">
+                                <div class="checkboxlable bg-color  ms-4">
+                                    <label class="custom_check primary cardFontSize fw_500">
+                                        <input type="checkbox" class="d_none" name="print_comp_report">
+                                        <span class="checkmark check-size"></span>
+                                        Print Container Compare Report
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="add-customer-btns text-end">
             <a href="{{ route('admin.user_role.index') }}" class="btn btn-outline-primary custom-btn">Cancel</a>
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
+
     </form>
-    <script>
+
+
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             const checkboxes = document.querySelectorAll('.checkboxlable bg-color  input[type="checkbox"]');
 
@@ -2897,645 +3397,11 @@
             });
         });
 
-    </script>
+    </script> -->
 </x-app-layout>
 
 
-<!-- ----------------------------------------------------------------------------------- -->
-
-<!-- <div class="border-bottom"></div>
-
-    <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-        <label class="required">Role Name</label>
-        <select class="form-select border-dark border-1 opacity-75 bg-checkbox" id="inputGroupSelect01">
-            <option>Select Role</option>
-            <option>Warehouse Manager</option>
-            <option>Driver</option>
-        </select>
-    </div>
-
-    <div class="cardTitle my-3">
-        <p class="fw-semibold fs-5 text-dark">Permissions</p>
-    </div>
-
-    <div class="parentDiv my-3 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck1">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck1">Accounting
-                    Report</label>
-            </div>
-        </div>
- 
-        <div class="form-checkbox border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck2">
-            <label class="form-check-label  cardFontSize fw-regular mb-0" for="exampleCheck2">New
-                End Of The Day Reports</label>
-        </div>
-
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck3">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck3">Invoice</label>
-                </div>
-            </div>
-
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck4">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck4">Payment</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck5">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck5">Excpenses</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck6">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck6">Print Report</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-
-    <div class="parentDiv mt-3 mb-2 px-2 py-1">
-        <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck7">
-            <label class="form-check-label cardFontSize fw-regular mb-0"
-                for="exampleCheck7">Invoice Reports</label>
-        </div>
-      
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck8">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck8">Print Invoice
-                        Report</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded ps-3 pe-2 py-1">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 bg-checkbox"
-                        id="exampleCheck9">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck9">Print Invoice</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck10">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck10">Excpenses</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck11">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck11">Print Report</label>
-                </div>
-            </div>
-        </div>
-    </div>
-<br>
-
- 
-    <div class="parentDiv mt-3 mb-2 px-2 py-1 widthCheckbox">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck12">
-                <label class="form-check-label fw-medium mb-0"
-                    for="exampleCheck12">Administration</label>
-            </div>
-        </div>
-
-       
-        <div class="border border-dark opacity-75 bg-checkbox rounded px-3 py-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck13">
-            <label class="form-check-label cardFontSize fw-regular mb-0"
-                for="exampleCheck13">Roles</label>
-        </div>
-
-        <div class="d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck14">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck14">Creating New
-                        Roles</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck15">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck15">Deleting role</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck16">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck16">Editing role</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
- 
-    <div class="parentDiv mt-3 mb-2 px-2 py-1">
-        <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck17">
-            <label class="form-check-label cardFontSize fw-regular mb-0"
-                for="exampleCheck17">Users</label>
-        </div>
-
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck18">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck18">Changing
-                        Permissions</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded ps-3 pe-2 py-1">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck19">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck19">Creating New User</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck20">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck20">Deleting User</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck21">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck21">Editing User</label>
-                </div>
-            </div>
-        </div>
- 
-    </div>
-<br>
-   
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck22">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck22">Warehouse</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck23">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck23">Create New
-                        Warehouse</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck24">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck24">Delete Warehouse</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck25">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck25">Edit Warehouse</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck26">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck26">Claims</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck27">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck27">Add New Claim</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck28">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck28">Delete Claim</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck29">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck29">Edit Claim</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck30">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck30">Vehicle</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck31">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck31">Create New
-                        Vehicle</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck32">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck32">Delete Vehicle</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck33">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck33">Edit Vehicle</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck34">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck34">Customer
-                    Pickup</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck35">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck35">Create New Customer
-                        Pickup</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck36">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck36">Delete Customer
-                        Pickup</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck37">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck37">Edit Customer
-                        Pickup</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck38">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck38">Deliveries</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck39">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck39">Create New
-                        Delivery</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck40">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck40">Delete Delivery</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck41">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck41">Edit Delivery</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck42">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck42">Delivery Report</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck43">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck43">Is Payment?</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck44">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck44">Drivers</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck45">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck45">Create New Driver</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck46">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck46">Delete Driver</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck47">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck47">Edit Driver</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck48">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck48">Expenses</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck49">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck49">Create New
-                        Expense</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck50">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck50">Delete Expense</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck51">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck51">Edit Expense</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck52">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck52">Inventory</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck53">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck53">Create New
-                        Inventory</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck54">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck54">Delete Inventory</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck55">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck55">Edit Inventory</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck56">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck56">Invoice</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck57">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck57">Create New
-                        Invoice</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck58">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck58">Delete Invoice</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck59">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck59">Edit Invoice</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck60">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck60">Payment Types</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck61">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck61">Create New Payment
-                        Type</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck62">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck62">Delete Payment
-                        Type</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck63">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck63">Edit Payment Type</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-3 mb-2 px-2 py-1">
-        <div class="input-group">
-            <div class="form-check text-checkbox">
-                <input type="checkbox" class="form-check-input border-dark opacity-75" id="exampleCheck64">
-                <label class="form-check-label fw-medium mb-0" for="exampleCheck64">Pickup</label>
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex my-2 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck65">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck65">Create New Pickup</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck66">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck66">Delete Pickup</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck67">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck67">Edit Pickup</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck68">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck68">Pickup Management</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="parentDiv mt-3 mb-2 px-2 py-1">
-        <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck69">
-            <label class="form-check-label cardFontSize fw-regular mb-0"
-                for="exampleCheck69">Pickup Address</label>
-        </div>
-
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck70">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck70">Create New Pickup
-                        Address</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck71">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck71">Delete Pickup
-                        Address</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck72">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck72">Edit Pickup
-                        Address</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <div class="parentDiv mt-3 mb-2 px-2 py-1">
-        <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck73">
-            <label class="form-check-label cardFontSize fw-regular mb-0"
-                for="exampleCheck73">Roles & Permission</label>
-        </div>
-
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck74">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck74">Create Role</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck75">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck75">Delete Role</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck76">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck76">Edit Role</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<br>
-    <div class="parentDiv mt-3 mb-2 px-2 py-1">
-        <div class="border border-dark opacity-75 bg-checkbox rounded p-1 my-2">
-            <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck77">
-            <label class="form-check-label cardFontSize fw-regular mb-0"
-                for="exampleCheck77">Driver Inventory</label>
-        </div>
-
-        <div class="col-md-12 d-flex my-3 ms-4">
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck78">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck78">Create Driver
-                        Inventory</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck79">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck79">Delete Driver
-                        Inventory</label>
-                </div>
-            </div>
-            <div class="px-1">
-                <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2">
-                    <input type="checkbox" class="form-check-input border-dark opacity-75 mx-2" id="exampleCheck80">
-                    <label class="form-check-label cardFontSize fw-regular mb-0" for="exampleCheck80">Edit Driver
-                        Inventory</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<!-- 
     <script>
         document.querySelectorAll('.form-check-input').forEach(input =>{
             input.addEventListener("change", function(){
@@ -3547,4 +3413,4 @@
                 }
             })
         })
-    </script>
+    </script> -->

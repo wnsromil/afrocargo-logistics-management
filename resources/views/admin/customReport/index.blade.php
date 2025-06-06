@@ -41,68 +41,51 @@
         </div>
     </div>
 
-    <div class="container-fluid text-dark">
-        <div class="thead-light rounded-2 p-2 mt-4">
-            <div class="row rounded-2 bg-custom">
-                <div class="col-md-3 col-sm-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    <div class="col-3">
-                        <label for="search_id" class="col-form-label">Search</label>
-                    </div>
-                    <div class="col-9">
-                        <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
-                            placeholder="Search">
-                    </div>
+    <div class="container-fluid ">
+        <div class="rounded-2 p-2 mt-3">
+            <div class="row rounded-2 bg-custom text-dark">
+                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
+                    <label for="search_id" class="col-form-label">Search</label>
+                    <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
+                        placeholder="Search">
                 </div>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    <div class="col-3">
-                        <label for="branch_id" class="col-form-label">Branch</label>
-                    </div>
-                    <div class="col-9">
-                        <select class="form-select select2">
-                            <option selected>Select Branch</option>
-                            <option value="1">Afro Cargo OH USA</option>
-                            <option value="2">Afro Cargo GA USA</option>
-                            <option value="3">Afro Cargo Abidjan</option>
-                            <option value="4">Afro Cargo Bamako</option>
-                        </select>
-                    </div>
+                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
+                    <label for="branch_id" class="col-form-label">Branch</label>
+                    <select class="form-select select2">
+                        <option selected>Select Branch</option>
+                        <option value="1">Afro Cargo OH USA</option>
+                        <option value="2">Afro Cargo GA USA</option>
+                        <option value="3">Afro Cargo Abidjan</option>
+                        <option value="4">Afro Cargo Bamako</option>
+                    </select>
                 </div>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    <div class="col-3">
-                        <label for="date_id" class="col-form-label">Date</label>
-                    </div>
-                    <div class="col-9">
-                        <input type="date" id="date_id" class="form-control rounded-1 form-control-lg">
-                    </div>
+                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
+                    <label for="date_id" class="col-form-label">Date</label>
+                    <input type="date" id="date_id" class="form-control rounded-1 form-control-lg">
                 </div>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    <div class="col-3">
-                        <label for="report_id" class="col-form-label">Report Type</label>
-                    </div>
-                    <div class="col-9">
-                        <select class="form-select select2">
-                            <option selected>Select Report Type</option>
-                            <option value="1">Invoice</option>
-                            <option value="2">Tracking</option>
-                        </select>
-                    </div>
+                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
+                    <label for="report_id" class="col-form-label">Report Type</label>
+                    <select class="form-select select2">
+                        <option selected>Select Report Type</option>
+                        <option value="1">Invoice</option>
+                        <option value="2">Tracking</option>
+                    </select>
                 </div>
             </div>
 
             <div class="row">
-                <div class="d-flex align-items-center justify-content-end mb-1">
-                    <div class="d-grid gap-2 d-md-block justify-content-end">
-                        <button class="btn btn-danger" type="button">Search</button>
-                        <button class="btn btn-tomato ms-12" type="button">Clear</button>
-                    </div>
+                <div class="d-flex align-items-center justify-content-end mt-2">
+                    <button class="btn btn-primary" type="button">Search</button>
+                    <button class="btn btn-outline-danger ms-2" type="button">Reset</button>
+
                 </div>
             </div>
         </div>
 
-        <div class="row mt-2">
+        <div class="row mt-2 text-dark">
             <div class="col-auto">
                 <div><strong>Total I-Amount:</strong>
                     $176,504.00</div>
@@ -120,40 +103,39 @@
         <div class="row">
             <div id='ajexTable'>
                 <div class="card-table">
-                    <div class="">
-                        <div class="table-responsive table-height border border-dark mt-3">
-
+                    <div class="table-body">
+                        <div class="table-responsive table-height mt-3">
                             <table class="table table-stripped table-hover datatable">
-                                <thead class="thead-light border-bottom border-dark text-start">
+                                <thead class="thead-light text-start">
                                     <tr>
-                                        <th class="fs_14 fw-semibold ">Date</th>
-                                        <th class="fs_14 fw-semibold ">Branch</th>
-                                        <th class="fs_14 fw-semibold ">Container</th>
-                                        <th class="fs_14 fw-semibold ">Report Type</th>
-                                        <th class="fs_14 fw-semibold ">Doc Id</th>
-                                        <th class="fs_14 fw-semibold ">Invoice</th>
-                                        <th class="fs_14 fw-semibold ">Expense</th>
-                                        <th class="fs_14 fw-semibold ">Exp</th>
-                                        <th class="fs_14 fw-semibold bg-transparent table-last-column">
+                                        <th>Date</th>
+                                        <th>Branch</th>
+                                        <th>Container</th>
+                                        <th>Report Type</th>
+                                        <th>Doc Id</th>
+                                        <th>Invoice</th>
+                                        <th>Expense</th>
+                                        <th>Exp</th>
+                                        <th class="bg-transparent table-last-column">
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <tr class="font12 border-bottom border-dark">
-                                        <td class="text-dark">05/26/2025</td>
-                                        <td class="text-dark">Afro Cargo N...</td>
-                                        <td class="text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">Sudu8880982</a></td>
-                                        <td class="text-dark">Invoice</td>
-                                        <td class="text-dark">Billaly3Cars</td>
-                                        <td class="text-dark">6000</td>
+                                    <tr>
+                                        <td>05/26/2025</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal"
+                                                data-bs-target="#editContainerModal">Sudu8880982</a></td>
+                                        <td>Invoice</td>
+                                        <td>Billaly3Cars</td>
+                                        <td>6000</td>
                                         <td class="text-danger">0</td>
 
                                         <td class="text-success">6000
                                         </td>
-                                        <td class="text-dark">
+                                        <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
@@ -165,18 +147,18 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="border-bottom border-dark">
-                                        <td class="font12 text-dark">04/29/2024</td>
-                                        <td class="font12 text-dark">Afro Cargo N...</td>
-                                        <td class="font12 text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">01425</a></td>
-                                        <td class="font12 text-dark">Invoice</td>
-                                        <td class="font12 text-dark">1</td>
-                                        <td class="font12 text-dark">7502.5</td>
-                                        <td class="font12 text-danger">0</td>
-                                        <td class="font12 text-success">750
+                                    <tr>
+                                        <td>04/29/2024</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01425</a>
                                         </td>
-                                        <td class="font12 text-dark">
+                                        <td>Invoice</td>
+                                        <td>1</td>
+                                        <td>7502.5</td>
+                                        <td class="text-danger">0</td>
+                                        <td class="text-success">750
+                                        </td>
+                                        <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
@@ -186,23 +168,23 @@
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#expensePopupModal">Expense</button>
                                         </td>
-
                                     </tr>
 
-                                    <tr class="font12 border-bottom border-dark">
-                                        <td class="text-dark">04/04/2025</td>
-                                        <td class="text-dark">Afro Cargo N...</td>
-                                        <td class="text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">01045abj</a></td>
-                                        <td class="text-dark">Invoice</td>
-                                        <td class="text-dark">ACLUp787255</td>
-                                        <td class="text-dark">39408.5</td>
+                                    <tr>
+                                        <td>04/04/2025</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01045abj</a>
+                                        </td>
+                                        <td>Invoice</td>
+                                        <td>ACLUp787255</td>
+                                        <td>39408.5</td>
                                         <td class="text-danger">0</td>
 
                                         <td class="text-success">394
                                         </td>
-                                        <td class="text-dark"><i class="fa-regular fa-envelope me-1"
-                                                data-bs-toggle="modal" data-bs-target="#trackingReportModal"></i>
+                                        <td>
+                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
+                                                data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
                                             <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
                                                 data-bs-target="#deleteCustomReportModal"></i>
@@ -212,19 +194,19 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="font12 border-bottom border-dark">
-                                        <td class="text-dark">04/05/2025</td>
-                                        <td class="text-dark">Afro Cargo N...</td>
-                                        <td class="text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">Fafau5415337</a></td>
-                                        <td class="text-dark">Invoice</td>
-                                        <td class="text-dark">Fafau5415337</td>
-                                        <td class="text-dark">40811</td>
+                                    <tr>
+                                        <td>04/05/2025</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal"
+                                                data-bs-target="#editContainerModal">Fafau5415337</a></td>
+                                        <td>Invoice</td>
+                                        <td>Fafau5415337</td>
+                                        <td>40811</td>
                                         <td class="text-danger">0</td>
 
                                         <td class="text-success">750
                                         </td>
-                                        <td class="text-dark">
+                                        <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
@@ -236,19 +218,19 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="font12 border-bottom border-dark">
-                                        <td class="text-dark">04/16/2025</td>
-                                        <td class="text-dark">Afro Cargo N...</td>
-                                        <td class="text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">01125abj</a></td>
-                                        <td class="text-dark">Invoice</td>
-                                        <td class="text-dark">Gcnu73886</td>
-                                        <td class="text-dark">44133</td>
+                                    <tr>
+                                        <td>04/16/2025</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01125abj</a>
+                                        </td>
+                                        <td>Invoice</td>
+                                        <td>Gcnu73886</td>
+                                        <td>44133</td>
                                         <td class="text-danger">0</td>
 
                                         <td class="text-success">441
                                         </td>
-                                        <td class="text-dark">
+                                        <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
@@ -260,19 +242,19 @@
                                         </td>
                                     </tr>
 
-                                    <tr class="font12 border-bottom border-dark">
-                                        <td class="text-dark">04/29/2025</td>
-                                        <td class="text-dark">Afro Cargo N...</td>
-                                        <td class="text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">1225gcnu7853</a></td>
-                                        <td class="text-dark">Invoice</td>
-                                        <td class="text-dark">SEALUL5073</td>
-                                        <td class="text-dark">38649</td>
+                                    <tr>
+                                        <td>04/29/2025</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal"
+                                                data-bs-target="#editContainerModal">1225gcnu7853</a></td>
+                                        <td>Invoice</td>
+                                        <td>SEALUL5073</td>
+                                        <td>38649</td>
                                         <td class="text-danger">0</td>
 
                                         <td class="text-success">386
                                         </td>
-                                        <td class="text-dark">
+                                        <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
@@ -283,19 +265,19 @@
                                                 data-bs-target="#expensePopupModal">Expense</button>
                                         </td>
                                     </tr>
-                                    <tr class="font12 border-bottom border-dark">
-                                        <td class="text-dark">05/26/2025</td>
-                                        <td class="text-dark">Afro Cargo N...</td>
-                                        <td class="text-dark"><a data-bs-toggle="modal"
-                                            data-bs-target="#editContainerModal">Sudu8880982</a></td>
-                                        <td class="text-dark">Invoice</td>
-                                        <td class="text-dark">Billaly3Cars</td>
-                                        <td class="text-dark">6000</td>
+                                    <tr>
+                                        <td>05/26/2025</td>
+                                        <td>Afro Cargo N...</td>
+                                        <td><a data-bs-toggle="modal"
+                                                data-bs-target="#editContainerModal">Sudu8880982</a></td>
+                                        <td>Invoice</td>
+                                        <td>Billaly3Cars</td>
+                                        <td>6000</td>
                                         <td class="text-danger">0</td>
 
                                         <td class="text-success">600
                                         </td>
-                                        <td class="text-dark">
+                                        <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
                                             <i class="far fa-edit mx-1"></i>
@@ -327,7 +309,7 @@
                     <h1 class="modal-title fs-5" id="editContainerModalLabel">Edit Container</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-dark">
+                <div class="modal-body noBorder">
 
                     <div class="mt-3">
                         <label for="exampleFormControlInput1" class="form-label mb-0">Branch<i
@@ -374,7 +356,7 @@
                     <h1 class="modal-title fs-5" id="newReportModalLabel">Add New Custom Report</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-dark">
+                <div class="modal-body noBorder">
 
                     <div class="mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Date<i
@@ -446,7 +428,7 @@
                     <button type="button" class="btn-close ms-0 fs_18" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-dark">
+                <div class="modal-body ">
                     <div class="mb-2">
                         <label for="lading_bill" class="form-label">Email Id<i class="text-danger">*</i>:</label>
                         <input type="email" id="lading_bill" class="form-control" value=""
@@ -493,7 +475,7 @@
                     <h1 class="modal-title fs-5" id="expensePopupModalLabel">Edit Expense</h1>
                     <button type="button" class="btn-close fs_18" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-dark">
+                <div class="modal-body">
 
                     <div class="d-flex align-items-center justify-content-end mb-1 mt-3">
                         <div class="usersearch d-flex">
@@ -505,49 +487,6 @@
                                         New Report
                                     </div>
                                 </button>
-                                <button class="btn btn-primary dropdown-toggle px-2" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Column
-                                </button>
-                                <ul class="dropdown-menu checkbox-transform py-2 px-3">
-                                    <li>
-                                        <div class="form-check border-bottom">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Date
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check border-bottom">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Category
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check border-bottom">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Note
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkChecked"
-                                                checked>
-                                            <label class="form-check-label permission-font" for="checkChecked">
-                                                Amount
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -555,20 +494,19 @@
                     <div id='ajexTable'>
                         <div class="card-table">
                             <div class="card-body"></div>
-                            <div class="table-responsive table-height border border-dark mt-3">
+                            <div class="table-responsive table-height mt-3">
                                 <table class="table table-stripped table-hover datatable">
-                                    <thead class="thead-light border-bottom border-dark">
+                                    <thead class="thead-light ">
                                         <tr>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Date
+                                            <th class="text-truncate text-start">Date
                                             </th>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Category
+                                            <th class="text-truncate text-start">Category
                                             </th>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Note
+                                            <th class="text-truncate text-start">Note
                                             </th>
-                                            <th class="fs_14 fw-semibold maxmax-width text-truncate text-start">Amount
+                                            <th class="text-truncate text-start">Amount
                                             </th>
-                                            <th
-                                                class="fs_14 fw-semibold maxmax-width text-truncate text-start bg-transparent table-last-column">
+                                            <th class="text-truncate text-start bg-transparent table-last-column">
                                                 Action</th>
                                         </tr>
                                     </thead>
@@ -596,7 +534,7 @@
                     <h1 class="modal-title fs-5" id="addExpensesModalLabel">Add Expense</h1>
                     <button type="button" class="btn-close fs_18" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-dark">
+                <div class="modal-body ">
 
                     <div class="mb-2">
                         <label for="selectCategory" class="form-label">Expense Category<i
