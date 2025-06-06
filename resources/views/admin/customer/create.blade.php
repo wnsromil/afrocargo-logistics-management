@@ -401,7 +401,7 @@
                     <div class="row mt-4">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-1">
-                                <label class="foncolor" for="contract">Contract<i class="text-danger">*</i></label>
+                                <label class="foncolor" for="contract">Contract</label>
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="input-block mb-3 d-flex align-items-center">
@@ -425,7 +425,7 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-1">
-                                <label class="foncolor" for="text_cust">Text Cust<i class="text-danger">*</i></label>
+                                <label class="foncolor" for="text_cust">Text Cust</label>
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="input-block mb-3 d-flex align-items-center">
@@ -447,7 +447,7 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-1">
-                                <label class="foncolor" for="voice_call">Voice Call<i class="text-danger">*</i></label>
+                                <label class="foncolor" for="voice_call">Voice Call</label>
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="input-block mb-3 d-flex align-items-center">
@@ -469,7 +469,7 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-1">
-                                <label class="foncolor" for="cash_cust">Cash Cust<i class="text-danger">*</i></label>
+                                <label class="foncolor" for="cash_cust">Cash Cust</label>
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="input-block mb-3 d-flex align-items-center">

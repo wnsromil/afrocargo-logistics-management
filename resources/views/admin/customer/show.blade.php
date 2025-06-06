@@ -110,7 +110,7 @@
     <div class="row">
         <div class="col-4 customerr">
             <p class="phead">License ID</p>
-            <p>{{ $user->license_number ?? '-' }}</p>
+            <p class="pdata">{{ $user->license_number ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Lic Expired Date</p>
@@ -138,10 +138,54 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-4 customerr">
+            <p class="phead">Contract</p>
+            <p class="pdata">{{ $user->contract ?? '-' }}</p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Text Cust</p>
+            <p class="pdata">
+                {{ $user->text_cust ?? '-' }}
+            </p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Voice Call</p>
+            <p class="pdata">{{ $user->voice_call ?? '-' }}</p>
+        </div>
+    </div>
 
     <div class="row">
+        <div class="col-4 customerr">
+            <p class="phead">Cash Cust</p>
+            <p class="pdata">{{ $user->cash_cust ?? '-' }}</p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Is License Pic</p>
+            <p class="pdata">
+                {{ $user->is_license_pic ?? '-' }}
+            </p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">No Service</p>
+            <p class="pdata">{{ $user->no_service ?? '-' }}</p>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-4 customerr">
+            <p class="phead">Call</p>
+            <p class="pdata">{{ $user->call ?? '-' }}</p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Sales Call</p>
+            <p class="pdata">
+                {{ $user->sales_call ?? '-' }}
+            </p>
+        </div>
+    </div>
 
+    <div class="row">
         <div class="col-4">
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Signature </p>
