@@ -53,7 +53,7 @@ class Vehicle extends Model
         return $this->hasMany(Parcel::class, 'container_id', 'id');
     }
 
-      public function gateInDriver()
+    public function gateInDriver()
     {
         return $this->belongsTo(User::class, 'gate_in_driver_id');
     }
@@ -70,6 +70,11 @@ class Vehicle extends Model
     public function containerCompany()
     {
         return $this->belongsTo(ContainerCompany::class, 'container_company_id');
+    }
+
+    public function ContainerSize()
+    {
+        return $this->belongsTo(ContainerSize::class, foreignKey: 'container_size');
     }
 
 

@@ -12,7 +12,8 @@ use App\Models\{
     User,
     Role,
     Country,
-    Vehicle
+    Vehicle,
+    ContainerSize,
 };
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -102,7 +103,10 @@ class ContainerController extends Controller
         })->where('status', 'Active')->get();
         $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
             ->Where('is_deleted', 'no')->select('id', 'name')->get();
-        return view('admin.container.create', compact('vehicle', 'warehouses', 'drivers'));
+
+        $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+
+        return view('admin.container.create', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }
 
     /**
@@ -234,7 +238,9 @@ class ContainerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
 
-        return view('admin.container.edit', compact('vehicle', 'warehouses', 'drivers'));
+         $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+
+        return view('admin.container.edit', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }
 
     /**

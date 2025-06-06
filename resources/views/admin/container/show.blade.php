@@ -46,7 +46,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Size</label>
-                        <p>{{ $vehicle->container_size ?? '--'}}</p>
+                        <p>{{ $vehicle->ContainerSize->container_name ?? '--'}}</p>
                     </div>
                 </div>
 
