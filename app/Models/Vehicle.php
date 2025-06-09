@@ -43,12 +43,23 @@ class Vehicle extends Model
     {
         return $this->hasMany(Parcel::class, 'container_id')
             ->selectRaw('container_id, COUNT(*) as count')
+            ->where('status', 4)
             ->groupBy('container_id');
     }
+
 
     public function parcels()
     {
         return $this->hasMany(Parcel::class, 'container_id', 'id');
+    }
+
+      public function gateInDriver()
+    {
+        return $this->belongsTo(User::class, 'gate_in_driver_id');
+    }
+    public function gateOutDriver()
+    {
+        return $this->belongsTo(User::class, 'gate_out_driver_id');
     }
 
     public function containerStatus()

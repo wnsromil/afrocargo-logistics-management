@@ -149,7 +149,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Template Management',
                 'icon' => '<i class="menuIcon ti ti-template"></i>',
                 'route' => 'admin.Categorytemplate.index',
-                'route' => '#',
+               // 'route' => '#',
                 'active' => 'template_category*,templates*',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['template_management.view'],
@@ -161,6 +161,14 @@ class MenuSeeder extends Seeder
                 'active' => 'notification',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['notification.view'],
+            ],
+            [
+                'title' => 'CBM Calculator',
+                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
+                //'route' => 'admin.cbm_calculator.freight_Calculator',
+                'route' => '#',
+                'active' => 'cbm_calculator*',
+                'roles' => ['admin', 'warehouse_manager']
             ],
         ];
 
@@ -226,7 +234,6 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['vehicle_list.view'],
             ]);
-
             Menu::create([
                 'title' => 'Container List',
                 'route' => 'admin.container.index',
@@ -277,6 +284,37 @@ class MenuSeeder extends Seeder
                 'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
+        }
+
+        $cbm_calculator = Menu::where('title', 'CBM Calculator')->first();
+
+        if ($cbm_calculator) {
+            $childMenus = [
+                [
+                    'title' => 'Freight Calculator',
+                    'route' => 'admin.cbm_calculator.freight_Calculator',
+                ],
+                [
+                    'title' => 'Freight Container Size',
+                    'route' => 'admin.cbm_calculator.freight_ContainerSize',
+                ],
+                [
+                    'title' => 'Freight Shipping',
+                    'route' => 'admin.cbm_calculator.freight_Shipping',
+                ],
+            ];
+
+            foreach ($childMenus as $menu) {
+                Menu::firstOrCreate(
+                    ['route' => $menu['route']], // unique check by route
+                    [
+                        'title' => $menu['title'],
+                        'active' => 'cbm_calculator*',
+                        'parent_id' => $cbm_calculator->id,
+                        'roles' => ['admin', 'warehouse_manager'],
+                    ]
+                );
+            }
         }
     }
 }

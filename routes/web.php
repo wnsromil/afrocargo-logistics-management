@@ -34,6 +34,7 @@ use App\Http\Controllers\Web\Admin\{
     ScheduleController,
     BillofLadingController,
     LadingDetailsController,
+    CBMCalculatoarController
 };
 use App\Mail\RegistorMail;
 
@@ -132,19 +133,6 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/freightCalculator', function () {
-    return view('admin.freightCalculator.port_wise_freight');
-});
-Route::get('/FreightContainerSize', function () {
-    return view('admin.FreightContainerSize.Freight_Container_List');
-});
-Route::get('/freightShipping', function () {
-    return view('admin.freightShipping.SingleShippingContainer');
-});
-Route::get('/freightShipping_PDF', function () {
-    return view('admin.freightShipping_PDF.Pdf_view');
-});
-
 Route::get('/lading_details_PDF', function () {
     return view('admin.lading_details_PDF.bill-pdf');
 });
@@ -231,7 +219,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
-        Route::get('container_order/{id}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
+        Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
 
         Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
@@ -281,6 +269,11 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('user_role', [RoleManagementController::class,'index'])->name('user_role.index');
         Route::get('user_role/create', [RoleManagementController::class,'create'])->name('user_role.create');
         Route::post('user_role/store', [RoleManagementController::class,'store'])->name('user_role.store');
+        //CBM Calculatoar
+        Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
+        Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
+        Route::get('freight-Shipping', [CBMCalculatoarController::class, 'FreightShipping'])->name('cbm_calculator.freight_Shipping');
+        Route::get('freight-Shipping_PDF', [CBMCalculatoarController::class, 'FreightShipping_PDF'])->name('cbm_calculator.freight_Shipping_PDF');
 
         Route::get('/orderdetails', function () {
             return view('admin.OrderShipment.orderdetails');

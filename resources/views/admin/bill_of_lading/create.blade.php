@@ -7,66 +7,72 @@
 
     <x-slot name="cardTitle">
         <div class="innertopnav">
-            <div class="subhead h5Size fw-semibold p-0">Add Bill of Lading</div>
-            <nav aria-label="breadcrumb" class="mb-lg-0 mb-16">
-
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a>Bill of Lading</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">
-                        <a href="#" class="text-secondary"> Add Bill
-                            of Lading </a>
-                    </li>
-                </ol>
-            </nav>
+            <div class="subhead">Add Bill of Lading</div>
         </div>
     </x-slot>
 
     <form action="" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group-customer addTemplateForm mb-3">
-            <div class="row mx-3">
-                <div class="col-md-4 col-sm-12 col-lg-4 mb-3">
-                    <label for="company_name" class="form-label text-dark">Company</label>
-                    <input type="text" class="form-control" id="company_name" placeholder="Enter Company Name">
-                </div>
-
-                <div class="col-md-4 col-sm-12 col-lg-4 mb-3 px-4">
-                    <p for="templateTitle" class="form-label text-dark">Type<i class="text-danger">*</i></p>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="Shipper" name="ladingtype" id="radio1" checked>
-                        <label class="form-check-label text-dark" for="inlineRadio1">Shipper</label>
+            <div class="row">
+                <div class="col-12">
+                    <div class="input-block mb-3">
+                        <p for="templateTitle" class="form-label text-dark">Type<i class="text-danger">*</i></p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="Shipper" name="ladingtype" id="radio1" checked>
+                            <label class="form-check-label text-dark" for="inlineRadio1">Shipper</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="Consignee" name="ladingtype" id="radio2">
+                            <label class="form-check-label text-dark" for="inlineRadio2">Consignee</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="Consignee" name="ladingtype" id="radio2">
-                        <label class="form-check-label text-dark" for="inlineRadio2">Consignee</label>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12 col-lg-4 mb-3">
-                    <label for="name" class="form-label text-dark">Name<i class="text-danger">*</i></label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter Name" required>
-                </div>
-
-                <div class="col-md-4 col-sm-12 col-lg-4 mb-3">
-                    <label for="address1" class="form-label text-dark">Address<i class="text-danger">*</i></label>
-                    <input type="text" class="form-control" id="address1" placeholder="Enter Address" required>
-                </div>
-                <div class="col-md-4 col-sm-12 col-lg-4 mb-3">
-                    <label for="address2" class="form-label text-dark">Address 2</label>
-                    <input type="text" class="form-control" id="address2" placeholder="Enter Address 2">
-                </div>
-
-                <div class="col-md-4 col-sm-12 col-lg-4 mb-3">
-                    <label for="city" class="form-label text-dark">City<i class="text-danger">*</i></label>
-                    <input type="text" class="form-control" id="city" placeholder="Enter City" required>
                 </div>
                 <div class="col-md-4 col-sm-12 col-lg-4">
-                    <label for="state" class="form-label text-dark">State<i class="text-danger">*</i></label>
-                    <input type="text" class="form-control" id="state" placeholder="Enter State" required>
+                    <div class="input-block mb-3">
+                        <label for="company_name" class="form-label text-dark">Company</label>
+                        <input type="text" class="form-control inp" id="company_name" placeholder="Enter Company Name">
+                    </div>
                 </div>
 
                 <div class="col-md-4 col-sm-12 col-lg-4">
-                    <label for="zipcode" class="form-label text-dark">Zipcode<i class="text-danger">*</i></label>
-                    <input type="text" class="form-control" id="zipcode" placeholder="Enter Zipcode" required>
+                    <div class="input-block mb-3">
+                        <label for="name" class="form-label text-dark">Name<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="name" placeholder="Enter Name" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="address1" class="form-label text-dark">Address<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="address1" placeholder="Enter Address" required>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="address2" class="form-label text-dark">Address 2</label>
+                        <input type="text" class="form-control inp" id="address2" placeholder="Enter Address 2">
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="city" class="form-label text-dark">City<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="city" placeholder="Enter City" required>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="state" class="form-label text-dark">State<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="state" placeholder="Enter State" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="zipcode" class="form-label text-dark">Zipcode<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="zipcode" placeholder="Enter Zipcode" required>
+                    </div>
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -76,19 +82,16 @@
                             <div class="customflagselect">
                                 <select class="flag-select" name="mobile_number_code_id">
                                     @foreach ($coutry as $key => $item)
-                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                            {{ $item->name }} +{{ $item->phonecode }}
-                                        </option>
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <input type="number" class="form-control form-select-sm py-0 flagInput inp"
-                                placeholder="Enter Mobile No" name="telephone" value="201-555-0123"
-                                oninput="this.value = this.value.slice(0, 10)">
+                            <input type="number" class="form-control form-select-sm py-0 flagInput inp" placeholder="Enter Mobile No" name="telephone" value="201-555-0123" oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('telephone')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -100,29 +103,23 @@
                             <div class="customflagselect">
                                 <select class="flag-select" name="mobile_number_code_id">
                                     @foreach ($coutry as $key => $item)
-                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                            {{ $item->name }} +{{ $item->phonecode }}
-                                        </option>
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <input type="number" class="form-control form-select-sm py-0 flagInput inp"
-                                placeholder="Enter Cellphone No" name="cellphone" value="201-555-0123"
-                                oninput="this.value = this.value.slice(0, 10)">
+                            <input type="number" class="form-control form-select-sm py-0 flagInput inp" placeholder="Enter Cellphone No" name="cellphone" value="201-555-0123" oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('cellphone')
-                            <small class="text-danger">{{ $message }}</small>
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-12"></div>
-
-                <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="col-12">
                     <div class="add-customer-btns text-end mt-4">
-                        <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')"
-                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                        <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
 
                         <button type="submit" class="btn btn-primary">Save</button>
 
