@@ -43,7 +43,7 @@
 
             <div class="top-nav-search">
                 <form>
-                    <input type="text" class="form-control forms" placeholder="Search ">
+                    <input type="text" class="form-control forms" placeholder="Search">
 
                 </form>
             </div>

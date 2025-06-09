@@ -94,6 +94,7 @@ Route::post('/update-out-container-time', [ContainerController::class, 'updateCo
 //CBM 
 
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
+Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsByCountryName']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

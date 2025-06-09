@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\ContainerSize;
 use App\Models\DefaultContainerSize;
+use App\Models\Country;
+use App\Models\Port;
+use App\Models\PortWiseFreight;
+use App\Models\PortWiseFreightContainer;
 
 class CBMCalculatoarController extends Controller
 {
@@ -24,8 +28,10 @@ class CBMCalculatoarController extends Controller
     public function FreightCalculator(Request $request): View
     {
         $ContainerSizes = ContainerSize::all();
+        $Countrys = Country::all();
         return view('admin.cbm_calculatoar.FreightCalculator.Port_wise_freight', [
-            'containerSizes' => $ContainerSizes
+            'containerSizes' => $ContainerSizes,
+            'countrys' => $Countrys
         ]);
     }
 
@@ -33,7 +39,6 @@ class CBMCalculatoarController extends Controller
     {
         return view('admin.cbm_calculatoar.FreightShipping.SingleShippingContainer');
     }
-
 
     public function FreightShipping_PDF(Request $request): View
     {
@@ -83,5 +88,67 @@ class CBMCalculatoarController extends Controller
         $defaults = DefaultContainerSize::all();
 
         return response()->json($defaults);
+    }
+
+    function getPortsByCountryName($countryName)
+    {
+        $ports = Port::where('country_code', $countryName)->orderBy('port_name', 'asc')->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Ports fetched successfully.',
+            'data' => $ports
+        ]);
+    }
+
+    public function storePortFreight(Request $request)
+    {
+        $request->validate([
+            'from_country_select' => 'required|string',
+            'from_port' => 'required|integer',
+            'to_country_select' => 'required|string',
+            'to_port' => 'required|integer',
+        ], [
+            'from_country_select.required' => 'Please select from country.',
+            'from_port.required' => 'Please select from port.',
+            'to_country_select.required' => 'Please select to country.',
+            'to_port.required' => 'Please select to port.',
+        ]);
+
+        // Step 1: Save main freight
+        $freight = PortWiseFreight::create([
+            'creator_user_id' => auth()->id(),
+            'from_country' => $request->from_country_select,
+            'from_port' => $request->from_port,
+            'to_country' => $request->to_country_select,
+            'to_port' => $request->to_port,
+        ]);
+
+        // Step 2: Loop through container data
+        $containerNames = $request->container_name;
+        $freightPrices = $request->freight_price;
+        $currencies = $request->currency;
+
+        foreach ($freightPrices as $index => $freightPrice) {
+            // Agar freight_price ya currency blank ho to skip karo
+            if (empty($freightPrice) || empty($currencies[$index])) {
+                continue;
+            }
+
+            // Container name se container_size_id find karo
+            $container = ContainerSize::where('container_name', $containerNames[$index])->first();
+
+            if ($container) {
+                PortWiseFreightContainer::create([
+                    'port_freight_id' => $freight->id,
+                    'container_size_id' => $container->id,
+                    'freight_price' => $freightPrice,
+                    'currency' => $currencies[$index],
+                ]);
+            }
+        }
+
+
+        return redirect()->back()->with('success', 'Freight data saved successfully.');
     }
 }
