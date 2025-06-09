@@ -26,10 +26,11 @@ function toggleLoginForm(type) {
         // $("#supplies_items").addClass("d-none");
         $("#description_services_items").removeClass("d-none");
         $("#weight_services_items").removeClass("d-none");
-        $('select[name="container_id"]') // optional: if you use this class for styling
-            .prop("disabled", false) // this is essential
-            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
-            .css("opacity", "1");
+        if($('input[name="transport_type"]').val() =='air'){
+            $('select[name="container_id"]').prop("disabled", true);
+        }else{
+            $('select[name="container_id"]').prop("disabled", false);
+        }
     } else if (type === "supplies") {
         // document.getElementById('services').style.display = 'none';
         // document.getElementById('supplies').style.display = 'block';
@@ -56,6 +57,20 @@ function toggleLoginForm(type) {
     }
 }
 
+$('input[name="transport_type"]').on("click", function () {
+    const transportType = $(this).val();
+    console.log("Transport Type:", transportType);
+    if (transportType == "air") {
+        $('select[name="container_id"]')
+        .prop("disabled", true) // this is essential
+            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+            .css("opacity", "1"); // optional: restores visual state
+    }
+    else {
+        $('select[name="container_id"]').prop("disabled", false);
+    }
+});
+
 window.onload = function () {
     // const urlParams = new URLSearchParams(window.location.search);
     // const formType = urlParams.get('id') || 'services';
@@ -63,6 +78,14 @@ window.onload = function () {
     setTimeout(() => {
         console.log("invoce_typ", invoce_type);
         toggleLoginForm(invoce_type);
+        if($('input[name="transport_type"]').val()!='air'){
+            $('select[name="container_id"]')
+            .prop("disabled", true) // this is essential
+            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+            .css("opacity", "1"); // optional: restores visual state
+        }else{
+            $('select[name="container_id"]').prop("disabled", false);
+        }
     }, 600);
 };
 
@@ -242,22 +265,6 @@ $(document).ready(function () {
         minimumInputLength: 1,
     });
 
-    // When a customer is selected
-    // $('select[name="customer_id"]').on('select2:select', function(e) {
-    //     var data = e.params.data;
-    //     var customer = data.customer;
-    //     if(customer.parcel_inventory){
-    //         $('input[name="invoce_item"]').val(customer.parcel_inventory);
-    //     }
-    //     if(customer.delivery_address){
-    //         setPickupDeleveryFormValue(customer.delivery_address)
-    //     }
-    //     if(customer.pickup_address){
-    //         setPickupDeleveryFormValue(customer.pickup_address)
-    //     }
-
-    // });
-
     $('select[name="customer_id"]').on("select2:select", function (e) {
         var data = e.params.data;
         var customer = data.customer;
@@ -396,6 +403,7 @@ $(document).ready(function () {
         // }else{
             $('input[name="descriptions"]').val(customer.descriptions);
             $('input[name="weight"]').val(customer.weight);
+            $('input[name="parcel_id"]').val(customer.parcel_id);
         // }
 
         if (customer.delivery_address) {
@@ -460,20 +468,7 @@ function setPickupDeleveryFormValue(customer) {
             .find('select[name="mobile_number_code_id"]')
             .val(customer.mobile_number_code_id ?? 1)
             .trigger("change");
-        // Wait for states to be loaded before setting the state
-        // setTimeout(() => {
-        //     userAddress.find('select[name="state_id"]')
-        //         .val(customer.state_id)
-        //         .trigger('change');
 
-        //     // Wait again for cities to be loaded
-        //     setTimeout(() => {
-        //         userAddress.find('select[name="city_id"]')
-        //             .val(customer.city_id)
-        //             .trigger('change');
-        //     }, 400); // adjust if cities load slower
-
-        // }, 400); // adjust if states load slower
         userAddress
             .find('input[name="mobile_number"]')
             .val(customer.mobile_number);
@@ -488,6 +483,7 @@ function setPickupDeleveryFormValue(customer) {
         userAddress.find('input[name="country"]').val(customer.country);
         userAddress.find('input[name="state"]').val(customer.state);
         userAddress.find('input[name="city"]').val(customer.city);
+        userAddress.find('input[name="user_id"]').val(customer.user_id);
         // Address 2 can be left empty or filled with additional info if available
     }
 }
@@ -727,13 +723,20 @@ function hendelAjex(url, formData) {
 function jsValidator(requiredFields) {
     // Validate required fields manually
     let isValid = true;
+    // Remove all previous error messages before validating
+    $('.danger').remove();
+
     requiredFields.forEach(function (name) {
         const input = $(`[name="${name}"]`);
         if (!input.val()) {
             input.addClass("is-invalid");
+            // Add error message span after the input
+            // input.after(`<span class="danger">${name.replace(/_/g, ' ')} is required.</span>`);
             isValid = false;
         } else {
             input.removeClass("is-invalid");
+            // Remove the specific error message span after the input
+            // input.after('span.danger').remove();
         }
     });
 
@@ -807,7 +810,7 @@ $("#pickup_country").on("change", function () {
 //
 
 function printLabel() {
-    $("#label_print").print({
+    $("#printInvoice2Content").print({
         globalStyles: true,
         mediaPrint: false,
         stylesheet: null,

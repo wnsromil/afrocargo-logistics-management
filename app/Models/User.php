@@ -159,6 +159,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Address::class, 'user_id');
     }
+    public function addrs()
+    {
+        return $this->hasMany(Address::class);
+    }
     public function parcels()
     {
         return $this->hasMany(Parcel::class);

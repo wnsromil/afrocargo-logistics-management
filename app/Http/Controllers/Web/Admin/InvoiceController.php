@@ -20,7 +20,8 @@ use App\Models\{
     HubTracking,
     Invoice,
     Country,
-    Address
+    Address,
+    InvoiceComment
 };
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -214,7 +215,7 @@ class InvoiceController extends Controller
         $invoice->total_qty = $request->total_qty ?? 0;
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
-        $invoice->duedaterange = Carbon::createFromFormat('m-d-Y', $request->currentdate)->format('Y-m-d');
+        $invoice->duedaterange = $request->currentdate;
         $invoice->currentdate = Carbon::createFromFormat('m-d-Y', $request->currentdate)->format('Y-m-d'); 
         $invoice->warehouse_id = $request->warehouse_id;
         $invoice->driver_id = $request->driver_id;
@@ -225,6 +226,7 @@ class InvoiceController extends Controller
         $invoice->generated_status = $request->generated_status ?? 'generated';
         $invoice->issue_date = now();
         $invoice->user_id = auth()->id();
+        $invoice->create_by = auth()->id();
         $invoice->total_amount = $request->total_amount;
         $invoice->grand_total = $request->grand_total;
         $invoice->payment = $request->payment;
@@ -288,7 +290,7 @@ class InvoiceController extends Controller
     public function edit(string $id)
     {
         //
-        $invoice = Invoice::with(['deliveryAddress','pickupAddress','createdByUser'])->findOrFail($id);
+        $invoice = Invoice::with(['deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments'])->findOrFail($id);
 
         $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id',$id)->latest()->first();
 
@@ -327,61 +329,6 @@ class InvoiceController extends Controller
             'pickupAddress','invoiceHistory'));
     }
 
-    protected function formatAddress($address, $parcel = null) {
-        if ((!$address || !$address->user) && empty($address->role_id)) return null;
-        
-        if(!empty($address->address_type)){
-            return [
-                'id' => $address->id,
-                'user_id' => $address->user_id ?? '',
-                'text' => ($address->full_name ?? ($address->name." ".$address->last_name)) ." ".($parcel->tracking_number??null).", " . $address->address,
-                'name' => $address->user->name ?? $address->name ?? '',
-                'last_name' => $address->user->last_name ?? $address->last_name ?? '',
-                'phone' => $address->user->mobile_number ?? $address->mobile_number ?? '',
-                'full_name' => $address->full_name ?? '',
-                'mobile_number' => $address->mobile_number,
-                'alternative_mobile_number' => $address->alternative_mobile_number,
-                'mobile_number_code_id' => $address->mobile_number_code_id ?? 1,
-                'alternative_mobile_number_code_id' => $address->alternative_mobile_number_code_id ?? 1,
-                'address1' => $address->address,
-                'address2' => $address->address_2,
-                'pincode' => $address->pincode,
-                'country_id' => $address->country_id,
-                'state_id' => $address->state_id,
-                'city_id' => $address->city_id,
-                'country' => $address->country_id,
-                'state' => $address->state_id,
-                'city' => $address->city_id,
-                'address_type' => $address->address_type,
-            ];
-        }
-
-        return [
-                'id' => $address->id,
-                'user_id' => $address->id ?? '',
-                'text' => $address->name." ".$address->last_name.", " . $address->address,
-                'name' => $address->name ?? '',
-                'last_name' => $address->last_name ?? '',
-                'phone' => $address->phone ?? '',
-                'full_name' => $address->name." ".$address->last_name,
-                'mobile_number' => $address->phone,
-                'alternative_mobile_number' => $address->phone_2,
-                'mobile_number_code_id' => $address->phone_code_id ?? 1,
-                'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? 1,
-                'address1' => $address->address,
-                'address2' => $address->address_2,
-                'pincode' => $address->pincode,
-                'country_id' => $address->country_id,
-                'state_id' => $address->state_id,
-                'city_id' => $address->city_id,
-                'country' => $address->country_id,
-                'state' => $address->state_id,
-                'city' => $address->city_id,
-                'address_type' => $address->address_type,
-                'address_type_t' => $address->address_type,
-            ];
-        
-    }
 
     /**
      * Update the specified resource in storage.
@@ -432,6 +379,9 @@ class InvoiceController extends Controller
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems;
         $invoice->duedaterange = $request->duedaterange;
+        if($request->parcel_id){
+            $invoice->parcel_id = $request->parcel_id;
+        }
         if($request->currentdate){
             $invoice->currentdate = Carbon::createFromFormat('m-d-Y', $request->currentdate)->format('Y-m-d');
         }
@@ -468,10 +418,17 @@ class InvoiceController extends Controller
     {
         // return $request->all();
 
-        Invoice::where('id',$request->invoice_id)->update([
-            'notes'=>$request->notes,
-            'created_by'=>auth()->id()
-        ]);
+        InvoiceComment::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'notes' => $request->notes,
+                'invoice_id' => $request->invoice_id,
+                'type' => $request->type ?? 'note',
+                'created_by_id' => auth()->id(),
+                'is_deleted' => false,
+                'is_active' => true
+            ]
+        );
         
         return redirect()->back()->with('success', 'Note updated successfully.');
     }
@@ -482,97 +439,16 @@ class InvoiceController extends Controller
      */
     public function destroy(string $id)
     {
-        $parcel = Parcel::find($id);
+        $invoice = Invoice::findOrFail($id);
 
-        ParcelHistory::create([
-            'parcel_id' => $inventory->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $parcel['customer_id'],
-            'warehouse_id' => $parcel['warehouse_id'],
-            'status' => 'Deleted',
-            'parcel_status' => 'Deleted',
-            'description' => collect($parcel)
-        ]);
+        // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
+        // InvoiceHistory::where('invoice_id', $id)->delete();
+        // IndividualPayment::where('invoice_id', $id)->delete();
+        // ParcelInventorie::where('invoice_id', $id)->delete();
 
-        $parce->delete();
-        return redirect()->route('admin.Invoices.index')
-            ->with('success', 'Order deleted successfully');
-    }
+        $invoice->delete();
 
-    public function customerSearchOld(Request $request)
-    {
-        if (!$request->search) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please enter a search term'
-            ], 400);
-        }
-
-        $searchTerm = '%' . $request->search . '%';
-        $invoice_type = $request->invoice_type;
-
-        $users = User::join('addresses', 'users.id', '=', 'addresses.user_id')
-            ->where('users.role_id', 2)
-            ->where(function($query) use ($searchTerm) {
-                $query->where('users.name', 'like', $searchTerm)
-                    ->orWhere('users.email', 'like', $searchTerm)
-                    ->orWhere('users.phone', 'like', $searchTerm)
-                    ->orWhere('addresses.full_name', 'like', $searchTerm)
-                    ->orWhere('addresses.mobile_number', 'like', $searchTerm)
-                    ->orWhere('addresses.alternative_mobile_number', 'like', $searchTerm)
-                    ->orWhere('addresses.address', 'like', $searchTerm)
-                    ->orWhere('addresses.pincode', 'like', $searchTerm);
-            })->when($request->address_type,function($q)use($request){
-                return $q->where('addresses.address_type',$request->address_type);
-            })
-            ->select(
-                'users.*',
-                'addresses.*'
-            )
-            ->get();
-            
-
-            
-
-        if ($users->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No results found'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $users->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'role_id' => $user->role_id,
-                    'text' => ($user->full_name ?? $user->name).", ".$user->address,
-                    'name' => $user->name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    'full_name' => $user->full_name,
-                    'mobile_number' => $user->mobile_number,
-                    'alternative_mobile_number' => $user->alternative_mobile_number,
-                    'mobile_number_code_id' => $user->mobile_number_code_id ?? 1,
-                    'alternative_mobile_number_code_id' => $user->alternative_mobile_number_code_id ?? 1,
-                    'address1' => $user->address,
-                    'address2' => $user->address_2,
-                    'pincode' => $user->pincode,
-                    'country_id' => $user->country_id,
-                    'state_id' => $user->state_id,
-                    'city_id' => $user->city_id,
-                    'country' => $user->country_id,
-                    'state' => $user->state_id,
-                    'city' => $user->city_id,
-                    'address_type' => $user->address_type,
-                    'lat' => $user->lat,
-                    'long' => $user->long,
-                    'invoice_type' => $invoice_type,
-                ];
-            })
-        ]);
+        return redirect()->route('admin.invoices.index')->with('success', 'Invoice deleted successfully.');
     }
 
     public function customerSearch(Request $request)
@@ -619,7 +495,9 @@ class InvoiceController extends Controller
             ->values();
             
 
-        $users = User::when($searchTerm, function ($query) use ($searchTerm) {
+        $users = User::leftJoin('addresses','addresses.user_id','users.id')
+        ->where('users.role', 3)
+        ->when($searchTerm, function ($query) use ($searchTerm) {
             $query
                 ->where('users.name', 'like', $searchTerm)
                 ->orWhere('users.last_name', 'like', $searchTerm)
@@ -629,12 +507,11 @@ class InvoiceController extends Controller
                 ->orWhere('users.pincode', 'like', $searchTerm);
         })
         ->whereNotIn('users.id', $addressUserIds)
-        ->where('users.role', 3)
-        ->select('users.*') // ensure you only select from users
-        ->distinct()
+        ->select('users.*', 'addresses.id as address_id', 'addresses.user_id', 'addresses.full_name', 'addresses.mobile_number', 'addresses.alternative_mobile_number', 'addresses.address', 'addresses.pincode', 'addresses.address_type')
         ->get()->map(function ($user,$id) use ($invoice_type) {
             return [
                 "id" => 'user_'.$user->id,
+                "parcel_id"=>null,
                 "transport_type" => null,
                 "status" => 1,
                 "unique_id" => null,
@@ -685,19 +562,33 @@ class InvoiceController extends Controller
                 "pickup_type" => null,
                 "delivery_type" => null,
                 "invoice_type" => $invoice_type,
-                "pickup_address" => $this->formatAddress($user),
-                "role_id" => 3,
-                "delivery_address" => $this->formatAddress($user),
+                "address_type" => $user->address_type,
+                "role_id" => $user->role_id ?? 3,
+                "pickup_address" => $this->formatAddress($user,null,'pickup'),
+                "delivery_address" => $this->formatAddress($user,null,'delivery'),
                 "category_names" => [],
                 "pickupaddress" => null,
                 "deliveryaddress" => null,
                 "parcel_inventory" => null
             ];
-        });
+        })->filter(function ($user) use ($request) {
+            return (!empty($user['pickup_address']) || !empty($user['delivery_address'])) 
+            && $user['address_type'] == $request->address_type;
+        })->values();
+
+
+        if($request->address_type =='pickup'){
+            return response()->json([
+                'success' => true,
+                'data' => $users->toArray(),
+            ]);
+        }
+
 
          // Format parcel addresses
         $formattedParcels = $parcels->map(function ($parcel) use ($invoice_type) {
             $parcel->invoice_type = $invoice_type;
+            $parcel->parcel_id = $parcel->id ?? null;
             $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress, $parcel);
             $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress, $parcel);
             return $parcel;
@@ -747,11 +638,37 @@ class InvoiceController extends Controller
             'city' => 'nullable',
             'zip_code' => 'nullable|string|max:10',
             'address_type' => 'required|in:pickup,delivery',
+            'user_id' => 'nullable|integer',
         ]);
+        $useCheck =['phone' => $validatedData['mobile_number']];
+
+            $saveAd =[
+                'full_name' => $validatedData['first_name'] . " " . $validatedData['last_name'],
+                'alternative_mobile_number_code_id' => $validatedData['alternative_mobile_number_code_id'] ?? null,
+                'mobile_number_code_id' => $validatedData['mobile_number_code_id'] ?? null,
+                'alternative_mobile_number' => $validatedData['alternative_mobile_number'] ?? null,
+                'address_2' => $validatedData['address_2'] ?? null,
+                'country_id' => $validatedData['country'],
+                'state_id' => $validatedData['state'],
+                'city_id' => $validatedData['city'] ?? null,
+                'pincode' => $validatedData['zip_code'] ?? null,
+            ];
+        if(!empty($request->address_id) && !empty($request->user_id)){
+           $check['id'] =  $request->address_id;
+           $saveAd['mobile_number'] = $validatedData['mobile_number'];
+           $saveAd['address'] = $validatedData['address'];
+           $saveAd['address_type'] = $validatedData['address_type'];
+        }else{
+            $check = [
+                'mobile_number' => $validatedData['mobile_number'],
+                'address_type' => $validatedData['address_type'],
+                'address' => $validatedData['address']
+            ];
+        }
 
         // Find or create the user based on mobile number
         $user = User::firstOrCreate(
-            ['phone' => $validatedData['mobile_number']],
+            $useCheck,
             [
                 'name' => $validatedData['first_name'],
                 'last_name' => $validatedData['last_name'],
@@ -768,29 +685,13 @@ class InvoiceController extends Controller
                 'password' => bcrypt('password'), // Set a default password
             ]
         );
-        if(!empty($request->address_id)){
-           $check['id'] =  $request->address_id;
-        }else{
-            $check = [
-                'mobile_number' => $validatedData['mobile_number'],
-                'address_type' => $validatedData['address_type'],
-                'address' => $validatedData['address']
-            ];
-        }
+
+        $check['user_id'] =  $user->id;
+        
 
         $address = Address::updateOrCreate(
             $check,
-            [
-                'full_name' => $validatedData['first_name'] . " " . $validatedData['last_name'],
-                'alternative_mobile_number_code_id' => $validatedData['alternative_mobile_number_code_id'] ?? null,
-                'mobile_number_code_id' => $validatedData['mobile_number_code_id'] ?? null,
-                'alternative_mobile_number' => $validatedData['alternative_mobile_number'] ?? null,
-                'address_2' => $validatedData['address_2'] ?? null,
-                'country_id' => $validatedData['country'],
-                'state_id' => $validatedData['state'],
-                'city_id' => $validatedData['city'] ?? null,
-                'pincode' => $validatedData['zip_code'] ?? null,
-            ]
+            $saveAd
         );
         
 
@@ -845,6 +746,7 @@ class InvoiceController extends Controller
             'exchange_rate' => 'nullable|numeric',
             'balance_after_exchange_rate' => 'nullable|numeric',
             'payment_date' => 'required|date',
+            'currentTime' => 'nullable',
         ]);
 
         $data = $this->individualPayment($validated);
@@ -944,6 +846,7 @@ class InvoiceController extends Controller
                         'price' => $item['price'],
                         'ins' => $item['ins'],
                         'tax' => $item['tax'],
+                        'discount' => $item['discount'],
                         'total' => $item['total'],
                     ]
                 );
@@ -963,6 +866,65 @@ class InvoiceController extends Controller
         }
 
         return $parcel;
+    }
+
+    protected function formatAddress($address, $parcel = null,$type=null) {
+        if ((empty($address) || empty($address->user)) && empty($address->role_id)) return null;
+        if(!empty($type) && $type != $address->address_type){
+            return null;
+        }
+        
+        if(!empty($address->address_type)){
+            return [
+                'id' => $address->id,
+                'user_id' => $address->user_id ?? '',
+                'text' => ($address->full_name ?? ($address->name." ".$address->last_name)) ." ".($parcel->tracking_number??null).", " . $address->address,
+                'name' => $address->user->name ?? $address->name ?? '',
+                'last_name' => $address->user->last_name ?? $address->last_name ?? '',
+                'phone' => $address->user->mobile_number ?? $address->mobile_number ?? '',
+                'full_name' => $address->full_name ?? '',
+                'mobile_number' => $address->mobile_number,
+                'alternative_mobile_number' => $address->alternative_mobile_number,
+                'mobile_number_code_id' => $address->mobile_number_code_id ?? 1,
+                'alternative_mobile_number_code_id' => $address->alternative_mobile_number_code_id ?? 1,
+                'address1' => $address->address,
+                'address2' => $address->address_2,
+                'pincode' => $address->pincode,
+                'country_id' => $address->country_id,
+                'state_id' => $address->state_id,
+                'city_id' => $address->city_id,
+                'country' => $address->country_id,
+                'state' => $address->state_id,
+                'city' => $address->city_id,
+                'address_type' => $address->address_type,
+            ];
+        }
+
+        return [
+                'id' => $address->id,
+                'user_id' => null,
+                'text' => $address->name." ".$address->last_name.", " . $address->address,
+                'name' => $address->name ?? '',
+                'last_name' => $address->last_name ?? '',
+                'phone' => $address->phone ?? '',
+                'full_name' => $address->name." ".$address->last_name,
+                'mobile_number' => $address->phone,
+                'alternative_mobile_number' => $address->phone_2,
+                'mobile_number_code_id' => $address->phone_code_id ?? 1,
+                'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? 1,
+                'address1' => $address->address,
+                'address2' => $address->address_2,
+                'pincode' => $address->pincode,
+                'country_id' => $address->country_id,
+                'state_id' => $address->state_id,
+                'city_id' => $address->city_id,
+                'country' => $address->country_id,
+                'state' => $address->state_id,
+                'city' => $address->city_id,
+                'address_type' => $address->address_type,
+                'address_type_t' => $address->address_type,
+            ];
+        
     }
 
 

@@ -123,6 +123,22 @@ class Parcel extends Model
 
     public function ParcelInventory()
     {
-        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id');
+        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id')->select(
+            'id',
+            'id as supply_id',
+            'parcel_id',
+            'invoice_id',
+            'inventorie_id',
+            'inventory_name as supply_name',
+            'inventorie_item_quantity as qty',
+            'label_qty',
+            'price',
+            'ins',
+            'tax',
+            'discount',
+            'total',
+            'created_at',
+            'updated_at'
+        );
     }
 }

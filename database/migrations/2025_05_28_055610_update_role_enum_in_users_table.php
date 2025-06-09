@@ -13,19 +13,19 @@ return new class extends Migration
     {
         // Step 1: Change enum to string temporarily
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->change();
+            // $table->string('role')->change();
         });
 
         // Step 2: Change string back to enum with updated values
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', [
-                'admin',
-                'warehouse_manager',
-                'customer',
-                'driver',
-                'ship_to_customer',
-                'pickup_to_customer',
-            ])->change();
+            // $table->enum('role', [
+            //     'admin',
+            //     'warehouse_manager',
+            //     'customer',
+            //     'driver',
+            //     'ship_to_customer',
+            //     'pickup_to_customer',
+            // ])->change();
         });
     }
 

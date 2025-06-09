@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('Item1')->nullable();
             $table->string('Item2')->nullable();
             $table->string('pickup_delivery')->nullable(); // e.g., pickup or delivery
-            $table->enum('status', ['Active', 'Inactive'])->default('Active')->after('pickup_type');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->date('Date')->nullable();
             $table->time('Time')->nullable();
             $table->date('Done_Date')->nullable();

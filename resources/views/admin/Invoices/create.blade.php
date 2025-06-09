@@ -478,7 +478,7 @@
                                 <option value="">Select Container</option>
                                 @foreach($containers as $container)
                                                             <option {{ old('container_id') == $container->id ? 'selected' : '' }} value="{{
-                                    $container->id }}">{{ $container->vehicle_number }}</option>
+                                    $container->id }}">{{ $container->unique_id }}</option>
                                 @endforeach
                             </select>
                             @error('container_id')
@@ -643,6 +643,7 @@
             <input type="hidden" name="total_amount">
             <input type="hidden" name="pickup_address_id">
             <input type="hidden" name="delivery_address_id">
+            <input type="hidden" name="parcel_id">
 
             <div class="modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

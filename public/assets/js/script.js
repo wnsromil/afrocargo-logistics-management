@@ -12,6 +12,7 @@ Version      : 1.0
     var $wrapper = $(".main-wrapper");
     var $pageWrapper = $(".page-wrapper");
     var $slimScrolls = $(".slimscroll");
+    var scheduleData;
 
     // Sidebar
     // var Sidemenu = function () {
@@ -456,6 +457,7 @@ Version      : 1.0
     }
 
     $(document).ready(function () {
+        if(!scheduleData) return; // If scheduleData is not defined, exit early
         // Agar schedule data hai tabhi form ke andar values bharni hain
         if (Array.isArray(scheduleData) && scheduleData.length > 0) {
             scheduleData.forEach(function (entry) {
@@ -1857,67 +1859,79 @@ Version      : 1.0
         });
     }
 
-    function initAutocompleteById() {
-    const inputs = document.querySelectorAll(".address");
-    if (!inputs.length) return;
+    function initAutocompleteByCls() {
+        // For each .address input, attach a separate autocomplete instance
+        const addressInputs = document.querySelectorAll("input.address");
+        if (!addressInputs.length) return;
 
-    inputs.forEach((input, index) => {
-        console.log('input=>',input);
-        const autocomplete = new google.maps.places.Autocomplete(input, {
-            types: ["geocode"],
-        });
+        addressInputs.forEach(function(input) {
+            // Prevent double-initialization
+            if (input._autocompleteInitialized) return;
+            input._autocompleteInitialized = true;
 
-        autocomplete.addListener("place_changed", function () {
-            const place = autocomplete.getPlace();
-            if (!place) return;
-
-            console.log("Selected address:", place.formatted_address || "N/A");
-
-            const addressComponents = place.address_components || [];
-
-            let postalCode = "",
-                country = "",
-                state = "",
-                city = "",
-                lat = "",
-                lng = "";
-
-            addressComponents.forEach((component) => {
-                const types = component.types || [];
-
-                if (types.includes("postal_code")) {
-                    postalCode = component.long_name || "";
-                }
-                if (types.includes("country")) {
-                    country = component.long_name || "";
-                }
-                if (types.includes("administrative_area_level_1")) {
-                    state = component.long_name || "";
-                }
-                if (types.includes("locality")) {
-                    city = component.long_name || "";
-                }
-                if (types.includes("administrative_area_level_2") && !city) {
-                    city = component.long_name || "";
-                }
+            const autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ["geocode"],
+                // componentRestrictions: { country: "in" }
             });
 
-            if (place.geometry && place.geometry.location) {
-                lat = place.geometry.location.lat() || "";
-                lng = place.geometry.location.lng() || "";
-            }
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                if (!place) return;
 
-            // Scoped query to this form or container
-            const container = input.closest('.address-container') || input.closest('form') || input.parentElement;
+                // Find the closest form to this input
+                const form = input.closest("form");
 
-            setField("Zip_code", postalCode);
-            setField("country", country);
-            setField("state", state);
-            setField("city", city);
-            setField("latitude", lat);
-            setField("longitude", lng);
-            setField("Shipto_latitude", lat);
-            setField("Shipto_longitude", lng);
+                const addressComponents = place.address_components || [];
+
+                let postalCode = "",
+                    country = "",
+                    state = "",
+                    city = "",
+                    lat = "",
+                    lng = "";
+
+                addressComponents.forEach((component) => {
+                    const types = component.types || [];
+
+                    if (types.includes("postal_code")) {
+                        postalCode = component.long_name || "";
+                    }
+                    if (types.includes("country")) {
+                        country = component.long_name || "";
+                    }
+                    if (types.includes("administrative_area_level_1")) {
+                        state = component.long_name || "";
+                    }
+                    if (types.includes("locality")) {
+                        city = component.long_name || "";
+                    }
+                    if (types.includes("administrative_area_level_2") && !city) {
+                        city = component.long_name || "";
+                    }
+                });
+
+                // Get Latitude and Longitude
+                if (place.geometry && place.geometry.location) {
+                    lat = place.geometry.location.lat() || "";
+                    lng = place.geometry.location.lng() || "";
+                }
+
+                // Fill only fields within the same form
+                function setField(name, value) {
+                    if (!form) return;
+                    const field = form.querySelector(`[name="${name}"]`);
+                    if (field) field.value = value;
+                }
+
+                setField("zip_code", postalCode);
+                setField("country", country);
+                setField("state", state);
+                setField("city", city);
+                setField("latitude", lat);
+                setField("longitude", lng);
+                setField("shipto_latitude", lat);
+                setField("shipto_longitude", lng);
+            });
         });
     }
 
@@ -2059,14 +2073,11 @@ Version      : 1.0
             setField("shipto_latitude", lat);
             setField("shipto_longitude", lng);
         });
-    });
-}
-
-
+    }
 
     window.addEventListener("load", function () {
         initAutocomplete();
-        initAutocompleteById();
+        initAutocompleteByCls();
         initAutocomplete_1();
         initAutocomplete_2();
         initAutocomplete_3();
