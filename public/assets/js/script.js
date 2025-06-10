@@ -12,6 +12,7 @@ Version      : 1.0
     var $wrapper = $(".main-wrapper");
     var $pageWrapper = $(".page-wrapper");
     var $slimScrolls = $(".slimscroll");
+    var scheduleData;
 
     // Sidebar
     // var Sidemenu = function () {
@@ -457,6 +458,9 @@ Version      : 1.0
 
     $(document).ready(function () {
         // Agar schedule data hai tabhi form ke andar values bharni hain
+        if(!scheduleData){
+            return;
+        }
         if (Array.isArray(scheduleData) && scheduleData.length > 0) {
             scheduleData.forEach(function (entry) {
                 const day = entry.day.toLowerCase();

@@ -5,6 +5,15 @@
         </h2>
     </x-slot>
 
+    @section('style')
+        <style>
+            #deleteFreightBtn:disabled {
+                cursor: no-drop !important;
+                opacity: 0.6 !important;
+            }
+        </style>
+    @endsection
+
     <x-slot name="cardTitle">
         <p class="head">Port-wise Freight</p>
     </x-slot>
@@ -14,17 +23,16 @@
             <div class="input_group">
                 <p for="selectPort" class="form-label text-dark">Create New Or Select Existing Port-wise
                     Freight Information</p>
-
-                <select class="form-select inp text-secondary" id="selectPort" aria-label="Default select example">
+                <select class="form-select inp text-secondary select2" id="selectPort"
+                    aria-label="Default select example">
                     <option value="add" selected>Add new freight information</option>
-                    <option value="1" data-from="India: Chennai" data-to="United States: New York" data-freight="2500"
-                        data-currency="USD">
-                        India: Chennai - United States: New York
-                    </option>
-                    <option value="2" data-from="India: Chennai" data-to="United States: San Diego, California"
-                        data-freight="2200" data-currency="USD">
-                        India: Chennai - United States: San Diego, California
-                    </option>
+                    @foreach($portWiseFreights as $index => $portWiseFreight)
+                        <option value="{{$portWiseFreight->id}}"
+                            data-from="{{$portWiseFreight->from_country . " : " . $portWiseFreight->fromPort->port_name}}"
+                            data-to="{{$portWiseFreight->to_country . " : " . $portWiseFreight->toPort->port_name}}">
+                            {{$portWiseFreight->from_country . " : " . $portWiseFreight->to_country . " - " . $portWiseFreight->fromPort->port_name . " : " . $portWiseFreight->toPort->port_name  }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
@@ -44,9 +52,11 @@
                             <input type="text" class="form-control inp" id="to_country" placeholder="Country/Port"
                                 readonly>
                         </div>
+                        <input type="hidden" class="form-control inp" name="port_wise_freights_id"
+                            id="port_wise_freights_id" readonly>
                     </div>
 
-                    <div id="newFreightForm" class="row mt-3" >
+                    <div id="newFreightForm" class="row mt-3">
                         <div class="col-md-6 col-lg-6 col-sm-12 border-0 mb-3">
                             <label for="from_country" class="form-label text-dark">From Country</label>
                             <select id="from_country_select" name="from_country_select"
@@ -115,7 +125,7 @@
                                     name="freight_price[]" placeholder="">
                             </div>
                             <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                                <select class="form-control inp select2" id="freight_currency" name="currency[]">
+                                <select class="form-control inp select2" id="freight_currency_selected" name="currency[]">
                                     @foreach($viewCurrencys as $index => $currency)
                                         <option value="{{ $currency }}">{{ $currency }}</option>
                                     @endforeach
@@ -128,11 +138,10 @@
                 <div class="row mt-2">
                     <div class="col-12">
                         <div class="text-end">
-
-                            <button type="button" class="btn btn-outline-primary custom-btn">Delete Freight</button>
-
+                            <!-- Button -->
+                            <button type="button" class="btn btn-outline-primary custom-btn" id="deleteFreightBtn"
+                                disabled>Delete Freight</button>
                             <button type="submit" class="btn btn-primary ">Update Freight</button>
-
                         </div>
                     </div>
                 </div>
@@ -141,7 +150,6 @@
     </div>
 
     @section('script')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('#from_country_select').on('change', function () {
@@ -182,43 +190,122 @@
             });
         </script>
         <script>
-            document.getElementById('selectPort').addEventListener('change', function () {
-                const selectedOption = this.options[this.selectedIndex];
+            $('#selectPort').on('change', function () {
+                const selectedOption = $(this).find('option:selected');
+                const selectedValue = $(this).val();
+                const from = selectedOption.data('from');
+                const to = selectedOption.data('to');
 
-                const from = selectedOption.getAttribute('data-from');
-                const to = selectedOption.getAttribute('data-to');
-                const freight = selectedOption.getAttribute('data-freight');
-                const currency = selectedOption.getAttribute('data-currency');
+                const $fromInput = $('#from_country');
+                const $toInput = $('#to_country');
+                const $newFreightForm = $('#newFreightForm');
+                const $existingFreight = $('#existingFreight');
+                const $deleteFreightBtn = $('#deleteFreightBtn');
+                const $portWiseFreightsId = $('#port_wise_freights_id');
+                const selectedId = $('#selectPort').val();
 
-                const fromInput = document.getElementById('from_country');
-                const toInput = document.getElementById('to_country');
-                const newFreightForm = document.getElementById('newFreightForm');
-                const existingFreight = document.getElementById('existingFreight');
+                if (selectedValue === 'add') {
+                    // Reset inputs
+                    $fromInput.val('');
+                    $toInput.val('');
+                    $newFreightForm.css('display', 'flex');
+                    $existingFreight.css('display', 'none');
 
-                // For standard 20 feet
-                const freightPriceInput = document.getElementById('freight_price_selected');
-                const currencySelect = document.getElementById('freight_currency_checked');
-
-                if (this.value === 'add') {
-                    fromInput.value = '';
-                    toInput.value = '';
-                    newFreightForm.style.display = 'flex';
-                    existingFreight.style.display = 'none';
-
-                    freightPriceInput.value = '';
-                    currencySelect.value = null;
+                    // Clear freight & currency
+                    $('input[name="freight_price[]"]').val('');
+                    $('select[name="currency[]"]').each(function () {
+                        $(this).val('AAD').trigger('change');
+                    });
+                    $portWiseFreightsId.val(null);
+                    // Disable Delete button
+                    $deleteFreightBtn.prop('disabled', true);
                 } else {
-                    fromInput.value = from || '';
-                    toInput.value = to || '';
-                    newFreightForm.style.display = 'none';
-                    existingFreight.style.display = 'flex';
-
-                    // Set the freight & currency values
-                    freightPriceInput.value = freight || '';
-                    currencySelect.value = currency || '';
+                    $fromInput.val(from || '');
+                    $toInput.val(to || '');
+                    $newFreightForm.css('display', 'none');
+                    $existingFreight.css('display', 'flex');
+                    $portWiseFreightsId.val(selectedId);
+                    // Enable Delete button
+                    $deleteFreightBtn.prop('disabled', false);
                 }
             });
         </script>
+        <script>
+            function updateFreightFields(containerSizes) {
+                // Loop through each container row and update the values
+                containerSizes.forEach(function (item, index) {
+                    // Target nth input group
+                    const row = $('.row.mt-2').eq(index);
+
+                    // Update freight_price input
+                    row.find('input[name="freight_price[]"]').val(item.freight_price);
+
+                    // Update currency select
+                    row.find('select[name="currency[]"]').val(item.currency).trigger('change');
+                });
+            }
+
+            // Example: You already made the API call
+            $('#selectPort').on('change', function () {
+                const selectedId = $(this).val();
+                if (selectedId !== 'add') {
+                    $.ajax({
+                        url: `/api/port-freight-containers/${selectedId}`,
+                        type: 'GET',
+                        success: function (response) {
+                            console.log('API Response:', response);
+                            if (response.status && response.container_size) {
+                                updateFreightFields(response.container_size);
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error('Error:', xhr.responseText);
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#deleteFreightBtn').on('click', function () {
+                    const selectedId = $('#selectPort').val();
+
+                    if (selectedId === 'add') {
+                        return; // Don't delete if "Add new freight" is selected
+                    }
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This will delete the selected freight information.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: `/api/port-freight-delete/${selectedId}`,
+                                type: 'DELETE',
+                                success: function (response) {
+                                    if (response.status) {
+                                        Swal.fire('Deleted!', 'The freight has been deleted.', 'success')
+                                            .then(() => {
+                                                window.location.reload();
+                                            });
+                                    } else {
+                                        Swal.fire('Error', 'Delete failed.', 'error');
+                                    }
+                                },
+                                error: function (xhr) {
+                                    Swal.fire('Error', 'Something went wrong.', 'error');
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+
     @endsection
 </x-app-layout>
 

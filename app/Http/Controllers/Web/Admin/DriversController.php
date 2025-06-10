@@ -138,6 +138,8 @@ class DriversController extends Controller
             'license_number' => $request->license_number,
             'license_expiry_date' => Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d'),
             'license_document' => $licenseDocumentPath,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         Vehicle::where('id', $request->vehicle_type)->update([
@@ -321,6 +323,8 @@ class DriversController extends Controller
             'license_expiry_date' => $license_expiry_date,
             'license_document' => $licenseDocumentPath,
             'status' => $status,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         return redirect()->route('admin.drivers.index')->with('success', 'Driver updated successfully');

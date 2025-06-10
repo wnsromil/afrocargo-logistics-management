@@ -271,7 +271,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('/container-sizes/update', [CBMCalculatoarController::class, 'ContainerSizeStore'])->name('cbm_calculator.container-sizes.update');
         Route::post('/store-port-freight', [CBMCalculatoarController::class, 'storePortFreight'])->name('cbm_calculator.store-port-freight');
 
-          // Customer 
+        // Customer 
         Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
 
 

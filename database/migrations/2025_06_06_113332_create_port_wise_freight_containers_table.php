@@ -15,7 +15,7 @@ class CreatePortWiseFreightContainersTable extends Migration
             $table->decimal('freight_price', 10, 2);
             $table->string('currency', 10);
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
-            $table->enum('is_delete', ['Yes', 'No'])->default('No');
+            $table->enum('is_deleted', ['Yes', 'No'])->default('No');
             $table->timestamps();
         });
     }

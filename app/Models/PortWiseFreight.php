@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PortWiseFreight extends Model
 {
     //
-     use HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'creator_user_id',
@@ -17,4 +17,14 @@ class PortWiseFreight extends Model
         'to_country',
         'to_port',
     ];
+
+    public function fromPort()
+    {
+        return $this->hasOne(Port::class, 'id', 'from_port');
+    }
+
+    public function toPort()
+    {
+        return $this->hasOne(Port::class, 'id', 'to_port');
+    }
 }

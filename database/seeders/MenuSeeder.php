@@ -112,7 +112,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill of Lading',
                 'icon' => '<i class="menuIcon ti ti-truck"></i>',
                 'route' => 'admin.BillofLading.index',
-                'route' => '#',
+              //  'route' => '#',
                 'active' => 'bill_of_lading*,lading_details*',
                 'roles' => ['admin', 'warehouse_manager']
             ],

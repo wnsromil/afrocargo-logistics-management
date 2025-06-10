@@ -51,8 +51,6 @@ class SignatureController extends Controller
         return view('admin.signature.index', compact('signatures'));
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -108,8 +106,6 @@ class SignatureController extends Controller
         return redirect()->route('admin.signature.index')
             ->with('success', 'Signature added successfully');
     }
-
-
 
     /**
      * Display the specified resource.
@@ -174,7 +170,6 @@ class SignatureController extends Controller
         return redirect()->route('admin.signature.index')
             ->with('success', 'Signature updated successfully.');
     }
-
 
     /**
      * Remove the specified resource from storage.

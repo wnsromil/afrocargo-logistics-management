@@ -92,9 +92,11 @@ Route::post('/update-in-container-time', [ContainerController::class, 'updateCon
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 
 //CBM 
-
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
 Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsByCountryName']);
+Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'getContainersByPortFreightId']);
+Route::delete('/port-freight-delete/{id}', [CBMCalculatoarController::class, 'destroyPortFreight']);
+Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'getFreightShippingData']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

@@ -16,7 +16,7 @@ class CreatePortWiseFreightsTable extends Migration
             $table->string('to_country');
             $table->string('to_port');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
-            $table->enum('is_delete', ['Yes', 'No'])->default('No');
+            $table->enum('is_deleted', ['Yes', 'No'])->default('No');
             $table->timestamps();
         });
     }
