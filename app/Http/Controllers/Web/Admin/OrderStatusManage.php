@@ -190,8 +190,8 @@ class OrderStatusManage extends Controller
         $vehicleData = $vehicle->toJson(); // store full parcel data in description
 
 
-
-        ContainerHistory::create([
+        // 2. Transfer record
+        $TransfercontainerHistory =  ContainerHistory::create([
             'container_id' => $vehicle->id,
             'transfer_date' => now()->format('Y-m-d'),
             'driver_id' => $validated['delivery_man'],
@@ -238,7 +238,11 @@ class OrderStatusManage extends Controller
         $parcels = Parcel::where('container_id', $vehicle->id)->where('status', 4)->get();
 
         foreach ($parcels as $parcel) {
-            $parcel->update(['status' => 5, 'arrived_container_history_id' => $containerHistory->id]);
+            $parcel->update([
+                'status' => 5,
+                'arrived_container_history_id' => $containerHistory->id,
+                'container_history_id' => $TransfercontainerHistory->id
+            ]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
@@ -479,8 +483,6 @@ class OrderStatusManage extends Controller
             'parcel' => $parcel,
         ]);
     }
-
-
 
     /**
      * Helper function to find the nearest warehouse.

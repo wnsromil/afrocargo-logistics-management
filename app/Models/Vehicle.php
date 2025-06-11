@@ -47,6 +47,14 @@ class Vehicle extends Model
             ->groupBy('container_id');
     }
 
+      public function parcelsCountTransferToWarehouse()
+    {
+        return $this->hasMany(Parcel::class, 'container_id')
+            ->selectRaw('container_id, COUNT(*) as count')
+             ->whereIn('status', [1, 2, 3, 4])
+            ->groupBy('container_id');
+    }
+
 
     public function parcels()
     {

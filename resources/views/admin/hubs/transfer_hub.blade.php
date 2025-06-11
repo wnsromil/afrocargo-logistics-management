@@ -52,7 +52,7 @@
                                     <td>{{ $vehicle->seal_no ?? "-" }}</td>
                                     <td>{{ \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') }}</td>
-                                    <td>{{$vehicle->parcelsCount->first()->count ?? 0}}</td>
+                                    <td>{{$vehicle->parcelsCountTransferToWarehouse->first()->count ?? 0}}</td>
                                     <td>{{ $vehicle->driver->name ?? "-" }}</td>
                                     <td>
                                         <div class="row">
@@ -161,7 +161,7 @@
                                 <input type="hidden" id="total_amount_sum_input_hidden" name="total_amount_sum_hidden"
                                     value="{{$vehicle->total_amount_sum ?? '0'}}" class="form-control" readonly>
                                 <input type="hidden" id="no_of_orders_input_hidden" name="no_of_orders_sum_hidden"
-                                    value="{{$vehicle->parcelsCount->first()->count ?? 0}}" class="form-control" readonly>
+                                    value="{{$vehicle->parcelsCountTransferToWarehouse->first()->count ?? 0}}" class="form-control" readonly>
                             @empty
                                 <tr>
                                     <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>

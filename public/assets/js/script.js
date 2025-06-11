@@ -458,7 +458,7 @@ Version      : 1.0
 
     $(document).ready(function () {
         // Agar schedule data hai tabhi form ke andar values bharni hain
-        if(!scheduleData){
+        if (!scheduleData) {
             return;
         }
         if (Array.isArray(scheduleData) && scheduleData.length > 0) {

@@ -143,7 +143,7 @@ class ContainerController extends Controller
         $messages = [
             'warehouse_name.required' => 'The warehouse field is required.',
             'warehouse_name.exists'   => 'The selected warehouse is invalid.',
-            'container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM',
+            //'container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM',
             'eta_date.required' => 'The ETA date field is required.',
             'transit_country.required' => 'The transit field is required.',
         ];
