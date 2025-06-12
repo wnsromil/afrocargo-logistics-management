@@ -26,17 +26,10 @@ class HubTrackingController extends Controller
     public function transfer_hub()
     {
         // Vehicle data
-        $vehicles = Vehicle::where('vehicle_type', '1')
-            ->where(function ($query) {
-                $query->where('status', 'Active')
-                    ->orWhere('container_status', 20)
-                    ->orWhere('container_status', 6)
-                    ->orWhere('container_status', 16);
-            })
-            ->withSum('parcels as partial_payment_sum', 'partial_payment')
-            ->withSum('parcels as remaining_payment_sum', 'remaining_payment')
-            ->withSum('parcels as total_amount_sum', 'total_amount')
-            ->paginate(10);
+        $vehicles = ContainerHistory::where('type', 'Active')
+            ->with(['container', 'driver'])
+            ->orderBy('id', 'desc')
+            ->get();
 
         // ContainerHistory data
         $historyVehicles = ContainerHistory::where('type', 'Transfer')
@@ -93,8 +86,7 @@ class HubTrackingController extends Controller
                 return $q->where('container_history_id', $id);
             })
             ->when($type === 'OnLoading', function ($q) use ($id) {
-                return $q->where('container_id', $id)
-                    ->whereIn('status', [1, 2, 3, 4]);
+              return $q->where('container_history_id', $id);
             })
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);

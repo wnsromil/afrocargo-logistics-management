@@ -17,7 +17,8 @@ use App\Models\{
     Vehicle,
     ContainerHistory,
     Cart,
-    Address
+    Address,
+    ParcelPickupDriver
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -142,12 +143,20 @@ class OrderShipmentController extends Controller
             $validatedData['container_id'] = $activeVehicle->id;
             $validatedData['warehouse_id'] = $nearestWarehouse->id;
 
-            $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)->where('warehouse_id', $nearestWarehouse->id)
-                ->where('status', 'Transfer')
+            $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
+                ->where('status', 'Active')
                 ->latest() // optional: if multiple transfer records exist, get the latest
                 ->first();
 
             if ($containerHistory) {
+                $containerHistory->increment('no_of_orders', 1);
+
+                // Add financial fields
+                $containerHistory->total_amount += $request->total_amount;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
+
+                $containerHistory->save();
                 $validatedData['container_history_id'] = $containerHistory->id;
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
@@ -745,6 +754,39 @@ class OrderShipmentController extends Controller
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
         return $earthRadius * $c; // Distance in km
+    }
+
+    public function parcelPickupDriver(Request $request)
+    {
+        $validatedData = $request->validate([
+            'parcel_id'   => 'required|integer|exists:parcels,id',
+            'item_name'   => 'required|string',
+            // 'quantity'    => 'required|integer',
+            'img'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $user = $this->user;
+        $data = $request->only(['parcel_id', 'item_name', 'quantity']);
+        $data['is_deleted'] = 'No';
+        $data['driver_id'] = $user->id;
+        $data['quantity'] = $request->quantity ?? null;
+        $data['quantity_type'] = $request->quantity_type ?? null;
+
+
+        // Handle image upload
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/pickup_parcels', $filename, 'public');
+            $data['img'] = 'storage/' . $filePath;
+        }
+
+        $parcel = ParcelPickupDriver::create($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Parcel pickup driver data saved successfully.',
+            'data' => $parcel
+        ], 201);
     }
 
     // end

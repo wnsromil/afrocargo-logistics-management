@@ -46,13 +46,16 @@
                         <tbody>
                             @forelse ($vehicles as $index => $vehicle)
                                 <tr>
-                                    <td>{{ $vehicle->unique_id ?? "-" }}</td>
-                                    <td>{{ $vehicle->transfer_date ?? "-" }}</td>
-                                    <td>{{ $vehicle->vehicle_type ?? "-" }}</td>
-                                    <td>{{ $vehicle->seal_no ?? "-" }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') }}</td>
-                                    <td>{{$vehicle->parcelsCountTransferToWarehouse->first()->count ?? 0}}</td>
+                                    <td>{{ $vehicle->container->unique_id ?? "-" }}</td>
+                                    <td>{{ $vehicle->transfer_date ? \Carbon\Carbon::parse($vehicle->transfer_date)->format('m-d-Y') : '-' }}
+                                    </td>
+                                    <td>{{ $vehicle->container->vehicle_type ?? "-" }}</td>
+                                    <td>{{ $vehicle->container->seal_no ?? "-" }}</td>
+                                    <td>{{ $vehicle->open_date ? \Carbon\Carbon::parse($vehicle->open_date)->format('m-d-Y') : '-' }}
+                                    </td>
+                                    <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}
+                                    </td>
+                                    <td>{{$vehicle->no_of_orders ?? 0}}</td>
                                     <td>{{ $vehicle->driver->name ?? "-" }}</td>
                                     <td>
                                         <div class="row">
@@ -62,21 +65,21 @@
                                                 <div class="row">Total: </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="row"> ${{ $vehicle->partial_payment_sum ?? '0' }}</div>
-                                                <div class="row"> ${{ $vehicle->remaining_payment_sum ?? '0' }}</div>
-                                                <div class="row"> ${{ $vehicle->total_amount_sum ?? '0' }}</div>
+                                                <div class="row"> ${{ $vehicle->partial_payment ?? '0' }}</div>
+                                                <div class="row"> ${{ $vehicle->remaining_payment ?? '0' }}</div>
+                                                <div class="row"> ${{ $vehicle->total_amount ?? '0' }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     @php
-                                        $status_class = $vehicle->container_status ?? null;
-                                        $container_status_name = $vehicle->containerStatus->status ?? null;
+                                        $status_class = $vehicle->container->container_status ?? null;
+                                        $container_status_name = $vehicle->container->containerStatus->status ?? null;
 
                                         $classValue = match ($status_class) {
-                                            16 => 'badge-ready_to_transfer',
-                                            17 => 'badge-transfer_to_hub',
-                                            5 => 'badge-in-transit',
-                                            20 => 'badge-re-delivery',
+                                            '16' => 'badge-ready_to_transfer',
+                                            '17' => 'badge-transfer_to_hub',
+                                            '5' => 'badge-in-transit',
+                                            '20' => 'badge-re-delivery',
                                             default => 'badge-pending',
                                         };
                                       @endphp
@@ -86,7 +89,7 @@
                                             {{ $container_status_name ?? '-' }}
                                         </label>
                                         <br>
-                                        @if($vehicle->container_status == 17)
+                                        @if($vehicle->container->container_status == 17)
                                             <label class="badge-delivered" for="status">
                                                 {{ $vehicle->warehouse->warehouse_name . ' To ' . $vehicle->arrived_warehouse->warehouse_name}}
                                             </label>
@@ -99,21 +102,22 @@
 
                                                 <span class="user-content"
                                                     style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                       height: 26px;align-content: center;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                           height: 26px;align-content: center;">
                                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                 </span>
                                             </a>
-                                            @if($vehicle->container_status == 20 || $vehicle->container_status == 16)
+                                            @if($vehicle->container->container_status == 20 || $vehicle->container->container_status == 16)
                                                 <div class="dropdown-menu menu-drop-user">
                                                     <div class="profilemenu">
                                                         <div class="subscription-menu">
                                                             <ul>
                                                                 <li>
-                                                                    @if($vehicle->container_status == 20)
+                                                                    @if($vehicle->container->container_status == 20)
                                                                         <a class="dropdown-item" href="javascript:void(0);"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#fullyloadedcontainer"
-                                                                            vehicle-id="{{ $vehicle->id }}">
+                                                                            vehicle-id="{{ $vehicle->container->id }}"
+                                                                            container-history-id="{{ $vehicle->id }}">
                                                                             Full load
                                                                         </a>
                                                                     @else
@@ -125,11 +129,12 @@
                                                                 </li>
 
                                                                 <li>
-                                                                    @if($vehicle->container_status == 16)
-                                                                        <a onclick="openTransferModal({{ $vehicle->id }})"
+                                                                    @if($vehicle->container->container_status == 16)
+                                                                        <a onclick="openTransferModal({{ $vehicle->container->id }}, {{ $vehicle->id }})"
                                                                             class="dropdown-item" href="javascript:void(0);"
                                                                             data-bs-toggle="modal" data-bs-target="#transfer_to_hub"
-                                                                            vehicle-id="{{ $vehicle->id }}">
+                                                                            vehicle-id="{{ $vehicle->container->id }}"
+                                                                            container-history-id="{{ $vehicle->id }}">
                                                                             Transfer to Hub
                                                                         </a>
                                                                     @else
@@ -154,14 +159,16 @@
                                     </td>
                                 </tr>
                                 <input type="hidden" id="partial_payment_sum_input_hidden" name="partial_payment_sum_hidden"
-                                    value="{{$vehicle->partial_payment_sum ?? '0'}}" class="form-control" readonly>
+                                    value="{{$vehicle->partial_payment ?? '0'}}" class="form-control" readonly>
                                 <input type="hidden" id="remaining_payment_sum_input_hidden"
-                                    name="remaining_payment_sum_hidden" value="{{$vehicle->remaining_payment_sum ?? '0'}}"
+                                    name="remaining_payment_sum_hidden" value="{{$vehicle->remaining_payment ?? '0'}}"
                                     class="form-control" readonly>
                                 <input type="hidden" id="total_amount_sum_input_hidden" name="total_amount_sum_hidden"
-                                    value="{{$vehicle->total_amount_sum ?? '0'}}" class="form-control" readonly>
+                                    value="{{$vehicle->total_amount ?? '0'}}" class="form-control" readonly>
                                 <input type="hidden" id="no_of_orders_input_hidden" name="no_of_orders_sum_hidden"
-                                    value="{{$vehicle->parcelsCountTransferToWarehouse->first()->count ?? 0}}" class="form-control" readonly>
+                                    value="{{$vehicle->no_of_orders ?? 0}}" class="form-control" readonly>
+                                <input type="hidden" id="containerHistoryId_input_hidden" name="containerHistoryId"
+                                    value="{{$vehicle->id ?? 0}}" class="form-control" readonly>
                             @empty
                                 <tr>
                                     <td colspan="11" class="px-4 py-4 text-center text-gray-500">No data found.</td>
@@ -181,9 +188,9 @@
                                     <td>{{ $historyVehicle->transfer_date ?? "-" }}</td>
                                     <td>{{ $historyVehicle->container->vehicle_type ?? "-" }}</td>
                                     <td>{{ $historyVehicle->container->seal_no ?? "-" }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($historyVehicle->container->open_date)->format('m-d-Y') }}
+                                    <td>{{ \Carbon\Carbon::parse($historyVehicle->open_date)->format('m-d-Y') }}
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($historyVehicle->container->close_date)->format('m-d-Y') }}
+                                    <td>{{ \Carbon\Carbon::parse($historyVehicle->close_date)->format('m-d-Y') }}
                                     </td>
                                     <td>{{ $historyVehicle->no_of_orders ?? 0 }}</td>
                                     <td>{{ $historyVehicle->driver->name ?? "-" }}</td>
@@ -239,13 +246,15 @@
                     </table>
                 </div>
 
-                <div class="bottom-user-page mt-3">
+                {{-- <div class="bottom-user-page mt-3">
                     {!! $vehicles->links('pagination::bootstrap-5') !!}
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
     <input type="hidden" id="vehicle_id_input_hidden" name="vehicle_id_hidden" class="form-control" readonly>
+    <input type="hidden" id="container_history_id_input_hidden" name="container_history_id_hidden" class="form-control"
+        readonly>
 
     <div class="modal custom-modal signature-add-modal fade" id="transfer_to_hub" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-md">
@@ -364,94 +373,101 @@
         </div>
     </div>
 
-    <script>
-        function openTransferModal(vehicleId) {
-            $.ajax({
-                url: "/api/fetch-transfer-to-hub-data",
-                type: "POST",
-                data: { vehicleId: vehicleId },
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                success: function (response) {
-                    // Fill from_warehouse_id
-                    $('input#from_warehouse_name').val(response.vehicle.warehouse.warehouse_name); // Show name
-                    $('input#from_warehouse_id').val(response.vehicle.warehouse.id); // Submit ID
+    @section("script")
+        <script>
+            function openTransferModal(vehicleId, containerHistoryId) {
+                $.ajax({
+                    url: "/api/fetch-transfer-to-hub-data",
+                    type: "POST",
+                    data: {
+                        vehicleId: vehicleId,
+                        containerHistoryId: containerHistoryId
+                    },
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    success: function (response) {
+                        // Fill from_warehouse_id
+                        $('input#from_warehouse_name').val(response.vehicle.warehouse.warehouse_name); // Show name
+                        $('input#from_warehouse_id').val(response.vehicle.warehouse.id); // Submit ID
 
 
-                    // Fill vehicle number
-                    $('input[name="vehicle_no"]').val(response.vehicle.vehicle_number);
+                        // Fill vehicle number
+                        $('input[name="vehicle_no"]').val(response.vehicle.vehicle_number);
 
-                    // Populate to_warehouse_id dropdown
-                    let warehouseDropdown = $('select[name="to_warehouse_id"]');
-                    warehouseDropdown.empty().append('<option value="">Select Warehouse</option>');
-                    response.warehouses.forEach(function (warehouse) {
-                        warehouseDropdown.append(
-                            `<option value="${warehouse.id}">${warehouse.warehouse_name}</option>`
-                        );
-                    });
+                        // Populate to_warehouse_id dropdown
+                        let warehouseDropdown = $('select[name="to_warehouse_id"]');
+                        warehouseDropdown.empty().append('<option value="">Select Warehouse</option>');
+                        response.warehouses.forEach(function (warehouse) {
+                            warehouseDropdown.append(
+                                `<option value="${warehouse.id}">${warehouse.warehouse_name}</option>`
+                            );
+                        });
 
-                    // Populate delivery man dropdown
-                    let deliveryDropdown = $('select[name="delivery_man"]');
-                    deliveryDropdown.empty().append('<option value="">Select Delivery Man</option>');
-                    response.drivers.forEach(function (driver) {
-                        deliveryDropdown.append(
-                            `<option value="${driver.id}">${driver.name}</option>`
-                        );
-                    });
-                },
-                error: function (xhr) {
-                    alert("Something went wrong while fetching data.");
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-    </script>
-    <script>
-        function updatestatusfullyloadedcontainer() {
-            let vehicleId = $("#vehicle_id_input_hidden").val();
-
-            if (!vehicleId) {
-                alert("Parcel ID is required.");
-                return;
+                        // Populate delivery man dropdown
+                        let deliveryDropdown = $('select[name="delivery_man"]');
+                        deliveryDropdown.empty().append('<option value="">Select Delivery Man</option>');
+                        response.drivers.forEach(function (driver) {
+                            deliveryDropdown.append(
+                                `<option value="${driver.id}">${driver.name}</option>`
+                            );
+                        });
+                    },
+                    error: function (xhr) {
+                        alert("Something went wrong while fetching data.");
+                        console.error(xhr.responseText);
+                    }
+                });
             }
-            // Show Loading Indicator
-            $(".btn-primary").html("Processing...").prop("disabled", true);
+        </script>
+        <script>
+            function updatestatusfullyloadedcontainer() {
+                let vehicleId = $("#vehicle_id_input_hidden").val();
+                let containerhistoryid = $("#container_history_id_input_hidden").val();
 
-            // Make AJAX POST Request
-            $.ajax({
-                url: "/api/update-status-fully-loaded-container", // API endpoint
-                type: "POST",
-                data: {
-                    vehicleId: vehicleId,
-                },
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
-                },
-                success: function (response) {
-                    document
-                        .querySelector("#fullyloadedcontainer .custom-btn")
-                        .click();
-                    Swal.fire({
-                        title: "Good job!",
-                        text: "Status changed successfully!",
-                        icon: "success",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
-                },
-                error: function (xhr, status, error) {
-                    // Handle Server-Side Validation Errors
-                    let errors = xhr.responseJSON?.errors || {};
-                },
-                complete: function () {
-                    // Re-enable Save Button
-                    $(".btn-primary").html("Save").prop("disabled", false);
-                },
-            });
-        }
-    </script>
+                if (!vehicleId) {
+                    alert("Parcel ID is required.");
+                    return;
+                }
+                // Show Loading Indicator
+                $(".btn-primary").html("Processing...").prop("disabled", true);
+
+                // Make AJAX POST Request
+                $.ajax({
+                    url: "/api/update-status-fully-loaded-container", // API endpoint
+                    type: "POST",
+                    data: {
+                        vehicleId: vehicleId,
+                        containerHistoryId: containerhistoryid
+                    },
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                    },
+                    success: function (response) {
+                        document
+                            .querySelector("#fullyloadedcontainer .custom-btn")
+                            .click();
+                        Swal.fire({
+                            title: "Good job!",
+                            text: "Status changed successfully!",
+                            icon: "success",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle Server-Side Validation Errors
+                        let errors = xhr.responseJSON?.errors || {};
+                    },
+                    complete: function () {
+                        // Re-enable Save Button
+                        $(".btn-primary").html("Save").prop("disabled", false);
+                    },
+                });
+            }
+        </script>
+    @endsection
 
 </x-app-layout>

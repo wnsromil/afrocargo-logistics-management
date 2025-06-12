@@ -7,6 +7,7 @@ use App\Models\Container;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\ContainerHistory;
 
 class ContainerController extends Controller
 {
@@ -68,6 +69,13 @@ class ContainerController extends Controller
                 if ($checkbox_status == 'only_open' || $checkbox_status == 'both_open_close') {
                     $openVehicle->open_date = $today;
                     $openVehicle->container_status = 20;
+                    $containerHistory = ContainerHistory::create([
+                        'container_id' => $openVehicle->id,
+                        'status' => 20,
+                        'type' => 'Active',
+                        'warehouse_id' => $openVehicle->warehouse_id,
+                        'open_date' => $today,
+                    ]);
                 }
 
                 $openVehicle->save();
@@ -89,6 +97,18 @@ class ContainerController extends Controller
                 if ($checkbox_status == 'only_close' || $checkbox_status == 'both_open_close') {
                     $closeVehicle->close_date = $today;
                     $closeVehicle->container_status = 0;
+
+                    $containerHistory = ContainerHistory::where('container_id', $closeVehicle->id)
+                        ->where('warehouse_id', $closeVehicle->warehouse_id)
+                        ->first();
+
+                    if ($containerHistory) {
+                        // Update the existing record
+                        $containerHistory->update([
+                            'type' => 'Inactive',
+                            'close_date' => $today,
+                        ]);
+                    }
                 }
 
                 $closeVehicle->save();

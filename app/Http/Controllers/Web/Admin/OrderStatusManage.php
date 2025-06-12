@@ -191,21 +191,19 @@ class OrderStatusManage extends Controller
 
 
         // 2. Transfer record
-        $TransfercontainerHistory =  ContainerHistory::create([
-            'container_id' => $vehicle->id,
-            'transfer_date' => now()->format('Y-m-d'),
-            'driver_id' => $validated['delivery_man'],
-            'status' => 17,
-            'type' => 'Transfer',
-            'no_of_orders' => $validated['no_of_orders_input_hidden'],
-            'description' => $vehicleData,
-            'warehouse_id' => $validated['from_warehouse_id'],
-            'arrived_warehouse_id' => $validated['to_warehouse_id'],
-            'partial_payment' => $validated['partial_payment_sum_input_hidden'],
-            'remaining_payment' => $validated['remaining_payment_sum_input_hidden'],
-            'total_amount' => $validated['total_amount_sum_input_hidden'],
-            'note' => $validated['note'],
-        ]);
+        $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
+
+        if ($TransfercontainerHistory) {
+            $TransfercontainerHistory->update([
+                'transfer_date'         => now()->format('Y-m-d'),
+                'driver_id'             => $validated['delivery_man'],
+                'status'                => 17,
+                'type'                  => 'Transfer',
+                'description'           => $vehicleData,
+                'arrived_warehouse_id'  => $validated['to_warehouse_id'],
+                'note'                  => $validated['note'],
+            ]);
+        }
 
         // 2. Arrived record
         $containerHistory = ContainerHistory::create([
@@ -222,6 +220,8 @@ class OrderStatusManage extends Controller
             'remaining_payment' => $validated['remaining_payment_sum_input_hidden'],
             'total_amount' => $validated['total_amount_sum_input_hidden'],
             'note' => $validated['note'],
+            'open_date' => $TransfercontainerHistory->open_date,
+            'close_date' => $TransfercontainerHistory->close_date,
         ]);
 
         // Step 3: Update vehicle table
@@ -241,7 +241,6 @@ class OrderStatusManage extends Controller
             $parcel->update([
                 'status' => 5,
                 'arrived_container_history_id' => $containerHistory->id,
-                'container_history_id' => $TransfercontainerHistory->id
             ]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
@@ -340,6 +339,14 @@ class OrderStatusManage extends Controller
         $Vehicle->update([
             'container_status' => 16,
         ]);
+
+        $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
+
+        if ($TransfercontainerHistory) {
+            $TransfercontainerHistory->update([
+                'close_date'         => now()->format('Y-m-d'),
+            ]);
+        }
 
         // Return success response
         return response()->json([
