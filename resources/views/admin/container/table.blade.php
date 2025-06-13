@@ -13,6 +13,9 @@
                         <th>Close Invoice</th>
                         <th>Close Warehouse</th>
                         <th>Volume</th>
+                        <th>Total Billed</th>
+                        <th>Total Collected</th>
+                        <th>Total Balance</th>
                         <th>Status</th>
                         <th>Status Change</th>
                         <th Class="no-sort">Action</th>
@@ -30,7 +33,10 @@
                             <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}</td>                                    
                             <td class="tabletext"><input type="checkbox"></td>
                             <td class="tabletext"><input type="checkbox"></td>
-                            <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>                                
+                            <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
+                            <td>${{number_format(328913.5)}}</td>
+                            <td>${{number_format(103311.5)}}</td>
+                            <td>${{number_format(227389)}}</td>                            
                             <td>
                                 <label
                                     class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"

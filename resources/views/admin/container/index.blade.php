@@ -84,9 +84,9 @@
 
     <div class="usersearch d-flex align-items-center justify-content-between">
         <div class="lablewrap d-flex text-dark">
-            <label class="me-sm-4 me-2 mb-0">Total Billed: <b>328913.5</b></label>
-            <label class="me-sm-4 me-2 mb-0">Total Collected: <b>103311.5</b></label>
-            <label class="me-sm-4 me-2 mb-0">Total Balance: <b>227389</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Billed: $<b>{{number_format(328913.5)}}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Collected: $<b>{{number_format(103311.5)}}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Balance: $<b>{{number_format(227389)}}</b></label>
         </div>
     </div>
 
@@ -107,6 +107,9 @@
                                 <th>Close Invoice</th>
                                 <th>Close Warehouse</th>
                                 <th>Volume</th>
+                                <th>Total Billed</th>
+                                <th>Total Collected</th>
+                                <th>Total Balance</th>
                                 <th>Status</th>
                                 <th>Status Change</th>
                                 <th Class="no-sort">Action</th>
@@ -127,6 +130,9 @@
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
+                                    <td>${{number_format(328913.5)}}</td>
+                                    <td>${{number_format(103311.5)}}</td>
+                                    <td>${{number_format(227389)}}</td>
                                     <td>
                                         <label
                                             class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
@@ -173,8 +179,7 @@
                                                         <a class="dropdown-item" data-bs-toggle="modal"
                                                             data-bs-target="#Out_time_model" href="javascript:void(0);"
                                                             onclick="setContainerId({{ $vehicle->id }})">
-                                                            <i
-                                                                class="fa-solid fa-truck me-2"></i>Container
+                                                            <i class="fa-solid fa-truck me-2"></i>Container
                                                             Out Time
                                                         </a>
                                                     </li>

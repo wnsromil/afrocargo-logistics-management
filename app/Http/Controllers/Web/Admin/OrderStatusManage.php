@@ -482,11 +482,15 @@ class OrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
 
+        //$otp = rand(1000, 9999);
+        $otp = 1234;
+
         // Update the parcel details
         $parcel->update([
             'arrived_driver_id' => $request->driver_id,
             'status' => 22,
             'arrived_warehouse_id' => $request->warehouse_id,
+            'otp' => $otp
         ]);
 
         // Create a new entry in ParcelHistory

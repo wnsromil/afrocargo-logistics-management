@@ -229,12 +229,22 @@ class ServiceOrderStatusManage extends Controller
     {
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
+            'otp' => 'required|digits:4', // ✅ Add OTP validation
             'notes' => 'nullable|string',
         ]);
 
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
-        // Update the parcel details
+
+        // ✅ Check if OTP matches
+        if ($parcel->otp != $request->otp) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid OTP. Please check and try again.',
+            ], 400);
+        }
+
+        // ✅ Check if already delivered
         if ($parcel->status == 11) {
             return response()->json([
                 'status' => false,
@@ -242,17 +252,18 @@ class ServiceOrderStatusManage extends Controller
             ], 400);
         }
 
+        // ✅ Update parcel
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 11,
-            // 'warehouse_id' => $this->user->warehouse_id,
         ]);
 
-         ParcelPickupDriver::where('parcel_id', $parcel->id)
+        // ✅ Update ParcelPickupDriver
+        ParcelPickupDriver::where('parcel_id', $parcel->id)
             ->where('container_id', $parcel->container_id)
             ->update(['status' => 11]);
 
-        // Create a new entry in ParcelHistory
+        // ✅ Add Parcel History
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
             'created_user_id' => $this->user->id,
@@ -261,7 +272,7 @@ class ServiceOrderStatusManage extends Controller
             'parcel_status' => 11,
             'note' => $request->notes ?? null,
             'warehouse_id' => $this->user->warehouse_id,
-            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
 
         return response()->json([
@@ -270,6 +281,7 @@ class ServiceOrderStatusManage extends Controller
             'data' => $parcel
         ]);
     }
+
 
     public function statusUpdate_Cancel(Request $request)
     {
