@@ -27,9 +27,9 @@
                     <select name="driver_id" class="form-control select2">
                         <option value="">Select Driver</option>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ request()->query('driver_id') == $user->id ? 'selected' : '' }}>
-                            {{ $user->name }}
-                        </option>
+                            <option value="{{ $user->id }}" {{ request()->query('driver_id') == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -40,90 +40,109 @@
                     <label>Date</label>
                     <div class="daterangepicker-wrap cal-icon cal-icon-info">
                         <input type="text" name="daterangepicker" class="btn-filters form-cs inp Expensefillterdate"
-                        value="{{ old('daterangepicker', request()->query('daterangepicker')) }}" />
+                            value="{{ old('daterangepicker', request()->query('daterangepicker')) }}" />
                     </div>
                 </div>
             </div>
             <div class="col-md-4  top-50 start-100 twobutton2">
                 <button type="submit" class="btn btn-primary btnf me-2">Search</button>
-                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
+                <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
             </div>
         </div>
     </form>
-        <div id='ajexTable'>
+    <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive DriverInventoryTable notMinheight mt-3">
-                    <table class="table table-stripped table-hover datatable">
-                        <thead class="thead-light">
+                    <table class="table table-stripped table-hover datatable notposition"
+                        style="border: 1px solid #000; width: 100%; text-align: center; font-size: 14px;">
+                        <thead style="background-color: #f8f9fa; border: 1px solid #000;">
                             <tr>
-                                <th>S. No.</th>
-                                <th>Date</th>
-                                <th>Driver</th>
-                                <th>Item Number</th>
-                                <th>Item</th>
-                                <th>Type</th>
-                                <th>Quantity</th>
-                                <th>Action</th>
+                                <th style="border: 1px solid #000;">S. No.</th>
+                                <th style="border: 1px solid #000;">Date</th>
+                                <th style="border: 1px solid #000;">Driver</th>
+                                <th style="border: 1px solid #000;">Item Number</th>
+                                <th style="border: 1px solid #000;">Item</th>
+                                <th style="border: 1px solid #000;">Type</th>
+                                <th style="border: 1px solid #000;">Quantity</th>
+                                <th style="border: 1px solid #000;">Action</th>
                             </tr>
                         </thead>
 
-                        <tbody>
-                            @forelse ($items as $key => $item)
-                                <tr>
-                                    <td>{{ $serialStartItems + $key + 1 }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->date)->format('m-d-Y') }}</td>
-                                    <td>{{ $item->driver->name ?? '--' }}</td>
-                                    <td>{{ $item->items->unique_id ?? '--' }}</td>
-                                    <td>{{ $item->items->name ?? '--' }}</td>
-                                    <td>{{ $item->in_out ?? '--' }}</td>
-                                    <td>{{ $item->quantity ?? '--' }}</td>
-                                    <td>
-                                        <form action="{{ route('admin.driver_inventory.destroy', $item->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                style="background:none; border:none; padding:0; cursor:pointer;">
-                                                <img src="{{ asset('assets/img/Vector (13).png') }}" alt="Delete Icon">
-                                            </button>
-                                        </form>
-                                    </td>
+                              <tbody>
+                                    @forelse ($items as $key => $item)
+                                        <tr>
+                                            <td style="border: 1px solid #000;">{{ $serialStartItems + $key + 1 }}</td>
+                                            <td style="border: 1px solid #000;">
+                                                {{ \Carbon\Carbon::parse($item->date)->format('m-d-Y') }}</td>
+                                            <td style="border: 1px solid #000;">{{ $item->driver->name ?? '--' }}</td>
+                                            <td style="border: 1px solid #000;">{{ $item->items->unique_id ?? '--' }}</td>
+                                            <td style="border: 1px solid #000;">{{ $item->items->name ?? '--' }}</td>
+                                            <td style="border: 1px solid #000;">{{ $item->in_out ?? '--' }}</td>
+                                            <td style="border: 1px solid #000;">{{ $item->quantity ?? '--' }}</td>
+                                            <td style="border: 1px solid #000;">
+                                                <form action="{{ route('admin.driver_inventory.destroy', $item->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        style="background:none; border:none; padding:0; cursor:pointer;">
+                                                        <img src="{{ asset('assets/img/Vector (13).png') }}" alt="Delete Icon">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                         <tr style="background-color: #fff;">
+                                           @php
+                                                    $result = calculateDriverInventoryDetails($item->id);
+                                                @endphp
 
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
+                                                <td colspan="8" style="padding: 0px !important; border: none;">
+                                                    <table style="width: 100%; border-collapse: collapse;">
+                                                        <tr>
+                                                            <td style="width: 33.33%; text-align: center; border: 1px solid #000;">
+                                                                <p style="margin: 8px 0; color: red; font-weight: bold;">
+                                                                    Out Qty ({{ $result['DriverInventory_quantity_out'] }}) - Sold Qty ({{ $result['DriverInventoriesSolde_quantity'] }}) = {{ $result['remaining_quantity'] }}
+                                                                </p>
+                                                            </td>
+                                                            <td style="width: 33.33%; text-align: center; border: 1px solid #000;">
+                                                                <p style="margin: 8px 0; color: red; font-weight: bold;">
+                                                                    Total Qty
+                                                                </p>
+                                                            </td>
+                                                            <td style="width: 33.33%; text-align: center; border: 1px solid #000;">
+                                                                <p style="margin: 8px 0; color: red; font-weight: bold;">
+                                                                    Outs Qty ({{ $result['DriverInventory_quantity_out'] }}) - Ins Qty ({{ $result['DriverInventory_quantity_in'] }}) = {{ $result['DriverInventory_quantity_total'] }}
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                         </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" style="border: 1px solid #000; padding: 10px; text-align: center;">No Data found.</td>
+                                        </tr>
+                                    @endforelse
+
+                                    {{-- ✅ Summary Row --}}
+                                   
+                                </tbody>
                     </table>
                 </div>
             </div>
         </div>
-       
-        <div class="d-flex" style="border:1px solid #737B8B;height: 47px;justify-content: space-around;
-    padding: 0 10px;">
-            <div>
-                <p class="inventory">Out Qty (1) - Sold Qty (3) = -2</p>
-            </div>
-            <div>
-                <p class="inventory">Total Qty</p>
-            </div>
-            <div>
-                <p class="inventory">Outs Qty (1) - Ins Qty (0) = 1</p>
-            </div>
-        </div>
+
+        <!-- Inline styled footer row like image -->
         <h3 class="head">Detail Driver Supplies</h3>
-       
+
         <div class="card-table">
             <div class="card-body">
-                <div class="table-responsive DriverInventoryTable notMinheight mt-3">
-                    <table class="table table-stripped table-hover datatable">
+                <div class="table-responsive DriverInventoryTable soldItems notMinheight mt-3">
+                    <table class="table table-stripped table-hover datatable notposition">
                         <thead class="thead-light">
                             <tr>
-                                <th>S. No.</th>
+                                {{-- <th>S. No.</th> --}}
                                 <th>Date</th>
                                 <th>Customer</th>
                                 <th>Invoice No.</th>
@@ -137,24 +156,24 @@
                         </thead>
                         <tbody>
                             @forelse ($driver_details as $key => $driver_detail)
-                            <tr>
-                                <td>{{ $serialStartSold + $key + 1 }}</td>
-                                <td>{{ \Carbon\Carbon::parse($driver_detail->date)->format('m-d-Y') }}</td>
-                                <td>{{ $driver_detail->customer->name ?? '--' }}</td>
-                                <td>{{ $driver_detail->invoice_no ?? '--' }}</td>
-                                <td>{{ $item->items->unique_id ?? '--' }}</td>
-                                <td>{{ $driver_detail->items->items->name ?? '--' }}</td>
-                                <td>{{ $driver_detail->type ?? '--' }}</td>
-                                <td>{{ $driver_detail->quantity ?? '--' }}</td>
-                                <td>{{ $driver_detail->price ?? '--' }}</td>
-                                <td>{{ $driver_detail->total ?? '--' }}</td>
-                            </tr>
+                                <tr>
+                                    {{-- <td>{{ $serialStartSold + $key + 1 }}</td> --}}
+                                    <td>{{ \Carbon\Carbon::parse($driver_detail->date)->format('m-d-Y') }}</td>
+                                    <td>{{ $driver_detail->customer->name ?? '--' }}</td>
+                                    <td>{{ $driver_detail->invoice_no ?? '--' }}</td>
+                                    <td>{{ $item->items->unique_id ?? '--' }}</td>
+                                    <td>{{ $driver_detail->items->items->name ?? '--' }}</td>
+                                    <td>{{ $driver_detail->type ?? '--' }}</td>
+                                    <td>{{ $driver_detail->quantity ?? '--' }}</td>
+                                    <td>{{ $driver_detail->price ?? '--' }}</td>
+                                    <td>{{ $driver_detail->total ?? '--' }}</td>
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
-                                </td>
-                            </tr>
-                        @endforelse
+                                <tr>
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -182,7 +201,8 @@
         <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                     <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                     <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -196,11 +216,11 @@
                         {!! $driver_details->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
-       </div>
+    </div>
 
-       <script>
+    <script>
         // Function to reset the form fields
         function resetForm() {
             window.location.href = "{{ route('admin.driver_inventory.index') }}";

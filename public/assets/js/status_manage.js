@@ -96,6 +96,9 @@
             let delivery_man = $("#delivery_man").val();
             let note = $("#Note").val();
             let vehicle_id_hidden = $("#vehicle_id_input_hidden").val();
+            let container_history_id_input_hidden = $(
+                "#container_history_id_input_hidden"
+            ).val();
             let partial_payment_sum_input_hidden = $(
                 "#partial_payment_sum_input_hidden"
             ).val();
@@ -148,6 +151,7 @@
                     total_amount_sum_input_hidden:
                         total_amount_sum_input_hidden,
                     no_of_orders_input_hidden: no_of_orders_input_hidden,
+                    containerHistoryId: container_history_id_input_hidden,
                 },
                 headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
@@ -341,12 +345,19 @@
                 button.addEventListener("click", function () {
                     // Get the ID from the clicked button's data-id attribute
                     const vehiclelId = this.getAttribute("vehicle-id");
+                    const containerhistoryid = this.getAttribute(
+                        "container-history-id"
+                    );
 
                     // Store the ID in the hidden input field
                     if (vehiclelId) {
                         document.getElementById(
                             "vehicle_id_input_hidden"
                         ).value = vehiclelId;
+
+                        document.getElementById(
+                            "container_history_id_input_hidden"
+                        ).value = containerhistoryid;
                     }
                 });
             });

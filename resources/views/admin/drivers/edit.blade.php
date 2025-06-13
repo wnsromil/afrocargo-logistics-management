@@ -13,6 +13,15 @@
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <!-- Warehouse Name -->
+             
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="company_name"> Driver ID</label>
+                        <input type="text" class="form-control inp" id="unique_id" name="unique_id" style="background: #ececec;" placeholder=""
+                            value="{{ $manager_data->unique_id }}" readonly>
+                    </div>
+                </div>
+                    
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name">Warehouse Name<i class="text-danger">*</i></label>
@@ -57,24 +66,36 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 edit_mobile_code_driver">
                     <div class="input-block mb-3">
                         <label for="phone">Contact Number <i class="text-danger">*</i></label>
-                        <input type="text" id="edit_mobile_code" name="edit_mobile_code" class="form-control" placeholder="Enter Contact Number"
-                        value="{{$manager_data->phone ?? old('edit_mobile_code') }}">
-                        @error('edit_mobile_code')
-                            <span class="text-danger">{{ $message }}</span>
+                        <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        {{ $item->id == old('mobile_number_code_id', $manager_data->phone_code_id) ? 'selected' : '' }}>
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp"
+                            placeholder="Enter Mobile No" name="mobile_number"
+                            value="{{ old('mobile_number', $manager_data->phone) }}"
+                            oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('mobile_number')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                 </div>
                 
-                <input type="hidden" id="country_code" name="country_code"
-                        value="{{ old('country_code', $manager_data->country_code) }}">
-
                 <!-- Address -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="address">Address<i class="text-danger">*</i> </label>
-                        <input type="text" name="address" class="form-control" placeholder="Enter Address"
-                            value="{{$manager_data->address ?? old('address') }}">
+                        <input type="text" name="address_1" class="form-control" placeholder="Enter Address"
+                            value="{{$manager_data->address ?? old('address_1') }}">
                         @error('address')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -200,6 +221,14 @@
                 </div> -->
             </div>
         </div>
+
+          <input type="number" name="latitude"
+            value="{{ old('latitude', $manager_data->latitude) }}" class="form-control inp"
+            placeholder="0" readonly style="background: #ececec;">
+
+                <input type="number" name="longitude"
+            value="{{ old('longitude', $manager_data->longitude) }}" class="form-control inp"
+            placeholder="0" readonly style="background: #ececec;">
 
         <div class="add-customer-btns text-end">
             <button type="button" onclick="redirectTo('{{route('admin.drivers.index') }}')"

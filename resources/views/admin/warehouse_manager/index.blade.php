@@ -16,7 +16,7 @@
             <div class="usersearch d-flex usersserach">
                 <div class="top-nav-search">
                     <form>
-                        <input id="searchInput" type="text" class="form-control forms" placeholder="Search ">
+                        <input id="searchInput" type="text" class="form-control forms" placeholder="Search" name="search" value="{{ request()->search }}">
                     </form>
                 </div>
 
@@ -72,7 +72,7 @@
                                     <td><span>{{$warehouse->name ?? '-'}}</span></td>
                                     <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
                                     <td>{{$warehouse->email ?? '-'}}</td>
-                                    <td>{{$warehouse->address ?? '-'}}</td>
+                                    <td><p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$warehouse->address ?? '-'}}">{{$warehouse->address ?? '-'}}</p></td>
                                     <td>{{ $warehouse->country_code ?? '' }} {{$warehouse->phone ?? '-'}}</td>
                                     <td>
                                         <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">

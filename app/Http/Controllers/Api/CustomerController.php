@@ -17,29 +17,19 @@ use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
-    public function getCustomers(Request $request)
+    public function getCustomersInvoice(Request $request)
     {
         $request->validate([
             'invoice_custmore_type' => 'nullable|in:from_to,ship_to,all',
-            'invoice_custmore_id' => 'nullable|integer',
+            'invoice_custmore_id' => 'required|integer',
             'search' => 'nullable|string|max:255',
         ]);
 
         $type = $request->query('invoice_custmore_type');
-        $invoiceCustomerId = $request->query('invoice_custmore_id');
+        $invoiceCustomerId = $request->query(key: 'invoice_custmore_id');
 
-        $query = User::where('role', 'customer')->orderBy('id', 'desc');
-
-
-        if ($invoiceCustomerId) {
-            // Only fetch this specific customer by ID
-            $query->where('invoice_custmore_id', $invoiceCustomerId);
-        } else {
-            // Apply type filter only if invoice_custmore_id not provided
-            if ($type && in_array($type, ['from_to', 'ship_to'])) {
-                $query->where('invoice_custmore_type', $type);
-            }
-        }
+        $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
+        $query->where('invoice_custmore_id', $invoiceCustomerId);
 
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
@@ -53,7 +43,48 @@ class CustomerController extends Controller
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
-            $customer->address = $address->address ?: $customer->address;
+            if ($address && !empty($address->address)) {
+                $customer->address = $address->address;
+            } else {
+                $customer->address = $customer->address ?? null;
+            }
+        }
+
+        return response()->json(['customers' => $customers], 200);
+    }
+
+    public function getCustomersDriver(Request $request)
+    {
+        $request->validate([
+            'created_by_id' => 'required|integer',
+            'search' => 'nullable|string|max:255',
+        ]);
+
+        $DriverCustomerId = $request->query(key: 'created_by_id');
+
+        $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
+        $query->where('created_by_id', $DriverCustomerId);
+        $query->where('invoice_custmore_type', 'from_to'); // Assuming you want to filter by 'from_to' type
+        $query->where('invoice_custmore_id', null);
+
+
+        if ($request->has('search') && !empty($request->query('search'))) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+
+        foreach ($customers as $customer) {
+            $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
+            if ($address && !empty($address->address)) {
+                $customer->address = $address->address;
+            } else {
+                $customer->address = $customer->address ?? null;
+            }
         }
 
 
@@ -62,17 +93,31 @@ class CustomerController extends Controller
 
     public function getCustomersDetails(Request $request)
     {
-        if ($request->has('id') && !empty($request->id)) {
-            $customer = User::where('role', 'customer')->where('id', $request->id)->first();
+        $id = $request->id;
 
-            if (!$customer) {
-                return response()->json(['message' => 'No customer found'], 404);
-            }
-
-            return response()->json(['customer' => $customer], 200);
+        if (!$id) {
+            return response()->json(['message' => 'ID is required'], 400);
         }
 
-        return response()->json(['message' => 'ID is required'], 400);
+        // Step 1: Main customer record by ID
+        $customer = User::where('role_id', 3)
+            ->where('id', $id)
+            ->with('vehicle', 'invoiceCustmore')
+            ->first();
+
+        if (!$customer) {
+            return response()->json(['message' => 'No customer found'], 404);
+        }
+
+        // Step 2: Latest related user where invoice_custmore_id == $id
+        $latestRelated = User::where('invoice_custmore_id', $id)
+            ->orderByDesc('id') // ya ->latest() agar created_at use kar rahe ho
+            ->first();
+
+        return response()->json([
+            'customer' => $customer,
+            'latest_related' => $latestRelated,
+        ], 200);
     }
 
     public function createCustomer(Request $request)
@@ -105,21 +150,29 @@ class CustomerController extends Controller
                     $folder = ($imageType === 'profile_pics') ? 'uploads/profile_pics' : 'uploads/customer';
                     $filePath = $file->storeAs($folder, $fileName, 'public');
 
+                    // Yahan condition laga do
+                    if ($imageType === 'license_picture') {
+                        $filePath = 'storage/' . $filePath;
+                    }
+
                     $imagePaths[$imageType] = $filePath;
                 }
             }
 
+            $user = $this->user;
             $userData = [
                 'name' => $validated['first_name'],
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['mobile_code'],
                 'phone_2' => $validated['alternate_mobile_no'] ?? null,
                 'address' => $validated['address_1'],
-                'address_2' => $request->Address_2,
+                'address_2' => $request->address_2,
                 'country_id' => $validated['country'],
                 'state_id' => $validated['state'],
                 'city_id' => $validated['city'],
                 'pincode' => $validated['Zip_code'],
+                'role' => 'customer',
+                'created_by_id' => $user->id,
                 'password' => Hash::make(12345678),
                 'status' => $request->status ?? 'Active',
                 'company_name' => $request->company_name ?? null,
@@ -143,6 +196,7 @@ class CustomerController extends Controller
                 'country_code_2' => $request->country_code_2 ?? null,
                 'invoice_custmore_type' => $request->invoice_custmore_type,
                 'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                'vehicle_id'        => $request->container_id ?? null,
             ];
 
             if (!empty($request->license_expiry_date)) {
@@ -152,6 +206,15 @@ class CustomerController extends Controller
             if (!empty($request->signature_date)) {
                 $userData['signature_date'] = Carbon::createFromFormat('m/d/Y', $request->signature_date)->format('Y-m-d');
             }
+
+            $userName = $request->first_name;
+            $email = $request->email ?? null;
+            $mobileNumber = $request->mobile_code;
+            $password = '12345678';
+            $loginUrl = route('login');
+
+            // Send the email
+            Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
             $user = User::create($userData);
 
@@ -229,7 +292,7 @@ class CustomerController extends Controller
         $shippingUser->customer_id = $customer_id;
         $shippingUser->created_id = $this->user->id;
         $shippingUser->country_id = $request->country_id;
-        $shippingUser->address_1 = $request->address_1;
+        $shippingUser->address = $request->address_1;
         $shippingUser->address_2 = $request->address_2;
         $shippingUser->ship_to_id = $request->ship_to_id ?? 'Done';
         $shippingUser->company_name = $request->company_name;
@@ -317,7 +380,7 @@ class CustomerController extends Controller
         }
 
         // Step 1: Get vehicles based on warehouse_id
-        $vehicles = Vehicle::where('vehicle_type', 'Container')->where('warehouse_id', $warehouseId)->get();
+        $vehicles = Vehicle::where('vehicle_type', '1')->where('warehouse_id', $warehouseId)->get();
 
         if ($vehicles->isEmpty()) {
             return response()->json(['message' => 'No vehicles found for the given warehouse.'], 404);

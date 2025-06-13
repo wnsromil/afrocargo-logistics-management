@@ -1,11 +1,10 @@
 <x-app-layout>
     @section('style')
-    <style>
-        .card.mainCardGlobal:before {
-            display: none;
-        }
-
-    </style>
+        <style>
+            .card.mainCardGlobal:before {
+                display: none;
+            }
+        </style>
     @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -13,19 +12,19 @@
         </h2>
     </x-slot>
     @section('content')
-    <div class="content-page-header mb-4">
-        <h5 class="setting-menu">User Detail</h5>
-    </div>
+        <div class="content-page-header mb-4">
+            <h5 class="setting-menu">User Detail</h5>
+        </div>
     @endsection
     <div class="customerhead">
         <div class="d-flex align-items-center position-relative">
             <div>
 
                 @if ($user->profile_pic)
-                <img class="profileImg" src="{{ ($user->profile_pic) }}" alt="license">
+                    <img class="profileImg" src="{{ ($user->profile_pic) }}" alt="license">
 
                 @else
-                <p> - No Image</p>
+                    <p> - No Image</p>
                 @endif
             </div>
             <div class="ms-4">
@@ -51,8 +50,15 @@
     <div class="row customerbody">
         <div class="col-4 customerr">
             <p class="phead">Phone Numbers</p>
-            <p class="pdata">{{ $user->country_code ?? '' }} {{ $user->phone ?? '-' }}</p>
-            <p class="pdata">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '-' }}</p>
+            <p class="pdata">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
+            <p class="pdata">
+                @if (!empty($user->phone_2))
+                    +{{ $custuseromer->phone_2_code->phonecode ?? '' }} {{ $user->phone_2 }}
+                @else
+                    -
+                @endif
+
+            </p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Address</p>
@@ -104,7 +110,7 @@
     <div class="row">
         <div class="col-4 customerr">
             <p class="phead">License ID</p>
-            <p>{{ $user->license_number ?? '-' }}</p>
+            <p class="pdata">{{ $user->license_number ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Lic Expired Date</p>
@@ -132,17 +138,62 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-4 customerr">
+            <p class="phead">Contract</p>
+            <p class="pdata">{{ $user->contract ?? '-' }}</p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Text Cust</p>
+            <p class="pdata">
+                {{ $user->text_cust ?? '-' }}
+            </p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Voice Call</p>
+            <p class="pdata">{{ $user->voice_call ?? '-' }}</p>
+        </div>
+    </div>
 
     <div class="row">
+        <div class="col-4 customerr">
+            <p class="phead">Cash Cust</p>
+            <p class="pdata">{{ $user->cash_cust ?? '-' }}</p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Is License Pic</p>
+            <p class="pdata">
+                {{ $user->is_license_pic ?? '-' }}
+            </p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">No Service</p>
+            <p class="pdata">{{ $user->no_service ?? '-' }}</p>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-4 customerr">
+            <p class="phead">Call</p>
+            <p class="pdata">{{ $user->call ?? '-' }}</p>
+        </div>
+        <div class="col-4 customerr">
+            <p class="phead">Sales Call</p>
+            <p class="pdata">
+                {{ $user->sales_call ?? '-' }}
+            </p>
+        </div>
+    </div>
 
+    <div class="row">
         <div class="col-4">
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Signature </p>
                 @if ($user->signature_img)
-                <img src="{{ asset('storage/' . $user->signature_img) }}" alt="license" style="margin-left: 15px; max-width: 150px;">
+                    <img src="{{ asset('storage/' . $user->signature_img) }}" alt="license"
+                        style="margin-left: 15px; max-width: 150px;">
                 @else
-                <p> - No Image</p>
+                    <p> - No Image</p>
                 @endif
 
             </div>
@@ -152,9 +203,10 @@
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Contract Signature </p>
                 @if ($user->signature_img)
-                <img src="{{ asset('storage/' . $user->contract_signature_img) }}" alt="license" style="margin-left: 15px; max-width: 150px;">
+                    <img src="{{ asset('storage/' . $user->contract_signature_img) }}" alt="license"
+                        style="margin-left: 15px; max-width: 150px;">
                 @else
-                <p> - No Image</p>
+                    <p> - No Image</p>
                 @endif
             </div>
         </div>
@@ -164,9 +216,10 @@
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Licence Picture </p>
                 @if ($user->license_document)
-                <img src="{{ asset('storage/' . $user->license_document) }}" alt="license" style="margin-left: 15px; max-width: 150px;">
+                    <img src="{{ asset('`/' . $user->license_document) }}" alt="license"
+                        style="margin-left: 15px; max-width: 150px;">
                 @else
-                <p> - No Image</p>
+                    <p> - No Image</p>
                 @endif
             </div>
         </div>

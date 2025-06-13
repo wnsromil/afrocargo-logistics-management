@@ -9,6 +9,7 @@
                         <th>Tracking ID</th>
                         <th>From</th>
                         <th>To</th>
+                        <th>Shipping Type</th>
                         <th>Pickup Date</th>
                         <th>Capture Image</th>
                         <th>Items</th>
@@ -79,6 +80,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td>
+                                            <div>{{ ucfirst($parcel->transport_type) ?? '-' }}</div>
                                             </td>
                                             <td>
                                                 <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>

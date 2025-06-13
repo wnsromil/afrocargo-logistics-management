@@ -58,6 +58,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 mt-4">
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="templateTitle">Primary Langugae (English)</label>
+                        <textarea name="primaryLanguageEditor" id="primaryLanguageEditor" class="form-control" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="templateTitle">Secondary Langugae (Espanish)</label>
+                        <textarea name="secondaryLanguageEditor" id="secondaryLanguageEditor" class="form-control" rows="5"></textarea>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -94,7 +106,7 @@
             function toggleContainerFields() {
                 let selectedValue = $('#vehicle_type').val();
 
-                if (selectedValue === 'Container') {
+                if (selectedValue === '1') {
                     $('.seal-no-field').show();
                     $('.container-no-1-field').show();
                     $('.container-no-2-field').show();
@@ -132,6 +144,20 @@
             updateTextColor();
             statusToggle.addEventListener("change", updateTextColor);
         });
+
+    </script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#primaryLanguageEditor'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#secondaryLanguageEditor'))
+            .catch(error => {
+                console.error(error);
+            });
 
     </script>
 

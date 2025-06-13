@@ -78,10 +78,10 @@ class WarehouseManagerController extends Controller
             'warehouse_name' => 'required|exists:warehouses,id', // Ensure ID exists
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'address' => 'required|string|max:500',
-            'mobile_code' => 'required|string|max:15|unique:users,phone',
+            'address_1' => 'required|string|max:500',
+            'mobile_number' => 'required|string|max:15',
+            'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'nullable|in:Active,Inactive',
-            'country_code' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -106,11 +106,13 @@ class WarehouseManagerController extends Controller
         $user = User::create([
             'warehouse_id' => $request->warehouse_name,
             'name' => $request->manager_name,
-            'address' => $request->address,
+            'address' => $request->address_1,
+            'country_id' => $request->country,
             'email' => $request->email,
             'password' => $hashedPassword,
-            'phone' => $request->mobile_code,
-            'country_code' => $request->country_code,
+            'phone' => $request->mobile_number,
+            'phone_code_id'  => $request->mobile_number_code_id,
+            'country_code' => +0,
             'status' => $status,
             'role_id' => 2,
             'role' => "warehouse_manager",
@@ -119,7 +121,7 @@ class WarehouseManagerController extends Controller
         // Email Data Prepare Karna
         $manager_name = $request->manager_name;
         $email = $request->email;
-        $mobileNumber = $request->phone;
+        $mobileNumber = $request->mobile_number;
         $password = $randomPassword;
         $loginUrl = route('login');
 
@@ -177,10 +179,11 @@ class WarehouseManagerController extends Controller
             'warehouse_name' => 'required',
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
-            'address' => 'required|string|max:500',
-            'edit_mobile_code' => 'required|string|max:15',
+            'address_1' => 'required|string|max:500',
+            'mobile_number' => 'required|string|max:15',
+            'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'in:Active,Inactive',
-            'country_code' => 'required|string',
+
         ]);
 
         // Check if validation fails
@@ -196,12 +199,14 @@ class WarehouseManagerController extends Controller
         // Update warehouse with validated data
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
+            'unique_id' => $request->unique_id,
             'name' => $request->manager_name,
-            'address' => $request->address,
+            'address' => $request->address_1,
             'email' => $request->email,
-            'phone' => $request->edit_mobile_code,
+             'phone' => $request->mobile_number,
+            'phone_code_id'  => $request->mobile_number_code_id,
+            'country_code' => +0,
             'status' => $request->status ?? 'Active', // Status ko handle karna
-            'country_code' => $request->country_code,
         ]);
 
 

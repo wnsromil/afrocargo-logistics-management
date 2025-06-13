@@ -78,6 +78,17 @@
                     </option>
                 </select>
             </div>
+
+              <div class="col-md-3 mb-3">
+                <label>Type</label>
+                <select class="js-example-basic-single select2" name="type">
+                    <option value="">Select Type</option>
+                    <option value="Expense" {{ request()->query('type') == "Expense" ? 'selected' : '' }}>Expense
+                    </option>
+                    <option value="Income" {{ request()->query('type') == "Income" ? 'selected' : '' }}>Income
+                    </option>
+                </select>
+            </div>
             <div class="col-12">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>

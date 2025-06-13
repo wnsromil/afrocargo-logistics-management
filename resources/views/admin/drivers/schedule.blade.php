@@ -56,17 +56,23 @@
                         <div class="col-md-8">
                             <div class="col-md-6">
                                 <label for="LacationInput1" class="form-label">Enter Location</label>
-                                <input type="text" class="form-control" id="LacationInput1" placeholder="Location"
-                                    name="address"
+                                <input type="text" class="form-control address" id="LacationInput1"
+                                    placeholder="Location" name="address"
                                     value="{{ old('address') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->address : '') }}">
                                 @error('address')
-                                    <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                     </div>
                 </div>
                 <input type="hidden" value="{{ $user->id ?? "" }}" class="form-control" name="user_id">
+                <input type="hidden" name="latitude"
+                    value="{{ old('latitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lat : '') }}"
+                    class="form-control inp inputbackground">
+                <input type="hidden" name="longitude"
+                    value="{{ old('longitude') ?? ($locationschedule->isNotEmpty() ? $locationschedule->first()->lng : '') }}"
+                    class="form-control inp inputbackground">
                 <div class="text-end mt-2">
                     <a href="{{ route('admin.drivers.index', $user->id) }}">
                         <button type="button"
@@ -103,11 +109,12 @@
                                 </div>
                             </div>
                             @error('date')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-8">
-                            <label style="display: flex; align-items: center;" class="profileUpdateFont text-dark">
+                            <label style="display: flex; align-items: center;"
+                                class="profileUpdateFont text-dark d-none">
                                 <input type="checkbox" name="is_for_all_location" style="margin-right: 10px;">
                                 Is for all location
                             </label>
@@ -636,122 +643,174 @@
     </form>
 
     <div class="col-md-12 mt-5">
-        <form>
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="subhead login-logo-font fw-semibold me-sm-5">Schedule Availability</p>
-                </div>
-                <div class="col-md-6">
-                    <div class="usersearch d-flex justify-content-end">
-                        <div class="top-nav-search">
-                            <form>
-                                <input type="text" id="searchInput" class="form-control forms me-2"
-                                    placeholder="Search ">
-                            </form>
-                        </div>
 
-                        <div class="">
-                            <button type="button"
-                                class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                                <a class="btn-filters d-flex justify-content-center align-items-center"
-                                    href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                    title="Refresh">
-                                    <span><i class="fe fe-refresh-ccw"></i></span>
-                                </a>
-                            </button>
-                        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="subhead login-logo-font fw-semibold me-sm-5 availability">Schedule Availability</p>
+                <p class="subhead login-logo-font fw-semibold me-sm-5 location">Locations</p>
+            </div>
+            <div class="col-md-6">
+                <div class="usersearch d-flex justify-content-end">
+                    <div class="top-nav-search">
+                        {{-- <form>
+                            <input type="text" id="searchInput" class="form-control forms me-2" placeholder="Search ">
+                        </form> --}}
+                    </div>
+
+                    <div class="">
+                        <button type="button"
+                            class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                            <a class="btn-filters d-flex justify-content-center align-items-center"
+                                href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Refresh">
+                                <span><i class="fe fe-refresh-ccw"></i></span>
+                            </a>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div>
-                <div class="card-table">
-                    <div class="card-body">
-                        <div class="table-responsive DriverInventoryTable mt-3">
-                            <table class="table table-stripped table-hover datatable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>S. No.</th>
-                                        <th>Date</th>
-                                        <th>Location</th>
-                                        <th>Availability</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($availabilities as $index => $availabilitie)
-                                        <tr>
-                                            <td class="text-start">{{ $index + 1 }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}
-                                            </td>
-                                            <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td>
-                                            <td>
-                                                @php
-                                                    $slots = [];
-                                                    if (isset($availabilitie->morning) && $availabilitie->morning == 1)
-                                                        $slots[] = 'Morning';
-                                                    if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
-                                                        $slots[] = 'Afternoon';
-                                                    if (isset($availabilitie->evening) && $availabilitie->evening == 1)
-                                                        $slots[] = 'Evening';
+        </div>
+        <div>
+            <div class="card-table">
+                <div class="card-body">
+                    <div class="table-responsive DriverInventoryTable mt-3">
+                        <table class="table table-stripped table-hover location">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Location</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($locationschedule as $key => $item)
+                                <tr>
+                                    <td class="text-start">{{$key+1}}</td>
+                                    <td>{{$item->address??''}}</td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <form method="POST"
+                                                            action="{{ route('admin.schedule.locationstore') }}"
+                                                            enctype="multipart/form-data">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $item->id ?? "" }}"
+                                                                class="form-control" name="id">
+                                                            <input type="hidden" value="{{ $user->id ?? "" }}"
+                                                                class="form-control" name="user_id">
+                                                            <input type="hidden" value="delete" class="form-control"
+                                                                name="type">
+                                                            <button class="dropdown-item" type="submit">
+                                                                <i class="fa fa-trash me-2"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
 
-                                                    $allSlots = ['Morning', 'Afternoon', 'Evening'];
-                                                @endphp
+                                @endforelse
+                            </tbody>
+                        </table>
 
-                                                @if (count($slots) === 0)
-                                                    Full Unavailable
-                                                @elseif (count($slots) === 3)
-                                                    Available
-                                                @else
-                                                    {{ implode(', ', $slots) }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}"><i
-                                                                        class="far fa-eye me-2"></i>View</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#"
-                                                                    onclick="event.preventDefault(); showEditSchedule(
-                                                                                                                                                                                                                    '{{ $availabilitie->id }}', 
-                                                                                                                                                                                                                    '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
-                                                                                                                                                                                                                    '{{ $availabilitie->morning }}', 
-                                                                                                                                                                                                                    '{{ $availabilitie->afternoon }}', 
-                                                                                                                                                                                                                    '{{ $availabilitie->evening }}'
-                                                                                                                                                                                                                );">
-                                                                    <i class="far fa-edit me-2"></i>Update
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}"><i
-                                                                        class="fa fa-trash me-2"></i>Delete</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                        <table class="table table-stripped table-hover availability">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Date</th>
+                                    {{-- <th>Location</th> --}}
+                                    <th>Availability</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($availabilities as $index => $availabilitie)
+                                @php
+                                $slots = [];
+                                if (isset($availabilitie->morning) && $availabilitie->morning == 1)
+                                $slots[] = 'Morning';
+                                if (isset($availabilitie->afternoon) && $availabilitie->afternoon == 1)
+                                $slots[] = 'Afternoon';
+                                if (isset($availabilitie->evening) && $availabilitie->evening == 1)
+                                $slots[] = 'Evening';
 
-                                </tbody>
-                            </table>
-                        </div>
+                                $isFullyAvailable = count($slots) === 3;
+                                @endphp
+
+                                @if ($isFullyAvailable)
+                                @continue
+                                @endif
+
+                                <tr>
+                                    <td class="text-start">{{ $index + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</td>
+                                    {{-- <td>{{ $availabilitie->locationName->address ?? 'For All' }}</td> --}}
+                                    <td>
+                                        @if (count($slots) === 0)
+                                        Full Unavailable
+                                        @else
+                                        {{ implode(', ', $slots) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <!-- <li>
+                                                            <a class="dropdown-item" href="{{ route('admin.drivers.scheduleshow', $availabilitie->id) }}">
+                                                                <i class="far fa-eye me-2"></i>View
+                                                            </a>
+                                                        </li> -->
+                                                    <!-- <li>
+                                                            <a class="dropdown-item" href="#"
+                                                                onclick="event.preventDefault(); showEditSchedule(
+                                                                    '{{ $availabilitie->id }}', 
+                                                                    '{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') }}', 
+                                                                    '{{ $availabilitie->morning }}', 
+                                                                    '{{ $availabilitie->afternoon }}', 
+                                                                    '{{ $availabilitie->evening }}'
+                                                                );">
+                                                                <i class="far fa-edit me-2"></i>Update
+                                                            </a>
+                                                        </li> -->
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}">
+                                                            <i class="fa fa-trash me-2"></i>Delete
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No Data found.</td>
+                                </tr>
+                                @endforelse
+
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+
     </div>
 
 
@@ -760,7 +819,6 @@
     <!-- -------------------------------------------------------------------------- -->
     <script>
         const scheduleData = @json($weeklyschedule);
-
     </script>
 
 
@@ -778,12 +836,18 @@
 
             // Show selected section & activate corresponding button
             if (type === 'availability') {
+                $('.availability').show();
+                $('.location').hide();
                 document.getElementById('availability').style.display = 'block';
                 document.getElementById('availabilitybtn').classList.add('active3');
             } else if (type === 'location') {
+                $('.availability').hide();
+                $('.location').show();
                 document.getElementById('location').style.display = 'block';
                 document.getElementById('locationbtn').classList.add('active3');
             } else if (type === 'weekly') {
+                $('.availability').hide();
+                $('.location').hide();
                 document.getElementById('weekly').style.display = 'block';
                 document.getElementById('weeklybtn').classList.add('active3');
             }
@@ -801,11 +865,13 @@
             driverscheduleform(activeTab);
         });
 
+
     </script>
 
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            
             document.querySelectorAll('.toggle-switch').forEach(switchBtn => {
 
                 switchBtn.addEventListener("change", function () {
@@ -825,9 +891,9 @@
         document.addEventListener("DOMContentLoaded", function () {
             const fullUnavailable = document.querySelector('input[name="full_unavailable"]');
             const timeCheckboxes = [
-                document.querySelector('input[name="morning"]')
-                , document.querySelector('input[name="afternoon"]')
-                , document.querySelector('input[name="evening"]')
+                document.querySelector('input[name="morning"]'),
+                document.querySelector('input[name="afternoon"]'),
+                document.querySelector('input[name="evening"]')
             ];
 
             // When "Full Unavailable" is toggled
@@ -855,9 +921,9 @@
             // Function to update checkbox value (Active/Inactive)
             function updateCheckboxValue(checkbox) {
                 if (checkbox.checked) {
-                    checkbox.value = 'Inactive'; // Active if checked
+                    checkbox.value = 'Inactive';  // Active if checked
                 } else {
-                    checkbox.value = ''; // Inactive if unchecked
+                    checkbox.value = '';  // Inactive if unchecked
                 }
             }
 
@@ -1011,11 +1077,9 @@
             // Format date to MM-DD-YYYY
             const formattedDate = new Date(date).toLocaleDateString('en-US');
 
-            const {
-                value: formValues
-            } = await Swal.fire({
-                title: `Edit Schedule For This ${formattedDate}`
-                , html: `
+            const { value: formValues } = await Swal.fire({
+                title: `Edit Schedule For This ${formattedDate}`,
+                html: `
                 <form id="scheduleForm" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="_method" value="PUT">
@@ -1028,48 +1092,37 @@
                         <p class="profileUpdateFont text-dark">Full Unavailable</p>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
-                                <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
-                                <div class="my-2" style="display: flex;">
-                                    <input id="rating_30" class="check" name="morning" type="checkbox">
-                                    <label for="rating_30" class="checktoggle log checkbox-bg ms-0">checkbox</label>
-                                    <p class="profileUpdateFont text-dark">Unavailable</p>
-                                </div>
-                            </div>
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Morning</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_30" class="check" name="morning" type="checkbox">
+                            <label for="rating_30" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
                         </div>
-                        <div class="col-md-4">
-                            <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
-                                <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
-                                <div class="my-2" style="display: flex;">
-                                    <input id="rating_31" class="check" name="afternoon" type="checkbox">
-                                    <label for="rating_31" class="checktoggle log checkbox-bg ms-0">checkbox</label>
-                                    <p class="profileUpdateFont text-dark">Unavailable</p>
-                                </div>
-                            </div>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Afternoon</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_31" class="check" name="afternoon" type="checkbox">
+                            <label for="rating_31" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
                         </div>
-                        <div class="col-md-4">
-                            <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
-                                <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
-                                <div class="my-2" style="display: flex;">
-                                    <input id="rating_32" class="check" name="evening" type="checkbox">
-                                    <label for="rating_32" class="checktoggle log checkbox-bg ms-0">checkbox</label>
-                                    <p class="profileUpdateFont text-dark">Unavailable</p>
-                                </div>
-                            </div>
+                    </div>
+
+                    <div class="status-toggle togglewrapper px-2 ps-0 mt-3" style="display: flow; text-align: -webkit-left;">
+                        <button type="button" class="btn profileUpdateFont btn-size align-items-center fw-medium p-1 px-3 pointernone">Evening</button>
+                        <div class="my-2" style="display: flex;">
+                            <input id="rating_32" class="check" name="evening" type="checkbox">
+                            <label for="rating_32" class="checktoggle log checkbox-bg ms-0">checkbox</label>
+                            <p class="profileUpdateFont text-dark">Unavailable</p>
                         </div>
                     </div>
                 </form>
-            `
-                , showCancelButton: true
-                , customClass: {
-                    popup: 'editScheduelPopup'
-                    , title: 'custom-swal-title'
-                    , htmlContainer: 'custom-swal-content'
-                }
-                , confirmButtonText: 'Submit'
-                , didOpen: () => {
+            `,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                didOpen: () => {
                     const form = Swal.getPopup().querySelector('#scheduleForm');
                     form.action = updateScheduleRoute.replace('__ID__', id); // Laravel route
 
@@ -1107,13 +1160,12 @@
                         });
                         updateCheckboxValue(cb);
                     });
-                }
-                , preConfirm: () => {
+                },
+                preConfirm: () => {
                     document.getElementById('scheduleForm').submit();
                 }
             });
         }
-
     </script>
 
 </x-app-layout>

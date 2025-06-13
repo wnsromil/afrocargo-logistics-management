@@ -26,13 +26,13 @@
     </x-slot>
 
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <div class="invoiceForm">
@@ -46,15 +46,16 @@
                         </div>
                         <div class="middleDiv">
                             <input type="hidden" name="type" value="delivery">
-                            <select name="customer_id" class="form-control delevery_customer select2" id="delevery_customer_id">
+                            <select name="customer_id" class="form-control delevery_customer select2"
+                                id="delevery_customer_id">
                                 <option value="">Search Customer</option>
                                 @foreach($customers as $customer)
-                                <option {{ old('customer_id')==$customer->id ? 'selected' : '' }} value="{{
+                                                            <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                             @error('customer_id')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="last">
@@ -80,15 +81,16 @@
                         </div>
                         <div class="middleDiv">
                             <input type="hidden" value="delivery">
-                            <select name="customer_id" class="form-control delevery_customer select2" id="ship_customer">
+                            <select name="customer_id" class="form-control delevery_customer select2"
+                                id="ship_customer">
                                 <option value="">Search Customer</option>
                                 @foreach($customers as $customer)
-                                <option {{ old('customer_id')==$customer->id ? 'selected' : '' }} value="{{
+                                                            <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                             @error('customer_id')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="last">
@@ -124,6 +126,8 @@
                                 @csrf
                                 <input type="hidden" name="address_type" value="delivery">
 
+                                <input type="hidden" name="address_id">
+
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
                                             class="text-danger">*</i></label>
@@ -145,13 +149,15 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
                                             placeholder="Enter Contact No. 2" name="mobile_number">
-                                    </div> 
+                                    </div>
 
                                 </div>
                                 <div class="col-md-6">
@@ -161,14 +167,16 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="alternative_mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
                                             placeholder="Enter Contact No. 2" name="alternative_mobile_number">
-                                    </div> 
-                                        
+                                    </div>
+
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
@@ -176,15 +184,15 @@
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" {{ old('country_id')==$country->id ?
+                                                                            <option value="{{ $country->id }}" {{ old('country_id') == $country->id ?
                                             'selected' : '' }}>
-                                            {{ $country->name }}
-                                        </option>
+                                                                                {{ $country->name }}
+                                                                            </option>
                                         @endforeach
                                     </select>
 
                                     @error('country_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
@@ -192,11 +200,11 @@
                                     <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
-                                        <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
+                                            <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
                                         @endif
                                     </select>
                                     @error('state_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
                                 </div>
@@ -205,11 +213,11 @@
                                     <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
-                                        <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
+                                            <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
                                         @endif
                                     </select>
                                     @error('city_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
@@ -243,6 +251,7 @@
 
                                 @csrf
                                 <input type="hidden" name="address_type" value="pickup">
+                                <input type="hidden" name="address_id">
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
@@ -265,13 +274,15 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
                                             placeholder="Enter Contact No. 2" name="mobile_number">
-                                    </div> 
+                                    </div>
 
                                 </div>
                                 <div class="col-md-6">
@@ -281,29 +292,32 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="alternative_mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"> {{ $item->name }} +{{ $item->phonecode }}</option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
                                             placeholder="Enter Contact No. 2" name="alternative_mobile_number">
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="pickup_country">Country <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="pickup_country">Country <i
+                                            class="text-danger">*</i></label>
                                     <select name="country_id" id="pickup_country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" {{ old('country_id')==$country->id ?
+                                                                            <option value="{{ $country->id }}" {{ old('country_id') == $country->id ?
                                             'selected' : '' }}>
-                                            {{ $country->name }}
-                                        </option>
+                                                                                {{ $country->name }}
+                                                                            </option>
                                         @endforeach
                                     </select>
 
                                     @error('country_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 {{-- <div class="col-md-6">
@@ -324,11 +338,11 @@
                                     <select name="city_id" id="pickup_city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
-                                        <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
+                                            <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
                                         @endif
                                     </select>
                                     @error('city_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
@@ -367,7 +381,7 @@
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
                                 <input type="text" class="btn-filters datetimepicker form-control form-cs inp "
-                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ date('Y-m-d') }}" />
+                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ date('m-d-Y') }}" />
                                 <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
                                     readonly value="08:30 AM" name="currentTime">
                             </div>
@@ -389,22 +403,25 @@
                             <select name="driver_id" class="form-control select2">
                                 <option value="">Select Driver</option>
                                 @foreach($drivers as $driver)
-                                <option {{ old('driver_id')==$driver->id ? 'selected' : '' }} value="{{ $driver->id
-                                    }}">{{ $driver->name }}</option>
+                                    <option {{ old('driver_id') == $driver->id ? 'selected' : '' }} value="{{ $driver->id
+                                        }}">{{ $driver->name }}</option>
                                 @endforeach
                             </select>
                             @error('driver_id')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="col-md-3">
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
                                 <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00"
-                                    style="padding-left: 35px; padding-top: 8px !important;" id="grand_total" name="grand_total">
+                                    style="padding-left: 35px; padding-top: 8px !important;" id="grand_total"
+                                    name="grand_total">
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <label>Due Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -427,23 +444,27 @@
                             <input type="text" class="form-control inp readonly" readonly placeholder="John Duo"
                                 value="{{auth()->user()->name ?? ''}} {{auth()->user()->last_name ?? ''}}">
                         </div>
+
                         <div class="col-md-3">
                             <label>Container<i class="text-danger">*</i></label>
                             <select name="container_id" class="form-control select2">
                                 <option value="">Select Container</option>
                                 @foreach($containers as $container)
-                                <option {{ old('container_id')==$container->id ? 'selected' : '' }} value="{{
+                                                            <option {{ old('container_id') == $container->id ? 'selected' : '' }} value="{{
                                     $container->id }}">{{ $container->vehicle_number }}</option>
                                 @endforeach
                             </select>
                             @error('container_id')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="col-md-3 ">
                             <label>Status<i class="text-danger">*</i></label>
-                            <input type="text" class="form-control inp readonly" readonly placeholder="Pending" name="status" value="pending">
+                            <input type="text" class="form-control inp readonly" readonly placeholder="Pending"
+                                name="status" value="pending">
                         </div>
+
                         <div class="col-md-3">
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
@@ -457,6 +478,7 @@
                             <label>Total Items</label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="0">
                         </div>
+
                         <div class="col-md-3 ">
 
                             <label> Warehouse</label>
@@ -464,30 +486,31 @@
                                 style="font-weight:400px !important">
                                 <option value="">Select Warehouse </option>
                                 @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_id')==$warehouse->id ? 'selected' : '' }} value="{{
+                                                            <option {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }} value="{{
                                     $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                                 @endforeach
                             </select>
 
                             @error('warehouse_id')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-md-6 d-none" id="description_services_items">
+
+                        {{-- <div class="col-md-6 d-none" id="description_services_items">
                             <label>description<i class="text-danger">*</i></label>
                             <textarea name="descrition" class="form-control form-cs inp"></textarea>
                         </div>
                         <div class="col-md-6 d-none" id="weight_services_items">
                             <label>weight<i class="text-danger">*</i></label>
                             <input type="text" name="weight" class="form-control form-cs inp" value="">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
                 <!-- total  -->
-                <div class="card-body curve_tabel p-0 mt-5">
-                    <div class="table-responsive p-1 d-none" id="supplies_items">
-                        <table class="table table-bordered " id="dynamicTable">
+                <div class="card-body curve_tabel notAction p-0 mt-5">
+                    <div class="table-responsive p-1" id="supplies_items">
+                        <table class="table table-bordered" id="dynamicTable">
                             <thead>
                                 <tr>
                                     <th style="width:57px;">Item</th>
@@ -517,7 +540,8 @@
                                     </td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder="" name="label_qty"></td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="label_qty"></td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput"><input type="text"
                                                 class="form-control inputcolor" placeholder="" name="price"><button
@@ -557,20 +581,16 @@
             <div class="blueRibbon">
                 <div class="d-sm-flex align-items-end belowflex">
                     <div><label>Subtotal</label>
-                        <input type="text" class="form-control bigInput" placeholder="0"
-                             name="total_amount">
+                        <input type="text" class="form-control bigInput" placeholder="0" name="total_amount">
                     </div>
                     <div><label>Value</label>
-                        <input type="text" class="form-control smInput" placeholder="0" name="total_price"
-                            >
+                        <input type="text" class="form-control smInput" placeholder="0" name="total_price">
                     </div>
                     <div><label>Tax</label>
-                        <input type="text" class="form-control smInput" placeholder="0" 
-                            name="tax">
+                        <input type="text" class="form-control smInput" placeholder="0" name="tax">
                     </div>
                     <div><label>Discount</label>
-                        <input type="text" class="form-control smInput" placeholder="0"
-                            name="discount">
+                        <input type="text" class="form-control smInput" placeholder="0" name="discount">
                     </div>
                     <div><label>Ins</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
@@ -581,8 +601,7 @@
                             value="{{$invoice->payment ?? 0}}">
                     </div>
                     <div><label>Service Fee</label>
-                        <input type="text" class="form-control" placeholder="0" 
-                            name="service_fee">
+                        <input type="text" class="form-control" placeholder="0" name="service_fee">
                     </div>
                     <div><label>Balance</label>
                         <input type="text" class="form-control" placeholder="0" name="balance">
@@ -606,9 +625,11 @@
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                @foreach ($inventories->get('Supply') as $supply)
-                                <option value="{{ $supply->id }}">{{ $supply->name }}</option>
-                                @endforeach
+                                @if(!$inventories)
+                                    @foreach ($inventories->get('Supply') as $supply)
+                                        <option value="{{ $supply->id }}">{{ $supply->name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="modal-footer">
@@ -626,12 +647,18 @@
         <!-- ---------------------------- Supplies form ------------------------- -->
     </div>
     @section('script')
-    <script src="{{asset('js/invoice.js')}}"></script>
-    <script>
-        var supplyItems = @json($inventories->get('Supply'));
-        var currentRow = null;
+        <!-- Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    </script>
+        <!-- Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <script src="{{asset('js/invoice.js')}}"></script>
+        <script>
+            var supplyItems = @json($inventories->get('Supply'));
+            var currentRow = null;
+
+        </script>
     @endsection
 
 </x-app-layout>

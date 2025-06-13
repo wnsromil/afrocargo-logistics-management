@@ -19,7 +19,7 @@
     <!-- ---------------------- msg ---------------------------------- -->
 
     <!-- ----------------  1  -------------------------- -->
-    <div class="mainFontFamily fixContainer text-dark">
+    <div class="mainFontFamily text-dark">
 
         @forelse ($notifications as $notification)
         <div class="shadow-box fontSize innerCards setTopBottomMargin">

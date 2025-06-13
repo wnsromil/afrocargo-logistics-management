@@ -10,12 +10,33 @@
         </div>
     </x-slot>
 
+           @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
     <form action="{{ route('admin.vehicle.update', $vehicle->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
+         @php
+            $role_id = Auth::user()->role_id;
+         @endphp
+
         <div class="form-group-customer customer-additional-form">
             <div class="row">
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="foncolor" for="company_name"> Vehicle ID</label>
+                    <input type="text" class="form-control inp" style="background: #ececec;"
+                        placeholder="" value="{{ $vehicle->unique_id }}" readonly>
+                </div>
+
                 <!-- Warehouse Location -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -33,25 +54,45 @@
                     </div>
                 </div>
               
-                <!-- Vehicle Type -->
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type" class="foncolor">Vehicle Type</label>
-                        <select name="vehicle_type" class="js-example-basic-single select2">
-                            <option value="" disabled>Select Vehicle Type </option>
-                            @foreach (['Truck', 'Van', 'Bike', 'Pickup', 'Mini Truck', 'Container Truck', 'Three-Wheeler', 'SUV', 'Sedan', 'Electric Scooter', 'Cargo Plane', 'Cargo Ship', 'Train Cargo'] as $type)
-                                <option value="{{ $type }}" {{ old('vehicle_type', $vehicle->vehicle_type) == $type ? 'selected' : '' }}>
-                                    {{ $type }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('vehicle_type')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                @if($role_id == 1)
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="vehicle_type" class="foncolor">Vehicle Type <i class="text-danger">*</i></label>
+                            <select id="vehicle_type" name="vehicle_type" class="profileUpdateFont">
+                                <option value="">Select Vehicle Type</option>
+                                @foreach($viewVehicleTypes as $viewVehicleType)
+                                    <option {{ old('vehicle_type', $vehicle->vehicle_type) == $viewVehicleType->name ? 'selected' : '' }}
+                                        value="{{ $viewVehicleType->name }}">
+                                        {{ $viewVehicleType->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('vehicle_type')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div> --}}
-             
-
+                @else
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="vehicle_type" class="foncolor">Vehicle Type <i class="text-danger">*</i></label>
+                            <select id="vehicle_types" name="vehicle_type"
+                                class="js-example-basic-single select2 form-control profileUpdateFont">
+                                <option value="">Select Vehicle Type</option>
+                                @foreach($viewVehicleTypes as $viewVehicleType)
+                                    <option {{ old('vehicle_type', $vehicle->vehicle_type) == $viewVehicleType->name ? 'selected' : '' }}
+                                        value="{{ $viewVehicleType->name }}">
+                                        {{ $viewVehicleType->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('vehicle_type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
+        
                 <!-- Vehicle Model -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -64,18 +105,6 @@
                         @enderror
                     </div>
                 </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_model">Vehicle Model <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_model" class="form-control"
-                            placeholder="Enter Vehicle Model"
-                            value="{{ old('vehicle_model', $vehicle->vehicle_model) }}">
-                        @error('vehicle_model')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
 
                 <!-- Vehicle Manufactured Year -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -89,18 +118,6 @@
                         @enderror
                     </div>
                 </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_year">Manufactured Year <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_year" class="form-control"
-                            placeholder="Enter Manufactured Year"
-                            value="{{ old('vehicle_year', $vehicle->vehicle_year) }}">
-                        @error('vehicle_year')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
 
                 <!-- Vehicle Number (Plate No.) -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -114,20 +131,68 @@
                         @enderror
                     </div>
                 </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_number">Vehicle Number (Plate No.) <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_number" class="form-control"
-                            placeholder="Enter Vehicle Number"
-                            value="{{ old('vehicle_number', $vehicle->vehicle_number) }}">
-                        @error('vehicle_number')
+                        <label for="licence_plate_number" class="foncolor">Licence Plate Number<i
+                                class="text-danger">*</i></label>
+                        <input type="licence_plate_number" name="licence_plate_number" class="form-control inp"
+                            placeholder=" Enter Vehicle Manufactured year" value="{{ old('licence_plate_number', $vehicle->licence_plate_number) }}">
+                        @error('licence_plate_number')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div> -->
+                </div>
 
+                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="edit_license_expiry_date" class="foncolor">Licence Plate Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="edit_license_expiry_date"
+                                class="btn-filters  form-cs inp " 
+                                value="{{ old('edit_license_expiry_date', $vehicle->licence_plate_exp_date ? \Carbon\Carbon::parse($vehicle->licence_plate_exp_date)->format('n/j/Y') : '') }}"
+                                placeholder="mm-dd-yy" />
+                        </div>
+                        @error('edit_license_expiry_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
-                <!-- Status -->
+                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="edit_vehicle_registration_exp_date" class="foncolor">Vehicle Registration Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="edit_vehicle_registration_exp_date"
+                                class="btn-filters  form-cs inp "
+                                value="{{ old('edit_vehicle_registration_exp_date', $vehicle->vehicle_registration_exp_date ? \Carbon\Carbon::parse($vehicle->vehicle_registration_exp_date)->format('n/j/Y') : '') }}"
+                                placeholder="MM-DD-YYYY" />
+                        </div>
+                        @error('edit_vehicle_registration_exp_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="edit_vehicle_insurance_exp_date" class="foncolor">Vehicle Insurance Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="edit_vehicle_insurance_exp_date"
+                                class="btn-filters  form-cs inp " 
+                                value="{{ old('edit_vehicle_insurance_exp_date', $vehicle->vehicle_insurance_exp_date ? \Carbon\Carbon::parse($vehicle->vehicle_insurance_exp_date)->format('n/j/Y') : '') }}"
+                                placeholder="MM-DD-YYYY" />
+                        </div>
+                        @error('edit_vehicle_insurance_exp_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                  <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="mb-3">
                         <label for="in_status">Status</label>
@@ -146,24 +211,65 @@
                     </div>
                 </div>
 
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                  <div class="input-block">
+                     <label class="table-content col737 fw-medium">Vehicle Registration Document<i
+                                class="text-danger">*</i></label>
+                        <div class="input-block mb-3 service-upload img-size2 mb-0">
+                    <!-- Preview Image -->
+                    <img id="vehicle_registration_doc_img_preview"
+                        src="{{ !empty($vehicle->vehicle_registration_doc) ? asset('storage/' . $vehicle->vehicle_registration_doc) : '' }}"
+                        alt="vehicle_registration_doc Image"
+                        class="img-thumbnail mb-2 {{ empty($vehicle->vehicle_registration_doc) ? 'd-none' : '' }}"
+                        style="max-width: 150px; height: auto;">
 
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active"
-                                    {{ old('status', $vehicle->status) == 'Active' ? 'checked' : '' }}>
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
-                        </div>
-                        @error('status')
+                    <!-- Hidden File Input -->
+                    <input type="file" name="vehicle_registration_doc" id="vehicle_registration_doc_image" class="d-none">
+
+                    <!-- Action Icons -->
+                    <div>
+                        <img src="{{ asset('assets/img/edit (1).png') }}" alt="Edit" style="cursor: pointer;" onclick="openImagePicker()">
+                        <img src="{{ asset('assets/img/dlt (1).png') }}" alt="Delete" style="cursor: pointer;" onclick="removeImage()">
+                    </div>
+
+                    <!-- Delete Flag -->
+                    <input type="hidden" name="vehicle_registration_doc_delete_img" id="vehicle_registration_doc_delete_img" value="0">
+                      </div>
+                </div>
+                  @error('vehicle_registration_doc')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                 </div>
+
+                   <div class="col-lg-4 col-md-6 col-sm-12">
+                  <div class="input-block">
+                     <label class="table-content col737 fw-medium">Vehicle Insurance Document<i
+                                class="text-danger">*</i></label>
+                        <div class="input-block mb-3 service-upload img-size2 mb-0">
+                    <!-- Preview Image -->
+                    <img id="vehicle_insurance_doc_img_preview"
+                        src="{{ !empty($vehicle->vehicle_insurance_doc) ? asset('storage/' . $vehicle->vehicle_insurance_doc)  : '' }}"
+                        alt="vehicle_insurance_doc Image"
+                        class="img-thumbnail mb-2 {{ empty($vehicle->vehicle_insurance_doc) ? 'd-none' : '' }}"
+                        style="max-width: 150px; height: auto;">
+
+                    <!-- Hidden File Input -->
+                    <input type="file" name="vehicle_insurance_doc" id="vehicle_insurance_doc_image" class="d-none">
+
+                    <!-- Action Icons -->
+                    <div>
+                        <img src="{{ asset('assets/img/edit (1).png') }}" alt="Edit" style="cursor: pointer;" onclick="openImagePickerVehicleInsurance()">
+                        <img src="{{ asset('assets/img/dlt (1).png') }}" alt="Delete" style="cursor: pointer;" onclick="removeImageVehicleInsurance()">
                     </div>
-                </div> -->
+
+                    <!-- Delete Flag -->
+                    <input type="hidden" name="vehicle_insurance_doc_delete_img" id="vehicle_insurance_doc_delete_img" value="0">
+                      </div>
+                </div>
+                  @error('vehicle_insurance_doc')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                 </div>
 
             </div>
         </div>
@@ -179,6 +285,7 @@
         </div>
     </form>
 
+    @section('script')
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let statusToggle = document.getElementById("cb-switch");
@@ -197,4 +304,84 @@
             statusToggle.addEventListener("change", updateTextColor);
         });
     </script>
+     <script>
+           $(document).ready(function () {
+                $('#vehicle_type').select2({
+                    tags: true,
+                    placeholder: 'Select or type vehicle type',
+                    allowClear: true
+                });
+            });
+        function openImagePicker() {
+            document.getElementById('vehicle_registration_doc_image').click();
+        }
+
+        document.getElementById('vehicle_registration_doc_image').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.getElementById('vehicle_registration_doc_img_preview');
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                preview.style.display = 'inline-block';
+                preview.style.maxWidth = '150px';
+                preview.style.height = 'auto';
+            };
+            reader.readAsDataURL(file);
+
+            // Reset delete flag
+            document.getElementById('vehicle_registration_doc_delete_img').value = '0';
+         });
+
+        function removeImage() {
+            const preview = document.getElementById('vehicle_registration_doc_img_preview');
+            const fileInput = document.getElementById('vehicle_registration_doc_image');
+            const deleteInput = document.getElementById('vehicle_registration_doc_delete_img');
+
+            preview.src = '';
+            preview.classList.add('d-none');
+            fileInput.value = '';
+            deleteInput.value = '1';
+          }
+
+        function openImagePickerVehicleInsurance() {
+            document.getElementById('vehicle_insurance_doc_image').click();
+        }
+
+           document.getElementById('vehicle_insurance_doc_image').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.getElementById('vehicle_insurance_doc_img_preview');
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                preview.style.display = 'inline-block';
+                preview.style.maxWidth = '150px';
+                preview.style.height = 'auto';
+            };
+            reader.readAsDataURL(file);
+
+            // Reset delete flag
+            document.getElementById('vehicle_insurance_doc_delete_img').value = '0';
+         });
+
+        
+
+          function removeImageVehicleInsurance() {
+            const preview = document.getElementById('vehicle_insurance_doc_img_preview');
+            const fileInput = document.getElementById('vehicle_insurance_doc_image');
+            const deleteInput = document.getElementById('vehicle_insurance_doc_delete_img');
+
+            preview.src = '';
+            preview.classList.add('d-none');
+            fileInput.value = '';
+            deleteInput.value = '1';
+          }
+          
+     </script>
+     @endsection
 </x-app-layout>

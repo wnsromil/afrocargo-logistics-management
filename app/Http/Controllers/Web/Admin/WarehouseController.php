@@ -32,7 +32,7 @@ class WarehouseController extends Controller
                         ->orWhere('address', 'like', "%$search%")
                         ->orWhere('zip_code', 'like', "%$search%")
                         ->orWhere('phone', 'like', "%$search%")
-                      
+
                         ->orWhereHas('country', function ($q) use ($search) {
                             $q->where('name', 'like', "%$search%");
                         })
@@ -47,12 +47,12 @@ class WarehouseController extends Controller
             ->latest('id')
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-            $serialStart = ($currentPage - 1) * $perPage;
+        $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.warehouse.table', compact('warehouses','serialStart'))->render();
+            return view('admin.warehouse.table', compact('warehouses', 'serialStart'))->render();
         }
 
-        return view('admin.warehouse.index', compact('warehouses','serialStart', 'search', 'perPage'));
+        return view('admin.warehouse.index', compact('warehouses', 'serialStart', 'search', 'perPage'));
     }
 
 
@@ -64,11 +64,11 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','name')->all();
+        $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-        return view('admin.warehouse.create',compact('roles','countries'));
+        return view('admin.warehouse.create', compact('roles', 'countries'));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -77,24 +77,17 @@ class WarehouseController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'email' => 'required|email|unique:warehouse,email',
-        //     'password' => 'required|same:confirm-password',
-        //     'roles' => 'required'
-        // ]);
-    
         // Validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required|string|max:255',
             'warehouse_code' => 'required|string|max:50|unique:warehouses,warehouse_code',
-            'address' => 'required|string|max:500',
-            'country_id' => 'required|integer|exists:countries,id',
-            'state_id' => 'required|integer|exists:states,id',
-            'city_id' => 'required|integer|exists:cities,id',
-            'zip_code' => 'required|string|max:20',
-            'mobile_code' => 'required|string|max:15',
-            'country_code' => 'required|string',
+            'address_1' => 'required|string|max:500',
+            'country' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'nullable|string',
+            'Zip_code' => 'nullable|string|max:20',
+            'mobile_number' => 'required|string|max:15',
+            'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'in:Active,Inactive',
         ]);
 
@@ -104,27 +97,30 @@ class WarehouseController extends Controller
                 ->withErrors($validator)  // Send errors to the session
                 ->withInput();  // Keep old input data
         }
-        
+
         $status  = !empty($request->status) ? $request->status : 'Active';
         // Store validated data
         Warehouse::create([
             'warehouse_name' => $request->warehouse_name,
             'warehouse_code' => $request->warehouse_code,
-            'address' => $request->address,
-            'country_id' => $request->country_id,
-            'state_id' => $request->state_id,
-            'city_id' => $request->city_id,
-            'zip_code' => $request->zip_code,
-            'phone' => $request->mobile_code,
-            'country_code' => $request->country_code,
+            'address' => $request->address_1,
+            'country_id' => $request->country,
+            'state_id' => $request->state,
+            'city_id' => $request->city,
+            'zip_code' => $request->Zip_code,
+            'phone' => $request->mobile_number,
+            'phone_code_id'  => $request->mobile_number_code_id,
+            'country_code' => +0,
             'status' => $status,
+            'lat' => $request->latitude,
+            'long' => $request->longitude,
         ]);
 
         // Redirect with success message
         return redirect()->route('admin.warehouses.index')
             ->with('success', 'Warehouse created successfully.');
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -135,9 +131,9 @@ class WarehouseController extends Controller
     {
         $warehouse = Warehouse::find($id);
 
-        return view('admin.warehouse.show',compact('warehouse'));
+        return view('admin.warehouse.show', compact('warehouse'));
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -147,12 +143,12 @@ class WarehouseController extends Controller
     public function edit($id)
     {
         $warehouse = Warehouse::find($id);
-        $roles = Role::pluck('name','name')->all();
+        $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
-    
-        return view('admin.warehouse.edit',compact('warehouse','roles','countries'));
+
+        return view('admin.warehouse.edit', compact('warehouse', 'roles', 'countries'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -166,45 +162,47 @@ class WarehouseController extends Controller
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'string|max:255',
             'warehouse_code' => 'string|max:50|unique:warehouses,warehouse_code,' . $id,
-            'address' => 'string|max:500',
-            'country_id' => 'integer|exists:countries,id',
-            'state_id' => 'integer|exists:states,id',
-            'city_id' => 'integer|exists:cities,id',
-            'zip_code' => 'string|max:20',
-            'mobile_code' => 'string|max:15',
+            'address_1' => 'string|max:500',
+            'country' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'nullable|string',
+            'Zip_code' => 'nullable|string|max:20',
+            'mobile_number' => 'required|string|max:15',
+            'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'nullable|in:Active,Inactive',  // Nullable kiya
-            'country_code' => 'required|string',
         ]);
-    
+
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-    
+
         // Find the warehouse by ID
         $warehouse = Warehouse::find($id);
-    
-        
-    
+
+
+
         // Update warehouse with validated data
         $warehouse->update([
             'warehouse_name' => $request->warehouse_name,
+            'unique_id' => $request->unique_id,
             'warehouse_code' => $request->warehouse_code,
-            'address' => $request->address,
-            'country_id' => $request->country_id,
-            'state_id' => $request->state_id,
-            'city_id' => $request->city_id,
-            'zip_code' => $request->zip_code,
-            'phone' => $request->mobile_code,
-            'country_code' => $request->country_code,
+            'address' => $request->address_1,
+            'country_id' => $request->country,
+            'state_id' => $request->state,
+            'city_id' => $request->city,
+            'zip_code' => $request->Zip_code,
+            'phone' => $request->mobile_number,
+            'phone_code_id'  => $request->mobile_number_code_id,
+            'country_code' => +0,
             'status' => $request->status ?? 'Active', // Default 'Inactive' agar request me na ho
         ]);
-    
+
         // Redirect to the warehouse index page with a success message
         return redirect()->route('admin.warehouses.index')
-                        ->with('success', 'Warehouse updated successfully');
+            ->with('success', 'Warehouse updated successfully');
     }
 
     /**
@@ -217,7 +215,7 @@ class WarehouseController extends Controller
     {
         Warehouse::find($id)->delete();
         return redirect()->route('admin.warehouses.index')
-                        ->with('success','Warehouse deleted successfully');
+            ->with('success', 'Warehouse deleted successfully');
     }
 
     public function changeStatus(Request $request, $id)

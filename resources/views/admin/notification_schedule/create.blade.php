@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        Parcel Management
+        Send Notification
     </x-slot>
 
     <x-slot name="cardTitle">
@@ -18,27 +18,29 @@
         <input type="radio" id="tab2" name="tab">
         <input type="radio" id="tab3" name="tab">
         <input type="radio" id="tab4" name="tab">
+        <input type="radio" id="tab5" name="tab">
 
         <!-- Tab titles (labels) -->
         <!-- <div class="tab-titles">
-    <label for="tab1" class="tab-title">All</label>
-    <label for="tab2" class="tab-title">Warehouses</label>
-    <label for="tab3" class="tab-title">Users</label>
-    <label for="tab4" class="tab-title">Driver</label>
-  </div> -->
+            <label for="tab1" class="tab-title">All</label>
+            <label for="tab2" class="tab-title">Warehouses</label>
+            <label for="tab3" class="tab-title">Users</label>
+            <label for="tab4" class="tab-title">Driver</label>
+        </div> -->
 
         <div class="tab-titles mt-1">
             <label for="tab1" class="tab-title">All</label>
             <label for="tab2" class="tab-title">Warehouses</label>
-            <label for="tab3" class="tab-title">Users</label>
+            <label for="tab3" class="tab-title">Customer</label>
             <label for="tab4" class="tab-title">Drivers</label>
+            <label for="tab5" class="tab-title">Invoice</label>
         </div>
 
 
         <!-- Tab content sections -->
         <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content1">
             <!-- <h2>Content for Tab 1</h2>
-    <p>This is the content of the first tab.</p> -->
+            <p>This is the content of the first tab.</p> -->
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -49,7 +51,7 @@
                 <div class="col-lg-9 me-lg-5 col-md-12 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
-                        <input type="text" name="notification_message" class="form-control inp" style="height: 98px !important;width: 677px;" placeholder="Enter Your Notification Message">
+                        <textarea name="notification_message" class="form-control inp" placeholder="Enter Your Notification Message"></textarea>
                     </div>
                 </div>
             </div>
@@ -57,7 +59,7 @@
 
         <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content2" style="padding:0">
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
                         <select name="warehouse_name" class="form-control inp select2">
@@ -67,15 +69,76 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="container" class="foncolor">Container <i class="text-danger">*</i></label>
+                        <select name="container" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Containers </option>
+                            <option>All</option>
+                            <option>CNUS00125</option>
+                            <option>CNFR00225</option>
+                            <option>CNCA00325</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Customer_name" class="foncolor">Customer <i class="text-danger">*</i></label>
+                        <select name="Customer_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Customer </option>
+                            <option>All</option>
+                            <option>Lucas</option>
+                            <option>Kiran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="EndoftheDay_name" class="foncolor">End of the Day <i class="text-danger">*</i></label>
+                        <select name="EndoftheDay_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select End of the Days </option>
+                            <option>All</option>
+                            <option>000128</option>
+                            <option>000129</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Invoice_name" class="foncolor">Invoice <i class="text-danger">*</i></label>
+                        <select name="Invoice_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Invoice </option>
+                            <option>All</option>
+                            <option>INV000012</option>
+                            <option>INV000013</option>
+                            <option>INV000014</option>
+                            <option>INV000015</option>
+                            <option>INV000016</option>
+                            <option>INV000017</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="bill" class="foncolor">Bill <i class="text-danger">*</i></label>
+                        <select name="bill" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Bill </option>
+                            <option>All</option>
+                            <option>Paid</option>
+                            <option>Balance</option>
+                            <option>Due</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-lg-12 col-md-6 mt-3 col-sm-12">
                     <div class="tabs m-0 mw-100">
-                        <input type="radio" id="tab5" name="tab1" checked>
-                        <input type="radio" id="tab6" name="tab1">
+                        <input type="radio" id="tab6" name="tabs" checked>
+                        <input type="radio" id="tab7" name="tabs">
                         <div class="tab-titles">
-                            <label for="tab5" class="tab-title">Manager</label>
-                            <label for="tab6" class="tab-title">Driver</label>
+                            <label for="tab6" class="tab-title">Manager</label>
+                            <label for="tab7" class="tab-title">Driver</label>
                         </div>
-                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content5">
+                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content6">
                             <div class="row">
                                 <div class="col-lg-4 col-md-6 col-sm-12 pe-sm-0">
                                     <div class="input-block mb-3">
@@ -91,20 +154,20 @@
                             <div class="row">
                                 <div class="col-lg-4 me-sm-5 col-md-6 col-sm-12 pe-sm-0">
                                     <div class="input-block mb-3">
-                                        <label class="col737 fw-medium mb-1">Notification Title<i class="text-danger">*</i></label>
+                                        <label class="foncolor">Notification Title<i class="text-danger">*</i></label>
                                         <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
-                                        <label for="notification_message" class="col737 fw-medium mb-1">Notification Message<i class="text-danger">*</i></label>
+                                        <label for="notification_message" class="foncolor">Notification Message<i class="text-danger">*</i></label>
                                         <textarea type="text" name="notification_message" class="form-control textarea-w" id="notification_message" rows="4" placeholder="Enter Your Notification Message"></textarea>
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content6">
+                        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content7">
                             <div class="row">
                                 <div class="col-lg-4 col-md-6 col-sm-12 pe-sm-0">
                                     <div class="input-block mb-3">
@@ -142,21 +205,90 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="Warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
-                        <select name="Warehouse_name" class="form-control inp select2">
-                            <option value="" disabled hidden>Select Warehouses </option>
-                            <option>San Andrease </option>
-                            <option>California</option>
+                        <label for="Container_name" class="foncolor">Container <i class="text-danger">*</i></label>
+                        <select name="Container_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Container </option>
+                            <option>All</option>
+                            <option>CTN0000125 </option>
+                            <option>CTN0000225</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="User_name" class="foncolor">User <i class="text-danger">*</i></label>
-                        <select name="User_name" class="form-control inp select2">
-                            <option value="" disabled hidden>Select Users </option>
+                        <label for="Customer_name" class="foncolor">Customer <i class="text-danger">*</i></label>
+                        <select name="Customer_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Customer </option>
+                            <option>All</option>
                             <option>Lucas</option>
                             <option>Kiran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="EndoftheDay_name" class="foncolor">End of the Day <i class="text-danger">*</i></label>
+                        <select name="EndoftheDay_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select End of the Days </option>
+                            <option>All</option>
+                            <option>000128</option>
+                            <option>000129</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Invoice_name" class="foncolor">Invoice <i class="text-danger">*</i></label>
+                        <select name="Invoice_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Invoice </option>
+                            <option>All</option>
+                            <option>INV000012</option>
+                            <option>INV000013</option>
+                            <option>INV000014</option>
+                            <option>INV000015</option>
+                            <option>INV000016</option>
+                            <option>INV000017</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="bill" class="foncolor">Bill <i class="text-danger">*</i></label>
+                        <select name="bill" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Bill </option>
+                            <option>All</option>
+                            <option>Paid</option>
+                            <option>Balance</option>
+                            <option>Due</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
+                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
+                        <textarea type="text" name="notification_message" class="form-control textarea-w" id="notification_message" rows="4" placeholder="Enter Your Notification Message"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content4">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
+                        <select name="Warehouse_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Warehouses </option>
+                            <option>San Andrease </option>
+                            <option>California</option>
                         </select>
                     </div>
                 </div>
@@ -164,37 +296,10 @@
                     <div class="input-block mb-3">
                         <label for="Container_name" class="foncolor">Container <i class="text-danger">*</i></label>
                         <select name="Container_name" class="form-control inp select2">
-                            <option value="" disabled hidden>Select Containers </option>
-                            <option>000128</option>
-                            <option>000129</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
-                    <div class="input-block mb-3">
-                        <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
-                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-12 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
-                        <input type="text" name="notification_message" class="form-control inp" style="height: 98px !important;width: 677px;" placeholder="Enter Your Notification Message">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content4">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="Warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
-                        <select name="Warehouse_name" class="form-control inp select2">
-                            <option value="" disabled hidden>Select Warehouses </option>
-                            <option>San Andrease </option>
-                            <option>California</option>
+                            <option value="" disabled hidden selected>Select Container </option>
+                            <option>All</option>
+                            <option>CTN0000125 </option>
+                            <option>CTN0000225</option>
                         </select>
                     </div>
                 </div>
@@ -202,9 +307,47 @@
                     <div class="input-block mb-3">
                         <label for="Driver_name" class="foncolor">Driver <i class="text-danger">*</i></label>
                         <select name="Driver_name" class="form-control inp select2">
-                            <option value="" disabled hidden>Select Drivers </option>
+                            <option value="" disabled hidden selected>Select Drivers </option>
                             <option>Lucas</option>
                             <option>Kiran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="EndoftheDay_name" class="foncolor">End of the Day <i class="text-danger">*</i></label>
+                        <select name="EndoftheDay_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select End of the Days </option>
+                            <option>All</option>
+                            <option>000128</option>
+                            <option>000129</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Invoice_name" class="foncolor">Invoice <i class="text-danger">*</i></label>
+                        <select name="Invoice_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Invoice </option>
+                            <option>All</option>
+                            <option>INV000012</option>
+                            <option>INV000013</option>
+                            <option>INV000014</option>
+                            <option>INV000015</option>
+                            <option>INV000016</option>
+                            <option>INV000017</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="bill" class="foncolor">Bill <i class="text-danger">*</i></label>
+                        <select name="bill" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Bill </option>
+                            <option>All</option>
+                            <option>Paid</option>
+                            <option>Balance</option>
+                            <option>Due</option>
                         </select>
                     </div>
                 </div>
@@ -219,27 +362,103 @@
                 <div class="col-lg-8 col-md-12 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
-                        <input type="text" name="notification_message" class="form-control inp" style="height: 98px !important;width: 677px;" placeholder="Enter Your Notification Message">
+                        <textarea type="text" name="notification_message" class="form-control textarea-w" id="notification_message" rows="4" placeholder="Enter Your Notification Message"></textarea>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content5">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Container_name" class="foncolor">Container <i class="text-danger">*</i></label>
+                        <select name="Container_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Container </option>
+                            <option>All</option>
+                            <option>CTN0000125 </option>
+                            <option>CTN0000225</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Invoice_name" class="foncolor">Invoice <i class="text-danger">*</i></label>
+                        <select name="Invoice_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Invoice </option>
+                            <option>All</option>
+                            <option>INV000012</option>
+                            <option>INV000013</option>
+                            <option>INV000014</option>
+                            <option>INV000015</option>
+                            <option>INV000016</option>
+                            <option>INV000017</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Driver_name" class="foncolor">Driver <i class="text-danger">*</i></label>
+                        <select name="Driver_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Drivers </option>
+                            <option>Lucas</option>
+                            <option>Kiran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="Customer_name" class="foncolor">Customer <i class="text-danger">*</i></label>
+                        <select name="Customer_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Customer </option>
+                            <option>All</option>
+                            <option>Lucas</option>
+                            <option>Kiran</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="EndoftheDay_name" class="foncolor">End of the Day <i class="text-danger">*</i></label>
+                        <select name="EndoftheDay_name" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select End of the Days </option>
+                            <option>All</option>
+                            <option>000128</option>
+                            <option>000129</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="bill" class="foncolor">Bill <i class="text-danger">*</i></label>
+                        <select name="bill" class="form-control inp select2">
+                            <option value="" disabled hidden selected>Select Bill </option>
+                            <option>All</option>
+                            <option>Paid</option>
+                            <option>Balance</option>
+                            <option>Due</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
+                        <input type="text" name="notification_title" class="form-control inp" placeholder="Enter Notification Title">
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor"> Notification Message<i class="text-danger">*</i></label>
+                        <textarea type="text" name="notification_message" class="form-control textarea-w" id="notification_message" rows="4" placeholder="Enter Your Notification Message"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="ptop d-flex align-items-center">
             <div>
-                <div class="input-block mb-3">
-                    <label class="foncolor" for="status">Status</label>
-
-                    <div class="status-toggle">
-                        <span>Active</span>
-                        <input id="status" class="check" type="checkbox" name="status" checked>
-                        <label for="status" class="checktoggle checkbox-bg togc"></label>
-                        <span class="">Inactive</span>
-                    </div>
-                    @error('status')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-
-                </div>
             </div>
 
             <div>

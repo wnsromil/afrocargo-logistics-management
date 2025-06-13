@@ -1,12 +1,8 @@
-.dash-logo img{
-    max-width: 70%;
-}
 
-.nav-head {
-    color: white;
-    background: #203A5F !important;
-    height:80px;
-}
+
+
+
+
 .header{
     position: sticky;
 }
@@ -103,7 +99,7 @@ text-align: left;
     font-size: 14px;
     height: 46px;
     border-bottom: 1px solid #f5f5f5;
-    padding: 15px 25px;
+    padding: 8px 25px;
     white-space: nowrap;
     box-shadow: none;
     vertical-align: middle;

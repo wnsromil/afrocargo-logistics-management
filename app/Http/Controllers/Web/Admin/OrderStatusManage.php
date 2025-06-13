@@ -15,7 +15,8 @@ use App\Models\{
     ParcelHistory,
     HubTracking,
     Address,
-    ContainerHistory
+    ContainerHistory,
+    ParcelPickupDriver
 };
 use \Carbon\Carbon;
 
@@ -119,6 +120,9 @@ class OrderStatusManage extends Controller
             'status' => 4,
         ]);
 
+        ParcelPickupDriver::where('parcel_id', $request->parcel_id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 4]);
 
         $parcelHistory = ParcelHistory::where('parcel_id', $request->parcel_id)->first();
         // Create a new entry in ParcelHistory
@@ -189,24 +193,24 @@ class OrderStatusManage extends Controller
 
         $vehicleData = $vehicle->toJson(); // store full parcel data in description
 
-        ContainerHistory::create([
-            'container_id' => $vehicle->id,
-            'transfer_date' => now()->format('Y-m-d'),
-            'driver_id' => $validated['delivery_man'],
-            'status' => 17,
-            'type' => 'Transfer',
-            'no_of_orders' => $validated['no_of_orders_input_hidden'],
-            'description' => $vehicleData,
-            'warehouse_id' => $validated['from_warehouse_id'],
-            'arrived_warehouse_id' => $validated['to_warehouse_id'],
-            'partial_payment' => $validated['partial_payment_sum_input_hidden'],
-            'remaining_payment' => $validated['remaining_payment_sum_input_hidden'],
-            'total_amount' => $validated['total_amount_sum_input_hidden'],
-            'note' => $validated['note'],
-        ]);
+
+        // 2. Transfer record
+        $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
+
+        if ($TransfercontainerHistory) {
+            $TransfercontainerHistory->update([
+                'transfer_date'         => now()->format('Y-m-d'),
+                'driver_id'             => $validated['delivery_man'],
+                'status'                => 17,
+                'type'                  => 'Transfer',
+                'description'           => $vehicleData,
+                'arrived_warehouse_id'  => $validated['to_warehouse_id'],
+                'note'                  => $validated['note'],
+            ]);
+        }
 
         // 2. Arrived record
-        ContainerHistory::create([
+        $containerHistory = ContainerHistory::create([
             'container_id' => $vehicle->id,
             'transfer_date' => now()->format('Y-m-d'),
             'driver_id' => $validated['delivery_man'],
@@ -220,6 +224,8 @@ class OrderStatusManage extends Controller
             'remaining_payment' => $validated['remaining_payment_sum_input_hidden'],
             'total_amount' => $validated['total_amount_sum_input_hidden'],
             'note' => $validated['note'],
+            'open_date' => $TransfercontainerHistory->open_date,
+            'close_date' => $TransfercontainerHistory->close_date,
         ]);
 
         // Step 3: Update vehicle table
@@ -233,10 +239,17 @@ class OrderStatusManage extends Controller
         ]);
 
         // Step 4: Find all parcels related to this container and update their status to 5
-        $parcels = Parcel::where('container_id', $vehicle->id)->get();
+        $parcels = Parcel::where('container_id', $vehicle->id)->where('status', 4)->get();
 
         foreach ($parcels as $parcel) {
-            $parcel->update(['status' => 5]);
+            ParcelPickupDriver::where('parcel_id', $parcel->id)
+                ->where('container_id', $parcel->container_id)
+                ->update(['status' => 5]);
+
+            $parcel->update([
+                'status' => 5,
+                'arrived_container_history_id' => $containerHistory->id,
+            ]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
@@ -274,12 +287,15 @@ class OrderStatusManage extends Controller
 
         foreach ($parcels as $parcel) {
             $parcel->update(['status' => 8]);
+            ParcelPickupDriver::where('parcel_id', $parcel->id)
+                ->where('container_id', $parcel->container_id)
+                ->update(['status' => 8]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
                 'customer_id' => $parcel->customer_id,
                 'status' => 'Updated',
-                'parcel_status' => 5,
+                'parcel_status' => 8,
                 'note' => $validated['note'] ?? null,
                 'warehouse_id' => $vehicle->warehouse_id,
                 'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
@@ -335,6 +351,14 @@ class OrderStatusManage extends Controller
             'container_status' => 16,
         ]);
 
+        $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
+
+        if ($TransfercontainerHistory) {
+            $TransfercontainerHistory->update([
+                'close_date'         => now()->format('Y-m-d'),
+            ]);
+        }
+
         // Return success response
         return response()->json([
             'message' => 'Container status updated successfully',
@@ -374,14 +398,20 @@ class OrderStatusManage extends Controller
 
         foreach ($parcels as $parcel) {
             $parcel_status_id = '';
-            if($parcel->delivery_type == 'self'){
+            if ($parcel->delivery_type == 'self') {
                 $parcel->update(['status' => 21]);
                 $parcel_status_id = 21;
-            }else{
-                $parcel->update(['status' => 9]); 
+                ParcelPickupDriver::where('parcel_id', $parcel->id)
+                    ->where('container_id', $parcel->container_id)
+                    ->update(['status' => 21]);
+            } else {
+                $parcel->update(['status' => 9]);
                 $parcel_status_id = 9;
+                ParcelPickupDriver::where('parcel_id', $parcel->id)
+                    ->where('container_id', $parcel->container_id)
+                    ->update(['status' => 9]);
             }
-          
+
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
@@ -452,11 +482,15 @@ class OrderStatusManage extends Controller
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
 
+        //$otp = rand(1000, 9999);
+        $otp = 1234;
+
         // Update the parcel details
         $parcel->update([
             'arrived_driver_id' => $request->driver_id,
             'status' => 22,
             'arrived_warehouse_id' => $request->warehouse_id,
+            'otp' => $otp
         ]);
 
         // Create a new entry in ParcelHistory
@@ -477,8 +511,6 @@ class OrderStatusManage extends Controller
             'parcel' => $parcel,
         ]);
     }
-
-
 
     /**
      * Helper function to find the nearest warehouse.

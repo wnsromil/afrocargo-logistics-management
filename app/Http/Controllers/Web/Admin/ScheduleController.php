@@ -149,17 +149,25 @@ class ScheduleController extends Controller
 
     public function locationStore(Request $request)
     {
+        if($request->id && $request->type == 'delete'){
+            LocationSchedule::where('id',$request->id)->delete();
+            return redirect()
+            ->route('admin.drivers.schedule', ['id' => $request->user_id, 'tab' => 'location'])
+            ->with('success', 'Location deleted successfully.');
+        }
+
         $rules = [
             'address' => 'required|string',
         ];
+
 
         $availabilityData = $request->validate($rules);
 
         // Common data
         $availabilityData['creates_by'] = auth()->id();
-        $availabilityData['user_id'] = $request->user_id;
-        $availabilityData['lat'] = "55";
-        $availabilityData['lng'] = "86";
+        $availabilityDataIfUpdate['user_id'] = $request->user_id;
+        $availabilityDataIfUpdate['lat'] = $request->latitude;
+        $availabilityDataIfUpdate['lng'] = $request->longitude;
         $availabilityData['is_active'] = 1;
 
         // Check if record exists for the user_id
@@ -167,7 +175,7 @@ class ScheduleController extends Controller
 
 
         // Create new record
-        LocationSchedule::create($availabilityData);
+        LocationSchedule::updateOrCreate($availabilityDataIfUpdate,$availabilityData);
         return redirect()->route('admin.drivers.schedule', [
             'id' => $request->user_id,
         ])->with('success', 'Location saved successfully.')

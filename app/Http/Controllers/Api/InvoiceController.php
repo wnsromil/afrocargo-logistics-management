@@ -38,7 +38,7 @@ class InvoiceController extends Controller
 
             // $parcelTypes = Category::get();
             $inventaries = Inventory::get();
-            $containers = Vehicle::where('vehicle_type', 'Container')->get();
+            $containers = Vehicle::where('vehicle_type', '1')->get();
 
             return response()->json([
                 'status' => 'success',

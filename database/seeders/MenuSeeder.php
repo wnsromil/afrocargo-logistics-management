@@ -41,7 +41,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Vehicle Management',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 'route' => 'admin.vehicle.index',
-                'route' => '#',
+                //'route' => '#',
                 'active' => 'vehicle*,container*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -109,6 +109,14 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
+                'title' => 'Bill of Lading',
+                'icon' => '<i class="menuIcon ti ti-truck"></i>',
+                'route' => 'admin.BillofLading.index',
+              //  'route' => '#',
+                'active' => 'bill_of_lading*,lading_details*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
                 'title' => 'Notifications Schedule',
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
                 'route' => 'admin.notification_schedule.index',
@@ -133,7 +141,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Template Management',
                 'icon' => '<i class="menuIcon ti ti-template"></i>',
                 'route' => 'admin.Categorytemplate.index',
-                'route' => '#',
+               // 'route' => '#',
                 'active' => 'template_category*,templates*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -142,6 +150,14 @@ class MenuSeeder extends Seeder
                 'icon' => '<i class="menuIcon ti ti-bell-ringing"></i>',
                 'route' => 'admin.notification.index',
                 'active' => 'notification',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'CBM Calculator',
+                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
+                //'route' => 'admin.cbm_calculator.freight_Calculator',
+                'route' => '#',
+                'active' => 'cbm_calculator*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
         ];
@@ -180,13 +196,13 @@ class MenuSeeder extends Seeder
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
-            Menu::create([
-                'title' => 'Received Orders',
-                'route' => 'admin.received.orders.hub.list',
-                'active' => 'receivedOrders*',
-                'parent_id' => $orderShip->id,
-                'roles' => ['admin', 'warehouse_manager']
-            ]);
+            // Menu::create([
+            //     'title' => 'Received Orders',
+            //     'route' => 'admin.received.orders.hub.list',
+            //     'active' => 'receivedOrders*',
+            //     'parent_id' => $orderShip->id,
+            //     'roles' => ['admin', 'warehouse_manager']
+            // ]);
         }
 
         // Add submenus
@@ -199,7 +215,6 @@ class MenuSeeder extends Seeder
                 'parent_id' => $vehicle->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
-
             Menu::create([
                 'title' => 'Container List',
                 'route' => 'admin.container.index',
@@ -227,6 +242,57 @@ class MenuSeeder extends Seeder
                 'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);
+        }
+
+        // Add submenus
+        $template = Menu::where('title', 'Bill Of Lading')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'Bill Of Lading',
+                'route' => 'admin.bill_of_lading.index',
+                'active' => 'bill_of_lading*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Bill Of Lading Details',
+                'route' => 'admin.lading_details.index',
+                'active' => 'lading_details*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        $cbm_calculator = Menu::where('title', 'CBM Calculator')->first();
+
+        if ($cbm_calculator) {
+            $childMenus = [
+                [
+                    'title' => 'Freight Calculator',
+                    'route' => 'admin.cbm_calculator.freight_Calculator',
+                ],
+                [
+                    'title' => 'Freight Container Size',
+                    'route' => 'admin.cbm_calculator.freight_ContainerSize',
+                ],
+                [
+                    'title' => 'Freight Shipping',
+                    'route' => 'admin.cbm_calculator.freight_Shipping',
+                ],
+            ];
+
+            foreach ($childMenus as $menu) {
+                Menu::firstOrCreate(
+                    ['route' => $menu['route']], // unique check by route
+                    [
+                        'title' => $menu['title'],
+                        'active' => 'cbm_calculator*',
+                        'parent_id' => $cbm_calculator->id,
+                        'roles' => ['admin', 'warehouse_manager'],
+                    ]
+                );
+            }
         }
     }
 }

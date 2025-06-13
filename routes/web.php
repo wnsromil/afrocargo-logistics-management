@@ -29,7 +29,11 @@ use App\Http\Controllers\Web\Admin\{
     ContainerController,
     TemplateCategoryController,
     TemplateController,
+    AutoCallBatchController,
     ScheduleController,
+    BillofLadingController,
+    LadingDetailsController,
+    CBMCalculatoarController
 };
 use App\Mail\RegistorMail;
 
@@ -123,9 +127,36 @@ Route::get('/notificationsend', function () {
     return view('admin.notificationsend.create');
 });
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
+
+Route::get('/lading_details_PDF', function () {
+    return view('admin.lading_details_PDF.bill-pdf');
+});
+
+Route::get('/customReport', function () {
+    return view('admin.customReport.index');
+});
+
+Route::get('/customReportEdit', function () {
+    return view('admin.customReportEdit.edit');
+});
+
+Route::get('/customReport_pdf1', function () {
+    return view('admin.customReport_pdf1.item_product_list');
+});
+
+Route::get('/customReport_pdf_2', function () {
+    return view('admin.customReport_pdf_2.containerReportList');
+});
+
+Route::get('/VerifyLicense', function () {
+    return view('admin.VerifyLicense.index');
+});
+
+
 
 
 // Route::get('/dashboard', function () {
@@ -173,16 +204,21 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('user_role', RoleManagementController::class);
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
+        Route::resource('autocall', AutoCallBatchController::class);
+        Route::resource('bill_of_lading', BillofLadingController::class);
+        Route::resource('lading_details', LadingDetailsController::class);
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
         Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
-        Route::post('saveIndividualPayment', [IndividualPaymentController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
+        Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
+        Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('updateNote');
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
+        Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
 
         Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
@@ -191,9 +227,28 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
-
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
+
+        // Customer Ship To Address
+        Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
+        Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');
+        Route::get('/update-shipTo/{id}', [CustomerController::class, 'updateShipTo'])->name('customer.updateShipTo');
+        Route::put('/edit-shipTo/{id}', [CustomerController::class, 'editeShipTo'])->name('customer.editeShipTo');
+        Route::post('/delete-shipTo/{id}', [CustomerController::class, 'destroyShipTo'])->name('customer.destroyShipTo');
+
+        // Customer Pickups Address
+        Route::get('/view-viewPickups/{id}', [CustomerController::class, 'viewPickups'])->name('customer.viewPickups');
+        Route::get('/view-viewPickupAddress/{id}', [CustomerController::class, 'viewPickupAddress'])->name('customer.viewPickupAddress');
+        Route::post('/create-pickupAddress', [CustomerController::class, 'createPickupAddress'])->name('customer.createPickupAddress');
+        Route::get('/update-pickupAddress/{id}', [CustomerController::class, 'updatePickupAddress'])->name('customer.updatePickupAddress');
+        Route::put('/edit-editpickupAddress/{id}', [CustomerController::class, 'editPickupAddress'])->name('customer.editPickupAddress');
+        Route::post('/delete-pickupAddress/{id}', [CustomerController::class, 'destroyPickupAddress'])->name('customer.destroyPickupAddress');
+
+        // Customer Pickups
+        Route::post('/create-Pickup', [CustomerController::class, 'Pickupstore'])->name('customer.Pickupstore');
+        Route::get('/update-Pickup/{id}', [CustomerController::class, 'updatePickup'])->name('customer.updatePickup');
+        Route::post('/edit-Pickup/{id}', [CustomerController::class, 'Editupdate'])->name('customer.pickup-edit');
 
         // Warehouse 
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
@@ -204,9 +259,20 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         // Schedule
         Route::post('weekly_schedule_store', [ScheduleController::class, 'weeklyScheduleStore'])->name('schedule.weeklyschedulestore');
         Route::post('location_schedule_store', [ScheduleController::class, 'locationStore'])->name('schedule.locationstore');
-       
+
         //Expenses
         Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
+
+        //CBM Calculatoar
+        Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
+        Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
+        Route::get('freight-Shipping', [CBMCalculatoarController::class, 'FreightShipping'])->name('cbm_calculator.freight_Shipping');
+        Route::get('freight-Shipping_PDF', [CBMCalculatoarController::class, 'FreightShipping_PDF'])->name('cbm_calculator.freight_Shipping_PDF');
+        Route::post('/container-sizes/update', [CBMCalculatoarController::class, 'ContainerSizeStore'])->name('cbm_calculator.container-sizes.update');
+        Route::post('/store-port-freight', [CBMCalculatoarController::class, 'storePortFreight'])->name('cbm_calculator.store-port-freight');
+
+        // Customer 
+        Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
 
 
         Route::get('/orderdetails', function () {
@@ -219,6 +285,10 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/container/{id}', function () {
             return view('admin.container.show');
         })->name('container.show');
+
+        Route::get('/add-role', function () {
+            return view('admin.user_role.create');
+        })->name('create');
     });
 });
 

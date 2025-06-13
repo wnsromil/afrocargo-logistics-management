@@ -1,65 +1,163 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Inventory Management') }}
+        {{ __('Inventory Detail') }}
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="head">All Inventory History</p>
+        <p class="head">Inventory ID - TIT-000009</p>
     </x-slot>
 
-    <div>
+    <section class="mt-4">
+        <div class="row px-4">
 
-        <div class="card-table">
-            <div class="card-body">
-                <div class="table-responsive">
+            <div class="col-md-12 col-sm-12 mb-4 d-flex align-items-center mb-4 text-dark">
+                <img src="/assets/img/products/washing_machine.webp" alt="Washing Machine"
+                    class="inventory-img">
+                <div>
+                    <h5 class="label fw-semibold fs_18">Inventory Name</h5>
+                    <p class="fs_18">Washing Machine</p>
+                </div>
+            </div>
 
-                    <table class="table table-stripped table-hover datatable">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Sn no.</th>
-                                <th>Created By User</th>
-                                <th>Inventory Name</th>
-                                <th>Warehouse Name</th>
-                                <th>Low stock Warning</th>
-                                <th>In Stock Quantity</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($inventories as $index => $inventory)
-                            <tr>
-                                <td>
-                                    {{ ++$index }}
-                                </td>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Inventory Type</h6>
+                    <p>Air</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Barcode Code</h6>
+                    <p>Yes</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Warehouse Name</h6>
+                    <p>Tulsa Cargo</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Created At</h6>
+                    <p>05-18-2025, 12:20 AM</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Cost Price</h6>
+                    <p>-</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Quality</h6>
+                    <p>25</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Low Stock Warning</h6>
+                    <p>02</p>
+                </div>
+            </div>
 
-                                <td>{{ ucfirst($inventory->user->name ?? '') .' / ('. ucfirst($inventory->user->role.')' ?? '')}}</td>
-                                <td>{{ ucfirst($inventory->category->name ?? '')}}</td>
-                                <td>{{ ucfirst($inventory->warehouse->warehouse_name ?? '')}}</td>
-                                <td><span>{{$inventory->low_stock_warning ?? '-'}}</span></td>
-                                <td><span>{{$inventory->in_stock_quantity ?? '-'}}</span></td>
-                                <td>{{ $inventory->created_at ? $inventory->created_at->format('d-m-Y') : '-' }}</td>
-                                <td><span class="badge {{$inventory->status!='Updated' ? 'bg-success-light':'bg-danger-light'}}">{{$inventory->status ?? '-'}}</span>
-                                </td>
-                                
-
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="11" class="px-4 py-4 text-center text-gray-500">No users found.</td>
-                            </tr>
-                            @endforelse
-
-                        </tbody>
-
-                    </table>
-                    
-                    <div class="bottom-user-page mt-3">
-                        {!! $inventories->links('pagination::bootstrap-5') !!}
-                    </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Package Type</h6>
+                    <p>Imported</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Retail/Shipping Price</h6>
+                    <p>120.00</p>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Description</h6>
+                    <p class="pe-5">Fully automatic and 7.2 ltr and Get water instict Lorem ipsum curen stock clearence full metalic
+                        body, high power motor</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Default Driver App</h6>
+                    <p>Yes</p>
                 </div>
             </div>
         </div>
-    </div>
-    
+
+        <hr>
+
+        <div class="row px-4">
+             <div class="col-md-12 col-sm-12 mb-4 mb-2">
+                    <div class="cargo-title text-dark">Cargo/Air</div>
+                </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Country</h6>
+                    <p>Yes</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>State/Zone</h6>
+                    <p>100</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Weight (kg)</h6>
+                    <p>20</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Item Length (inch)</h6>
+                    <p>8.00</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Item Width (inch)</h6>
+                    <p>12.00</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Item Height (inch)</h6>
+                    <p>18.00</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Volume (l*b*h)</h6>
+                    <p>1536.00</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Volume Price(1*1*1)</h6>
+                    <p>11.00</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Factor</h6>
+                    <p>5000</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Insurance</h6>
+                    <p>2500.00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </x-app-layout>

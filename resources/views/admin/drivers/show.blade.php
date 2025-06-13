@@ -8,7 +8,6 @@
             .card.mainCardGlobal>.card-body>.page-header {
                 margin-bottom: -10px !important;
             }
-
         </style>
     @endsection
 
@@ -24,11 +23,24 @@
     @endsection
 
     <div class="text-end mt-n4">
-        <a class="btn update btn-primary me-2" href="{{ route('admin.drivers.edit', $user->id) }}"><i class="ti ti-edit"></i> Update
+        <a class="btn update btn-primary me-2" href="{{ route('admin.drivers.edit', $user->id) }}"><i
+                class="ti ti-edit"></i> Update
             Driver</a>
     </div>
+    @php
+        $expiry = checkExpiryStatus($user->license_expiry_date, 'license_expiry_date');
+    @endphp
+
     <section>
         <div class="row align-items-center">
+            @if ($expiry && isset($expiry['message']))
+                <div class="mt-2 alert alert-danger alert-dismissible fade show {{ $expiry['bg_class'] ?? '' }} {{ $expiry['text_class'] ?? '' }}"
+                    role="alert">
+                    {{ $expiry['message'] }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <div class="col-lg-6 col-md-6 col-12 my-4">
                 <div class="customer-details">
                     <div class="d-flex align-items-center">
@@ -92,8 +104,9 @@
                         </span>
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">Phone Number</h6>
-                            <p class="col3A fw_500">{{ $user->country_code ?? '' }} {{ $user->phone ?? '--' }}</p>
-                            <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}</p>
+                            <p class="col3A fw_500">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
+                            {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}
+                            </p> --}}
                         </div>
                     </div>
                 </div>
@@ -118,32 +131,6 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">Address</h6>
                             <p class="col3A fw_500">{{ $user->address ?? '--' }}</p>
-                            <p class="col3A fw_500">{{ $user->address_2 ?? '--'}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-12 my-4">
-                <div class="customer-details">
-                    <div class="d-flex align-items-center">
-                        <span class="customer-widget-img d-inline-flex">
-                            <div class="profile-picture text-center mb-0">
-                                <div class="upload-profile me-2">
-                                    <div class="profile-img">
-                                        @if ($user->license_document)
-                                            <img id="blah" style="max-width: 150px;" src="{{ asset('' . $user->license_document) }}"
-                                                alt="license">
-                                        @else
-                                            <p> - No Image</p>
-                                        @endif
-                                    </div>
-
-                                </div>
-                            </div>
-                        </span>
-                        <div class="customer-details-cont">
-                            <h6 class="fs_20 fw_600 col00 mb-1">License image</h6>
-
                         </div>
                     </div>
                 </div>
@@ -175,6 +162,67 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6 col-md-6 col-12 my-4">
+                <div class="customer-details">
+                    <div class="d-flex align-items-center">
+                        <span class="customer-widget-img d-inline-flex">
+                            <div class="iconwrapper me-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-id">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                    <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                    <path d="M15 8l2 0" />
+                                    <path d="M15 12l2 0" />
+                                    <path d="M7 16l10 0" />
+                                </svg>
+                            </div>
+                        </span>
+                        <div class="customer-details-cont">
+                            <h6 class="fs_20 fw_600 col00 mb-1">License Expiry Date</h6>
+                            <p class="col3A fw_500">
+                                @if ($user->license_expiry_date)
+                                    {{ \Carbon\Carbon::parse($user->license_expiry_date)->format('m/d/Y') }}
+                                @else
+                                    --
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-12 my-4">
+                <div class="customer-details">
+                    <div class="d-flex align-items-center">
+                        <span class="customer-widget-img d-inline-flex">
+                            <div class="profile-picture text-center mb-0">
+                                <div class="upload-profile me-2">
+                                    <div class="profile-img">
+                                        @if ($user->license_document)
+                                            <img id="blah" style="max-width: 150px;"
+                                                src="{{ asset('' . $user->license_document) }}" alt="license">
+                                        @else
+                                            <p> - No Image</p>
+                                        @endif
+                                    </div>
+
+                                </div>
+                            </div>
+                        </span>
+                        <div class="customer-details-cont">
+                            <h6 class="fs_20 fw_600 col00 mb-1">License image</h6>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
     @section('bottomContent')
@@ -187,7 +235,7 @@
                             <label>By Date</label>
                             <div class="daterangepicker-wrap mannual cal-icon cal-icon-info">
                                 <input type="text" class="btn-filters form-control form-cs info" name="datetimes"
-                                    placeholder="From Date - To Date"  />
+                                    placeholder="From Date - To Date" />
                             </div>
                         </div>
 

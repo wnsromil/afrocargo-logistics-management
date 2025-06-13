@@ -36,36 +36,34 @@
 
     </x-slot> -->
 
-    <x-slot name="cardTitle" >
-       <p class="head">Send Notification List</p>
+    <x-slot name="cardTitle">
+        <p class="head">Send Notification List</p>
 
-       <div class="usersearch d-flex usersserach">
-        
-        <div class="top-nav-search">
-            <form>
-                <input type="text" class="form-control forms" placeholder="Search ">
+        <div class="usersearch d-flex usersserach">
 
-            </form>
+            <div class="top-nav-search">
+                <form>
+                    <input type="text" class="form-control forms" placeholder="Search ">
+
+                </form>
+            </div>
+            <div class="mt-2">
+                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+            </div>
         </div>
-        <div class="mt-2">
-        <button type="button" class="btn btn-primary refeshuser " ><a class="btn-filters" href="javascript:void(0);" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Refresh"><span><i
-                                            class="fe fe-refresh-ccw"></i></span></a></button>
-        </div>
-    </div>
     </x-slot>
 
 
-    <div class="d-flex align-items-end justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    <a href="{{ route('admin.notification_schedule.create') }}" class="btn btn-primary buttons">
-                        <i class="ti ti-circle-plus me-2 text-white"></i>
-                        Add Notification
-                    </a>
-                </div>
+    <div class="d-flex align-items-end justify-content-end mb-3">
+        <div class="usersearch d-flex">
+            <div class="mt-0">
+                <a href="{{ route('admin.notification_schedule.create') }}" class="btn btn-primary buttons">
+                    <i class="ti ti-circle-plus me-2 text-white"></i>
+                    Add Notification
+                </a>
             </div>
         </div>
+    </div>
 
 
     <div>
@@ -77,207 +75,256 @@
                             <tr>
                                 {{-- <th><input type="checkbox" id="selectAll"></th> --}}
                                 <th>Sn no.</th>
+                                <th>Notification ID</th>
                                 <th>Title</th>
                                 <th>Message</th>
                                 <th>Notification For</th>
                                 <th>Date/Time</th>
                                 <th>Status</th>
-                                 <th>Action</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="alignt">
                                 <td>1</td>
+                                <td>TNT-00001</td>
                                 <td>Notification #41</td>
                                 <td>Message Notification #41</td>
                                 <td>All</td>
                                 <td>02-12-2025 11:40 AM</td>
-                                <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                                <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr class="alignt">
                                 <td>2</td>
+                                <td>TNT-00002</td>
                                 <td>Notification #42</td>
                                 <td>Message Notification #42</td>
                                 <td>Warehouse</td>
                                 <td>02-11-2025 11:50 AM</td>
-                                <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}"><p>Active</p></div></td>
-                                <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                                
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">
+                                        <p>Active</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
                             </tr>
                             <tr class="alignt">
-                            <td>3</td>
-                            <td>Notification #43</td>
-                            <td>Message Notification #43</td>
-                            <td>Users</td>
-                            <td>02-10-2025 10:40 AM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                            
-                        </tr>
-                        <tr class="alignt">
-                            <td>4</td>
-                            <td>Notification #44</td>
-                            <td>Message Notification #44</td>
-                            <td>Drivers</td>
-                            <td>02-09-2025 10:40 AM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                           
-                        </tr>
-                        <tr class="alignt">
-                            <td>5</td>
-                            <td>Notification #45</td>
-                            <td>Message Notification #45</td>
-                            <td>Drivers</td>
-                            <td>02-15-2025 11:40 AM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                           
-                        </tr>
-                        <tr class="alignt">
-                            <td>6</td>
-                            <td>Notification #46</td>
-                            <td>Message Notification #46</td>
-                            <td>Warehouse</td>
-                            <td>02-14-2025 11:40 AM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                           
-                        </tr>
-                        <tr class="alignt">
-                            <td>7</td>
-                            <td>Notification #47</td>
-                            <td>Message Notification #47</td>
-                            <td>User</td>
-                            <td>02-02-2025 11:40 AM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                            
-                        </tr>
-                        <tr class="alignt">
-                            <td>8</td>
-                            <td>Notification #48</td>
-                            <td>Message Notification #48</td>
-                            <td>Drivers</td>
-                            <td>02-03-2025 11:40 AM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>  <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div></td>
-                            
-                        </tr>
-                        <tr class="alignt">
-                            <td>9</td>
-                            <td>Notification #49</td>
-                            <td>Message Notification #40</td>
-                            <td>Drivers</td>
-                            <td>02-14-2025 11:40 PM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>
-                            <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div>
-                            </td>
-                            
-                        </tr>
-                        <tr class="alignt">
-                            <td>10</td>
-                            <td>Notification #50</td>
-                            <td>Message Notification #50</td>
-                            <td>All</td>
-                            <td>02-22-2025 10:10 PM</td>
-                            <td><div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div></td>
-                            <td>
-                            <div class="dropdown dropdown-action container">
-															<a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-															<div class="dropdown-menu dropdown-menu-end">
-																<ul>
-																	<li>
-																		<a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
-																	</li>
-																</ul>
-															</div>
-														</div>
-                            </td>
-                        </tr>
+                                <td>3</td>
+                                <td>TNT-00003</td>
+                                <td>Notification #43</td>
+                                <td>Message Notification #43</td>
+                                <td>Users</td>
+                                <td>02-10-2025 10:40 AM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>4</td>
+                                <td>TNT-00004</td>
+                                <td>Notification #44</td>
+                                <td>Message Notification #44</td>
+                                <td>Drivers</td>
+                                <td>02-09-2025 10:40 AM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>5</td>
+                                <td>TNT-00005</td>
+                                <td>Notification #45</td>
+                                <td>Message Notification #45</td>
+                                <td>Drivers</td>
+                                <td>02-15-2025 11:40 AM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>6</td>
+                                <td>TNT-00006</td>
+                                <td>Notification #46</td>
+                                <td>Message Notification #46</td>
+                                <td>Warehouse</td>
+                                <td>02-14-2025 11:40 AM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>7</td>
+                                <td>TNT-00007</td>
+                                <td>Notification #47</td>
+                                <td>Message Notification #47</td>
+                                <td>User</td>
+                                <td>02-02-2025 11:40 AM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>8</td>
+                                <td>TNT-00008</td>
+                                <td>Notification #48</td>
+                                <td>Message Notification #48</td>
+                                <td>Drivers</td>
+                                <td>02-03-2025 11:40 AM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>9</td>
+                                <td>TNT-00009</td>
+                                <td>Notification #49</td>
+                                <td>Message Notification #40</td>
+                                <td>Drivers</td>
+                                <td>02-14-2025 11:40 PM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr class="alignt">
+                                <td>10</td>
+                                <td>TNT-00010</td>
+                                <td>Notification #50</td>
+                                <td>Message Notification #50</td>
+                                <td>All</td>
+                                <td>02-22-2025 10:10 PM</td>
+                                <td>
+                                    <div class="container"><img src="{{asset('assets/img/checkbox.png')}}">Active</div>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action container">
+                                        <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="edit-customer.html"><i class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                             <!-- @forelse ($parcels as $index => $parcel)
                                 <tr>
                                     {{-- <td><input type="checkbox" class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($parcel->status) }}" value="{{ $parcel->id }}"></td> --}}
@@ -453,29 +500,28 @@
             options += `<option value="${driver.id}">${driver.name}</option>`;
         });
 
-        const Input_Fields = [
-            {
-                id: "pickup-man",
-                label: "Pickup Man",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
+        const Input_Fields = [{
+                id: "pickup-man"
+                , label: "Pickup Man"
+                , type: "select"
+                , options: options
+                , required: true
+            }
+            , {
+                id: "note"
+                , label: "Note"
+                , type: "textarea"
+                , required: false
             }
         ];
 
         let selectedUsers = [];
-        $(".selectCheckbox:checked").each(function () {
+        $(".selectCheckbox:checked").each(function() {
             selectedUsers.push($(this).val());
         });
 
-        if(ParcelId=="selectArr"){
-            ParcelId =selectedUsers;
+        if (ParcelId == "selectArr") {
+            ParcelId = selectedUsers;
         }
 
         const status = "Pickup Assign";
@@ -488,27 +534,26 @@
             options += `<option value="${driver.id}">${driver.name}</option>`;
         });
 
-        const Input_Fields = [
-            {
-                id: "pickup-man",
-                label: "Pickup Man",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "pickup_date",
-                label: "Pickup Date",
-                type: "date",
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
+        const Input_Fields = [{
+                id: "pickup-man"
+                , label: "Pickup Man"
+                , type: "select"
+                , options: options
+                , required: true
             }
-            
+            , {
+                id: "pickup_date"
+                , label: "Pickup Date"
+                , type: "date"
+                , required: true
+            }
+            , {
+                id: "note"
+                , label: "Note"
+                , type: "textarea"
+                , required: false
+            }
+
         ];
 
         const status = "Pickup Re-Schedule";
@@ -521,7 +566,7 @@
         console.log("❌ Pickup Cancel Clicked");
     }
 
-    function handleReceivedByPickupMan(ParcelId=false) {
+    function handleReceivedByPickupMan(ParcelId = false) {
         const status = "Received By Pickup Man";
         DynmicModel(ParcelId, status, []);
     }
@@ -532,24 +577,23 @@
             options += `<option value="${warehouse.id}">${warehouse.warehouse_name}</option>`;
         });
 
-        const Input_Fields = [
-            {
-                id: "warehouse_id",
-                label: "Warehouse",
-                type: "select",
-                options: options,
-                required: true
-            },
-            {
-                id: "note",
-                label: "Note",
-                type: "textarea",
-                required: false
+        const Input_Fields = [{
+                id: "warehouse_id"
+                , label: "Warehouse"
+                , type: "select"
+                , options: options
+                , required: true
+            }
+            , {
+                id: "note"
+                , label: "Note"
+                , type: "textarea"
+                , required: false
             }
         ];
 
         const status = "Received Warehouse";
-        DynmicModel(ParcelId, status, Input_Fields );
+        DynmicModel(ParcelId, status, Input_Fields);
         console.log("🏢 Received Warehouse Clicked");
     }
 
@@ -575,19 +619,25 @@
         });
 
         // Show SweetAlert
-        const { value: formValues } = await Swal.fire({
-            title: "Update Status",
-            html: formHtml,
-            showCancelButton: true,
-            confirmButtonText: "Change",
-            showCloseButton: true,
-            preConfirm: () => {
-                let formData = { ParcelId: ParcelId, status: status, _token: _token };
+        const {
+            value: formValues
+        } = await Swal.fire({
+            title: "Update Status"
+            , html: formHtml
+            , showCancelButton: true
+            , confirmButtonText: "Change"
+            , showCloseButton: true
+            , preConfirm: () => {
+                let formData = {
+                    ParcelId: ParcelId
+                    , status: status
+                    , _token: _token
+                };
                 let isValid = true;
 
                 // Validate and collect data
                 Input_Fields.forEach(field => {
-                    let inputValue = document.getElementById(field.id)?.value.trim() || "";
+                    let inputValue = document.getElementById(field.id) ? .value.trim() || "";
                     if (field.required && !inputValue) {
                         Swal.showValidationMessage(`Please fill ${field.label}!`);
                         isValid = false;
@@ -602,27 +652,27 @@
         if (formValues) {
             // Send AJAX Request
             $.ajax({
-                url: "{{ route('parcel.status_update') }}",
-                type: "POST",
-                data: formValues, // Dynamic data object
-                success: function (response) {
+                url: "{{ route('parcel.status_update') }}"
+                , type: "POST"
+                , data: formValues, // Dynamic data object
+                success: function(response) {
                     if (response.status === true) {
-                    Swal.fire({
-                    title: "Good job!",
-                    text: "Status change successfully!",
-                    icon: "success"
-                   }).then(() => {
-                    location.reload(); // Page reload after OK click
-                   });
+                        Swal.fire({
+                            title: "Good job!"
+                            , text: "Status change successfully!"
+                            , icon: "success"
+                        }).then(() => {
+                            location.reload(); // Page reload after OK click
+                        });
                     } else {
                         Swal.fire({
-                            title: "Oops...",
-                            text: "Something went to wrong!",
-                            icon: "error"
+                            title: "Oops..."
+                            , text: "Something went to wrong!"
+                            , icon: "error"
                         });
                     }
-                },
-                error: function (xhr) {
+                }
+                , error: function(xhr) {
                     Swal.fire('Error!', 'An error occurred while processing your request.', 'error');
                     console.log(xhr.responseJSON);
                 }

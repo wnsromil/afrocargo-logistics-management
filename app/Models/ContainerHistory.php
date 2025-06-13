@@ -24,7 +24,9 @@ class ContainerHistory extends Model
         'warehouse_id',
         'arrived_warehouse_id',
         'note',
-        'type'
+        'type',
+        'open_date',
+        'close_date'
 
     ];
 
