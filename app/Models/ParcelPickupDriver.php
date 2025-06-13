@@ -19,5 +19,23 @@ class ParcelPickupDriver extends Model
         'quantity_type',
         'is_deleted',
         'driver_id',
+        'container_id',
+        'container_move_id',
+        'move'
     ];
+
+    public function parcelStatus()
+    {
+        return $this->belongsTo(ParcelStatus::class, 'status');
+    }
+
+    public function container()
+    {
+        return $this->hasOne(Vehicle::class, 'id', 'container_id'); // ya hasMany agar ek se zyada ho
+    }
+
+    public function moveContainer()
+    {
+        return $this->hasOne(Vehicle::class, 'container_move_id'); // ya hasMany agar ek se zyada ho
+    }
 }

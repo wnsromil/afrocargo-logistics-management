@@ -2,6 +2,52 @@
     <x-slot name="header">
         Parcel Management
     </x-slot>
+    @section('style')
+        <style>
+            .show {
+                z-index: 999;
+                display: none;
+            }
+
+            .show .overlay {
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, .66);
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .show .img-show {
+                width: 600px;
+                height: 400px;
+                background: #FFF;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                overflow: hidden
+            }
+
+            .img-show span {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 99;
+                cursor: pointer;
+            }
+
+            .img-show img {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            /*End style*/
+        </style>
+    @endsection
 
     <x-slot name="cardTitle">
         <p class="head">Order details</p>
@@ -169,65 +215,158 @@
                     </tbody>
                 </table>
             </div>
-            <div>
-
-                @php
-                    $statusSteps = [
-                        1 => 'Pending',
-                        3 => 'Pickup order',
-                        4 => 'Arrived warehouse',
-                        5 => 'In transit',
-                        8 => 'Arrived at final destination warehouse',
-                        9 => 'Ready for pick up',
-                        //21 => 'Ready for self pick up',
-                        10 => 'Out for delivery',
-                        11 => 'Delivered'
-
-                    ];
-
-                    $statusDates = [];
-                    $completedStatusMap = [];
-
-                    foreach ($ParcelHistories as $history) {
-                        $status = (int) $history->parcel_status;
-                        $statusDates[$status] = \Carbon\Carbon::parse($history->created_at)->format('D, M d - h:i A');
-                        $completedStatusMap[$status] = true;
-                    }
-                @endphp
-                <p class="heading mt-4">Order History</p>
-                <!-- Timeline -->
+            <div class="row mt-4 ">
                 <div class="col-md-12">
-                    <div class="timeline-card px-3">
-                        <div class="card-body">
-                            <div class="">
-                                <div class="hh-grayBox pt45 pb20">
-                                    <div class="row">
-                                        @foreach($statusSteps as $code => $label)
-                                            @php
-                                                $isCompleted = isset($completedStatusMap[$code]) && $completedStatusMap[$code] === true;
-                                            @endphp
-                                            <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
-                                                <span class="is-complete"></span>
-                                                <p>
-                                                    {{ $label }}<br>
-                                                    <span>{{ $statusDates[$code] ?? '' }}</span>
-                                                </p>
-                                            </div>
-                                        @endforeach
-                                    </div>
+                    <p class="heading mb-3">Item List</p>
+                    <div class="table-responsive notMinheight smallTDs">
+                        <table class="table table-stripped table-hover datatable notposition border1">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th> <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></th>
+                                    <th>S.No</th>
+                                    <th>Container ID</th>
+                                    <th>Item Image</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($parcelItems as $index => $parcelItem)
+                                    <tr>
+                                        <td> <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></td>
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{$parcelItem->container->unique_id ?? "-"}}</td>
+                                        <td class="product_img justify-items-center popup" style="justify-items: center;">
+                                            @if (!empty($parcelItem->img))
+                                                <img style="cursor: pointer;" src="{{ asset($parcelItem->img) }}" alt="Inventory Image" class="itemImg">
+                                            @else
+                                                <span>-</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ucfirst($parcelItem->item_name ?? '')}}</td>
+                                        <td>{{$parcelItem->quantity ?? "0"}}</td>
+                                        <td>{{ucfirst($parcelItem->quantity_type ?? "-")}}</td>
+                                        @php
+                                            $classValue = match ((string) $parcelItem->status) {
+                                                "1" => 'badge-pending',
+                                                "2" => 'badge-pickup',
+                                                "3" => 'badge-picked-up',
+                                                "4" => 'badge-arrived-warehouse',
+                                                "5" => 'badge-in-transit',
+                                                "8" => 'badge-arrived-final',
+                                                "9" => 'badge-ready-pickup',
+                                                "10" => 'badge-out-delivery',
+                                                "11" => 'badge-delivered',
+                                                "12" => 'badge-re-delivery',
+                                                "13" => 'badge-on-hold',
+                                                "14" => 'badge-cancelled',
+                                                "15" => 'badge-abandoned',
+                                                "21" => 'badge-picked-up',
+                                                "22" => 'badge-in-transit',
+                                                default => 'badge-pending',
+                                            };
+                                        @endphp
+                                        <td>
+                                            <label class="{{ $classValue }}" for="status">
+                                                {{ $parcelItem->parcelStatus->status ?? '-' }}
+                                            </label>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="px-4 py-4 text-center text-gray-500">No Item found.
+                                        </td>
+                                    </tr>
+                                @endforelse
 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+
+            @php
+                $statusSteps = [
+                    1 => 'Pending',
+                    3 => 'Pickup order',
+                    4 => 'Arrived warehouse',
+                    5 => 'In transit',
+                    8 => 'Arrived at final destination warehouse',
+                    9 => 'Ready for pick up',
+                    //21 => 'Ready for self pick up',
+                    10 => 'Out for delivery',
+                    11 => 'Delivered'
+
+                ];
+
+                $statusDates = [];
+                $completedStatusMap = [];
+
+                foreach ($ParcelHistories as $history) {
+                    $status = (int) $history->parcel_status;
+                    $statusDates[$status] = \Carbon\Carbon::parse($history->created_at)->format('D, M d - h:i A');
+                    $completedStatusMap[$status] = true;
+                }
+            @endphp
+            <p class="heading mt-4">Order History</p>
+            <!-- Timeline -->
+            <div class="col-md-12">
+                <div class="timeline-card px-3">
+                    <div class="card-body">
+                        <div class="">
+                            <div class="hh-grayBox pt45 pb20">
+                                <div class="row">
+                                    @foreach($statusSteps as $code => $label)
+                                        @php
+                                            $isCompleted = isset($completedStatusMap[$code]) && $completedStatusMap[$code] === true;
+                                        @endphp
+                                        <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
+                                            <span class="is-complete"></span>
+                                            <p>
+                                                {{ $label }}<br>
+                                                <span>{{ $statusDates[$code] ?? '' }}</span>
+                                            </p>
+                                        </div>
+                                    @endforeach
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Timeline -->
             </div>
+            <!-- Timeline -->
         </div>
     </div>
+    <div class="show">
+        <div class="overlay"></div>
+        <div class="img-show">
+            <span><i class="fa-solid fa-rectangle-xmark"></i></span>
+            <img src="">
+        </div>
     </div>
-    </div>
-    </div>
-    </div>
+
+    @section('script')
+        <script>
+            $(function () {
+                "use strict";
+
+                $(".popup img").click(function () {
+                    var $src = $(this).attr("src");
+                    $(".show").fadeIn();
+                    $(".img-show img").attr("src", $src);
+                });
+
+                $("span, .overlay").click(function () {
+                    $(".show").fadeOut();
+                });
+
+            });
+        </script>
+    @endsection
 
 </x-app-layout>

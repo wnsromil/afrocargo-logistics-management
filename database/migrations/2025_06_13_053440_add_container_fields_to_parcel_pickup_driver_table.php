@@ -8,16 +8,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('parcel_pickup_driver', function (Blueprint $table) {
-            $table->string('status')->nullable()->after('driver_id');
-            $table->enum('delivered', ['Yes', 'No'])->default('No')->after('status');
+            $table->unsignedBigInteger('container_id')->nullable()->after('id');
+            $table->unsignedBigInteger('container_move_id')->nullable()->after('container_id');
+            $table->enum('move', ['Yes', 'No'])->default('No')->after('container_move_id');
         });
     }
 
     public function down(): void
     {
         Schema::table('parcel_pickup_driver', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->dropColumn('delivered');
+            $table->dropColumn(['container_id', 'container_move_id', 'move']);
         });
     }
 };

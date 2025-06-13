@@ -13,7 +13,8 @@ use App\Models\{
     Parcel,
     ParcelHistory,
     Invoice,
-    ParcelInventorie
+    ParcelInventorie,
+    ParcelPickupDriver
 };
 
 class ServiceOrderStatusManage extends Controller
@@ -200,6 +201,11 @@ class ServiceOrderStatusManage extends Controller
             // 'warehouse_id' => $this->user->warehouse_id,
         ]);
 
+
+        ParcelPickupDriver::where('parcel_id', $parcel->id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 10]);
+
         // Create a new entry in ParcelHistory
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
@@ -241,6 +247,10 @@ class ServiceOrderStatusManage extends Controller
             'status' => 11,
             // 'warehouse_id' => $this->user->warehouse_id,
         ]);
+
+         ParcelPickupDriver::where('parcel_id', $parcel->id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 11]);
 
         // Create a new entry in ParcelHistory
         ParcelHistory::create([

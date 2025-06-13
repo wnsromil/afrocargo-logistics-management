@@ -15,7 +15,8 @@ use App\Models\{
     ParcelHistory,
     HubTracking,
     Address,
-    ContainerHistory
+    ContainerHistory,
+    ParcelPickupDriver
 };
 use \Carbon\Carbon;
 
@@ -119,6 +120,9 @@ class OrderStatusManage extends Controller
             'status' => 4,
         ]);
 
+        ParcelPickupDriver::where('parcel_id', $request->parcel_id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 4]);
 
         $parcelHistory = ParcelHistory::where('parcel_id', $request->parcel_id)->first();
         // Create a new entry in ParcelHistory
@@ -238,6 +242,10 @@ class OrderStatusManage extends Controller
         $parcels = Parcel::where('container_id', $vehicle->id)->where('status', 4)->get();
 
         foreach ($parcels as $parcel) {
+            ParcelPickupDriver::where('parcel_id', $parcel->id)
+                ->where('container_id', $parcel->container_id)
+                ->update(['status' => 5]);
+
             $parcel->update([
                 'status' => 5,
                 'arrived_container_history_id' => $containerHistory->id,
@@ -279,6 +287,9 @@ class OrderStatusManage extends Controller
 
         foreach ($parcels as $parcel) {
             $parcel->update(['status' => 8]);
+            ParcelPickupDriver::where('parcel_id', $parcel->id)
+                ->where('container_id', $parcel->container_id)
+                ->update(['status' => 8]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
@@ -390,9 +401,15 @@ class OrderStatusManage extends Controller
             if ($parcel->delivery_type == 'self') {
                 $parcel->update(['status' => 21]);
                 $parcel_status_id = 21;
+                ParcelPickupDriver::where('parcel_id', $parcel->id)
+                    ->where('container_id', $parcel->container_id)
+                    ->update(['status' => 21]);
             } else {
                 $parcel->update(['status' => 9]);
                 $parcel_status_id = 9;
+                ParcelPickupDriver::where('parcel_id', $parcel->id)
+                    ->where('container_id', $parcel->container_id)
+                    ->update(['status' => 9]);
             }
 
             ParcelHistory::create([

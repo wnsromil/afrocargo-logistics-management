@@ -140,9 +140,6 @@ class CustomerController extends Controller
                 }
             }
 
-
-
-
             // 🛠 Mapping Request Fields to Database Fields
             $userData = [
                 'name'          => $validated['first_name'],

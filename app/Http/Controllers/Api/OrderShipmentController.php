@@ -144,7 +144,7 @@ class OrderShipmentController extends Controller
             $validatedData['warehouse_id'] = $nearestWarehouse->id;
 
             $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
-                ->where('status', 'Active')
+                ->where('type', 'Active')
                 ->latest() // optional: if multiple transfer records exist, get the latest
                 ->first();
 
@@ -767,10 +767,16 @@ class OrderShipmentController extends Controller
         $user = $this->user;
         $data = $request->only(['parcel_id', 'item_name', 'quantity']);
         $data['is_deleted'] = 'No';
+        $data['status'] = '3';
         $data['driver_id'] = $user->id;
         $data['quantity'] = $request->quantity ?? null;
         $data['quantity_type'] = $request->quantity_type ?? null;
 
+        $parcel = Parcel::find($request->parcel_id);
+
+        $data['container_id'] = $parcel->container_id ?? null;
+       // $data['container_move_id'] = $parcel->container_id ?? null;
+        $data['move'] = "No";
 
         // Handle image upload
         if ($request->hasFile('img')) {
