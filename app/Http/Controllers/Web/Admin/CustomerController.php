@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail};
 use Spatie\Permission\Models\Role;
 use DB;
-use Hash;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use App\Mail\RegistorMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -140,6 +141,10 @@ class CustomerController extends Controller
                 }
             }
 
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
+
             // 🛠 Mapping Request Fields to Database Fields
             $userData = [
                 'name'          => $validated['first_name'],
@@ -157,7 +162,7 @@ class CustomerController extends Controller
                 'state_id'       => $validated['state'],
                 'city_id'        => $validated['city'],
                 'pincode'            => $validated['Zip_code'],
-                'password'       => Hash::make(12345678),
+                'password'       => $hashedPassword,
                 'status' => $request->status ?? 'Active',
                 'company_name'        => $request->company_name ?? null,
                 'apartment'        => $request->apartment ?? null,
@@ -204,7 +209,7 @@ class CustomerController extends Controller
             $userName = $validated['first_name'];
             $email = $validated['email'] ?? null;
             $mobileNumber = $validated['mobile_number'];
-            $password = 12345678;
+            $password = $hashedPassword;
             $loginUrl = route('login');
 
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
@@ -564,6 +569,9 @@ class CustomerController extends Controller
                 }
             }
 
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
 
             $userData = [
                 'name'       => $validated['first_name'],
@@ -579,7 +587,7 @@ class CustomerController extends Controller
                 'language'   => $validated['language'],
                 'company_name' => $validated['company_name'],
                 'country_id'   => $validated['country'],
-                'password'     => Hash::make(12345678),
+                'password'     => $hashedPassword,
                 'signup_type'  => 'for_admin',
                 'role'  => 'ship_to_customer',
                 'role_id'  => 5,
@@ -735,6 +743,9 @@ class CustomerController extends Controller
             'Zip_code' => 'nullable|string|max:10',
         ]);
         try {
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
             $userData = [
                 'name'       => $validated['first_name'],
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
@@ -750,7 +761,7 @@ class CustomerController extends Controller
                 'state_id'   => $validated['city'],
                 'city_id'   => $validated['state'],
                 'pincode'   => $validated['Zip_code'],
-                'password'     => Hash::make(12345678),
+                'password'     => $hashedPassword,
                 'signup_type'  => 'for_admin',
                 'role'  => 'pickup_to_customer',
                 'role_id'  => 6,

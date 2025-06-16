@@ -532,7 +532,7 @@
                     <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         src="{{ asset('assets/img/cross.png') }}">
                 </div>
-                <form id="deliveryForm" method="POST">
+                <form id="signaturedeliveryForm" method="POST">
                     @csrf
                     <!-- Parcel ID Input Field -->
                     <div class="modal-body">
@@ -581,11 +581,19 @@
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block">
+                                    <label class="foncolor">Amount</label>
+                                    <input type="number" name="amount" class="form-control inp"
+                                        placeholder="Enter amount">
+                                      <div id="amountError" class="text-danger small mt-1"></div>   
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
                                     <label class="foncolor">Note</label>
                                     <input type="text" name="notes" class="form-control inp Note"
                                         placeholder="Enter note">
                                 </div>
-                            </div>
+                            </div>      
                         </div>
                     </div>
                     <div class="modal-footer">

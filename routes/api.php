@@ -75,6 +75,7 @@ Route::post('/update-status-received-to-hub', [OrderStatusManage::class, 'status
 Route::post(uri: '/update-status-fully-loaded-container', action: [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
 Route::post(uri: '/update-status-fully-discharge-container', action: [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
 Route::post(uri: '/update-status-delivery-with-driver', action: [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
+Route::post(uri: '/update-status-signature-self-delivery', action: [OrderStatusManage::class, 'statusUpdate_SignatureSelfDelivery']);
 
 // Pickup
 Route::get('/pickup-users/{id}', [PickupController::class, 'getPickupUsers']);
