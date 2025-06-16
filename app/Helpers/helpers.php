@@ -1,5 +1,6 @@
 <?php
 include('timeSlot.php');
+include('BarcodeHelper.php');
 use App\Helpers\SettingsHelper;
 
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
+use App\Models\Currency;
 
 class LocationController extends Controller
 {
@@ -28,5 +29,13 @@ class LocationController extends Controller
         })->when(empty($request->type), function ($q) use ($state_id) {
             $q->where('state_id', $state_id);
         })->get());
+    }
+
+    public function getCurrencyExchangeRate(Request $request)
+    {
+        $currency = Currency::when($request->currency_name,function($q) use($request){
+            $q->where('currency_name', $request->currency_name);
+        })->get();
+        return response()->json($currency);
     }
 }

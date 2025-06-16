@@ -160,4 +160,16 @@ class Invoice extends Model
                 $query->select('id', 'name', 'last_name');
             }]);
     }
+    public function individualPayment()
+    {
+        return $this->hasMany(IndividualPayment::class, 'invoice_id')
+            ->with(['createdByUser' => function ($query) {
+                $query->select('id', 'name', 'last_name');
+            }]);
+    }
+
+    public function barcodes()
+    {
+        return $this->hasMany(Barcode::class, 'invoice_id')->with('ParcelInventory');
+    }
 }

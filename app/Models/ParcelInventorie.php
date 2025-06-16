@@ -15,6 +15,7 @@ class ParcelInventorie extends Model
         'invoice_id',
         'label_qty',
         'price',
+        'discount',
         'ins',
         'tax',
         'total',
@@ -29,5 +30,9 @@ class ParcelInventorie extends Model
     public function inventorie()
     {
         return $this->belongsTo(Inventory::class, 'inventorie_id');
+    }
+
+    public function barcode(){
+        return $this->belongsTo(Barcode::class, 'supply_id', 'id');
     }
 }

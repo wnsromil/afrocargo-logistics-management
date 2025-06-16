@@ -81,46 +81,6 @@ class InvoiceController extends Controller
         return view('admin.Invoices.invoicesdetails', compact('getInvoice'));
     }
 
-    public function invoices_download(Request $request, $id)
-    {
-        $invoice = Invoice::with(['deliveryAddress', 'pickupAddress'])->findOrFail($id);
-        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->get();
-        return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
-        if($request->type == 'labels'){
-            $pdf = Pdf::loadView('admin.Invoices.pdf.labels', [
-                'invoice' => $invoice,
-                'invoiceHistory' => $invoiceHistory
-            ]);
-            // Generate a filename
-            $filename = 'invoice-' . $invoice->invoice_no . '.pdf';
-        }else{
-            // Load the PDF first
-            $pdf = Pdf::loadView('admin.Invoices.pdf.invoicepdf', [
-                'invoice' => $invoice,
-                'invoiceHistory' => $invoiceHistory
-            ]);
-
-            // Generate a filename
-            $filename = 'labels-' . $invoice->invoice_no . '.pdf';
-        }
-        
-
-
-        // Set paper options
-        // $pdf->setPaper('A4', 'portrait');
-
-        $pdf->setPaper('A4', 'landscape');
-
-        // First return the PDF as a response to load it
-        // Then you can call download() on the client side if needed
-        return $pdf->stream($filename);
-        
-        // Alternatively, if you want to force download immediately:
-        // return $pdf->download($filename);
-
-        // return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -171,8 +131,21 @@ class InvoiceController extends Controller
             'invoce_type' => 'required|in:services,supplies',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
-            'container_id' => 'nullable|required_if:invoce_type,services|numeric',
-            'driver_id' => 'nullable|numeric',
+            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'driver_id' => [
+                'nullable',
+                'numeric',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (
+                        isset($request->container_id) &&
+                        is_numeric($request->container_id) &&
+                        $request->container_id > 0 &&
+                        empty($value)
+                    ) {
+                        $fail('The driver field is required when container is selected.');
+                    }
+                },
+            ],
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
@@ -290,7 +263,7 @@ class InvoiceController extends Controller
     public function edit(string $id)
     {
         //
-        $invoice = Invoice::with(['deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments'])->findOrFail($id);
+        $invoice = Invoice::with(['deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes'])->findOrFail($id);
 
         $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id',$id)->latest()->first();
 
@@ -340,8 +313,21 @@ class InvoiceController extends Controller
             'invoce_type' => 'required|in:services,supplies',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
-            'container_id' => 'nullable|required_if:invoce_type,services|numeric',
-            'driver_id' => 'nullable|numeric',
+            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'driver_id' => [
+                'nullable',
+                'numeric',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (
+                        isset($request->container_id) &&
+                        is_numeric($request->container_id) &&
+                        $request->container_id > 0 &&
+                        empty($value)
+                    ) {
+                        $fail('The driver field is required when container is selected.');
+                    }
+                },
+            ],
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
@@ -732,7 +718,7 @@ class InvoiceController extends Controller
             'invoice_id' => 'nullable|exists:invoices,id',
             'created_by' => 'nullable|exists:users,id',
             'personal' => 'nullable|string',
-            'currency' => 'required|string',
+            'local_currency' => 'required|string',
             'payment_type' => 'required|in:boxcredit,cash,cheque,CreditCard',
             'payment_amount' => 'required|numeric',
             'reference' => 'nullable|string',
@@ -833,23 +819,33 @@ class InvoiceController extends Controller
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
             if(!empty($item['supply_id'])){
-                ParcelInventorie::updateOrCreate(
-                    [
-                        'parcel_id' => $invoice->parcel_id,
-                        'invoice_id' => $invoice->id,
-                        'inventorie_id' => $item['supply_id'],
-                    ],
-                    [
-                        'inventorie_item_quantity' => $item['qty'],
-                        'inventory_name' => $item['supply_name'],
-                        'label_qty' => $item['label_qty'],
-                        'price' => $item['price'],
-                        'ins' => $item['ins'],
-                        'tax' => $item['tax'],
-                        'discount' => $item['discount'],
-                        'total' => $item['total'],
-                    ]
-                );
+                $supply =  ParcelInventorie::updateOrCreate(
+                            [
+                                'parcel_id' => $invoice->parcel_id,
+                                'invoice_id' => $invoice->id,
+                                'inventorie_id' => $item['supply_id'],
+                            ],
+                            [
+                                'inventorie_item_quantity' => $item['qty'],
+                                'inventory_name' => $item['supply_name'],
+                                'label_qty' => $item['label_qty'],
+                                'price' => $item['price'],
+                                'ins' => $item['ins'],
+                                'tax' => $item['tax'],
+                                'discount' => $item['discount'] ?? 0,
+                                'total' => $item['total'],
+                            ]
+                        );
+                if($status != 'updated'){
+                    for ($i=0; $i < $item['label_qty']; $i++) { 
+                        store_barcode([
+                            'parcel_id' => $invoice->parcel_id,
+                            'invoice_id' => $invoice->id,
+                            'supply_id' => $supply->id,
+                        ]);
+                    }
+                }
+
             }
         }
 

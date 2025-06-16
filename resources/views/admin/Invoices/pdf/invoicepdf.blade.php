@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargo Invoice</title>
 </head>
+
 <body style="font-family: Arial, sans-serif;">
     <!-- Header Section -->
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -49,11 +51,11 @@
             </td>
             <td style="width: 50%; padding: 5px; text-align: right;">
                 <p style="text-align: -webkit-left;">
-                <strong>Ship To:</strong><br>
-                {{ $invoice->deliveryAddress->full_name ?? 'N/A' }}<br>
-                {{ $invoice->deliveryAddress->address ?? 'N/A' }}<br>
-                Cel.: {{ $invoice->deliveryAddress->mobile_number ?? 'N/A' }}<br>
-                Tel.: {{ $invoice->deliveryAddress->alternative_mobile_number ?? 'N/A' }}
+                    <strong>Ship To:</strong><br>
+                    {{ $invoice->deliveryAddress->full_name ?? 'N/A' }}<br>
+                    {{ $invoice->deliveryAddress->address ?? 'N/A' }}<br>
+                    Cel.: {{ $invoice->deliveryAddress->mobile_number ?? 'N/A' }}<br>
+                    Tel.: {{ $invoice->deliveryAddress->alternative_mobile_number ?? 'N/A' }}
                 </p>
             </td>
         </tr>
@@ -76,15 +78,20 @@
     <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
         <thead>
             <tr style="background-color: #f2f2f2; border: 1px solid black;">
-                <th style="border: 1px solid black; padding: 5px;">P.: {{ $invoice->pickupAddress->city_id ?? 'N/A' }}</th>
-                <th style="border: 1px solid black; padding: 5px;">M.: {{ $invoice->deliveryAddress->city_id ?? 'N/A' }}</th>
-                <th style="border: 1px solid black; padding: 5px;">S.: {{ $invoice->deliveryAddress->city_id ?? 'N/A' }}</th>
+                <th style="border: 1px solid black; padding: 5px;">P.: {{ $invoice->pickupAddress->city_id ?? 'N/A' }}
+                </th>
+                <th style="border: 1px solid black; padding: 5px;">M.: {{ $invoice->deliveryAddress->city_id ?? 'N/A' }}
+                </th>
+                <th style="border: 1px solid black; padding: 5px;">S.: {{ $invoice->deliveryAddress->city_id ?? 'N/A' }}
+                </th>
             </tr>
         </thead>
         <tbody>
             <tr style="background-color: #f2f2f2; border: 1px solid black;">
-                <td style="border: 1px solid black; padding: 5px;">Invoice Date: {{ date('m/d/Y', strtotime($invoice->issue_date)) }}</td>
-                <td style="border: 1px solid black; padding: 5px;">Pay Terms: {{ $invoice->pickupAddress->country_id ?? 'N/A' }}</td>
+                <td style="border: 1px solid black; padding: 5px;">Invoice Date: {{ date('m/d/Y',
+                    strtotime($invoice->issue_date)) }}</td>
+                <td style="border: 1px solid black; padding: 5px;">Pay Terms: {{ $invoice->pickupAddress->country_id ??
+                    'N/A' }}</td>
                 <td style="border: 1px solid black; padding: 5px;">Driver: {{ $invoice->driver_id ?? 'N/A' }}</td>
             </tr>
             <tr style="background-color: #f2f2f2; border: 1px solid black;">
@@ -137,6 +144,46 @@
         </tr>
     </table>
 
+    @if(!empty($invoice->individualPayment) && count($invoice->individualPayment) > 0)
+     <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
+        <thead>
+            <tr style="background-color: #007bff; color: white; border: 1px solid black;">
+                <th style="border: 1px solid black; padding: 5px;">Invoice ID</th>
+                <th style="border: 1px solid black; padding: 5px;">User</th>
+                <th style="border: 1px solid black; padding: 5px;">Payment Type</th>
+                <th style="border: 1px solid black; padding: 5px;">Payment Date</th>
+                <th style="border: 1px solid black; padding: 5px;">Amt. In Dollar</th>
+                <th style="border: 1px solid black; padding: 5px;">Local Currency</th>
+                <th style="border: 1px solid black; padding: 5px;">Currency</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse($invoice->individualPayment as $payment)
+            <tr style="border: 1px solid black;">
+                <td style="border: 1px solid black; padding: 5px;">{{ $invoice->invoice_no ?? '' }}</td>
+                <td style="border: 1px solid black; padding: 5px;">
+                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}">
+                        {{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}
+                    </p>
+                </td>
+                <td style="border: 1px solid black; padding: 5px;">{{ ucfirst($payment->payment_type ?? '-') }}</td>
+                <td style="border: 1px solid black; padding: 5px;">{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y, h:i a') :
+                    '-' }}</td>
+                <td style="border: 1px solid black; padding: 5px;">{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
+                <td style="border: 1px solid black; padding: 5px;">{{ $payment->local_currency ?? '-' }}</td>
+                <td style="border: 1px solid black; padding: 5px;">{{ $payment->currency ?? '-' }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="8" class="text-center">No Payments Found</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+    @endif
+
     <!-- Subtotal and Balance Section -->
     <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
         <tbody>
@@ -168,7 +215,14 @@
         <tr>
             <td style="padding: 5px;">
                 <p style="font-size: smaller; line-height: 1.2;">
-                    <strong>DECLARO que no estoy enviando:</strong> DROGA, DINERO, ARMAS DE FUEGO Y EXPLOSIVOS, QUÍMICOS Y NINGÚN ARTÍCULOS PROHIBIDO POR LEY. Entiendo que he pagado por lo que he declarado y si llegase a omitir cualquier artículo me comprometo a pagar los Impuestos y Multa por mala declaración. Tengo 30 días para realizar el pago, caso contrario autorizo a la Empresa A SUBASTAR MIS CAJAS. También entiendo que mi carga ha sido asegurada en un 100% del valor declarado y que en la eventualidad de que ocurra pérdida parcial total, la empresa se compromete a reembolsarme al 100% del valor declarado y si hay pérdida parcial el reembolso será proporcional al faltante de las libras. También conozco que la empresa no es responsable durante el transporte por ROTURAS o DAÑOS.
+                    <strong>DECLARO que no estoy enviando:</strong> DROGA, DINERO, ARMAS DE FUEGO Y EXPLOSIVOS, QUÍMICOS
+                    Y NINGÚN ARTÍCULOS PROHIBIDO POR LEY. Entiendo que he pagado por lo que he declarado y si llegase a
+                    omitir cualquier artículo me comprometo a pagar los Impuestos y Multa por mala declaración. Tengo 30
+                    días para realizar el pago, caso contrario autorizo a la Empresa A SUBASTAR MIS CAJAS. También
+                    entiendo que mi carga ha sido asegurada en un 100% del valor declarado y que en la eventualidad de
+                    que ocurra pérdida parcial total, la empresa se compromete a reembolsarme al 100% del valor
+                    declarado y si hay pérdida parcial el reembolso será proporcional al faltante de las libras. También
+                    conozco que la empresa no es responsable durante el transporte por ROTURAS o DAÑOS.
                 </p>
             </td>
         </tr>
@@ -189,4 +243,5 @@
         </tr>
     </table>
 </body>
+
 </html>

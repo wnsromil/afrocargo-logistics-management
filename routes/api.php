@@ -46,6 +46,7 @@ use App\Http\Controllers\Web\Admin\{
 Route::get('/get-countries', [LocationController::class, 'getCountries']);
 Route::get('/get-states/{country_id}', [LocationController::class, 'getStates']);
 Route::get('/get-cities/{state_id}', [LocationController::class, 'getCities']);
+Route::get('/getCurrencyExchangeRate', [LocationController::class, 'getCurrencyExchangeRate']);
 
 Route::get('/get-terms-conditions', [CommonController::class, 'getTermsConditions']);
 Route::get('/get-privacy-policies', [CommonController::class, 'getPrivacyPolicies']);
@@ -194,4 +195,9 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/invoice-details/{id}', 'invoiceDetails');
         Route::get('/invoice-get/{type}', 'invoicesGet');
     });
+    
 });
+
+Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
+Route::post('invoices/sendInvoice', [InvoiceController::class, 'sendInvoice'])->name('invoices.sendInvoice');
+Route::post('barcode', [InvoiceController::class, 'barcode'])->name('barcode');

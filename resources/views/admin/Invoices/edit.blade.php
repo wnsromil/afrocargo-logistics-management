@@ -424,7 +424,7 @@
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
                                 <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00"
-                                    style="padding-left: 35px; padding-top: 8px !important;">
+                                    style="padding-left: 35px; padding-top: 8px !important;" value="{{ $invoice->payment ?? 0 }}">
                             </div>
                         </div>
 

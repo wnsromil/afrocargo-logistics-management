@@ -26,9 +26,9 @@ function toggleLoginForm(type) {
         // $("#supplies_items").addClass("d-none");
         $("#description_services_items").removeClass("d-none");
         $("#weight_services_items").removeClass("d-none");
-        if($('input[name="transport_type"]').val() =='air'){
+        if ($('input[name="transport_type"]').val() == "air") {
             $('select[name="container_id"]').prop("disabled", true);
-        }else{
+        } else {
             $('select[name="container_id"]').prop("disabled", false);
         }
     } else if (type === "supplies") {
@@ -62,11 +62,10 @@ $('input[name="transport_type"]').on("click", function () {
     console.log("Transport Type:", transportType);
     if (transportType == "air") {
         $('select[name="container_id"]')
-        .prop("disabled", true) // this is essential
+            .prop("disabled", true) // this is essential
             .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
             .css("opacity", "1"); // optional: restores visual state
-    }
-    else {
+    } else {
         $('select[name="container_id"]').prop("disabled", false);
     }
 });
@@ -78,12 +77,12 @@ window.onload = function () {
     setTimeout(() => {
         console.log("invoce_typ", invoce_type);
         toggleLoginForm(invoce_type);
-        if($('input[name="transport_type"]').val()!='air'){
+        if ($('input[name="transport_type"]').val() != "air") {
             $('select[name="container_id"]')
-            .prop("disabled", true) // this is essential
-            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
-            .css("opacity", "1"); // optional: restores visual state
-        }else{
+                .prop("disabled", true) // this is essential
+                .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+                .css("opacity", "1"); // optional: restores visual state
+        } else {
             $('select[name="container_id"]').prop("disabled", false);
         }
     }, 600);
@@ -239,24 +238,26 @@ $(document).ready(function () {
             },
             processResults: function (data) {
                 return {
-                    results: data.data.map(function (customer) {
-                        if (customer.address_type == "pickup") {
-                            return {
-                                id: customer.pickup_address.id ?? '',
-                                text: customer.pickup_address.text ?? '',
-                                customer: customer ?? '', // Store the full customer object
-                            };
-                        } else  if (customer.delivery_address){
-                            return {
-                                id: customer.delivery_address.id ?? '',
-                                text: customer.delivery_address.text ?? '',
-                                customer: customer ?? '', // Store the full customer object
-                            };
-                        }else{
-                            return false;
-                        }
-                         // Return false if no address type matches
-                    }).filter((i) => i), // Filter out any empty results
+                    results: data.data
+                        .map(function (customer) {
+                            if (customer.address_type == "pickup") {
+                                return {
+                                    id: customer.pickup_address.id ?? "",
+                                    text: customer.pickup_address.text ?? "",
+                                    customer: customer ?? "", // Store the full customer object
+                                };
+                            } else if (customer.delivery_address) {
+                                return {
+                                    id: customer.delivery_address.id ?? "",
+                                    text: customer.delivery_address.text ?? "",
+                                    customer: customer ?? "", // Store the full customer object
+                                };
+                            } else {
+                                return false;
+                            }
+                            // Return false if no address type matches
+                        })
+                        .filter((i) => i), // Filter out any empty results
                 };
             },
             cache: true,
@@ -268,21 +269,21 @@ $(document).ready(function () {
     $('select[name="customer_id"]').on("select2:select", function (e) {
         var data = e.params.data;
         var customer = data.customer;
-         $('input[name="parcel_id"]').val(customer.id);
+        $('input[name="parcel_id"]').val(customer.id);
 
         // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
-            $('input[name="invoce_item"]').val(customer.parcel_inventory);
-            $('input[name="transport_type"]').val(customer.transport_type);
+        $('input[name="invoce_item"]').val(customer.parcel_inventory);
+        $('input[name="transport_type"]').val(customer.transport_type);
 
-            let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
+        let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
 
-            // Show table if hidden
-            // $("#supplies_items").removeClass("d-none");
+        // Show table if hidden
+        // $("#supplies_items").removeClass("d-none");
 
-            // Clear existing rows
-            $("#dynamicTable tbody").empty();
-            if(inventoryItems && inventoryItems.length > 0){
-                // Loop through inventory items and create rows
+        // Clear existing rows
+        $("#dynamicTable tbody").empty();
+        if (inventoryItems && inventoryItems.length > 0) {
+            // Loop through inventory items and create rows
             inventoryItems.forEach((item, index) => {
                 let newRow = `
                 <tr>
@@ -344,8 +345,8 @@ $(document).ready(function () {
 
                 $("#dynamicTable tbody").append(newRow);
             });
-            }else{
-                $("#dynamicTable tbody").append(`<tr>
+        } else {
+            $("#dynamicTable tbody").append(`<tr>
                                     <td class="mwidth open-supply-modal">
                                         <div class="d-flex align-items-center">
                                             <input type="text" name="supply_name"
@@ -391,19 +392,19 @@ $(document).ready(function () {
                                     </td>
 
                                 </tr>`);
-            }
+        }
 
-            // Recalculate totals
-            setTimeout(() => {
-                $("#dynamicTable tbody tr").each(function () {
-                    const row = $(this);
-                    syncSummary(row);
-                });
-            }, 100); // Adjust the timeout as needed
+        // Recalculate totals
+        setTimeout(() => {
+            $("#dynamicTable tbody tr").each(function () {
+                const row = $(this);
+                syncSummary(row);
+            });
+        }, 100); // Adjust the timeout as needed
         // }else{
-            $('input[name="descriptions"]').val(customer.descriptions);
-            $('input[name="weight"]').val(customer.weight);
-            $('input[name="parcel_id"]').val(customer.parcel_id);
+        $('input[name="descriptions"]').val(customer.descriptions);
+        $('input[name="weight"]').val(customer.weight);
+        $('input[name="parcel_id"]').val(customer.parcel_id);
         // }
 
         if (customer.delivery_address) {
@@ -720,28 +721,136 @@ function hendelAjex(url, formData) {
         },
     });
 }
-function jsValidator(requiredFields) {
-    // Validate required fields manually
-    let isValid = true;
-    // Remove all previous error messages before validating
-    $('.danger').remove();
 
-    requiredFields.forEach(function (name) {
-        const input = $(`[name="${name}"]`);
-        if (!input.val()) {
+
+function jsValidator(rules, form = null) {
+    let isValid = true;
+    $(".text-danger").remove();
+    const errors = {};
+
+    if (Array.isArray(rules)) {
+        rules.forEach(function (name) {
+            let input = null;
+            if (form) {
+                input = form.find(`[name="${name}"]`);
+                errors[name] = input.val() ? null : `${name} is required.`;
+                // Add error message span after the input
+                input.after(`<span class="text-danger">${name.replace(/_/g, ' ')} is required.</span>`);
+            } else {
+                input = $(`[name="${name}"]`);
+                // Remove the specific error message span after the input
+                input.after('span.text-danger').remove();
+            }
+
+            if (!input.val()) {
+                console.log(`Validation Error: Field '${name}' is required but empty.`);
+                input.addClass("is-invalid");
+                isValid = false;
+            } else {
+                input.removeClass("is-invalid");
+            }
+        });
+
+        return isValid;
+    }
+
+    const getInput = (name) => form ? form.find(`[name="${name}"]`) : $(`[name="${name}"]`);
+
+    for (const [field, ruleSet] of Object.entries(rules)) {
+        const input = getInput(field);
+        const value = input.val()?.trim();
+        const rulesArray = ruleSet.split('|');
+        
+
+        let fieldValid = true;
+
+        for (const rule of rulesArray) {
+            if (rule === 'required' && !value) {
+                console.log(`Validation Error: Field '${field}' failed 'required' rule.`);
+                errors[field] = `${field.replace(/_/g, ' ')} is required.`;
+                fieldValid = false;
+                break;
+            }
+
+            if (rule.startsWith('required_if')) {
+                const [, otherField, expectedValue] = rule.split(':')[1].split(',');
+                const otherInput = getInput(otherField);
+                if (otherInput.val() === expectedValue && !value) {
+                    console.log(`Validation Error: Field '${field}' is required because '${otherField}' is '${expectedValue}', but it's empty.`);
+                    errors[field] = `${field.replace(/_/g, ' ')} is required when ${otherField} is ${expectedValue}.`;
+                    fieldValid = false;
+                    break;
+                }
+            }
+
+            if (rule.startsWith('in')) {
+                const validValues = rule.split(':')[1].split(',');
+                if (!validValues.includes(value)) {
+                    console.log(`Validation Error: Field '${field}' value '${value}' is not in allowed values: [${validValues}].`);
+                    errors[field] = `${field.replace(/_/g, ' ')} must be one of: ${validValues.join(', ')}.`;
+                    fieldValid = false;
+                    break;
+                }
+            }
+
+            if (rule === 'numeric' && value && isNaN(value)) {
+                console.log(`Validation Error: Field '${field}' should be numeric but got '${value}'.`);
+                errors[field] = `${field.replace(/_/g, ' ')} must be a number.`;
+                fieldValid = false;
+                break;
+            }
+
+            if (rule.startsWith('date_format')) {
+                const format = rule.split(':')[1];
+                if (format === 'm-d-Y' && !/^\d{2}-\d{2}-\d{4}$/.test(value)) {
+                    console.log(`Validation Error: Field '${field}' doesn't match the date format '${format}'.`);
+                    errors[field] = `${field.replace(/_/g, ' ')} must be in the format ${format}.`;
+                    fieldValid = false;
+                    break;
+                }
+            }
+
+            if (rule.startsWith('max')) {
+                const maxLength = parseInt(rule.split(':')[1]);
+                if (value.length > maxLength) {
+                    console.log(`Validation Error: Field '${field}' exceeds maximum length of ${maxLength}.`);
+                    errors[field] = `${field.replace(/_/g, ' ')} must not exceed ${maxLength} characters.`;
+                    fieldValid = false;
+                    break;
+                }
+            }
+        }
+
+        // Extra Custom JS logic (driver_id depending on container_id)
+        if (field === 'driver_id') {
+            const container_id = getInput('container_id').val();
+            if (container_id && parseInt(container_id) > 0 && !value) {
+                console.log(`Validation Error: Field 'driver_id' is required because 'container_id' is present.`);
+                errors[field] = `${field.replace(/_/g, ' ')} is required when container_id is present.`;
+                fieldValid = false;
+            }
+        }
+
+        if (!fieldValid) {
             input.addClass("is-invalid");
-            // Add error message span after the input
-            // input.after(`<span class="danger">${name.replace(/_/g, ' ')} is required.</span>`);
+            // input.after(`<span class="text-danger">${field.replace(/_/g, ' ')} is required.</span>`);
             isValid = false;
+            Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: `${field.replace(/_/g, ' ')} is required.`,
+                });
         } else {
             input.removeClass("is-invalid");
-            // Remove the specific error message span after the input
-            // input.after('span.danger').remove();
+            // input.after('span.text-danger').remove();
         }
-    });
+    }
+
+    console.log("Validation Errors:", errors);
 
     return isValid;
 }
+
 
 $(".datetimepicker").datetimepicker({
     format: "YYYY-MM-DD", // This enforces yyyy-mm-dd
@@ -764,6 +873,7 @@ function getInvoiceItemsJSON() {
                 parseFloat($(this).find('[name="label_qty"]').val()) *
                     parseFloat($(this).find('[name="price"]').val()) || 0,
             ins: parseFloat($(this).find('[name="ins"]').val()) || 0,
+            discount: parseFloat($(this).find('[name="discount"]').val()) || 0,
             tax: parseFloat($(this).find('[name="tax"]').val()) || 0,
             total: parseFloat($(this).find('[name="total"]').val()) || 0,
         };
@@ -775,6 +885,36 @@ function getInvoiceItemsJSON() {
 
 $("#services").on("submit", function (e) {
     e.preventDefault();
+
+    const rules = {
+        invoce_type: 'required|in:services,supplies',
+        delivery_address_id: 'required',
+        pickup_address_id: 'required_if:invoce_type,services',
+        container_id: 'required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+        driver_id: 'numeric',
+        warehouse_id: 'numeric',
+        ins: 'numeric',
+        discount: 'numeric',
+        tax: 'numeric',
+        weight: 'numeric',
+        balance: 'numeric',
+        total_price: 'required|numeric',
+        total_qty: 'required|numeric',
+        duedaterange: '',
+        currentdate: 'date_format:m-d-Y',
+        currentTime: '',
+        invoice_no: 'max:255',
+        total_amount: 'required|numeric',
+        grand_total: 'required|numeric',
+        payment: 'required|numeric',
+        status: 'required',
+    };
+
+    if (!jsValidator(rules, $("#services"))) {
+        alert("Please fix the errors");
+        e.preventDefault();
+        return false;
+    }
 
     const items = getInvoiceItemsJSON();
     const jsonData = JSON.stringify(items); // convert to JSON string
@@ -833,3 +973,287 @@ flatpickr('input[name="currentTime"]', {
     dateFormat: "h:i K",
     defaultDate: new Date(),
 });
+
+//
+
+// Exchange rates (mock - can be loaded from DB or API)
+let exchangeRates = [];
+
+function calculateExchangeFields() {
+    // Get values
+    const payment = parseFloat($('input[name="payment_amount"]').val()) || 0;
+    const totalBalance =
+        parseFloat($('input[name="total_balance"]').val()) || 0;
+    const currency = $('select[name="local_currency"]').val();
+    const rate =
+        exchangeRates.find((cur) => cur.currency_code === currency)
+            ?.exchange_rate || 1;
+
+    // Set exchange rate field
+    $('input[name="exchange_rate"]').val(rate);
+
+    // Calculate payment in USD (or base currency)
+    const paymentInBase = payment * rate;
+    $('input[name="exchange_rate_balance"]').val(paymentInBase.toFixed(2));
+
+    // Applied payments (for now, just current payment)
+    $('input[name="applied_payments"]').val(payment.toFixed(2));
+    $('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
+
+    // Balance after payment (in original currency)
+    const balanceAfterPayment = totalBalance - payment;
+    $('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
+
+    // Balance after payment, converted to base currency
+    const balanceAfterExchange = balanceAfterPayment * rate;
+    $('input[name="balance_after_exchange_rate"]').val(
+        balanceAfterExchange.toFixed(2)
+    );
+}
+
+$('input[name="payment_amount"], select[name="local_currency"]').on(
+    "input change",
+    calculateExchangeFields
+);
+
+// Fetch and set exchange rates on page load and when currency changes
+function fetchAndSetExchangeRates() {
+    $.get(`/api/getCurrencyExchangeRate`, function (res) {
+        if (res) {
+            exchangeRates = res;
+            // Set select options if input[name="currency"] exists
+            const $currencyInput = $('select[name="local_currency"]');
+            if ($currencyInput.length) {
+                let options = "";
+                res.forEach(function (cur) {
+                    options += `<option value="${cur.currency_code}">${cur.currency_name}-${cur.currency_code}</option>`;
+                });
+                // If input is actually a select, set options
+                if ($currencyInput.is("select")) {
+                    $currencyInput.html(options);
+                }
+            }
+        }
+    });
+}
+
+// Call on page load
+$(document).ready(function () {
+    fetchAndSetExchangeRates();
+});
+
+// Also call when currency changes (if needed)
+$('input[name="local_currency"]').on("change", fetchAndSetExchangeRates);
+
+// Handles sending invoice email or SMS using the form and invoice ID
+// Listen for form submission
+$(document)
+    .off("submit", "#sendInvoiceForm")
+    .on("submit", "#sendInvoiceForm", function (e) {
+        e.preventDefault();
+
+        const form = $(this);
+        const sendType = form
+            .find('input[name="sentInvoicePdf"]:checked')
+            .val();
+        const email = form.find('input[name="email"]').val();
+        const alternateMobile = form
+            .find('input[name="alternate_mobile_no"]')
+            .val();
+        const invoiceId = form.find('input[name="invoiceId"]').val();
+
+        // Basic validation
+        if (sendType === "email" && !email) {
+            alert("Please enter an email address.");
+            return;
+        }
+        if (sendType === "sms" && !alternateMobile) {
+            alert("Please enter an alternate mobile number.");
+            return;
+        }
+
+        // Prepare data
+        const data = {
+            _token: form.find('input[name="_token"]').val(),
+            invoice_id: invoiceId,
+            send_type: sendType,
+            email: email,
+            alternate_mobile_no: alternateMobile,
+        };
+
+        showLoader();
+
+        $.ajax({
+            url: "/api/invoices/sendInvoice",
+            method: "POST",
+            data: data,
+            success: function (res) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: res.message || "Invoice sent successfully.",
+                });
+                // Optionally close modal or reset form
+                $('#sendinvoicepdf').closest(".modal").modal("hide");
+                hideLoader();
+            },
+            error: function (xhr) {
+                hideLoader();
+                let errors = xhr.responseJSON?.errors;
+                if (errors) {
+                    Object.keys(errors).forEach((key) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: errors[key][0],
+                        });
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "An unexpected error occurred.",
+                    });
+                }
+            },
+        });
+    });
+
+// Toggle between email and SMS fields
+$(document)
+    .off("change", 'input[name="sentInvoicePdf"]')
+    .on("change", 'input[name="sentInvoicePdf"]', function () {
+        if ($(this).val() === "email") {
+            $("#emailDiv").show();
+            $("#textorsmsDiv").hide();
+        } else {
+            $("#emailDiv").hide();
+            $("#textorsmsDiv").show();
+        }
+    });
+
+
+$(document)
+    .off("submit", "#AddnewLable")
+    .on("submit", "#AddnewLable", function (e) {
+        e.preventDefault();
+
+        const form = $(this);
+
+        const description = form.find('textarea[name="description"]').val();
+        const qty = form.find('input[name="labelQuantity"]').val();
+        const invoiceId = form.find('input[name="invoiceId"]').val();
+
+
+        // Prepare data
+        const data = {
+            _token: form.find('input[name="_token"]').val(),
+            invoice_id: invoiceId,
+            description: description,
+            qty:qty,
+            action:'generate'
+        };
+
+        const requiredFields = [
+            "invoiceId",
+            "description",
+            "labelQuantity",
+        ];
+
+        if (!jsValidator(requiredFields,form)) {
+            alert("Please fill all required fields.");
+            return;
+        }
+
+        showLoader();
+
+        $.ajax({
+            url: "/api/barcode",
+            method: "POST",
+            data: data,
+            success: function (res) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: res.message || "barcode sent successfully.",
+                });
+                // Optionally close modal or reset form
+                $('#createLabel').closest(".modal").modal("hide");
+                hideLoader();
+                window.location.reload();
+            },
+            error: function (xhr) {
+                hideLoader();
+                let errors = xhr.responseJSON?.errors;
+                if (errors) {
+                    Object.keys(errors).forEach((key) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: errors[key][0],
+                        });
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "An unexpected error occurred.",
+                    });
+                }
+            },
+        });
+    });
+
+// $(document)
+//     .off("submit", "#services")
+//     .on("submit", "#services", function (e) {
+//     e.preventDefault();
+
+//     const rules = {
+//         invoce_type: 'required|in:services,supplies',
+//         delivery_address_id: 'required',
+//         pickup_address_id: 'required_if:invoce_type,services',
+//         container_id: 'required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+//         driver_id: 'numeric',
+//         warehouse_id: 'numeric',
+//         ins: 'numeric',
+//         discount: 'numeric',
+//         tax: 'numeric',
+//         weight: 'numeric',
+//         balance: 'numeric',
+//         total_price: 'required|numeric',
+//         total_qty: 'required|numeric',
+//         duedaterange: '',
+//         currentdate: 'date_format:m-d-Y',
+//         currentTime: '',
+//         invoice_no: 'max:255',
+//         total_amount: 'required|numeric',
+//         grand_total: 'required|numeric',
+//         payment: 'required|numeric',
+//         status: 'required',
+//     };
+
+//     if (!jsValidator(rules, $("#services"))) {
+//         alert("Please fix the errors");
+//         e.preventDefault();
+//         return false;
+//     }
+
+    
+//     $.ajax({
+//         url: $(this).attr('action'),
+//         type: 'POST',
+//         data: new FormData(this),
+//         processData: false,
+//         contentType: false,
+//         headers: {
+//             'X-CSRF-TOKEN': $('[name="_token"]').val()
+//         },
+//         success: function(data) {
+//             console.log('Success:', data);
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error:', error);
+//         }
+//     });
+// });

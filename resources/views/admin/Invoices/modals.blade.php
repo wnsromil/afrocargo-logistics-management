@@ -4,10 +4,10 @@
         <i class="ti ti-history-toggle"></i>
     </a>
 
-    <a class="circleIconBtn" data-bs-placement="bottom" title="Individual Payment" data-bs-toggle="modal"
+    {{-- <a class="circleIconBtn" data-bs-placement="bottom" title="Individual Payment" data-bs-toggle="modal"
         data-bs-target="#individualPayment">
         <i class="ti ti-cash"></i>
-    </a>
+    </a> --}}
 
     <a class="circleIconBtn" data-bs-placement="bottom" title="Send Invoice pdf" data-bs-toggle="modal"
         data-bs-target="#sendinvoicepdf">
@@ -222,10 +222,10 @@
                                 <label>Date<i class="text-danger">*</i></label>
                                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
                                     <input type="text" name="payment_date" class="btn-filters  form-cs inp"
-                                        placeholder="MM/DD/YYYY" />
+                                        placeholder="MM/DD/YYYY" value="{{ old('payment_date', \Carbon\Carbon::now()->format('Y-m-d')) }}" />
                                     <input type="text"
                                         class="form-control inp inputs text-center timeOnlyInput inputbackground"
-                                        readonly value="09:20 AM" name="currentTime">
+                                        readonly value="{{ old('currentTime', \Carbon\Carbon::now()->format('h:i A')) }}" name="currentTime">
                                 </div>
                             </div>
                         </div>
@@ -255,7 +255,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
                                 <label for="driver_id">Currency<i class="text-danger">*</i></label>
-                                <select class="js-example-basic-single select2  form-cs" name="currency">
+                                <select class="js-example-basic-single select2  form-cs" name="local_currency">
                                     <option selected="selected" disabled hidden>Select Currency</option>
                                     <option value="USD">United States - USD</option>
                                     <option value="DKK">Greenland - DKK</option>
@@ -278,8 +278,9 @@
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
                                 <label>Payment Amount<i class="text-danger">*</i></label>
-                                <input type="text" name="payment_amount" class="form-control inp"
-                                    placeholder="Enter Payment Amount" />
+                                <input type="number" name="payment_amount" class="form-control inp" min="0.1" max="{{ $invoice->balance ?? 0 }}" step="0.01"
+                                    placeholder="Enter Payment Amount" required
+                                    oninput="if (parseFloat(this.value) > parseFloat(this.max)) this.value = this.max; if (parseFloat(this.value) < parseFloat(this.min)) this.value = this.min;">
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -300,14 +301,14 @@
                             <div class="input-block flexblockInput mb-3">
                                 <label>Invoice Amount<i class="text-danger">*</i></label>
                                 <input type="text" name="invoice_amount" class="form-control inp inputbackground" readonly
-                                    value="600.00" />
+                                    value="{{$invoice->grand_total ?? 0}}" />
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
                                 <label>Total Balance<i class="text-danger">*</i></label>
                                 <input type="text" name="total_balance" class="form-control inp inputbackground" readonly
-                                    value="300.00" />
+                                    value="{{$invoice->balance ?? 0}}" />
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -374,18 +375,20 @@
                                     </thead>
 
                                     <tbody>
+                                        @forelse($invoice->individualPayment as $payment)
                                         <tr>
-                                            <td>TIP-000710</td>
+                                            <td>{{ $invoice->invoice_no ?? '' }}</td>
                                             <td>
                                                 <p class="overflow-ellpise" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Abijan Cargo Sacko">Abijan Cargo
-                                                    Sacko</p>
+                                                    data-bs-placement="top" title="{{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}">
+                                                    {{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}
+                                                </p>
                                             </td>
-                                            <td>Cash</td>
-                                            <td>04/28/2025, 03:21</td>
-                                            <td>200.00</td>
-                                            <td>-</td>
-                                            <td>USD</td>
+                                            <td>{{ ucfirst($payment->payment_type ?? '-') }}</td>
+                                            <td>{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y, h:i a') : '-' }}</td>
+                                            <td>{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
+                                            <td>{{ $payment->local_currency ?? '-' }}</td>
+                                            <td>{{ $payment->currency ?? '-' }}</td>
                                             <td class="d-flex align-items-center">
                                                 <div class="dropdown dropdown-action">
                                                     <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
@@ -393,19 +396,23 @@
                                                     <div class="dropdown-menu dropdown-menu-end">
                                                         <ul>
                                                             <li>
-                                                                <a class="dropdown-item" href="#"><i
+                                                                <a class="dropdown-item" href="{{route('invoices.invoicesdownload',encrypt($invoice->id))}}"><i
                                                                         class="ti ti-file-type-pdf me-2"></i>PDF</a>
                                                             </li>
-                                                            <li>
+                                                            {{-- <li>
                                                                 <a class="dropdown-item" href="#"><i
                                                                         class="ti ti-trash me-2"></i>Delete</a>
-                                                            </li>
-
+                                                            </li> --}}
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">No Payments Found</td>
+                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -438,7 +445,7 @@
                 </button>
             </div>
             <div class="modal-body pt-3 pb-2">
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="" method="POST" enctype="multipart/form-data" id="sendInvoiceForm">
                     @csrf
                     <div class="row pb-2">
                         <div class="col-12">
@@ -447,6 +454,7 @@
                                         class="text-danger">*</i></label>
                             </div>
                         </div>
+                        <input type="hidden" name="invoiceId" value="{{ $invoice->id ?? '' }}">
                         <div class="col-md-2 col-6">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-3 col3A" for="templateTitle">Email</label> <input
@@ -1200,7 +1208,6 @@
             <div class="modal-body p-2">
                 <table width="100%" cellpadding="0" cellspacing="0"
                     style="border-collapse: collapse; max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #ffffff; font-size: 14px; color: #000;">
-
                     <!-- Header -->
                     <tr>
                         <td colspan="2" style="padding: 0 20px 0px 20px;">
@@ -1256,28 +1263,28 @@
                             <table
                                 style="width: 100%; border-collapse: collapse; border: 1px solid black; border-bottom: none; margin-top: 15px;">
                                 <tr style="background-color: #f2f2f2; border: 1px solid black; ">
-                                    <td
-                                        style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                         Driver</td>
-                                    <td
-                                        style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                         Container</td>
-                                    <td
-                                        style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                         Date</td>
-                                    <td
-                                        style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                         Invoice</td>
                                 </tr>
                                 <tr style="background-color: #ffffff; border: 1px solid black; ">
-                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">Bouba
-                                        Fofana</td>
-                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">02225
+                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
+                                        {{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}
                                     </td>
                                     <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                        05/30/2025 9:09 pm</td>
+                                        {{ $invoice->container->unique_id ?? '' }}
+                                    </td>
                                     <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                        TIV-001492</td>
+                                        {{ $invoice->created_at ? $invoice->created_at->format('m/d/Y h:i a') : '' }}
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
+                                        {{ $invoice->invoice_no ?? '' }}
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -1294,8 +1301,7 @@
                                                     <table width="100%">
                                                         <tr>
                                                             <td style="width: 40%; vertical-align: baseline;">
-                                                                <b style="font-size: 16px;">Afro Cargo Express Llc
-                                                                    NY</b><br>
+                                                                <b style="font-size: 16px;">Afro Cargo Express Llc NY</b><br>
                                                                 366 Concord Ave<br>
                                                                 NY, The Bronx, 10454<br>
                                                                 United States - 646-468-4135<br>
@@ -1317,36 +1323,29 @@
                                                 <td style="padding: 10px;" colspan="2">
                                                     <table
                                                         style="width: 100%; border-collapse: collapse; border: 1px solid black; border-bottom: none; margin-top: 15px;">
-                                                        <tr
-                                                            style="background-color: #f2f2f2; border: 1px solid black; ">
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                                        <tr style="background-color: #f2f2f2; border: 1px solid black; ">
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                                                 Driver</td>
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                                                 Container</td>
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                                                 Date</td>
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start; font-weight: 500;">
                                                                 Invoice</td>
                                                         </tr>
-                                                        <tr
-                                                            style="background-color: #ffffff; border: 1px solid black; ">
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                                                Bouba Fofana</td>
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                                                02225</td>
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                                                05/30/2025 9:09 pm
+                                                        <tr style="background-color: #ffffff; border: 1px solid black; ">
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
+                                                                {{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}
                                                             </td>
-                                                            <td
-                                                                style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                                                TIV-001492</td>
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
+                                                                {{ $invoice->container->unique_id ?? '' }}
+                                                            </td>
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
+                                                                {{ $invoice->created_at ? $invoice->created_at->format('m/d/Y h:i a') : '' }}
+                                                            </td>
+                                                            <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
+                                                                {{ $invoice->invoice_no ?? '' }}
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -1357,23 +1356,22 @@
                                                         <tr>
                                                             <td>
                                                                 <b style="font-size: 18px;">Customer</b><br>
-                                                                John Williams<br>
-                                                                15 Hodges Mews, High Wycombe<br>
-                                                                HP12 3JL<br>
-                                                                United Kingdom<br>
-                                                                829-457-9638
+                                                                {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                                {{ $invoice->deliveryAddress->state_id ?? '' }}<br>
+                                                                {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
+                                                                {{ $invoice->deliveryAddress->mobile_number ?? '' }}
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </td>
-                                                <td
-                                                    style="width: 50%; padding:10px; padding-top: 5px; text-align: right;">
+                                                <td style="width: 50%; padding:10px; padding-top: 5px; text-align: right;">
                                                     <b style="font-size: 18px;">Ship To:</b><br>
-                                                    Walter Roberson<br>
-                                                    299 Star Trek Drive, Panama City,<br>
-                                                    Florida, 32405,<br>
-                                                    USA<br>
-                                                    07 07 50 8448
+                                                    {{ $invoice->pickupAddress->full_name ?? '' }}<br>
+                                                    {{ $invoice->pickupAddress->address ?? '' }}<br>
+                                                    {{ $invoice->pickupAddress->state_id ?? '' }}<br>
+                                                    {{ $invoice->pickupAddress->country_id ?? '' }}<br>
+                                                    {{ $invoice->pickupAddress->mobile_number ?? '' }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1381,7 +1379,7 @@
                                                     <table aria-describedby="table-description"
                                                         style="width: 100%; padding: 0 10px; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000; margin-bottom: 20px;">
                                                         <tr>
-                                                            <td colspan="4"><b>* Barrel large</b></td>
+                                                            <td colspan="6"><b>* {{ $invoice->invoce_item[0]['supply_name'] ?? '' }}</b></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Qty</td>
@@ -1391,14 +1389,22 @@
                                                             <td>Ins</td>
                                                             <td>Total</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>$250.00</td>
-                                                            <td>$0.00</td>
-                                                            <td>$0.00</td>
-                                                            <td>$0.00</td>
-                                                            <td>$250.00</td>
-                                                        </tr>
+                                                        @if(isset($invoice->invoce_item) && count($invoice->invoce_item))
+                                                            @foreach($invoice->invoce_item as $item)
+                                                            <tr>
+                                                                <td>{{ $item['qty'] ?? 0 }}</td>
+                                                                <td>${{ number_format($item['price'] ?? 0, 2) }}</td>
+                                                                <td>${{ number_format($item['discount'] ?? 0, 2) }}</td>
+                                                                <td>${{ number_format($item['tax'] ?? 0, 2) }}</td>
+                                                                <td>${{ number_format($item['ins'] ?? 0, 2) }}</td>
+                                                                <td>${{ number_format($item['total'] ?? 0, 2) }}</td>
+                                                            </tr>
+                                                            @endforeach
+                                                        @else
+                                                            <tr>
+                                                                <td colspan="6">No Items</td>
+                                                            </tr>
+                                                        @endif
                                                     </table>
                                                 </td>
                                             </tr>
@@ -1407,14 +1413,14 @@
                                                     <table width="100%" style="padding: 10px;">
                                                         <tr>
                                                             <td>
-                                                                Total Items: 1
+                                                                Total Items: {{ $invoice->total_qty ?? count($invoice->invoce_item ?? []) }}
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
                                                                 <table
                                                                     style="width: 100%; border-collapse: collapse; border: 1px solid black;"
-                                                                    cellpadding="8" ;>
+                                                                    cellpadding="8">
                                                                     <tr>
                                                                         <td>
                                                                             I have received the contract and
@@ -1436,22 +1442,22 @@
                                                     <table style="width: 65%; margin-left: auto; padding: 10px;">
                                                         <tr>
                                                             <td>
-                                                                <b>Sub-Total:</b> $250.00 <br>
-                                                                <b>Ins:</b> $0.00 <br>
-                                                                <b>Tax:</b> $0.00 <br>
-                                                                <b>Total:</b> $250.00 <br>
-                                                                <b>Payment:</b> $0.00 <br>
-                                                                <b>Balance:</b> $250.00
+                                                                <b>Sub-Total:</b> ${{ number_format($invoice->sub_total ?? 0, 2) }} <br>
+                                                                <b>Ins:</b> ${{ number_format($invoice->insurance ?? 0, 2) }} <br>
+                                                                <b>Tax:</b> ${{ number_format($invoice->tax ?? 0, 2) }} <br>
+                                                                <b>Total:</b> ${{ number_format($invoice->grand_total ?? 0, 2) }} <br>
+                                                                <b>Payment:</b> ${{ number_format($invoice->is_paid ?? 0, 2) }} <br>
+                                                                <b>Balance:</b> ${{ number_format($invoice->balance ?? 0, 2) }}
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
                                                                 <table
                                                                     style="width: 100%; border-collapse: collapse; border: 1px solid black;"
-                                                                    cellpadding="5" ;>
+                                                                    cellpadding="5">
                                                                     <tr>
                                                                         <td style="font-size: 15px;">
-                                                                            Invoice#: TIV-001492
+                                                                            Invoice#: {{ $invoice->invoice_no ?? '' }}
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -1478,8 +1484,13 @@
                                                                 <table style="width: 100%;">
                                                                     <tr>
                                                                         <td style="text-align: center;">
-                                                                            <img style="width: 200px;"
-                                                                                src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                                            @if(isset($invoice->pickupAddress->user->license_document))
+                                                                                <img style="width: 200px;"
+                                                                                    src="{{ $invoice->pickupAddress->user->license_document }}">
+                                                                            @else
+                                                                                <img style="width: 200px;"
+                                                                                    src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                                            @endif
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -1507,8 +1518,13 @@
                                                                 <table style="width: 100%;">
                                                                     <tr>
                                                                         <td style="text-align: center;">
-                                                                            <img style="width: 200px;"
-                                                                                src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                                            @if(isset($invoice->deliveryAddress->user->license_document))
+                                                                                <img style="width: 200px;"
+                                                                                    src="{{ $invoice->deliveryAddress->user->license_document }}">
+                                                                            @else
+                                                                                <img style="width: 200px;"
+                                                                                    src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                                            @endif
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -1548,12 +1564,12 @@
                     </tr>
                     <tr>
                         <td style="padding: 5px;">
-                            Terms & Condition
+                            {{ $invoice->terms_and_conditions ?? 'Terms & Condition' }}
                         </td>
                     </tr>
                     <tr>
                         <td style="padding: 5px;">
-                            Terms & Condition
+                            {{ $invoice->terms_and_conditions_2 ?? 'Terms & Condition' }}
                         </td>
                     </tr>
                     <tr>
@@ -1584,133 +1600,169 @@
             <div class="modal-body p-2">
                 <table width="100%" cellpadding="0" cellspacing="0"
                     style="border-collapse: collapse; max-width:100%; margin: 0 auto; background: #fff; border: 1px solid #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; font-size: 12px; color: #000;">
-                    <tr>
-                        <td>
-                            <table aria-describedby="table-description" style="width: 100%; table-layout: fixed;">
-                                <thead>
-                                    <tr>
+                    @if(!empty($invoice->barcodes) && count($invoice->barcodes)>0)
+                        @foreach ($invoice->barcodes as $barcode)
+                        <tr>
+                            <td>
+                                <table aria-describedby="table-description" style="width: 100%; table-layout: fixed;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="vertical-align: baseline;">
+                                                <table>
+                                                    <tr>
+                                                        <td style=" vertical-align: middle;">
+                                                            <img style="width: 60px; margin-right: 5px;"
+                                                                src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                        </td>
+                                                        <td>
+                                                            Afro Cargo Express Llc NY<br> 366 Concord Ave<br>
+                                                            NY The Bronx
+                                                            <br>
+                                                            646-468-4135<br> 718-954-9093
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            <td style="text-align: right;"> Afro Cargo Express Llc Abidjan<br> Avenue
+                                                21<br>
+                                                Rue 15 Treichville<br>
+                                                Abidjan Autonomous District Abidjan <br> 07 09 04
+                                                1250<br> 07 89 49 2486
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 5px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"
+                                                style="font-weight: bold; font-size: 30px; color: #000; text-align: center;">
+                                                {{ $invoice->invoice_no ?? '' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 5px;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table aria-describedby="table-description"
+                                    style="width: 100%; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td
+                                                style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px;">
+                                                {{ $invoice->created_at ? $invoice->created_at->format('m/d/Y') : '' }}</td>
+                                            <td
+                                                style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px; text-align: right;">
+                                                Afro Cargo
+                                                Express Llc NY </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table aria-describedby="table-description"
+                                    style="width: 100%; table-layout: fixed; border-bottom: 1px solid #000;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr></tr>
+                                        <tr>
+                                            <td>
+                                                <b style="font-size: 13px;">Ship To:</b><br>
+                                                {{ $invoice->deliveryAddress->full_name ?? '' }} <br>
+                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                {{ $invoice->deliveryAddress->state_id ?? '' }} {{ $invoice->deliveryAddress->country_id ?? '' }} <br>
+                                            </td>
+                                            <td style="text-align: right; font-size: 15px; font-weight: 700;">
+                                                Tracking Items: {{count($invoice->barcodes??[])}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:0px;"></td>
+                                        </tr>
+                                        <tr></tr>
+                                        <tr>
+                                            <td>
+                                                {{ $invoice->pickupAddress->full_name ?? '' }} <br>
+                                                {{ $invoice->pickupAddress->address ?? '' }}<br>
+                                                {{ $invoice->pickupAddress->state_id ?? '' }} {{ $invoice->pickupAddress->country_id ?? '' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="height: 5px;"></td>
+                                        </tr>
+                                        {{-- <tr>
+                                            <td style="text-align: left; font-weight: 500; font-size: 14px;">
+                                                {{ $invoice->invoce_item[0]['supply_name'] ?? '' }}
+                                            </td>
+                                        </tr> --}}
+                                        <tr>
+                                            <td style="height:5px;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            
+                                <table aria-describedby="table-description"
+                                    style="width: 100%; border-radius: 4px; border-bottom: 1px solid #000000;">
+                                    <thead>
                                         <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: baseline;">
-                                            <table>
-                                                <tr>
-                                                    <td style=" vertical-align: middle;">
-                                                        <img style="width: 60px; margin-right: 5px;"
-                                                            src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
-                                                    </td>
-                                                    <td>
-                                                        Afro Cargo Express Llc NY<br> 366 Concord Ave<br>
-                                                        <!----> NY The Bronx
-                                                        <br>
-                                                        646-468-4135<br> 718-954-9093
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                        <td style="text-align: right;"> Afro Cargo Express Llc Abidjan<br> Avenue
-                                            21<br>
-                                            Rue 15 Treichville<br>
-                                            <!----> Abidjan Autonomous District Abidjan <br> 07 09 04
-                                            1250<br> 07 89 49 2486
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"
-                                            style="font-weight: bold; font-size: 30px; color: #000; text-align: center;">
-                                            TIV-000982
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table aria-describedby="table-description"
-                                style="width: 100%; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td
-                                            style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px;">
-                                            04/11/2025</td>
-                                        <td
-                                            style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px; text-align: right;">
-                                            Afro Cargo
-                                            Express Llc NY </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table aria-describedby="table-description"
-                                style="width: 100%; table-layout: fixed; border-bottom: 1px solid #000;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr></tr>
-                                    <tr>
-                                        <td><b style="font-size: 13px;">Ship To:</b><br> Fatoumata <br> 1042 Oaks Dr<br>
-                                            <!----> Ohio Columbus 42228 <br>
-                                        </td>
-                                        <td style="text-align: right; font-size: 15px; font-weight: 700;"> Tracking
-                                            Items: 2 </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height:0px;"></td>
-                                    </tr>
-                                    <tr></tr>
-                                    <tr>
-                                        <td> Zeinabou <br> Abidjan<br>
-                                            <!---->
-                                            <!---->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" style="height: 5px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left; font-weight: 500; font-size: 14px;"> Barrel large
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height:5px;"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table aria-describedby="table-description"
-                                style="width: 100%; border-radius: 4px; border-bottom: 1px solid #000000;">
-                                <thead>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="text-align: center;"><img width="300px" alt="Logo"
-                                                src="https://d9wi98su9qvhp.cloudfront.net/production/kroC02.png"><span
-                                                style="display: block; padding-top: 5px; font-weight: bold; font-size: 16px; text-align: center;">
-                                                Abidjam
-                                            </span><span
-                                                style="display: block; font-weight: bold; font-size: 16px; text-align: center;">
-                                                AbidjaM
-                                            </span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 20px;"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="">
+                                                @if ($barcode->ParcelInventory)
+                                                    {{ $barcode->ParcelInventory->supply_name ?? '' }}
+                                                @else
+                                                    {{ $barcode->description ?? '' }}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <div>
+                                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                                        {!! $barcode->barcode ?? '' !!}
+                                                    </div>
+                                                    <span style="display: block; font-weight: bold; font-size: 16px; text-align: center;">
+                                                        {!! $barcode->barcode_code ?? '' !!}
+                                                    </span>
+                                                </div>
+                                                <br>
+                                                <strong>
+                                                    {{ $invoice->pickupAddress->address ?? '' }}
+                                                </strong>
+                                                <br>
+                                                <strong>
+                                                    {{ $invoice->pickupAddress->state_id ?? '' }} {{ $invoice->pickupAddress->country_id ?? '' }}
+                                                </strong>
+                                                <br>
+                                                {{url('/')}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 20px;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                    
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
                 </table>
             </div>
         </div>
@@ -1731,13 +1783,14 @@
                 </button>
             </div>
             <div class="modal-body pt-3 pb-2">
-                <form action="{{ route('admin.customer.store') }}" method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" id="AddnewLable">
                     @csrf
+                    <input type="hidden" name="invoiceId" value="{{$invoice->id ?? ''}}">
                     <div class="row">
                         <div class="col-12">
                             <div class="input-block mb-3">
                                 <label>Quantity<i class="text-danger">*</i></label>
-                                <input name="labelQuantity" class="form-control inp" placeholder="Enter Quantity">
+                                <input type="number" name="labelQuantity" class="form-control inp" placeholder="Enter Quantity">
                             </div>
                         </div>
                         <div class="col-12">
@@ -1795,10 +1848,11 @@
                                 </thead>
 
                                 <tbody>
+                                    @forelse (($invoice->barcodes->whereNotNull('ParcelInventory')->values()??[]) as $key=>$item)
                                     <tr>
-                                        <td>060000529I1001</td>
-                                        <td>02/28/2025, 17:36</td>
-                                        <td>Imported</td>
+                                        <td>{{$item->barcode_code ?? ''}}</td>
+                                        <td>{{$item->created_at->format('m/d/Y H:i') ?? ''}}</td>
+                                        <td>{{$item->pacage_type ?? 'Imported'}}</td>
                                         <td>
                                             <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover"
                                                 data-bs-placement="bottom" data-bs-html="true"
@@ -1816,37 +1870,16 @@
                                                 title="Out For Delivery(it is for batch creation only.)"> Out For
                                                 Delivery(it is for batch creation only.)</p>
                                         </td>
-                                        <td>Afro Cargo Bronx NYC</td>
-                                        <td>-</td>
-                                        <td>Fode Sacko</td>
-                                        <td>Fode Sacko</td>
+                                        <td>{{ $invoice->warehouse->unique_id ?? '' }}</td>
+                                        <td>{{ $invoice->container->unique_id ?? '' }}</td>
+                                        <td>{{ $item->createdByUser->name ?? '' }} {{ $item->createdByUser->last_name ?? '' }}</td>
+                                        <td>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</td>
                                     </tr>
+                                    @empty
                                     <tr>
-                                        <td>060000529I1002</td>
-                                        <td>03/18/2025, 11:36</td>
-                                        <td>Imported</td>
-                                        <td>
-                                            <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover"
-                                                data-bs-placement="bottom" data-bs-html="true"
-                                                data-bs-content="<img style='max-width: 200px;' src='{{ asset('assets/img.png') }}'>"
-                                                src="{{ asset('assets/img.png') }}">
-
-                                        </td>
-                                        <td>
-                                            <img class="smImg" data-bs-toggle="popover" data-bs-trigger="hover"
-                                                data-bs-placement="bottom" data-bs-html="true"
-                                                data-bs-content="<img style='max-width: 200px;' src='{{ asset('assets/img.png') }}'>"
-                                                src="{{ asset('assets/img.png') }}">
-                                        </td>
-                                        <td>
-                                            <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                title="Out For Delivery(it is for batch creation only.)"> WH</p>
-                                        </td>
-                                        <td>Afro Cargo Bronx NYC</td>
-                                        <td>-</td>
-                                        <td>Fode Sacko</td>
-                                        <td>Fode Sacko</td>
+                                        <td colspan="10" class="text-center">No Tracking Details Found</td>
                                     </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
