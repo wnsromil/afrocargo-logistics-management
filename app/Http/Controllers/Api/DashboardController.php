@@ -11,7 +11,8 @@ use App\Models\{
     Role,
     Country,
     Vehicle,
-    Parcel
+    Parcel,
+    ContainerHistory
 };
 
 
@@ -104,6 +105,13 @@ class DashboardController extends Controller
             ->take(4)
             ->get();
 
+        $upcomingContainers = ContainerHistory::when($warehouseId, function ($query, $warehouseId) {
+            return $query->where('arrived_warehouse_id', $warehouseId);
+        })->with(['container', 'driver'])
+            ->where('type', 'Arrived')
+            ->where('status', 5)
+            ->get();
+
         $totalCargo = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })
@@ -137,7 +145,8 @@ class DashboardController extends Controller
             'new_supply' => $newSupply,
             'latest_containers' => $latestContainers,
             'total_Cargo' => $totalCargo,
-            'total_Air' => $totalAir
+            'total_Air' => $totalAir,
+            'upcomingContainers' => $upcomingContainers,
         ]);
     }
 }

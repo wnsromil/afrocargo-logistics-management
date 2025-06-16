@@ -131,7 +131,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div>{{ $parcel->payment_type ?? "-"}}</div>
+                                        <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
                                     </td>
                                     @php
                                         $status_class = $parcel->status ?? null;
