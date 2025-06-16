@@ -227,8 +227,6 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
-
-
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
 
@@ -273,6 +271,12 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
         Route::get('freight-Shipping', [CBMCalculatoarController::class, 'FreightShipping'])->name('cbm_calculator.freight_Shipping');
         Route::get('freight-Shipping_PDF', [CBMCalculatoarController::class, 'FreightShipping_PDF'])->name('cbm_calculator.freight_Shipping_PDF');
+        Route::post('/container-sizes/update', [CBMCalculatoarController::class, 'ContainerSizeStore'])->name('cbm_calculator.container-sizes.update');
+        Route::post('/store-port-freight', [CBMCalculatoarController::class, 'storePortFreight'])->name('cbm_calculator.store-port-freight');
+
+        // Customer 
+        Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
+
 
         Route::get('/orderdetails', function () {
             return view('admin.OrderShipment.orderdetails');

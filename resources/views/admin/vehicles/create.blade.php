@@ -179,6 +179,21 @@
                     </div>
                 </div>
 
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_registration_exp_date" class="foncolor">Vehicle Registration Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="vehicle_registration_exp_date"
+                                class="btn-filters  form-cs inp " value="{{ old('vehicle_registration_exp_date') }}"
+                                placeholder="MM-DD-YYYY" />
+                        </div>
+                        @error('vehicle_registration_exp_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block">
                         <label class="table-content col737 fw-medium">Vehicle Insurance Document <i
@@ -209,6 +224,21 @@
                         </div>
                         @error('vehicle_insurance_doc')
                             <span class="text-danger">{{ "The vehicle insurance document is required." }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_insurance_exp_date" class="foncolor">Vehicle Insurance Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="vehicle_insurance_exp_date"
+                                class="btn-filters  form-cs inp " value="{{ old('vehicle_insurance_exp_date') }}"
+                                placeholder="MM-DD-YYYY" />
+                        </div>
+                        @error('vehicle_insurance_exp_date')
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>

@@ -27,9 +27,7 @@ use App\Http\Controllers\Api\{
     ServiceOrderStatusManage,
     PermissionController,
     PickupController,
-    ShiptoController
-};
-use App\Http\Controllers\Api\{
+    ShiptoController,
     LocationController,
     OrderShipmentController,
     ProductController
@@ -37,6 +35,7 @@ use App\Http\Controllers\Api\{
 
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
+    CBMCalculatoarController,
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -92,6 +91,12 @@ Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 
+//CBM 
+Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
+Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsByCountryName']);
+Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'getContainersByPortFreightId']);
+Route::delete('/port-freight-delete/{id}', [CBMCalculatoarController::class, 'destroyPortFreight']);
+Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'getFreightShippingData']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -160,7 +165,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/invoice-order-create-service', [OrderShipmentController::class, 'invoiceOrderCreateService']);
         Route::post('/invoice-order-create-supply', [OrderShipmentController::class, 'invoiceOrderCreateSupply']);
         Route::post('/order-create-supply', [OrderShipmentController::class, 'storeSupply']);
-
+        Route::post('/parcel-pickup-driver', [OrderShipmentController::class, 'parcelPickupDriver']);
+        
         // Available slots Routes
         Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
 

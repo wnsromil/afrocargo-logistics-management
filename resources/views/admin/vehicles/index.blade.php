@@ -108,7 +108,15 @@
                         </thead>
                         <tbody>
                             @forelse ($vehicles as $index => $vehicle)
-                                <tr>
+                                @php
+                                    $result = checkVehicleExpiryStatus(
+                                        $vehicle->licence_plate_exp_date,
+                                        $vehicle->vehicle_registration_exp_date,
+                                        $vehicle->vehicle_insurance_exp_date
+                                    );
+                                @endphp
+
+                                <tr class="{{ collect($result)->firstWhere('bg_class')["bg_class"] ?? '' }}">
                                     <td>
                                         {{ $vehicle->unique_id ?? '-' }}
                                         {{-- {{ $vehicle->id ?? '-' }} --}}
@@ -121,7 +129,9 @@
                                     <td>{{ $vehicle->vehicle_model ?? '-' }}</td>
                                     <td>{{ $vehicle->vehicle_year ?? '-' }}</td>
                                     <td>
-                                        <label class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                        <label
+                                            class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                            for="{{ $vehicle->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>
                                     </td>
@@ -143,21 +153,21 @@
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
                                                     @if($vehicle->status == 'Active')
-                                                    <li>
-                                                        <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                            data-id="{{ $vehicle->id }}" data-status="Inactive">
-                                                            <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                        </a>
-                                                    </li>
-                                                @elseif($vehicle->status == 'Inactive')
-                                                    <li>
-                                                        <a class="dropdown-item activate" href="javascript:void(0)"
-                                                            data-id="{{ $vehicle->id }}" data-status="Active">
-                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                                
+                                                        <li>
+                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                                data-id="{{ $vehicle->id }}" data-status="Inactive">
+                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                            </a>
+                                                        </li>
+                                                    @elseif($vehicle->status == 'Inactive')
+                                                        <li>
+                                                            <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                data-id="{{ $vehicle->id }}" data-status="Active">
+                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -593,32 +603,32 @@
     {{-- jqury cdn --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-       $(document).ready(function () {
-                // Delegate click on dynamically updated table
-                $('#ajexTable').on('click', '.activate, .deactivate', function () {
-            let id = $(this).data('id');
-            let status = $(this).data('status');
+        $(document).ready(function () {
+            // Delegate click on dynamically updated table
+            $('#ajexTable').on('click', '.activate, .deactivate', function () {
+                let id = $(this).data('id');
+                let status = $(this).data('status');
 
-            $.ajax({
-                url: "{{ route('admin.vehicle.status', '') }}/" + id,
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    status: status
-                },
-                success: function (response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Status Updated',
-                            text: response.success
-                        });
+                $.ajax({
+                    url: "{{ route('admin.vehicle.status', '') }}/" + id,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status: status
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Status Updated',
+                                text: response.success
+                            });
 
-                        location.reload();
+                            location.reload();
+                        }
                     }
-                }
+                });
             });
         });
-    });
     </script>
 </x-app-layout>

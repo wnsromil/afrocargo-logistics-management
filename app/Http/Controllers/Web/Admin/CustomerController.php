@@ -140,7 +140,6 @@ class CustomerController extends Controller
                 }
             }
 
-
             // 🛠 Mapping Request Fields to Database Fields
             $userData = [
                 'name'          => $validated['first_name'],
@@ -180,6 +179,14 @@ class CustomerController extends Controller
                 'country_code'        => $request->country_code ?? null,
                 'country_code_2'        => $request->country_code_2 ?? null,
                 'vehicle_id'        => $request->container_id ?? null,
+                'contract'          => $request->contract ?? 'No',
+                'text_cust'         => $request->text_cust ?? 'No',
+                'voice_call'        => $request->voice_call ?? 'No',
+                'cash_cust'         => $request->cash_cust ?? 'No',
+                'is_license_pic'    => $request->is_license_pic ?? 'No',
+                'no_service'        => $request->no_service ?? 'No',
+                'call'              => $request->call ?? 'No',
+                'sales_call'        => $request->sales_call ?? 'No',
             ];
             if (!empty($request->license_expiry_date)) {
                 $userData['license_expiry_date'] = Carbon::createFromFormat('m/d/Y', $request->license_expiry_date)->format('Y-m-d');
@@ -395,6 +402,14 @@ class CustomerController extends Controller
             'vehicle_id'        => $request->container_id ?? null,
             'country_code'        => $request->country_code ?? null,
             'country_code_2'        => $request->country_code_2 ?? null,
+            'contract'          => $request->contract ?? 'No',
+            'text_cust'         => $request->text_cust ?? 'No',
+            'voice_call'        => $request->voice_call ?? 'No',
+            'cash_cust'         => $request->cash_cust ?? 'No',
+            'is_license_pic'    => $request->is_license_pic ?? 'No',
+            'no_service'        => $request->no_service ?? 'No',
+            'call'              => $request->call ?? 'No',
+            'sales_call'        => $request->sales_call ?? 'No',
             // 'signup_type'    => 'for_admin'
         ];
 

@@ -16,7 +16,9 @@ use App\Models\{
     ParcelInventorie,
     Vehicle,
     ContainerHistory,
-    Cart
+    Cart,
+    Address,
+    ParcelPickupDriver
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -114,25 +116,47 @@ class OrderShipmentController extends Controller
                 $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
             }
 
-            // 🟠 Check for active container vehicle
-            $activeContainer = Vehicle::where('vehicle_type', 1)->where('status', 'Active')->first();
+            $pickupAddress = Address::find($request->pickup_address_id);
+            if (!$pickupAddress) {
+                return response()->json(['error' => 'Pickup address not found'], 404);
+            }
 
-            if (!$activeContainer) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Container not open. Please wait for an open container.'
-                ], 400);
+            // Step 4: Find nearest warehouse
+            $nearestWarehouse = $this->findNearestWarehouse($pickupAddress->lat, $pickupAddress->long);
+            if (!$nearestWarehouse) {
+                return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
+            }
+
+            // Step 5: Get vehicles from this warehouse with vehicle_type = 1
+            $vehicles = Vehicle::where('warehouse_id', $nearestWarehouse->id)
+                ->where('vehicle_type', 1)
+                ->get();
+
+            // Step 6: Check if any vehicle has status = 'Active'
+            $activeVehicle = $vehicles->firstWhere('status', 'Active');
+
+            if (!$activeVehicle) {
+                return response()->json(['message' => 'Container is not open'], 200);
             }
 
             // Store container_id
-            $validatedData['container_id'] = $activeContainer->id;
+            $validatedData['container_id'] = $activeVehicle->id;
+            $validatedData['warehouse_id'] = $nearestWarehouse->id;
 
-            $containerHistory = ContainerHistory::where('container_id', $activeContainer->id)
-                ->where('status', 'Transfer')
+            $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
+                ->where('type', 'Active')
                 ->latest() // optional: if multiple transfer records exist, get the latest
                 ->first();
 
             if ($containerHistory) {
+                $containerHistory->increment('no_of_orders', 1);
+
+                // Add financial fields
+                $containerHistory->total_amount += $request->total_amount;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
+
+                $containerHistory->save();
                 $validatedData['container_history_id'] = $containerHistory->id;
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
@@ -202,8 +226,6 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($parcelData, 'Order data fetched successfully.');
     }
-
-
 
     public function OrderHistory(string $id)
     {
@@ -684,6 +706,93 @@ class OrderShipmentController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    private function findNearestWarehouse($latitude, $longitude)
+    {
+        // Fetch all warehouses
+        $warehouses = Warehouse::all();
+
+        // Initialize variables to track the nearest warehouse
+        $nearestWarehouse = null;
+        $shortestDistance = PHP_FLOAT_MAX;
+
+        // Loop through warehouses to calculate distance
+        foreach ($warehouses as $warehouse) {
+            $distance = $this->calculateDistance(
+                $latitude,
+                $longitude,
+                $warehouse->lat,
+                $warehouse->long
+            );
+
+            // Update nearest warehouse if current one is closer
+            if ($distance < $shortestDistance) {
+                $shortestDistance = $distance;
+                $nearestWarehouse = $warehouse;
+            }
+        }
+
+        return $nearestWarehouse;
+    }
+
+    /**
+     * Helper function to calculate distance between two coordinates.
+     */
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        // Haversine formula to calculate distance in kilometers
+        $earthRadius = 6371; // Radius of the Earth in km
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c; // Distance in km
+    }
+
+    public function parcelPickupDriver(Request $request)
+    {
+        $validatedData = $request->validate([
+            'parcel_id'   => 'required|integer|exists:parcels,id',
+            'item_name'   => 'required|string',
+            // 'quantity'    => 'required|integer',
+            'img'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $user = $this->user;
+        $data = $request->only(['parcel_id', 'item_name', 'quantity']);
+        $data['is_deleted'] = 'No';
+        $data['status'] = '3';
+        $data['driver_id'] = $user->id;
+        $data['quantity'] = $request->quantity ?? null;
+        $data['quantity_type'] = $request->quantity_type ?? null;
+
+        $parcel = Parcel::find($request->parcel_id);
+
+        $data['container_id'] = $parcel->container_id ?? null;
+       // $data['container_move_id'] = $parcel->container_id ?? null;
+        $data['move'] = "No";
+
+        // Handle image upload
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/pickup_parcels', $filename, 'public');
+            $data['img'] = 'storage/' . $filePath;
+        }
+
+        $parcel = ParcelPickupDriver::create($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Parcel pickup driver data saved successfully.',
+            'data' => $parcel
+        ], 201);
     }
 
     // end

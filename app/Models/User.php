@@ -66,7 +66,15 @@ class User extends Authenticatable
         'phone_2_code_id_id',
         'parent_customer_id',
         'unique_id',
-        'created_by_id'
+        'created_by_id',
+        'contract',
+        'text_cust',
+        'voice_call',
+        'cash_cust',
+        'is_license_pic',
+        'no_service',
+        'call',
+        'sales_call',
     ];
 
 

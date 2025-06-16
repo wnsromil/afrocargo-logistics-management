@@ -11,7 +11,6 @@
     </x-slot>
     <form action="{{ route('admin.warehouse_manager.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <!-- Warehouse Name -->
@@ -25,7 +24,6 @@
                                     value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
-
                         @error('warehouse_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

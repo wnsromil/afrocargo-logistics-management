@@ -49,6 +49,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Then, get all other countries ordered by name
         $otherCountries = Country::where('iso3', '!=', 'USA')->orderBy('name', 'asc')->get();
+        $currencies = Country::orderBy('currency', 'asc')->get()->groupBy('currency')->keys();
+
 
         // Merge both collections
         $countries = $usa->merge($otherCountries);
@@ -61,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Share with view
         View::share('coutry', $countries);
+        View::share('viewCurrencys', $currencies);
         View::share('viewVehicleTypes', $vehicleType);
         View::share('viewBrokers', $Brokers);
         View::share('viewVContainercompanys', $Containercompanys);

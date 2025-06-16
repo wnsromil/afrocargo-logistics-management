@@ -160,6 +160,38 @@
                     </div>
                 </div>
 
+                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="edit_vehicle_registration_exp_date" class="foncolor">Vehicle Registration Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="edit_vehicle_registration_exp_date"
+                                class="btn-filters  form-cs inp "
+                                value="{{ old('edit_vehicle_registration_exp_date', $vehicle->vehicle_registration_exp_date ? \Carbon\Carbon::parse($vehicle->vehicle_registration_exp_date)->format('n/j/Y') : '') }}"
+                                placeholder="MM-DD-YYYY" />
+                        </div>
+                        @error('edit_vehicle_registration_exp_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="edit_vehicle_insurance_exp_date" class="foncolor">Vehicle Insurance Expire Date<i
+                                class="text-danger">*</i></label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input readonly style="cursor: pointer;" type="text" name="edit_vehicle_insurance_exp_date"
+                                class="btn-filters  form-cs inp " 
+                                value="{{ old('edit_vehicle_insurance_exp_date', $vehicle->vehicle_insurance_exp_date ? \Carbon\Carbon::parse($vehicle->vehicle_insurance_exp_date)->format('n/j/Y') : '') }}"
+                                placeholder="MM-DD-YYYY" />
+                        </div>
+                        @error('edit_vehicle_insurance_exp_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
                   <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="mb-3">

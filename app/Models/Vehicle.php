@@ -47,13 +47,21 @@ class Vehicle extends Model
             ->groupBy('container_id');
     }
 
+      public function parcelsCountTransferToWarehouse()
+    {
+        return $this->hasMany(Parcel::class, 'container_id')
+            ->selectRaw('container_id, COUNT(*) as count')
+             ->whereIn('status', [1, 2, 3, 4])
+            ->groupBy('container_id');
+    }
+
 
     public function parcels()
     {
         return $this->hasMany(Parcel::class, 'container_id', 'id');
     }
 
-      public function gateInDriver()
+    public function gateInDriver()
     {
         return $this->belongsTo(User::class, 'gate_in_driver_id');
     }
@@ -70,6 +78,11 @@ class Vehicle extends Model
     public function containerCompany()
     {
         return $this->belongsTo(ContainerCompany::class, 'container_company_id');
+    }
+
+    public function ContainerSize()
+    {
+        return $this->belongsTo(ContainerSize::class, foreignKey: 'container_size');
     }
 
 

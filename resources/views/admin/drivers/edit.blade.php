@@ -222,6 +222,14 @@
             </div>
         </div>
 
+          <input type="number" name="latitude"
+            value="{{ old('latitude', $manager_data->latitude) }}" class="form-control inp"
+            placeholder="0" readonly style="background: #ececec;">
+
+                <input type="number" name="longitude"
+            value="{{ old('longitude', $manager_data->longitude) }}" class="form-control inp"
+            placeholder="0" readonly style="background: #ececec;">
+
         <div class="add-customer-btns text-end">
             <button type="button" onclick="redirectTo('{{route('admin.drivers.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>

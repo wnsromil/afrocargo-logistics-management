@@ -294,7 +294,7 @@
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="warehouse"> Language </label>
                                         <select class="js-example-basic-single select2" name="language">
-                                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ?  'selected' : '' }}>English</option>
+                                            <option value="English" {{ (old('language', $user->language ?? 'English') == 'English') ? 'selected' : '' }}>English</option>
                                             <option value="Hindi" {{ (old('language', $user->language ?? 'English') == 'Hindi') ? 'selected' : '' }}>Hindi</option>
                                         </select>
                                     </div>
@@ -327,7 +327,7 @@
                                 <div class="d-flex align-items-center justify-content-center avtard">
                                     <label class="foncolor set"
                                         for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                                                                    }}</label>
+                                                                                                                                                                            }}</label>
                                     <div class="avtarset" style="position: relative;">
                                         <!-- Image Preview -->
                                         <img id="preview_{{ $imageType }}" class="avtars avtarc"
@@ -358,7 +358,187 @@
                         @endforeach
 
                     </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="contract">Contract</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="contract">Yes
+                                            </label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="contract" {{ old('contract', $user->contract ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="contract">No
+                                            </label>
+                                            <input class="form-check-input mt-0" {{ old('contract', $user->contract ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No" name="contract">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="text_cust">Text Cust</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="text_cust">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="text_cust" {{ old('text_cust', $user->text_cust ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="text_cust">No</label>
+                                            <input class="form-check-input mt-0" type="radio" value="No"
+                                                name="text_cust" {{ old('text_cust', $user->text_cust ?? '') == 'No' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="voice_call">Voice Call</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="voice_call">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="voice_call" {{ old('voice_call', $user->voice_call ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="voice_call">No</label>
+                                            <input class="form-check-input mt-0" {{ old('voice_call', $user->voice_call ?? '') == 'No' ? 'checked' : '' }}  type="radio" value="No"
+                                                name="voice_call">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="cash_cust">Cash Cust</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="cash_cust">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="cash_cust" {{ old('cash_cust', $user->cash_cust ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="cash_cust">No</label>
+                                            <input class="form-check-input mt-0" {{ old('cash_cust', $user->cash_cust ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No"
+                                                name="cash_cust">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="is_license_pic">Is License Pic</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A"
+                                                for="is_license_pic">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="is_license_pic" {{ old('is_license_pic', $user->is_license_pic ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="is_license_pic">No</label>
+                                            <input class="form-check-input mt-0" type="radio" value="No"
+                                                name="is_license_pic" {{ old('is_license_pic', $user->is_license_pic ?? '') == 'No' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="no_service">No Service</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="no_service">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="no_service" {{ old('no_service', $user->no_service ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="no_service">No</label>
+                                            <input class="form-check-input mt-0" {{ old('no_service', $user->no_service ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No"
+                                                name="no_service" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="call">Call</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="call">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes" name="call"
+                                            {{ old('call', $user->call ?? '') == 'Yes' ? 'checked' : '' }}
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="call">No</label>
+                                            <input class="form-check-input mt-0" {{ old('call', $user->call ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No"
+                                                name="call">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="input-block mb-1">
+                                <label class="foncolor" for="sales_call">Sales Call</label>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="sales_call">Yes</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Yes"
+                                                name="sales_call" {{ old('sales_call', $user->sales_call ?? '') == 'Yes' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="input-block mb-3 d-flex align-items-center">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A" for="sales_call">No</label>
+                                            <input class="form-check-input mt-0" {{ old('sales_call', $user->sales_call ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No"
+                                                name="sales_call">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
 
                     <!-- ---------- -->

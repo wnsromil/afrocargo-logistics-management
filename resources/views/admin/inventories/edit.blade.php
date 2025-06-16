@@ -671,8 +671,6 @@
             deleteInput.value = '1';
           }
         </script>
-
-
     @endsection
 
 </x-app-layout>

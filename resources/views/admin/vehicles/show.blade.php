@@ -7,7 +7,28 @@
         <p class="head">Vehicle ID - {{ $vehicle->unique_id ?? '--'}}</p>
     </x-slot>
 
+    @php
+        $result = checkVehicleExpiryStatus(
+            $vehicle->licence_plate_exp_date,
+            $vehicle->vehicle_registration_exp_date,
+            $vehicle->vehicle_insurance_exp_date
+        );
+    @endphp
+
     <div class="card">
+        @if(!empty($result))
+            @foreach($result as $item)
+                <div class="alert alert-danger alert-dismissible fade show {{ $item['bg_class'] ?? '' }} {{ $item['text_class'] ?? '' }}"
+                    role="alert">
+                    <strong>{{ $item['label'] }}:</strong> {{ $item['message'] }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endforeach
+        @endif
+
+
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -69,19 +90,43 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Licence Plate Expire Date</label>
-                        <p>{{ $vehicle->licence_plate_exp_date ?? '--'}}</p>
+                        <p>
+                            @if ($vehicle->licence_plate_exp_date && $vehicle->licence_plate_exp_date)
+                                {{ optional($vehicle->licence_plate_exp_date ? \Carbon\Carbon::parse($vehicle->licence_plate_exp_date) : null)->format('m/d/Y') }}
+                            @else
+                                --
+                            @endif
+                        </p>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <p for="status">Status</p>
-                        <div
-                            class="mt-2 badge  {{$vehicle->status == 'Active' ? 'bg-success-light' : 'bg-danger-light'}}">
-                            <p>{{ $vehicle->status }}</p>
-                        </div>
+                        <label for="vehicle_capacity">Vehicle Registration Expire Date</label>
+                        <p>
+                            @if ($vehicle->vehicle_registration_exp_date && $vehicle->vehicle_registration_exp_date)
+                                {{ optional($vehicle->vehicle_registration_exp_date ? \Carbon\Carbon::parse($vehicle->vehicle_registration_exp_date) : null)->format('m/d/Y') }}
+                            @else
+                                --
+                            @endif
+                        </p>
                     </div>
                 </div>
+
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Vehicle Insurance Expire Date</label>
+                        <p>
+                            @if ($vehicle->vehicle_insurance_exp_date && $vehicle->vehicle_insurance_exp_date)
+                                {{ optional($vehicle->vehicle_insurance_exp_date ? \Carbon\Carbon::parse($vehicle->vehicle_insurance_exp_date) : null)->format('m/d/Y') }}
+                            @else
+                                --
+                            @endif
+                        </p>
+                    </div>
+                </div>
+
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class=" input-block mb-3 align-items-center">
@@ -95,7 +140,7 @@
                     </div>
                 </div>
 
-                 <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3 align-items-center">
                         <p for="status">Vehicle Insurance Document </p>
                         @if ($vehicle->vehicle_insurance_doc)
@@ -136,6 +181,16 @@
 
 
                 <!-- Status -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <p for="status">Status</p>
+                        <div
+                            class="mt-2 badge  {{$vehicle->status == 'Active' ? 'bg-success-light' : 'bg-danger-light'}}">
+                            <p>{{ $vehicle->status }}</p>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
 

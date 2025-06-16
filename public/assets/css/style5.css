@@ -1206,3 +1206,12 @@ input[type="checkbox"]:checked::after {
     cursor: not-allowed; /* Show "not-allowed" cursor */
     text-decoration: none !important;
 }
+
+.expiry_date_bg_alert {
+    background-color: #f8d7da !important; /* Halka red */
+       color: #181111 !important; /* White text */
+}
+
+.expiry_date_text_alert {
+    color: #f00505 !important; /* White text */
+}

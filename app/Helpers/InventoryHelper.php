@@ -51,4 +51,65 @@ if (!function_exists('calculateDriverInventoryDetails')) {
             'DriverInventory_quantity_in' => $DriverInventory_quantity_in,
         ];
     }
+
+    function checkExpiryStatus($date, $type = null)
+    {
+        if (!$date) {
+            return null;
+        }
+
+        $expiryDate = \Carbon\Carbon::parse($date);
+        $today = \Carbon\Carbon::today();
+
+        $daysRemaining = $today->diffInDays($expiryDate, false);
+
+        // Agar 0 ya negative hai to already expired bhi show karega
+        if ($daysRemaining <= 30) {
+            $response = [
+                'bg_class' => 'expiry_date_bg_alert',
+                'text_class' => 'expiry_date_text_alert',
+            ];
+
+            if ($type) {
+                $labels = [
+                    'licence_plate_exp_date' => 'License plate expiry',
+                    'vehicle_registration_exp_date' => 'Vehicle registration expiry',
+                    'vehicle_insurance_exp_date' => 'Insurance expiry',
+                    'license_expiry_date' => 'License expiry',
+                ];
+
+                $label = $labels[$type] ?? 'Document expiry';
+                $response['message'] = "$label in {$daysRemaining} days";
+            }
+
+            return $response;
+        }
+
+        return null; // agar 30 din se zyada time hai to kuch return na kare
+    }
+
+    function checkVehicleExpiryStatus($plateDate, $registrationDate, $insuranceDate)
+    {
+        $dates = [
+            'License Plate' => ['date' => $plateDate, 'type' => 'licence_plate_exp_date'],
+            'Registration' => ['date' => $registrationDate, 'type' => 'vehicle_registration_exp_date'],
+            'Insurance' => ['date' => $insuranceDate, 'type' => 'vehicle_insurance_exp_date'],
+        ];
+
+        $results = [];
+
+        foreach ($dates as $label => $info) {
+            $result = checkExpiryStatus($info['date'], $info['type']);
+            if ($result && isset($result['message'])) {
+                $results[] = [
+                    'label' => $label,
+                    'message' => $result['message'],
+                    'bg_class' => $result['bg_class'] ?? 'expiry_date_bg_alert',
+                    'text_class' => $result['text_class'] ?? 'expiry_date_text_alert',
+                ];
+            }
+        }
+
+        return $results; // Multiple cards ke liye
+    }
 }

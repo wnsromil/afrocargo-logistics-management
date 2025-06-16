@@ -18,7 +18,15 @@
                 </thead>
                 <tbody>
                     @forelse ($vehicles as $index => $vehicle)
-                        <tr>
+                        @php
+                            $result = checkVehicleExpiryStatus(
+                                $vehicle->licence_plate_exp_date,
+                                $vehicle->vehicle_registration_exp_date,
+                                $vehicle->vehicle_insurance_exp_date
+                            );
+                        @endphp
+
+                        <tr class="{{ $result ? $result['bg_class'] : '' }}">
                             <td>
                                 {{ $vehicle->unique_id ?? '-' }}
                             </td>
@@ -45,8 +53,8 @@
                             <td class="d-flex align-items-center">
 
                                 <div class="dropdown dropdown-action">
-                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i
+                                            class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
@@ -60,21 +68,21 @@
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
                                             @if($vehicle->status == 'Active')
-                                            <li>
-                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                    data-id="{{ $vehicle->id }}" data-status="Inactive">
-                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                </a>
-                                            </li>
-                                        @elseif($vehicle->status == 'Inactive')
-                                            <li>
-                                                <a class="dropdown-item activate" href="javascript:void(0)"
-                                                    data-id="{{ $vehicle->id }}" data-status="Active">
-                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                </a>
-                                            </li>
-                                        @endif
-                                        
+                                                <li>
+                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                        data-id="{{ $vehicle->id }}" data-status="Inactive">
+                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                    </a>
+                                                </li>
+                                            @elseif($vehicle->status == 'Inactive')
+                                                <li>
+                                                    <a class="dropdown-item activate" href="javascript:void(0)"
+                                                        data-id="{{ $vehicle->id }}" data-status="Active">
+                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                    </a>
+                                                </li>
+                                            @endif
+
                                         </ul>
                                     </div>
                                 </div>
@@ -96,7 +104,8 @@
 <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
     <div class="col-md-6 d-flex p-2 align-items-center">
         <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+            id="pageSizeSelect">
             <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
             <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
             <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>

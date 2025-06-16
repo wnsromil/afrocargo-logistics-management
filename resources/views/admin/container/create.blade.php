@@ -47,10 +47,13 @@
                         <label for="container_size" class="foncolor">Size</label>
                         <select name="container_size" id="container_size" class="js-example-basic-single select2">
                             <option value="">Select Size</option>
-                            <option {{ old('container_size') == '40 feet' ? 'selected' : '' }} value="40 feet">40 feet
-                            </option>
-                            <option {{ old('container_size') == '20 feet' ? 'selected' : '' }} value="20 feet">20 feet
-                            </option>
+                            @foreach($containerSizes as $size)
+                                <option value="{{ $size->id }}"
+                                        data-volume="{{ $size->volume }}"
+                                      {{ old('container_size') == $size->container_name ? 'selected' : '' }}>
+                                    {{ $size->container_name }}
+                                </option>
+                            @endforeach
                         </select>
                         @error('container_size')
                             <small class="text-danger">{{ $message }}</small>
@@ -457,6 +460,25 @@
                 });
             });
         </script>
+        <script>
+            $(document).ready(function () {
+            $('#container_size').on('change', function () {
+                const selectedOption = $(this).find('option:selected');
+                const volume = selectedOption.data('volume');
+                console.log('Selected volume:', volume);
+                $('#volume').val(volume || '');
+            });
+
+            // Page load pe bhi value set karne ke liye:
+            const selectedOption = $('#container_size').find('option:selected');
+            const volume = selectedOption.data('volume');
+            if (volume) {
+                $('#volume').val(volume);
+            }
+        });
+
+        </script>
+
     @endsection
 
 </x-app-layout>
