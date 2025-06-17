@@ -82,10 +82,10 @@
                     </div>
                 </div>
 
-                <!-- Company For Container -->
+                <!-- Shipping line -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type">Company For Container </label>
+                        <label for="vehicle_type">Shipping line </label>
                         <p>{{ $vehicle->containerCompany->name ?? '--'}}</p>
                     </div>
                 </div>
