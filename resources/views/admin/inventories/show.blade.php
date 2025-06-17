@@ -93,7 +93,7 @@
 
         <div class="row px-4">
              <div class="col-md-12 col-sm-12 mb-4 mb-2">
-                    <div class="cargo-title text-dark">Cargo/Air</div>
+                    <div class="cargo-title text-dark">Ocean Cargo/Air Cargo</div>
                 </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">

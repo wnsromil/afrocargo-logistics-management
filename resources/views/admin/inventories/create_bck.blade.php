@@ -199,12 +199,12 @@
                         </div>
                         <div class="col-lg-2 col-md-3">
                             <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">Cargo</label> <input class="form-check-input mt-0" checked type="radio" value="Cargo" name="inventoryType">
+                                <label class="foncolor mb-0 pt-0 me-2 col3A">Cargo</label> <input class="form-check-input mt-0" checked type="radio" value="Ocean Cargo" name="inventoryType">
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-3">
                             <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">Air</label> <input class="form-check-input mt-0" type="radio" value="Air" name="inventoryType">
+                                <label class="foncolor mb-0 pt-0 me-2 col3A">Air</label> <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="inventoryType">
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-3">
@@ -363,7 +363,7 @@
                 <div id="cargoDiv">
                     <div class="row">
                         <div class="col-12">
-                            <p class="heading mb-3">Cargo/Air</p>
+                            <p class="heading mb-3">Ocean Cargo/Air Cargo</p>
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -475,8 +475,8 @@
     <script>
         document.querySelectorAll('input[name="inventoryType"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
-                document.getElementById('cargoDiv').style.display = this.value === 'Cargo' ? 'block' : 'none';
-                document.getElementById('airDiv').style.display = this.value === 'Air' ? 'block' : 'none';
+                document.getElementById('cargoDiv').style.display = this.value === 'Ocean Cargo' ? 'block' : 'none';
+                document.getElementById('airDiv').style.display = this.value === 'Air Cargo' ? 'block' : 'none';
                 document.getElementById('supplyDiv').style.display = this.value === 'Supply' ? 'block' : 'none';
             });
         });

@@ -37,7 +37,7 @@ class InventoryController extends Controller
                 if ($main_type === 'Supply') {
                     return $q->where('inventary_sub_type', 'Supply');
                 } elseif ($main_type === 'Service') {
-                    return $q->whereIn('inventary_sub_type', ['Cargo', 'Air']);
+                    return $q->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo']);
                 }
             })
             // 🔹 Search Logic
@@ -109,12 +109,11 @@ class InventoryController extends Controller
     {
         // Common validation rules
         $rules = [
-            'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
+            'inventary_sub_type'         => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
             'name'                  => 'required|string',
             'barcode'               => 'required|string',
             'warehouse_id'          => 'required|exists:warehouses,id',
             'in_stock_quantity'     => 'required|numeric',
-            'low_stock_warning'     => 'required|numeric',
             'package_type'          => 'required|string',
             'retail_shipping_price' => 'required|numeric',
             'description'           => 'required|string',
@@ -134,6 +133,7 @@ class InventoryController extends Controller
                 'tax_percentage'      => 'required|numeric',
                 're_order_point'     => 'required|numeric',
                 're_order_quantity'  => 'required|numeric',
+                'low_stock_warning'     => 'required|numeric',
             ]);
         }
 
@@ -235,12 +235,11 @@ class InventoryController extends Controller
 
         // Common validation rules
         $rules = [
-            'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
+            'inventary_sub_type'         => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
             'name'                  => 'required|string',
             'barcode'               => 'required|string',
             'warehouse_id'          => 'required|exists:warehouses,id',
             'in_stock_quantity'     => 'required|numeric',
-            'low_stock_warning'     => 'required|numeric',
             'package_type'          => 'required|string',
             'retail_shipping_price' => 'required|numeric',
             'description'           => 'required|string',
@@ -260,6 +259,7 @@ class InventoryController extends Controller
                 'tax_percentage'      => 'nullable|numeric',
                 're_order_point'     => 'nullable|numeric',
                 're_order_quantity'  => 'nullable|numeric',
+                'low_stock_warning'     => 'required|numeric',
             ]);
         }
 

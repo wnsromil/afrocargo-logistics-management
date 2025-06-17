@@ -12,7 +12,7 @@ return new class extends Migration
    public function up()
 {
     Schema::table('parcels', function (Blueprint $table) {
-        $table->enum('transport_type', ['air', 'cargo', 'null'])->default('null')->after('id');
+        $table->enum('transport_type', ['Air Cargo', 'Ocean Cargo', 'null'])->default('null')->after('id');
     });
 }
 

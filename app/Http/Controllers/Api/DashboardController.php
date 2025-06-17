@@ -115,7 +115,7 @@ class DashboardController extends Controller
         $totalCargo = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })
-            ->where('transport_type', 'cargo')
+            ->where('transport_type', 'Ocean Cargo')
             ->where('parcel_type', 'Service')
             ->count();
 
@@ -123,7 +123,7 @@ class DashboardController extends Controller
         $totalAir = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })
-            ->where('transport_type', 'air')
+            ->where('transport_type', 'Air Cargo')
             ->where('parcel_type', 'Service')
             ->count();
 

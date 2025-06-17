@@ -38,9 +38,9 @@
                 <label>Shipping Type</label>
                 <select class="js-example-basic-single select2" name="shipping_type" id="shipping_type">
                     <option value="">Select Shipping Type</option>
-                    <option value="air" {{ request()->query('shipping_type') == "air" ? 'selected' : '' }}>Air
+                    <option value="Air Cargo" {{ request()->query('shipping_type') == "Air Cargo" ? 'selected' : '' }}>Air
                     </option>
-                    <option value="cargo" {{ request()->query('shipping_type') == "cargo" ? 'selected' : '' }}>Cargo
+                    <option value="Ocean Cargo" {{ request()->query('shipping_type') == "Ocean Cargo" ? 'selected' : '' }}>Cargo
                     </option>
                 </select>
             </div>

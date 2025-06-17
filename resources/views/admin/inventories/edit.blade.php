@@ -36,15 +36,15 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Cargo</label>
-                                <input class="form-check-input mt-0" type="radio" value="Cargo" name="inventary_sub_type"
-                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Cargo' ? 'checked' : '' }}>
+                                <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="inventary_sub_type"
+                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Ocean Cargo' ? 'checked' : '' }}>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-3">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Air</label>
-                                <input class="form-check-input mt-0" type="radio" value="Air" name="inventary_sub_type"
-                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Air' ? 'checked' : '' }}>
+                                <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="inventary_sub_type"
+                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Air Cargo' ? 'checked' : '' }}>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-3">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <!-- Low Stock Warning -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12" id="low_stock_warning">
                     <div class="input-block mb-3">
                         <label for="low_stock_warning" class="table-content col737 fw-medium">Low Stock Warning <i class="text-danger">*</i></label>
                         <input class="form-control text-dark" type="number" name="low_stock_warning"
@@ -241,12 +241,12 @@
                 </div>
             </div>
 
-            <!-- Cargo/Air Section -->
+            <!-- Ocean Cargo/Air Cargo Section -->
             <div class="col-12 pt-3 mt-3 border-top">
                 <div id="cargoDiv" style="display:none;">
                     <div class="row">
                         <div class="col-12">
-                            <p class="heading mb-3">Cargo/Air</p>
+                            <p class="heading mb-3">Ocean Cargo/Air Cargo</p>
                         </div>
                         <!-- Country -->
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -573,10 +573,12 @@
         </script>
         <script>
             function updateInventoryDivs(selectedValue) {
-                if (selectedValue === 'Cargo' || selectedValue === 'Air') {
+                if (selectedValue === 'Ocean Cargo' || selectedValue === 'Air Cargo') {
                     document.getElementById('cargoDiv').style.display = 'block';
+                     document.getElementById('low_stock_warning').style.display = 'none';
                 } else {
                     document.getElementById('cargoDiv').style.display = 'none';
+                    document.getElementById('low_stock_warning').style.display = 'block';
                 }
                 document.getElementById('supplyDiv').style.display = selectedValue === 'Supply' ? 'block' : 'none';
             }
