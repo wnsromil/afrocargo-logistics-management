@@ -94,7 +94,7 @@ class DriversController extends Controller
             'mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             'email' => 'required|email|unique:users,email',
-            'vehicle_type' => 'required',
+           // 'vehicle_type' => 'required',
             'license_number' => 'required',
             'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'required',
@@ -123,7 +123,7 @@ class DriversController extends Controller
         // Store validated data
         $driver = User::create([
             'warehouse_id' => $request->warehouse_name,
-            'vehicle_id' => $request->vehicle_type,
+            'vehicle_id' => $request->vehicle_type ?? null,
             'name' => $request->driver_name,
             'address' => $request->address_1,
             'country_id' => $request->country,
@@ -142,9 +142,9 @@ class DriversController extends Controller
             'longitude' => $request->longitude,
         ]);
 
-        Vehicle::where('id', $request->vehicle_type)->update([
-            'driver_id' => $driver->id,
-        ]);
+        // Vehicle::where('id', $request->vehicle_type)->update([
+        //     'driver_id' => $driver->id,
+        // ]);
 
         $driver_name = $request->driver_name;
         $email = $request->email;
@@ -264,7 +264,7 @@ class DriversController extends Controller
             'mobile_number' => 'required|string|max:15',
             'mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
-            'vehicle_type' => 'required',
+            //'vehicle_type' => 'required',
             'email' => 'nullable|email|unique:users,email,' . $id,
             'license_number' => 'required',
             'edit_license_expiry_date' => 'required',
@@ -313,7 +313,7 @@ class DriversController extends Controller
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
             'unique_id' => $request->unique_id,
-            'vehicle_id' => $request->vehicle_type,
+            'vehicle_id' => $request->vehicle_type ?? null,
             'name' => $request->driver_name,
             'address' => $request->address_1,
             'phone' => $request->mobile_number,
