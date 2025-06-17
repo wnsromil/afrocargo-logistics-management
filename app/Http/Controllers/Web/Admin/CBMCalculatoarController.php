@@ -11,6 +11,8 @@ use App\Models\Country;
 use App\Models\Port;
 use App\Models\PortWiseFreight;
 use App\Models\PortWiseFreightContainer;
+use App\Models\PortSingleShippingContainer;
+use App\Models\PortSingleShippingContainerProduct;
 
 class CBMCalculatoarController extends Controller
 {
@@ -272,5 +274,74 @@ class CBMCalculatoarController extends Controller
             'container_data' => $containerData,
             'containerSizeData' => $containerSizeData
         ], 200);
+    }
+
+    public function storeContainerAndProduct(Request $request)
+    {
+        dd($request->all());
+        // ✅ Validate request (simplified; add more rules as needed)
+        $request->validate([
+            'calculation_date' => 'required|date',
+            'container_size_id' => 'required|integer',
+            'port_wise_freights_id' => 'required|integer',
+            'product_name' => 'required|string',
+            // ...add other required product fields here
+        ]);
+
+        // ✅ Step 1: Try to find existing container
+        $existingContainer = PortSingleShippingContainer::where('calculation_date', $request->calculation_date)
+            ->where('container_size_id', $request->container_size_id)
+            ->where('port_wise_freights_id', $request->port_wise_freights_id)
+            ->first();
+
+        if ($existingContainer) {
+            $containerId = $existingContainer->id;
+        } else {
+            // ✅ Step 2: Create new container
+            $container = PortSingleShippingContainer::create([
+                'creator_user_id' => $request->creator_user_id ?? null,
+                'calculation' => $request->calculation ?? 0,
+                'calculation_date' => $request->calculation_date,
+                'customer_name' => $request->customer_name,
+                'container_size_id' => $request->container_size_id,
+                'port_wise_freights_id' => $request->port_wise_freights_id,
+                'from_country' => $request->from_country,
+                'from_port' => $request->from_port,
+                'to_country' => $request->to_country,
+                'to_port' => $request->to_port,
+                'freight_price' => $request->freight_price,
+                'currency' => $request->currency,
+                'used_volume' => $request->used_volume,
+                'used_weight' => $request->used_weight,
+            ]);
+
+            $containerId = $container->id;
+        }
+
+        // ✅ Step 3: Store product info
+        $ProductData =  PortSingleShippingContainerProduct::create([
+            'port_single_shipping_container_id' => $containerId,
+            'product_name' => $request->product_name,
+            'description' => $request->description,
+            'total_quantity' => $request->total_quantity,
+            'dimensions_in' => $request->dimensions_in,
+            'breadth' => $request->breadth,
+            'length' => $request->length,
+            'height' => $request->height,
+            'product_weight_type' => $request->product_weight_type,
+            'product_weight' => $request->product_weight,
+            'qty_pack' => $request->qty_pack,
+            'packing_weight_type' => $request->packing_weight_type,
+            'packing_weight' => $request->packing_weight,
+            'total_cartons' => $request->total_cartons,
+            'single_CBM' => $request->single_CBM,
+            'total_CBM' => $request->total_CBM,
+            'net_weight_kg' => $request->net_weight_kg,
+            'gross_weight_kg' => $request->gross_weight_kg,
+            'total_net_weight_kg' => $request->total_net_weight_kg,
+            'total_gross_weight_kg' => $request->total_gross_weight_kg,
+        ]);
+
+        return response()->json(['message' => 'Data saved successfully.', 'product_data' => $ProductData], 200);
     }
 }

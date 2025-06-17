@@ -96,6 +96,7 @@ Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsBy
 Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'getContainersByPortFreightId']);
 Route::delete('/port-freight-delete/{id}', [CBMCalculatoarController::class, 'destroyPortFreight']);
 Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'getFreightShippingData']);
+Route::post('/store-single-shipping-container-product', [CBMCalculatoarController::class, 'storeContainerAndProduct']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

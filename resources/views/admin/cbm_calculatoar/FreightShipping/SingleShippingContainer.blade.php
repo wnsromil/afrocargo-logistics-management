@@ -16,8 +16,9 @@
         <p class="head">Single Shipping Container</p>
     </x-slot>
 
-    <form>
+    <form id="singleShippingContainerForm" method="POST">
         <div class="row">
+
             <div class="col-12">
                 <p class="fs_18 col3a">Single Shipping Container Loading Calculator</p>
             </div>
@@ -26,7 +27,8 @@
                     <div class="col-md-6">
                         <div class="input-block mb-2">
                             <label for="exampleCalculation" class="foncolor">Calculation #</label>
-                            <input type="text" id="exampleCalculation" value="tss/1" class="form-control inp">
+                            <input name="calculation" type="text" id="exampleCalculation" value="tss/1"
+                                class="form-control inp">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -34,8 +36,8 @@
                             <label for="exampleCalculation" class="foncolor">Calculation
                                 Date</label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" name="license_expiry_date" class="btn-filters form-cs inp "
-                                    placeholder="mm-dd-yy" readonly />
+                                <input name="calculation_date" type="text" class="btn-filters form-cs inp " readonly
+                                    style="background: #ffffff" placeholder="MM/DD/YYYY" />
                             </div>
                         </div>
                     </div>
@@ -45,14 +47,15 @@
                     <div class="col-md-12">
                         <div class="input-block mb-2">
                             <label for="exampleCalculation" class="foncolor">Customer</label>
-                            <input type="text" id="exampleCalculation" placeholder="Enter Customer Name"
-                                class="form-control inp">
+                            <input name="customer_name" type="text" id="exampleCalculation"
+                                placeholder="Enter Customer Name" class="form-control inp">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="input-block mb-2 border-0">
                             <label for="exampleCalculation" class="foncolor">Container</label>
-                            <select class="js-example-basic-single select2" id="containerSelect">
+                            <select name="container_size_id" class="js-example-basic-single select2"
+                                id="containerSelect">
                                 <option selected value="" disabled hidden>Select Container</option>
                                 <option value="">Select Container</option>
                                 @foreach ($containerSizes as $containerSize)
@@ -79,14 +82,13 @@
                     <div class="col-md-6">
                         <div class="input-block mb-2 border-0">
                             <label for="exampleCalculation" class="foncolor">From Country</label>
-                            <select id="from_country_select" name="from_country_select"
-                                class="form-control inp select2">
+                            <select name="from_country" id="from_country_select" class="form-control inp select2">
                                 <option selected disabled hidden>Select Country</option>
                                 @foreach($countrys as $index => $country)
                                     <option value="{{ $country->name }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
-                            @error('from_country_select')
+                            @error('from_country')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -105,13 +107,13 @@
                     <div class="col-md-6">
                         <div class="input-block mb-2 border-0">
                             <label for="exampleCalculation" class="foncolor">To Country</label>
-                            <select id="to_country_select" name="to_country_select" class="form-control inp select2">
+                            <select id="to_country" name="to_country" class="form-control inp select2">
                                 <option selected disabled hidden>Select Country</option>
                                 @foreach($countrys as $index => $country)
                                     <option value="{{ $country->name }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
-                            @error('to_country_select')
+                            @error('to_country')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -130,8 +132,8 @@
                     <div class="col-md-6">
                         <div class="input-block mb-2">
                             <label for="exampleCalculation" class="foncolor">Container's Freight</label>
-                            <input type="text" id="Container_Freight_price" placeholder="" class="form-control inp"
-                                value="0.0000">
+                            <input name="freight_price" type="text" id="Container_Freight_price" placeholder=""
+                                class="form-control inp" value="0.0000">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -164,15 +166,15 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="progress inp">
-                                    <div id="progress-bar" class="progress-bar" role="progressbar"
-                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="40"
+                                        aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="">
-                                    <input type="text" id="progress-input" class="form-control inp" value="0%"
-                                        readonly>
+                                    <input name="used_volume" type="text" id="progress-input" class="form-control inp"
+                                        value="0%" readonly>
                                 </div>
                             </div>
                         </div>
@@ -192,15 +194,15 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="progress inp">
-                                    <div id="progress-bar" class="progress-bar" role="progressbar"
-                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="40"
+                                        aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="">
-                                    <input type="text" id="progress-input" class="form-control inp" value="0%"
-                                        readonly>
+                                    <input name="used_weight" type="text" id="progress-input" class="form-control inp"
+                                        value="0%" readonly>
                                 </div>
                             </div>
                         </div>
@@ -246,14 +248,16 @@
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Product</label>
                                     <div class="col-md-10 col-lg-10 col-sm-10 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="product_name" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Description</label>
                                     <div class="col-md-10 col-lg-10 col-sm-10 ps-4">
-                                        <textarea type="text" class="form-control inp form-control-sm" id="inputProduct"
+                                        <textarea name="description" type="text"
+                                            class="form-control inp form-control-sm" id="inputProduct"
                                             rows="4"></textarea>
                                     </div>
                                 </div>
@@ -262,12 +266,14 @@
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Total
                                         Quantity</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="total_quantity" type="number"
+                                            class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Qty/Pack</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="qty_pack" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
 
@@ -275,12 +281,14 @@
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">
                                         Dimensions in</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="dimensions_in" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Length</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="length" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
 
@@ -288,12 +296,14 @@
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Breadth</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="breadth" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Height</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="height" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
 
@@ -301,30 +311,32 @@
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Product
                                         Weight</label>
                                     <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
-                                        <select class="form-select form-select-sm select2">
-                                            <option disabled hidden selected vlaue=""></option>
-                                            <option vlaue="Kg">Kg</option>
-                                            <option vlaue="G">G</option>
-                                            <option vlaue="Lbs">Lbs</option>
-                                            <option vlaue="Oz">Oz</option>
+                                        <select name="product_weight_type" class="form-select form-select-sm select2">
+                                            <option disabled hidden selected value=""></option>
+                                            <option value="Kg">Kg</option>
+                                            <option value="G">G</option>
+                                            <option value="Lbs">Lbs</option>
+                                            <option value="Oz">Oz</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 col-lg-2 col-sm-6 mt-1 ps-1">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="product_weight" type="text"
+                                            class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Packing
                                         Weight</label>
                                     <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
-                                        <select class="form-select select2">
-                                            <option disabled hidden selected vlaue=""></option>
-                                            <option vlaue="Kg">Kg</option>
-                                            <option vlaue="G">G</option>
-                                            <option vlaue="Lbs">Lbs</option>
-                                            <option vlaue="Oz">Oz</option>
+                                        <select name="packing_weight_type" class="form-select select2">
+                                            <option disabled hidden selected value=""></option>
+                                            <option value="Kg">Kg</option>
+                                            <option value="G">G</option>
+                                            <option value="Lbs">Lbs</option>
+                                            <option value="Oz">Oz</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 col-lg-2 col-sm-6 mt-1 ps-1">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="packing_weight" type="text"
+                                            class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
@@ -335,7 +347,8 @@
                                         class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
                                         Cartons</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="total_cartons" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -343,7 +356,8 @@
                                         class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Single
                                         CBM</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="single_CBM" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -351,7 +365,8 @@
                                         class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
                                         CBM</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="total_CBM" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -360,7 +375,8 @@
                                         Weight
                                         (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="net_weight_kg" type="text" class="form-control inp form-control-sm"
+                                            id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-2 row">
@@ -369,7 +385,8 @@
                                         weight
                                         (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="gross_weight_kg" type="text"
+                                            class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-2 row">
@@ -379,7 +396,8 @@
                                         weight
                                         (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="total_net_weight_kg" type="text"
+                                            class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -389,14 +407,14 @@
                                         weight (kg.):
                                     </label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input type="text" class="form-control inp form-control-sm" id="inputProduct">
+                                        <input name="total_gross_weight_kg" type="text"
+                                            class="form-control inp form-control-sm" id="inputProduct">
                                     </div>
                                 </div>
 
                                 <div class="my-1 row">
-                                    <button type="button" for="inputProduct" id="cancelUpdateBtn"
+                                    <button type="submit" for="inputProduct" id="cancelUpdateBtn"
                                         class="col-md-4 col-lg-4 col-sm-4 btn bg-transparent btn-text-color text-start btn-sm">Update
-                                        Cancel
                                     </button>
                                 </div>
                             </td>
@@ -404,7 +422,7 @@
                     </tbody>
 
                     <tbody id="product_data" class="border productData border-dark-subtle">
-                        <tr>
+                        <tr style="display: none;">
                             <td class="border-bottom border-dark-subtle text-middle fw-light">
                                 <div class="d-block">
                                     <a href="#" class="decoration-text pe-2">Edit</a>
@@ -426,6 +444,11 @@
                             <td class="border border-dark-subtle text-end fw-light">0.3000</td>
                             <td class="border border-dark-subtle text-end fw-light">0.3000</td>
                             <td class="border border-dark-subtle text-end fw-light">0.3</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="py-2 text-center">
+                                <p>No data to display</p>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4" class="py-2">
@@ -451,6 +474,35 @@
         </div>
     </form>
     @section('script')
+        <script>
+            $(document).ready(function () {
+                $('#singleShippingContainerForm').on('submit', function (e) {
+                    e.preventDefault(); // Prevent default form submit
+
+                    let formData = new FormData(this);
+
+                    $.ajax({
+                        url: '/api/store-single-shipping-container-product',
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token if needed
+                        },
+                        success: function (response) {
+                            alert('Success: ' + response.message);
+                            // Optionally reset the form:
+                            $('#singleShippingContainerForm')[0].reset();
+                        },
+                        error: function (xhr) {
+                            console.error(xhr.responseText);
+                            alert('Error occurred while saving.');
+                        }
+                    });
+                });
+            });
+        </script>
         <script>
             $(document).ready(function () {
                 function fetchData() {
@@ -595,7 +647,7 @@
             }
 
             // Example: Dynamically set to 70%
-           // updateProgress(20);
+            // updateProgress(20);
 
         </script>
     @endsection
