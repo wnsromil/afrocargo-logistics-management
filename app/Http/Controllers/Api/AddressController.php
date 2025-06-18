@@ -26,6 +26,26 @@ class AddressController extends Controller
         return response()->json($addresses, 200);
     }
 
+    public function getAddressById($id)
+    {
+        $user = $this->user;
+
+        // ✅ Find the address with matching ID & user_id, include relationships
+        $address = Address::where('id', $id)
+            ->where('user_id', $user->id)
+            ->with(['country', 'state', 'city'])
+            ->first();
+
+        // ✅ Not Found
+        if (!$address) {
+            return response()->json(['message' => 'Address not found'], 404);
+        }
+
+        // ✅ Return Address Detail
+        return response()->json($address, 200);
+    }
+
+
     public function createAddress(Request $request)
     {
         // ✅ Step 1: Validation
@@ -89,39 +109,37 @@ class AddressController extends Controller
     public function updateAddress(Request $request, $id)
     {
         // ✅ Step 1: Get Authenticated User
-        $user = $this->user; // Laravel Auth system se current user
+        $user = $this->user;
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // ✅ Step 2: Find Address by ID
+        // ✅ Step 2: Find Address by ID & User
         $address = Address::where('id', $id)->where('user_id', $user->id)->first();
-
-        // ✅ Step 3: Check if Address Exists
         if (!$address) {
             return response()->json(['message' => 'Address not found or unauthorized'], 404);
         }
 
-        // ✅ Step 4: Validate Data
+        // ✅ Step 3: Validation (same as createAddress)
         $validatedData = $request->validate([
             'address' => 'required|string|max:255',
             'address_type' => 'required|string|in:pickup,delivery',
             'alternative_mobile_number' => 'nullable|string|max:15',
-            'city_id' => 'required|integer',
-            'country_id' => 'required|integer',
+            'city_id' => 'required|string',
+            'country_id' => 'required|string',
             'full_name' => 'required|string|max:255',
             'mobile_number' => 'required|string|max:15',
             'pincode' => 'required|string|max:10',
-            'state_id' => 'required|integer',
+            'state_id' => 'required|string',
             'warehouse_id' => 'nullable|integer|exists:warehouses,id',
-            'lat' => 'nullable',
-            'long' => 'nullable',
+            'lat' => 'required',
+            'long' => 'required',
         ]);
 
-        // ✅ Step 5: Update Address
+        // ✅ Step 4: Update Address
         $address->update($validatedData);
 
-        // ✅ Step 6: Return Response
+        // ✅ Step 5: Return Response
         return response()->json([
             'message' => 'Address updated successfully!',
             'data' => $address

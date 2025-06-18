@@ -14,7 +14,7 @@ class CreatePortSingleShippingContainerTable extends Migration
         Schema::create('port_single_shipping_container', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_user_id')->nullable();
-            $table->decimal('calculation', 10, 2)->nullable();
+            $table->string('calculation', 10, 2)->nullable();
             $table->date('calculation_date')->nullable();
             $table->string('customer_name')->nullable();
             $table->unsignedBigInteger('container_size_id')->nullable();

@@ -13,6 +13,7 @@ use App\Models\PortWiseFreight;
 use App\Models\PortWiseFreightContainer;
 use App\Models\PortSingleShippingContainer;
 use App\Models\PortSingleShippingContainerProduct;
+use Carbon\Carbon;
 
 class CBMCalculatoarController extends Controller
 {
@@ -278,18 +279,20 @@ class CBMCalculatoarController extends Controller
 
     public function storeContainerAndProduct(Request $request)
     {
-        dd($request->all());
         // ✅ Validate request (simplified; add more rules as needed)
         $request->validate([
             'calculation_date' => 'required|date',
             'container_size_id' => 'required|integer',
             'port_wise_freights_id' => 'required|integer',
-            'product_name' => 'required|string',
+            'customer_name' => 'required|string',
             // ...add other required product fields here
         ]);
 
+        $calculation_date = Carbon::createFromFormat('m/d/Y', $request->calculation_date)->format('Y-m-d');
+
+
         // ✅ Step 1: Try to find existing container
-        $existingContainer = PortSingleShippingContainer::where('calculation_date', $request->calculation_date)
+        $existingContainer = PortSingleShippingContainer::where('calculation_date', $calculation_date)
             ->where('container_size_id', $request->container_size_id)
             ->where('port_wise_freights_id', $request->port_wise_freights_id)
             ->first();
@@ -301,7 +304,7 @@ class CBMCalculatoarController extends Controller
             $container = PortSingleShippingContainer::create([
                 'creator_user_id' => $request->creator_user_id ?? null,
                 'calculation' => $request->calculation ?? 0,
-                'calculation_date' => $request->calculation_date,
+                'calculation_date' => $calculation_date,
                 'customer_name' => $request->customer_name,
                 'container_size_id' => $request->container_size_id,
                 'port_wise_freights_id' => $request->port_wise_freights_id,
@@ -311,8 +314,8 @@ class CBMCalculatoarController extends Controller
                 'to_port' => $request->to_port,
                 'freight_price' => $request->freight_price,
                 'currency' => $request->currency,
-                'used_volume' => $request->used_volume,
-                'used_weight' => $request->used_weight,
+                'used_volume' => rtrim($request->used_volume, '%'),
+                'used_weight' => rtrim($request->used_weight, '%'),
             ]);
 
             $containerId = $container->id;
@@ -343,5 +346,22 @@ class CBMCalculatoarController extends Controller
         ]);
 
         return response()->json(['message' => 'Data saved successfully.', 'product_data' => $ProductData], 200);
+    }
+
+    public function deleteContainerProduct($id)
+    {
+        $product = PortSingleShippingContainerProduct::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        $product->delete();
+
+        return response()->json([
+            'message' => 'Product deleted successfully',
+            'total_CBM' => $product->total_CBM,
+            'total_gross_weight_kg' => $product->total_gross_weight_kg,
+        ], 200);
     }
 }

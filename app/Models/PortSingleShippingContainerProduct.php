@@ -8,6 +8,7 @@ class PortSingleShippingContainerProduct extends Model
 {
     //
 
+    protected $table = 'port_single_shipping_container_product';
     protected $fillable = [
         'port_single_shipping_container_id',
         'product_name',

@@ -97,6 +97,8 @@ Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'g
 Route::delete('/port-freight-delete/{id}', [CBMCalculatoarController::class, 'destroyPortFreight']);
 Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'getFreightShippingData']);
 Route::post('/store-single-shipping-container-product', [CBMCalculatoarController::class, 'storeContainerAndProduct']);
+Route::delete('/delete-container-product/{id}', [CBMCalculatoarController::class, 'deleteContainerProduct']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -149,8 +151,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/productList', [CartController::class, 'productList']);
         Route::post('/delete-product', [CartController::class, 'destroyProduct']);
 
-        // Addresse Routes
+        // Address Routes
         Route::post('/address-list', [AddressController::class, 'getAddress']);
+        Route::get('/address-details/{id}', [AddressController::class, 'getAddressById']);
         Route::post('/addresse-create', [AddressController::class, 'createAddress']);
         Route::get('/addresse-delete/{id}', [AddressController::class, 'deleteAddress']);
         Route::post('/address-update/{id}', [AddressController::class, 'updateAddress']);
@@ -163,7 +166,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/invoice-order-create-supply', [OrderShipmentController::class, 'invoiceOrderCreateSupply']);
         Route::post('/order-create-supply', [OrderShipmentController::class, 'storeSupply']);
         Route::post('/parcel-pickup-driver', [OrderShipmentController::class, 'parcelPickupDriver']);
-        
+
         // Available slots Routes
         Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
 

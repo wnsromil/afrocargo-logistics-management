@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PortSingleShippingContainer extends Model
 {
     //
+    protected $table = 'port_single_shipping_container';
 
     protected $fillable = [
         'creator_user_id',
