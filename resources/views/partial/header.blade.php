@@ -1,7 +1,6 @@
 <div class="header header-one nav-head shadow d-flex col-md-12 logopin align-items-center ">
 
-    <div
-        class="main-logo d-inline float-start d-lg-flex align-items-center align-center d-none d-sm-none d-md-none shadow col-md-8">
+    <div class="main-logo d-inline float-start d-lg-flex align-items-center align-center d-none d-sm-none d-md-none shadow col-md-8">
         <div class="dash-logo logopin">
             <img src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt="">
         </div>
@@ -27,18 +26,18 @@
                     <span class="bar-icons"></span>
                 </span>
             </a>
-    
 
 
-        <!-- Sidebar Toggle -->
-        <div class="dash2 countFontSize2 header-heading">
-            <h5 style="color: #ffffff">
-                @isset($header)
+
+            <!-- Sidebar Toggle -->
+            <div class="dash2 countFontSize2 header-heading">
+                <h5 style="color: #ffffff">
+                    @isset($header)
                     {{ $header }}
-                @endisset
-            </h5>
+                    @endisset
+                </h5>
+            </div>
         </div>
-</div>
         <!-- /Sidebar Toggle -->
 
         <!-- Search -->
@@ -52,18 +51,20 @@
         <!-- Header Menu -->
 
         <!-- -------------- Notification ------------------------------ -->
-        <div class="d-flex align-items-center float-end me-4">
+        <div class="d-flex align-items-center float-end me-3 me-sm-4">
 
-            <a class="nav-link mt-1 me-2 pt-2" href="{{route('admin.notification.index')}}">
+            <a class="nav-link height-52 p-2" href="{{route('admin.notification.index')}}">
                 <!-- <i class="fe fe-bell" style="font-size:30px; color:white"></i> <span class="badge rounded-pill"></span> -->
                 {{-- <img src="{{asset('../assets/images/notification BTN.svg')}}" alt="..." /> --}}
-                <svg  xmlns="http://www.w3.org/2000/svg"  width="30"  height="30"  viewBox="0 0 24 24"  fill="none"  stroke="#fff"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-bell"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bell">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+                    <path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
             </a>
 
 
             <div class="nav-profile">
-                <button class="btn profile dropdown-toggle btnColor1" type="button" id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="nav-link btn height-52 profile dropdown-toggle btnColor1 p-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <span><i class="fe fe-user" style="color:rgb(255, 255, 255)"></i></span>
 
                 </button>
@@ -89,6 +90,12 @@
 
                 </ul>
             </div>
+
+            <!-- Mobile Menu Toggle -->
+            <a class="nav-link height-52 d-block d-sm-none text-white position-relative p-2 pe-1" id="mobile_btn">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="32"  height="32"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-align-right-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 4v16" /><path d="M4 6h12" /><path d="M10 12h6" /><path d="M6 18h10" /></svg>
+            </a>
+            <!-- /Mobile Menu Toggle -->
         </div>
     </div>
 </div>

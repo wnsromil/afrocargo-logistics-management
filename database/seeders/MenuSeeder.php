@@ -208,6 +208,7 @@ class MenuSeeder extends Seeder
         // Add submenus
         $vehicle = Menu::where('title', 'Vehicle Management')->first();
         if ($vehicle) {
+            
             Menu::create([
                 'title' => 'Vehicle List',
                 'route' => 'admin.vehicle.index',
@@ -216,6 +217,7 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ]);
             Menu::create([
+                'icon' => 'assets/images/container_icon.svg',
                 'title' => 'Container List',
                 'route' => 'admin.container.index',
                 'active' => 'container*',
