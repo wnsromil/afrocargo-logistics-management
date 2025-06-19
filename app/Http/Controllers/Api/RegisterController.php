@@ -42,8 +42,8 @@ class RegisterController extends Controller
                 'state_id' => 'required|string|max:255',
                 'city_id' => 'required|string|max:255',
                 'pincode' => 'required|numeric',
-                'latitude' => 'nullable|numeric',
-                'longitude' => 'nullable|numeric',
+                'latitude' => 'required|numeric',
+                'longitude' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -79,6 +79,26 @@ class RegisterController extends Controller
                     'state_id' => $request->state_id,
                     'city_id' => $request->city_id,
                     'pincode' => $request->pincode,
+                ]);
+
+                insertAddress([
+                    'user_id' => $user->id,
+                    'address' => $request->address,
+                    'address_type' => 'pickup',
+                    'mobile_number' => $request->phone ?? null,
+                    'alternative_mobile_number' => $request->alternate_mobile_no ?? null,
+                    'mobile_number_code_id'        =>  $request->country_code ?? null,
+                    'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
+                    'city_id' => $request->city_id ?? null,
+                    'country_id' => $request->country_id ?? null,
+                    'full_name' => $request->name,
+                    'pincode' => $request->pincode ?? null,
+                    'state_id' => $request->state_id ?? null,
+                    'warehouse_id' => $request->warehouse_id ?? null,
+                    'lat' => $request->latitude ?? null,
+                    'long' => $request->longitude ?? null,
+                    'type' => 'Services', // Default type
+                    'default_address' => 'Yes'
                 ]);
 
                 $success['token'] = $user->createToken('MyApp')->accessToken;

@@ -34,7 +34,7 @@ use App\Http\Controllers\Api\{
 
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
-    CBMCalculatoarController,
+    CBMCalculatoarController
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -54,6 +54,7 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgetPassword', [ForgetPassword::class, 'forgetPassword']);
 Route::post('/warehouse-list', [WarehouseController::class, 'index']);
+Route::get('/warehouse-countries', [WarehouseController::class, 'getWarehouseCountries']);
 Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
 Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus']);
@@ -190,6 +191,10 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/update-status-delivered', [ServiceOrderStatusManage::class, 'statusUpdate_Delivered']);
         Route::post('/update-status-cancel', [ServiceOrderStatusManage::class, 'statusUpdate_Cancel']);
         Route::post('/update-status-reschedule', [ServiceOrderStatusManage::class, 'statusUpdate_reschedule']);
+
+        // Ship To mobile customer
+        Route::post('/customer-shipto-create', [ShiptoController::class, 'CustomerCreateShipTo']);
+        Route::post('/get-shipto-users', [ShiptoController::class, 'getCustomerShipToUsers']);
     });
 
     //invoice controller

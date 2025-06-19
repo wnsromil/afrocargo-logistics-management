@@ -204,12 +204,33 @@ class CustomerController extends Controller
             // 📌 Create User
             $user = User::create($userData);
 
+            insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'pickup',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => !empty($validated['alternative_mobile_number'])
+                    ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                    : null,
+                'city_id' => $validated['city'] ?? null,
+                'country_id' => $validated['country'] ?? null,
+                'full_name' => $validated['first_name'],
+                'pincode' => $validated['Zip_code'] ?? null,
+                'state_id' => $validated['state'] ?? null,
+                'warehouse_id' => $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null,
+                'long' => $validated['longitude'] ?? null,
+                'type' => 'Services', // Default type
+                'default_address' => 'Yes'
+            ]);
 
             // Example dynamic data
             $userName = $validated['first_name'];
             $email = $validated['email'] ?? null;
             $mobileNumber = $validated['mobile_number'];
-            $password = $hashedPassword;
+            $password = $randomPassword;
             $loginUrl = route('login');
 
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
@@ -435,7 +456,6 @@ class CustomerController extends Controller
         if (!empty($imagePaths['signature_img'])) {
             $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
         }
-
         if (!empty($imagePaths['contract_signature_img'])) {
             $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
         }
@@ -445,9 +465,6 @@ class CustomerController extends Controller
         if (!empty($imagePaths['profile_pic'])) {
             $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
         }
-
-
-
 
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {
@@ -465,6 +482,24 @@ class CustomerController extends Controller
 
         // 🛠 Update User Data
         $user->update($userData);
+
+        updateAddress($id, [
+            'address' => $validated['address_1'],
+            'mobile_number' => $validated['mobile_number'] ?? null,
+            'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+            'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+            'alternative_mobile_number_code_id' => !empty($validated['alternative_mobile_number'])
+                ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                : null,
+            'city_id' => $validated['city'] ?? null,
+            'country_id' => $validated['country'] ?? null,
+            'full_name' => $validated['first_name'],
+            'pincode' => $validated['Zip_code'] ?? null,
+            'state_id' => $validated['state'] ?? null,
+            'warehouse_id' => $request->warehouse_id ?? null,
+            'lat' => $validated['latitude'] ?? null,
+            'long' => $validated['longitude'] ?? null,
+        ]);
 
         return redirect()->route('admin.customer.index', ['page' => $request->page_no])
             ->with('success', 'User updated successfully');

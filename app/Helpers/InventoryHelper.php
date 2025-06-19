@@ -2,6 +2,7 @@
 
 use App\Models\DriverInventory;
 use App\Models\DriverInventoriesSolde;
+use App\Models\Address;
 
 if (!function_exists('calculateDriverInventoryDetails')) {
     function calculateDriverInventoryDetails($driverInventoryId)
@@ -111,5 +112,26 @@ if (!function_exists('calculateDriverInventoryDetails')) {
         }
 
         return $results; // Multiple cards ke liye
+    }
+}
+
+function insertAddress(array $data)
+{
+    // Step 1: Merge default values for new columns if not provided
+    $data['type'] = $data['type'] ?? 'Services';
+    $data['default_address'] = $data['default_address'] ?? 'No';
+
+    // Step 2: Insert into addresses table
+    Address::create($data);
+}
+
+function updateAddress(int $id, array $data)
+{
+    // Step 2: Find the address by ID
+    $address = Address::where('user_id', $id)->where('default_address', 'Yes')->first();
+
+    if ($address) {
+        // Step 3: Update the address
+        $address->update($data);
     }
 }

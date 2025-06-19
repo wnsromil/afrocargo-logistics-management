@@ -16,6 +16,7 @@ class AddressController extends Controller
         $user = $this->user;
         $addresses = Address::where('user_id', $user->id)
             ->where('address_type', $request->address_type)
+            ->where('default_address', 'No')
             ->with(['country', 'state', 'city'])
             ->get();
 
@@ -44,7 +45,6 @@ class AddressController extends Controller
         // ✅ Return Address Detail
         return response()->json($address, 200);
     }
-
 
     public function createAddress(Request $request)
     {

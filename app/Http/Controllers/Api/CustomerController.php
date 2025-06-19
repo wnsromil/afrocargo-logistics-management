@@ -220,6 +220,25 @@ class CustomerController extends Controller
 
             $user = User::create($userData);
 
+             insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address'],
+                'address_type' => 'pickup',
+                'mobile_number' => $validated['mobile_code'] ?? null,
+                'alternative_mobile_number' => $validated['alternate_mobile_no'] ?? null,
+                'mobile_number_code_id'        =>  $request->country_code ?? null,
+                'alternative_mobile_number_code_id' =>$request->country_code_2 ?? null,
+                'city_id' => $validated['city'] ?? null,
+                'country_id' => $validated['country'] ?? null,
+                'full_name' => $validated['first_name'],
+                'pincode' => $validated['Zip_code'] ?? null,
+                'state_id' => $validated['state'] ?? null,
+                'warehouse_id' => $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null,
+                'long' => $validated['longitude'] ?? null,
+                'type' => 'Services', // Default type
+                'default_address' => 'Yes'
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -237,7 +256,6 @@ class CustomerController extends Controller
             ], 500);
         }
     }
-
 
     public function createShippingCustomer(Request $request)
     {
@@ -312,6 +330,24 @@ class CustomerController extends Controller
         $shippingUser->sector = $request->sector;
         $shippingUser->language = $request->language;
         $shippingUser->save();
+
+        // insertAddress([
+        //     'user_id' => $shippingUser->id,
+        //     'address' => $request->address_1,
+        //     'address_type' => 'shipping',
+        //     'mobile_number' => $request->phone ?? null,
+        //     'alternative_mobile_number' => $request->alternate_mobile_no ?? null,
+        //     'mobile_number_code_id' => $request->country_code ?? null,
+        //     'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
+        //     'city_id' => $request->city ?? null,
+        //     'country_id' => $request->country ?? null,
+        //     'full_name' => $request->first_name,
+        //     'pincode' => $request->Zip_code ?? null,
+        //     'state_id' => $request->state ?? null,
+        //     'warehouse_id' => $request->warehouse_id ?? null,
+        //     'lat' => $request->latitude ?? null,
+        //     'long' => $request->longitude ?? null,
+        // ]);
 
         return response()->json(['shipping_user' => $shippingUser], 200);
     }
