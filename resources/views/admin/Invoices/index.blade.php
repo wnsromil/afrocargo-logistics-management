@@ -4,7 +4,6 @@
         .content-page-header {
             margin-top: -10px;
         }
-
     </style>
     @endsection
 
@@ -29,276 +28,285 @@
 
 
 
-    <form class="invoice">
+    <form class="invoice" method="GET" action="{{ route('admin.invoices.index') }}">
         <div class="row g-3">
             <div class="col-md-3 dposition">
                 <label for="searchInput">Search</label>
                 <i class="ti ti-search"></i>
-                <input type="text" id="searchInput" class="form-control form-cs" placeholder="Search">
+                <input type="text" id="searchInput" name="search" class="form-control form-cs" placeholder="Search" value="{{ request('search') }}">
             </div>
 
             <div class="col-md-3 dposition">
-                <label>By Invoice #ID</label>
+                <label for="invoice_id">By Invoice #ID</label>
                 <i class="ti ti-search"></i>
-                <input type="text" class="form-control form-cs" placeholder="Enter Invoice #ID">
+                <input type="text" id="invoice_id" name="invoice_id" class="form-control form-cs" placeholder="Enter Invoice #ID" value="{{ request('invoice_id') }}">
             </div>
             <div class="col-md-3 dposition">
-                <label>Invoice Date</label>
+                <label for="datetrange">Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                    <input type="text" class="btn-filters form-control bookingrange form-cs info" name="datetrange" placeholder="From Date - To Date" />
+                    <input type="text" id="datetrange" class="btn-filters form-control bookingrange form-cs info" name="datetrange"
+                        placeholder="From Date - To Date" value="{{ request('datetrange') }}" autocomplete="off" />
                 </div>
             </div>
 
-
             <div class="col-md-3 dposition">
-                <label>By Container</label>
+                <label for="container_seal">By Container</label>
                 <i class="ti ti-search"></i>
-                <input type="text" class="form-control form-cs" placeholder="Enter Container Seal No.">
+                <input type="text" id="container_seal" name="container_seal" class="form-control form-cs" placeholder="Enter Container Seal No." value="{{ request('container_seal') }}">
             </div>
 
             <div class="col-md-3">
-
-                <label>By Warehouse</label>
-                <select class="js-example-basic-single select2 ">
-                    <option selected="selected " class="form-cs">Select Warehouse</option>
-                    <option>white</option>
-                    <option>purple</option>
+                <label for="warehouse_id">By Warehouse</label>
+                <select id="warehouse_id" name="warehouse_id" class="js-example-basic-single select2 form-cs">
+                    <option value="">Select Warehouse</option>
+                    @foreach ($warehouses as $warehouse)
+                    <option value="{{$warehouse->id}}" {{ request('warehouse_id') == $warehouse->id ? 'selected' : '' }}>{{$warehouse->name ?? ''}}</option>
+                    @endforeach
                 </select>
             </div>
 
             <div class="col-md-3">
-                <label>By Driver</label>
-                <select class="js-example-basic-single select2  form-cs">
-                    <option selected="selected">Select Drive</option>
-                    <option>white</option>
-                    <option>purple</option>
+                <label for="driver_id">By Driver</label>
+                <select id="driver_id" name="driver_id" class="js-example-basic-single select2 form-cs">
+                    <option value="">Select Driver</option>
+                    @foreach ($drivers as $driver)
+                    <option value="{{$driver->id}}" {{ request('driver_id') == $driver->id ? 'selected' : '' }}>{{$driver->name ?? ''}} {{$driver->last_name ?? ''}}</option>
+                    @endforeach
                 </select>
             </div>
 
-
             <div class="col-md-3 dposition">
-                <label>By Invoice Item</label>
+                <label for="invoice_item">By Invoice Item</label>
                 <i class="ti ti-search"></i>
-                <input type="text" class="form-control form-cs" placeholder="Enter Invoice Item">
+                <input type="text" id="invoice_item" name="invoice_item" class="form-control form-cs" placeholder="Enter Invoice Item" value="{{ request('invoice_item') }}">
             </div>
 
             <div class="col-md-3 text-end align-content-end">
-                <button class="btn px-4 btn-primary me-2">Filter</button>
-                <button class="btn px-4 btn-outline-danger">Reset</button>
+                <button type="submit" class="btn px-4 btn-primary me-2">Filter</button>
+                <a href="{{ route('admin.invoices.index') }}" class="btn px-4 btn-outline-danger">Reset</a>
             </div>
         </div>
+    </form>
 
-        <div>
-            <div class="card-table">
-                <div class="card-body">
-                    <div class="table-responsive mt-3">
-                        <table class="table table-stripped table-hover datatable">
-                            <thead class="thead-light">
-                                <tr>
-                                    {{-- <th><input type="checkbox" id="selectAll"></th> --}}
-                                    <th>S. No.</th>
-                                    <th>Invoice ID</th>
-                                    <th>Tracking ID</th>
-                                    <th>Seal Number</th>
-                                    <th>Item List</th>
-                                    <th>Value</th>
-                                    <th>Driver Name</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>Total</th>
-                                    <th>Paid</th>
-                                    {{-- <th>Warehouse</th> --}}
-                                    <th>Due</th>
-                                    <th>Payment Mode</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($invoices as $index => $invoice)
-                                <tr>
-                                    {{-- <td><input type="checkbox"
-                                            class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
-                                    value="{{ $invoice->id }}"></td> --}}
-                                    <td>{{ ++$index }}</td>
-                                    <td>
-                                        <div>#{{ $invoice->invoice_no ?? 'INV-001' }}</div>
-                                    </td>
-                                    <td>
-                                        {{ $invoice->parcel_id ?? '-' }}
-                                    </td>
-                                    <td>
-                                        <div>2E 5777</div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            @if (empty($invoice->invoce_item))
-                                            <span class="text-danger">No Items</span>
-                                            @else
-                                            @foreach($invoice->invoce_item as $item)
-                                            {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}),
-                                            @endforeach
-                                            @endif
+    <div>
+        <div class="card-table">
+            <div class="card-body">
+                <div class="table-responsive mt-3">
+                    <table class="table table-stripped table-hover datatable">
+                        <thead class="thead-light">
+                            <tr>
+                                {{-- <th><input type="checkbox" id="selectAll"></th> --}}
+                                <th>S. No.</th>
+                                <th>Invoice ID</th>
+                                <th>Tracking ID</th>
+                                <th>Seal Number</th>
+                                <th>Item List</th>
+                                <th>Value</th>
+                                <th>Driver Name</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Total</th>
+                                <th>Paid</th>
+                                {{-- <th>Warehouse</th> --}}
+                                <th>Due</th>
+                                <th>Payment Mode</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($invoices as $index => $invoice)
+                            <tr>
+                                {{-- <td><input type="checkbox"
+                                        class="form-check-input selectCheckbox checkbox-{{ activeStatusKey($invoice->status) }}"
+                                        value="{{ $invoice->id }}"></td> --}}
+                                <td>{{ ++$index }}</td>
+                                <td>
+                                    <div>#{{ $invoice->invoice_no ?? 'INV-001' }}</div>
+                                </td>
+                                <td>
+                                    {{ $invoice->parcel_id ?? '-' }}
+                                </td>
+                                <td>
+                                    <div>2E 5777</div>
+                                </td>
+                                <td>
+                                    <div>
+                                        @if (empty($invoice->invoce_item))
+                                        <span class="text-danger">No Items</span>
+                                        @else
+                                        @foreach($invoice->invoce_item as $item)
+                                        {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}),
+                                        @endforeach
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>$ {{ number_format($invoice->total_price, 2) }}</div>
+                                </td>
+                                <td>
+                                    <div>Driver Name</div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <p>
+                                            <i class="fe fe-user"></i>{{ $invoice->pickup_address->full_name ?? '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-phone"></i>{{ $invoice->pickup_address->mobile_number ?? '-'
+                                            }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-map-pin"></i>{{ $invoice->pickup_address->address ?? '-' }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <p>
+                                            <i class="fe fe-user"></i>{{ $invoice->delivery_address->full_name ?? '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-phone"></i>{{ $invoice->delivery_address->mobile_number ??
+                                            '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-map-pin"></i>{{ $invoice->delivery_address->address ?? '-'
+                                            }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span>${{ number_format($invoice->grand_total, 2) }}</span>
+                                </td>
+                                <td>
+                                    <span>${{ number_format($invoice->payment, 2) }}</span>
+                                </td>
+                                <td>
+                                    <span>${{ number_format($invoice->balance, 2) }}</span>
+                                </td>
+                                <td>
+                                    <span>{{ $invoice->invoce_type ?? '-' }}</span>
+                                </td>
+                                <td>
+                                    <label class="labelstatus" for="{{ $invoice->status }}">{{ $invoice->status
+                                        }}</label>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{route('admin.invoices.edit',$invoice->id)}}"><i
+                                                            class="far fa-edit me-2"></i>Edit Invoice</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{route('admin.invoices.details',$invoice->id)}}"><i
+                                                            class="far fa-eye me-2"></i>View Invoice</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{route('admin.invoices.show',$invoice->id)}}"><i
+                                                            class="far fa-eye me-2"></i>View Delivery Challans</a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div>$ {{ number_format($invoice->total_price, 2) }}</div>
-                                    </td>
-                                    <td>
-                                        <div>Driver Name</div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <i class="fe fe-user"></i>{{ $invoice->pickup_address->full_name ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-phone"></i>{{ $invoice->pickup_address->mobile_number ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-map-pin"></i>{{ $invoice->pickup_address->address ?? '-' }}
-                                            </p>
+                                </td>
+                                <td>
+                                    <div>$ {{ number_format($invoice->total_price, 2) }}</div>
+                                </td>
+                                <td>
+                                    <div>Driver Name</div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <p>
+                                            <i class="fe fe-user"></i>{{ $invoice->pickup_address->full_name ?? '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-phone"></i>{{ $invoice->pickup_address->mobile_number ?? '-'
+                                            }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-map-pin"></i>{{ $invoice->pickup_address->address ?? '-' }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <p>
+                                            <i class="fe fe-user"></i>{{ $invoice->delivery_address->full_name ?? '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-phone"></i>{{ $invoice->delivery_address->mobile_number ??
+                                            '-' }}
+                                        </p>
+                                        <p>
+                                            <i class="fe fe-map-pin"></i>{{ $invoice->delivery_address->address ?? '-'
+                                            }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span>${{ number_format($invoice->grand_total, 2) }}</span>
+                                </td>
+                                <td>
+                                    <span>${{ number_format($invoice->payment, 2) }}</span>
+                                </td>
+                                <td>
+                                    <span>${{ number_format($invoice->balance, 2) }}</span>
+                                </td>
+                                <td>
+                                    <span>{{ $invoice->invoce_type ?? '-' }}</span>
+                                </td>
+                                <td>
+                                    <label class="labelstatus" for="{{ $invoice->status }}">{{ $invoice->status
+                                        }}</label>
+                                </td>
+                                <td>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{route('admin.invoices.edit', $invoice->id)}}"><i
+                                                            class="far fa-edit me-2"></i>Edit Invoice</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{route('admin.invoices.details', $invoice->id)}}"><i
+                                                            class="far fa-eye me-2"></i>View Invoice</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{route('admin.invoices.show', $invoice->id)}}"><i
+                                                            class="far fa-eye me-2"></i>View Delivery Challans</a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <p>
-                                                <i class="fe fe-user"></i>{{ $invoice->delivery_address->full_name ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-phone"></i>{{ $invoice->delivery_address->mobile_number ?? '-' }}
-                                            </p>
-                                            <p>
-                                                <i class="fe fe-map-pin"></i>{{ $invoice->delivery_address->address ?? '-' }}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span>${{ number_format($invoice->grand_total, 2) }}</span>
-                                    </td>
-                                    <td>
-                                        <span>${{ number_format($invoice->payment, 2) }}</span>
-                                    </td>
-                                    <td>
-                                        <span>${{ number_format($invoice->balance, 2) }}</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ $invoice->invoce_type ?? '-' }}</span>
-                                    </td>
-                                    <td>
-                                        <label class="labelstatus" for="{{ $invoice->status }}">{{ $invoice->status }}</label>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{route('admin.invoices.edit',$invoice->id)}}"><i class="far fa-edit me-2"></i>Edit Invoice</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{route('admin.invoices.details',$invoice->id)}}"><i class="far fa-eye me-2"></i>View Invoice</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{route('admin.invoices.show',$invoice->id)}}"><i class="far fa-eye me-2"></i>View Delivery Challans</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>$ {{ number_format($invoice->total_price, 2) }}</div>
-                                        </td>
-                                        <td>
-                                            <div>Driver Name</div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <p>
-                                                    <i
-                                                        class="fe fe-user"></i>{{ $invoice->pickup_address->full_name ?? '-' }}
-                                                </p>
-                                                <p>
-                                                    <i
-                                                        class="fe fe-phone"></i>{{ $invoice->pickup_address->mobile_number ?? '-' }}
-                                                </p>
-                                                <p>
-                                                    <i
-                                                        class="fe fe-map-pin"></i>{{ $invoice->pickup_address->address ?? '-' }}
-                                                </p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <p>
-                                                    <i
-                                                        class="fe fe-user"></i>{{ $invoice->delivery_address->full_name ?? '-' }}
-                                                </p>
-                                                <p>
-                                                    <i
-                                                        class="fe fe-phone"></i>{{ $invoice->delivery_address->mobile_number ?? '-' }}
-                                                </p>
-                                                <p>
-                                                    <i
-                                                        class="fe fe-map-pin"></i>{{ $invoice->delivery_address->address ?? '-' }}
-                                                </p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span>${{ number_format($invoice->grand_total, 2) }}</span>
-                                        </td>
-                                        <td>
-                                            <span>${{ number_format($invoice->payment, 2) }}</span>
-                                        </td>
-                                        <td>
-                                            <span>${{ number_format($invoice->balance, 2) }}</span>
-                                        </td>
-                                        <td>
-                                            <span>{{ $invoice->invoce_type ?? '-' }}</span>
-                                        </td>
-                                        <td>
-                                            <label class="labelstatus"
-                                                for="{{ $invoice->status }}">{{ $invoice->status }}</label>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
-                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('admin.invoices.edit', $invoice->id)}}"><i
-                                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('admin.invoices.details', $invoice->id)}}"><i
-                                                                    class="far fa-eye me-2"></i>View Invoice</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('admin.invoices.show', $invoice->id)}}"><i
-                                                                    class="far fa-eye me-2"></i>View Delivery Challans</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="15" class="px-4 py-4 text-center text-gray-500">No invoices found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="bottom-user-page mt-3">
-                        {!! $invoices->links('pagination::bootstrap-5') !!}
-                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="15" class="px-4 py-4 text-center text-gray-500">No invoices found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bottom-user-page mt-3">
+                    {!! $invoices->links('pagination::bootstrap-5') !!}
                 </div>
             </div>
         </div>
+    </div>
 </x-app-layout>
 <script>
     function handlePickupAssign(ParcelId, drivers) {

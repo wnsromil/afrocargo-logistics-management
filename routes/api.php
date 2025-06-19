@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\{
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
     CBMCalculatoarController,
+    LadingDetailsController
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -90,6 +91,7 @@ Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 // Container 
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
+Route::post('/updateContainer', [ContainerController::class, 'updateContainer'])->name('updateContainer');
 
 //CBM 
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
@@ -207,3 +209,5 @@ Route::middleware('auth:api')->group(function () {
 Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
 Route::post('invoices/sendInvoice', [InvoiceController::class, 'sendInvoice'])->name('invoices.sendInvoice');
 Route::post('barcode', [InvoiceController::class, 'barcode'])->name('barcode');
+Route::post('getContainersByWarehouse', [InvoiceController::class, 'getContainersByWarehouse'])->name('getContainersByWarehouse');
+Route::get('billOfLadingPdf/{id}', [LadingDetailsController::class, 'billOfLadingPdf'])->name('lading_details.billOfLadingPdf');

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web\Admin;
 
-use App\Models\BillOfLanding;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class BillOfLandingController extends Controller
+class VerifyLicenseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +13,7 @@ class BillOfLandingController extends Controller
     public function index()
     {
         //
+        return view('admin.VerifyLicense.index');
     }
 
     /**
@@ -34,7 +35,7 @@ class BillOfLandingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(BillOfLanding $billOfLanding)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +43,7 @@ class BillOfLandingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BillOfLanding $billOfLanding)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +51,7 @@ class BillOfLandingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BillOfLanding $billOfLanding)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +59,7 @@ class BillOfLandingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BillOfLanding $billOfLanding)
+    public function destroy(string $id)
     {
         //
     }

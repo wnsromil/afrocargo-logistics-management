@@ -43,60 +43,68 @@
 
     <div class="container-fluid ">
         <div class="rounded-2 p-2 mt-3">
-            <div class="row rounded-2 bg-custom text-dark">
-                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
-                    <label for="search_id" class="col-form-label">Search</label>
-                    <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
-                        placeholder="Search">
+            <form action="{{route('admin.custom-reports.index')}}" method="get">
+                <div class="row rounded-2 bg-custom text-dark">
+                    <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
+                        <label for="search_id" class="col-form-label">Search</label>
+                        <input type="text" id="search_id" name="search" class="form-control rounded-1 form-control-lg"
+                            placeholder="Search">
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
+                        <label for="branch_id" class="col-form-label">Branch</label>
+                        <select class="form-select select2" name="warehouse_id" id="branch_id">
+                            <option selected value="">Select Branch</option>
+                            @foreach ($warehouses as $warehouse)
+                            <option {{request()->get('warehouse_id') && request()->get('warehouse_id') == $warehouse->id
+                                ? 'selected':'' }} value="{{$warehouse->id ?? ''}}">{{$warehouse->warehouse_name ?? ''}}
+                                {{$warehouse->warehouse_code ?? ''}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
+                        <label for="date_id" class="col-form-label">Date</label>
+                        <input type="date" id="date_id" class="form-control rounded-1 form-control-lg"
+                            name="report_date" value="{{request()->get('report_date') ?? ''}}"
+                            placeholder="Enter Date">
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
+                        <label for="report_id" class="col-form-label">Report Type</label>
+                        <select class="form-select select2" name="report_type" id="report_id">
+                            <option selected value="">Select Report Type</option>
+                            <option {{request()->get('report_type') && request()->get('report_type') == 'Invoice' ?
+                                'selected':'' }} value="Invoice">Invoice</option>
+                            <option {{request()->get('report_type') && request()->get('report_type') == 'Tracking' ?
+                                'selected':'' }} value="Tracking">Tracking</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
-                    <label for="branch_id" class="col-form-label">Branch</label>
-                    <select class="form-select select2">
-                        <option selected>Select Branch</option>
-                        <option value="1">Afro Cargo OH USA</option>
-                        <option value="2">Afro Cargo GA USA</option>
-                        <option value="3">Afro Cargo Abidjan</option>
-                        <option value="4">Afro Cargo Bamako</option>
-                    </select>
-                </div>
+                <div class="row">
+                    <div class="d-flex align-items-center justify-content-end mt-2">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                        <button class="btn btn-outline-danger ms-2"
+                            onclick="redirectTo('{{route('admin.custom-reports.index')}}')" type="button">Reset</button>
 
-                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center">
-                    <label for="date_id" class="col-form-label">Date</label>
-                    <input type="date" id="date_id" class="form-control rounded-1 form-control-lg">
+                    </div>
                 </div>
-
-                <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
-                    <label for="report_id" class="col-form-label">Report Type</label>
-                    <select class="form-select select2">
-                        <option selected>Select Report Type</option>
-                        <option value="1">Invoice</option>
-                        <option value="2">Tracking</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="d-flex align-items-center justify-content-end mt-2">
-                    <button class="btn btn-primary" type="button">Search</button>
-                    <button class="btn btn-outline-danger ms-2" type="button">Reset</button>
-
-                </div>
-            </div>
+            </form>
         </div>
 
         <div class="row mt-2 text-dark">
             <div class="col-auto">
                 <div><strong>Total I-Amount:</strong>
-                    $176,504.00</div>
+                    ${{$totalAmount ?? 0}}</div>
             </div> |
             <div class="col-auto">
                 <div><strong>Total Expense:</strong>
-                    $0</div>
+                    ${{$totalInvoiced ?? 0}}</div>
             </div> |
             <div class="col-auto">
                 <div><strong>Total Income:</strong>
-                    $176,504.00</div>
+                    ${{$totalExpense ?? 0}}</div>
             </div>
         </div>
 
@@ -123,176 +131,152 @@
                                 </thead>
 
                                 <tbody>
+                                    @forelse ($customReports as $customReport)
                                     <tr>
-                                        <td>05/26/2025</td>
-                                        <td>Afro Cargo N...</td>
+                                        <td>{{$customReport->report_date->format('m/d/Y') ?? ''}}</td>
+                                        <td>{{$customReport->warehouse->warehouse_name ?? ''}},
+                                            {{$customReport->warehouse->warehouse_code ?? ''}}</td>
                                         <td><a data-bs-toggle="modal"
-                                                data-bs-target="#editContainerModal">Sudu8880982</a></td>
-                                        <td>Invoice</td>
-                                        <td>Billaly3Cars</td>
-                                        <td>6000</td>
-                                        <td class="text-danger">0</td>
+                                                data-bs-target="#editContainerModal{{$customReport->id}}">{{$customReport->container->unique_id
+                                                ?? ''}}</a></td>
+                                        <td>{{$customReport->report_type ?? ''}}</td>
+                                        <td>{{$customReport->container->doc_id ?? ''}}</td>
+                                        <td>{{$customReport->invoiced ?? 0 }}</td>
+                                        <td class="text-danger">{{$customReport->expense ?? ''}}</td>
 
-                                        <td class="text-success">6000
+                                        <td class="text-success">{{ sum($customReport->expense ?? 0,
+                                            $customReport->invoiced ?? 0) }}
                                         </td>
                                         <td>
                                             <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
                                                 data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
+                                            <i class="far fa-edit mx-1"
+                                                onclick="redirectTo('{{route('admin.custom-reports.show',$customReport->id)}}')"></i>
+                                            <i class="far fa-trash-alt mx-1"
+                                                onclick="deleteRaw('{{route('admin.custom-reports.destroy',$customReport->id)}}')"></i>
                                             <button type="button" class="btn bg-transparent fw-semibold p-0"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#expensePopupModal">Expense</button>
                                         </td>
-                                    </tr>
 
+
+                                        <!-- Edit Container -->
+                                        <div class="modal custom-modal fade"
+                                            id="editContainerModal{{$customReport->id}}" tabindex="-1"
+                                            aria-labelledby="editContainerModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="editContainerModalLabel">Edit
+                                                            Container</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body noBorder">
+                                                        <form
+                                                            action="{{route('admin.custom-reports.updateCustomReportContainer')}}"
+                                                            method="post">
+                                                            @csrf
+                                                            <div class="mt-3">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label mb-0">Branch<i
+                                                                        class="text-danger">*</i>:</label>
+                                                                <select class="form-select select2"
+                                                                    aria-label="Default select example"
+                                                                    name="warehouse_id" disabled>
+                                                                    <option selected>Search Branch</option>
+                                                                    @foreach ($warehouses as $warehouse)
+                                                                    <option {{$customReport->warehouse_id ==
+                                                                        $warehouse->id ? 'selected' :'' }}
+                                                                        value="{{$warehouse->id ??
+                                                                        ''}}">{{$warehouse->warehouse_name ?? ''}},
+                                                                        {{$warehouse->warehouse_code ?? ''}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="mt-3">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label mb-0">Container<i
+                                                                        class="text-danger">*</i>:</label>
+                                                                <select class="form-select select2"
+                                                                    aria-label="Default select example" disabled>
+                                                                    @foreach ($containers as $item)
+                                                                    <option {{$customReport->container_id == $item->id ?
+                                                                        'selected' :'' }}
+                                                                        value="{{$item->id}}">{{$item->unique_id}}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <input type="hidden" name="container_id"
+                                                                    value="{{$customReport->container_id}}">
+                                                            </div>
+
+                                                            <div class="mt-3">
+                                                                <label for="doc_id" class="form-label mb-0">Doc Id<i
+                                                                        class="text-danger">*</i>:</label>
+                                                                <input type="text" id="doc_id" name="doc_id"
+                                                                    class="form-control"
+                                                                    value="{{$customReport->container->doc_id ?? '' }}">
+                                                            </div>
+
+                                                            <div class="mt-3">
+                                                                <label for="lading_bill" class="form-label mb-0">Bill Of
+                                                                    Lading<i class="text-danger">*</i>:</label>
+                                                                <input type="text" id="lading_bill"
+                                                                    name="bill_of_lading" class="form-control"
+                                                                    value="{{$customReport->container->bill_of_lading ?? 0 }}">
+                                                            </div>
+
+                                                            <div class="modal-footer p-0 pt-3 mt-3">
+                                                                <button type="submit"
+                                                                    class="btn btn-primary change-color">Save
+                                                                    changes</button>
+                                                                <button type="button" class="btn btn-secondary ms-2"
+                                                                    data-bs-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </tr>
+                                    @empty
                                     <tr>
-                                        <td>04/29/2024</td>
-                                        <td>Afro Cargo N...</td>
-                                        <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01425</a>
-                                        </td>
-                                        <td>Invoice</td>
-                                        <td>1</td>
-                                        <td>7502.5</td>
-                                        <td class="text-danger">0</td>
-                                        <td class="text-success">750
-                                        </td>
-                                        <td>
-                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
-                                                data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
-                                            <button type="button" class="btn bg-transparent fw-semibold p-0"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#expensePopupModal">Expense</button>
-                                        </td>
+                                        <td colspan="9" class="text-center">No custom reports found.</td>
                                     </tr>
-
-                                    <tr>
-                                        <td>04/04/2025</td>
-                                        <td>Afro Cargo N...</td>
-                                        <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01045abj</a>
-                                        </td>
-                                        <td>Invoice</td>
-                                        <td>ACLUp787255</td>
-                                        <td>39408.5</td>
-                                        <td class="text-danger">0</td>
-
-                                        <td class="text-success">394
-                                        </td>
-                                        <td>
-                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
-                                                data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
-                                            <button type="button" class="btn bg-transparent fw-semibold p-0"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#expensePopupModal">Expense</button>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>04/05/2025</td>
-                                        <td>Afro Cargo N...</td>
-                                        <td><a data-bs-toggle="modal"
-                                                data-bs-target="#editContainerModal">Fafau5415337</a></td>
-                                        <td>Invoice</td>
-                                        <td>Fafau5415337</td>
-                                        <td>40811</td>
-                                        <td class="text-danger">0</td>
-
-                                        <td class="text-success">750
-                                        </td>
-                                        <td>
-                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
-                                                data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
-                                            <button type="button" class="btn bg-transparent fw-semibold p-0"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#expensePopupModal">Expense</button>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>04/16/2025</td>
-                                        <td>Afro Cargo N...</td>
-                                        <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01125abj</a>
-                                        </td>
-                                        <td>Invoice</td>
-                                        <td>Gcnu73886</td>
-                                        <td>44133</td>
-                                        <td class="text-danger">0</td>
-
-                                        <td class="text-success">441
-                                        </td>
-                                        <td>
-                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
-                                                data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
-                                            <button type="button" class="btn bg-transparent fw-semibold p-0"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#expensePopupModal">Expense</button>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>04/29/2025</td>
-                                        <td>Afro Cargo N...</td>
-                                        <td><a data-bs-toggle="modal"
-                                                data-bs-target="#editContainerModal">1225gcnu7853</a></td>
-                                        <td>Invoice</td>
-                                        <td>SEALUL5073</td>
-                                        <td>38649</td>
-                                        <td class="text-danger">0</td>
-
-                                        <td class="text-success">386
-                                        </td>
-                                        <td>
-                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
-                                                data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
-                                            <button type="button" class="btn bg-transparent fw-semibold p-0"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#expensePopupModal">Expense</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>05/26/2025</td>
-                                        <td>Afro Cargo N...</td>
-                                        <td><a data-bs-toggle="modal"
-                                                data-bs-target="#editContainerModal">Sudu8880982</a></td>
-                                        <td>Invoice</td>
-                                        <td>Billaly3Cars</td>
-                                        <td>6000</td>
-                                        <td class="text-danger">0</td>
-
-                                        <td class="text-success">600
-                                        </td>
-                                        <td>
-                                            <i class="fa-regular fa-envelope me-1" data-bs-toggle="modal"
-                                                data-bs-target="#trackingReportModal"></i>
-                                            <i class="far fa-edit mx-1"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteCustomReportModal"></i>
-                                            <button type="button" class="btn bg-transparent fw-semibold p-0"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#expensePopupModal">Expense</button>
-                                        </td>
-                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
+                <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+                    <div class="col-md-6 d-flex p-2 align-items-center">
+                        <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                        <select class="form-select input-width form-select-sm opacity-50"
+                            aria-label="Small select example" id="pageSizeSelect">
+                            <option value="10" {{ request('per_page', 10)==10 ? 'selected' : '' }}>10</option>
+                            <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('per_page')==100 ? 'selected' : '' }}>100</option>
+                        </select>
+                        <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="float-end">
+                            <div class="bottom-user-page mt-3">
+                                {!! $customReports->appends(['per_page' =>
+                                request('per_page')])->links('pagination::bootstrap-5') !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -300,56 +284,12 @@
 
 
 
-    <!-- Edit Container -->
-    <div class="modal fade" id="editContainerModal" tabindex="-1" aria-labelledby="editContainerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editContainerModalLabel">Edit Container</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body noBorder">
 
-                    <div class="mt-3">
-                        <label for="exampleFormControlInput1" class="form-label mb-0">Branch<i
-                                class="text-danger">*</i>:</label>
-                        <select class="form-select select2" aria-label="Default select example" disabled>
-                            <option selected>Search Branch</option>
-                        </select>
-                    </div>
-
-                    <div class="mt-3">
-                        <label for="exampleFormControlInput1" class="form-label mb-0">Container<i
-                                class="text-danger">*</i>:</label>
-                        <select class="form-select select2" aria-label="Default select example" disabled>
-                            <option value="">Container</option>
-                        </select>
-                    </div>
-
-                    <div class="mt-3">
-                        <label for="doc_id" class="form-label mb-0">Doc Id<i class="text-danger">*</i>:</label>
-                        <input type="text" id="doc_id" class="form-control" value="1">
-                    </div>
-
-                    <div class="mt-3">
-                        <label for="lading_bill" class="form-label mb-0">Bill Of Lading<i
-                                class="text-danger">*</i>:</label>
-                        <input type="text" id="lading_bill" class="form-control" value="1">
-                    </div>
-
-                    <div class="modal-footer p-0 pt-3 mt-3">
-                        <button type="button" class="btn btn-primary change-color">Save changes</button>
-                        <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!--  New Report Modal -->
-    <div class="modal fade" id="newReportModal" tabindex="-1" aria-labelledby="newReportModalLabel" aria-hidden="true">
+    <div class="modal custom-modal fade" id="newReportModal" tabindex="-1" aria-labelledby="newReportModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -357,60 +297,65 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body noBorder">
-
-                    <div class="mb-2">
-                        <label for="exampleFormControlInput1" class="form-label">Date<i
-                                class="text-danger">*</i>:</label>
-                        <div class="input-group mb-3">
-                            <input type="date" class="form-control" value="06-02-2025" placeholder="Enter Date"
-                                required>
-                            <span class="input-group-text" id="basic-addon2" readonly>08 : 26 <button type="button"
-                                    class="btn btn-default text-center p-1 btn-secondary ms-2" disabled>AM</button>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="exampleFormControlInput1" class="form-label">Report Type<i
-                                class="text-danger">*</i>:</label>
-                        <div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                    value="option1" checked>
-                                <label class="form-check-label" for="inlineRadio1">Invoice</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                                    value="option2">
-                                <label class="form-check-label" for="inlineRadio2">Tracking</label>
+                    <form action="{{ route('admin.custom-reports.store') }}" method="POST" id="addCustomReportForm">
+                        @csrf
+                        <div class="mb-2">
+                            <label for="exampleFormControlInput1" class="form-label">Date<i
+                                    class="text-danger">*</i>:</label>
+                            <div class="input-group mb-3">
+                                <input type="date" class="form-control" name="report_date" value="{{date('m-d-Y')}}"
+                                    placeholder="Enter Date" required>
+                                <span class="input-group-text" id="basic-addon2" readonly>08 : 26 <button type="button"
+                                        class="btn btn-default text-center p-1 btn-secondary ms-2" disabled>AM</button>
+                                </span>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="exampleFormControlInput1" class="form-label">Branch<i
-                                class="text-danger">*</i>:</label>
-                        <select class="form-select select2" aria-label="Default select example">
-                            <option selected>Search Branch</option>
-                            <option value="1">Afro Cargo Bamako</option>
-                            <option value="2">Afro Cargo Abidjan</option>
-                            <option value="3">Afro Cargo FL USA</option>
-                            <option value="4">Afro Cargo GA USA</option>
-                            <option value="5">Afro Cargo OH USA</option>
-                            <option value="6">Afro Cargo NYC USA</option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label for="exampleFormControlInput1" class="form-label">Container<i
-                                class="text-danger">*</i>:</label>
-                        <select class="form-select select2" aria-label="Default select example" disabled>
-                            <option value="">Search Container</option>
-                        </select>
-                    </div>
 
-                    <div class="modal-footer p-0 pt-3">
-                        <button type="button" class="btn btn-primary change-color">Save changes</button>
-                        <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Cancel</button>
-                    </div>
+                        <div class="mb-2">
+                            <label for="exampleFormControlInput1" class="form-label">Report Type<i
+                                    class="text-danger">*</i>:</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="report_type" id="inlineRadio1"
+                                        value="Invoice" checked>
+                                    <label class="form-check-label" for="inlineRadio1">Invoice</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="report_type" id="inlineRadio2"
+                                        value="Tracking">
+                                    <label class="form-check-label" for="inlineRadio2">Tracking</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="exampleFormControlInput1" class="form-label">Branch<i
+                                    class="text-danger">*</i>:</label>
+                            <select class="form-select select2" aria-label="Default select example" name="warehouse_id"
+                                id="addReportBranch">
+                                <option selected>Search Branch</option>
+                                @foreach ($warehouses as $warehouse)
+                                <option value="{{$warehouse->id ?? ''}}">{{$warehouse->warehouse_name ?? ''}}
+                                    {{$warehouse->warehouse_code ?? ''}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="exampleFormControlInput1" class="form-label">Container<i
+                                    class="text-danger">*</i>:</label>
+                            <select class="form-select select2" aria-label="Default select example" name="container_id"
+                                id="addReportcontainer">
+                                <option value="">Search Container</option>
+                                {{-- @foreach ($containers as $item)
+                                <option value="{{$item->id}}">{{$item->unique_id}}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+
+                        <div class="modal-footer p-0 pt-3">
+                            <button type="submit" class="btn btn-primary change-color">Save changes</button>
+                            <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -418,8 +363,8 @@
 
 
     <!-- Custom Tracking Report Pdf Modal -->
-    <div class="modal fade" id="trackingReportModal" tabindex="-1" aria-labelledby="trackingReportModalLabel"
-        aria-hidden="true">
+    <div class="modal custom-modal fade" id="trackingReportModal" tabindex="-1"
+        aria-labelledby="trackingReportModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header justify-content-between">
@@ -445,7 +390,7 @@
     </div>
 
     <!-- Delete Modal -->
-    <div class="modal fade" id="deleteCustomReportModal" tabindex="-1" aria-labelledby="deleteConfirmLabel"
+    <div class="modal custom-modal fade" id="deleteCustomReportModal" tabindex="-1" aria-labelledby="deleteConfirmLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center p-4">
@@ -467,7 +412,7 @@
 
 
     <!-- Expense Popup Modal -->
-    <div class="modal fade" id="expensePopupModal" tabindex="-1" aria-labelledby="expensePopupModalLabel"
+    <div class="modal custom-modal fade" id="expensePopupModal" tabindex="-1" aria-labelledby="expensePopupModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-size">
             <div class="modal-content ">
@@ -526,7 +471,7 @@
 
 
     <!--  Add Expense Modal -->
-    <div class="modal fade" id="addExpensesModal" tabindex="-1" aria-labelledby="addExpensesModalLabel"
+    <div class="modal custom-modal fade" id="addExpensesModal" tabindex="-1" aria-labelledby="addExpensesModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -563,5 +508,44 @@
             </div>
         </div>
     </div>
+
+    @section('script')
+    <script>
+        $(document).ready(function() {
+           $("#addReportBranch").on("change", function () {
+                var warehouse_id = $(this).val();
+                console.log('warehouse_id',warehouse_id);
+                if (warehouse_id) {
+                    getContainersByWarehouse(warehouse_id, '#addReportcontainer');
+                }
+            }); 
+        });
+
+        function getContainersByWarehouse(warehouseId,pushToSelect = false) {
+            if (!warehouseId || !pushToSelect) {
+                console.error("Warehouse ID or pushToSelect is not provided.");
+                return;
+            }
+            $.ajax({
+                url: "{{ route('getContainersByWarehouse') }}",
+                type: "POST",
+                data: {
+                    warehouse_id: warehouseId
+                },
+                success: function(response) {
+                    var containerSelect = $(pushToSelect);
+                    containerSelect.empty();
+                    containerSelect.append('<option value="">Search Container</option>');
+                    $.each(response.containers, function(index, container) {
+                        containerSelect.append('<option value="' + container.id + '">' + container.unique_id + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching containers:", error);
+                }
+            });
+        }
+    </script>
+    @endsection
 
 </x-app-layout>

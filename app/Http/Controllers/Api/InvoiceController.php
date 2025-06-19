@@ -280,4 +280,16 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function getContainersByWarehouse(Request $request)
+    {
+        $containers = Vehicle::when($request->warehouse_id,function(){
+            return Vehicle::where('warehouse_id', request()->warehouse_id);
+        })->where('vehicle_type','Container')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'containers' => $containers
+        ]);
+    }
+
 }

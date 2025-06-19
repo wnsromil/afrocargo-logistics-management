@@ -25,7 +25,8 @@
             <div class="top-nav-search">
                 <form action="" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput" name="search" value="">
+                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput"
+                            name="search" value="">
                         {{-- <button type="submit">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button> --}}
@@ -33,8 +34,10 @@
                 </form>
             </div>
             <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+                <button type="button"
+                    class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
                         <span><i class="fe fe-refresh-ccw"></i></span>
                     </a>
                 </button>
@@ -62,30 +65,38 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($billOfLadingDetails as $bill)
                             <tr>
-                                <td>BLD-000001</td>
-                                <td>Harouan</td>
+                                <td>{{ $bill->unique_id ?? '' }}</td>
+                                <td>{{ $bill->consigneeDetails->name ?? '' }}</td>
                                 <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="Rue 17 Avenue 21">Rue 17 Avenue 21</p>
+                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="{{ $bill->consigneeDetails->address ?? '' }}">{{
+                                        $bill->consigneeDetails->address ?? '' }}</p>
                                 </td>
-                                <td>+225 07070707</td>
-                                <td>Sacko</td>
+                                <td>{{ $bill->consigneeDetails->phone ?? '' }}</td>
+                                <td>{{ $bill->shipperDetails->name ?? '' }}</td>
                                 <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="366 Concord Ave">366 Concord Ave</p>
+                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="{{ $bill->shipperDetails->address ?? '' }}">{{
+                                        $bill->shipperDetails->address ?? '' }}</p>
                                 </td>
-                                <td> +1 6464684135</td>
+                                <td>{{ $bill->shipperDetails->phone ?? '' }}</td>
 
                                 <td>
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
-                                                    <a class="dropdown-item" {{ route('admin.lading_details.create') }}>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.lading_details.edit', $bill->id) }}">
                                                         <i class="far fa-edit me-2"></i>Update</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
+                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                        onclick="deleteRaw('{{ route('admin.lading_details.destroy', $bill->id) }}')">
                                                         <i class="far fa-trash-alt me-2"></i>Delete</a>
                                                 </li>
 
@@ -94,132 +105,33 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>BLD-000002</td>
-                                <td>Rinne Agula</td>
-                                <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="366, crown Markham Tulsa, Oklahoma USA">366, crown Markham Tulsa, Oklahoma USA</p>
-                                </td>
-                                <td>+225 121554552</td>
-                                <td>Lucas Hobala</td>
-                                <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="36 rio town 17 Avenue 21">366 Concord Ave</p>
-                                </td>
-                                <td>+1 6464682221</td>
-                                <td>
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="far fa-edit me-2"></i>Update</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
-                                                        <i class="far fa-trash-alt me-2"></i>Delete</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td>
-                                <<<<<<< Updated upstream <td class="cardFontSize text-start px-3 maxmax-width text-truncate text-truncate">+1
-                                    646-468-4135</td>
-                                    <td class="cardFontSize text-start px-3 maxmax-width text-truncate text-dark px-0">
-                                        <div class="d-flex">
-                                            <a href="{{ route('admin.lading_details.create') }}"><i class="far fa-edit me-2"></i></a>
-                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="far fa-trash-alt ms-1"></i></a>
-                                            =======
-                            </tr>
-                            <tr>
-                                <td>BLD-000003</td>
-                                <td>Lawrence Vitory</td>
-                                <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="21, Cupa Doco farms, Old Verginia, Ohio">21, Cupa Doco farms, Old Verginia, Ohio</p>
-                                </td>
-                                <td>+1 2215456958</td>
-                                <td>Huge Jackmen</td>
-                                <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="36 rio town 17 Avenue 21">32B, Sunbun Arena, Mukuyoma, Lihano</p>
-                                </td>
-                                <td>+1 2215554746</td>
-                                <td>
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="far fa-edit me-2"></i>Update</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
-                                                        <i class="far fa-trash-alt me-2"></i>Delete</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                        >>>>>>> Stashed changes
-                                    </div>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
 
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-center p-4">
-                <div class="modal-body">
-                    <!-- <div class="mb-3">
-                            <i class="bi bi-exclamation-circle" style="font-size: 48px; color: orange;"></i>
-                        </div> -->
-                    <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
-                        <div class="swal2-icon-content">!</div>
+        <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
+            <div class="col-md-6 d-flex p-2 align-items-center">
+                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
+                    <option value="10" {{ request('per_page', 10)==10 ? 'selected' : '' }}>10</option>
+                    <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
+                    <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('per_page')==100 ? 'selected' : '' }}>100</option>
+                </select>
+                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="float-end">
+                    <div class="bottom-user-page mt-3">
+                        {!! $billOfLadingDetails->appends(['per_page' =>
+                        request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
-                    <h4 class="fw-bold mb-2">Are you sure?</h4>
-                    <p class="mb-4 fs_18">You won't be able to revert this!</p>
-                    <button type="button" class="btn btn-danger me-2 rounded-1">Yes, delete it!</button>
-                    <button type="button" class="btn btn-secondary rounded-1" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-    {{-- jqury cdn --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $('.activate, .deactivate').on('click', function() {
-            let id = $(this).data('id');
-            let status = $(this).data('status');
-
-            $.ajax({
-                url: "{{ route('admin.vehicle.status', '') }}/" + id
-                , type: 'POST'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , status: status
-                }
-                , success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success'
-                            , title: 'Status Updated'
-                            , text: response.success
-                        });
-
-                        location.reload();
-                    }
-                }
-            });
-        });
-
-    </script>
 </x-app-layout>

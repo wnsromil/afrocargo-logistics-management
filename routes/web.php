@@ -34,7 +34,9 @@ use App\Http\Controllers\Web\Admin\{
     ScheduleController,
     BillofLadingController,
     LadingDetailsController,
-    CBMCalculatoarController
+    CBMCalculatoarController,
+    CustomReportController,
+    VerifyLicenseController
 };
 use App\Mail\RegistorMail;
 
@@ -202,12 +204,16 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('expenses', ExpensesController::class);
         Route::resource('signature', SignatureController::class);
         Route::resource('notification_schedule', NotificationScheduleController::class);
+        Route::resource('custom-reports', CustomReportController::class);
+        Route::post('updateCustomReportContainer', [CustomReportController::class, 'updateCustomReportContainer'])->name('custom-reports.updateCustomReportContainer');
+        Route::resource('verify-license', VerifyLicenseController::class);
        
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
         Route::resource('bill_of_lading', BillofLadingController::class);
         Route::resource('lading_details', LadingDetailsController::class);
+        Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');

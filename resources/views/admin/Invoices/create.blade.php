@@ -461,14 +461,14 @@
 
                                 <div class="col-lg-4 col-md-4">
                                     <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Cargo</label>
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
                                         <input class="form-check-input mt-0" type="radio" value="cargo" name="transport_type">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4 col-md-4">
                                     <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air</label>
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
                                         <input class="form-check-input mt-0" type="radio" value="air" name="transport_type">
                                     </div>
                                 </div>

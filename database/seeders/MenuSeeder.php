@@ -117,8 +117,15 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill of Lading',
                 'icon' => '<i class="menuIcon ti ti-truck"></i>',
                 'route' => 'admin.BillofLading.index',
-              //  'route' => '#',
+                // 'route' => '#',
                 'active' => 'bill_of_lading*,lading_details*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Custom Reports',
+                'icon' => '<i class="ti ti-chart-sankey"></i>',
+                'route' => '#',
+                'active' => 'custom-reports*,verify-license*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -186,6 +193,12 @@ class MenuSeeder extends Seeder
         if ($warehouse) {
             Menu::create(['title' => 'Warehouse List', 'route' => 'admin.warehouses.index', 'active' => 'warehouses*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
             Menu::create(['title' => 'Warehouse Manager', 'route' => 'admin.warehouse_manager.index', 'active' => 'warehouse_manager*', 'parent_id' => $warehouse->id, 'roles' => ['admin']]);
+        }
+
+        $CustomReports = Menu::where('title', 'Custom Reports')->first();
+        if ($CustomReports) {
+            Menu::create(['title' => 'Custom Invoice Reports', 'route' => 'admin.custom-reports.index', 'active' => 'custom-reports*', 'parent_id' => $CustomReports->id, 'roles' => ['admin', 'warehouse_manager']]);
+            Menu::create(['title' => 'Verify License', 'route' => 'admin.verify-license.index', 'active' => 'verify-license*', 'parent_id' => $CustomReports->id, 'roles' => ['admin', 'warehouse_manager']]);
         }
         // Add submenus
         $orderShip = Menu::where('title', 'Service Orders')->first();

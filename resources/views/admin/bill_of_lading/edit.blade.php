@@ -1,200 +1,173 @@
 <x-app-layout>
 
     <x-slot name="header">
-        Vehicle Management
+        Edit Bill of Lading
     </x-slot>
 
     <x-slot name="cardTitle">
-        <div class="d-flex innertopnav">
-            <p class="subhead pheads">Update Vehicle</p>
+        <div class="innertopnav">
+            <div class="subhead">Edit Bill of Lading</div>
         </div>
     </x-slot>
 
-    <form action="{{ route('admin.vehicle.update', $vehicle->id) }}" method="POST" enctype="multipart/form-data">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('admin.bill_of_lading.update', $billOfLading->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
-        <div class="form-group-customer customer-additional-form">
+        <div class="form-group-customer addTemplateForm mb-3">
             <div class="row">
-                <!-- Warehouse Location -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-12">
                     <div class="input-block mb-3">
-                        <label for="warehouse_location" class="foncolor">Warehouse Location</label>
-                        <select name="warehouse_id" class="js-example-basic-single select2">
-                            <option value="">Select Warehouse </option>
-                            @foreach($warehouses as $warehouse)
-                                <option {{ old('warehouse_id', $vehicle->warehouse_id) == $warehouse->id ? 'selected' : '' }}
-                                    value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('warehouse_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-              
-                <!-- Vehicle Type -->
-                {{-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_type" class="foncolor">Vehicle Type</label>
-                        <select name="vehicle_type" class="js-example-basic-single select2">
-                            <option value="" disabled>Select Vehicle Type </option>
-                            @foreach (['Truck', 'Van', 'Bike', 'Pickup', 'Mini Truck', 'Container Truck', 'Three-Wheeler', 'SUV', 'Sedan', 'Electric Scooter', 'Cargo Plane', 'Cargo Ship', 'Train Cargo'] as $type)
-                                <option value="{{ $type }}" {{ old('vehicle_type', $vehicle->vehicle_type) == $type ? 'selected' : '' }}>
-                                    {{ $type }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('vehicle_type')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> --}}
-             
-
-                <!-- Vehicle Model -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_model" class="foncolor">Vehicle Model</label>
-                        <input type="text" name="vehicle_model" class="form-control inp"
-                            placeholder="Enter Vehicle Model"
-                            value="{{ old('vehicle_model', $vehicle->vehicle_model) }}">
-                        @error('vehicle_model')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_model">Vehicle Model <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_model" class="form-control"
-                            placeholder="Enter Vehicle Model"
-                            value="{{ old('vehicle_model', $vehicle->vehicle_model) }}">
-                        @error('vehicle_model')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-
-                <!-- Vehicle Manufactured Year -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_year" class="foncolor">Vehicle Manufactured year</label>
-                        <input type="vehicle_year" name="vehicle_year" class="form-control inp"
-                            placeholder=" Enter Vehicle Manufactured year"
-                            value="{{ old('vehicle_year', $vehicle->vehicle_year) }}">
-                        @error('vehicle_year')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_year">Manufactured Year <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_year" class="form-control"
-                            placeholder="Enter Manufactured Year"
-                            value="{{ old('vehicle_year', $vehicle->vehicle_year) }}">
-                        @error('vehicle_year')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-
-                <!-- Vehicle Number (Plate No.) -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_number" class="foncolor">Vehicle Number(Plate No.)</label>
-                        <input type="text" name="vehicle_number" class="form-control inp"
-                            placeholder=" Enter Vehicle No."
-                            value="{{ old('vehicle_number', $vehicle->vehicle_number) }}">
-                        @error('vehicle_number')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label for="vehicle_number">Vehicle Number (Plate No.) <i class="text-danger">*</i></label>
-                        <input type="text" name="vehicle_number" class="form-control"
-                            placeholder="Enter Vehicle Number"
-                            value="{{ old('vehicle_number', $vehicle->vehicle_number) }}">
-                        @error('vehicle_number')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div> -->
-
-
-                <!-- Status -->
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="mb-3">
-                        <label for="in_status">Status</label>
-                        <div class="status-toggle d-flex align-items-center">
-                            <span id="inactiveText" class="bold">Active</span>
-                            <input id="cb-switch" class="check" type="checkbox" name="status" value="Active"
-                            {{ old('status', $vehicle->status) == 'Inactive' ? 'checked' : '' }}>
-                            <label for="cb-switch" class="checktoggle checkbox-bg togc"></label>
-                            <!-- <input id="status" class="check d-none" type="checkbox" name="status" checked>
-                            <label for="status" class="checktoggle checkbox-bg togc mx-2"></label> -->
-                            <span id="activeText">Inactive</span>
+                        <p for="templateTitle" class="form-label text-dark">Type<i class="text-danger">*</i></p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="Shipper" name="type" id="radio1" {{ old('type', $billOfLading->type) == 'Shipper' ? 'checked' : '' }}>
+                            <label class="form-check-label text-dark" for="inlineRadio1">Shipper</label>
                         </div>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="Consignee" name="type" id="radio2" {{ old('type', $billOfLading->type) == 'Consignee' ? 'checked' : '' }}>
+                            <label class="form-check-label text-dark" for="inlineRadio2">Consignee</label>
+                        </div>
+                        @error('type')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="company" class="form-label text-dark">Company</label>
+                        <input type="text" class="form-control inp" id="company" name="company" placeholder="Enter Company Name" value="{{ old('company', $billOfLading->company) }}">
+                        @error('company')
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
 
-
-                <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-md-4 col-sm-12 col-lg-4">
                     <div class="input-block mb-3">
-                        <label for="status">Status <i class="text-danger">*</i></label>
-                        <div class="toggle-switch">
-                            <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active"
-                                    {{ old('status', $vehicle->status) == 'Active' ? 'checked' : '' }}>
-                                <span>
-                                    <small></small>
-                                </span>
-                            </label>
-                        </div>
-                        @error('status')
-                            <span class="text-danger">{{ $message }}</span>
+                        <label for="name" class="form-label text-dark">Name<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="name" name="name" placeholder="Enter Name" required value="{{ old('name', $billOfLading->name) }}">
+                        @error('name')
+                        <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                </div> -->
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="address" class="form-label text-dark">Address<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="address" name="address" placeholder="Enter Address" required value="{{ old('address', $billOfLading->address) }}">
+                        @error('address')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="address2" class="form-label text-dark">Address 2</label>
+                        <input type="text" class="form-control inp" id="address2" name="address2" placeholder="Enter Address 2" value="{{ old('address2', $billOfLading->address2) }}">
+                        @error('address2')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="city" class="form-label text-dark">City<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="city" name="city" placeholder="Enter City" required value="{{ old('city', $billOfLading->city) }}">
+                        @error('city')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="state" class="form-label text-dark">State<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="state" name="state" placeholder="Enter State" required value="{{ old('state', $billOfLading->state) }}">
+                        @error('state')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-4">
+                    <div class="input-block mb-3">
+                        <label for="zip" class="form-label text-dark">Zipcode<i class="text-danger">*</i></label>
+                        <input type="text" class="form-control inp" id="zip" name="zip" placeholder="Enter Zipcode" required value="{{ old('zip', $billOfLading->zip) }}">
+                        @error('zip')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor pt-0" for="phone">Telephone <i class="text-danger">*</i></label>
+                        <div class="flaginputwrap">
+                            <div class="customflagselect">
+                                <select class="flag-select" name="phone_code">
+                                    @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        {{ old('phone_code', $billOfLading->phone_code) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="number" class="form-control form-select-sm py-0 flagInput inp" placeholder="Enter Mobile No" name="phone" value="{{ old('phone', $billOfLading->phone) }}" oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('phone')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                        @error('telephone')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor pt-0" for="cellphone">Cellphone</label>
+                        <div class="flaginputwrap">
+                            <div class="customflagselect">
+                                <select class="flag-select" name="cellphone_code">
+                                    @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}" data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        {{ old('cellphone_code', $billOfLading->cellphone_code) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="number" class="form-control form-select-sm py-0 flagInput inp" placeholder="Enter Cellphone No" name="cellphone" value="{{ old('cellphone', $billOfLading->cellphone) }}" oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('cellphone_code')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                        @error('cellphone')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="add-customer-btns text-end mt-4">
+                        <button type="button" onclick="redirectTo('{{ route('admin.bill_of_lading.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
 
             </div>
         </div>
-
-        <!-- <div class="add-customer-btns text-end">
-            <a href="{{ route('admin.vehicle.index') }}" class="btn customer-btn-cancel">Cancel</a>
-            <button type="submit" class="btn customer-btn-save text-light">Update</button>
-        </div> -->
-        <div class="add-customer-btns text-end">
-            <button type="button" onclick="redirectTo('{{route('admin.vehicle.index') }}')"
-                class="btn btn-outline-primary custom-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary ">Update</button>
-        </div>
     </form>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let statusToggle = document.getElementById("cb-switch");
-            let activeText = document.getElementById("activeText");
-            let inactiveText = document.getElementById("inactiveText");
-            function updateTextColor() {
-                if (statusToggle.checked) {
-                    activeText.classList.add("bold");
-                    inactiveText.classList.remove("bold");
-                } else {
-                    activeText.classList.remove("bold");
-                    inactiveText.classList.add("bold");
-                }
-            }
-            updateTextColor();
-            statusToggle.addEventListener("change", updateTextColor);
-        });
-    </script>
 </x-app-layout>

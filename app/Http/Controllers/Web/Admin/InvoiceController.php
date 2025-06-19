@@ -34,34 +34,58 @@ class InvoiceController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default pagination
+        // return $request->all();
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+        $drivers = $user->where('role_id', 4)->values();
+
 
         $invoices = Invoice::with(['customer', 'driver', 'warehouse']) // ✅ Include relationships
             ->when($this->user->role_id != 1, function ($q) {
-                // Uncomment if warehouse filtering is required
-                // return $q->where('warehouse_id', $this->user->warehouse_id);
+            // Uncomment if warehouse filtering is required
+            // return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($request->input('warehouse_id'), function ($q) use ($request) {
+            return $q->where('warehouse_id', $request->input('warehouse_id'));
+            })
+            ->when($request->input('driver_id'), function ($q) use ($request) {
+            return $q->where('driver_id', $request->input('driver_id'));
+            })
+            ->when($request->input('invoice_id'), function ($q) use ($request) {
+            return $q->where('invoice_no', $request->input('invoice_id'));
+            })
+            ->when($request->input('datetrange'), function ($q) use ($request) {
+                $dates = explode(' - ', $request->input('datetrange'));
+                if (count($dates) === 2) {
+                    $start = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[0]))->startOfDay();
+                    $end = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[1]))->endOfDay();
+                    $q->whereBetween('created_at', [$start, $end]);
+                }
             })
             ->when($search, function ($q) use ($search) {
-                return $q->where(function ($query) use ($search) {
-                    $query->where('tracking_number', 'like', "%$search%")
-                        ->orWhere('total_amount', 'like', "%$search%")
-                        ->orWhere('partial_payment', 'like', "%$search%")
-                        ->orWhere('remaining_payment', 'like', "%$search%")
-                        ->orWhere('payment_type', 'like', "%$search%")
-                        ->orWhere('source_address', 'like', "%$search%")
-                        ->orWhere('destination_address', 'like', "%$search%")
-                        ->orWhere('status', 'like', "%$search%")
-                        // 🔹 Search in related tables
-                        ->orWhereHas('customer', function ($q) use ($search) {
-                            $q->where('name', 'like', "%$search%")
-                                ->orWhere('email', 'like', "%$search%");
-                        })
-                        ->orWhereHas('driver', function ($q) use ($search) {
-                            $q->where('name', 'like', "%$search%");
-                        })
-                        ->orWhereHas('warehouse', function ($q) use ($search) {
-                            $q->where('warehouse_name', 'like', "%$search%");
-                        });
+            return $q->where(function ($query) use ($search) {
+                $query->where('invoice_no', 'like', "%$search%")
+                ->orWhere('total_amount', 'like', "%$search%")
+                ->orWhere('invoce_type', 'like', "%$search%")
+                ->orWhere('status', 'like', "%$search%")
+                // 🔹 Search in related tables
+                // ->orWhereHas('customer', function ($q) use ($search) {
+                //     $q->where('name', 'like', "%$search%")
+                //     ->orWhere('email', 'like', "%$search%");
+                // })
+                ->orWhereHas('driver', function ($q) use ($search) {
+                    $q->where('name', 'like', "%$search%");
+                })
+                ->orWhereHas('warehouse', function ($q) use ($search) {
+                    $q->where('warehouse_name', 'like', "%$search%");
                 });
+            });
             })
             ->latest()
             ->paginate($perPage)
@@ -71,7 +95,7 @@ class InvoiceController extends Controller
             return view('admin.Invoices.table', compact('invoices'));
         }
 
-        return view('admin.Invoices.index', compact('invoices', 'search', 'perPage'));
+        return view('admin.Invoices.index', compact('invoices', 'drivers', 'warehouses', 'search', 'perPage'));
     }
 
 
@@ -92,6 +116,8 @@ class InvoiceController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
+        $containers = Vehicle::where('vehicle_type','Container')->get();
+
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
             // return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
@@ -103,8 +129,6 @@ class InvoiceController extends Controller
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
         $countries = Country::get();
-
-        $containers = Vehicle::where('vehicle_type','Container')->get();
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 

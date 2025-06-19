@@ -163,6 +163,7 @@
     <script src="{{ asset('assets/js/greedynav.js') }}"></script>
     <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/admin/select2.js') }}"></script>
+    <script src="{{ asset('js/validate.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script> --}}
 
     <!-- Intl Tell Input js -->
@@ -204,6 +205,33 @@
                 if (result.isConfirmed) {
                     // Assuming the button that calls deleteData is inside a form
                     $(self).closest('form').submit(); // Finds the closest form and submits it
+                }
+            });
+        }
+
+        function deleteRaw(url){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545', // Bootstrap btn-danger
+                cancelButtonColor: '#6c757d',  // Bootstrap btn-secondary
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit a form or send AJAX request to delete
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        location.reload();
+                    });
                 }
             });
         }
