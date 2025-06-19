@@ -76,7 +76,7 @@
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Retail/Shipping Price</h6>
-                    <p>{{$inventories->retail_shipping_price ?? "-"}}</p>
+                    <p>${{ number_format($inventories->retail_shipping_price ?? 0, 2) }}</p>
                 </div>
             </div>
             <div class="col-md-8 col-sm-6 mb-4">

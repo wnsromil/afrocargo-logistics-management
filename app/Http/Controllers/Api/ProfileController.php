@@ -93,20 +93,20 @@ class ProfileController extends Controller
 
         updateAddress($user->id, [
             'user_id' => $user->id,
-            'address' => $request->address,
+            'address' => $request->address ?? $user->address,
             'address_type' => 'pickup',
-            'mobile_number' => $request->phone ?? null,
-            'alternative_mobile_number' => $request->alternate_mobile_no ?? null,
-            'mobile_number_code_id'        =>  $request->country_code ?? null,
-            'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
-            'city_id' => $request->city_id ?? null,
-            'country_id' => $request->country_id ?? null,
-            'full_name' => $request->name,
-            'pincode' => $request->pincode ?? null,
-            'state_id' => $request->state_id ?? null,
-            'warehouse_id' => $request->warehouse_id ?? null,
-            'lat' => $request->latitude ?? null,
-            'long' => $request->longitude ?? null,
+            'mobile_number' => $request->phone ?? $user->phone,
+            'alternative_mobile_number' => $request->alternate_mobile_no ?? $user->phone_2,
+            'mobile_number_code_id'        =>  $request->country_code ?? $user->phone_code_id,
+            'alternative_mobile_number_code_id' => $request->country_code_2 ?? $user->phone_2_code_id_id,
+            'city_id' => $request->city_id ?? $user->city_id,
+            'country_id' => $request->country_id ?? $user->country_id,
+            'full_name' => $request->name ?? $user->name,
+            'pincode' => $request->pincode ?? $user->pincode,
+            'state_id' => $request->state_id ?? $user->state_id,
+            'warehouse_id' => $request->warehouse_id ?? $user->warehouse_id,
+            'lat' => $request->latitude ?? $user->latitude,
+            'long' => $request->longitude ?? $user->longitude,
         ]);
 
         return $this->sendResponse($user, 'User updated successfully.');

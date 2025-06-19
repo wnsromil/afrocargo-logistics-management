@@ -181,7 +181,6 @@
                             <input class="no-border" type="text" name="description"
                                 value="{{ old('description', $editData->description ?? '') }}"
                                 placeholder="Enter description">
-                            <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                         </div>
                         @error('description')
                             <span class="text-danger">{{ $message }}</span>
