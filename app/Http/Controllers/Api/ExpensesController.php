@@ -25,31 +25,31 @@ class ExpensesController extends Controller
     public function getExpensesByUser(Request $request)
     {
         $userId = auth()->id();
-    
+
         // Query start karo user ID ke saath
         $query = Expense::where('creator_id', $userId);
-    
+
         // Agar request me date di gayi ho to usi date ke expenses filter karo
         if ($request->has('date')) {
             $query->whereDate('date', $request->date);
         }
-    
+
         $expenses = $query->get();
-    
+
         if ($expenses->isEmpty()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No expenses found for this user.',
             ], 404);
         }
-    
+
         return response()->json([
             'status' => 'success',
             'message' => 'Expenses fetched successfully.',
             'data' => $expenses
         ], 200);
     }
-    
+
 
     public function store(Request $request)
     {
@@ -70,6 +70,7 @@ class ExpensesController extends Controller
         $validatedData['creator_id'] = $request->creator_id;
         $validatedData['container_id'] = $request->container_id;
         $validatedData['time'] = $request->currentTIme;
+        $validatedData['currency'] = $request->currency;
         $validatedData['type'] = $request->type;
         $allData = $request->except('_token');
         $dataToStore = array_merge($allData, $validatedData);
@@ -112,6 +113,7 @@ class ExpensesController extends Controller
         $expense->container_id = $request->container_id;
         $expense->amount = $request->amount;
         $expense->category = $request->category;
+        $expense->currency = $request->currency;
         $expense->warehouse_id = $request->warehouse;
         $expense->type = $request->type;
         $expense->status = !empty($request->status) ? $request->status : 'Active';

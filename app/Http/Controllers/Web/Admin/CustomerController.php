@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail};
 use Spatie\Permission\Models\Role;
 use DB;
-use Hash;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use App\Mail\RegistorMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -140,6 +141,10 @@ class CustomerController extends Controller
                 }
             }
 
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
+
             // 🛠 Mapping Request Fields to Database Fields
             $userData = [
                 'name'          => $validated['first_name'],
@@ -157,7 +162,7 @@ class CustomerController extends Controller
                 'state_id'       => $validated['state'],
                 'city_id'        => $validated['city'],
                 'pincode'            => $validated['Zip_code'],
-                'password'       => Hash::make(12345678),
+                'password'       => $hashedPassword,
                 'status' => $request->status ?? 'Active',
                 'company_name'        => $request->company_name ?? null,
                 'apartment'        => $request->apartment ?? null,
@@ -199,12 +204,33 @@ class CustomerController extends Controller
             // 📌 Create User
             $user = User::create($userData);
 
+            insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'pickup',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => !empty($validated['alternative_mobile_number'])
+                    ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                    : null,
+                'city_id' => $validated['city'] ?? null,
+                'country_id' => $validated['country'] ?? null,
+                'full_name' => $validated['first_name'],
+                'pincode' => $validated['Zip_code'] ?? null,
+                'state_id' => $validated['state'] ?? null,
+                'warehouse_id' => $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null,
+                'long' => $validated['longitude'] ?? null,
+                'type' => 'Services', // Default type
+                'default_address' => 'Yes'
+            ]);
 
             // Example dynamic data
             $userName = $validated['first_name'];
             $email = $validated['email'] ?? null;
             $mobileNumber = $validated['mobile_number'];
-            $password = 12345678;
+            $password = $randomPassword;
             $loginUrl = route('login');
 
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
@@ -430,7 +456,6 @@ class CustomerController extends Controller
         if (!empty($imagePaths['signature_img'])) {
             $userData['signature_img'] = $imagePaths['signature_img'] ?? $user->signature_img;
         }
-
         if (!empty($imagePaths['contract_signature_img'])) {
             $userData['contract_signature_img'] = $imagePaths['contract_signature_img'] ?? $user->contract_signature_img;
         }
@@ -440,9 +465,6 @@ class CustomerController extends Controller
         if (!empty($imagePaths['profile_pic'])) {
             $userData['profile_pic'] = $imagePaths['profile_pic'] ?? $user->profile_pic;
         }
-
-
-
 
         // 🔹 Date Format Conversion
         if (!empty($request->edit_license_expiry_date)) {
@@ -460,6 +482,24 @@ class CustomerController extends Controller
 
         // 🛠 Update User Data
         $user->update($userData);
+
+        updateAddress($id, [
+            'address' => $validated['address_1'],
+            'mobile_number' => $validated['mobile_number'] ?? null,
+            'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+            'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+            'alternative_mobile_number_code_id' => !empty($validated['alternative_mobile_number'])
+                ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                : null,
+            'city_id' => $validated['city'] ?? null,
+            'country_id' => $validated['country'] ?? null,
+            'full_name' => $validated['first_name'],
+            'pincode' => $validated['Zip_code'] ?? null,
+            'state_id' => $validated['state'] ?? null,
+            'warehouse_id' => $request->warehouse_id ?? null,
+            'lat' => $validated['latitude'] ?? null,
+            'long' => $validated['longitude'] ?? null,
+        ]);
 
         return redirect()->route('admin.customer.index', ['page' => $request->page_no])
             ->with('success', 'User updated successfully');
@@ -564,6 +604,9 @@ class CustomerController extends Controller
                 }
             }
 
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
 
             $userData = [
                 'name'       => $validated['first_name'],
@@ -579,7 +622,7 @@ class CustomerController extends Controller
                 'language'   => $validated['language'],
                 'company_name' => $validated['company_name'],
                 'country_id'   => $validated['country'],
-                'password'     => Hash::make(12345678),
+                'password'     => $hashedPassword,
                 'signup_type'  => 'for_admin',
                 'role'  => 'ship_to_customer',
                 'role_id'  => 5,
@@ -735,6 +778,9 @@ class CustomerController extends Controller
             'Zip_code' => 'nullable|string|max:10',
         ]);
         try {
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
             $userData = [
                 'name'       => $validated['first_name'],
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
@@ -750,7 +796,7 @@ class CustomerController extends Controller
                 'state_id'   => $validated['city'],
                 'city_id'   => $validated['state'],
                 'pincode'   => $validated['Zip_code'],
-                'password'     => Hash::make(12345678),
+                'password'     => $hashedPassword,
                 'signup_type'  => 'for_admin',
                 'role'  => 'pickup_to_customer',
                 'role_id'  => 6,

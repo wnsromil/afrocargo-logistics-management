@@ -104,7 +104,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor" for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
+                        <label class="foncolor" for="vehicle_type">Vehicle</label>
                         <select name="vehicle_type" class="form-control inp select2">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)

@@ -124,7 +124,7 @@
                                                         };
                                                     @endphp
                                                     <td>
-                                                        <div>{{ $parcel->payment_type ?? "-"}}</div>
+                                                        <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
                                                     </td>
                                                     <td>
                                                         <label class="{{ $classValue }}" for="status">

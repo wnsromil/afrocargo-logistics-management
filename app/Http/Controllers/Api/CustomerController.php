@@ -12,8 +12,9 @@ use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistorMail;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -122,13 +123,14 @@ class CustomerController extends Controller
 
     public function createCustomer(Request $request)
     {
-        $validated = $request->validate([
+
+        $validated =  $request->validate([
             'first_name' => 'required|string|max:255',
             'mobile_code' => 'required|max:13|unique:users,phone',
             'email' => 'required|email|max:255|unique:users,email',
             'alternate_mobile_no' => 'nullable|max:13',
-            'address_1' => 'required|string|max:255',
-            'country' => 'required|string|exists:countries,id',
+            'address' => 'required|string|max:255',
+            'country' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'required|string|max:10',
@@ -150,30 +152,29 @@ class CustomerController extends Controller
                     $folder = ($imageType === 'profile_pics') ? 'uploads/profile_pics' : 'uploads/customer';
                     $filePath = $file->storeAs($folder, $fileName, 'public');
 
-                    // Yahan condition laga do
-                    if ($imageType === 'license_picture') {
-                        $filePath = 'storage/' . $filePath;
-                    }
-
                     $imagePaths[$imageType] = $filePath;
                 }
             }
 
             $user = $this->user;
+
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
             $userData = [
                 'name' => $validated['first_name'],
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['mobile_code'],
                 'phone_2' => $validated['alternate_mobile_no'] ?? null,
-                'address' => $validated['address_1'],
+                'address' => $validated['address'],
                 'address_2' => $request->address_2,
                 'country_id' => $validated['country'],
                 'state_id' => $validated['state'],
-                'city_id' => $validated['city'],
-                'pincode' => $validated['Zip_code'],
                 'role' => 'customer',
                 'created_by_id' => $user->id,
-                'password' => Hash::make(12345678),
+                'city_id' => $validated['city'],
+                'pincode' => $validated['Zip_code'],
+                'password' => $hashedPassword,
                 'status' => $request->status ?? 'Active',
                 'company_name' => $request->company_name ?? null,
                 'apartment' => $request->apartment ?? null,
@@ -195,7 +196,8 @@ class CustomerController extends Controller
                 'country_code' => $request->country_code ?? null,
                 'country_code_2' => $request->country_code_2 ?? null,
                 'invoice_custmore_type' => $request->invoice_custmore_type,
-                'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                // 'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                'invoice_custmore_id' => null,
                 'vehicle_id'        => $request->container_id ?? null,
             ];
 
@@ -210,13 +212,33 @@ class CustomerController extends Controller
             $userName = $request->first_name;
             $email = $request->email ?? null;
             $mobileNumber = $request->mobile_code;
-            $password = '12345678';
+            $password = $randomPassword;
             $loginUrl = route('login');
 
             // Send the email
             Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
 
             $user = User::create($userData);
+
+             insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address'],
+                'address_type' => 'pickup',
+                'mobile_number' => $validated['mobile_code'] ?? null,
+                'alternative_mobile_number' => $validated['alternate_mobile_no'] ?? null,
+                'mobile_number_code_id'        =>  $request->country_code ?? null,
+                'alternative_mobile_number_code_id' =>$request->country_code_2 ?? null,
+                'city_id' => $validated['city'] ?? null,
+                'country_id' => $validated['country'] ?? null,
+                'full_name' => $validated['first_name'],
+                'pincode' => $validated['Zip_code'] ?? null,
+                'state_id' => $validated['state'] ?? null,
+                'warehouse_id' => $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null,
+                'long' => $validated['longitude'] ?? null,
+                'type' => 'Services', // Default type
+                'default_address' => 'Yes'
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -227,7 +249,10 @@ class CustomerController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong.',
-                'error' => $e->getMessage()
+                'error_message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                // 'trace' => $e->getTraceAsString() // optional
             ], 500);
         }
     }
@@ -305,6 +330,24 @@ class CustomerController extends Controller
         $shippingUser->sector = $request->sector;
         $shippingUser->language = $request->language;
         $shippingUser->save();
+
+        // insertAddress([
+        //     'user_id' => $shippingUser->id,
+        //     'address' => $request->address_1,
+        //     'address_type' => 'shipping',
+        //     'mobile_number' => $request->phone ?? null,
+        //     'alternative_mobile_number' => $request->alternate_mobile_no ?? null,
+        //     'mobile_number_code_id' => $request->country_code ?? null,
+        //     'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
+        //     'city_id' => $request->city ?? null,
+        //     'country_id' => $request->country ?? null,
+        //     'full_name' => $request->first_name,
+        //     'pincode' => $request->Zip_code ?? null,
+        //     'state_id' => $request->state ?? null,
+        //     'warehouse_id' => $request->warehouse_id ?? null,
+        //     'lat' => $request->latitude ?? null,
+        //     'long' => $request->longitude ?? null,
+        // ]);
 
         return response()->json(['shipping_user' => $shippingUser], 200);
     }

@@ -1077,6 +1077,27 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="calculation_date"]').length > 0) {
+        $('input[name="calculation_date"]').daterangepicker({
+            singleDatePicker: true, // Single Date Picker Enable
+            showDropdowns: true, // Month/Year Dropdown Enable
+            minDate: moment().startOf("day"), // Past Dates Disabled
+            startDate: moment().startOf("day"), // Default Today Selected
+            autoUpdateInput: false, // Auto Update Input With Default Date
+            locale: {
+                format: "M/DD/YYYY", // Date Format
+            },
+        });
+
+        // Date Select Hone Ke Baad Input Me Value Set Karo
+        $('input[name="calculation_date"]').on(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                $(this).val(picker.startDate.format("M/DD/YYYY"));
+            }
+        );
+    }
+
     // if ($('input[name="pickup_time"]').length > 0) {
     //     $('input[name="pickup_time"]').daterangepicker({
     //         timePicker: true,

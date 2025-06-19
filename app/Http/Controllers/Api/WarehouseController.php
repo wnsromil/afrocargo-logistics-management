@@ -26,16 +26,16 @@ class WarehouseController extends Controller
             $request->state_id,
             $request->city_id
         ])->every(fn($value) => empty($value))) {
-            
+
             // Return all active warehouses if no filters are provided
             $warehouses = Warehouse::where('status', 'Active')->get();
             return $this->sendResponse($warehouses, 'All active warehouses fetched successfully.');
         }
-    
+
         // Filtered search
         $warehouses = Warehouse::when($request->warehouse_code, function ($q) use ($request) {
-                return $q->where('warehouse_code', 'like', "%" . $request->warehouse_code . "%");
-            })
+            return $q->where('warehouse_code', 'like', "%" . $request->warehouse_code . "%");
+        })
             ->when($request->address, function ($q) use ($request) {
                 return $q->where('address', 'like', "%" . $request->address . "%");
             })
@@ -49,10 +49,10 @@ class WarehouseController extends Controller
                 return $q->where('city_id', $request->city_id);
             })
             ->get();
-    
+
         return $this->sendResponse($warehouses, 'Warehouses fetched successfully.');
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -84,5 +84,18 @@ class WarehouseController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getWarehouseCountries()
+    {
+        $countries = Warehouse::select('country_id')
+            ->whereNotNull('country_id')
+            ->groupBy('country_id')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $countries
+        ]);
     }
 }

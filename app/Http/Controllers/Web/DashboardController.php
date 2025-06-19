@@ -11,7 +11,8 @@ use App\Models\{
     Role,
     Country,
     Vehicle,
-    Parcel
+    Parcel,
+    ContainerHistory
 };
 
 class DashboardController extends Controller
@@ -29,8 +30,13 @@ class DashboardController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        return view('dashboard', compact('latestContainers', 'warehouses'));
-    }
+        $upcomingContainers = ContainerHistory::when($this->user->role_id != 1, function ($q) {
+            return $q->where('arrived_warehouse_id', $this->user->warehouse_id);
+        })->with(['container', 'driver'])
+            ->where('type', 'Arrived')
+             ->where('status', 5)
+            ->get();
 
-  
+        return view('dashboard', compact('latestContainers', 'warehouses', 'upcomingContainers'));
+    }
 }

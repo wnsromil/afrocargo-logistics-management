@@ -120,17 +120,17 @@
                     </div>
                 </div>
 
-                 {{-- Company For Container --}}
+                 {{-- Shipping line --}}
                 @php
                     $role_id = Auth::user()->role_id;
                 @endphp
                 @if($role_id == 1)
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="mb-3">
-                            <label for="company_for_container" class="foncolor">Company For Container <i
+                            <label for="company_for_container" class="foncolor">Shipping line <i
                                     class="text-danger">*</i></label>
                             <select id="company_for_container" name="company_for_container" class="profileUpdateFont">
-                                <option value="">Select Company For Container</option>
+                                <option value="">Select Shipping line</option>
                                 @foreach($viewVContainercompanys as $viewVContainercompany)
                                     <option {{ old('company_for_container', $vehicle->containerCompany->name) == $viewVContainercompany->name ? 'selected' : '' }}
                                         value="{{ $viewVContainercompany->name }}">
@@ -340,7 +340,7 @@
             $(document).ready(function () {
                 $('#company_for_container').select2({
                     tags: true,
-                    placeholder: 'Select Or Type Company For Container',
+                    placeholder: 'Select Or Type Shipping line',
                     allowClear: true
                 });
             });

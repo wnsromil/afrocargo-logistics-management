@@ -318,6 +318,85 @@
         });
     });
 
+    $(document).ready(function () {
+        $("#signaturedeliveryForm").on("submit", function (e) {
+            e.preventDefault();
+
+            // Clear previous errors
+            $("#amountError").text("");
+            let hasError = false;
+            // Prepare FormData object
+            let formData = new FormData();
+            let amount = $('input[name="amount"]').val();
+
+            if (!amount) {
+                $("#amountError").text("Amount is required.");
+                hasError = true;
+            }
+
+            // Add fields
+            formData.append("parcel_id", $("#parcel_id_input").val());
+            formData.append("amount", $('input[name="amount"]').val());
+            formData.append("notes", $('input[name="notes"]').val());
+
+            // Add hidden fields
+            formData.append("warehouse_id", $("#warehouse_id_input").val());
+            formData.append(
+                "created_user_id",
+                $("#created_user_id_input").val()
+            );
+
+            // Add image file
+            let imgFile = $("#self_pickup_img")[0].files[0]; // Make sure input has id="self_pickup_img"
+            if (imgFile) {
+                formData.append("img", imgFile);
+            }
+
+            // CSRF token
+            let csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+            // Disable button
+            $(".btn-primary").html("Processing...").prop("disabled", true);
+
+            if (hasError) {
+                return;
+            }
+
+            // AJAX request
+            $.ajax({
+                url: "/api/update-status-signature-self-delivery",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                data: formData,
+                processData: false, // Required for FormData
+                contentType: false, // Required for FormData
+                success: function (response) {
+                    $("#delivery_with_driver .custom-btn").click();
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Status changed successfully!",
+                        icon: "success",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    let errors = xhr.responseJSON?.errors || {};
+                    if (errors.driver_id) {
+                        $("#deliverydriverError").text(errors.driver_id[0]);
+                    }
+                },
+                complete: function () {
+                    $(".btn-primary").html("Save").prop("disabled", false);
+                },
+            });
+        });
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
         // Listen for all modal trigger clicks
         document

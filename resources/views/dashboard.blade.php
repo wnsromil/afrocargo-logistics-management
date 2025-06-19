@@ -591,6 +591,47 @@
 
     <div class="row">
 
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-4 d-none"
+            id="upcoming-container-header">
+            <h5 class='cardh5Size fw-semibold'>Upcoming Container</h5>
+            <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
+            <div class="col-auto">
+                <a href="{{ route('admin.received.hub.list') }}"
+                    class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
+                    See All
+                </a>
+            </div>
+        </div>
+
+        <!-- --------------------------------upcoming Container Cards -------------------------------- -->
+        <div class="col-md-12 d-none" id="upcoming-container-card">
+            <div id="upcoming-container-list" class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
+                @forelse ($upcomingContainers as $index => $upcomingContainer)
+                    <div class="col-md-5 col-xl-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard setCardSize rounded 
+                                {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
+                            <div class="card2 d-flex flex-row justify-content-between">
+                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                    <p class="font13 fw-medium"><span class="col737">Seal No :</span>
+                                        {{$upcomingContainer->container->seal_no ?? "-"}}</p>
+                                    <h5 class='text-black countFontSize fw-medium'>
+                                        {{$upcomingContainer->container->container_no_1 ?? "-"}}
+                                    </h5>
+                                    <div class="cardFontSize mt-2 fw-medium">
+                                        <span class="fw-regular col737">Total Order :</span>
+                                        {{$upcomingContainer->no_of_orders ?? 0}}<br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p colspan="7" class="px-4 py-4 text-gray-500"></p>
+                @endforelse
+            </div>
+        </div>
+
         <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
             <h5 class='cardh5Size fw-semibold'>Latest Container</h5>
             <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
@@ -609,7 +650,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                                                                                {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
+                                                                                                                                            {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -2295,6 +2336,7 @@
                 document.getElementById('cargo-order').textContent = data.total_Cargo ? data.total_Cargo : 0;
                 document.getElementById('air-order').textContent = data.total_Air ? data.total_Air : 0;
                 updateContainerCards(data.latest_containers || []);
+                updateUpcomingContainerCards(data.upcomingContainers || []);
 
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
@@ -2345,6 +2387,41 @@
             </div>
         `;
 
+                containerList.appendChild(card);
+            });
+        }
+
+
+        function updateUpcomingContainerCards(upcomingContainers) {
+            const containerList = document.getElementById('upcoming-container-list');
+            containerList.innerHTML = ''; // Remove existing cards
+            if (upcomingContainers.length === 0) {
+                return;
+            }
+            document.getElementById('upcoming-container-header').classList.remove('d-none');
+            document.getElementById('upcoming-container-card').classList.remove('d-none');
+            upcomingContainers.forEach((container, index) => {
+                console.log(container);
+                const isActive = container.container.status === 'Active';
+                const card = document.createElement('div');
+                card.className = 'col-md-5 col-xl-3 col-sm-6';
+                card.innerHTML = `
+            <div class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1' : ''}">
+                <div class="card2 d-flex flex-row justify-content-between">
+                    <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                        <p class="font13 fw-medium">
+                            <span class="col737">Seal No :</span> ${container.container.seal_no ?? "-"}
+                        </p>
+                        <h5 class="text-black countFontSize fw-medium">
+                            ${container.container.container_no_1 ?? "-"}
+                        </h5>
+                        <div class="cardFontSize mt-2 fw-medium">
+                            <span class="fw-regular col737">Total Order :</span> ${container.no_of_orders ?? 0}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
                 containerList.appendChild(card);
             });
         }
