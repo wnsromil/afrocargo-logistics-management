@@ -173,6 +173,7 @@ class ExpensesController extends Controller
             'type' => 'required|string',
             'amount' => 'required|numeric|min:0',
             'category' => 'required|string',
+            'currency' => 'required|string',
         ]);
 
         $status  = !empty($request->status) ? $request->status : 'Active';
@@ -183,6 +184,7 @@ class ExpensesController extends Controller
         $validatedData['creator_id'] = $request->creator_id;
         $validatedData['container_id'] = $request->container_id;
         $validatedData['time'] = $request->currentTIme;
+        $validatedData['currency'] = $request->currency;
         $validatedData['type'] = $request->type;
         $allData = $request->except('_token');
         $dataToStore = array_merge($allData, $validatedData);
@@ -254,7 +256,8 @@ class ExpensesController extends Controller
             'amount' => 'required|numeric',
             'category' => 'required|in:Expense,Deposit',
             'img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-             'type' => 'required|string', // Uncomment if 'type' is required  
+            'type' => 'required|string', // Uncomment if 'type' is required  
+            'currency' => 'required|string',
             // 'status' => 'nullable|in:Active'
         ]);
 
@@ -266,6 +269,7 @@ class ExpensesController extends Controller
         $expense->container_id = $request->container_id;
         $expense->amount = $request->amount;
         $expense->category = $request->category;
+        $expense->currency = $request->currency;
         $expense->warehouse_id = $request->warehouse;
         $expense->type = $request->type; // Ensure 'type' is set if required
         $expense->status = !empty($request->status) ? $request->status : 'Active';
