@@ -195,15 +195,13 @@ class InventoryController extends Controller
             ->with('success', 'Inventory add successfully.');
     }
 
-
-
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
-        $inventories = Stock::where('inventory_id', $id)->latest('id')->paginate(10);
+        $inventories = Inventory::where('id', $id)->first();
         return view('admin.inventories.show', compact('inventories'));
     }
 
