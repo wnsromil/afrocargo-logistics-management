@@ -1,4 +1,7 @@
 <ul class="sidebar-vertical mt-5">
+<li class="d-block d-sm-none mb-0">
+    <a href="/"><img class="mobileLogo" src="{{asset('assets/images/AfroCargoLogo.svg')}}" alt=""></a>
+</li>
     @foreach ($menus as $menu)
         @php
             $hasSubmenu = $menu->submenu->count() > 0;
@@ -19,7 +22,7 @@
                             <a
                                 href="{{ $submenu->route && !in_array($submenu->route, ["#", "''"]) ? route($submenu->route) : 'javascript:void(0)' }}">
                                 @if ($submenu->icon)
-                                    <img src="{{ asset($submenu->icon) }}" alt="{{ $submenu->title }}">
+                                    <img class="iconSubmenu" src="{{ asset(path: $submenu->icon) }}" alt="{{ $submenu->title }}">
                                 @endif
                                 <span>
                                     <i class="fa fa-arrow-right tooltipped" data-position="top" data-tooltip="fa fa-arrow-right"></i>
