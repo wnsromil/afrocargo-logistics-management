@@ -115,12 +115,18 @@ class InventoryController extends Controller
             'warehouse_id'          => 'required|exists:warehouses,id',
             'in_stock_quantity'     => 'required|numeric',
             'package_type'          => 'required|string',
-            'retail_shipping_price' => 'required|numeric',
             'description'           => 'required|string',
             'driver_app_access'     => 'required|in:Yes,No',
             'status'                => 'required|in:Active,Inactive',
             'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+            'country'               => 'required|string',
         ];
+
+        if ($request->inventary_sub_type === 'Ocean Cargo' || $request->inventary_sub_type === 'Air Cargo') {
+            $rules = array_merge($rules, [
+                'retail_shipping_price' => 'required|numeric',
+            ]);
+        }
 
         // Conditional rules for Supply type
         if ($request->inventary_sub_type === 'Supply') {
@@ -134,8 +140,16 @@ class InventoryController extends Controller
                 're_order_point'     => 'required|numeric',
                 're_order_quantity'  => 'required|numeric',
                 'low_stock_warning'     => 'required|numeric',
+                'color' => 'required|string',
+                'open' => 'required|string',
+                'capacity' => 'required|string',
+                'un_rating' => 'required|string',
+                'model_number' => 'required|string',
+                'minimum_order_limit' => 'required|numeric',
             ]);
         }
+
+
 
         $validatedData = $request->validate($rules);
 
@@ -165,6 +179,9 @@ class InventoryController extends Controller
             'factor',
             'insurance_have',
             'insurance',
+            'city',
+            'state',
+
         ]);
         $data['price'] = $request->costprice ?? null;
         if ($request->inventary_sub_type === 'Supply') {
@@ -177,6 +194,12 @@ class InventoryController extends Controller
                 're_order_point',
                 're_order_quantity',
                 'tax_percentage',
+                'color',
+                'open',
+                'capacity',
+                'un_rating',
+                'model_number',
+                'minimum_order_limit'
             ]));
         }
 

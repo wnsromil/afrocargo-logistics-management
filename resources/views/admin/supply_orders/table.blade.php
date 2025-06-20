@@ -27,143 +27,136 @@
                 <tbody>
 
                     @forelse ($parcels as $index => $parcel)
-                                                <tr>
-                                                    <td> {{ $serialStart + $index + 1 }}</td>
-                                                    <td>{{ $parcel->tracking_number ?? "-"}}</td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="col">
-                                                                <div class="row">
-                                                                    <div class="td"><i
-                                                                            class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="td"><i
-                                                                            class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
-                                                                        <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                                        <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
-                                                                            {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
-                                                                            {{$parcel->deliveryaddress->city->name ?? "--"}}
-                                                                            {{$parcel->deliveryaddress->state->name ?? "--"}}
-                                                                            {{$parcel->deliveryaddress->country->name ?? "--"}}
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        --
-                                                    </td>
-                                                    <td>
-                                                        <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
-                                                    </td>
-                                                   
-                                                    {{-- <td>
-                                                        <div>
-                                                            @if(isset($parcel->inventorie->img))
-                                                                <img src="{{ asset($parcel->inventorie->img) }}" alt="image">
-                                                            @else
-                                                                -
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>{{ $parcel->inventorie->description ?? "-"}}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div>{{ $parcel->inventorie_item_quantity ?? "0"}}</div>
-                                                    </td> --}}
+                        <tr>
+                            <td> {{ $serialStart + $index + 1 }}</td>
+                            <td>{{ $parcel->tracking_number ?? "-"}}</td>
+                            <td>
+                                <div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="td"><i
+                                                    class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="td"><i
+                                                    class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
+                                                <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
+                                                    {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
+                                                    {{$parcel->deliveryaddress->city->name ?? "--"}}
+                                                    {{$parcel->deliveryaddress->state->name ?? "--"}}
+                                                    {{$parcel->deliveryaddress->country->name ?? "--"}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                --
+                            </td>
+                            <td>
+                                <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
+                            </td>
 
-                                                    <td>
-                                                        <div>${{ $parcel->total_amount ?? "0"}}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div>{{ $parcel->driver->name ?? "-"}}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
-                                                    </td>
-                                                    @php
-                                                        $forValue = match ($parcel->payment_status) {
-                                                            'Unpaid' => 'unpaid_status',
-                                                            'Paid' => 'status',
-                                                            'Completed' => 'partial_status',
-                                                        };
-                                                    @endphp
-                                                    <td>
-                                                        <label class="labelstatusy" for="{{ $forValue }}">
-                                                            {{ $parcel->payment_status ?? '-' }}
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <div class="row">Partial:</div>
-                                                                <div class="row">Due:</div>
-                                                                <div class="row">Total:</div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                                                <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                                                <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    @php
-                                                        $classValue = match ($parcel->status) {
-                                                            'Pickup Assign' => 'labelstatusp',
-                                                            'Pending' => 'labelstatusp',
-                                                            'Pickup Re-Schedule' => 'labelstatuspi',
-                                                            default => 'labelstatusp',
-                                                        };
-                                                    @endphp
-                                                    <td>
-                                                        <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
-                                                    </td>
-                                                    <td>
-                                                        <label class="{{ $classValue }}" for="status">
-                                                            {{ $parcel->status ?? '-' }}
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <li class="nav-item dropdown">
-                                                            <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                                                data-bs-toggle="dropdown">
+                            {{-- <td>
+                                <div>
+                                    @if(isset($parcel->inventorie->img))
+                                    <img src="{{ asset($parcel->inventorie->img) }}" alt="image">
+                                    @else
+                                    -
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <div>{{ $parcel->inventorie->description ?? "-"}}</div>
+                            </td>
+                            <td>
+                                <div>{{ $parcel->inventorie_item_quantity ?? "0"}}</div>
+                            </td> --}}
 
-                                                                <span class="user-content" style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                               height: 26px;align-content: center;">
-                                                                    <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                                                </span>
-                                                            </a>
-                                                            <div class="dropdown-menu menu-drop-user">
-                                                                <div class="profilemenu">
-                                                                    <div class="subscription-menu">
-                                                                        <ul>
+                            <td>
+                                <div>
+                                    ${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
+                            </td>
+                            <td>
+                                <div>{{ $parcel->driver->name ?? "-"}}</div>
+                            </td>
+                            <td>
+                                <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
+                            </td>
+                            @php
+                                $forValue = match ($parcel->payment_status) {
+                                    'Unpaid' => 'unpaid_status',
+                                    'Paid' => 'status',
+                                    'Completed' => 'partial_status',
+                                };
+                            @endphp
+                            <td>
+                                <label class="labelstatusy" for="{{ $forValue }}">
+                                    {{ $parcel->payment_status ?? '-' }}
+                                </label>
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
+                                </div>
+                            </td>
+                            @php
+                                $classValue = match ($parcel->status) {
+                                    'Pickup Assign' => 'labelstatusp',
+                                    'Pending' => 'labelstatusp',
+                                    'Pickup Re-Schedule' => 'labelstatuspi',
+                                    default => 'labelstatusp',
+                                };
+                            @endphp
+                            <td>
+                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                            </td>
+                            <td>
+                                <label class="{{ $classValue }}" for="status">
+                                    {{ $parcel->status ?? '-' }}
+                                </label>
+                            </td>
+                            <td>
+                                <li class="nav-item dropdown">
+                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
+                                        data-bs-toggle="dropdown">
 
-                                                                            <li>
-                                                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#deliveryman_modal">Assign delivery
-                                                                                    Boy</a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
+                                        <span class="user-content"
+                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
+                                                                                                   height: 26px;align-content: center;">
+                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu menu-drop-user">
+                                        <div class="profilemenu">
+                                            <div class="subscription-menu">
+                                                <ul>
 
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </td>
-                                                    <td class="btntext">
-                                                        <button onClick="redirectTo('{{route('admin.orderdetails')}}')"
-                                                            class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                                                    </td>
-                                                </tr>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deliveryman_modal">Assign delivery
+                                                            Boy</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </td>
+                            <td class="btntext">
+                                <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img
+                                        src="{{asset('assets/img/ordereye.png')}}"></button>
+                            </td>
+                        </tr>
                     @empty
                         <tr>
                             <td colspan="7" class="px-4 py-4 text-center text-gray-500">No order found.

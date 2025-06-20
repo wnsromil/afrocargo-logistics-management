@@ -38,11 +38,17 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin']
             ],
             [
-                'title' => 'Vehicle Management',
+                'title' => 'Vehicle',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 'route' => 'admin.vehicle.index',
-                //'route' => '#',
-                'active' => 'vehicle*,container*',
+                'active' => 'vehicle*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Container',
+                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
+                'route' => 'admin.container.index',
+                'active' => 'container*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -112,7 +118,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill of Lading',
                 'icon' => '<i class="menuIcon ti ti-truck"></i>',
                 'route' => 'admin.BillofLading.index',
-              //  'route' => '#',
+                //  'route' => '#',
                 'active' => 'bill_of_lading*,lading_details*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -141,7 +147,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Template Management',
                 'icon' => '<i class="menuIcon ti ti-template"></i>',
                 'route' => 'admin.Categorytemplate.index',
-               // 'route' => '#',
+                // 'route' => '#',
                 'active' => 'template_category*,templates*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
@@ -203,25 +209,6 @@ class MenuSeeder extends Seeder
             //     'parent_id' => $orderShip->id,
             //     'roles' => ['admin', 'warehouse_manager']
             // ]);
-        }
-
-        // Add submenus
-        $vehicle = Menu::where('title', 'Vehicle Management')->first();
-        if ($vehicle) {
-            Menu::create([
-                'title' => 'Vehicle List',
-                'route' => 'admin.vehicle.index',
-                'active' => 'vehicle*',
-                'parent_id' => $vehicle->id,
-                'roles' => ['admin', 'warehouse_manager']
-            ]);
-            Menu::create([
-                'title' => 'Container List',
-                'route' => 'admin.container.index',
-                'active' => 'container*',
-                'parent_id' => $vehicle->id,
-                'roles' => ['admin', 'warehouse_manager']
-            ]);
         }
 
         // Add submenus
