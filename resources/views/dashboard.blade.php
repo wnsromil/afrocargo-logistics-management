@@ -548,17 +548,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="49"
-                                            viewBox="0 0 44 49" fill="none" stroke="#203A5F" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-ship">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1" />
-                                            <path d="M4 18l-1 -5h18l-2 4" />
-                                            <path d="M5 13v-6h8l4 6" />
-                                            <path d="M7 7v-4h-1" />
-                                        </svg>
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="55"  height="55"  viewBox="0 0 24 24"  fill="none"  stroke="#203A5F"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-ship"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1" /><path d="M4 18l-1 -5h18l-2 4" /><path d="M5 13v-6h8l4 6" /><path d="M7 7v-4h-1" /></svg>
                                     </span>
                                 </div>
                                 <!-- </div> -->
@@ -580,14 +570,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="49"
-                                            viewBox="0 0 44 49" fill="none" stroke="#203A5F" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plane">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" />
-                                        </svg>
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="50"  height="50"  viewBox="0 0 24 24"  fill="none"  stroke="#203A5F"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plane"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" /></svg>
                                     </span>
                                 </div>
                                 <!-- </div> -->
@@ -1043,7 +1026,7 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                <a class="btn orderbutton btn-primary align-center veiwBtn rounded-1"
                                                     style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1136,7 +1119,7 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                <a class="btn orderbutton btn-primary align-center veiwBtn rounded-1"
                                                     style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1237,7 +1220,7 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                <a class="btn orderbutton btn-primary align-center veiwBtn rounded-1"
                                                     style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>

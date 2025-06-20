@@ -284,9 +284,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.serviceorderdetails.orderdetails');
         })->name('serviceorderdetails.orderdetails');
 
-        Route::get('/container/{id}', function () {
-            return view('admin.container.show');
-        })->name('container.show');
+        
 
         Route::get('/add-role', function () {
             return view('admin.user_role.create');
