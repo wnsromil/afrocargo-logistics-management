@@ -12,7 +12,7 @@ use App\Models\{
     Inventory
 };
 
-class InventoryController extends Controller
+class SupplyInventoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -67,10 +67,10 @@ class InventoryController extends Controller
             ->get();
 
         if ($request->ajax()) {
-            return view('admin.inventories.table', compact('inventories', 'warehouses'))->render();
+            return view('admin.supply_inventories.table', compact('inventories', 'warehouses'))->render();
         }
 
-        return view('admin.inventories.index', compact(
+        return view('admin.supply_inventories.index', compact(
             'inventories',
             'search',
             'perPage',
@@ -99,7 +99,7 @@ class InventoryController extends Controller
         ]);
 
 
-        return view('admin.inventories.create', compact('warehouses', 'categories'));
+        return view('admin.supply_inventories.create', compact('warehouses', 'categories'));
     }
 
     /**
@@ -214,7 +214,7 @@ class InventoryController extends Controller
         // Example:
         Inventory::create($data);
 
-        return redirect()->route('admin.inventories.index')
+        return redirect()->route('admin.supply_inventories.index')
             ->with('success', 'Inventory add successfully.');
     }
 
@@ -225,7 +225,7 @@ class InventoryController extends Controller
     {
         //
         $inventories = Inventory::where('id', $id)->first();
-        return view('admin.inventories.show', compact('inventories'));
+        return view('admin.supply_inventories.show', compact('inventories'));
     }
 
     /**
@@ -245,7 +245,7 @@ class InventoryController extends Controller
         $editData = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
-        return view('admin.inventories.edit', compact('editData', 'warehouses', 'categories'));
+        return view('admin.supply_inventories.edit', compact('editData', 'warehouses', 'categories'));
     }
 
     /**
@@ -339,7 +339,7 @@ class InventoryController extends Controller
         }
         $inventory->update($data);
 
-        return redirect()->route('admin.inventories.index')
+        return redirect()->route('admin.supply_inventories.index')
             ->with('success', 'Inventory updated successfully.');
     }
 
@@ -357,7 +357,7 @@ class InventoryController extends Controller
             $inventory->save();
         }
 
-        return redirect()->route('admin.inventories.index')
+        return redirect()->route('admin.supply_inventories.index')
             ->with('success', 'Inventory deleted successfully');
     }
 

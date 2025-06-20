@@ -64,7 +64,7 @@
                                 <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
                             </td>
                             <td>
-                                <div>${{ $parcel->total_amount ?? "0"}}</div>
+                                <div>${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                             </td>
                             <td>
                                 <div>{{ $parcel->arrivedDriver->name ?? "-"}}</div>
@@ -86,16 +86,7 @@
                             </td>
                             <td>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <div class="row">Partial:</div>
-                                        <div class="row">Due:</div>
-                                        <div class="row">Total:</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                        <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                        <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
-                                    </div>
+                                    <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                 </div>
                             </td>
                             @php
@@ -120,7 +111,8 @@
 
                             @endphp
                             <td>
-                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                </div>
                             </td>
                             <td>
                                 <label class="{{ $classValue }}" for="status">
@@ -160,8 +152,9 @@
                                         </td>
                                         <td>{{ucfirst($parcelInventorie->inventorie->name ?? '')}}</td>
                                         <td>{{$parcelInventorie->inventorie_item_quantity ?? "0"}}</td>
-                                        <td>${{$parcelInventorie->price ?? "0"}}</td>
-                                        <td>${{$parcelInventorie->total ?? "0"}}</td>
+                                        <td>
+                                            ${{ number_format($parcelInventorie->price ?? 0, 2) }}</td>
+                                        <td>${{ number_format($parcelInventorie->total ?? 0, 2) }}</td>
                                     </tr>
                                 @empty
                                     <tr>

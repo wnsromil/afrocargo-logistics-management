@@ -130,8 +130,8 @@ class ShiptoController extends Controller
                 'ShipTo_address_1' => 'required|string|max:255',
                 'ship_to_latitude' => 'required|numeric',
                 'ship_to_longitude' => 'required|numeric',
-                'state' => 'nullable|integer',
-                'city' => 'required|integer',
+                'state' => 'nullable|string',
+                'city' => 'required|string',
                 'Zip_code' => 'nullable|string|max:20',
 
             ],

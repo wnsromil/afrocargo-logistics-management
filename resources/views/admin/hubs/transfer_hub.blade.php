@@ -65,9 +65,9 @@
                                                 <div class="row">Total: </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="row"> ${{ $vehicle->partial_payment ?? '0' }}</div>
-                                                <div class="row"> ${{ $vehicle->remaining_payment ?? '0' }}</div>
-                                                <div class="row"> ${{ $vehicle->total_amount ?? '0' }}</div>
+                                                <div class="row">${{ number_format($vehicle->partial_payment ?? 0, 2) }}</div>
+                                                <div class="row">${{ number_format($vehicle->remaining_payment ?? 0, 2) }}</div>
+                                                <div class="row">${{ number_format($vehicle->total_amount ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -202,9 +202,9 @@
                                                 <div class="row">Total: </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="row"> ${{ $historyVehicle->partial_payment ?? '0' }}</div>
-                                                <div class="row"> ${{ $historyVehicle->remaining_payment ?? '0' }}</div>
-                                                <div class="row"> ${{ $historyVehicle->total_amount ?? '0' }}</div>
+                                                <div class="row">${{ number_format($historyVehicle->partial_payment ?? 0, 2) }}</div>
+                                                <div class="row">${{ number_format($historyVehicle->remaining_payment ?? 0, 2) }}</div>
+                                                <div class="row">${{ number_format($historyVehicle->total_amount ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </td>

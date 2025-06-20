@@ -96,7 +96,7 @@
                                                 {{  $parcel->descriptions ?? '-' }}</p>
                                             </td>
                                             <td>
-                                                <div>${{ $parcel->estimate_cost ?? "0"}}</div>
+                                                <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
                                             </td>
                                             <td>
                                                 <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -127,9 +127,9 @@
                                                         <div class="row">Total:</div>
                                                     </div>
                                                     <div class="col-6">
-                                                        <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                                        <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                                        <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
+                                                        <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}</div>
+                                                        <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}</div>
+                                                        <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                                     </div>
                                                 </div>
                                             </td>

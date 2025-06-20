@@ -145,7 +145,7 @@
                                 </p>
                             </td>
                             <td>
-                                <div>${{ $parcel->estimate_cost ?? "0"}}</div>
+                               <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
                             </td>
                             <td>
                                 <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -174,9 +174,9 @@
                                         <div class="row">Total:</div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                        <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                        <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
+                                        <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}</div>
+                                        <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}</div>
+                                        <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                     </div>
                                 </div>
                             </td>
@@ -247,7 +247,7 @@
                                         </td>
                                         <td>{{ucfirst($parcelItem->item_name ?? '')}}</td>
                                         <td>{{$parcelItem->quantity ?? "0"}}</td>
-                                        <td>{{ucfirst($parcelItem->quantity_type ?? "-")}}</td>
+                                        <td>{{ucfirst(string: $parcelItem->quantity_type ?? "-")}}</td>
                                         @php
                                             $classValue = match ((string) $parcelItem->status) {
                                                 "1" => 'badge-pending',

@@ -45,6 +45,14 @@ class Inventory extends Model
         'price',
         'img',
         'name',
+        'state',
+        'city',
+        'color',
+        'open',
+        'capacity',
+        'un_rating',
+        'model_number',
+        'minimum_order_limit'
     ];
 
 

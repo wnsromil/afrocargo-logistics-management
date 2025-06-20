@@ -7,7 +7,8 @@
         <div class="usersearch d-flex usersserach">
             <div class="top-nav-search">
                 <form>
-                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search" name="search" value="{{ request()->search }}">
+                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search" name="search"
+                        value="{{ request()->search }}">
 
                 </form>
             </div>
@@ -75,13 +76,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                       {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
+                                        {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
                                     </td>
                                     <td>
                                         <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
                                     </td>
                                     <td>
-                                        <div>${{ $parcel->total_amount ?? "0"}}</div>
+                                        <div>${{ number_format($parcel->total_amount ?? 0, 2)   }}</div>
                                     </td>
                                     <td>
                                         <div>{{ $parcel->arrivedDriver->name ?? "-"}}</div>
@@ -103,40 +104,33 @@
                                     </td>
                                     <td>
                                         <div class="row">
-                                            <div class="col-6">
-                                                <div class="row">Partial:</div>
-                                                <div class="row">Due:</div>
-                                                <div class="row">Total:</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                                <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                                <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
-                                            </div>
+                                            <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                         </div>
                                     </td>
                                     @php
                                         $classValue = match ((string) $parcel->status) {
-                                        "1"  => 'badge-pending',
-                                        "2"  => 'badge-pickup',
-                                        "3"  => 'badge-picked-up',
-                                        "4"  => 'badge-arrived-warehouse',
-                                        "5"  => 'badge-in-transit',
-                                        "8"  => 'badge-arrived-final',
-                                        "9"  => 'badge-ready-pickup',
-                                        "10" => 'badge-out-delivery',
-                                        "11" => 'badge-delivered',
-                                        "12" => 'badge-re-delivery',
-                                        "13" => 'badge-on-hold',
-                                        "14" => 'badge-cancelled',
-                                        "15" => 'badge-abandoned',
-                                        "21" => 'badge-picked-up',
-                                        "22" => 'badge-in-transit',
-                                        default => 'badge-pending',
-                                    };
+                                            "1" => 'badge-pending',
+                                            "2" => 'badge-pickup',
+                                            "3" => 'badge-picked-up',
+                                            "4" => 'badge-arrived-warehouse',
+                                            "5" => 'badge-in-transit',
+                                            "8" => 'badge-arrived-final',
+                                            "9" => 'badge-ready-pickup',
+                                            "10" => 'badge-out-delivery',
+                                            "11" => 'badge-delivered',
+                                            "12" => 'badge-re-delivery',
+                                            "13" => 'badge-on-hold',
+                                            "14" => 'badge-cancelled',
+                                            "15" => 'badge-abandoned',
+                                            "21" => 'badge-picked-up',
+                                            "22" => 'badge-in-transit',
+                                            default => 'badge-pending',
+                                        };
                                     @endphp
                                     <td>
-                                        <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                        <div>
+                                            {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                        </div>
                                     </td>
                                     <td>
                                         <label class="{{ $classValue }}" for="status">
@@ -150,7 +144,7 @@
 
                                                 <span class="user-content"
                                                     style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                       height: 26px;align-content: center;">
+                                                                                                                           height: 26px;align-content: center;">
                                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                 </span>
                                             </a>

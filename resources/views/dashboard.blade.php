@@ -609,7 +609,7 @@
                 @forelse ($upcomingContainers as $index => $upcomingContainer)
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div class="card innerCards w-100 setCard setCardSize rounded 
-                                {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
+                                    {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -650,7 +650,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                                                                                                            {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
+                                                                                                                                                {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -2329,8 +2329,10 @@
                 document.getElementById('total-drivers').textContent = data.total_drivers ? data.total_drivers : 0;
                 document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
                 document.getElementById('total-vehicles').textContent = data.total_vehicles ? data.total_vehicles : 0;
-                document.getElementById('total-earnings').textContent = '$' + (data.total_earnings ? data.total_earnings : 0);
-                document.getElementById('today-earnings').textContent = '$' + (data.today_earnings ? data.today_earnings : 0);
+                document.getElementById('total-earnings').textContent =
+                    '$' + (data.total_earnings ? Number(data.total_earnings).toLocaleString() : '0');
+                document.getElementById('today-earnings').textContent =
+                    '$' + (data.today_earnings ? Number(data.today_earnings).toLocaleString() : '0');
                 document.getElementById('total-supply').textContent = data.total_supply ? data.total_supply : 0;
                 document.getElementById('new-supply').textContent = data.new_supply ? data.new_supply : 0;
                 document.getElementById('cargo-order').textContent = data.total_Cargo ? data.total_Cargo : 0;
