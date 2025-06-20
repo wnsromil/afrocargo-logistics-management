@@ -172,6 +172,25 @@ class MenuSeeder extends Seeder
             Menu::create($menu);
         }
 
+        // $inventory = Menu::where('title', 'Inventory')->first();
+        // if ($inventory) {
+        //     Menu::create([
+        //         'title' => 'Service Inventory',
+        //         'route' => 'admin.inventories.index',
+        //         'active' => 'inventories*',
+        //         'parent_id' => $inventory->id,
+        //         'roles' => ['admin', 'warehouse_manager']
+        //     ]);
+
+        //     Menu::create([
+        //         'title' => 'Supply Inventory',
+        //         'route' => 'admin.supply_inventories.index',
+        //         'active' => 'supply_inventories*',
+        //         'parent_id' => $inventory->id,
+        //         'roles' => ['admin', 'warehouse_manager']
+        //     ]);
+        // }
+        
         // Add submenus
         $warehouse = Menu::where('title', 'Warehouses')->first();
         if ($warehouse) {

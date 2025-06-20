@@ -16,12 +16,12 @@
         </div>
      -->
     <x-slot name="cardTitle">
-        <p class="head">All Inventory</p>
+        <p class="head">Supply Inventory</p>
 
         <div class="d-flex align-items-center justify-content-end mb-1">
             <div class="usersearch d-flex">
                 <div class="mt-2">
-                    <a href="{{ route('admin.inventories.create') }}" class="btn btn-primary buttons"
+                    <a href="{{ route('admin.supply_inventories.create') }}" class="btn btn-primary buttons"
                         style="background:#203A5F">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
                         Add Inventory
@@ -35,7 +35,7 @@
         $warehouseIdFromUrl = request()->query('warehouse_id');
     @endphp
     {{-- ✅ Select Dropdown for Multiple Warehouses --}}
-    <form id="expenseFilterForm" action="{{ route('admin.inventories.index') }}" method="GET">
+    <form id="expenseFilterForm" action="{{ route('admin.supply_inventories.index') }}" method="GET">
         <div class="row gx-3 inputheight40">
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
@@ -146,18 +146,18 @@
                                                 <ul>
                                                     {{-- <li>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
+                                                            href="{{ route('admin.supply_inventories.edit', $inventory->id) }}"><i
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li> --}}
                                                     <li>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                            href="{{ route('admin.supply_inventories.show', $inventory->id) }}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
                                                     <li>
 
                                                         <form
-                                                            action="{{ route('admin.inventories.destroy', $inventory->id) }}"
+                                                            action="{{ route('admin.supply_inventories.destroy', $inventory->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
@@ -233,7 +233,7 @@
         <script>
             // Function to reset the form fields
             function resetForm() {
-                window.location.href = "{{ route('admin.inventories.index') }}";
+                window.location.href = "{{ route('admin.supply_inventories.index') }}";
             }
         </script>
     @endsection

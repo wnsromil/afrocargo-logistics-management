@@ -19,7 +19,7 @@
     </div>
     @endif --}}
 
-    <form action="{{ route('admin.inventories.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.supply_inventories.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group-customer customer-additional-form">
@@ -704,7 +704,7 @@
 
         <div class="add-customer-btns d-flex" style="justify-self: right">
             <div class="btnWrapper">
-                <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
+                <button type="button" onclick="redirectTo('{{ route('admin.supply_inventories.index') }}')"
                     class="btn btn-outline-primary custom-btn">Cancel</button>
                 <button type="submit" class="btn btn-primary ">Submit</button>
             </div>

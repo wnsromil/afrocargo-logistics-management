@@ -33,7 +33,8 @@ use App\Http\Controllers\Web\Admin\{
     ScheduleController,
     BillofLadingController,
     LadingDetailsController,
-    CBMCalculatoarController
+    CBMCalculatoarController,
+    SupplyInventoryController
 };
 use App\Mail\RegistorMail;
 
@@ -191,6 +192,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('drivers', DriversController::class);
         Route::resource('schedules', ScheduleController::class);
         Route::resource('inventories', InventoryController::class);
+        Route::resource('supply_inventories', SupplyInventoryController::class);
         Route::resource('advance_reports', AdvanceReportsController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
         Route::resource('hubs', HubTrackingController::class);

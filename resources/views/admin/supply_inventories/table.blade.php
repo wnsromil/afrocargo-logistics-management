@@ -55,16 +55,16 @@
                                         <ul>
                                             {{-- <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
+                                                    href="{{ route('admin.supply_inventories.edit', $inventory->id) }}"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
                                             </li> --}}
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                    href="{{ route('admin.supply_inventories.show', $inventory->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
                                             <li>
-                                                <form action="{{ route('admin.inventories.destroy', $inventory->id) }}"
+                                                <form action="{{ route('admin.supply_inventories.destroy', $inventory->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -75,7 +75,7 @@
                                             </li>
                                             {{-- <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                    href="{{ route('admin.supply_inventories.show', $inventory->id) }}"><i
                                                         class="far fa-eye me-2"></i>View History</a>
                                             </li> --}}
 
