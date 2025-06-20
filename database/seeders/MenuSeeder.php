@@ -279,7 +279,7 @@ class MenuSeeder extends Seeder
             ]);
         }
 
-        // Add submenus
+        // Add submenus Bill Of Lading
         $template = Menu::where('title', 'Bill Of Lading')->first();
         if ($template) {
             Menu::create([

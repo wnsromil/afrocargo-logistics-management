@@ -109,11 +109,13 @@ $("#addShiptoAddress").on("click", function () {
     $(".newShipmentAddress").toggleClass("none");
     $(this).addClass("d-none");
     $("#add_ship_save_body").removeClass("d-none");
+    $("#add_location").removeClass("d-none");
 });
 
 $("#add_ship_cancel").on("click", function () {
     $(".newShipmentAddress").toggleClass("none");
     $("#add_ship_save_body").addClass("d-none");
+    $("#add_location").addClass("d-none");
     $("#addShiptoAddress").removeClass("d-none");
 });
 
@@ -491,6 +493,8 @@ function setPickupDeleveryFormValue(customer) {
 
 $("#auto_invoice_gen").on("click", () => {
     $('input[name="invoice_no"]').val($('input[name="nextInvoiceNo"]').val());
+    
+    $('input[name="invoice_no"]').val('');
 });
 
 // total and grand total

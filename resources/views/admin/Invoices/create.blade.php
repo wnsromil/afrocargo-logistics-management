@@ -114,6 +114,51 @@
 
             </div>
 
+            <!-- country wis address search -->
+            <div class="row mt-5 g-3 d-none" id="add_location">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <div class="d-sm-flex align-items-center">
+                        <div class="first">
+                            <label for="customer_id">Country<i class="text-danger">*</i></label>
+                        </div>
+                        <div class="middleDiv">
+                            <select class="form-control select2" id="countryForLocation">
+                                    @foreach (setting()->warehouseContries() as $key => $item)
+                                    <option value="{{ $item->iso2 ?? 'AF' }}">
+                                        {{ $item->name ?? '' }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
+                        <div class="last">
+                            <div>
+                                <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#locationModal" id="locationModalShow">
+                                    location
+                                </button>
+                            </div>
+                            <div class="modal custom-modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Select Location</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" class="form-control" id="locationSearchBox" placeholder="Enter location..." />
+                                        </div>
+                                        <div class="modal-footer">
+
+                                            <button type="button" class="btn btn-primary confirm-supply"
+                                                data-bs-dismiss="modal">Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
             <!-- first row end pick up  -->
             <div class="row mt-5 g-3">
@@ -645,15 +690,16 @@
             <input type="hidden" name="delivery_address_id">
             <input type="hidden" name="parcel_id">
 
-            <div class="modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
+            <div class="modal custom-modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Select Supply</h5>
                         </div>
                         <div class="modal-body">
+                            {{-- @dd($inventories,$inventories->get('Supply')) --}}
                             <select class="form-control select2" id="supplySelector">
-                                @if(!$inventories)
+                                @if($inventories)
                                     @foreach ($inventories->get('Supply') as $supply)
                                         <option value="{{ $supply->id }}">{{ $supply->name }}</option>
                                     @endforeach

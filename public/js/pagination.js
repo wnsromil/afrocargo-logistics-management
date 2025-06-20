@@ -112,13 +112,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 🔹 4. Handle Pagination Clicks (Event Delegation)
-        ajxtbl.addEventListener("click", function (event) {
-            if (event.target.closest(".pagination a")) {
-                event.preventDefault();
-                let url = event.target.getAttribute("href");
-                updateTable(url);
-            }
-        });
+        if (ajxtbl) {
+            ajxtbl.addEventListener("click", function (event) {
+                if (event.target.closest(".pagination a")) {
+                    event.preventDefault();
+                    let url = event.target.getAttribute("href");
+                    updateTable(url);
+                }
+            });
+        }
 
         initializeSorting();
 

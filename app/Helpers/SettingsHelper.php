@@ -1,7 +1,12 @@
 <?php
 namespace App\Helpers;
 
-use App\Models\{Setting,ParcelStatus};
+use App\Models\{
+    Setting,
+    ParcelStatus,
+    Warehouse,
+    Country
+};
 
 class SettingsHelper
 {
@@ -39,6 +44,22 @@ class SettingsHelper
     public static function statusList(){
         return ParcelStatus::get();
     }
+
+    public static function warehouseContries()
+    {
+        // Get distinct country names from warehouses
+        $countryNames = Warehouse::select('country_id')->distinct()->pluck('country_id');
+
+        // Fetch country details for each country name using LIKE query
+        return Country::where(function($query) use ($countryNames) {
+            foreach ($countryNames as $countryName) {
+            $query->orWhere('name', 'like', '%' . $countryName);
+            }
+        })
+        ->select('id', 'name', 'iso2', 'iso3', 'phonecode')
+        ->get();
+    }
+    
 
     private static function formatValue($type, $value)
     {

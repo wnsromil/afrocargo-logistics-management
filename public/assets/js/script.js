@@ -2243,6 +2243,67 @@ Version      : 1.0
         //     input.dispatchEvent(ev);
         // });
     }
+
+    function initLocationAutocomplete() {
+        // let selectedCountry = '';
+
+        // // 1. When country changes, update selectedCountry
+        // document.querySelector('#countryForLocation').addEventListener('change', function () {
+        //     selectedCountry = this.value.toLowerCase();
+        //     console.log("Selected Country:", selectedCountry);
+        // });
+
+        // 2. When location modal is opened, attach Google Autocomplete
+        document.getElementById('locationModalShow').addEventListener('click', function () {
+            const input = document.getElementById('locationSearchBox');
+            let countryForLocation = document.getElementById('countryForLocation');
+            
+            if (!input) return;
+            if (!countryForLocation) return;
+            let selectedCountry = countryForLocation.value.toLowerCase() || 'us'; // Default to 'us' if no country selected
+            console.log("Selected Country:", selectedCountry);
+            // Clear previous autocomplete instance by cloning node
+            const newInput = input.cloneNode(true);
+            input.parentNode.replaceChild(newInput, input);
+
+            // Initialize autocomplete
+            const autocomplete = new google.maps.places.Autocomplete(newInput, {
+                types: ['geocode'],
+                componentRestrictions: { country: selectedCountry }
+            });
+
+            autocomplete.addListener('place_changed', function () {
+                const place = autocomplete.getPlace();
+                console.log("Selected Location:", place.formatted_address);
+                console.log("Lat/Lng:", place.geometry?.location?.lat(), place.geometry?.location?.lng());
+
+                // Store or populate as needed
+                newInput.setAttribute('data-lat', place.geometry?.location?.lat() || '');
+                newInput.setAttribute('data-lng', place.geometry?.location?.lng() || '');
+            });
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('locationModal'));
+            modal.show();
+        });
+
+
+        
+
+        // Optional: Handle modal continue button
+        // document.querySelector('.confirm-supply').addEventListener('click', function () {
+        //     const input = document.getElementById('locationSearchBox');
+        //     const address = input.value;
+        //     const lat = input.getAttribute('data-lat');
+        //     const lng = input.getAttribute('data-lng');
+
+        //     console.log("Final Location:", address, lat, lng);
+
+        //     // You can assign values to hidden inputs or submit to server here
+        //     // e.g., document.querySelector('input[name="shipto_address"]').value = address;
+        // });
+    }
+
     window.addEventListener("load", function () {
         initAutocomplete();
         initAutocompleteByCls();
@@ -2250,5 +2311,6 @@ Version      : 1.0
         initAutocomplete_2();
         initAutocomplete_3();
         init_transit_Autocomplete();
+        initLocationAutocomplete();
     });
 })(jQuery);
