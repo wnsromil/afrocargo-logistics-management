@@ -59,11 +59,11 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
-                                            {{-- <li>
+                                            <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.inventories.edit', $inventory->id) }}"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
-                                            </li> --}}
+                                            </li>
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.inventories.show', $inventory->id) }}"><i

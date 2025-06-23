@@ -183,6 +183,13 @@
                 {{ $user->sales_call ?? '-' }}
             </p>
         </div>
+        <div class="col-4 customerr">
+            <p class="phead">Created At </p>
+            <p class="pdata">
+                {{$user->created_at ? $user->created_at->format('m/d/Y') : "-"}}
+            </p>
+        </div>
+
     </div>
 
     <div class="row">
@@ -223,9 +230,6 @@
                 @endif
             </div>
         </div>
-
-
-
     </div>
 
 

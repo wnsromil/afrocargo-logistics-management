@@ -652,6 +652,33 @@ Version      : 1.0
         );
     }
 
+    if ($('input[name="edit_celliling_date"]').length > 0) {
+        const input = $('input[name="edit_celliling_date"]');
+        const inputVal = input.val(); // Get value from input
+
+        let defaultDate = moment().startOf("day"); // Default today's date
+
+        // If input value exists, parse it as moment date
+        if (inputVal) {
+            defaultDate = moment(inputVal, "M/D/YYYY");
+        }
+
+        input.daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minDate: moment().startOf("day"),
+            startDate: defaultDate, // Use parsed date from input
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY",
+            },
+        });
+
+        input.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(picker.startDate.format("M/DD/YYYY"));
+        });
+    }
+
     if ($('input[name="eta_date"]').length > 0) {
         $('input[name="eta_date"]').daterangepicker({
             singleDatePicker: true,
@@ -671,6 +698,33 @@ Version      : 1.0
                 $(this).val(picker.startDate.format("M/DD/YYYY"));
             }
         );
+    }
+
+    if ($('input[name="edit_eta_date"]').length > 0) {
+        const input = $('input[name="edit_eta_date"]');
+        const inputVal = input.val(); // Get value from input
+
+        let defaultDate = moment().startOf("day"); // Default today's date
+
+        // If input value exists, parse it as moment date
+        if (inputVal) {
+            defaultDate = moment(inputVal, "M/D/YYYY");
+        }
+
+        input.daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minDate: moment().startOf("day"),
+            startDate: defaultDate, // Use parsed date from input
+            autoUpdateInput: false,
+            locale: {
+                format: "M/DD/YYYY",
+            },
+        });
+
+        input.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(picker.startDate.format("M/DD/YYYY"));
+        });
     }
 
     if ($('input[name="container_date_time"]').length > 0) {

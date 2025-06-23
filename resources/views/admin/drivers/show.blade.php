@@ -51,7 +51,7 @@
                                         @if ($user->profile_pic)
                                             <img id="blah" class="avatar" src="{{ ($user->profile_pic) }}" alt="license">
                                         @else
-                                            <p> - No Image</p>
+                                            <img id="blah" class="avatar" src="{{ asset('assets/img.png') }}" alt="license">
                                         @endif
                                     </div>
                                 </div>
@@ -103,8 +103,34 @@
                             </div>
                         </span>
                         <div class="customer-details-cont">
-                            <h6 class="fs_20 fw_600 col00 mb-1">Phone Number</h6>
-                            <p class="col3A fw_500">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
+                            <h6 class="fs_20 fw_600 col00 mb-1">Contact Number</h6>
+                            <p class="col3A fw_500">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}
+                            </p>
+                            {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}
+                            </p> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12 my-4">
+                <div class="customer-details">
+                    <div class="d-flex align-items-center">
+                        <span class="customer-widget-img d-inline-flex">
+                            <div class="iconwrapper me-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-phone">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                </svg>
+                            </div>
+                        </span>
+                        <div class="customer-details-cont">
+                            <h6 class="fs_20 fw_600 col00 mb-1">Office Contact Number</h6>
+                            <p class="col3A fw_500">+{{ $user->phone_2_code->phonecode ?? '' }}
+                                {{ $user->phone_2 ?? '-' }}</p>
                             {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}
                             </p> --}}
                         </div>
@@ -226,7 +252,7 @@
         </div>
     </section>
     @section('bottomContent')
-        <div class="card mainCardGlobal my-4">
+        {{-- <div class="card mainCardGlobal my-4">
             <div class="card-body">
                 <h5 class="textSize col3a mb-4">Activity Logs</h5>
                 <form>
@@ -259,61 +285,6 @@
                 </form>
                 <div class="row">
                     <div class="col-md-12">
-                        {{-- <div class="cd-horizontal-timeline mannuallyCSS type2">
-                            <div class="timeline w-100">
-                                <div class="events-wrapper">
-                                    <div class="events">
-                                        <ol>
-                                            <li>
-                                                <a href="#0" data-date="16/01/2014" class="selected">
-                                                    <p class="smfont">12-12-2024</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#0" data-date="17/01/2014">
-                                                    <p class="smfont">12-13-2024</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#0" data-date="18/01/2014">
-                                                    <p class="smfont">12-15-2024</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#0" data-date="19/01/2014">
-                                                    <p class="smfont">12-16-2024</p>
-                                                </a>
-                                            </li>
-                                        </ol>
-                                        <span class="filling-line" aria-hidden="true"></span>
-                                    </div>
-                                    <!-- events -->
-                                </div>
-                                <ul class="cd-timeline-navigation">
-                                    <li><a href="#0" class="prev inactive">Prev</a></li>
-                                    <li><a href="#0" class="next">Next</a></li>
-                                </ul>
-                                <!-- cd-timeline-navigation -->
-                            </div>
-                            <!-- timeline -->
-                            <div class="events-content">
-                                <ol>
-                                    <li class="selected" data-date="16/01/2014">
-                                        1 sss
-                                    </li>
-                                    <li class="selected" data-date="17/01/2014">
-                                        2sss
-                                    </li>
-                                    <li class="selected" data-date="18/01/2014">
-                                        3 sss
-                                    </li>
-                                    <li class="selected" data-date="19/01/2014">
-                                        4sss
-                                    </li>
-                                </ol>
-                            </div>
-                            <!-- timeline -->
-                        </div> --}}
 
                         <div class="cd-horizontal-timeline two mannuallyCSS type2">
                             <div class="timeline w-100">
@@ -328,15 +299,15 @@
                                         </ol>
                                         <span class="filling-line" aria-hidden="true"></span>
                                     </div>
-                                    <!-- events -->
+
                                 </div>
                                 <ul class="cd-timeline-navigation">
                                     <li><a href="#0" class="prev inactive">Prev</a></li>
                                     <li><a href="#0" class="next">Next</a></li>
                                 </ul>
-                                <!-- cd-timeline-navigation -->
+
                             </div>
-                            <!-- timeline -->
+
                             <div class="events-content mt-0 py-3">
                                 <ol>
                                     <li class="selected" data-date="16/01/2014">
@@ -583,11 +554,11 @@
                                     </li>
                                 </ol>
                             </div>
-                            <!-- .events-content -->
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     @endsection
 </x-app-layout>

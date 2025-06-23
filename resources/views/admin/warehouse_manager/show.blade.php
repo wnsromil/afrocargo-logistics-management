@@ -39,6 +39,13 @@
                     <p>{{$user->address ?? '-' }}</p>
                 </div>
             </div>
+               <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Created At </h6>
+                    <p>{{ $user->created_at ? $user->created_at->format('m/d/Y') : "-"}}</p>
+                </div>
+            </div>
+            
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Status</h6>

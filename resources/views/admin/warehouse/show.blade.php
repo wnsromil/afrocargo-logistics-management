@@ -49,6 +49,11 @@
                     @endif
                 </div>
             </div>
-        </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Created At </h6>
+                    <p>{{ $warehouse->created_at ? $warehouse->created_at->format('m/d/Y') : "-"}}</p>
+                </div>
+            </div>
     </section>
 </x-app-layout>

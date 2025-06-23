@@ -127,20 +127,11 @@
                                             class="text-danger">*</i></label>
                                           <select id="currency_select" class="form-control select2" name="currency">
                                               <option selected="selected" value="">Select Currency</option>
-                                            <option value="BDT" {{ old('currency') == 'BDT' ? 'selected' : '' }}>Bangladesh - BDT</option>
-                                            <option value="EUR" {{ old('currency') == 'EUR' ? 'selected' : '' }}>Belgium - EUR</option>
-                                            <option value="KWD" {{ old('currency') == 'KWD' ? 'selected' : '' }}>Kuwait - KWD</option>
-                                            <option value="XCD" {{ old('currency') == 'XCD' ? 'selected' : '' }}>Dominica - XCD</option>
-                                            <option value="INR" {{ old('currency') == 'INR' ? 'selected' : '' }}>India - INR</option>
-                                            <option value="DOP" {{ old('currency') == 'DOP' ? 'selected' : '' }}>Dominican Republic - DOP</option>
-                                            <option value="EUR" {{ old('currency') == 'EUR' ? 'selected' : '' }}>Andorra - EUR</option>
-                                            <option value="CLP" {{ old('currency') == 'CLP' ? 'selected' : '' }}>Chile - CLP</option>
-                                            <option value="USD" {{ old('currency') == 'USD' ? 'selected' : '' }}>United States - USD</option>
-                                            <option value="DKK" {{ old('currency') == 'DKK' ? 'selected' : '' }}>Greenland - DKK</option>
-                                            <option value="CVE" {{ old('currency') == 'CVE' ? 'selected' : '' }}>Cabo Verde - CVE</option>
-                                            <option value="XOF" {{ old('currency') == 'XOF' ? 'selected' : '' }}>Côte d'Ivoire - XOF</option>
-                                            <option value="XOF" {{ old('currency') == 'XOF' ? 'selected' : '' }}>Mali - XOF</option>
-                                            <option value="EUR" {{ old('currency') == 'EUR' ? 'selected' : '' }}>European Union - EUR</option>
+                                              @foreach (setting()->warehouseContries() as $country )
+                                                <option value="{{ $country['currency'] }}" {{ old('currency') == $country['currency'] ? 'selected' : '' }}>
+                                                    {{ $country['name'] }} - {{ $country['currency'] }}
+                                                </option>
+                                              @endforeach
                                         </select>
                                     @error('currency')
                                     <small class="text-danger">{{ $message }}</small>
