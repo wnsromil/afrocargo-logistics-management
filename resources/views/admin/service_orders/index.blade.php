@@ -178,8 +178,9 @@
                                     <td>
                                         <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
                                     </td>
-                                     <td>
-                                        <div>{{ $parcel->delivery_date ? $parcel->delivery_date->format('d-m-Y') : '-' }}</div>
+                                    <td>
+                                        <div>{{ $parcel->delivery_date ? $parcel->delivery_date->format('d-m-Y') : '-' }}
+                                        </div>
                                     </td>
                                     <td>
                                         <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
@@ -306,8 +307,7 @@
                                                                     href="javascript:void(0);">Picked up</a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item 
-                                                                                                                                                                   {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
+                                                                <a class="dropdown-item  {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#arrived_warehouse"
                                                                     data-id="{{ $parcel->id }}" href="javascript:void(0);">
@@ -354,22 +354,30 @@
                                                                 <a class="dropdown-item  {{ $currentStatusId == 11 ? 'active disabled-link-for-active-service' : ($currentStatusId == 21 ? '' : 'disabled-link') }}"
                                                                     href="javascript:void(0);">Delivered</a>
                                                             </li>
-
-                                                            <li>
-                                                                <a class="dropdown-item {{ $currentStatusId == 12 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">Re-delivery</a>
-                                                            </li>
                                                             <li>
                                                                 <a class="dropdown-item {{ $currentStatusId == 13 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">On hold</a>
+                                                                    href="javascript:void(0);">Custom hold</a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item {{ $currentStatusId == 14 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">Cancelled</a>
+                                                                <a class="dropdown-item {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#Re_schedule_pickup"
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                    Re-schedule pickup
+                                                                </a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item {{ $currentStatusId == 15 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">Abandoned</a>
+                                                                <a class="dropdown-item {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#Re_schedule_delivery"
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                    Re-schedule delivery
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#Cancelled"
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                    Cancelled
+                                                                </a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -420,6 +428,160 @@
     <input type="hidden" id="warehouse_id_input_hidden" name="warehouse_id_hidden" class="form-control" readonly>
     <input type="hidden" id="created_user_id_input_hidden" name="created_user_id_hidden" class="form-control" readonly
         value="{{ auth()->user()->id }}">
+
+    <!-- Re-schedule delivery -->
+    <div class="modal custom-modal signature-add-modal fade" id="Re_schedule_delivery" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Cancelled</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="Re_schedule_deliveryForm" method="POST">
+                    @csrf
+                    <!-- Parcel ID Input Field -->
+                     <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="Re_schedule_type" name="Re_schedule_type"
+                                        class="form-control" readonly value="delivery">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Delivery date</label>
+                                    <input type="text" name="signature_date" readonly style="cursor: pointer;"
+                                        class="btn-filters  form-cs inp  inputbackground"
+                                        value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Note</label>
+                                    <input type="text" name="notes" class="form-control inp Note"
+                                        placeholder="Enter note">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Re-schedule pickup -->
+    <div class="modal custom-modal signature-add-modal fade" id="Re_schedule_pickup" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Re-Schedule Pickup</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="Re_schedule_pickupForm" method="POST">
+                    @csrf
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="Re_schedule_type" name="Re_schedule_type"
+                                        class="form-control" readonly value="pickup">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Pickup date</label>
+                                    <input type="text" name="signature_date" readonly style="cursor: pointer;"
+                                        class="btn-filters  form-cs inp  inputbackground"
+                                        value="{{ old('signature_date') }}" placeholder="mm-dd-yy" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Note</label>
+                                    <input type="text" name="notes" class="form-control inp Note"
+                                        placeholder="Enter note">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancelled -->
+    <div class="modal custom-modal signature-add-modal fade" id="Cancelled" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Cancelled</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="cancelledForm" method="POST">
+                    @csrf
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="parcel_id_input" name="parcel_id" class="form-control"
+                                        readonly>
+                                    <input type="hidden" id="warehouse_id_input" name="warehouse_id"
+                                        class="form-control" readonly>
+                                    <input type="hidden" id="created_user_id_input" name="created_user_id"
+                                        class="form-control" readonly value="
+                                    {{ auth()->user()->id }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Note</label>
+                                    <input type="text" name="notes" class="form-control inp Note"
+                                        placeholder="Enter note">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Pick_up_with_driver -->
     <div class="modal custom-modal signature-add-modal fade" id="Pick_up_with_driver" role="dialog">

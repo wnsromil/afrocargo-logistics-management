@@ -571,9 +571,93 @@ class OrderStatusManage extends Controller
         ]);
     }
 
-    /**
-     * Helper function to find the nearest warehouse.
-     */
+    public function statusUpdateAdmin_Cancel(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+
+        if ($parcel->status == 14) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been canceled. Status update not allowed.',
+            ], 400);
+        }
+
+
+        $parcel->update([
+            'status' => 14,
+            'warehouse_id' => $request->warehouse_id ?? null,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $request->created_user_id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 14,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $request->warehouse_id ?? null,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
+    public function statusUpdateAdmin_reschedule(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+            'pickup_date' => 'required|date',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+
+        if ($parcel->status == 23) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been rescheduled. Status update not allowed.',
+            ], 400);
+        }
+
+        $parcel->update([
+            'status' => 23,
+            'warehouse_id' => $request->warehouse_id,
+            'pickup_date' => $request->pickup_date,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $request->created_user_id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 23,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $request->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
     private function findNearestWarehouse($latitude, $longitude)
     {
         // Fetch all warehouses
@@ -601,10 +685,7 @@ class OrderStatusManage extends Controller
 
         return $nearestWarehouse;
     }
-
-    /**
-     * Helper function to calculate distance between two coordinates.
-     */
+  
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
     {
         // Haversine formula to calculate distance in kilometers
@@ -621,4 +702,6 @@ class OrderStatusManage extends Controller
 
         return $earthRadius * $c; // Distance in km
     }
+
+    
 }

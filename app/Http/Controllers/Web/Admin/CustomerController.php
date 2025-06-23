@@ -652,7 +652,6 @@ class CustomerController extends Controller
         return view('admin.customer.shipto.update', compact('user', 'id'));
     }
 
-
     public function editeShipTo(Request $request, $id)
     {
         // Validation

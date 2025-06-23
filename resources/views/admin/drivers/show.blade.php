@@ -130,7 +130,8 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">Office Contact Number</h6>
                             <p class="col3A fw_500">+{{ $user->phone_2_code->phonecode ?? '' }}
-                                {{ $user->phone_2 ?? '-' }}</p>
+                                {{ $user->phone_2 ?? '-' }}
+                            </p>
                             {{-- <p class="col3A fw_500">{{ $user->country_code_2 ?? '' }} {{ $user->phone_2 ?? '--'}}
                             </p> --}}
                         </div>
@@ -244,6 +245,35 @@
                         <div class="customer-details-cont">
                             <h6 class="fs_20 fw_600 col00 mb-1">License image</h6>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-12 my-4">
+                <div class="customer-details">
+                    <div class="d-flex align-items-center">
+                           <span class="customer-widget-img d-inline-flex">
+                            <div class="iconwrapper me-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-id">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                    <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                    <path d="M15 8l2 0" />
+                                    <path d="M15 12l2 0" />
+                                    <path d="M7 16l10 0" />
+                                </svg>
+                            </div>
+                        </span>
+                        <div class="customer-details-cont">
+                            <h6 class="fs_20 fw_600 col00 mb-1">Created At</h6>
+                            <p class="col3A fw_500">
+                            <p>{{ $user->created_at ? $user->created_at->format('m/d/Y') : "-"}}</p>
+                            </p>
                         </div>
                     </div>
                 </div>

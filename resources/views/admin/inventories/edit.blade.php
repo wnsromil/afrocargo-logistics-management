@@ -194,7 +194,7 @@
                             Price</label>
                         <div class="d-flex align-items-center justify-content-between form-control">
                             <input class="no-border" type="number" name="retail_vaule_price"
-                                value="{{ old('retail_vaule_price') }}" placeholder="Enter retail price">
+                                value="{{ old('retail_vaule_price' , $editData->retail_vaule_price) }}" placeholder="Enter retail price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                         </div>
                         @error('retail_vaule_price')

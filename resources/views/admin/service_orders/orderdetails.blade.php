@@ -45,7 +45,14 @@
                 left: 0;
             }
 
-            /*End style*/
+            .order-tracking.cancelled .is-complete {
+                background-color: red !important;
+                border-color: red;
+            }
+
+            .order-tracking.cancelled p {
+                color: red;
+            }
         </style>
     @endsection
 
@@ -305,60 +312,80 @@
                 </div>
             </div>
         </div>
-        <div>
+        @php
+            $currentStatusId = $parcel->status ?? null;
 
-            @php
-                $statusSteps = [
-                    1 => 'Pending',
-                    3 => 'Pickup order',
-                    4 => 'Arrived warehouse',
-                    5 => 'In transit',
-                    8 => 'Arrived at final destination warehouse',
-                    9 => 'Ready for pick up',
-                    //21 => 'Ready for self pick up',
-                    10 => 'Out for delivery',
-                    11 => 'Delivered'
+            $statusSteps = [
+                1 => 'Pending',
+                3 => 'Pickup order',
+                4 => 'Arrived warehouse',
+                5 => 'In transit',
+                8 => 'Arrived at final destination warehouse',
+                9 => 'Ready for pick up',
+                10 => 'Out for delivery',
+                11 => 'Delivered',
+            ];
 
-                ];
+            $statusDates = [];
+            $completedStatusMap = [];
 
-                $statusDates = [];
-                $completedStatusMap = [];
+            foreach ($ParcelHistories as $history) {
+                $status = (int) $history->parcel_status;
+                $statusDates[$status] = \Carbon\Carbon::parse($history->created_at)->format('D, M d - h:i A');
+                $completedStatusMap[$status] = true;
+            }
 
-                foreach ($ParcelHistories as $history) {
-                    $status = (int) $history->parcel_status;
-                    $statusDates[$status] = \Carbon\Carbon::parse($history->created_at)->format('D, M d - h:i A');
-                    $completedStatusMap[$status] = true;
-                }
-            @endphp
-            <p class="heading mt-4">Order History</p>
-            <!-- Timeline -->
-            <div class="col-md-12">
-                <div class="timeline-card px-3">
-                    <div class="card-body">
-                        <div class="">
-                            <div class="hh-grayBox pt45 pb20">
-                                <div class="row">
-                                    @foreach($statusSteps as $code => $label)
-                                        @php
-                                            $isCompleted = isset($completedStatusMap[$code]) && $completedStatusMap[$code] === true;
-                                        @endphp
-                                        <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
+            $cancelFound = $currentStatusId == 14;
+        @endphp
+
+        <p class="heading mt-4">Order History</p>
+        <div class="col-md-12">
+            <div class="timeline-card px-3">
+                <div class="card-body">
+                    <div class="hh-grayBox pt45 pb20">
+                        <div class="row">
+                            @if ($cancelFound)
+                                @php $cancelInserted = false; @endphp
+                                @foreach ($statusSteps as $code => $label)
+                                    @if (isset($completedStatusMap[$code]))
+                                        <div class="order-tracking completed">
                                             <span class="is-complete"></span>
                                             <p>
                                                 {{ $label }}<br>
                                                 <span>{{ $statusDates[$code] ?? '' }}</span>
                                             </p>
                                         </div>
-                                    @endforeach
-                                </div>
-
-                            </div>
+                                    @elseif (!$cancelInserted)
+                                        <div class="order-tracking cancelled">
+                                            <span class="is-complete"></span>
+                                            <p>
+                                                Cancelled<br>
+                                                <span>{{ $statusDates[14] ?? now()->format('D, M d - h:i A') }}</span>
+                                            </p>
+                                        </div>
+                                        @php $cancelInserted = true; @endphp
+                                        @break
+                                    @endif
+                                @endforeach
+                            @else
+                                @foreach ($statusSteps as $code => $label)
+                                    @php $isCompleted = isset($completedStatusMap[$code]); @endphp
+                                    <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
+                                        <span class="is-complete"></span>
+                                        <p>
+                                            {{ $label }}<br>
+                                            <span>{{ $statusDates[$code] ?? '' }}</span>
+                                        </p>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Timeline -->
         </div>
+
+
     </div>
     <div class="show">
         <div class="overlay"></div>

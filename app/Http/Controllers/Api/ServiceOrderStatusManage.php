@@ -183,8 +183,6 @@ class ServiceOrderStatusManage extends Controller
             'data' => $parcel
         ]);
     }
-
-
     public function statusUpdate_Delivery(Request $request)
     {
         $request->validate([

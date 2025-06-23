@@ -1,10 +1,6 @@
 (function ($) {
     "use strict";
     $(document).ready(function () {
-        // Initialize Select2 Plugin
-        //$(".js-example-basic-single").select2();
-
-        // Handle Form Submission via AJAX
         $("#pickupForm").on("submit", function (e) {
             e.preventDefault(); // Prevent default form submission
 
@@ -391,6 +387,70 @@
                     }
                 },
                 complete: function () {
+                    $(".btn-primary").html("Save").prop("disabled", false);
+                },
+            });
+        });
+    });
+
+     $(document).ready(function () {
+        $("#cancelledForm").on("submit", function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Clear previous error messages
+            // Get Form Data
+            let parcelId = $("#parcel_id_input_hidden").val();
+            let created_user_id = $("#created_user_id_input").val();
+            let notes = $('input[name="notes"]').val();
+            
+            // Client-Side Validation
+            let hasError = false;
+
+            if (!parcelId) {
+                alert("Parcel ID is required.");
+                return;
+            }
+         
+            // If there are validation errors, stop further execution
+            if (hasError) {
+                return;
+            }
+
+            // Show Loading Indicator
+            $(".btn-primary").html("Processing...").prop("disabled", true);
+
+            // Make AJAX POST Request
+            $.ajax({
+                url: "/api/update-status-admin-cancel", // API endpoint
+                type: "POST",
+                data: {
+                    parcel_id: parcelId,
+                    created_user_id: created_user_id,
+                    notes: notes,
+                },
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                },
+                success: function (response) {
+                    document
+                        .querySelector("#cancelledForm .custom-btn")
+                        .click();
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Status changed successfully!",
+                        icon: "success",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // Handle Server-Side Validation Errors
+                    let errors = xhr.responseJSON?.errors || {};
+                },
+                complete: function () {
+                    // Re-enable Save Button
                     $(".btn-primary").html("Save").prop("disabled", false);
                 },
             });
