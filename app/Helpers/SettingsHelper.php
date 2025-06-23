@@ -65,7 +65,7 @@ class SettingsHelper
 
         // Get countries where LOWER(name) matches any lowercase country_id
         return Country::whereRaw('LOWER(name) IN ("' . $countryNames->implode('","') . '")')
-            ->select('id', 'name', 'iso2', 'iso3', 'phonecode')
+             ->select('id', 'name', 'iso2', 'iso3', 'phonecode', 'currency', 'currency_symbol')
             ->get();
     }
 }

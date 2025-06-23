@@ -63,6 +63,7 @@
                             <th>From</th>
                             <th>To</th>
                             <th>Pickup Date</th>
+                            <th>Delivery Date</th>
                             <th>Capture Image</th>
                             <th>Items</th>
                             <th>Estimate cost</th>
@@ -72,6 +73,8 @@
                             <th>Amount</th>
                             <th>Payment Mode</th>
                             <th>Status</th>
+                            <th>Pickup Type</th>
+                            <th>Delivery Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,6 +139,9 @@
                                 <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
                             </td>
                             <td>
+                                <div>{{ $parcel->delivery_date ? $parcel->delivery_date->format('d-m-Y') : '-' }}</div>
+                            </td>
+                            <td>
                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                             </td>
                             <td>
@@ -145,7 +151,7 @@
                                 </p>
                             </td>
                             <td>
-                               <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
+                                <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
                             </td>
                             <td>
                                 <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -181,7 +187,8 @@
                                 </div>
                             </td>
                             <td>
-                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                </div>
                             </td>
                             @php
                                 $status_class = $parcel->status ?? null;
@@ -210,6 +217,16 @@
                                 <label class="{{ $classValue }}" for="status">
                                     {{ $parcelStatus ?? '-' }}
                                 </label>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -240,7 +257,8 @@
                                         <td>{{$parcelItem->container->unique_id ?? "-"}}</td>
                                         <td class="product_img justify-items-center popup" style="justify-items: center;">
                                             @if (!empty($parcelItem->img))
-                                                <img style="cursor: pointer;" src="{{ asset($parcelItem->img) }}" alt="Inventory Image" class="itemImg">
+                                                <img style="cursor: pointer;" src="{{ asset($parcelItem->img) }}"
+                                                    alt="Inventory Image" class="itemImg">
                                             @else
                                                 <span>-</span>
                                             @endif

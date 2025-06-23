@@ -38,7 +38,8 @@
                 <label>Shipping Type</label>
                 <select class="js-example-basic-single select2" name="shipping_type" id="shipping_type">
                     <option value="">Select Shipping Type</option>
-                    <option value="Air Cargo" {{ request()->query('shipping_type') == "Air Cargo" ? 'selected' : '' }}>Air Cargo
+                    <option value="Air Cargo" {{ request()->query('shipping_type') == "Air Cargo" ? 'selected' : '' }}>Air
+                        Cargo
                     </option>
                     <option value="Ocean Cargo" {{ request()->query('shipping_type') == "Ocean Cargo" ? 'selected' : '' }}>Ocean Cargo
                     </option>
@@ -94,6 +95,7 @@
                                 <th>To</th>
                                 <th>Shipping Type</th>
                                 <th>Pickup Date</th>
+                                <th>Delivery Date</th>
                                 <th>Capture Image</th>
                                 <th>Items</th>
                                 <th>Estimate cost</th>
@@ -104,6 +106,8 @@
                                 <th>Payment Mode</th>
                                 {{-- <th>Warehouse</th> --}}
                                 <th>Status</th>
+                                <th>Pickup Type</th>
+                                <th>Delivery Type</th>
                                 <th>Status update</th>
                                 <th>Action</th>
                             </tr>
@@ -174,6 +178,9 @@
                                     <td>
                                         <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
                                     </td>
+                                     <td>
+                                        <div>{{ $parcel->delivery_date ? $parcel->delivery_date->format('d-m-Y') : '-' }}</div>
+                                    </td>
                                     <td>
                                         <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                                     </td>
@@ -200,8 +207,6 @@
                                             'Partial' => 'partial_status',
                                         };
                                     @endphp
-
-
                                     <td>
                                         <label class="labelstatusy" for="{{ $forValue }}">
                                             {{ $parcel->payment_status ?? '-' }}
@@ -215,14 +220,18 @@
                                                 <div class="row">Total:</div>
                                             </div>
                                             <div class="col-6">
-                                                 <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}</div>
-                                                 <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}</div>
-                                                 <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
+                                                <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                        <div>
+                                            {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                        </div>
                                     </td>
                                     @php
                                         $status_class = $parcel->status ?? null;
@@ -251,6 +260,16 @@
                                         <label class="{{ $classValue }}" for="status">
                                             {{ $parcelStatus ?? '-' }}
                                         </label>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
+                                        </div>
                                     </td>
                                     <td>
                                         <li class="nav-item dropdown">
@@ -288,7 +307,7 @@
                                                             </li>
                                                             <li>
                                                                 <a class="dropdown-item 
-                                                                                                                                       {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
+                                                                                                                                                                   {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#arrived_warehouse"
                                                                     data-id="{{ $parcel->id }}" href="javascript:void(0);">
@@ -584,7 +603,7 @@
                                     <label class="foncolor">Amount</label>
                                     <input type="number" name="amount" class="form-control inp"
                                         placeholder="Enter amount">
-                                      <div id="amountError" class="text-danger small mt-1"></div>   
+                                    <div id="amountError" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
@@ -593,7 +612,7 @@
                                     <input type="text" name="notes" class="form-control inp Note"
                                         placeholder="Enter note">
                                 </div>
-                            </div>      
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

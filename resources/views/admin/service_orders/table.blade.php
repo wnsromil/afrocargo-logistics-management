@@ -11,6 +11,7 @@
                         <th>To</th>
                         <th>Shipping Type</th>
                         <th>Pickup Date</th>
+                        <th>Delivery Date</th>
                         <th>Capture Image</th>
                         <th>Items</th>
                         <th>Estimate cost</th>
@@ -87,6 +88,9 @@
                                             <td>
                                                 <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
                                             </td>
+                                            <td>
+                                             <div>{{ $parcel->delivery_date ? $parcel->delivery_date->format('d-m-Y') : '-' }}</div>
+                                             </td>
                                             <td>
                                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
                                             </td>
