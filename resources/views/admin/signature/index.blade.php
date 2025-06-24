@@ -116,7 +116,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No inventories found.
+                                    <td colspan="11" class="px-4 py-4 text-center text-gray-500">No signature found.
                                     </td>
                                 </tr>
                             @endforelse

@@ -595,6 +595,9 @@ class OrderStatusManage extends Controller
             'warehouse_id' => $request->warehouse_id ?? null,
         ]);
 
+        ParcelPickupDriver::where('parcel_id', $parcel->id)
+            ->update(['status' => 14]);
+
         // Create a new entry in ParcelHistory
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
@@ -619,27 +622,32 @@ class OrderStatusManage extends Controller
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
             'notes' => 'nullable|string',
-            'pickup_date' => 'required|date',
+            'date' => 'required|date',
+            'Re_schedule_type' => 'required|in:pickup,delivery',
         ]);
+
+
 
         // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
-        // Update the parcel details
 
-        if ($parcel->status == 23) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Parcel has already been rescheduled. Status update not allowed.',
-            ], 400);
-        }
-
-        $parcel->update([
+        // Prepare update data
+        $updateData = [
             'status' => 23,
             'warehouse_id' => $request->warehouse_id,
-            'pickup_date' => $request->pickup_date,
-        ]);
+        ];
 
-        // Create a new entry in ParcelHistory
+        if ($request->Re_schedule_type === 'pickup') {
+            $updateData['pickup_date'] = Carbon::createFromFormat('m/d/Y', $request->date)->format('Y-m-d');
+            //dd(Carbon::createFromFormat('m/d/Y', $request->date)->format('Y-m-d'));
+        } elseif ($request->Re_schedule_type === 'delivery') {
+            $updateData['delivery_date'] = Carbon::createFromFormat('m/d/Y', $request->date)->format('Y-m-d');
+        }
+
+        // Update parcel
+        $parcel->update($updateData);
+
+        // Save to ParcelHistory
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
             'created_user_id' => $request->created_user_id,
@@ -648,7 +656,7 @@ class OrderStatusManage extends Controller
             'parcel_status' => 23,
             'note' => $request->notes ?? null,
             'warehouse_id' => $request->warehouse_id,
-            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
 
         return response()->json([
@@ -685,7 +693,7 @@ class OrderStatusManage extends Controller
 
         return $nearestWarehouse;
     }
-  
+
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
     {
         // Haversine formula to calculate distance in kilometers
@@ -702,6 +710,4 @@ class OrderStatusManage extends Controller
 
         return $earthRadius * $c; // Distance in km
     }
-
-    
 }

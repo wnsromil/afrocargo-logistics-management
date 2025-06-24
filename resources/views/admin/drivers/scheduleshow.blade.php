@@ -117,7 +117,7 @@
                 <div class="row row-cols-1 row-cols-md-5 justify-content-between">
                     <div class="col">
                         <p class="fw_600 col3A mb-2">Date</p>
-                        <p class="col3A">{{ \Carbon\Carbon::parse($availabilitie->date)->format('d-m-Y') ?? '--' }}</p>
+                        <p class="col3A">{{ \Carbon\Carbon::parse($availabilitie->date)->format('m-d-Y') ?? '--' }}</p>
                     </div>
                     <div class="col">
                         <p class="fw_600 col3A mb-2">Location</p>

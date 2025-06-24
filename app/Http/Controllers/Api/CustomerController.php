@@ -393,7 +393,7 @@ class CustomerController extends Controller
     public function getUsersByWarehouse(Request $request)
     {
         $warehouseId = $request->warehouse_id;
-
+        $role = $request->role_id;
         if (!$warehouseId) {
             return response()->json(['message' => 'Warehouse ID is required'], 400);
         }
@@ -411,7 +411,9 @@ class CustomerController extends Controller
             return response()->json(['message' => 'No users found for the given warehouse.'], 404);
         }
 
-        return response()->json(['users' => $users], 200);
+        return response()->json(['users' => $users->when(!empty($role),function($q){
+            return $q->where('role_id',request()->role_id);
+        })->values()], 200);
     }
 
     public function getVehiclesByWarehouse(Request $request)

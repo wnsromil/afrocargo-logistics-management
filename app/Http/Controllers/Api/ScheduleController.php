@@ -52,7 +52,7 @@ class ScheduleController extends Controller
                 // Step 2: availability record nahi mila => sab periods maan lo
                 $availablePeriods = ['morning', 'afternoon', 'evening'];
             }
-
+        
             // Step 3: Weekly schedule nikaalo
             $weekly = WeeklySchedule::where('user_id', $userId)
                 ->where('day', $dayName)

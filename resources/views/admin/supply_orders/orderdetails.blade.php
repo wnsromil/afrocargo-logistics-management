@@ -61,7 +61,7 @@
                                 {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
                             </td>
                             <td>
-                                <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
+                                <div>{{ $parcel->created_at ? $parcel->created_at->format('m-d-Y') : '-' }}</div>
                             </td>
                             <td>
                                 <div>${{ number_format($parcel->total_amount ?? 0, 2) }}</div>

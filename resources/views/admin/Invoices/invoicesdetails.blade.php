@@ -231,7 +231,7 @@
         <!-- Invoice Info -->
         <div class="invoice-info">
             <p><span class="highlight">Invoice
-                    Date:</span>{{Carbon\Carbon::parse($getInvoice->issue_date)->format('d-m-Y')}}</p>
+                    Date:</span>{{Carbon\Carbon::parse($getInvoice->issue_date)->format('m-d-Y')}}</p>
             <p><span class="highlight">Driver Name:</span>{{$getInvoice->parcel->driver->name}}</p>
             <p><span class="highlight">Cont:</span> 0425</p>
             <p><span class="highlight">Invoice No:123</span> {{$getInvoice->invoice_no}}</p>

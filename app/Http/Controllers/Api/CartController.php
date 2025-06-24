@@ -89,7 +89,6 @@ class CartController extends Controller
             return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
         }
 
-        // Step 1: Warehouse IDs based on city_id, or fallback to single warehouse_id
         $warehouseIds = Warehouse::where('id', $nearestWarehouse->id)->pluck('id');
 
         // Step 2: Query Inventory with relationships and filters

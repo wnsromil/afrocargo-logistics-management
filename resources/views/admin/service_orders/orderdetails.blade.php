@@ -143,10 +143,14 @@
                                 </div>
                             </td>
                             <td>
-                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
+                                <div>
+                                    {{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m-d-Y') : '-' }}
+                                </div>
                             </td>
                             <td>
-                                <div>{{ $parcel->delivery_date ? $parcel->delivery_date->format('d-m-Y') : '-' }}</div>
+                                <div>
+                                    {{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m-d-Y') : '-' }}
+                                </div>
                             </td>
                             <td>
                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
@@ -216,6 +220,7 @@
                                     "15" => 'badge-abandoned',
                                     "21" => 'badge-picked-up',
                                     "22" => 'badge-in-transit',
+                                    "23" => 'badge-pickup_re-schedule',
                                     default => 'badge-pending',
                                 };
 

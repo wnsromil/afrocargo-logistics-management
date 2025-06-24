@@ -84,28 +84,47 @@ class SignatureController extends Controller
     {
         // Step 1: Validate input
         $request->validate([
-            'warehouse_name'     => 'required|exists:warehouses,id',
+            'warehouse_name'   => 'required|exists:warehouses,id',
             'signature_name'   => 'required|string|max:255',
-            'img'   => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'img'              => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Step 2: Upload signature file
+        $data = [];
         if ($request->hasFile('img')) {
             $image = $request->file('img');
             $imageName = 'uploads/signature/' . $image->getClientOriginalName();
             $image->move(public_path('uploads/signature'), $imageName);
             $data['img'] = $imageName;
         }
-        // Step 3: Create new signature record
+
+        // Step 3: Check if signature already exists for warehouse & is_deleted = 'Yes'
+        $existing = Signature::where('warehouse_id', $request->warehouse_name)
+            ->where('is_deleted', 'No')
+            ->first();
+
+        if ($existing) {
+            // Update only image
+            $existing->update([
+                'signature_file' => $data['img'],
+            ]);
+
+            return redirect()->route('admin.signature.index')
+                ->with('success', 'Signature image updated successfully.');
+        }
+
+        // Step 4: Create new signature record
         Signature::create([
             'warehouse_id'     => $request->warehouse_name,
             'signature_name'   => $request->signature_name,
             'signature_file'   => $data['img'],
             'creator_user_id'  => auth()->id(),
         ]);
+
         return redirect()->route('admin.signature.index')
-            ->with('success', 'Signature added successfully');
+            ->with('success', 'Signature added successfully.');
     }
+
 
     /**
      * Display the specified resource.

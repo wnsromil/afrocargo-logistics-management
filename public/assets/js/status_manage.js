@@ -6,13 +6,15 @@
 
             // Clear previous error messages
             $("#driverError").text("");
-
+            $("#warehouseError").text("");
             // Get Form Data
-            let parcelId = $("#parcel_id_input").val();
-            let warehouse_id = $("#warehouse_id_input").val();
+            let parcelId = $("#parcel_id_input_hidden").val();
+            let warehouse_id = $(this)
+                .find('select[name="warehouse_id"]')
+                .val();
             let created_user_id = $("#created_user_id_input").val();
-            let driverId = $("#driverDropdown").val();
-            let notes = $('input[name="notes"]').val();
+            let driverId = $(this).find('select[name="driver_id"]').val();
+            let notes = $(this).find('input[name="notes"]').val();
 
             // Client-Side Validation
             let hasError = false;
@@ -23,6 +25,10 @@
             }
             if (!driverId) {
                 $("#driverError").text("Please select a Pickup Man.");
+                hasError = true;
+            }
+            if (!warehouse_id) {
+                $("#warehouseError").text("Please select a warehouse.");
                 hasError = true;
             }
 
@@ -243,13 +249,15 @@
 
             // Clear previous error messages
             $("#deliverydriverError").text("");
-
+            $("#deliverywarehouseError").text("");
             // Get Form Data
-            let parcelId = $("#parcel_id_input").val();
-            let warehouse_id = $("#warehouse_id_input").val();
+            let parcelId = $("#parcel_id_input_hidden").val();
+            let warehouse_id = $(this)
+                .find('select[name="warehouse_id"]')
+                .val();
             let created_user_id = $("#created_user_id_input").val();
-            let driverId = $("#deliverydriverDropdown").val();
-            let notes = $('input[name="notes"]').val();
+            let driverId = $(this).find('select[name="driver_id"]').val();
+            let notes = $(this).find('input[name="notes"]').val();
 
             // Client-Side Validation
             let hasError = false;
@@ -260,6 +268,10 @@
             }
             if (!driverId) {
                 $("#deliverydriverError").text("Please select a Pickup Man.");
+                hasError = true;
+            }
+            if (!warehouse_id) {
+                $("#deliverywarehouseError").text("Please select a warehouse.");
                 hasError = true;
             }
 
@@ -323,7 +335,7 @@
             let hasError = false;
             // Prepare FormData object
             let formData = new FormData();
-            let amount = $('input[name="amount"]').val();
+            let amount = $(this).find('input[name="amount"]').val();
 
             if (!amount) {
                 $("#amountError").text("Amount is required.");
@@ -331,9 +343,12 @@
             }
 
             // Add fields
-            formData.append("parcel_id", $("#parcel_id_input").val());
-            formData.append("amount", $('input[name="amount"]').val());
-            formData.append("notes", $('input[name="notes"]').val());
+            formData.append("parcel_id", $("#parcel_id_input_hidden").val());
+            formData.append(
+                "amount",
+                $(this).find('input[name="amount"]').val()
+            );
+            formData.append("notes", $(this).find('input[name="notes"]').val());
 
             // Add hidden fields
             formData.append("warehouse_id", $("#warehouse_id_input").val());
@@ -393,7 +408,7 @@
         });
     });
 
-     $(document).ready(function () {
+    $(document).ready(function () {
         $("#cancelledForm").on("submit", function (e) {
             e.preventDefault(); // Prevent default form submission
 
@@ -401,8 +416,8 @@
             // Get Form Data
             let parcelId = $("#parcel_id_input_hidden").val();
             let created_user_id = $("#created_user_id_input").val();
-            let notes = $('input[name="notes"]').val();
-            
+            let notes = $(this).find('input[name="notes"]').val();
+
             // Client-Side Validation
             let hasError = false;
 
@@ -410,7 +425,7 @@
                 alert("Parcel ID is required.");
                 return;
             }
-         
+
             // If there are validation errors, stop further execution
             if (hasError) {
                 return;
@@ -457,23 +472,95 @@
         });
     });
 
+    $(document).ready(function () {
+        $("#Re_schedule_pickupForm, #Re_schedule_deliveryForm").on(
+            "submit",
+            function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Clear previous error messages
+                // Get Form Data
+                let parcelId = $("#parcel_id_input_hidden").val();
+                let created_user_id = $("#created_user_id_input").val().trim();
+                let notes = $(this).find('input[name="notes"]').val();
+                let date = $(this).find('input[name="percel_date"]').val();
+                let Re_schedule_type = $(this)
+                    .find('input[name="Re_schedule_type"]')
+                    .val();
+                // Client-Side Validation
+
+                let hasError = false;
+
+                if (!parcelId) {
+                    alert("Parcel ID is required.");
+                    return;
+                }
+
+                // If there are validation errors, stop further execution
+                if (hasError) {
+                    return;
+                }
+
+                // Show Loading Indicator
+                $(".btn-primary").html("Processing...").prop("disabled", true);
+
+                // Make AJAX POST Request
+                $.ajax({
+                    url: "/api/update-status-admin-reschedule", // API endpoint
+                    type: "POST",
+                    data: {
+                        parcel_id: parcelId,
+                        created_user_id: created_user_id,
+                        notes: notes,
+                        date: date,
+                        Re_schedule_type: Re_schedule_type,
+                    },
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                    },
+                    success: function (response) {
+                        document
+                            .querySelector("#cancelledForm .custom-btn")
+                            .click();
+                        Swal.fire({
+                            title: "Good job!",
+                            text: "Status changed successfully!",
+                            icon: "success",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle Server-Side Validation Errors
+                        let errors = xhr.responseJSON?.errors || {};
+                    },
+                    complete: function () {
+                        // Re-enable Save Button
+                        $(".btn-primary").html("Save").prop("disabled", false);
+                    },
+                });
+            }
+        );
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
         // Listen for all modal trigger clicks
-        document
-            .querySelectorAll('[data-bs-toggle="modal"]')
-            .forEach(function (button) {
-                button.addEventListener("click", function () {
-                    // Get the ID from the clicked button's data-id attribute
-                    const parcelId = this.getAttribute("data-id");
-
-                    // Store the ID in the hidden input field
+        let ajexTable = document.getElementById("ajexTable");
+        if (ajexTable) {
+            ajexTable.addEventListener("click", function (e) {
+                const button = e.target.closest('[data-bs-toggle="modal"]');
+                if (button) {
+                    const parcelId = button.getAttribute("data-id");
                     if (parcelId) {
                         document.getElementById(
                             "parcel_id_input_hidden"
                         ).value = parcelId;
                     }
-                });
+                }
             });
+        }
     });
 
     document.addEventListener("DOMContentLoaded", function () {

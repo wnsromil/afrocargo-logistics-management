@@ -136,10 +136,10 @@ class ServiceOrderStatusManage extends Controller
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
             'notes' => 'nullable|string',
-            'estimate_cost' => 'required|numeric|min:0',
-            'partial_payment' => 'required|numeric|min:0',
-            'remaining_payment' => 'required|numeric|min:0',
-            'payment_type' => 'required|in:COD,Online',
+            'estimate_cost' => 'nullable|numeric|min:0',
+            'partial_payment' => 'nullable|numeric|min:0',
+            'remaining_payment' => 'nullable|numeric|min:0',
+            'payment_type' => 'nullable|in:COD,Online',
         ]);
 
         $parcel = Parcel::findOrFail($request->parcel_id);
@@ -159,11 +159,11 @@ class ServiceOrderStatusManage extends Controller
             'driver_id' => $this->user->id,
             'status' => 3,
             'warehouse_id' => $this->user->warehouse_id,
-            'payment_status' => $validatedData['payment_status'],
-            'estimate_cost' => $request->estimate_cost,
-            'partial_payment' => $request->partial_payment,
-            'remaining_payment' => $request->remaining_payment,
-            'payment_type' => $request->payment_type,
+            // 'payment_status' => $validatedData['payment_status'],
+            // 'estimate_cost' => $request->estimate_cost,
+            // 'partial_payment' => $request->partial_payment,
+            // 'remaining_payment' => $request->remaining_payment,
+            // 'payment_type' => $request->payment_type,
         ]);
 
         ParcelHistory::create([
@@ -183,6 +183,7 @@ class ServiceOrderStatusManage extends Controller
             'data' => $parcel
         ]);
     }
+
     public function statusUpdate_Delivery(Request $request)
     {
         $request->validate([

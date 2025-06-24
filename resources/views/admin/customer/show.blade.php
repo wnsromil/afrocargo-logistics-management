@@ -97,7 +97,7 @@
         <div class="col-4 customerr">
             <p class="phead">Signature Date</p>
             <p class="pdata">
-                {{ $user->signature_date ? \Carbon\Carbon::parse($user->signature_date)->format('d-m-Y') : '-' }}
+                {{ $user->signature_date ? \Carbon\Carbon::parse($user->signature_date)->format('m-d-Y') : '-' }}
             </p>
         </div>
         <div class="col-4 customerr">
@@ -115,7 +115,7 @@
         <div class="col-4 customerr">
             <p class="phead">Lic Expired Date</p>
             <p class="pdata">
-                {{ $user->license_expiry_date ? \Carbon\Carbon::parse($user->license_expiry_date)->format('d-m-Y') : '-' }}
+                {{ $user->license_expiry_date ? \Carbon\Carbon::parse($user->license_expiry_date)->format('m-d-Y') : '-' }}
             </p>
         </div>
         <div class="col-4 customerr">

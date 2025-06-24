@@ -883,7 +883,7 @@ h2 {
 }
 
 .card-table .card-body .table td:first-child {
-    text-align: center;
+    /* text-align: center; */
 }
 
 .daterangepicker-wrap.cal-icon::after {

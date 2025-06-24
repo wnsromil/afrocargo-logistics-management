@@ -61,7 +61,7 @@
                                 --
                             </td>
                             <td>
-                                <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
+                                <div>{{ $parcel->created_at ? $parcel->created_at->format('m-d-Y') : '-' }}</div>
                             </td>
 
                             {{-- <td>

@@ -22,6 +22,7 @@ class Parcel extends Model
         'delivery_address_id' => 'integer',
         'pickup_time' => 'string',
         'pickup_date' => 'date',
+        'delivery_date' => 'date',
         'delivery_type' => 'string',
         'pickup_type' => 'string',
     ];
@@ -91,7 +92,7 @@ class Parcel extends Model
     {
         return $this->belongsTo(Address::class, 'pickup_address_id');
     }
-    
+
     public function deliveryaddress()
     {
         return $this->belongsTo(Address::class, 'delivery_address_id');

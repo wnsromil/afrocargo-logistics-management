@@ -300,7 +300,7 @@
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block ">
-                                    <label class="foncolor">Vehicle No<i class="text-danger">*</i></label>
+                                    <label class="foncolor">Vehicle No</label>
                                     <div class="input-block mb-0">
                                         <input type="text" name="vehicle_no" id="vehicle_no" class="form-control inp"
                                             placeholder="" readonly>
