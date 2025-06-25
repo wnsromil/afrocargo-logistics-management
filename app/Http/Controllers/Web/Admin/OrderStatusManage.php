@@ -207,6 +207,7 @@ class OrderStatusManage extends Controller
                 'description'           => $vehicleData,
                 'arrived_warehouse_id'  => $validated['to_warehouse_id'],
                 'note'                  => $validated['note'],
+                ''
             ]);
         }
 
@@ -314,6 +315,7 @@ class OrderStatusManage extends Controller
             $latestTransfer->update([
                 'status' => 19,
                 'note' => $validated['note'],
+                'arrived_container' => 'Yes',
             ]);
         }
 
@@ -328,6 +330,7 @@ class OrderStatusManage extends Controller
             $latestArrived->update([
                 'status' => 18,
                 'note' => $validated['note'],
+                 'arrived_container' => 'Yes',
             ]);
         }
 
@@ -392,6 +395,7 @@ class OrderStatusManage extends Controller
         if ($latestArrived) {
             $latestArrived->update([
                 'status' => 7,
+                'full_discharge' => "Yes"
             ]);
         }
 
@@ -523,7 +527,7 @@ class OrderStatusManage extends Controller
             'amount' => 'nullable|numeric',
             'currency_name' => 'nullable|string',
             'created_user_id' => 'required|exists:users,id',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            //'warehouse_id' => 'required|exists:warehouses,id',
         ]);
 
         // Default image path
@@ -562,7 +566,7 @@ class OrderStatusManage extends Controller
             'status' => 'Updated',
             'parcel_status' => 11,
             'note' => $request->notes ?? null,
-            'warehouse_id' => $request->warehouse_id,
+            'warehouse_id' => $parcel->arrived_warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
 

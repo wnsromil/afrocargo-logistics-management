@@ -19,26 +19,19 @@ if (!function_exists('calculateDriverInventoryDetails')) {
             ];
         }
 
-        $driverId = $driverInventory->driver_id;
-
-        // Get all related inventories for the same driver
-        $relatedInventories = DriverInventory::where('driver_id', $driverId)->get();
-
         $DriverInventory_quantity_out = 0;
         $DriverInventory_quantity_in = 0;
 
-        foreach ($relatedInventories as $item) {
-            if ($item->in_out === 'Out') {
-                $DriverInventory_quantity_out += $item->quantity ?? 0;
-            } elseif ($item->in_out === 'In') {
-                $DriverInventory_quantity_in += $item->quantity ?? 0;
-            }
+        // Check just this entry's in_out
+        if ($driverInventory->in_out === 'Out') {
+            $DriverInventory_quantity_out = $driverInventory->quantity ?? 0;
+        } elseif ($driverInventory->in_out === 'In') {
+            $DriverInventory_quantity_in = $driverInventory->quantity ?? 0;
         }
 
-        // Final inventory quantity = Out - In
         $DriverInventory_quantity_total = $DriverInventory_quantity_out - $DriverInventory_quantity_in;
 
-        // Get all sold quantities
+        // Get only sold quantity related to this inventory row
         $DriverInventoriesSolde_quantity = DriverInventoriesSolde::where('driver_inventories_id', $driverInventoryId)
             ->sum('quantity');
 

@@ -118,12 +118,12 @@
                                                                             data-bs-target="#fullyloadedcontainer"
                                                                             vehicle-id="{{ $vehicle->container->id }}"
                                                                             container-history-id="{{ $vehicle->id }}">
-                                                                            Full load
+                                                                            Container Full load at warehouse
                                                                         </a>
                                                                     @else
                                                                         <a class="dropdown-item text-muted disabled"
                                                                             href="javascript:void(0);">
-                                                                            Full load
+                                                                            Container Full load at warehouse
                                                                         </a>
                                                                     @endif
                                                                 </li>

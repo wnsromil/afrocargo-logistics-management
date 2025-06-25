@@ -179,7 +179,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/get-expenses', [ExpensesController::class, 'getExpensesByUser']);
 
         // Driver Inventory
-        Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventorySolde']);
+        Route::get('/get-driver-inventory-sold', [DriverInventoryController::class, 'getDriverInventorySolde']);
+        Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventory']);
 
         // Schedule apis
         Route::post('/location-store', [AvailabilityController::class, 'locationStore']);

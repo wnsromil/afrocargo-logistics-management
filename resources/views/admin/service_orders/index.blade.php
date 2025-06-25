@@ -194,8 +194,20 @@
                                             {{  $parcel->descriptions ?? '-' }}
                                         </p>
                                     </td>
-                                    <td>
-                                        <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
+                                      <td>
+                                        <div>
+                                             <div class="row">
+                                            <div class="col-6">
+                                                <div class="row">Customer:</div>
+                                                <div class="row">Driver:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -691,13 +703,19 @@
                                         class="form-control" readonly value="{{ auth()->user()->id }}">
                                 </div>
                             </div>
-                            <select class="js-example-basic-single select2" name="warehouse_id"
-                                onchange="fetchDeliveryDriversBywarehouse(this.value)">
-                                <option selected="selected" value="">Select Warehouse</option>
-                                @foreach ($warehouses as $warehouse)
-                                    <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
-                                @endforeach
-                            </select>
+                            <div class=" col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Warehouse<i class="text-danger">*</i></label>
+                                    <select class="js-example-basic-single select2" name="warehouse_id"
+                                        onchange="fetchDeliveryDriversBywarehouse(this.value)">
+                                        <option selected="selected" value="">Select Warehouse</option>
+                                        @foreach ($warehouses as $warehouse)
+                                            <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="deliverywarehouseError" class="text-danger small mt-1"></div>
+                                </div>
+                            </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block mb-3">
                                     <label class="foncolor">Delivery Man<i class="text-danger">*</i></label>
@@ -705,7 +723,7 @@
                                         name="driver_id">
                                         <option selected="selected" value="">Select delivery Man</option>
                                     </select>
-                                    <div id="deliverywarehouseError" class="text-danger small mt-1"></div>
+                                    <div id="deliverydriverError" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">

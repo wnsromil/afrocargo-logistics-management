@@ -111,7 +111,19 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
+                                        <div>
+                                             <div class="row">
+                                            <div class="col-6">
+                                                <div class="row">Customer:</div>
+                                                <div class="row">Driver:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <div>{{ $parcel->driver->name ?? "-"}}</div>

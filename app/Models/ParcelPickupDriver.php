@@ -21,7 +21,8 @@ class ParcelPickupDriver extends Model
         'driver_id',
         'container_id',
         'container_move_id',
-        'move'
+        'move',
+        'status'
     ];
 
     public function parcelStatus()

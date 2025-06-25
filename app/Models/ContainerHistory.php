@@ -26,7 +26,9 @@ class ContainerHistory extends Model
         'note',
         'type',
         'open_date',
-        'close_date'
+        'close_date',
+        'arrived_container',
+        'full_discharge'
 
     ];
 
