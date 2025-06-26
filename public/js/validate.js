@@ -73,11 +73,11 @@ function jsValidator(rules, form = null,config={}) {
                 input = form.find(`[name="${name}"]`);
                 errors[name] = input.val() ? null : `${name} is required.`;
                 // Add error message span after the input
-                input.after(`<span class="text-danger">${name.replace(/_/g, ' ')} is required.</span>`);
+                // input.after(`<span class="text-danger">${name.replace(/_/g, ' ')} is required.</span>`);
             } else {
                 input = $(`[name="${name}"]`);
                 // Remove the specific error message span after the input
-                input.after('span.text-danger').remove();
+                // input.after('span.text-danger').remove();
             }
 
             if (!input.val()) {
@@ -171,9 +171,9 @@ function jsValidator(rules, form = null,config={}) {
 
         if (!fieldValid) {
             input.addClass("is-invalid");
-            if(config.showErrorMessages) {
-                input.after(`<div><p class="text-danger">${field.replace(/_/g, ' ')} is required.</p></div>`);
-            }
+            // if(config.showErrorMessages) {
+            //     input.after(`<div><p class="text-danger">${field.replace(/_/g, ' ')} is required.</p></div>`);
+            // }
             
             isValid = false;
             Swal.fire({
@@ -183,9 +183,9 @@ function jsValidator(rules, form = null,config={}) {
                 });
         } else {
             input.removeClass("is-invalid");
-            if(config.showErrorMessages) {
-                input.next('div').remove();
-            }
+            // if(config.showErrorMessages) {
+            //     input.next('div').remove();
+            // }
         }
     }
     if(config.ErrorMessagesPush) {

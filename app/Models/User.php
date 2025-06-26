@@ -190,6 +190,13 @@ class User extends Authenticatable
         );
     }
 
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => trim($this->name . ' ' . $this->last_name)
+        );
+    }
+
     public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
     {
         if (empty($role_id)) {

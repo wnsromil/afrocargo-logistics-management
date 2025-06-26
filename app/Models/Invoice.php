@@ -37,12 +37,13 @@ class Invoice extends Model
                 'customer_id',
                 'ship_customer_id',
                 'driver_id',
+                'arrived_warehouse_id',
                 'driver_subcategories_data',
                 'total_amount',
                 'estimate_cost',
                 'container_id',
                 'percel_comment'
-            ])->with(['driver' => function ($query) {
+            ])->with(['arrivedWarehouse','driver' => function ($query) {
                 return $query->select([
                     'id',
                     'name',
@@ -141,7 +142,7 @@ class Invoice extends Model
 
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class);
+        return $this->belongsTo(Warehouse::class)->with('signature');
     }
 
     public function container()
@@ -171,5 +172,10 @@ class Invoice extends Model
     public function barcodes()
     {
         return $this->hasMany(Barcode::class, 'invoice_id')->with('ParcelInventory');
+    }
+
+    public function claims()
+    {
+        return $this->hasMany(Claim::class, 'invoice_id')->with(['user']);
     }
 }

@@ -5,6 +5,8 @@ var pickupAddress = {};
 var deliveryAddress = {};
 var currentRow = null;
 var invoce_type = "services";
+let exchangeRates = [];
+var maxPaymentAmountValue = 0;
 
 function toggleLoginForm(type) {
     if (type === "services") {
@@ -69,29 +71,6 @@ $('input[name="transport_type"]').on("click", function () {
         $('select[name="container_id"]').prop("disabled", false);
     }
 });
-
-window.onload = function () {
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const formType = urlParams.get('id') || 'services';
-    // toggleLoginForm(formType);
-    setTimeout(() => {
-        console.log("invoce_typ", invoce_type);
-        toggleLoginForm(invoce_type);
-        if ($('input[name="transport_type"]').val() != "air") {
-            $('select[name="container_id"]')
-                .prop("disabled", true) // this is essential
-                .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
-                .css("opacity", "1"); // optional: restores visual state
-        } else {
-            $('select[name="container_id"]').prop("disabled", false);
-        }
-    }, 600);
-};
-
-document.getElementById("addCustomer").onclick = () => {
-    // it's deliver address code
-    document.querySelector(".newCustomerAdd").classList.toggle("none");
-};
 
 $("#addCustomer").on("click", function () {
     $(".newCustomerAdd").toggleClass("none");
@@ -236,6 +215,10 @@ $(document).ready(function () {
                     search: params.term,
                     address_type: address_type,
                     invoice_type: invoce_type,
+                    invoice_custmore_id:
+                        address_type == "pickup"
+                            ? $('input[name="invoice_custmore_id"]').val()
+                            : null,
                 };
             },
             processResults: function (data) {
@@ -308,6 +291,11 @@ $(document).ready(function () {
                     <td><input type="text" class="form-control tdbor inputcolor" name="label_qty" value="${
                         item.label_qty || 0
                     }"></td>
+                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="${
+                                                $item.volume || 0
+                                            }">
+                    </td>
                     <td>
                         <div class="d-flex align-items-center priceInput">
                             <input type="text" class="form-control inputcolor price-input" name="price" value="${
@@ -364,6 +352,8 @@ $(document).ready(function () {
                                             name="qty"></td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="label_qty"></td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume"></td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput"><input type="text"
                                                 class="form-control inputcolor" placeholder="" name="price"><button
@@ -409,12 +399,31 @@ $(document).ready(function () {
         $('input[name="parcel_id"]').val(customer.parcel_id);
         // }
 
-        if (customer.delivery_address) {
+        if (customer.address_type == "delivery" && customer.delivery_address) {
+            console.log("delivery pickup_address", customer.pickup_address);
             setPickupDeleveryFormValue(customer.delivery_address);
         }
-
-        if (customer.pickup_address) {
+        if (
+            customer.invoice_type == "Service" &&
+            inventoryItems &&
+            inventoryItems.length > 0
+        ) {
+            console.log("service pickup_address", customer.pickup_address);
             setPickupDeleveryFormValue(customer.pickup_address);
+        }
+        if (
+            customer.invoice_type == "Service" &&
+            customer.address_type == "pickup"
+        ) {
+            console.log(
+                "service pickup pickup_address",
+                customer.pickup_address
+            );
+            setPickupDeleveryFormValue(customer.pickup_address);
+        }
+        if (customer.invoice_type != "Service" && customer.pickup_address) {
+            setPickupDeleveryFormValue(customer.pickup_address);
+            console.log("supply pickup_address", customer.pickup_address, data);
         }
     });
 
@@ -446,6 +455,7 @@ function setPickupDeleveryFormValue(customer) {
             $("#ship_customer").append(newOption).trigger("change");
         } else {
             $('input[name="delivery_address_id"]').val(customer.id);
+            $('input[name="invoice_custmore_id"]').val(customer.id);
             // delevery select box
             // Add new option if not already present
             $("#delevery_customer_id").append(newOption).trigger("change");
@@ -491,11 +501,28 @@ function setPickupDeleveryFormValue(customer) {
     }
 }
 
-$("#auto_invoice_gen").on("click", () => {
-    $('input[name="invoice_no"]').val($('input[name="nextInvoiceNo"]').val());
-    
-    $('input[name="invoice_no"]').val('');
+$("#auto_invoice_gen").on("click", function () {
+    if ($(this).text().trim() === "Auto") {
+        $('input[name="invoice_no"]').prop("readonly", true);
+        $('input[name="invoice_no"]').val(
+            $('input[name="nextInvoiceNo"]').val()
+        );
+        $(this).text("Manual");
+    } else {
+        $('input[name="invoice_no"]').prop("readonly", false);
+        $('input[name="invoice_no"]').val("");
+        $(this).text("Auto");
+    }
 });
+
+// Helper to parse supply data from option
+function getSupplyData(option) {
+    try {
+        return JSON.parse(option.getAttribute("data-supply"));
+    } catch (e) {
+        return {};
+    }
+}
 
 // total and grand total
 
@@ -510,6 +537,7 @@ $(document).on("click", ".confirm-supply", function () {
     if (selectedItem && currentRow) {
         currentRow.find('input[name="supply_id"]').val(selectedItem.id);
         currentRow.find(".selected-supply-name").val(selectedItem.name);
+        currentRow.find('input[name="valume"]').val(selectedItem.valume ?? 0);
 
         currentRow.find('input[name="qty"]').val(1);
         currentRow.find('input[name="label_qty"]').val(1);
@@ -522,6 +550,68 @@ $(document).on("click", ".confirm-supply", function () {
             .val((selectedItem.price ?? 1) * 1);
 
         updateSummary();
+    }
+});
+
+$("#supplySelector").on("change", function () {
+    let selectedOption = this.options[this.selectedIndex];
+    let selectedItem = getSupplyData(selectedOption);
+
+    if (selectedItem) {
+        $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
+        $("#volume_price_display").text(selectedItem.volume_price ?? 0);
+        $("#price_display").text(selectedItem.price ?? 0);
+        $("#height_display").text(selectedItem.height ?? "N/A");
+        $("#width_display").text(selectedItem.width ?? "N/A");
+        $("#weight_display").text(selectedItem.weight ?? "N/A");
+    } else {
+        $("#volume_total_display").text("");
+        $("#volume_price_display").text(0);
+        $("#price_display").text(0);
+        $("#height_display").text("");
+        $("#width_display").text("");
+        $("#weight_display").text("");
+    }
+});
+
+// Open modal and set selected supply
+document
+    .querySelectorAll(
+        '.open-supply-modal button[data-bs-target="#supplyModal"]'
+    )
+    .forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            currentRow = btn.closest("tr");
+            // Get current supply_id and supply_name from hidden inputs in the row
+            let supplyId = currentRow.querySelector(
+                'input[name="supply_id"]'
+            )?.value;
+            let supplyName = currentRow.querySelector(
+                'input[name="supply_name"]'
+            )?.value;
+            let selector = document.getElementById("supplySelector");
+            // console.log("open modal", supplyId, supplyName, selector);
+            if (selector) {
+                if (supplyName) {
+                    // Fallback: select by supply_name using data-selected attribute
+                    let option = Array.from(selector.options).find(
+                        (opt) =>
+                            opt.getAttribute("data-selected") === supplyName
+                    );
+                    // console.log("open modal", supplyId, supplyName, selector,option,option.value);
+                    if (option) {
+                        selector.value = option.value;
+                    }
+                }
+                selector.dispatchEvent(new Event("change"));
+            }
+        });
+    });
+// When modal opens, trigger change to update display fields
+$("#supplyModal").on("shown.bs.modal", function () {
+    let selector = document.getElementById("supplySelector");
+    if (selector) {
+        selector.dispatchEvent(new Event("change"));
     }
 });
 
@@ -653,11 +743,10 @@ $(document).ready(function () {
             "mobile_number_code_id",
         ];
 
-        if (!jsValidator(requiredFields)) {
-            alert("Please fill all required fields.");
+        if (!jsValidator(requiredFields,$("#delivery_customer_inf_form"))) {
             return;
         }
-        let formData = $("#pick_up_customer_inf_form").serialize();
+        let formData = $("#delivery_customer_inf_form").serialize();
         // Submit via AJAX
         hendelAjex("/saveInvoceCustomer", formData);
     });
@@ -673,8 +762,7 @@ $(document).ready(function () {
             "country",
         ];
 
-        if (!jsValidator(requiredFields)) {
-            alert("Please fill all required fields.");
+        if (!jsValidator(requiredFields,$("#pick_up_customer_inf_form"))) {
             return;
         }
 
@@ -707,7 +795,17 @@ function hendelAjex(url, formData) {
                 $("#add_delevery_cancel").click();
             }
             if (response.success) {
-                alert(response.message);
+                // alert(response.message);
+
+                Swal.fire({
+                    icon: response.success ? "success" : "error",
+                    title: response.success ? "Success" : "Error",
+                    text:
+                        response.message ||
+                        (response.success
+                            ? "Operation successful."
+                            : "An error occurred."),
+                });
                 // optionally close modal or reset form
                 // $('#pick_up_customer_inf_form')[0].reset();
                 // $('.select2').val(null).trigger('change');
@@ -726,7 +824,6 @@ function hendelAjex(url, formData) {
     });
 }
 
-
 $(".datetimepicker").datetimepicker({
     format: "YYYY-MM-DD", // This enforces yyyy-mm-dd
 });
@@ -743,6 +840,7 @@ function getInvoiceItemsJSON() {
             qty: parseFloat($(this).find('[name="qty"]').val()) || 0,
             label_qty:
                 parseFloat($(this).find('[name="label_qty"]').val()) || 0,
+            volume: parseFloat($(this).find('[name="volume"]').val()) || 0,
             price: parseFloat($(this).find('[name="price"]').val()) || 0,
             value:
                 parseFloat($(this).find('[name="label_qty"]').val()) *
@@ -762,31 +860,32 @@ $("#services").on("submit", function (e) {
     e.preventDefault();
 
     const rules = {
-        invoce_type: 'required|in:services,supplies',
-        delivery_address_id: 'required',
-        pickup_address_id: 'required_if:invoce_type,services',
-        container_id: 'required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
-        driver_id: 'numeric',
-        warehouse_id: 'numeric',
-        ins: 'numeric',
-        discount: 'numeric',
-        tax: 'numeric',
-        weight: 'numeric',
-        balance: 'numeric',
-        total_price: 'required|numeric',
-        total_qty: 'required|numeric',
-        duedaterange: '',
-        currentdate: 'date_format:m-d-Y',
-        currentTime: '',
-        invoice_no: 'max:255',
-        total_amount: 'required|numeric',
-        grand_total: 'required|numeric',
-        payment: 'required|numeric',
-        status: 'required',
+        invoce_type: "required|in:services,supplies",
+        delivery_address_id: "required",
+        pickup_address_id: "required_if:invoce_type,services",
+        // container_id:
+        //     "required_if:invoce_type,services|required_if:transport_type,cargo|numeric",
+        driver_id: "numeric",
+        warehouse_id: "numeric",
+        ins: "numeric",
+        discount: "numeric",
+        tax: "numeric",
+        weight: "numeric",
+        balance: "numeric",
+        total_price: "required|numeric",
+        total_qty: "required|numeric",
+        duedaterange: "",
+        currentdate: "date_format:m-d-Y",
+        currentTime: "",
+        invoice_no: "max:255",
+        total_amount: "required|numeric",
+        grand_total: "required|numeric",
+        payment: "required|numeric",
+        status: "required",
     };
 
     if (!jsValidator(rules, $("#services"))) {
-        alert("Please fix the errors");
+        // alert("Please fix the errors");
         e.preventDefault();
         return false;
     }
@@ -852,73 +951,152 @@ flatpickr('input[name="currentTime"]', {
 //
 
 // Exchange rates (mock - can be loaded from DB or API)
-let exchangeRates = [];
 
-function calculateExchangeFields() {
+function calculateExchangeFields(form) {
+
+    // Use the provided form or default to the whole document
+    form = form || $(document);
+    let maxPaymentAmountValue = 0;
+
     // Get values
+    form.find('input[name="exchange_rate"]').prop("readonly", false);
+
     const payment = parseFloat($('input[name="payment_amount"]').val()) || 0;
     const totalBalance =
-        parseFloat($('input[name="total_balance"]').val()) || 0;
-    const currency = $('select[name="local_currency"]').val();
-    const rate =
-        exchangeRates.find((cur) => cur.currency_code === currency)
-            ?.exchange_rate || 1;
-
+        parseFloat(form.find('input[name="total_balance"]').val()) || 0;
+    let rate = form.find('input[name="exchange_rate"]').val() || 1;
+    const currency = form.find('select[name="local_currency"]').val();
+    if (currency === "USD") {
+        rate = 1; // USD is the base currency, so exchange rate is 1
+        form.find('input[name="exchange_rate"]').prop("readonly", true);
+    }
+    //  const currency = $('select[name="local_currency"]').val();
+    // const rate = exchangeRates.find((cur) => cur.currency_code === currency)
+    //     ?.exchange_rate || 1;
     // Set exchange rate field
-    $('input[name="exchange_rate"]').val(rate);
+    // $('input[name="exchange_rate"]').val(rate);
 
     // Calculate payment in USD (or base currency)
     const paymentInBase = payment * rate;
-    $('input[name="exchange_rate_balance"]').val(paymentInBase.toFixed(2));
+    maxPaymentAmountValue = totalBalance * rate;
+    form.find('input[name="exchange_rate_balance"]').val(
+        maxPaymentAmountValue.toFixed(2)
+    );
 
     // Applied payments (for now, just current payment)
-    $('input[name="applied_payments"]').val(payment.toFixed(2));
-    $('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
+    form.find('input[name="applied_payments"]').val(payment.toFixed(2));
+    form.find('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
 
     // Balance after payment (in original currency)
-    const balanceAfterPayment = totalBalance - payment;
-    $('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
+    const balanceAfterPayment = totalBalance - payment / rate;
+    form.find('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
 
     // Balance after payment, converted to base currency
     const balanceAfterExchange = balanceAfterPayment * rate;
-    $('input[name="balance_after_exchange_rate"]').val(
+    form.find('input[name="balance_after_exchange_rate"]').val(
         balanceAfterExchange.toFixed(2)
     );
 }
 
-$('input[name="payment_amount"], select[name="local_currency"]').on(
-    "input change",
-    calculateExchangeFields
-);
+function maxPaymentAmount(selt) {
 
-// Fetch and set exchange rates on page load and when currency changes
-function fetchAndSetExchangeRates() {
-    $.get(`/api/getCurrencyExchangeRate`, function (res) {
-        if (res) {
-            exchangeRates = res;
-            // Set select options if input[name="currency"] exists
-            const $currencyInput = $('select[name="local_currency"]');
-            if ($currencyInput.length) {
-                let options = "";
-                res.forEach(function (cur) {
-                    options += `<option value="${cur.currency_code}">${cur.currency_name}-${cur.currency_code}</option>`;
-                });
-                // If input is actually a select, set options
-                if ($currencyInput.is("select")) {
-                    $currencyInput.html(options);
-                }
-            }
-        }
-    });
+    const totalBalance =
+        parseFloat($(selt).closest('form').find('input[name="total_balance"]').val()) || 0;
+    let rate = $(selt).closest('form').find('input[name="exchange_rate"]').val() || 1;
+
+    var maxPaymentAmountValue = totalBalance * rate;
+    calculateExchangeFields($(selt).closest('form'));
+
+    console.log('parseFloat',parseFloat(selt.value),totalBalance, rate);
+
+    if (parseFloat(selt.value) > parseFloat(maxPaymentAmountValue)){
+        return (selt.value = maxPaymentAmountValue);
+    }
+    if (parseFloat(selt.value) < parseFloat(0)) return (selt.value = 0);
 }
 
-// Call on page load
-$(document).ready(function () {
-    fetchAndSetExchangeRates();
+// Use delegated event for select[name="local_currency"] to ensure handler works for dynamically loaded elements
+$('input[name="payment_amount"], input[name="exchange_rate"]').on("input", function () {
+    console.log("calculateExchangeFields called");
+    const form = $(this).closest("form");
+    calculateExchangeFields(form);
 });
 
-// Also call when currency changes (if needed)
-$('input[name="local_currency"]').on("change", fetchAndSetExchangeRates);
+// Delegated event for select[name="local_currency"]
+$(document).on("change", 'select[name="local_currency"]', function () {
+    console.log("calculateExchangeFields called (currency changed)");
+    const form = $(this).closest("form");
+    calculateExchangeFields(form);
+});
+
+// Update calculateExchangeFields to accept a form parameter
+// function calculateExchangeFields(form) {
+//     // Use the provided form or default to the whole document
+//     form = form || $(document);
+
+//     // Get values from the closest form
+//     const payment = parseFloat(form.find('input[name="payment_amount"]').val()) || 0;
+//     const totalBalance = parseFloat(form.find('input[name="total_balance"]').val()) || 0;
+//     let rate = form.find('input[name="exchange_rate"]').val() || 1;
+//     const currency = form.find('select[name="local_currency"]').val();
+
+//     form.find('input[name="exchange_rate"]').prop("readonly", false);
+
+//     if (currency === "USD") {
+//         rate = 1;
+//         form.find('input[name="exchange_rate"]').prop("readonly", true);
+//     }
+
+//     // Calculate payment in USD (or base currency)
+//     const paymentInBase = payment * rate;
+//     maxPaymentAmountValue = totalBalance * rate;
+//     form.find('input[name="exchange_rate_balance"]').val(
+//         maxPaymentAmountValue.toFixed(2)
+//     );
+
+//     // Applied payments (for now, just current payment)
+//     form.find('input[name="applied_payments"]').val(payment.toFixed(2));
+//     form.find('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
+
+//     // Balance after payment (in original currency)
+//     const balanceAfterPayment = totalBalance - payment / rate;
+//     form.find('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
+
+//     // Balance after payment, converted to base currency
+//     const balanceAfterExchange = balanceAfterPayment * rate;
+//     form.find('input[name="balance_after_exchange_rate"]').val(
+//         balanceAfterExchange.toFixed(2)
+//     );
+// }
+
+// // Fetch and set exchange rates on page load and when currency changes
+// function fetchAndSetExchangeRates() {
+//     $.get(`/api/getCurrencyExchangeRate`, function (res) {
+//         if (res) {
+//             exchangeRates = res;
+//             // Set select options if input[name="currency"] exists
+//             const $currencyInput = $('select[name="local_currency"]');
+//             if ($currencyInput.length) {
+//                 let options = "";
+//                 res.forEach(function (cur) {
+//                     options += `<option value="${cur.currency_code}">${cur.currency_name}-${cur.currency_code}</option>`;
+//                 });
+//                 // If input is actually a select, set options
+//                 if ($currencyInput.is("select")) {
+//                     $currencyInput.html(options);
+//                 }
+//             }
+//         }
+//     });
+// }
+
+// // Call on page load
+// $(document).ready(function () {
+//     fetchAndSetExchangeRates();
+// });
+
+// // Also call when currency changes (if needed)
+// $('input[name="local_currency"]').on("change", fetchAndSetExchangeRates);
 
 // Handles sending invoice email or SMS using the form and invoice ID
 // Listen for form submission
@@ -969,7 +1147,7 @@ $(document)
                     text: res.message || "Invoice sent successfully.",
                 });
                 // Optionally close modal or reset form
-                $('#sendinvoicepdf').closest(".modal").modal("hide");
+                $("#sendinvoicepdf").closest(".modal").modal("hide");
                 hideLoader();
             },
             error: function (xhr) {
@@ -1007,7 +1185,6 @@ $(document)
         }
     });
 
-
 $(document)
     .off("submit", "#AddnewLable")
     .on("submit", "#AddnewLable", function (e) {
@@ -1019,23 +1196,18 @@ $(document)
         const qty = form.find('input[name="labelQuantity"]').val();
         const invoiceId = form.find('input[name="invoiceId"]').val();
 
-
         // Prepare data
         const data = {
             _token: form.find('input[name="_token"]').val(),
             invoice_id: invoiceId,
             description: description,
-            qty:qty,
-            action:'generate'
+            qty: qty,
+            action: "generate",
         };
 
-        const requiredFields = [
-            "invoiceId",
-            "description",
-            "labelQuantity",
-        ];
+        const requiredFields = ["invoiceId", "description", "labelQuantity"];
 
-        if (!jsValidator(requiredFields,form)) {
+        if (!jsValidator(requiredFields, form)) {
             alert("Please fill all required fields.");
             return;
         }
@@ -1053,7 +1225,7 @@ $(document)
                     text: res.message || "barcode sent successfully.",
                 });
                 // Optionally close modal or reset form
-                $('#createLabel').closest(".modal").modal("hide");
+                $("#createLabel").closest(".modal").modal("hide");
                 hideLoader();
                 window.location.reload();
             },
@@ -1078,57 +1250,3 @@ $(document)
             },
         });
     });
-
-// $(document)
-//     .off("submit", "#services")
-//     .on("submit", "#services", function (e) {
-//     e.preventDefault();
-
-//     const rules = {
-//         invoce_type: 'required|in:services,supplies',
-//         delivery_address_id: 'required',
-//         pickup_address_id: 'required_if:invoce_type,services',
-//         container_id: 'required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
-//         driver_id: 'numeric',
-//         warehouse_id: 'numeric',
-//         ins: 'numeric',
-//         discount: 'numeric',
-//         tax: 'numeric',
-//         weight: 'numeric',
-//         balance: 'numeric',
-//         total_price: 'required|numeric',
-//         total_qty: 'required|numeric',
-//         duedaterange: '',
-//         currentdate: 'date_format:m-d-Y',
-//         currentTime: '',
-//         invoice_no: 'max:255',
-//         total_amount: 'required|numeric',
-//         grand_total: 'required|numeric',
-//         payment: 'required|numeric',
-//         status: 'required',
-//     };
-
-//     if (!jsValidator(rules, $("#services"))) {
-//         alert("Please fix the errors");
-//         e.preventDefault();
-//         return false;
-//     }
-
-    
-//     $.ajax({
-//         url: $(this).attr('action'),
-//         type: 'POST',
-//         data: new FormData(this),
-//         processData: false,
-//         contentType: false,
-//         headers: {
-//             'X-CSRF-TOKEN': $('[name="_token"]').val()
-//         },
-//         success: function(data) {
-//             console.log('Success:', data);
-//         },
-//         error: function(xhr, status, error) {
-//             console.error('Error:', error);
-//         }
-//     });
-// });

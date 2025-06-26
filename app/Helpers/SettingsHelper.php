@@ -47,17 +47,15 @@ class SettingsHelper
 
     public static function warehouseContries()
     {
-        // Get distinct country names from warehouses
-        $countryNames = Warehouse::select('country_id')->distinct()->pluck('country_id');
+        // Get unique country names from warehouses and convert to lowercase
+        $countryNames = Warehouse::selectRaw('LOWER(country_id) as country_name')
+            ->distinct()
+            ->pluck('country_name');
 
-        // Fetch country details for each country name using LIKE query
-        return Country::where(function($query) use ($countryNames) {
-            foreach ($countryNames as $countryName) {
-            $query->orWhere('name', 'like', '%' . $countryName);
-            }
-        })
-        ->select('id', 'name', 'iso2', 'iso3', 'phonecode')
-        ->get();
+        // Get countries where LOWER(name) matches any lowercase country_id
+        return Country::whereRaw('LOWER(name) IN ("' . $countryNames->implode('","') . '")')
+            ->select('id', 'name', 'iso2', 'iso3', 'phonecode', 'currency', 'currency_symbol')
+            ->get();
     }
     
 

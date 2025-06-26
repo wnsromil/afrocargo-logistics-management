@@ -137,7 +137,7 @@
                                     location
                                 </button>
                             </div>
-                            <div class="modal custom-modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -147,9 +147,8 @@
                                             <input type="text" class="form-control" id="locationSearchBox" placeholder="Enter location..." />
                                         </div>
                                         <div class="modal-footer">
-
                                             <button type="button" class="btn btn-primary confirm-supply"
-                                                data-bs-dismiss="modal">Continue</button>
+                                                data-bs-dismiss="modal" aria-label="Close">Continue</button>
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +163,7 @@
             <div class="row mt-5 g-3">
 
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="pick_up_customer_inf_form">
+                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
                         <div class="borderset position-relative newCustomerAdd disablesectionnew" id="pick_up">
                             <div class="row gx-3 gy-2">
 
@@ -300,6 +299,8 @@
                                 @csrf
                                 <input type="hidden" name="address_type" value="pickup">
                                 <input type="hidden" name="address_id">
+                                <input type="hidden" name="invoice_custmore_type" value="ship_to">
+                                <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
@@ -355,7 +356,7 @@
                                             class="text-danger">*</i></label>
                                     <!-- Address 1 -->
                                     <input type="text" name="address" class="form-control inp address"
-                                        placeholder="Enter Address 1">
+                                        placeholder="Enter Address 1" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Address.2 address">Address 2 </label>
@@ -365,7 +366,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country">
+                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country" readonly>
                                     {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
@@ -383,7 +384,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state">
+                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state" readonly>
                                     {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
@@ -397,7 +398,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
+                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city" readonly>
                                     {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
@@ -411,7 +412,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
+                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
                                 
                             </div>
@@ -588,6 +589,7 @@
                                     <th style="width:57px;">Item</th>
                                     <th class="thwidth">Qty</th>
                                     <th class="thwidth">Description</th>
+                                    <th class="thwidth">Volume</th>
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
                                     <th class="thwidth">Ins</th>
@@ -613,7 +615,12 @@
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="label_qty"></td>
+                                            name="label_qty">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="{{ $item['volume'] ?? '0' }}">
+                                    </td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput"><input type="text"
                                                 class="form-control inputcolor" placeholder="" name="price"><button
@@ -697,17 +704,41 @@
                             <h5 class="modal-title">Select Supply</h5>
                         </div>
                         <div class="modal-body">
-                            {{-- @dd($inventories,$inventories->get('Supply')) --}}
                             <select class="form-control select2" id="supplySelector">
-                                @if($inventories)
+                                @if($inventories && $inventories->get('Supply'))
                                     @foreach ($inventories->get('Supply') as $supply)
-                                        <option value="{{ $supply->id }}">{{ $supply->name }}</option>
+                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}' data-supply='@json($supply)'>{{ $supply->name }}</option>
                                     @endforeach
                                 @endif
                             </select>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label>Volume Total</label>
+                                    <div id="volume_total_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Price</label>
+                                    <div id="price_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 d-none">
+                                    <label>Volume Price</label>
+                                    <div id="volume_price_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Height</label>
+                                    <div id="height_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label>Width</label>
+                                    <div id="width_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label>Weight</label>
+                                    <div id="weight_display" class="form-control-plaintext"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-
                             <button type="button" class="btn btn-primary confirm-supply"
                                 data-bs-dismiss="modal">Confirm</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -732,6 +763,28 @@
             var supplyItems = @json($inventories->get('Supply'));
             var currentRow = null;
 
+            window.onload = function () {
+                // const urlParams = new URLSearchParams(window.location.search);
+                // const formType = urlParams.get('id') || 'services';
+                // toggleLoginForm(formType);
+                setTimeout(() => {
+                    console.log("invoce_typ", invoce_type);
+                    toggleLoginForm(invoce_type);
+                    if ($('input[name="transport_type"]').val() != "air") {
+                        $('select[name="container_id"]')
+                            .prop("disabled", true) // this is essential
+                            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+                            .css("opacity", "1"); // optional: restores visual state
+                    } else {
+                        $('select[name="container_id"]').prop("disabled", false);
+                    }
+                }, 600);
+            };
+
+            document.getElementById("addCustomer").onclick = () => {
+                // it's deliver address code
+                document.querySelector(".newCustomerAdd").classList.toggle("none");
+            };
         </script>
     @endsection
 

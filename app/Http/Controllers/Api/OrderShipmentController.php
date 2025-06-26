@@ -88,11 +88,11 @@ class OrderShipmentController extends Controller
                 'pickup_address_id' => 'required|numeric',
                 'delivery_address_id' => 'required|numeric',
                 'pickup_time' => 'required|string',
-                // 'delivery_type' => 'required|string',
-                // 'pickup_type' => 'required|string',
                 'pickup_date' => 'required|date',
-                'transport_type' => 'required|string',
                 'source_address' => 'required',
+                'delivery_type' => 'nullable|string',
+                'pickup_type' => 'nullable|string',
+                'transport_type' => 'required|string',
             ]);
 
             // Remaining Payment Check
@@ -162,6 +162,7 @@ class OrderShipmentController extends Controller
                 $validatedData['container_history_id'] = null; // or handle as needed
             }
 
+            $validatedData['delivery_date'] = $request->pickup_date;
             // Create Parcel
             $Parcel = Parcel::create($validatedData);
 
@@ -191,7 +192,6 @@ class OrderShipmentController extends Controller
     /**
      * Display the specified resource.
      */
-
     public function show(string $id)
     {
         $parcel = Parcel::where('id', $id)
@@ -239,7 +239,7 @@ class OrderShipmentController extends Controller
             ->with(['warehouse', 'customer', 'createdByUser', 'parcelStatus', 'parcel'])
             ->paginate(10);
 
-        // ✅ Inventorie data add karein
+        // ✅ Inventorie data laao
         $inventorieData = ParcelInventorie::where('parcel_id', $parcel->id)
             ->with('inventorie:id,name')
             ->get()
@@ -250,16 +250,21 @@ class OrderShipmentController extends Controller
                 ];
             });
 
-        $ParcelHistories->inventorie_data = $inventorieData->isEmpty() ? [] : $inventorieData;
+        // ✅ ParcelHistories ko array me convert karo
+        $ParcelHistoriesArray = $ParcelHistories->toArray();
 
-        return $this->sendResponse($ParcelHistories, 'Order histories fetch successfully.');
+        // ✅ Inventorie data inject karo manually
+        $ParcelHistoriesArray['inventorie_data'] = $inventorieData->isEmpty() ? [] : $inventorieData;
+
+        return $this->sendResponse($ParcelHistoriesArray, 'Order histories fetch successfully.');
     }
+
 
     public function OrderShipmentStatus(Request $request)
     {
         $validatedData = $request->validate([
             'order_id' => 'required|exists:parcels,id',
-            'status' => 'required|in:Pending,Pickup Assign,Pickup Re-Schedule,Received By Pickup Man,Received Warehouse,Transfer to hub,Received by hub,Delivery Man Assign,Return to Courier,Delivered,Cancelled',
+            'status' => 'required',
         ]);
 
         $parcel = Parcel::where('id', $validatedData['order_id'])
@@ -283,7 +288,7 @@ class OrderShipmentController extends Controller
             'warehouse_id' => $parcel->warehouse_id ?? null,
             'status' => 'Updated',
             'parcel_status' => $validatedData['status'],
-            'description' => collect($parcel)
+            'description' => collect(value: $parcel)
         ]);
 
         $parcel->status = $validatedData['status'];
@@ -465,6 +470,7 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($data, 'Estimate Price fetched successfully.');
     }
+
     public function invoiceOrderCreateService(Request $request)
     {
         try {
@@ -478,7 +484,7 @@ class OrderShipmentController extends Controller
                 'total_amount' => 'required|numeric|min:0',
                 'parcel_card_ids' => 'required|array',
                 'payment_type' => 'required|in:COD,Online,Cash',
-                'status' => 'required|in:Pending',
+                // 'status' => 'required|in:Pending',
                 'pickup_time' => 'required|string',
                 'pickup_date' => 'required|date',
             ]);
@@ -554,7 +560,7 @@ class OrderShipmentController extends Controller
                 'total_amount' => 'required|numeric|min:0',
                 'parcel_card_ids' => 'required|array',
                 'payment_type' => 'required|in:COD,Online,Cash',
-                'status' => 'required|in:Pending',
+                // 'status' => 'required|in:Pending',
             ]);
 
             // Assign customer ID
@@ -634,7 +640,7 @@ class OrderShipmentController extends Controller
                 'partial_payment' => 'required|numeric|min:0',
                 'remaining_payment' => 'required|numeric|min:0',
                 'payment_type' => 'required|in:COD,Online',
-                //'delivery_type' => 'required|string',
+                'delivery_type' => 'nullable|string',
                 'delivery_date' => 'required|date',
             ]);
 
@@ -655,16 +661,10 @@ class OrderShipmentController extends Controller
 
             // Store Parcel Inventories
             foreach ($request->inventorie_data as $item) {
-                $inventory = Inventory::find($item['inventorie_id']);
-                $price = $inventory->retail_shipping_price;
-                $quantity = $item['inventorie_item_quantity'];
-                $totalAmount = $price * $quantity;
                 ParcelInventorie::create([
                     'parcel_id' => $parcel->id,
                     'inventorie_id' => $item['inventorie_id'],
                     'inventorie_item_quantity' => $item['inventorie_item_quantity'],
-                    'price' => $price,
-                    'total' => $totalAmount,
                 ]);
             }
 
@@ -775,8 +775,10 @@ class OrderShipmentController extends Controller
         $parcel = Parcel::find($request->parcel_id);
 
         $data['container_id'] = $parcel->container_id ?? null;
-       // $data['container_move_id'] = $parcel->container_id ?? null;
+        // $data['container_move_id'] = $parcel->container_id ?? null;
         $data['move'] = "No";
+
+
 
         // Handle image upload
         if ($request->hasFile('img')) {

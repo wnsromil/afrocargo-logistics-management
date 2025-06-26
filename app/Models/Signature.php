@@ -27,10 +27,17 @@ class Signature extends Model
         return $this->belongsTo(User::class, 'creator_user_id');
     }
 
-     protected function signatureFile(): Attribute
+    protected function signatureFile(): Attribute
     {
         return Attribute::make(
             get: fn($value) => !empty($value) ? url($value) : null,
+        );
+    }
+
+    protected function signatureFileRaw(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? $value : null,
         );
     }
 }

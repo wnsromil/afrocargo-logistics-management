@@ -293,59 +293,6 @@
             }
         });
 
-
-
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const searchInput = document.getElementById("searchInput");
-
-        //     function fetchData(query) {
-        //         let url = new URL(window.location.href);
-        //         if (query) {
-        //             url.searchParams.set("search", query);
-        //         } else {
-        //             url.searchParams.delete("search");
-        //         }
-
-        //         // ✅ Update URL without reloading the page
-        //         window.history.pushState({}, "", url);
-
-        //         // ✅ Fetch search results via AJAX (No Full Page Reload)
-        //         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-        //             .then(response => response.text())
-        //             .then(html => {
-        //                 document.getElementById("ajexTable").innerHTML = html;
-        //             })
-        //             .catch(error => console.error("Error fetching data:", error));
-        //     }
-
-        //     searchInput.addEventListener("input", function () {
-        //         fetchData(searchInput.value.trim());
-        //     });
-        // });
-
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const pageSizeSelect = document.querySelector(".form-select");
-
-        //     pageSizeSelect.addEventListener("change", function () {
-        //         let selectedValue = this.value;
-        //         let url = new URL(window.location.href);
-
-        //         // ✅ Update URL parameter
-        //         url.searchParams.set("per_page", selectedValue);
-
-        //         // ✅ Update URL without reloading the whole page
-        //         window.history.pushState({}, "", url);
-
-        //         // ✅ Fetch data using AJAX
-        //         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-        //             .then(response => response.text())
-        //             .then(html => {
-        //                 document.getElementById("ajexTable").innerHTML = html;
-        //             })
-        //             .catch(error => console.error("Error fetching data:", error));
-        //     });
-        // });
-
         $(document).ready(function() {
             function formatOption(option) {
                 if (!option.id) return option.text;

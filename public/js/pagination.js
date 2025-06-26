@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    paginate();
+      paginate({
+                showLoader: showLoader,
+                hideLoader: hideLoader,
+            });
+    
 
     const dataTable = document.getElementById('ajexTable');
 
@@ -11,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (target) {
                 console.log("Page size select clicked");
                 paginate({
-                    // showLoader: showLoader,
-                    // hideLoader: hideLoader,
+                    showLoader: showLoader,
+                    hideLoader: hideLoader,
                 });
             }
             
@@ -56,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 showLoader();
             }
             // ✅ Fetch updated data using AJAX
-            fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+            fetch(url+'&isAjaxPagination=1', { headers: { "X-Requested-With": "XMLHttpRequest" } })
             .then((response) => response.text())
             .then((html) => {
                 ajxtbl.innerHTML = html;

@@ -9,8 +9,13 @@
 
 <body style="font-family: Arial, sans-serif;">
     <!-- Header Section -->
+    
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <tr>
+            <td>
+                <img style="width: 75px; margin-right: 5px;"
+                    src="{{public_path('assets/images/AfroCargoLogo.png')}}">
+            </td>
             <td style="text-align: center; padding: 10px;">
                 <h2 style="margin: 0;">CARGO INVOICE</h2>
             </td>
@@ -20,20 +25,26 @@
     <!-- Company Details -->
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <tr>
-            <td style="padding: 5px;">
-                <strong>Afro Cargo Express Llc NY</strong><br>
-                366 Concord Ave<br>
-                NY, The Bronx 10454<br>
-                Tel.: 718-954-9033
+            <td style="width: 40%; padding: 5px;">
+                <strong >{{$invoice->warehouse->warehouse_name ?? ''}}</strong><br>
+                {{$invoice->warehouse->address ?? ''}}<br>
+                The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
+                {{$invoice->warehouse->country ?? ''}}<br>
+                Tel-{{$invoice->warehouse->phone ?? ''}}<br>
             </td>
-            <td style="text-align: center; padding: 5px;">
+            <td style="width: 20%; text-align: center; padding: 5px;">
                 <span style="background-color: red; color: white; padding: 5px;">DUE BALANCE</span>
             </td>
-            <td style="text-align: right; padding: 5px;">
-                <strong>Afro Cargo Express Llc Abidjan</strong><br>
-                Avenue 21 Rue 15 Treichville<br>
-                Abidjan Autonomous District, Abidjan.<br>
-                Tel.: 07 89 49 2486
+            <td style="width: 40%; text-align: right; padding: 5px;">
+                @if($invoice->invoiceParcelData && $invoice->invoiceParcelData->arrivedWarehouse)
+                    <strong>{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
+                        ?? ''}}</strong><br>
+                        {{$invoice->invoiceParcelData->arrivedWarehouse->address
+                        ?? ''}},<br>
+                    The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br>
+                    Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br>
+                    {{-- Tel 718-954-9093<br> --}}
+                @endif
             </td>
         </tr>
     </table>
@@ -105,7 +116,7 @@
     <!-- Item Details Table -->
     <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
         <thead>
-            <tr style="background-color: #007bff; color: white; border: 1px solid black;">
+            <tr style="background-color: #203A5F; color:white; border: 1px solid black;">
                 <th style="border: 1px solid black; padding: 5px;">#</th>
                 <th style="border: 1px solid black; padding: 5px;">Qty.</th>
                 <th style="border: 1px solid black; padding: 5px;">Item</th>
@@ -118,19 +129,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($invoice->invoce_item as $index => $item)
-            <tr style="border: 1px solid black;">
-                <td style="border: 1px solid black; padding: 5px;">{{ $index + 1 }}</td>
-                <td style="border: 1px solid black; padding: 5px;">{{ $item['qty'] ?? '-' }}</td>
-                <td style="border: 1px solid black; padding: 5px;">{{ $item['supply_id'] }}</td>
-                <td style="border: 1px solid black; padding: 5px;">{{ $item['supply_name'] }}</td>
-                <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['price'], 2) }}</td>
-                <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['discount'] ?? 0, 2) }}</td>
-                <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['ins'], 2) }}</td>
-                <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['tax'], 2) }}</td>
-                <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['total'], 2) }}</td>
-            </tr>
-            @endforeach
+            @if ($invoice->invoce_item && count($invoice->invoce_item) > 0)
+                @foreach($invoice->invoce_item as $index => $item)
+                <tr style="border: 1px solid black;">
+                    <td style="border: 1px solid black; padding: 5px;">{{ $index + 1 }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">{{ $item['qty'] ?? '-' }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">{{ $item['supply_id'] }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">{{ $item['supply_name'] }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['price'], 2) }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['discount'] ?? 0, 2) }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['ins'], 2) }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['tax'], 2) }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['total'], 2) }}</td>
+                </tr>
+                @endforeach
+            @endif
         </tbody>
     </table>
 
@@ -139,7 +152,12 @@
         <tr>
             <td style="padding: 5px;">
                 <strong>Notes:</strong><br>
-                {{ $invoice->notes ?? '*****' }}
+                @if ($invoice->comments && count($invoice->comments) > 0)
+                    @foreach ($invoice->comments->where('type','notes')->values() as $comment)
+                        <p style="margin: 0;">{{ $comment->notes ?? '' }} - {{ $comment->created_at ? $comment->created_at->format('m/d/Y, h:i a') : '' }}</p>
+                    @endforeach
+                    
+                @endif
             </td>
         </tr>
     </table>
@@ -147,7 +165,7 @@
     @if(!empty($invoice->individualPayment) && count($invoice->individualPayment) > 0)
      <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
         <thead>
-            <tr style="background-color: #007bff; color: white; border: 1px solid black;">
+            <tr style="background-color: #203A5F; color:white; border: 1px solid black;">
                 <th style="border: 1px solid black; padding: 5px;">Invoice ID</th>
                 <th style="border: 1px solid black; padding: 5px;">User</th>
                 <th style="border: 1px solid black; padding: 5px;">Payment Type</th>
@@ -226,10 +244,67 @@
                 </p>
             </td>
         </tr>
+        <tr>
+            <td>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 40%;">
+                            <span>I have Received the Contract and Accept the Terms and
+                                Condition.</span><br>
+                            <span style="font-size: 18px; font-weight: 600; line-height: 40px;">Authorized
+                                Sign</span><br>
+                            <img src="{{$invoice->signature && $invoice->signature->signatureFileRaw ? public_path($invoice->signature->signatureFileRaw):'uploads/signature/download%20(2).png'}}" alt="Signature"
+                                style="max-width: 100px;">
+                        </td>
+                        <td style="width: 40%; "> </td>
+                        <td
+                            style="width: 20%; text-align: end; font-size: 16px; vertical-align: top; padding: 0px 20px;">
+                            <span style="color: #737B8B;">Sub-Total: <b
+                                    style="color: #000;">${{$invoice->grand_total ?? 0}}</b></span><br>
+                            <span style="color: #737B8B; line-height: 50px;">Paid: <b
+                                    style="color: #000;">${{$invoice->payment ?? 0}}</b></span><br>
+                            <span style="color: #000;"><b>Total Amount:</b> ${{$invoice->balance ?? 0}} </span><br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr style="padding: 10px 20px; border-top: 3px solid #EFEFEF;">
+            <td>
+                <table width="100%">
+                    <tr>
+                        <td style="width: 35%;">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+                                                    The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
+                                                    Tel-{{$invoice->warehouse->phone ?? ''}}<br>
+                                                    {{-- Tel 718-954-9093<br> --}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 30%; text-align: center;"> </td>
+                        <td style="width: 35%;">
+                            @if($invoice->invoiceParcelData && $invoice->invoiceParcelData->arrivedWarehouse)
+                            <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
+                                ?? ''}}</b><br>
+                                {{$invoice->invoiceParcelData->arrivedWarehouse->address
+                                ?? ''}},<br>
+                            The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br>
+                            Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br>
+                            {{-- Tel 718-954-9093<br> --}}
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </table>
 
     <!-- Footer Section -->
-    <table style="width: 100%; border-collapse: collapse;">
+    {{-- <table style="width: 100%; border-collapse: collapse;">
         <tr>
             <td style="padding: 5px;">
                 <strong>Agente - Fecha</strong>
@@ -241,7 +316,7 @@
                 <strong>Recibido por - Fecha - ID</strong>
             </td>
         </tr>
-    </table>
+    </table> --}}
 </body>
 
 </html>

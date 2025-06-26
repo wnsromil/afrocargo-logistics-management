@@ -12,7 +12,7 @@ Version      : 1.0
     var $wrapper = $(".main-wrapper");
     var $pageWrapper = $(".page-wrapper");
     var $slimScrolls = $(".slimscroll");
-    var scheduleData;
+    var scheduleData = null;
 
     // Sidebar
     // var Sidemenu = function () {
@@ -457,7 +457,7 @@ Version      : 1.0
     }
 
     $(document).ready(function () {
-        if(!scheduleData) return; // If scheduleData is not defined, exit early
+        if (!scheduleData) return; // If scheduleData is not defined, exit early
         // Agar schedule data hai tabhi form ke andar values bharni hain
         if (!scheduleData) {
             return;
@@ -1993,7 +1993,7 @@ Version      : 1.0
         const addressInputs = document.querySelectorAll("input.address");
         if (!addressInputs.length) return;
 
-        addressInputs.forEach(function(input) {
+        addressInputs.forEach(function (input) {
             // Prevent double-initialization
             if (input._autocompleteInitialized) return;
             input._autocompleteInitialized = true;
@@ -2034,7 +2034,10 @@ Version      : 1.0
                     if (types.includes("locality")) {
                         city = component.long_name || "";
                     }
-                    if (types.includes("administrative_area_level_2") && !city) {
+                    if (
+                        types.includes("administrative_area_level_2") &&
+                        !city
+                    ) {
                         city = component.long_name || "";
                     }
                 });
@@ -2056,10 +2059,9 @@ Version      : 1.0
                 setField("country", country);
                 setField("state", state);
                 setField("city", city);
-                setField("latitude", lat);
-                setField("longitude", lng);
-                setField("shipto_latitude", lat);
-                setField("shipto_longitude", lng);
+                // If you have latitude/longitude fields, add them here as needed
+                // setField("latitude", lat);
+                // setField("longitude", lng);
             });
         });
     }
@@ -2254,54 +2256,101 @@ Version      : 1.0
         // });
 
         // 2. When location modal is opened, attach Google Autocomplete
-        document.getElementById('locationModalShow').addEventListener('click', function () {
-            const input = document.getElementById('locationSearchBox');
-            let countryForLocation = document.getElementById('countryForLocation');
-            
-            if (!input) return;
-            if (!countryForLocation) return;
-            let selectedCountry = countryForLocation.value.toLowerCase() || 'us'; // Default to 'us' if no country selected
-            console.log("Selected Country:", selectedCountry);
-            // Clear previous autocomplete instance by cloning node
-            const newInput = input.cloneNode(true);
-            input.parentNode.replaceChild(newInput, input);
+        let locationModalShow = document.getElementById("locationModalShow");
+        if (locationModalShow) {
+            locationModalShow.addEventListener("click", function () {
+                const input = document.getElementById("locationSearchBox");
+                let countryForLocation =
+                    document.getElementById("countryForLocation");
 
-            // Initialize autocomplete
-            const autocomplete = new google.maps.places.Autocomplete(newInput, {
-                types: ['geocode'],
-                componentRestrictions: { country: selectedCountry }
+                if (!input) return;
+                if (!countryForLocation) return;
+                let selectedCountry =
+                    countryForLocation.value.toLowerCase() || "us"; // Default to 'us' if no country selected
+                console.log("Selected Country:", selectedCountry);
+                // Clear previous autocomplete instance by cloning node
+                const newInput = input.cloneNode(true);
+                input.parentNode.replaceChild(newInput, input);
+
+                // Initialize autocomplete
+                const autocomplete = new google.maps.places.Autocomplete(
+                    newInput,
+                    {
+                        types: ["geocode"],
+                        componentRestrictions: { country: selectedCountry },
+                    }
+                );
+
+                autocomplete.addListener("place_changed", function () {
+                    const place = autocomplete.getPlace();
+                    if (!place) return;
+
+                    // Find the closest form to this input
+                    const form = document.getElementById('pick_up_customer_inf_form');
+                    const addressComponents = place.address_components || [];
+
+                    let postalCode = "",
+                        country = "",
+                        state = "",
+                        city = "",
+                        lat = "",
+                        lng = "",
+                        address = place.formatted_address || "";
+
+                    addressComponents.forEach((component) => {
+                        const types = component.types || [];
+
+                        if (types.includes("postal_code")) {
+                            postalCode = component.long_name || "";
+                        }
+                        if (types.includes("country")) {
+                            country = component.long_name || "";
+                        }
+                        if (types.includes("administrative_area_level_1")) {
+                            state = component.long_name || "";
+                        }
+                        if (types.includes("locality")) {
+                            city = component.long_name || "";
+                        }
+                        if (
+                            types.includes("administrative_area_level_2") &&
+                            !city
+                        ) {
+                            city = component.long_name || "";
+                        }
+                    });
+
+                    // Get Latitude and Longitude
+                    if (place.geometry && place.geometry.location) {
+                        lat = place.geometry.location.lat() || "";
+                        lng = place.geometry.location.lng() || "";
+                    }
+                
+                    // Fill only fields within the same form
+                    function setField(name, value) {
+                        if (!form) return;
+                        const field = form.querySelector(`[name="${name}"]`);
+                        if (field) field.value = value;
+                    }
+
+                    setField("zip_code", postalCode);
+                    setField("country", country);
+                    setField("state", state);
+                    setField("city", city);
+                    setField("latitude", lat);
+                    setField("longitude", lng);
+                    setField("shipto_latitude", lat);
+                    setField("shipto_longitude", lng);
+                    setField("address", address);
+                });
+
+                // Show modal
+                // const modal = new bootstrap.Modal(
+                //     document.getElementById("locationModal")
+                // );
+                // modal.show();
             });
-
-            autocomplete.addListener('place_changed', function () {
-                const place = autocomplete.getPlace();
-                console.log("Selected Location:", place.formatted_address);
-                console.log("Lat/Lng:", place.geometry?.location?.lat(), place.geometry?.location?.lng());
-
-                // Store or populate as needed
-                newInput.setAttribute('data-lat', place.geometry?.location?.lat() || '');
-                newInput.setAttribute('data-lng', place.geometry?.location?.lng() || '');
-            });
-
-            // Show modal
-            const modal = new bootstrap.Modal(document.getElementById('locationModal'));
-            modal.show();
-        });
-
-
-        
-
-        // Optional: Handle modal continue button
-        // document.querySelector('.confirm-supply').addEventListener('click', function () {
-        //     const input = document.getElementById('locationSearchBox');
-        //     const address = input.value;
-        //     const lat = input.getAttribute('data-lat');
-        //     const lng = input.getAttribute('data-lng');
-
-        //     console.log("Final Location:", address, lat, lng);
-
-        //     // You can assign values to hidden inputs or submit to server here
-        //     // e.g., document.querySelector('input[name="shipto_address"]').value = address;
-        // });
+        }
     }
 
     window.addEventListener("load", function () {

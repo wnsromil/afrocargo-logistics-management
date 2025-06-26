@@ -165,7 +165,7 @@
                                         <div class="modal-footer">
 
                                             <button type="button" class="btn btn-primary confirm-supply"
-                                                data-bs-dismiss="modal">Continue</button>
+                                                data-bs-dismiss="modal" aria-label="Close" onclick="hideModalAndBackdrop('locationModal')">Continue</button>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +178,7 @@
             <!-- first row end pick up  -->
             <div class="row mt-5 g-3">
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="pick_up_customer_inf_form">
+                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
                         <div class="borderset position-relative newCustomerAdd disablesectionnew" id="pick_up">
                             <div class="row gx-3 gy-2">
 
@@ -297,6 +297,8 @@
                                 <input type="hidden" name="address_type" value="pickup">
                                 <input type="hidden" name="address_id">
                                 <input type="hidden" name="user_id">
+                                <input type="hidden" name="invoice_custmore_type" value="ship_to">
+                                <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
@@ -352,7 +354,7 @@
                                             class="text-danger">*</i></label>
                                     <!-- Address 1 -->
                                     <input type="text" name="address" class="form-control inp address"
-                                        placeholder="Enter Address 1">
+                                        placeholder="Enter Address 1" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Address.2 address">Address 2 </label>
@@ -363,7 +365,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                                     <input type="text" name="country" id="country" class="form-control inp address"
-                                        placeholder="Country">
+                                        placeholder="Country" readonly>
 
                                     @error('country_id')
                                     <span class="text-danger">{{ $message }}</span>
@@ -372,7 +374,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
                                     <input type="text" name="state" id="state" class="form-control inp address"
-                                        placeholder="state">
+                                        placeholder="state" readonly>
                                     @error('state_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -381,15 +383,15 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
                                     <input type="text" name="city" id="city" class="form-control inp address"
-                                        placeholder="city">
+                                        placeholder="city" readonly>
                                     @error('city_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="zip_code">Zip code <i class="text-danger">*</i></label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
+                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
 
                             </div>
@@ -412,7 +414,7 @@
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
                                 <input type="text" class="btn-filters datetimepicker form-control form-cs inp "
                                     name="currentdate" placeholder="mm-dd-yyyy"
-                                    value="{{ $invoice->currentdate->format('m-d-Y') ?? date('m-d-Y') }}" />
+                                    value="{{ $invoice->currentdate ? $invoice->currentdate->format('m-d-Y') : date('m-d-Y') }}" />
                                 <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
                                     readonly value="{{$invoice->currentTime ?? '08:30 AM'}}" name="currentTime">
                             </div>
@@ -568,6 +570,7 @@
                                     <th style="width:57px;">Item</th>
                                     <th class="thwidth">Qty</th>
                                     <th class="thwidth">Description</th>
+                                    <th class="thwidth">Volume</th>
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
                                     <th class="thwidth">Ins</th>
@@ -578,7 +581,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($invoice->invoce_item as $key=>$item)
+                                @if (isset($invoice->invoce_item) && count($invoice->invoce_item) > 0)
+                                @foreach ($invoice->invoce_item as $key=>$item)
                                 <tr>
                                     <td class="mwidth open-supply-modal">
                                         <div class="d-flex align-items-center">
@@ -599,6 +603,10 @@
                                     <td>
                                         <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="label_qty" value="{{ $item['label_qty'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="{{ $item['volume'] ?? '0' }}">
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput">
@@ -643,7 +651,8 @@
                                         </div>
                                     </td>
                                 </tr>
-                                @empty
+                                @endforeach
+                                @else
                                 <tr>
                                     <td class="mwidth open-supply-modal">
                                         <div class="d-flex align-items-center">
@@ -659,7 +668,12 @@
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="label_qty"></td>
+                                            name="label_qty">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="{{ $item['volume'] ?? '0' }}">
+                                    </td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput"><input type="text"
                                                 class="form-control inputcolor" placeholder="" name="price"><button
@@ -690,7 +704,7 @@
                                     </td>
 
                                 </tr>
-                                @endforelse
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -743,7 +757,7 @@
             <input type="hidden" name="delivery_address_id" value="{{ $invoice->deliveryAddress->id ?? '' }}">
             <input type="hidden" name="parcel_id" value="{{$invoice->parcel_id ?? 0}}">
 
-            <div class="modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
+            <div class="modal custom-modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -751,15 +765,40 @@
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                @if($inventories)
-                                @foreach ($inventories->get('Supply') as $supply)
-                                <option value="{{ $supply->id }}">{{ $supply->name }}</option>
-                                @endforeach
+                                @if($inventories && $inventories->get('Supply'))
+                                    @foreach ($inventories->get('Supply') as $supply)
+                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}' data-supply='@json($supply)'>{{ $supply->name }}</option>
+                                    @endforeach
                                 @endif
                             </select>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label>Volume Total</label>
+                                    <div id="volume_total_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Price</label>
+                                    <div id="price_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 d-none">
+                                    <label>Volume Price</label>
+                                    <div id="volume_price_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Height</label>
+                                    <div id="height_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label>Width</label>
+                                    <div id="width_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label>Weight</label>
+                                    <div id="weight_display" class="form-control-plaintext"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-
                             <button type="button" class="btn btn-primary confirm-supply"
                                 data-bs-dismiss="modal">Confirm</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -767,6 +806,7 @@
                     </div>
                 </div>
             </div>
+
         </form>
 
 
@@ -803,7 +843,56 @@
         var pickupAddress = @json($pickupAddress);
         var deliveryAddress = @json($deliveryAddress);
         var currentRow = null;
+        var maxPaymentAmountValue = '{{ $invoice->balance ?? 0 }}';
         var invoce_type ='{{$invoice->invoce_type}}';
+
+        window.onload = function () {
+            // const urlParams = new URLSearchParams(window.location.search);
+            // const formType = urlParams.get('id') || 'services';
+            // toggleLoginForm(formType);
+            setTimeout(() => {
+                console.log("invoce_typ", invoce_type);
+                toggleLoginForm(invoce_type);
+                if ($('input[name="transport_type"]').val() != "air") {
+                    $('select[name="container_id"]')
+                        .prop("disabled", true) // this is essential
+                        .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+                        .css("opacity", "1"); // optional: restores visual state
+                } else {
+                    $('select[name="container_id"]').prop("disabled", false);
+                }
+            }, 600);
+        };
+
+        document.getElementById("addCustomer").onclick = () => {
+            // it's deliver address code
+            document.querySelector(".newCustomerAdd").classList.toggle("none");
+        };
+
+        // 🖼 Image Preview Function
+        function previewImage(input, imageType) {
+            if (input.files && input.files[0]) {
+                let file = input.files[0];
+
+                // ✅ Sirf PNG ya JPG Allow Hai
+                if (file.type === "image/png" || file.type === "image/jpeg") {
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('preview_' + imageType).src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert("Only PNG & JPG images are allowed!");
+                    input.value = ""; // Invalid file ko remove karna
+                }
+            }
+        }
+
+        // ❌ Remove Image Function
+        function removeImage(imageType) {
+            document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+            document.getElementById('file_' + imageType).value = "";
+        }
     </script>
     @endsection
 </x-app-layout>

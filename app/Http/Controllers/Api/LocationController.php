@@ -33,9 +33,7 @@ class LocationController extends Controller
 
     public function getCurrencyExchangeRate(Request $request)
     {
-        $currency = Currency::when($request->currency_name,function($q) use($request){
-            $q->where('currency_name', $request->currency_name);
-        })->get();
+        $currency = setting()->warehouseContries();
         return response()->json($currency);
     }
 }
