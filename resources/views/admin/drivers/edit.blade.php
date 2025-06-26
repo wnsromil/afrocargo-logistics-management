@@ -79,12 +79,39 @@
                             </select>
                         </div>
                         <input type="number" class="form-control flagInput inp"
-                            placeholder="Enter Mobile No" name="mobile_number"
+                            placeholder="Enter Contact Number" name="mobile_number"
                             value="{{ old('mobile_number', $manager_data->phone) }}"
                             oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">The Contact Number field is required.</small>
+                        @enderror
+                    </div>
+
+                </div>
+
+                   <div class="col-lg-4 col-md-6 col-sm-12 edit_mobile_code_driver">
+                    <div class="input-block mb-3">
+                        <label for="phone">Office Contact Number <i class="text-danger">*</i></label>
+                        <div class="flaginputwrap">
+                        <div class="customflagselect">
+                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                @foreach ($coutry as $key => $item)
+                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        {{ $item->id == old('alternative_mobile_number_code_id', $manager_data->phone_2_code_id_id) ? 'selected' : '' }}>
+                                        {{ $item->name }} +{{ $item->phonecode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="number" class="form-control flagInput inp"
+                            placeholder="Enter Office Contact Number" name="alternative_mobile_number"
+                            value="{{ old('alternative_mobile_number', $manager_data->phone_2) }}"
+                            oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('alternative_mobile_number')
+                            <small class="text-danger">The Office Contact Number field is required.</small>
                         @enderror
                     </div>
 
@@ -222,11 +249,11 @@
             </div>
         </div>
 
-          <input type="number" name="latitude"
+          <input type="hidden" name="latitude"
             value="{{ old('latitude', $manager_data->latitude) }}" class="form-control inp"
             placeholder="0" readonly style="background: #ececec;">
 
-                <input type="number" name="longitude"
+                <input type="hidden" name="longitude"
             value="{{ old('longitude', $manager_data->longitude) }}" class="form-control inp"
             placeholder="0" readonly style="background: #ececec;">
 

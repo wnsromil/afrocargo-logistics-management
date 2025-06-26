@@ -19,26 +19,19 @@ if (!function_exists('calculateDriverInventoryDetails')) {
             ];
         }
 
-        $driverId = $driverInventory->driver_id;
-
-        // Get all related inventories for the same driver
-        $relatedInventories = DriverInventory::where('driver_id', $driverId)->get();
-
         $DriverInventory_quantity_out = 0;
         $DriverInventory_quantity_in = 0;
 
-        foreach ($relatedInventories as $item) {
-            if ($item->in_out === 'Out') {
-                $DriverInventory_quantity_out += $item->quantity ?? 0;
-            } elseif ($item->in_out === 'In') {
-                $DriverInventory_quantity_in += $item->quantity ?? 0;
-            }
+        // Check just this entry's in_out
+        if ($driverInventory->in_out === 'Out') {
+            $DriverInventory_quantity_out = $driverInventory->quantity ?? 0;
+        } elseif ($driverInventory->in_out === 'In') {
+            $DriverInventory_quantity_in = $driverInventory->quantity ?? 0;
         }
 
-        // Final inventory quantity = Out - In
         $DriverInventory_quantity_total = $DriverInventory_quantity_out - $DriverInventory_quantity_in;
 
-        // Get all sold quantities
+        // Get only sold quantity related to this inventory row
         $DriverInventoriesSolde_quantity = DriverInventoriesSolde::where('driver_inventories_id', $driverInventoryId)
             ->sum('quantity');
 
@@ -52,67 +45,66 @@ if (!function_exists('calculateDriverInventoryDetails')) {
             'DriverInventory_quantity_in' => $DriverInventory_quantity_in,
         ];
     }
-
-    function checkExpiryStatus($date, $type = null)
-    {
-        if (!$date) {
-            return null;
-        }
-
-        $expiryDate = \Carbon\Carbon::parse($date);
-        $today = \Carbon\Carbon::today();
-
-        $daysRemaining = $today->diffInDays($expiryDate, false);
-
-        // Agar 0 ya negative hai to already expired bhi show karega
-        if ($daysRemaining <= 30) {
-            $response = [
-                'bg_class' => 'expiry_date_bg_alert',
-                'text_class' => 'expiry_date_text_alert',
-            ];
-
-            if ($type) {
-                $labels = [
-                    'licence_plate_exp_date' => 'License plate expiry',
-                    'vehicle_registration_exp_date' => 'Vehicle registration expiry',
-                    'vehicle_insurance_exp_date' => 'Insurance expiry',
-                    'license_expiry_date' => 'License expiry',
-                ];
-
-                $label = $labels[$type] ?? 'Document expiry';
-                $response['message'] = "$label in {$daysRemaining} days";
-            }
-
-            return $response;
-        }
-
-        return null; // agar 30 din se zyada time hai to kuch return na kare
+}
+function checkExpiryStatus($date, $type = null)
+{
+    if (!$date) {
+        return null;
     }
 
-    function checkVehicleExpiryStatus($plateDate, $registrationDate, $insuranceDate)
-    {
-        $dates = [
-            'License Plate' => ['date' => $plateDate, 'type' => 'licence_plate_exp_date'],
-            'Registration' => ['date' => $registrationDate, 'type' => 'vehicle_registration_exp_date'],
-            'Insurance' => ['date' => $insuranceDate, 'type' => 'vehicle_insurance_exp_date'],
+    $expiryDate = \Carbon\Carbon::parse($date);
+    $today = \Carbon\Carbon::today();
+
+    $daysRemaining = $today->diffInDays($expiryDate, false);
+
+    // Agar 0 ya negative hai to already expired bhi show karega
+    if ($daysRemaining <= 30) {
+        $response = [
+            'bg_class' => 'expiry_date_bg_alert',
+            'text_class' => 'expiry_date_text_alert',
         ];
 
-        $results = [];
+        if ($type) {
+            $labels = [
+                'licence_plate_exp_date' => 'License plate expiry',
+                'vehicle_registration_exp_date' => 'Vehicle registration expiry',
+                'vehicle_insurance_exp_date' => 'Insurance expiry',
+                'license_expiry_date' => 'License expiry',
+            ];
 
-        foreach ($dates as $label => $info) {
-            $result = checkExpiryStatus($info['date'], $info['type']);
-            if ($result && isset($result['message'])) {
-                $results[] = [
-                    'label' => $label,
-                    'message' => $result['message'],
-                    'bg_class' => $result['bg_class'] ?? 'expiry_date_bg_alert',
-                    'text_class' => $result['text_class'] ?? 'expiry_date_text_alert',
-                ];
-            }
+            $label = $labels[$type] ?? 'Document expiry';
+            $response['message'] = "$label in {$daysRemaining} days";
         }
 
-        return $results; // Multiple cards ke liye
+        return $response;
     }
+
+    return null; // agar 30 din se zyada time hai to kuch return na kare
+}
+
+function checkVehicleExpiryStatus($plateDate, $registrationDate, $insuranceDate)
+{
+    $dates = [
+        'License Plate' => ['date' => $plateDate, 'type' => 'licence_plate_exp_date'],
+        'Registration' => ['date' => $registrationDate, 'type' => 'vehicle_registration_exp_date'],
+        'Insurance' => ['date' => $insuranceDate, 'type' => 'vehicle_insurance_exp_date'],
+    ];
+
+    $results = [];
+
+    foreach ($dates as $label => $info) {
+        $result = checkExpiryStatus($info['date'], $info['type']);
+        if ($result && isset($result['message'])) {
+            $results[] = [
+                'label' => $label,
+                'message' => $result['message'],
+                'bg_class' => $result['bg_class'] ?? 'expiry_date_bg_alert',
+                'text_class' => $result['text_class'] ?? 'expiry_date_text_alert',
+            ];
+        }
+    }
+
+    return $results; // Multiple cards ke liye
 }
 
 function insertAddress(array $data)

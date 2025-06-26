@@ -196,8 +196,8 @@ class CustomerController extends Controller
                 'country_code' => $request->country_code ?? null,
                 'country_code_2' => $request->country_code_2 ?? null,
                 'invoice_custmore_type' => $request->invoice_custmore_type,
-                // 'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
-                'invoice_custmore_id' => null,
+                'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                //'invoice_custmore_id' => null,
                 'vehicle_id'        => $request->container_id ?? null,
             ];
 
@@ -220,14 +220,14 @@ class CustomerController extends Controller
 
             $user = User::create($userData);
 
-             insertAddress([
+            insertAddress([
                 'user_id' => $user->id,
                 'address' => $validated['address'],
                 'address_type' => 'pickup',
                 'mobile_number' => $validated['mobile_code'] ?? null,
                 'alternative_mobile_number' => $validated['alternate_mobile_no'] ?? null,
                 'mobile_number_code_id'        =>  $request->country_code ?? null,
-                'alternative_mobile_number_code_id' =>$request->country_code_2 ?? null,
+                'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
                 'city_id' => $validated['city'] ?? null,
                 'country_id' => $validated['country'] ?? null,
                 'full_name' => $validated['first_name'],
@@ -393,7 +393,7 @@ class CustomerController extends Controller
     public function getUsersByWarehouse(Request $request)
     {
         $warehouseId = $request->warehouse_id;
-
+        $role = $request->role_id;
         if (!$warehouseId) {
             return response()->json(['message' => 'Warehouse ID is required'], 400);
         }
@@ -411,7 +411,9 @@ class CustomerController extends Controller
             return response()->json(['message' => 'No users found for the given warehouse.'], 404);
         }
 
-        return response()->json(['users' => $users], 200);
+        return response()->json(['users' => $users->when(!empty($role),function($q){
+            return $q->where('role_id',request()->role_id);
+        })->values()], 200);
     }
 
     public function getVehiclesByWarehouse(Request $request)

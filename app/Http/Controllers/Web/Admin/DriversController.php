@@ -92,9 +92,11 @@ class DriversController extends Controller
             'driver_name' => 'required|string',
             'mobile_number' => 'required|string|max:15',
             'mobile_number_code_id' => 'required|exists:countries,id',
+            'alternative_mobile_number' => 'required|string|max:15',
+            'alternative_mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             'email' => 'required|email|unique:users,email',
-           // 'vehicle_type' => 'required',
+            // 'vehicle_type' => 'required',
             'license_number' => 'required',
             'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'required',
@@ -130,6 +132,10 @@ class DriversController extends Controller
             'email' => $request->email,
             'phone' => $request->mobile_number,
             'phone_code_id'  => $request->mobile_number_code_id,
+            'phone_2' => $validated['alternative_mobile_number'] ?? null,
+            'phone_2_code_id_id' => !empty($validated['alternative_mobile_number'])
+                ? (int) ($validated['alternative_mobile_number_code_id'] ?? null)
+                : null,
             'country_code' => +0,
             'status' => $status,
             'role_id' => 4,
@@ -269,6 +275,8 @@ class DriversController extends Controller
             'license_number' => 'required',
             'edit_license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
+            'alternative_mobile_number' => 'required|string|max:15',
+            'alternative_mobile_number_code_id' => 'required|exists:countries,id',
         ];
 
         // Image validation agar remove ya naya upload hua ho
@@ -318,6 +326,8 @@ class DriversController extends Controller
             'address' => $request->address_1,
             'phone' => $request->mobile_number,
             'phone_code_id'  => $request->mobile_number_code_id,
+            'phone_2' =>  $request->alternative_mobile_number ?? null,
+            'phone_2_code_id_id' => $request->alternative_mobile_number_code_id ?? null,
             'country_code' => +0,
             'license_number' => $request->license_number,
             'license_expiry_date' => $license_expiry_date,

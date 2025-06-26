@@ -14,7 +14,8 @@ use App\Models\{
     ParcelHistory,
     Invoice,
     ParcelInventorie,
-    ParcelPickupDriver
+    ParcelPickupDriver,
+    ContainerHistory
 };
 
 class ServiceOrderStatusManage extends Controller
@@ -136,10 +137,10 @@ class ServiceOrderStatusManage extends Controller
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
             'notes' => 'nullable|string',
-            'estimate_cost' => 'required|numeric|min:0',
-            'partial_payment' => 'required|numeric|min:0',
-            'remaining_payment' => 'required|numeric|min:0',
-            'payment_type' => 'required|in:COD,Online',
+            'estimate_cost' => 'nullable|numeric|min:0',
+            'partial_payment' => 'nullable|numeric|min:0',
+            'remaining_payment' => 'nullable|numeric|min:0',
+            'payment_type' => 'nullable|in:COD,Online',
         ]);
 
         $parcel = Parcel::findOrFail($request->parcel_id);
@@ -164,7 +165,24 @@ class ServiceOrderStatusManage extends Controller
             'partial_payment' => $request->partial_payment,
             'remaining_payment' => $request->remaining_payment,
             'payment_type' => $request->payment_type,
+            'total_amount' =>  $request->estimate_cost,
         ]);
+
+        if ($parcel->container_history_id) {
+            $containerHistory = ContainerHistory::where('id', $parcel->container_history_id)
+                ->where('type', 'Active')
+                ->latest()
+                ->first();
+
+            if ($containerHistory) {
+                $containerHistory->increment('no_of_orders', 1);
+                $containerHistory->total_amount += $request->estimate_cost;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
+                $containerHistory->save();
+            }
+        }
+
 
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
@@ -183,7 +201,6 @@ class ServiceOrderStatusManage extends Controller
             'data' => $parcel
         ]);
     }
-
 
     public function statusUpdate_Delivery(Request $request)
     {

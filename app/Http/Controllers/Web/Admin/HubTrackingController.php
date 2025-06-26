@@ -26,13 +26,14 @@ class HubTrackingController extends Controller
     public function transfer_hub()
     {
         // Vehicle data
-        $vehicles = ContainerHistory::where('type', 'Active')
+        $vehicles = ContainerHistory::where('arrived_container', 'No')
+            ->whereIn('type', ['Transfer', 'Active'])
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
 
         // ContainerHistory data
-        $historyVehicles = ContainerHistory::where('type', 'Transfer')
+        $historyVehicles = ContainerHistory::where('arrived_container', 'Yes')->where('type', 'Transfer')
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
@@ -43,22 +44,21 @@ class HubTrackingController extends Controller
     public function received_hub()
     {
         // 1. Incoming containers (status = 5 or 7 for 'Arrived')
-        $incoming_containers = ContainerHistory::where('type', 'Arrived')
-            ->where(function ($query) {
-                $query->where('status', 5)
-                    ->orWhere('status', 18);
-            })
-            ->orderByDesc('id')
+        $incoming_containers = ContainerHistory::whereIn('arrived_container', ['No', 'Yes'])
+            ->where('type', 'Arrived')
+            ->where('full_discharge', 'No')
+            ->with(['container', 'driver'])
+            ->orderBy('id', 'desc')
             ->get();
 
+
+
         // 2. Container history (exclude status = 5 and 7 for 'Arrived')
-        $container_historys = ContainerHistory::where('type', 'Arrived')
-            ->where(function ($query) {
-                $query->where('status', '!=', 5)
-                    ->where('status', '!=', 18);
-            })
-            ->orderByDesc('id')
+        $container_historys = ContainerHistory::where('full_discharge', 'Yes')->where('type', 'Arrived')
+            ->with(['container', 'driver'])
+            ->orderBy('id', 'desc')
             ->get();
+
 
         return view('admin.hubs.received_hub', compact('incoming_containers', 'container_historys'));
     }
@@ -86,7 +86,7 @@ class HubTrackingController extends Controller
                 return $q->where('container_history_id', $id);
             })
             ->when($type === 'OnLoading', function ($q) use ($id) {
-              return $q->where('container_history_id', $id);
+                return $q->where('container_history_id', $id);
             })
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);

@@ -159,6 +159,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="package_type" class="table-content col737 fw-medium">Package Type<i
@@ -174,6 +175,7 @@
                         @enderror
                     </div>
                 </div>
+                
                 <div class="col-lg-4 col-md-6 col-sm-12" id="retail_shipping_price">
                     <div class="input-block mb-3">
                         <label for="retail_shipping_price"
@@ -409,24 +411,9 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
-                                <label for="in_price" class="table-content col737 fw-medium text-dark">Weight
-                                    Price</label>
-                                <div class="d-flex align-items-center justify-content-between form-control">
-                                    <input class="no-border" type="number" name="weight_price"
-                                        value="{{ old('weight_price') }}" placeholder="Enter Weight Price">
-                                    <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
-                                </div>
-
-                                @error('weight_price')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="input-block mb-3">
                                 <label for="height" class="table-content col737 fw-medium">Volume Price(1*1*1)</label>
                                 <input class="form-control input-padding" name="volume_price" id="volume_price"
-                                    type="number" step="any" value="{{ old('volume_total') }}"
+                                    type="number" step="any" value="{{ old('volume_price') }}"
                                     placeholder="Enter Volume Price" aria-label="default input example">
 
                                 @error('volume_price')

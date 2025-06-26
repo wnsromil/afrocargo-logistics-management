@@ -118,12 +118,12 @@
                                                                             data-bs-target="#fullyloadedcontainer"
                                                                             vehicle-id="{{ $vehicle->container->id }}"
                                                                             container-history-id="{{ $vehicle->id }}">
-                                                                            Full load
+                                                                            Container Full load at warehouse
                                                                         </a>
                                                                     @else
                                                                         <a class="dropdown-item text-muted disabled"
                                                                             href="javascript:void(0);">
-                                                                            Full load
+                                                                            Container Full load at warehouse
                                                                         </a>
                                                                     @endif
                                                                 </li>
@@ -300,7 +300,7 @@
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block ">
-                                    <label class="foncolor">Vehicle No<i class="text-danger">*</i></label>
+                                    <label class="foncolor">Vehicle No</label>
                                     <div class="input-block mb-0">
                                         <input type="text" name="vehicle_no" id="vehicle_no" class="form-control inp"
                                             placeholder="" readonly>

@@ -83,7 +83,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
+                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('m-d-Y') : '-' }}</div>
                             </td>
                             <td>
                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>

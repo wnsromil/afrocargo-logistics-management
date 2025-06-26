@@ -239,7 +239,7 @@ class ContainerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
 
-         $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+        $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
 
         return view('admin.container.edit', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }
@@ -268,6 +268,14 @@ class ContainerController extends Controller
             'trucking_company' => 'required|string',
             'chassis_number' => 'required|string',
             'vessel_voyage' => 'required|string',
+
+            'gate_in_driver_id'     => 'required|integer|exists:users,id',
+            'gate_out_driver_id'    => 'required|integer|exists:users,id',
+            'port_of_loading'       => 'required|string|max:255',
+            'port_of_discharge'     => 'required|string|max:255',
+            'edit_celliling_date'        => 'required|date',
+            'edit_eta_date'              => 'required|date',
+            'transit_country'       => 'required|string|max:255',
         ];
 
         $messages = [
@@ -275,6 +283,8 @@ class ContainerController extends Controller
             'warehouse_name.exists'   => 'The selected warehouse is invalid.',
             'company_for_container.required' => 'Shipping line field is required.',
             //   'edit_container_date_time.date_format' => 'Date/Time format must be like 5/30/2025 06:00 AM'
+            'edit_eta_date.required' => 'The ETA date field is required.',
+            'transit_country.required' => 'The transit field is required.',
         ];
 
         // Validate the request
@@ -327,9 +337,16 @@ class ContainerController extends Controller
         $vehicle->tir_number = $request->tir_number;
         // $vehicle->container_in_date = $containerInDate;
         // $vehicle->container_in_time = $containerInTime;
+        $vehicle->gate_in_driver_id = $request->gate_in_driver_id;
+        $vehicle->gate_out_driver_id = $request->gate_out_driver_id;
+        $vehicle->port_of_loading = $request->port_of_loading;
+        $vehicle->port_of_discharge = $request->port_of_discharge;
+        $vehicle->celliling_date = Carbon::createFromFormat('m/d/Y', $request->edit_celliling_date)->format('Y-m-d');
+        $vehicle->eta_date = Carbon::createFromFormat('m/d/Y', $request->edit_eta_date)->format('Y-m-d');
+        $vehicle->transit_country = $request->transit_country;
         $vehicle->save();
 
-        return redirect()->route('admin.container.show', ['id' => $id])->with('success', 'Container added successfully.');
+        return redirect()->route('admin.container.show', ['container' => $id])->with('success', 'Container added successfully.');
     }
 
     /**

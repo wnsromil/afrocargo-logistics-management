@@ -88,14 +88,14 @@ class WarehouseController extends Controller
 
     public function getWarehouseCountries()
     {
-        $countries = Warehouse::select('country_id')
-            ->whereNotNull('country_id')
-            ->groupBy('country_id')
-            ->get();
+        // $countries = Warehouse::select('country_id')
+        //     ->whereNotNull('country_id')
+        //     ->groupBy('country_id')
+        //     ->get();
 
         return response()->json([
             'success' => true,
-            'data' => $countries
+            'data' => setting()->warehouseContries()
         ]);
     }
 }

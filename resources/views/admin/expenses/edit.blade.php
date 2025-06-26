@@ -125,20 +125,11 @@
                                     <label class="foncolor" for="Category">Currency <i class="text-danger">*</i></label>
                                     <select id="currency_select" class="form-control select2" name="currency">
                                         <option value="" {{ old('currency', $expense->currency ?? '') == '' ? 'selected' : '' }}>Select Currency</option>
-                                        <option value="BDT" {{ old('currency', $expense->currency ?? '') == 'BDT' ? 'selected' : '' }}>Bangladesh - BDT</option>
-                                        <option value="EUR" {{ old('currency', $expense->currency ?? '') == 'EUR' ? 'selected' : '' }}>Belgium - EUR</option>
-                                        <option value="KWD" {{ old('currency', $expense->currency ?? '') == 'KWD' ? 'selected' : '' }}>Kuwait - KWD</option>
-                                        <option value="XCD" {{ old('currency', $expense->currency ?? '') == 'XCD' ? 'selected' : '' }}>Dominica - XCD</option>
-                                        <option value="INR" {{ old('currency', $expense->currency ?? '') == 'INR' ? 'selected' : '' }}>India - INR</option>
-                                        <option value="DOP" {{ old('currency', $expense->currency ?? '') == 'DOP' ? 'selected' : '' }}>Dominican Republic - DOP</option>
-                                        <option value="EUR" {{ old('currency', $expense->currency ?? '') == 'EUR' ? 'selected' : '' }}>Andorra - EUR</option>
-                                        <option value="CLP" {{ old('currency', $expense->currency ?? '') == 'CLP' ? 'selected' : '' }}>Chile - CLP</option>
-                                        <option value="USD" {{ old('currency', $expense->currency ?? '') == 'USD' ? 'selected' : '' }}>United States - USD</option>
-                                        <option value="DKK" {{ old('currency', $expense->currency ?? '') == 'DKK' ? 'selected' : '' }}>Greenland - DKK</option>
-                                        <option value="CVE" {{ old('currency', $expense->currency ?? '') == 'CVE' ? 'selected' : '' }}>Cabo Verde - CVE</option>
-                                        <option value="XOF" {{ old('currency', $expense->currency ?? '') == 'XOF' ? 'selected' : '' }}>Côte d'Ivoire - XOF</option>
-                                        <option value="XOF" {{ old('currency', $expense->currency ?? '') == 'XOF' ? 'selected' : '' }}>Mali - XOF</option>
-                                        <option value="EUR" {{ old('currency', $expense->currency ?? '') == 'EUR' ? 'selected' : '' }}>European Union - EUR</option>
+                                        @foreach (setting()->warehouseContries() as $country )
+                                                <option value="{{ $country['currency'] }}" {{ $expense->currency == $country['currency'] ? 'selected' : '' }}>
+                                                    {{ $country['name'] }} - {{ $country['currency'] }}
+                                                </option>
+                                        @endforeach
                                     </select>
                                     @error('currency')
                                         <small class="text-danger">{{ $message }}</small>

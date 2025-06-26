@@ -106,6 +106,14 @@
                     <p>{{$inventories->driver_app_access ?? "-"}}</p>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="basic-info-detail">
+                    <h6>Created At </h6>
+                    <p>
+                        {{ $inventories->created_at ? $inventories->created_at->format('m/d/Y') : "-"}}
+                    </p>
+                </div>
+            </div>
         </div>
         <hr>
         @if ($inventories->inventary_sub_type == 'Ocean Cargo' || $inventories->inventary_sub_type == 'Air Cargo')

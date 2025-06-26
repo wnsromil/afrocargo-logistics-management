@@ -4,15 +4,11 @@
             <table class="table table-stripped table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        {{-- <th><input type="checkbox" id="selectAll"></th> --}}
-                        <th>Sn no.</th>
+                        <th>S.No</th>
                         <th>Tracking ID</th>
                         <th>From</th>
                         <th>Warehouse Name</th>
                         <th>Order Date</th>
-                        {{-- <th>Supply Image</th>
-                        <th>Supply Details</th>
-                        <th>Quantity</th> --}}
                         <th>Estimate cost</th>
                         <th>Driver Name</th>
                         <th>Vehicle Type</th>
@@ -58,37 +54,19 @@
                                 </div>
                             </td>
                             <td>
-                                --
+                                {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
                             </td>
                             <td>
-                                <div>{{ $parcel->created_at ? $parcel->created_at->format('d-m-Y') : '-' }}</div>
-                            </td>
-
-                            {{-- <td>
-                                <div>
-                                    @if(isset($parcel->inventorie->img))
-                                    <img src="{{ asset($parcel->inventorie->img) }}" alt="image">
-                                    @else
-                                    -
-                                    @endif
-                                </div>
+                                <div>{{ $parcel->created_at ? $parcel->created_at->format('m-d-Y') : '-' }}</div>
                             </td>
                             <td>
-                                <div>{{ $parcel->inventorie->description ?? "-"}}</div>
+                                <div>${{ number_format($parcel->total_amount ?? 0, 2)   }}</div>
                             </td>
                             <td>
-                                <div>{{ $parcel->inventorie_item_quantity ?? "0"}}</div>
-                            </td> --}}
-
-                            <td>
-                                <div>
-                                    ${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
+                                <div>{{ $parcel->arrivedDriver->name ?? "-"}}</div>
                             </td>
                             <td>
-                                <div>{{ $parcel->driver->name ?? "-"}}</div>
-                            </td>
-                            <td>
-                                <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
+                                <div>{{ $parcel->arrivedDriverVehicle->vehicle_type ?? "-"}}</div>
                             </td>
                             @php
                                 $forValue = match ($parcel->payment_status) {
@@ -108,19 +86,33 @@
                                 </div>
                             </td>
                             @php
-                                $classValue = match ($parcel->status) {
-                                    'Pickup Assign' => 'labelstatusp',
-                                    'Pending' => 'labelstatusp',
-                                    'Pickup Re-Schedule' => 'labelstatuspi',
-                                    default => 'labelstatusp',
+                                $classValue = match ((string) $parcel->status) {
+                                    "1" => 'badge-pending',
+                                    "2" => 'badge-pickup',
+                                    "3" => 'badge-picked-up',
+                                    "4" => 'badge-arrived-warehouse',
+                                    "5" => 'badge-in-transit',
+                                    "8" => 'badge-arrived-final',
+                                    "9" => 'badge-ready-pickup',
+                                    "10" => 'badge-out-delivery',
+                                    "11" => 'badge-delivered',
+                                    "12" => 'badge-re-delivery',
+                                    "13" => 'badge-on-hold',
+                                    "14" => 'badge-cancelled',
+                                    "15" => 'badge-abandoned',
+                                    "21" => 'badge-picked-up',
+                                    "22" => 'badge-in-transit',
+                                    default => 'badge-pending',
                                 };
                             @endphp
                             <td>
-                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                <div>
+                                    {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                </div>
                             </td>
                             <td>
                                 <label class="{{ $classValue }}" for="status">
-                                    {{ $parcel->status ?? '-' }}
+                                    {{ $parcel->parcelStatus->status ?? '-' }}
                                 </label>
                             </td>
                             <td>
@@ -130,7 +122,7 @@
 
                                         <span class="user-content"
                                             style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                   height: 26px;align-content: center;">
+                                                                                                                                   height: 26px;align-content: center;">
                                             <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                         </span>
                                     </a>
@@ -140,10 +132,12 @@
                                                 <ul>
 
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#deliveryman_modal">Assign delivery
-                                                            Boy</a>
+                                                        <a class="dropdown-item {{ $parcel->status == 1 ? '' : 'disabled-link-supply' }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#delivery_with_driver"
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                    Assign delivery with driver
+                                                        </a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -153,8 +147,8 @@
                                 </li>
                             </td>
                             <td class="btntext">
-                                <button onClick="redirectTo('{{route('admin.orderdetails')}}')" class=orderbutton><img
-                                        src="{{asset('assets/img/ordereye.png')}}"></button>
+                                <button onClick="redirectTo('{{route('admin.supply_orders.show', $parcel->id)}}')"
+                                    class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
                             </td>
                         </tr>
                     @empty
@@ -189,3 +183,4 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="parcel_id_input_hidden" name="parcel_id_hidden" class="form-control" readonly>

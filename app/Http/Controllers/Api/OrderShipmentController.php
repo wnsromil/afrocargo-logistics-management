@@ -18,7 +18,10 @@ use App\Models\{
     ContainerHistory,
     Cart,
     Address,
-    ParcelPickupDriver
+    ParcelPickupDriver,
+    Availability,
+    WeeklySchedule,
+    LocationSchedule
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -63,7 +66,6 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($parcels, 'Parcel data fetched successfully.');
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -74,14 +76,14 @@ class OrderShipmentController extends Controller
             $validatedData = $request->validate([
                 'weight' => 'required|numeric|min:0',
                 'total_amount' => 'required|numeric|min:0',
-                'estimate_cost' => 'required|numeric|min:0',
+                'customer_estimate_cost' => 'required|numeric|min:0',
                 'partial_payment' => 'required|numeric|min:0',
                 'remaining_payment' => 'required|numeric|min:0',
                 'payment_type' => 'required|in:COD,Online',
                 'descriptions' => 'nullable|string',
-                'destination_address' => 'required|string|max:255',
-                'destination_user_name' => 'required|string|max:255',
-                'destination_user_phone' => 'required|digits:10',
+                'destination_address' => 'nullable|string|max:255',
+                'destination_user_name' => 'nullable|string|max:255',
+                'destination_user_phone' => 'nullable',
                 //  'parcel_card_ids' => 'nullable|array',
                 'customer_subcategories_data' => 'nullable', // JSON format required
                 'driver_subcategories_data' => 'nullable',   // JSON format required
@@ -127,6 +129,56 @@ class OrderShipmentController extends Controller
                 return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
             }
 
+
+            // if (!empty($request->pickup_time)) {
+            //     $shuffleUsers = $this->AsgainDriverOrder($request->pickup_date, $request->pickup_address_id);
+            //     $shuffleSelectedUserId = collect($shuffleUsers)->random()['user_id'] ?? null;
+
+            //     $shuffleWarehouseId = $shuffleSelectedUserId
+            //         ? User::find($shuffleSelectedUserId)?->warehouse_id
+            //         : null;
+
+            //     // Step 5: Get vehicles from this warehouse with vehicle_type = 1
+            //     $vehicles = Vehicle::where('warehouse_id', $shuffleWarehouseId)
+            //         ->where('vehicle_type', 1)
+            //         ->get();
+
+            //     // Step 6: Check if any vehicle has status = 'Active'
+            //     $activeVehicle = $vehicles->firstWhere('status', 'Active');
+
+            //     if (!$activeVehicle) {
+            //         return response()->json(['message' => 'Container is not open'], 200);
+            //     }
+            //     // Store container_id
+            //     $validatedData['container_id'] = $activeVehicle->id;
+            //     $validatedData['warehouse_id'] = $shuffleWarehouseId;
+            //     $validatedData['driver_id'] = $shuffleSelectedUserId;
+            //     $validatedData['status'] = 2;
+
+
+            //     $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
+            //         ->where('type', 'Active')
+            //         ->latest() // optional: if multiple transfer records exist, get the latest
+            //         ->first();
+
+            //     if ($containerHistory) {
+            //         $containerHistory->increment('no_of_orders', 1);
+
+            //         // Add financial fields
+            //         $containerHistory->total_amount += $request->total_amount;
+            //         $containerHistory->partial_payment += $request->partial_payment;
+            //         $containerHistory->remaining_payment += $request->remaining_payment;
+
+            //         $containerHistory->save();
+            //         $validatedData['container_history_id'] = $containerHistory->id;
+            //     } else {
+            //         $validatedData['container_history_id'] = null; // or handle as needed
+            //     }
+            // }
+
+            // Create Parcel
+            $Parcel = Parcel::create($validatedData);
+
             // Step 5: Get vehicles from this warehouse with vehicle_type = 1
             $vehicles = Vehicle::where('warehouse_id', $nearestWarehouse->id)
                 ->where('vehicle_type', 1)
@@ -149,31 +201,41 @@ class OrderShipmentController extends Controller
                 ->first();
 
             if ($containerHistory) {
-                $containerHistory->increment('no_of_orders', 1);
+                // $containerHistory->increment('no_of_orders', 0);
 
                 // Add financial fields
-                $containerHistory->total_amount += $request->total_amount;
-                $containerHistory->partial_payment += $request->partial_payment;
-                $containerHistory->remaining_payment += $request->remaining_payment;
+                // $containerHistory->total_amount += $request->total_amount;
+                // $containerHistory->partial_payment += $request->partial_payment;
+                // $containerHistory->remaining_payment += $request->remaining_payment;
 
-                $containerHistory->save();
+                // $containerHistory->save();
                 $validatedData['container_history_id'] = $containerHistory->id;
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
             }
-
-            // Create Parcel
-            $Parcel = Parcel::create($validatedData);
 
             // Create Parcel History
             ParcelHistory::create([
                 'parcel_id' => $Parcel->id,
                 'created_user_id' => $this->user->id,
                 'customer_id' => $validatedData['customer_id'],
+                'warehouse_id' => $nearestWarehouse->id,
                 'status' => 'Created',
                 'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
+
+            // if (!empty($request->pickup_time)) {
+            //     ParcelHistory::create([
+            //         'parcel_id' => $Parcel->id,
+            //         'created_user_id' => $this->user->id,
+            //         'customer_id' => $validatedData['customer_id'],
+            //         'warehouse_id' => $nearestWarehouse->id,
+            //         'status' => 'Created',
+            //         'parcel_status' => 2,
+            //         'description' => json_encode($Parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+            //     ]);
+            // }
 
             return $this->sendResponse($Parcel, 'Order added successfully.');
         } catch (Exception $e) {
@@ -188,6 +250,7 @@ class OrderShipmentController extends Controller
             ], 500);
         }
     }
+
     public function show(string $id)
     {
         $parcel = Parcel::where('id', $id)
@@ -461,6 +524,7 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($data, 'Estimate Price fetched successfully.');
     }
+
     public function invoiceOrderCreateService(Request $request)
     {
         try {
@@ -763,7 +827,7 @@ class OrderShipmentController extends Controller
         $user = $this->user;
         $data = $request->only(['parcel_id', 'item_name', 'quantity']);
         $data['is_deleted'] = 'No';
-        $data['status'] = '3';
+        $data['status'] = 3;
         $data['driver_id'] = $user->id;
         $data['quantity'] = $request->quantity ?? null;
         $data['quantity_type'] = $request->quantity_type ?? null;
@@ -771,7 +835,7 @@ class OrderShipmentController extends Controller
         $parcel = Parcel::find($request->parcel_id);
 
         $data['container_id'] = $parcel->container_id ?? null;
-       // $data['container_move_id'] = $parcel->container_id ?? null;
+        // $data['container_move_id'] = $parcel->container_id ?? null;
         $data['move'] = "No";
 
         // Handle image upload
@@ -789,6 +853,63 @@ class OrderShipmentController extends Controller
             'message' => 'Parcel pickup driver data saved successfully.',
             'data' => $parcel
         ], 201);
+    }
+
+    function AsgainDriverOrder($date, $address_id)
+    {
+        $dayName = strtolower(Carbon::parse($date)->format('l'));
+        $weeklyUserId = [];
+        $availabilities = Availability::where('date', $date)->get()->keyBy('user_id');
+
+        $address = Address::findOrFail($address_id);
+        $lat = $address->lat;
+        $long = $address->long;
+        $userIds = $this->getNearbyUserIds($lat, $long);
+
+        foreach ($userIds as $userId) {
+            $availablePeriods = [];
+
+            // Step 1: Check availability table se user ki entry
+            if (isset($availabilities[$userId])) {
+                $avail = $availabilities[$userId];
+                foreach (['morning', 'afternoon', 'evening'] as $period) {
+                    if ($avail->$period == 1) {
+                        $availablePeriods[] = $period;
+                    }
+                }
+
+                if (empty($availablePeriods)) {
+                    continue;
+                }
+            } else {
+                $availablePeriods = ['morning', 'afternoon', 'evening'];
+            }
+
+            // Step 3: Weekly schedule nikaalo
+            $weekly = WeeklySchedule::where('user_id', $userId)
+                ->where('day', $dayName)
+                ->first();
+
+            if (!$weekly) continue;
+
+            // ✅ FIX: Collect all weekly records in an array
+            $weeklyUserId[] = [
+                'user_id' => $userId,
+            ];
+        }
+
+        return $weeklyUserId;
+    }
+
+    function getNearbyUserIds($lat, $lng, $radius = 50)
+    {
+        return LocationSchedule::select('user_id')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) + sin(radians(?)) * sin(radians(lat)))) AS distance',
+                [$lat, $lng, $lat]
+            )
+            ->having('distance', '<=', $radius)
+            ->pluck('user_id');
     }
 
     // end

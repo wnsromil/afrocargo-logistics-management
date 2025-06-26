@@ -45,7 +45,14 @@
                 left: 0;
             }
 
-            /*End style*/
+            .order-tracking.cancelled .is-complete {
+                background-color: red !important;
+                border-color: red;
+            }
+
+            .order-tracking.cancelled p {
+                color: red;
+            }
         </style>
     @endsection
 
@@ -63,6 +70,7 @@
                             <th>From</th>
                             <th>To</th>
                             <th>Pickup Date</th>
+                            <th>Delivery Date</th>
                             <th>Capture Image</th>
                             <th>Items</th>
                             <th>Estimate cost</th>
@@ -72,6 +80,8 @@
                             <th>Amount</th>
                             <th>Payment Mode</th>
                             <th>Status</th>
+                            <th>Pickup Type</th>
+                            <th>Delivery Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,7 +143,14 @@
                                 </div>
                             </td>
                             <td>
-                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
+                                <div>
+                                    {{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m-d-Y') : '-' }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m-d-Y') : '-' }}
+                                </div>
                             </td>
                             <td>
                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
@@ -145,7 +162,20 @@
                                 </p>
                             </td>
                             <td>
-                               <div>${{ number_format($parcel->estimate_cost ?? 0, 2) }}</div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">Customer:</div>
+                                            <div class="row">Driver:</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                ${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                            </div>
+                                            <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                            </div>
+                                        </div>
+                                    </div>
                             </td>
                             <td>
                                 <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -181,7 +211,8 @@
                                 </div>
                             </td>
                             <td>
-                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                </div>
                             </td>
                             @php
                                 $status_class = $parcel->status ?? null;
@@ -202,6 +233,7 @@
                                     "15" => 'badge-abandoned',
                                     "21" => 'badge-picked-up',
                                     "22" => 'badge-in-transit',
+                                    "23" => 'badge-pickup_re-schedule',
                                     default => 'badge-pending',
                                 };
 
@@ -210,6 +242,16 @@
                                 <label class="{{ $classValue }}" for="status">
                                     {{ $parcelStatus ?? '-' }}
                                 </label>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -240,7 +282,8 @@
                                         <td>{{$parcelItem->container->unique_id ?? "-"}}</td>
                                         <td class="product_img justify-items-center popup" style="justify-items: center;">
                                             @if (!empty($parcelItem->img))
-                                                <img style="cursor: pointer;" src="{{ asset($parcelItem->img) }}" alt="Inventory Image" class="itemImg">
+                                                <img style="cursor: pointer;" src="{{ asset($parcelItem->img) }}"
+                                                    alt="Inventory Image" class="itemImg">
                                             @else
                                                 <span>-</span>
                                             @endif
@@ -287,60 +330,80 @@
                 </div>
             </div>
         </div>
-        <div>
+        @php
+            $currentStatusId = $parcel->status ?? null;
 
-            @php
-                $statusSteps = [
-                    1 => 'Pending',
-                    3 => 'Pickup order',
-                    4 => 'Arrived warehouse',
-                    5 => 'In transit',
-                    8 => 'Arrived at final destination warehouse',
-                    9 => 'Ready for pick up',
-                    //21 => 'Ready for self pick up',
-                    10 => 'Out for delivery',
-                    11 => 'Delivered'
+            $statusSteps = [
+                1 => 'Pending',
+                3 => 'Pickup order',
+                4 => 'Arrived warehouse',
+                5 => 'In transit',
+                8 => 'Arrived at final destination warehouse',
+                9 => 'Ready for pick up',
+                10 => 'Out for delivery',
+                11 => 'Delivered',
+            ];
 
-                ];
+            $statusDates = [];
+            $completedStatusMap = [];
 
-                $statusDates = [];
-                $completedStatusMap = [];
+            foreach ($ParcelHistories as $history) {
+                $status = (int) $history->parcel_status;
+                $statusDates[$status] = \Carbon\Carbon::parse($history->created_at)->format('D, M d - h:i A');
+                $completedStatusMap[$status] = true;
+            }
 
-                foreach ($ParcelHistories as $history) {
-                    $status = (int) $history->parcel_status;
-                    $statusDates[$status] = \Carbon\Carbon::parse($history->created_at)->format('D, M d - h:i A');
-                    $completedStatusMap[$status] = true;
-                }
-            @endphp
-            <p class="heading mt-4">Order History</p>
-            <!-- Timeline -->
-            <div class="col-md-12">
-                <div class="timeline-card px-3">
-                    <div class="card-body">
-                        <div class="">
-                            <div class="hh-grayBox pt45 pb20">
-                                <div class="row">
-                                    @foreach($statusSteps as $code => $label)
-                                        @php
-                                            $isCompleted = isset($completedStatusMap[$code]) && $completedStatusMap[$code] === true;
-                                        @endphp
-                                        <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
+            $cancelFound = $currentStatusId == 14;
+        @endphp
+
+        <p class="heading mt-4">Order History</p>
+        <div class="col-md-12">
+            <div class="timeline-card px-3">
+                <div class="card-body">
+                    <div class="hh-grayBox pt45 pb20">
+                        <div class="row">
+                            @if ($cancelFound)
+                                @php $cancelInserted = false; @endphp
+                                @foreach ($statusSteps as $code => $label)
+                                    @if (isset($completedStatusMap[$code]))
+                                        <div class="order-tracking completed">
                                             <span class="is-complete"></span>
                                             <p>
                                                 {{ $label }}<br>
                                                 <span>{{ $statusDates[$code] ?? '' }}</span>
                                             </p>
                                         </div>
-                                    @endforeach
-                                </div>
-
-                            </div>
+                                    @elseif (!$cancelInserted)
+                                        <div class="order-tracking cancelled">
+                                            <span class="is-complete"></span>
+                                            <p>
+                                                Cancelled<br>
+                                                <span>{{ $statusDates[14] ?? now()->format('D, M d - h:i A') }}</span>
+                                            </p>
+                                        </div>
+                                        @php $cancelInserted = true; @endphp
+                                        @break
+                                    @endif
+                                @endforeach
+                            @else
+                                @foreach ($statusSteps as $code => $label)
+                                    @php $isCompleted = isset($completedStatusMap[$code]); @endphp
+                                    <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
+                                        <span class="is-complete"></span>
+                                        <p>
+                                            {{ $label }}<br>
+                                            <span>{{ $statusDates[$code] ?? '' }}</span>
+                                        </p>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Timeline -->
         </div>
+
+
     </div>
     <div class="show">
         <div class="overlay"></div>

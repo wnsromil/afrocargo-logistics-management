@@ -12,6 +12,9 @@ class SlotController extends Controller
     // Get available slots
     public function getAvailableSlots(Request $request)
     {
+        $date = $request->query('date', date('Y-m-d'));
+        $dayName = date('l', strtotime($date));
+        dd($dayName);
         $config = [
             'date' => $request->query('date', date('Y-m-d')),
             'date_format' => 'Y-m-d',

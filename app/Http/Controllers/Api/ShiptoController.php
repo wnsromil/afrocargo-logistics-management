@@ -118,9 +118,9 @@ class ShiptoController extends Controller
                 'company_name' => 'nullable|string|max:255',
                 'first_name' => 'required|string|max:255',
                 'mobile_number_code_id' => 'required',
-                'mobile_number' => 'required|digits:10|unique:users,phone',
+                'mobile_number' => 'required|digits:8|max:15|unique:users,phone',
                 'alternative_mobile_number_code_id' => 'nullable',
-                'alternative_mobile_number' => 'nullable|max:10',
+                'alternative_mobile_number' => 'nullable|max:15',
                 'email' => [
                     'required',
                     'email',
