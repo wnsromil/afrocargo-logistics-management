@@ -9,7 +9,7 @@
                         <th>Vehicle Type</th>
                         <th>Warehouse Name</th>
                         <th>Driver Name</th>
-                        <th>Vehicle/SEAL Number</th>
+                        <th>Vehicle</th>
                         <th>Vehicle Model</th>
                         <th>Vehicle Year</th>
                         <th class="tabletext">Status</th>
@@ -26,7 +26,7 @@
                             );
                         @endphp
 
-                        <tr class="{{ $result ? $result['bg_class'] : '' }}">
+                       <tr class="{{ collect($result)->firstWhere('bg_class')["bg_class"] ?? '' }}">
                             <td>
                                 {{ $vehicle->unique_id ?? '-' }}
                             </td>

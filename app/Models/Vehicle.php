@@ -82,7 +82,7 @@ class Vehicle extends Model
 
     public function ContainerSize()
     {
-        return $this->belongsTo(ContainerSize::class, foreignKey: 'container_size');
+        return $this->belongsTo(ContainerSize::class, 'container_size', 'id');
     }
 
 

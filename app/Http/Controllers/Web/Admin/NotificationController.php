@@ -9,19 +9,34 @@ use App\Models\User;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
-        $notifications = Notification::latest()->paginate(5);
-      
-        $data = User::latest()->paginate(5);
-  
-        return view('admin.notification.index',compact('notifications','data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10); // Default 10
+        $currentPage = $request->input('page', 1); // Current page number
+
+        $notifications = Notification::when($query, function ($q) use ($query) {
+            return $q->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%$query%")
+                    ->orWhere('description', 'LIKE', "%$query%")
+                    ->orWhere('type', 'LIKE', "%$query%")
+                    ->orWhere('status', 'LIKE', "%$query%");
+            });
+        })
+            ->latest()
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
+
+        // Serial number calculation for pagination
+        $serialStart = ($currentPage - 1) * $perPage;
+
+        if ($request->ajax()) {
+            return view('admin.notification.table', compact('notifications', 'serialStart'))->render();
+        }
+
+        return view('admin.notification.index', compact('notifications', 'query', 'perPage', 'serialStart'));
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -46,7 +61,7 @@ class NotificationController extends Controller
     {
         $user = User::find($id);
 
-        return view('admin.notification.show',compact('user'));
+        return view('admin.notification.show', compact('user'));
     }
 
     /**
@@ -72,4 +87,5 @@ class NotificationController extends Controller
     {
         //
     }
+    
 }

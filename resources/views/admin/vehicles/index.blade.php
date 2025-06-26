@@ -16,76 +16,55 @@
             </div>
         </div>
     </div>
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
 
-
-
-
-    {{-- <x-slot name="cardTitle">
-        <p class="head">All Vehicle</p>
-
-        <div class="usersearch d-flex">
-            <div class="top-nav-search">
-                <form>
-                    <input type="text" class="form-control forms" placeholder="Search ">
-
-                </form>
+    <form id="expenseFilterForm" action="{{ route('admin.vehicle.index') }}" method="GET">
+        <div class="row gx-3 inputheight40">
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Search</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                        placeholder="Search" name="search" value="{{ request('search') }}">
+                </div>
             </div>
-            <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+            {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
-        </div>
-    </x-slot> --}}
 
-
-
-
-    <x-slot name="cardTitle">
-        <p class="head">All Vehicle</p>
-        <div class="usersearch d-flex usersserach">
-
-            <div class="top-nav-search">
-                <form action="{{ url()->current() }}" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput"
-                            name="search" value="{{ request()->search }}">
-                        {{-- <button type="submit">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button> --}}
-                    </div>
-                </form>
-            </div>
-            <div class="mt-2">
-                <button type="button"
-                    class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);"
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
-                        <span><i class="fe fe-refresh-ccw"></i></span>
-                    </a>
-                </button>
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
+                </div>
             </div>
         </div>
-        <!-- <div class="usersearch d-flex">
-            <div class="top-nav-search">
-                <form action="{{ url()->current() }}" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control forms" placeholder="Search" id="search"
-                            name="search" value="{{ request()->search }}">
-                        {{-- <button type="submit">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button> --}}
-                    </div>
-                </form>
-            </div>
-            <div class="mt-2 ms-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="{{ route('admin.vehicle.index') }}" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
-            </div>
-        </div> -->
-    </x-slot>
-
+    </form>
 
     <div id='ajexTable'>
         <div class="card-table">
@@ -601,7 +580,7 @@
     </div>
 
     {{-- jqury cdn --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @section('script')
     <script>
         $(document).ready(function () {
             // Delegate click on dynamically updated table
@@ -631,4 +610,11 @@
             });
         });
     </script>
+    <script>
+        function resetForm() {
+            window.location.href = "{{ route('admin.vehicle.index') }}";
+        }
+    </script>
+    @endsection
+
 </x-app-layout>

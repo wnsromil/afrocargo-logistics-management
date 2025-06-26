@@ -13,29 +13,56 @@
         </div>
     </div>
 
-    <x-slot name="cardTitle">
-        <div class="d-flex topnavs">
-            <p class="head">All Drivers</p>
-            <div class="usersearch d-flex usersserach">
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
 
-                <div class="top-nav-search">
-                    <form action="{{ url()->current() }}" method="get">
-                        <div class="input-group">
-                            <input type="text" class="form-control forms" id="searchInput" placeholder="Search"
-                                id="search" name="search" value="{{ request()->search }}">
-                        </div>
-                    </form>
+    <form id="expenseFilterForm" action="{{ route('admin.drivers.index') }}" method="GET">
+        <div class="row gx-3 inputheight40">
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Search</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                        placeholder="Search" name="search" value="{{ request('search') }}">
                 </div>
-                <div class="mt-2">
-                    <button type="button" class="btn btn-primary refeshuser ">
-                        <a class="btn-filters" href="{{ route('admin.drivers.index') }}" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Refresh"><span><i
-                                    class="fe fe-refresh-ccw"></i></span></a>
-                    </button>
+            </div>
+            {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
                 </div>
             </div>
         </div>
-    </x-slot>
+    </form>
+
     <div class="row">
         <div id='ajexTable'>
             <div class="card-table">
@@ -60,32 +87,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($warehouses as $index => $warehouse)
+                                @forelse ($drivers as $index => $driver)
                                     @php
-                                        $result = checkExpiryStatus($warehouse->license_expiry_date);
+                                        $result = checkExpiryStatus($driver->license_expiry_date);
                                     @endphp
 
                                     <tr class="{{ $result['bg_class'] ?? '' }}">
                                         <td>
-                                            {{ $warehouse->unique_id }}
+                                            {{ $driver->unique_id }}
                                         </td>
-                                        <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '--') }}</td>
-                                        <td><span>{{ ucfirst($warehouse->name ?? '--') }}</span></td>
-                                        <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}
+                                        <td>{{ ucfirst($driver->warehouse->warehouse_name ?? '--') }}</td>
+                                        <td><span>{{ ucfirst($driver->name ?? '--') }}</span></td>
+                                        <td>+{{ $driver->phone_code->phonecode ?? '' }} {{ $driver->phone ?? '-' }}
                                         </td>
                                         <td>
-                                            <span>{{ $warehouse->vehicle->vehicle_type ?? '--' }}</span>
-                                            <span> ({{ $warehouse->vehicle->vehicle_number ?? '--' }})</span>
+                                            <span>{{ $driver->vehicle->vehicle_type ?? '--' }}</span>
+                                            <span> ({{ $driver->vehicle->vehicle_number ?? '--' }})</span>
                                         </td>
                                         <td>
                                             <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                title="{{ $warehouse->address ?? '-' }}">{{ $warehouse->address ?? '-' }}
+                                                title="{{ $driver->address ?? '-' }}">{{ $driver->address ?? '-' }}
                                         </td>
-                                        <td>{{ $warehouse->license_number ?? '--' }}</td>
-                                        <td>{{ $warehouse->license_expiry_date ?? '--' }}</td>
+                                        <td>{{ $driver->license_number ?? '--' }}</td>
+                                        <td>{{ $driver->license_expiry_date ?? '--' }}</td>
                                         <td>
-                                            @if (!empty($warehouse->license_document))
-                                                <a href="{{ asset($warehouse->license_document) }}" target="_blank"
+                                            @if (!empty($driver->license_document))
+                                                <a href="{{ asset($driver->license_document) }}" target="_blank"
                                                     class="justify-content-center downloadbtn" download>
                                                     <i class="fa fa-download"></i>
                                                 </a>
@@ -95,14 +122,14 @@
                                         </td>
                                         <td>
                                             <a class="btn btn-primary icon_btn"
-                                                href="{{ route('admin.drivers.schedule', $warehouse->id) }}">
+                                                href="{{ route('admin.drivers.schedule', $driver->id) }}">
                                                 <i class="ti ti-calendar-clock"></i></a>
                                         </td>
                                         <td>
                                             <label
-                                                class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}"
-                                                for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
-                                                {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}
+                                                class="labelstatus {{ $driver->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                                for="{{ $driver->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                                {{ $driver->status == 'Active' ? 'Active' : 'Inactive' }}
                                             </label>
                                         </td>
                                         <td class="d-flex align-items-center">
@@ -117,25 +144,25 @@
                                                     <ul>
                                                         <li>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('admin.drivers.edit', $warehouse->id) }}"><i
+                                                                href="{{ route('admin.drivers.edit', $driver->id) }}"><i
                                                                     class="far fa-edit me-2"></i>Edit</a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
+                                                                href="{{ route('admin.drivers.show', $driver->id) }}"><i
                                                                     class="far fa-eye me-2"></i>View</a>
                                                         </li>
-                                                        @if($warehouse->status == 'Active')
+                                                        @if($driver->status == 'Active')
                                                             <li>
                                                                 <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                    data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                                    data-id="{{ $driver->id }}" data-status="Inactive">
                                                                     <i class="far fa-bell-slash me-2"></i>Deactivate
                                                                 </a>
                                                             </li>
-                                                        @elseif($warehouse->status == 'Inactive')
+                                                        @elseif($driver->status == 'Inactive')
                                                             <li>
                                                                 <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                    data-id="{{ $warehouse->id }}" data-status="Active">
+                                                                    data-id="{{ $driver->id }}" data-status="Active">
                                                                     <i class="fa-solid fa-power-off me-2"></i>Activate
                                                                 </a>
                                                             </li>
@@ -176,47 +203,48 @@
                 <div class="col-md-6">
                     <div class="float-end">
                         <div class="bottom-user-page mt-3">
-                            {!! $warehouses->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
+                            {!! $drivers->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                // Delegate click on dynamically updated table
-                $('#ajexTable').on('click', '.activate, .deactivate', function () {
-                    let id = $(this).data('id');
-                    let status = $(this).data('status');
+        @section("script")
+            <script>
+                $(document).ready(function () {
+                    // Delegate click on dynamically updated table
+                    $('#ajexTable').on('click', '.activate, .deactivate', function () {
+                        let id = $(this).data('id');
+                        let status = $(this).data('status');
 
-                    $.ajax({
-                        url: "{{ route('admin.drivers.status', '') }}/" + id
-                        , type: 'POST'
-                        , data: {
-                            _token: '{{ csrf_token() }}'
-                            , status: status
-                        }
-                        , success: function (response) {
-                            if (response.success) {
-                                Swal.fire({
-                                    icon: 'success'
-                                    , title: 'Status Updated'
-                                    , text: response.success
-                                });
-
-                                location.reload();
+                        $.ajax({
+                            url: "{{ route('admin.drivers.status', '') }}/" + id
+                            , type: 'POST'
+                            , data: {
+                                _token: '{{ csrf_token() }}'
+                                , status: status
                             }
-                        }
+                            , success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success'
+                                        , title: 'Status Updated'
+                                        , text: response.success
+                                    });
+
+                                    location.reload();
+                                }
+                            }
+                        });
                     });
                 });
-            });
-
-        </script>
-
-        </script>
-
+            </script>
+            <script>
+                function resetForm() {
+                    window.location.href = "{{ route('admin.drivers.index') }}";
+                }
+            </script>
+        @endsection
     </div>
 
 </x-app-layout>

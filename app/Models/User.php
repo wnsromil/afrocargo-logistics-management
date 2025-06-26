@@ -75,6 +75,7 @@ class User extends Authenticatable
         'no_service',
         'call',
         'sales_call',
+        'notification_read'
     ];
 
 

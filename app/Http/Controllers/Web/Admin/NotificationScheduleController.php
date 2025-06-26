@@ -14,7 +14,8 @@ use App\Models\{
     Parcel,
     Vehicle,
     ParcelHistory,
-    HubTracking
+    HubTracking,
+    Notification
 };
 
 class NotificationScheduleController extends Controller
@@ -22,23 +23,33 @@ class NotificationScheduleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10); // Default 10
+        $currentPage = $request->input('page', 1); // Current page number
 
-        $parcels = Parcel::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest()->paginate(10);
-        $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->get());
+        $notifications = Notification::when($query, function ($q) use ($query) {
+            return $q->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%$query%")
+                    ->orWhere('message', 'LIKE', "%$query%")
+                    ->orWhere('unique_id', 'LIKE', "%$query%")
+                    ->orWhere('type', 'LIKE', "%$query%")
+                    ->orWhere('status', 'LIKE', "%$query%");
+            });
+        })
+            ->latest()
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
-        })->get();
+        // Serial number calculation for pagination
+        $serialStart = ($currentPage - 1) * $perPage;
 
-        $drivers = $user->where('role_id', 4)->values();
-        return view('admin.notification_schedule.index', compact('parcels', 'drivers', 'warehouses'));
+        if ($request->ajax()) {
+            return view('admin.notification_schedule.table', compact('notifications', 'serialStart'))->render();
+        }
+
+        return view('admin.notification_schedule.index', compact('notifications', 'query', 'perPage', 'serialStart'));
     }
 
     /**
@@ -71,41 +82,27 @@ class NotificationScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
-        // Validate incoming request data
-        $validatedData = $request->validate([
-            'tracking_number' => 'required|string|max:255|unique:parcels,tracking_number',
-            'customer_id' => 'required|exists:users,id',
-            'driver_id' => 'nullable|exists:users,id',
-            'warehouse_id' => 'nullable|exists:warehouses,id',
-            'weight' => 'required|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
-            'partial_payment' => 'required|numeric|min:0',
-            'remaining_payment' => 'required|numeric|min:0',
-            'payment_type' => 'required|in:COD,Online',
-            'descriptions' => 'nullable|string',
-            'source_address' => 'required|string|max:255',
-            'destination_address' => 'required|string|max:255',
-            'status' => 'required|in:Pending,Pickup Assign,Pickup Re-Schedule,Received By Pickup Man,Received Warehouse,Transfer to hub,Received by hub,Delivery Man Assign,Return to Courier,Delivered,Cancelled',
-            'parcel_car_ids' => 'required|array',
+        // Validate request
+        $request->validate([
+            'notification_title' => 'required|string|max:255',
+            'notification_message' => 'required|string',
         ]);
 
-        $inventory = Parcel::create($validatedData);
-
-        ParcelHistory::create([
-            'parcel_id' => $inventory->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $validatedData['customer_id'],
-            'warehouse_id' => $validatedData['warehouse_id'],
-            'status' => 'Created',
-            'parcel_status' => $validatedData['status'],
-            'description' => collect($validatedData)
+        // Create notification
+        Notification::create([
+            'title' => $request->notification_title,
+            'message' => $request->notification_message,
+            'notification_for' => 'All',
+            'type' => 'System',
         ]);
 
+        // 🔁 Increment notification_read for all users by +1
+        User::query()->increment('notification_read', 1);
+
+        // Redirect with success message
         return redirect()->route('admin.notification_schedule.index')
-            ->with('success', 'Order added successfully.');
+            ->with('success', 'Notification created and sent to all users!');
     }
-
 
     /**
      * Display the specified resource.
@@ -195,164 +192,10 @@ class NotificationScheduleController extends Controller
      */
     public function destroy(string $id)
     {
-        $parcel = Parcel::find($id);
+        $notification = Notification::find($id);
 
-        ParcelHistory::create([
-            'parcel_id' => $parcel->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $parcel['customer_id'],
-            'warehouse_id' => $parcel['warehouse_id'],
-            'status' => 'Deleted',
-            'parcel_status' => 'Deleted',
-            'description' => collect($parcel)
-        ]);
-
-        $parcel->delete();
+        $notification->delete();
         return redirect()->route('admin.notification_schedule.index')
-            ->with('success', 'Order deleted successfully');
-    }
-
-    public function status_update(Request $request)
-    {
-        try {
-            // Validate incoming request data
-            $validatedData = $request->validate([
-                'ParcelId' => 'required',
-                'status' => 'required|in:Pending,Pickup Assign,Pickup Re-Schedule,Received By Pickup Man,Received Warehouse,Transfer to hub,Received by hub,Delivery Man Assign,Return to Courier,Delivered,Cancelled',
-                'driver_id' => 'nullable|exists:users,id', // Ensure driver_id is valid if provided
-            ]);
-
-            $ParcelId = $validatedData['ParcelId'];
-            unset($validatedData['ParcelId']);
-
-            // Fetch the parcel record
-            $parcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
-                }
-                return $q->where('id', $ParcelId);
-            })->get();
-
-            if (!$parcel) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Parcel not found.'
-                ], 404);
-            }
-            
-            // Update parcel status and driver_id if provided
-            $objParcel = Parcel::when($ParcelId,function($q)use($ParcelId){
-                if(is_array($ParcelId)){
-                    return $q->whereIn('id',$ParcelId);
-                }
-                return $q->where('id', $ParcelId);
-            });
-
-            
-
-
-            $warehouse_id = null;
-            if($validatedData['status'] == "Received Warehouse"){
-                $warehouse_id =  $request->warehouse_id;
-
-                // $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-                //     return $q->where('warehouse_id',$this->user->warehouse_id);
-                // })->get();
-
-
-                // // ready to hub
-                // $hubTracking = collect(HubTracking::where('status','pending')
-                // ->withCount(['parcels'])
-                // ->where(['from_warehouse_id'=>$warehouse_id])
-                // ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get())
-                // ->filter(function($item){
-                //     return $item->parcels_count < $item->vehicle->capacity;
-                // })->first();
-
-                // if(empty($hubTracking)){
-                //     $hubTracking = HubTracking::create([
-                //         'vehicle_id' => $vehicles->first()->id,
-                //         'from_warehouse_id' => $warehouse_id,
-                //         'created_by' => $this->user->id
-                //     ]);
-                // }
-
-
-                // $validatedData['hub_tracking_id'] = $hubTracking->id;
-            }
-
-            if($validatedData['status'] == "Received By Pickup Man"){
-
-                $vehicles = Vehicle::when($this->user->role_id!=1,function($q){
-                    return $q->where('warehouse_id',$this->user->warehouse_id);
-                })->get();
-
-                $warehouse_id =  $vehicles->first()->warehouse_id;
-
-                // ready to hub
-                $hubTrackings = HubTracking::where('status','pending')
-                ->withCount(['parcels'])
-                ->with('vehicle')
-                ->where(['from_warehouse_id'=>$warehouse_id])
-                ->whereIn('vehicle_id',$vehicles->pluck('id')->toArray())->latest()->get();
-
-                $hubTracking = collect($hubTrackings)->filter(function($item){
-                    return $item->parcels_count < $item->vehicle->capacity;
-                })->first();
-                
-                // return collect($hubTrackings)->pluck('vehicle_id')->toArray();
-
-                if(empty($hubTracking)){
-                    $hubTracking = HubTracking::create([
-                        'vehicle_id' => $vehicles->whereNotIn('id',collect($hubTrackings)->pluck('vehicle_id')->toArray())->first()->id ?? null,
-                        'from_warehouse_id' => $warehouse_id,
-                        'created_by' => $this->user->id
-                    ]);
-                }
-
-
-                $validatedData['hub_tracking_id'] = $hubTracking->id;
-            }
-
-            $objParcel->update($validatedData);
-
-
-            $history = $parcel->map(function($item) use($validatedData,$warehouse_id){
-                return [
-                    'parcel_id' => $item->id,
-                    'created_user_id' => $this->user->id,
-                    'customer_id' => $item->customer_id,
-                    'warehouse_id' => $warehouse_id ?? $item->warehouse_id,
-                    'status' => 'Updated',
-                    'parcel_status' => $validatedData['status'],
-                    'description' => collect($item),
-                    'note' => $request->note ?? null,
-                    'created_at'=> Carbon::now()
-                ];
-            });
-
-            
-
-            // Store history in ParcelHistory table
-            ParcelHistory::insert(collect($history)->toArray());
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Order updated successfully.',
-                'data' => [
-                    // 'parcel_id' => $parcel->id,
-                    // 'status' => $validatedData['status'],
-                    // 'driver_id' => $request->driver_id ?? null,
-                    // 'note' => $request->note ?? null
-                ]
-            ], 200);
-        } catch (\Exception $e) {
-            return $e;
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+            ->with('success', 'Notification deleted successfully');
     }
 }
