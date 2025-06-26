@@ -36,7 +36,8 @@ use App\Http\Controllers\Web\Admin\{
     LadingDetailsController,
     CBMCalculatoarController,
     CustomReportController,
-    VerifyLicenseController
+    VerifyLicenseController,
+    SupplyInventoryController,
 };
 use App\Mail\RegistorMail;
 
@@ -194,6 +195,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('drivers', DriversController::class);
         Route::resource('schedules', ScheduleController::class);
         Route::resource('inventories', InventoryController::class);
+        Route::resource('supply_inventories', SupplyInventoryController::class);
         Route::resource('advance_reports', AdvanceReportsController::class);
         Route::resource('OrderShipment', OrderShipmentController::class);
         Route::resource('hubs', HubTrackingController::class);
@@ -292,9 +294,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.serviceorderdetails.orderdetails');
         })->name('serviceorderdetails.orderdetails');
 
-        Route::get('/container/{id}', function () {
-            return view('admin.container.show');
-        })->name('container.show');
+        
 
         Route::get('/add-role', function () {
             return view('admin.user_role.create');

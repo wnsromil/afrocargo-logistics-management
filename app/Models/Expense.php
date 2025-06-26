@@ -19,7 +19,8 @@ class Expense extends Model
         'status',
         'time',
         'img', // Image path
-        'type'
+        'type',
+        'currency',
     ];
 
     /**

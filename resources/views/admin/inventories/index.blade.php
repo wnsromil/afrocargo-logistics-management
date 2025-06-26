@@ -95,7 +95,8 @@
                                 <th>ItemId</th>
                                 <th>Image</th>
                                 <th>description</th>
-                                <th>Price</th>
+                                <th>Shipping Price</th>
+                                <th>Retail Price</th>
                                 <th>Cost</th>
                                 <th>Type</th>
                                 <th>Package Type</th>
@@ -108,11 +109,11 @@
                         <tbody>
                             @forelse ($inventories as $inventory)
                                 <tr class="background-instock text-center" style="
-                                                    @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                                    @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                                        @else background-color: #FFD6A5;
-                                                    @endif
-                                                ">
+                                                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                                                    @else background-color: #FFD6A5;
+                                                                @endif
+                                                            ">
                                     <td>
                                         {{ $inventory->unique_id }}
                                     </td>
@@ -132,8 +133,15 @@
                                             {{ $inventory->description ?? '-' }}
                                         </p>
                                     </td>
-                                    <td class="text-dark">{{ ($inventory->retail_shipping_price ?? '0') }}</td>
-                                    <td class="text-dark"><span>{{ $inventory->price ?? '0' }}</span></td>
+                                    <td class="text-dark">
+                                        <span>${{ number_format($inventory->retail_shipping_price ?? 0, 2) }}
+                                    </td>
+                                    <td class="text-dark">
+                                        <span>${{ number_format($inventory->retail_vaule_price ?? 0, 2) }}</span>
+                                    </td>
+                                    <td class="text-dark">
+                                        <span>${{ number_format($inventory->price ?? 0, 2) }}</span>
+                                    </td>
                                     <td class="text-dark"><span>{{ $inventory->inventary_sub_type ?? '-' }}</span></td>
                                     <td class="text-dark"><span>{{ $inventory->package_type ?? '-' }}</span></td>
                                     <td>
@@ -148,6 +156,11 @@
                                                                 class="far fa-edit me-2"></i>Edit</a>
                                                     </li>
                                                     <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                                class="far fa-eye me-2"></i>View</a>
+                                                    </li>
+                                                    <li>
 
                                                         <form
                                                             action="{{ route('admin.inventories.destroy', $inventory->id) }}"
@@ -159,12 +172,6 @@
                                                                     class="far fa-trash-alt me-2"></i>Delete</button>
                                                         </form>
                                                     </li>
-                                                    {{-- <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.inventories.show', $inventory->id) }}"><i
-                                                                class="far fa-eye me-2"></i>View History</a>
-                                                    </li> --}}
-
                                                 </ul>
                                             </div>
                                         </div>
@@ -209,32 +216,32 @@
         </div>
     </div>
 
-    @section('script') 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll("#setBackground tbody tr").forEach(row => {
-                let back = row.cells[12].querySelector('span').innerText.trim();
+    @section('script')
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll("#setBackground tbody tr").forEach(row => {
+                    let back = row.cells[12].querySelector('span').innerText.trim();
 
-                if (back === 'Low Stock' || back === 'low stock') {
-                    row.classList.add('bg-warning-bg');
-                    row.cells[12].querySelector('span').classList.add('bg-set4');
-                } else if (back === 'Out of Stock' || back === 'out of stock') {
-                    row.classList.add('bg-danger-bg');
-                    row.cells[12].querySelector('span').classList.add('bg-set3');
-                } else if (back === 'In Stock' || back === 'in stock') {
-                    row.classList.add('bg-success-bg');
-                    row.cells[12].querySelector('span').classList.add('bg-set2');
-                }
+                    if (back === 'Low Stock' || back === 'low stock') {
+                        row.classList.add('bg-warning-bg');
+                        row.cells[12].querySelector('span').classList.add('bg-set4');
+                    } else if (back === 'Out of Stock' || back === 'out of stock') {
+                        row.classList.add('bg-danger-bg');
+                        row.cells[12].querySelector('span').classList.add('bg-set3');
+                    } else if (back === 'In Stock' || back === 'in stock') {
+                        row.classList.add('bg-success-bg');
+                        row.cells[12].querySelector('span').classList.add('bg-set2');
+                    }
+                });
             });
-        });
 
-    </script>
-    <script>
-        // Function to reset the form fields
-        function resetForm() {
-            window.location.href = "{{ route('admin.inventories.index') }}";
-        }
-    </script>
+        </script>
+        <script>
+            // Function to reset the form fields
+            function resetForm() {
+                window.location.href = "{{ route('admin.inventories.index') }}";
+            }
+        </script>
     @endsection
 
 </x-app-layout>

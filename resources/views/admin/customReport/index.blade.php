@@ -10,17 +10,14 @@
             <div class="top-nav-search">
                 <form action="" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput"
-                            name="search" value="">
+                        <input type="text" class="form-control forms" placeholder="Search" id="searchInput" name="search" value="">
 
                     </div>
                 </form>
             </div>
             <div class="mt-2">
-                <button type="button"
-                    class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);"
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
+                <button type="button" class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
+                    <a class="btn-filters d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh">
                         <span><i class="fe fe-refresh-ccw"></i></span>
                     </a>
                 </button>
@@ -30,7 +27,7 @@
 
     <div class="d-flex align-items-center justify-content-end mb-1">
         <div class="usersearch d-flex">
-            <div class="mt-2 pe-3">
+            <div class="mt-2">
                 <button class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#newReportModal">
                     <div class="d-flex align-items-center justify-content-center">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
@@ -92,6 +89,7 @@
                 </div>
             </form>
         </div>
+    </div>
 
         <div class="row mt-2 text-dark">
             <div class="col-auto">
@@ -107,6 +105,7 @@
                     ${{$totalExpense ?? 0}}</div>
             </div>
         </div>
+    </div>
 
         <div class="row">
             <div id='ajexTable'>
@@ -370,19 +369,16 @@
                 <div class="modal-header justify-content-between">
                     <h1 class="modal-title fs_18" id="trackingReportModalLabel">Send Custom Tracking Report Pdf</h1>
                     <button type="button" class="btn btn-primary btn-sm py-0 ms-2">Print Report</button>
-                    <button type="button" class="btn-close ms-0 fs_18" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close ms-0 fs_18" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ">
                     <div class="mb-2">
                         <label for="lading_bill" class="form-label">Email Id<i class="text-danger">*</i>:</label>
-                        <input type="email" id="lading_bill" class="form-control" value=""
-                            placeholder="Enter Emaill Id">
+                        <input type="email" id="lading_bill" class="form-control" value="" placeholder="Enter Emaill Id">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm ms-2"
-                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm ms-2" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary btn-sm ms-2">Send</button>
                 </div>
             </div>
@@ -425,8 +421,7 @@
                     <div class="d-flex align-items-center justify-content-end mb-1 mt-3">
                         <div class="usersearch d-flex">
                             <div class="mt-2">
-                                <button class="btn btn-primary buttons px-2" data-bs-toggle="modal"
-                                    data-bs-target="#addExpensesModal">
+                                <button class="btn btn-primary buttons px-2" data-bs-toggle="modal" data-bs-target="#addExpensesModal">
                                     <div class="d-flex align-items-center justify-content-center">
                                         <i class="ti ti-circle-plus me-1 text-white"></i>
                                         New Report
@@ -482,22 +477,19 @@
                 <div class="modal-body ">
 
                     <div class="mb-2">
-                        <label for="selectCategory" class="form-label">Expense Category<i
-                                class="text-danger">*</i>:</label>
+                        <label for="selectCategory" class="form-label">Expense Category<i class="text-danger">*</i>:</label>
                         <select class="form-select select2 border-top-0" aria-label="Default select example">
                             <option selected>Search Expense Category</option>
                         </select>
                     </div>
                     <div class="mb-2">
                         <label for="amountInput" class="form-label">Amount<i class="text-danger">*</i>:</label>
-                        <input class="form-control" id="amountInput" type="text" placeholder="Enter Amount"
-                            aria-label="default input example">
+                        <input class="form-control" id="amountInput" type="text" placeholder="Enter Amount" aria-label="default input example">
 
                     </div>
                     <div class="mb-2">
                         <label for="noteInput" class="form-label">Note:</label>
-                        <input class="form-control" id="noteInput" type="text" placeholder="Enter Note"
-                            aria-label="default input example">
+                        <input class="form-control" id="noteInput" type="text" placeholder="Enter Note" aria-label="default input example">
                     </div>
 
                     <div class="modal-footer p-0 pt-3">

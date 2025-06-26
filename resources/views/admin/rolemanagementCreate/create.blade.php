@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor" for="role_name">Role Name <i class="text-danger">*</i></label>
+                        <label class="foncolor me-2" for="role_name">Role Name <i class="text-danger">*</i></label>
                         <select name="role_name" class="form-control inp select2">
                             <option value="" disabled hidden selected>Select Role </option>
                             <option value="Driver">Driver</option>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h6 class="head mt-3 text-dark fw-semibold">Permissions</h6>
+                    <h6 class="head my-3 text-dark fw-semibold ">Permissions</h6>
 
                     <div class="col-md-12 ms-2">
                         <label class="custom_check primary col3a fw_500 mb-1 cardFontSize">

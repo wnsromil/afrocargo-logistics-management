@@ -16,7 +16,8 @@ use App\Models\{
     HubTracking,
     Address,
     ContainerHistory,
-    ParcelPickupDriver
+    ParcelPickupDriver,
+    ParcelSignaturePickup
 };
 use \Carbon\Carbon;
 
@@ -206,6 +207,7 @@ class OrderStatusManage extends Controller
                 'description'           => $vehicleData,
                 'arrived_warehouse_id'  => $validated['to_warehouse_id'],
                 'note'                  => $validated['note'],
+                ''
             ]);
         }
 
@@ -313,6 +315,7 @@ class OrderStatusManage extends Controller
             $latestTransfer->update([
                 'status' => 19,
                 'note' => $validated['note'],
+                'arrived_container' => 'Yes',
             ]);
         }
 
@@ -327,6 +330,7 @@ class OrderStatusManage extends Controller
             $latestArrived->update([
                 'status' => 18,
                 'note' => $validated['note'],
+                 'arrived_container' => 'Yes',
             ]);
         }
 
@@ -391,6 +395,7 @@ class OrderStatusManage extends Controller
         if ($latestArrived) {
             $latestArrived->update([
                 'status' => 7,
+                'full_discharge' => "Yes"
             ]);
         }
 
@@ -512,9 +517,159 @@ class OrderStatusManage extends Controller
         ]);
     }
 
-    /**
-     * Helper function to find the nearest warehouse.
-     */
+    public function statusUpdate_SignatureSelfDelivery(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+            'img' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'amount' => 'nullable|numeric',
+            'currency_name' => 'nullable|string',
+            'created_user_id' => 'required|exists:users,id',
+            //'warehouse_id' => 'required|exists:warehouses,id',
+        ]);
+
+        // Default image path
+        $imgPath = null;
+
+        // Handle image upload if present
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/pickup_self', $filename, 'public');
+            $imgPath = 'storage/' . $filePath;
+        }
+
+        // Save data to ParcelSignaturePickup
+        ParcelSignaturePickup::create([
+            'parcel_id' => $request->parcel_id,
+            'notes' => $request->notes,
+            'img' => $imgPath,
+            'amount' => $request->amount ?? 0,
+            'currency_name' => $request->currency_name ?? 'USD',
+            'customer_id' => Parcel::findOrFail($request->parcel_id)->customer_id,
+        ]);
+
+        $parcel = Parcel::findOrFail($request->parcel_id);
+
+        // Update the parcel status
+        $parcel->update([
+            'status' => 11,
+        ]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $request->created_user_id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 11,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $parcel->arrived_warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
+        ]);
+
+        return response()->json([
+            'message' => 'Signature details updated successfully.',
+        ]);
+    }
+
+    public function statusUpdateAdmin_Cancel(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+        // Update the parcel details
+
+        if ($parcel->status == 14) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Parcel has already been canceled. Status update not allowed.',
+            ], 400);
+        }
+
+
+        $parcel->update([
+            'status' => 14,
+            'warehouse_id' => $request->warehouse_id ?? null,
+        ]);
+
+        ParcelPickupDriver::where('parcel_id', $parcel->id)
+            ->update(['status' => 14]);
+
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $request->created_user_id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 14,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $request->warehouse_id ?? null,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
+    public function statusUpdateAdmin_reschedule(Request $request)
+    {
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'notes' => 'nullable|string',
+            'date' => 'required|date',
+            'Re_schedule_type' => 'required|in:pickup,delivery',
+        ]);
+
+
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+
+        // Prepare update data
+        $updateData = [
+            'status' => 23,
+            'warehouse_id' => $request->warehouse_id,
+        ];
+
+        if ($request->Re_schedule_type === 'pickup') {
+            $updateData['pickup_date'] = Carbon::createFromFormat('m/d/Y', $request->date)->format('Y-m-d');
+            //dd(Carbon::createFromFormat('m/d/Y', $request->date)->format('Y-m-d'));
+        } elseif ($request->Re_schedule_type === 'delivery') {
+            $updateData['delivery_date'] = Carbon::createFromFormat('m/d/Y', $request->date)->format('Y-m-d');
+        }
+
+        // Update parcel
+        $parcel->update($updateData);
+
+        // Save to ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $request->created_user_id,
+            'customer_id' => $parcel->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => 23,
+            'note' => $request->notes ?? null,
+            'warehouse_id' => $request->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Driver service order status updated successfully.',
+            'data' => $parcel
+        ]);
+    }
+
     private function findNearestWarehouse($latitude, $longitude)
     {
         // Fetch all warehouses
@@ -543,9 +698,6 @@ class OrderStatusManage extends Controller
         return $nearestWarehouse;
     }
 
-    /**
-     * Helper function to calculate distance between two coordinates.
-     */
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
     {
         // Haversine formula to calculate distance in kilometers

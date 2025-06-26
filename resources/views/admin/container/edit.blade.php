@@ -120,17 +120,17 @@
                     </div>
                 </div>
 
-                 {{-- Company For Container --}}
+                 {{-- Shipping line --}}
                 @php
                     $role_id = Auth::user()->role_id;
                 @endphp
                 @if($role_id == 1)
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="mb-3">
-                            <label for="company_for_container" class="foncolor">Company For Container <i
+                            <label for="company_for_container" class="foncolor">Shipping line <i
                                     class="text-danger">*</i></label>
                             <select id="company_for_container" name="company_for_container" class="profileUpdateFont">
-                                <option value="">Select Company For Container</option>
+                                <option value="">Select Shipping line</option>
                                 @foreach($viewVContainercompanys as $viewVContainercompany)
                                     <option {{ old('company_for_container', $vehicle->containerCompany->name) == $viewVContainercompany->name ? 'selected' : '' }}
                                         value="{{ $viewVContainercompany->name }}">
@@ -224,7 +224,6 @@
                         $defaultDateTime = \Carbon\Carbon::parse($vehicle->container_in_date . ' ' . $vehicle->container_in_time)->format('m/d/Y h:i A');
                     }
                 @endphp
-
                 <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
                     <label class="foncolor mt-0 pt-0">In Date & Time</label>
                     <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -234,6 +233,110 @@
                             placeholder="M/DD/YYYY hh:mm A" />
                     </div>
                 </div> --}}
+
+                  <!-- Gate In Driver -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="gate_in_driver_id" class="foncolor">Gate In Driver<i
+                                class="text-danger">*</i></label>
+                        <select name="gate_in_driver_id" class="js-example-basic-single select2">
+                            <option value="">Select Driver </option>
+                            @foreach($drivers as $driver)
+                                <option 
+                                {{ $driver->id == old('gate_in_driver_id', $vehicle->gate_in_driver_id) ? 'selected' : '' }}
+                                value="{{$driver->id }}">{{ $driver->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('gate_in_driver_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Gate Out Driver -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="gate_out_driver_id" class="foncolor">Gate Out Driver<i
+                                class="text-danger">*</i></label>
+                        <select name="gate_out_driver_id" class="js-example-basic-single select2">
+                            <option value="">Select driver </option>
+                            @foreach($drivers as $driver)
+                                <option 
+                             {{ $driver->id == old('gate_out_driver_id', $vehicle->gate_out_driver_id) ? 'selected' : '' }}
+                                value="{{$driver->id }}">{{ $driver->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('gate_out_driver_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Port Of Loading --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="port_of_loading" class="foncolor">Port Of Loading<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="port_of_loading" id="port_of_loading" class="form-control inp"
+                            placeholder="Enter port of loading" value="{{ old('port_of_loading', $vehicle->port_of_loading) }}">
+                        @error('port_of_loading')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Port Of Discharge --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="port_of_discharge" class="foncolor">Port Of Discharge<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="port_of_discharge" id="port_of_discharge" class="form-control inp"
+                            placeholder="Enter port of discharge" value="{{ old('port_of_discharge', $vehicle->port_of_discharge) }}">
+                        @error('port_of_discharge')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Celliling Date --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="edit_celliling_date" class="foncolor">Celliling Date<i class="text-danger">*</i></label>
+                        <input type="text" name="edit_celliling_date" readonly style="cursor: pointer;"
+                            class="form-control inp"
+                           value="{{ old('edit_celliling_date', $vehicle->celliling_date ? \Carbon\Carbon::parse($vehicle->celliling_date)->format('n/j/Y') : '') }}"
+                             placeholder="M/DD/YYYY" />
+                        @error('edit_celliling_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- ETA Date --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="edit_eta_date" class="foncolor">ETA Date<i class="text-danger">*</i></label>
+                        <input type="text" name="edit_eta_date" readonly style="cursor: pointer;" class="form-control inp"
+                            value="{{ old('edit_eta_date', $vehicle->eta_date ? \Carbon\Carbon::parse($vehicle->eta_date)->format('n/j/Y') : '') }}"
+                            placeholder="M/DD/YYYY" />
+                        @error('edit_eta_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Transit --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="transit_country" class="foncolor">Transit<i class="text-danger">*</i></label>
+                        <input type="text" name="transit_country" id="transit_country" class="form-control inp"
+                            placeholder="Enter transit" value="{{ old('transit_country', $vehicle->transit_country) }}">
+                        @error('transit_country')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
 
                 {{-- Chassis Number --}}
                 <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
@@ -340,7 +443,7 @@
             $(document).ready(function () {
                 $('#company_for_container').select2({
                     tags: true,
-                    placeholder: 'Select Or Type Company For Container',
+                    placeholder: 'Select Or Type Shipping line',
                     allowClear: true
                 });
             });

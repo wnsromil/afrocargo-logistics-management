@@ -82,10 +82,10 @@
                     </div>
                 </div>
 
-                <!-- Company For Container -->
+                <!-- Shipping line -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="vehicle_type">Company For Container </label>
+                        <label for="vehicle_type">Shipping line </label>
                         <p>{{ $vehicle->containerCompany->name ?? '--'}}</p>
                     </div>
                 </div>
@@ -282,6 +282,13 @@
                     </div>
                 </div>
 
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Created At</label>
+                        <p>{{ $vehicle->created_at ? $vehicle->created_at->format('m/d/Y') : "-"}}</p>
+                    </div>
+                </div>
+
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -411,36 +418,36 @@
                     const timeString = now.toLocaleTimeString();
 
                     win.document.write(`
-                                                                    <html>
-                                                                    <head>
-                                                                        <title>Container Print</title>
-                                                                        <style>
-                                                                            body {
-                                                                                margin: 0;
-                                                                                padding: 10px;
-                                                                                font-family: Arial, sans-serif;
-                                                                            }
-                                                                            h1 {
-                                                                                text-align: center;
-                                                                                margin-bottom: 20px;
-                                                                            }
-                                                                            #printTime {
-                                                                                position: fixed;
-                                                                                bottom: 10px;
-                                                                                left: 0;
-                                                                                right: 0;
-                                                                                text-align: center;
-                                                                                font-size: 12px;
-                                                                                color: #555;
-                                                                            }
-                                                                        </style>
-                                                                    </head>
-                                                                    <body>
-                                                                        <img src="${dataUrl}" style="width:100%" />
-                                                                        <div id="printTime">${timeString}</div>
-                                                                    </body>
-                                                                    </html>
-                                                                `);
+                                                                        <html>
+                                                                        <head>
+                                                                            <title>Container Print</title>
+                                                                            <style>
+                                                                                body {
+                                                                                    margin: 0;
+                                                                                    padding: 10px;
+                                                                                    font-family: Arial, sans-serif;
+                                                                                }
+                                                                                h1 {
+                                                                                    text-align: center;
+                                                                                    margin-bottom: 20px;
+                                                                                }
+                                                                                #printTime {
+                                                                                    position: fixed;
+                                                                                    bottom: 10px;
+                                                                                    left: 0;
+                                                                                    right: 0;
+                                                                                    text-align: center;
+                                                                                    font-size: 12px;
+                                                                                    color: #555;
+                                                                                }
+                                                                            </style>
+                                                                        </head>
+                                                                        <body>
+                                                                            <img src="${dataUrl}" style="width:100%" />
+                                                                            <div id="printTime">${timeString}</div>
+                                                                        </body>
+                                                                        </html>
+                                                                    `);
 
                     win.document.close();
                     win.focus();

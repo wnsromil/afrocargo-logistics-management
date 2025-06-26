@@ -14,7 +14,8 @@ use App\Models\{
     ParcelHistory,
     Invoice,
     ParcelInventorie,
-    ParcelPickupDriver
+    ParcelPickupDriver,
+    ContainerHistory
 };
 
 class ServiceOrderStatusManage extends Controller
@@ -136,11 +137,13 @@ class ServiceOrderStatusManage extends Controller
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
             'notes' => 'nullable|string',
+            'estimate_cost' => 'nullable|numeric|min:0',
+            'partial_payment' => 'nullable|numeric|min:0',
+            'remaining_payment' => 'nullable|numeric|min:0',
+            'payment_type' => 'nullable|in:COD,Online',
         ]);
 
-        // Find the parcel by ID
         $parcel = Parcel::findOrFail($request->parcel_id);
-        // Update the parcel details
 
         if ($parcel->status == 3) {
             return response()->json([
@@ -149,14 +152,38 @@ class ServiceOrderStatusManage extends Controller
             ], 400);
         }
 
+        $validatedData = [
+            'payment_status' => $request->remaining_payment > 0 ? 'Partial' : 'Paid',
+        ];
 
         $parcel->update([
             'driver_id' => $this->user->id,
             'status' => 3,
             'warehouse_id' => $this->user->warehouse_id,
+            'payment_status' => $validatedData['payment_status'],
+            'estimate_cost' => $request->estimate_cost,
+            'partial_payment' => $request->partial_payment,
+            'remaining_payment' => $request->remaining_payment,
+            'payment_type' => $request->payment_type,
+            'total_amount' =>  $request->estimate_cost,
         ]);
 
-        // Create a new entry in ParcelHistory
+        if ($parcel->container_history_id) {
+            $containerHistory = ContainerHistory::where('id', $parcel->container_history_id)
+                ->where('type', 'Active')
+                ->latest()
+                ->first();
+
+            if ($containerHistory) {
+                $containerHistory->increment('no_of_orders', 1);
+                $containerHistory->total_amount += $request->estimate_cost;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
+                $containerHistory->save();
+            }
+        }
+
+
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
             'created_user_id' => $this->user->id,
@@ -165,7 +192,7 @@ class ServiceOrderStatusManage extends Controller
             'parcel_status' => 3,
             'note' => $request->notes ?? null,
             'warehouse_id' => $this->user->warehouse_id,
-            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
 
         return response()->json([
@@ -281,7 +308,6 @@ class ServiceOrderStatusManage extends Controller
             'data' => $parcel
         ]);
     }
-
 
     public function statusUpdate_Cancel(Request $request)
     {

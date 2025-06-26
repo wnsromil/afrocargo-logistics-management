@@ -179,6 +179,14 @@
                     </div>
                 </div>
 
+                 <!-- Vehicle Manufactured Year -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_year">Created At</label>
+                        <p>{{ $vehicle->created_at ? $vehicle->created_at->format('m/d/Y') : "-"}}</p>
+                    </div>
+                </div>
+
 
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">

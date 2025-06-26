@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
 
         $Containercompanys = ContainerCompany::where('status', 'Active')->get();
 
-        $ParcelStatus = ParcelStatus::get();
+        $ParcelStatus = ParcelStatus::whereIn('type', ['Order', 'Comman'])->get();
 
         // Share with view
         View::share('coutry', $countries);

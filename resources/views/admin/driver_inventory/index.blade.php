@@ -93,7 +93,7 @@
                                             </td>
                                         </tr>
                                          <tr style="background-color: #fff;">
-                                           @php
+                                              @php
                                                     $result = calculateDriverInventoryDetails($item->id);
                                                 @endphp
 

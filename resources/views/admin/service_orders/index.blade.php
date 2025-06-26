@@ -38,9 +38,10 @@
                 <label>Shipping Type</label>
                 <select class="js-example-basic-single select2" name="shipping_type" id="shipping_type">
                     <option value="">Select Shipping Type</option>
-                    <option value="air" {{ request()->query('shipping_type') == "air" ? 'selected' : '' }}>Air
+                    <option value="Air Cargo" {{ request()->query('shipping_type') == "Air Cargo" ? 'selected' : '' }}>Air
+                        Cargo
                     </option>
-                    <option value="cargo" {{ request()->query('shipping_type') == "cargo" ? 'selected' : '' }}>Cargo
+                    <option value="Ocean Cargo" {{ request()->query('shipping_type') == "Ocean Cargo" ? 'selected' : '' }}>Ocean Cargo
                     </option>
                 </select>
             </div>
@@ -94,6 +95,7 @@
                                 <th>To</th>
                                 <th>Shipping Type</th>
                                 <th>Pickup Date</th>
+                                <th>Delivery Date</th>
                                 <th>Capture Image</th>
                                 <th>Items</th>
                                 <th>Estimate cost</th>
@@ -104,6 +106,8 @@
                                 <th>Payment Mode</th>
                                 {{-- <th>Warehouse</th> --}}
                                 <th>Status</th>
+                                <th>Pickup Type</th>
+                                <th>Delivery Type</th>
                                 <th>Status update</th>
                                 <th>Action</th>
                             </tr>
@@ -172,7 +176,14 @@
                                         <div>{{ ucfirst($parcel->transport_type) ?? '-' }}</div>
                                     </td>
                                     <td>
-                                        <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
+                                        <div>
+                                            {{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m-d-Y') : '-' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m-d-Y') : '-' }}
+                                        </div>
                                     </td>
                                     <td>
                                         <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
@@ -183,8 +194,20 @@
                                             {{  $parcel->descriptions ?? '-' }}
                                         </p>
                                     </td>
-                                    <td>
-                                        <div>${{ $parcel->estimate_cost ?? "0"}}</div>
+                                      <td>
+                                        <div>
+                                             <div class="row">
+                                            <div class="col-6">
+                                                <div class="row">Customer:</div>
+                                                <div class="row">Driver:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -200,8 +223,6 @@
                                             'Partial' => 'partial_status',
                                         };
                                     @endphp
-
-
                                     <td>
                                         <label class="labelstatusy" for="{{ $forValue }}">
                                             {{ $parcel->payment_status ?? '-' }}
@@ -215,14 +236,18 @@
                                                 <div class="row">Total:</div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="row">${{ $parcel->partial_payment ?? "0"}}</div>
-                                                <div class="row">${{ $parcel->remaining_payment ?? "0"}}</div>
-                                                <div class="row">${{ $parcel->total_amount ?? "0"}}</div>
+                                                <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}
+                                                </div>
+                                                <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div>{{ $parcel->payment_type ?? "-"}}</div>
+                                        <div>
+                                            {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                        </div>
                                     </td>
                                     @php
                                         $status_class = $parcel->status ?? null;
@@ -243,6 +268,7 @@
                                             "15" => 'badge-abandoned',
                                             "21" => 'badge-picked-up',
                                             "22" => 'badge-in-transit',
+                                            "23" => 'badge-pickup_re-schedule',
                                             default => 'badge-pending',
                                         };
 
@@ -251,6 +277,16 @@
                                         <label class="{{ $classValue }}" for="status">
                                             {{ $parcelStatus ?? '-' }}
                                         </label>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
+                                        </div>
                                     </td>
                                     <td>
                                         <li class="nav-item dropdown">
@@ -274,11 +310,10 @@
                                                                     href="javascript:void(0);">Pending</a>
                                                             </li>
                                                             <li>
-                                                                <a onclick="{{ $currentStatusId == 1 ? 'fetchDriversByParcelId(' . $parcel->id . ')' : '' }}"
-                                                                    class="dropdown-item {{ $currentStatusId == 2 ? 'active disabled-link-for-active-service' : ($currentStatusId == 1 ? '' : 'disabled-link') }}"
+                                                                <a class="dropdown-item {{ $currentStatusId == 2 ? 'active disabled-link-for-active-service' : ($currentStatusId == 1 || $currentStatusId == 23 ? '' : 'disabled-link') }}"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#Pick_up_with_driver"
-                                                                    href="javascript:void(0);">
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
                                                                     Pick up with driver
                                                                 </a>
                                                             </li>
@@ -287,8 +322,7 @@
                                                                     href="javascript:void(0);">Picked up</a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item 
-                                                                                                                                       {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
+                                                                <a class="dropdown-item  {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#arrived_warehouse"
                                                                     data-id="{{ $parcel->id }}" href="javascript:void(0);">
@@ -312,7 +346,7 @@
                                                             <li>
                                                                 <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                                     class="dropdown-item {{ $currentStatusId == 21 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
-                                                                    data-bs-toggle="modal"
+                                                                    data-bs-toggle="modal" data-id="{{ $parcel->id }}"
                                                                     data-bs-target="#ready_for_signature_pick_up"
                                                                     href="javascript:void(0);">
                                                                     Ready for self pick up
@@ -321,7 +355,7 @@
                                                             <li>
                                                                 <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                                     class="dropdown-item {{ $currentStatusId == 22 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
-                                                                    data-bs-toggle="modal"
+                                                                    data-bs-toggle="modal" data-id="{{ $parcel->id }}"
                                                                     data-bs-target="#delivery_with_driver"
                                                                     href="javascript:void(0);">
                                                                     Assign delivery with driver
@@ -335,22 +369,36 @@
                                                                 <a class="dropdown-item  {{ $currentStatusId == 11 ? 'active disabled-link-for-active-service' : ($currentStatusId == 21 ? '' : 'disabled-link') }}"
                                                                     href="javascript:void(0);">Delivered</a>
                                                             </li>
-
-                                                            <li>
-                                                                <a class="dropdown-item {{ $currentStatusId == 12 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">Re-delivery</a>
-                                                            </li>
                                                             <li>
                                                                 <a class="dropdown-item {{ $currentStatusId == 13 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">On hold</a>
+                                                                    href="javascript:void(0);">Custom hold</a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item {{ $currentStatusId == 14 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">Cancelled</a>
+                                                                <a class="dropdown-item open-reschedule-pickup-modal {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#Re_schedule_pickup"
+                                                                    data-id="{{ $parcel->id }}"
+                                                                    data-date="{{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m/d/Y') : '' }}"
+                                                                    href="javascript:void(0);">
+                                                                    Re-schedule pickup
+                                                                </a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item {{ $currentStatusId == 15 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
-                                                                    href="javascript:void(0);">Abandoned</a>
+                                                                <a class="dropdown-item open-reschedule-delivery-modal {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#Re_schedule_delivery"
+                                                                    data-id="{{ $parcel->id }}"
+                                                                    data-date="{{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m/d/Y') : '' }}"
+                                                                    href="javascript:void(0);">
+                                                                    Re-schedule delivery
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                                    data-bs-toggle="modal" data-bs-target="#Cancelled"
+                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                                    Cancelled
+                                                                </a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -402,6 +450,160 @@
     <input type="hidden" id="created_user_id_input_hidden" name="created_user_id_hidden" class="form-control" readonly
         value="{{ auth()->user()->id }}">
 
+    <!-- Re-schedule delivery -->
+    <div class="modal custom-modal signature-add-modal fade" id="Re_schedule_delivery" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Re-Schedule Delivery</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="Re_schedule_deliveryForm" method="POST">
+                    @csrf
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="Re_schedule_type" name="Re_schedule_type"
+                                        class="form-control" readonly value="delivery">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Delivery date</label>
+                                    <input type="text" name="percel_date" readonly style="cursor: pointer;"
+                                        class="form-control inp" id="percel_delivery_date_input"
+                                        placeholder="MM/DD/YYYY" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Note</label>
+                                    <input type="text" name="notes" class="form-control inp Note"
+                                        placeholder="Enter note">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Re-schedule pickup -->
+    <div class="modal custom-modal signature-add-modal fade" id="Re_schedule_pickup" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Re-Schedule Pickup</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="Re_schedule_pickupForm" method="POST">
+                    @csrf
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="Re_schedule_type" name="Re_schedule_type"
+                                        class="form-control" readonly value="pickup">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Pickup date</label>
+                                    <input type="text" name="percel_date" readonly style="cursor: pointer;"
+                                        class="form-control inp" id="percel_pickup_date_input"
+                                        placeholder="MM/DD/YYYY" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Note</label>
+                                    <input type="text" name="notes" class="form-control inp Note"
+                                        placeholder="Enter note">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancelled -->
+    <div class="modal custom-modal signature-add-modal fade" id="Cancelled" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <div class="form-header text-start mb-0">
+                        <div class="popuph">
+                            <h4>Cancelled</h4>
+                        </div>
+                    </div>
+                    <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        src="{{ asset('assets/img/cross.png') }}">
+                </div>
+                <form id="cancelledForm" method="POST">
+                    @csrf
+                    <!-- Parcel ID Input Field -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <input type="hidden" id="parcel_id_input" name="parcel_id" class="form-control"
+                                        readonly>
+                                    <input type="hidden" id="warehouse_id_input" name="warehouse_id"
+                                        class="form-control" readonly>
+                                    <input type="hidden" id="created_user_id_input" name="created_user_id"
+                                        class="form-control" readonly value="
+                                    {{ auth()->user()->id }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Note</label>
+                                    <input type="text" name="notes" class="form-control inp Note"
+                                        placeholder="Enter note">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-outline-primary custom-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Pick_up_with_driver -->
     <div class="modal custom-modal signature-add-modal fade" id="Pick_up_with_driver" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-md">
@@ -427,14 +629,26 @@
                                     <input type="hidden" id="warehouse_id_input" name="warehouse_id"
                                         class="form-control" readonly>
                                     <input type="hidden" id="created_user_id_input" name="created_user_id"
-                                        class="form-control" readonly value="
-                                    {{ auth()->user()->id }}">
+                                        class="form-control" readonly value="{{ auth()->user()->id }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Warehouse<i class="text-danger">*</i></label>
+                                    <select class="js-example-basic-single select2" name="warehouse_id"
+                                        onchange="fetchDriversBywarehouse(this.value)">
+                                        <option selected="selected" value="">Select Warehouse</option>
+                                        @foreach ($warehouses as $warehouse)
+                                            <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="warehouseError" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block mb-3">
                                     <label class="foncolor">Pickup Man<i class="text-danger">*</i></label>
-                                    <select class="js-example-basic-single select2" id="driverDropdown"
+                                    <select class="js-example-basic-single select2" id="warehousedriverDropdown"
                                         name="driver_id">
                                         <option selected="selected" value="">Select Pickup Man</option>
                                     </select>
@@ -464,7 +678,7 @@
     <!-- delivery_with_driver -->
     <div class="modal custom-modal signature-add-modal fade" id="delivery_with_driver" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content">
+            <div class=" modal-content">
                 <div class="modal-header pb-0">
                     <div class="form-header text-start mb-0">
                         <div class="popuph">
@@ -479,21 +693,33 @@
                     <!-- Parcel ID Input Field -->
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-12 col-md-12">
+                            <div class=" col-lg-12 col-md-12">
                                 <div class="input-block mb-3">
                                     <input type="hidden" id="parcel_id_input" name="parcel_id" class="form-control"
                                         readonly>
                                     <input type="hidden" id="warehouse_id_input" name="warehouse_id"
                                         class="form-control" readonly>
                                     <input type="hidden" id="created_user_id_input" name="created_user_id"
-                                        class="form-control" readonly value="
-                                    {{ auth()->user()->id }}">
+                                        class="form-control" readonly value="{{ auth()->user()->id }}">
+                                </div>
+                            </div>
+                            <div class=" col-lg-12 col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="foncolor">Warehouse<i class="text-danger">*</i></label>
+                                    <select class="js-example-basic-single select2" name="warehouse_id"
+                                        onchange="fetchDeliveryDriversBywarehouse(this.value)">
+                                        <option selected="selected" value="">Select Warehouse</option>
+                                        @foreach ($warehouses as $warehouse)
+                                            <option value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="deliverywarehouseError" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block mb-3">
                                     <label class="foncolor">Delivery Man<i class="text-danger">*</i></label>
-                                    <select class="js-example-basic-single select2" id="deliverydriverDropdown"
+                                    <select class="js-example-basic-single select2" id="deliverywarehousedriverDropdown"
                                         name="driver_id">
                                         <option selected="selected" value="">Select delivery Man</option>
                                     </select>
@@ -522,7 +748,7 @@
     <!-- ready_for_signature_pick_up -->
     <div class="modal custom-modal signature-add-modal fade" id="ready_for_signature_pick_up" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content">
+            <div class=" modal-content">
                 <div class="modal-header pb-0">
                     <div class="form-header text-start mb-0">
                         <div class="popuph">
@@ -532,20 +758,19 @@
                     <img class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         src="{{ asset('assets/img/cross.png') }}">
                 </div>
-                <form id="deliveryForm" method="POST">
+                <form id="signaturedeliveryForm" method="POST">
                     @csrf
                     <!-- Parcel ID Input Field -->
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-12 col-md-12">
+                            <div class=" col-lg-12 col-md-12">
                                 <div class="input-block mb-3">
                                     <input type="hidden" id="parcel_id_input" name="parcel_id" class="form-control"
                                         readonly>
                                     <input type="hidden" id="warehouse_id_input" name="warehouse_id"
                                         class="form-control" readonly>
                                     <input type="hidden" id="created_user_id_input" name="created_user_id"
-                                        class="form-control" readonly value="
-                                    {{ auth()->user()->id }}">
+                                        class="form-control" readonly value="{{ auth()->user()->id }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
@@ -577,6 +802,14 @@
                                         <div id="preview" class="mt-2">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="input-block">
+                                    <label class="foncolor">Amount</label>
+                                    <input type="number" name="amount" class="form-control inp"
+                                        placeholder="Enter amount">
+                                    <div id="amountError" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
@@ -994,6 +1227,60 @@
 
     @section('script')
         <script>
+            // Function to initialize daterangepicker on any input by ID
+            function initDatePicker(inputId) {
+                const input = $('#' + inputId);
+
+                input.daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    locale: {
+                        format: 'MM/DD/YYYY'
+                    },
+                    minDate: moment().startOf("day") // prevent past date
+                });
+
+                input.on('apply.daterangepicker', function (ev, picker) {
+                    $(this).val(picker.startDate.format('MM/DD/YYYY'));
+                });
+            }
+
+            // Pickup modal open handler
+            $(document).on('click', '.open-reschedule-pickup-modal', function () {
+                const pickupDate = $(this).data('date'); // MM/DD/YYYY expected
+                const input = $('#percel_pickup_date_input');
+
+                if (pickupDate) {
+                    input.val(pickupDate);
+                    input.data('daterangepicker').setStartDate(moment(pickupDate, 'MM/DD/YYYY'));
+                } else {
+                    input.val('');
+                    input.data('daterangepicker').setStartDate(moment()); // fallback to today only if date is null
+                }
+            });
+
+            // Delivery modal open handler
+            $(document).on('click', '.open-reschedule-delivery-modal', function () {
+                const deliveryDate = $(this).data('date'); // MM/DD/YYYY expected
+                const input = $('#percel_delivery_date_input');
+
+                if (deliveryDate) {
+                    input.val(deliveryDate);
+                    input.data('daterangepicker').setStartDate(moment(deliveryDate, 'MM/DD/YYYY'));
+                } else {
+                    input.val('');
+                    input.data('daterangepicker').setStartDate(moment()); // fallback to today only if date is null
+                }
+            });
+
+            // Initialize both inputs on page load
+            $(function () {
+                initDatePicker('percel_pickup_date_input');
+                initDatePicker('percel_delivery_date_input');
+            });
+        </script>
+        <script>
             function resetForm() {
                 window.location.href = "{{ route('admin.service_orders.index') }}";
             }
@@ -1013,98 +1300,58 @@
             });
         </script>
         <script>
-            function fetchDriversByParcelId(parcelId) {
-                document.getElementById("parcel_id_input").value = parcelId;
-                // Show loading indicator (optional)
-                $("#driverDropdown").html('<option value="">Loading...</option>');
+            function fetchDriversBywarehouse(warehouseId) {
+                if (!warehouseId) {
+                    // If nothing selected, clear dropdown
+                    $('#warehousedriverDropdown').html('<option value="">Select Pickup Man</option>');
+                    return;
+                }
 
-                // Make AJAX POST request
                 $.ajax({
-                    url: "/api/get-drivers-by-assign-status", // API endpoint
-                    type: "POST",
-                    data: {
-                        parcel_id: parcelId, // Send parcel_id as parameter
-                    },
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
-                    },
+                    url: "/api/user-by-warehouse/" + warehouseId,
+                    data: { role_id: 4 },
+                    method: "GET",
                     success: function (response) {
                         // Clear existing options
-                        let dropdown = $("#driverDropdown");
-                        dropdown.empty();
+                        let options = '<option value="">Select Pickup Man</option>';
 
-                        // Add default option
-                        dropdown.append('<option value="">Select Pickup Man</option>');
+                        // Loop through response (assuming it's an array of users)
+                        response.users.forEach(function (driver) {
+                            options += `<option value="${driver.id}">${driver.name}</option>`;
+                        });
 
-                        // Populate dropdown with drivers from API response
-                        if (response.drivers && response.drivers.length > 0) {
-                            document.getElementById("warehouse_id_input").value =
-                                response.drivers[0].warehouse_id;
-                            response.drivers.forEach(function (driver) {
-                                dropdown.append(
-                                    `<option value="${driver.id}">${driver.name}</option>`
-                                );
-                            });
-                        } else {
-                            dropdown.append(
-                                '<option value="">No drivers available</option>'
-                            );
-                        }
+                        $('#warehousedriverDropdown').html(options);
                     },
-                    error: function (xhr, status, error) {
-                        // Handle error
-                        console.error("Error fetching drivers:", error);
-                        $("#driverDropdown").html(
-                            '<option value="">Error loading drivers</option>'
-                        );
-                    },
+                    error: function () {
+                        alert("No driver found for the warehouse.");
+                    }
                 });
             }
-            function fetchDeliveryDriversByParcelId(parcelId) {
-                document.getElementById("parcel_id_input").value = parcelId;
-                // Show loading indicator (optional)
-                $("#deliverydriverDropdown").html('<option value="">Loading...</option>');
+            function fetchDeliveryDriversBywarehouse(warehouseId) {
+                if (!warehouseId) {
+                    // If nothing selected, clear dropdown
+                    $('#warehousedriverDropdown').html('<option value="">Select Pickup Man</option>');
+                    return;
+                }
 
-                // Make AJAX POST request
                 $.ajax({
-                    url: "/api/get-delivery-drivers-by-assign-status", // API endpoint
-                    type: "POST",
-                    data: {
-                        parcel_id: parcelId, // Send parcel_id as parameter
-                    },
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
-                    },
+                    url: "/api/user-by-warehouse/" + warehouseId,
+                    data: { role_id: 4 },
+                    method: "GET",
                     success: function (response) {
                         // Clear existing options
-                        let dropdown = $("#deliverydriverDropdown");
-                        dropdown.empty();
+                        let options = '<option value="">Select Pickup Man</option>';
 
-                        // Add default option
-                        dropdown.append('<option value="">Select Delivery Man</option>');
+                        // Loop through response (assuming it's an array of users)
+                        response.users.forEach(function (driver) {
+                            options += `<option value="${driver.id}">${driver.name}</option>`;
+                        });
 
-                        // Populate dropdown with drivers from API response
-                        if (response.drivers && response.drivers.length > 0) {
-                            document.getElementById("warehouse_id_input").value =
-                                response.drivers[0].warehouse_id;
-                            response.drivers.forEach(function (driver) {
-                                dropdown.append(
-                                    `<option value="${driver.id}">${driver.name}</option>`
-                                );
-                            });
-                        } else {
-                            dropdown.append(
-                                '<option value="">No drivers available</option>'
-                            );
-                        }
+                        $('#deliverywarehousedriverDropdown').html(options);
                     },
-                    error: function (xhr, status, error) {
-                        // Handle error
-                        console.error("Error fetching drivers:", error);
-                        $("#driverDropdown").html(
-                            '<option value="">Error loading drivers</option>'
-                        );
-                    },
+                    error: function () {
+                        alert("No driver found for the warehouse.");
+                    }
                 });
             }
             function updatestatusarrivedwarehouse() {

@@ -64,11 +64,11 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="row">
-                                                    ${{ $incoming_container->partial_payment ?? '0' }}</div>
+                                                    ${{ number_format($incoming_container->partial_payment ?? 0, 2) }}</div>
                                                 <div class="row">
-                                                    ${{ $incoming_container->remaining_payment ?? '0' }}</div>
+                                                    ${{ number_format($incoming_container->remaining_payment ?? 0, 2) }}</div>
                                                 <div class="row">
-                                                    ${{ $incoming_container->total_amount ?? '0' }}</div>
+                                                    ${{ number_format($incoming_container->total_amount ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </td>

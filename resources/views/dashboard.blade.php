@@ -548,17 +548,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="49"
-                                            viewBox="0 0 44 49" fill="none" stroke="#203A5F" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-ship">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1" />
-                                            <path d="M4 18l-1 -5h18l-2 4" />
-                                            <path d="M5 13v-6h8l4 6" />
-                                            <path d="M7 7v-4h-1" />
-                                        </svg>
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="55"  height="55"  viewBox="0 0 24 24"  fill="none"  stroke="#203A5F"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-ship"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1" /><path d="M4 18l-1 -5h18l-2 4" /><path d="M5 13v-6h8l4 6" /><path d="M7 7v-4h-1" /></svg>
                                     </span>
                                 </div>
                                 <!-- </div> -->
@@ -580,14 +570,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <span class="dash-widget-icon col-md-6 float-end">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="49"
-                                            viewBox="0 0 44 49" fill="none" stroke="#203A5F" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plane">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" />
-                                        </svg>
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="50"  height="50"  viewBox="0 0 24 24"  fill="none"  stroke="#203A5F"  stroke-width="1"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plane"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z" /></svg>
                                     </span>
                                 </div>
                                 <!-- </div> -->
@@ -608,6 +591,47 @@
 
     <div class="row">
 
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-4 d-none"
+            id="upcoming-container-header">
+            <h5 class='cardh5Size fw-semibold'>Upcoming Container</h5>
+            <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
+            <div class="col-auto">
+                <a href="{{ route('admin.received.hub.list') }}"
+                    class="btn-right btn btn-sm btn-primary rounded-3 align-center fs_18 fw-semibold px-4 py-1">
+                    See All
+                </a>
+            </div>
+        </div>
+
+        <!-- --------------------------------upcoming Container Cards -------------------------------- -->
+        <div class="col-md-12 d-none" id="upcoming-container-card">
+            <div id="upcoming-container-list" class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
+                @forelse ($upcomingContainers as $index => $upcomingContainer)
+                    <div class="col-md-5 col-xl-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard setCardSize rounded 
+                                    {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
+                            <div class="card2 d-flex flex-row justify-content-between">
+                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                    <p class="font13 fw-medium"><span class="col737">Seal No :</span>
+                                        {{$upcomingContainer->container->seal_no ?? "-"}}</p>
+                                    <h5 class='text-black countFontSize fw-medium'>
+                                        {{$upcomingContainer->container->container_no_1 ?? "-"}}
+                                    </h5>
+                                    <div class="cardFontSize mt-2 fw-medium">
+                                        <span class="fw-regular col737">Total Order :</span>
+                                        {{$upcomingContainer->no_of_orders ?? 0}}<br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p colspan="7" class="px-4 py-4 text-gray-500"></p>
+                @endforelse
+            </div>
+        </div>
+
         <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
             <h5 class='cardh5Size fw-semibold'>Latest Container</h5>
             <!-- <button class="btn buttoncolor btn-lg px-4 text-light cardh5Size py-1" type="button">See All</button> -->
@@ -626,7 +650,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                                                                                {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
+                                                                                                                                                {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -1002,7 +1026,7 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                <a class="btn orderbutton btn-primary align-center veiwBtn rounded-1"
                                                     style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1095,7 +1119,7 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                <a class="btn orderbutton btn-primary align-center veiwBtn rounded-1"
                                                     style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -1196,7 +1220,7 @@
                                         </td>
                                         <td class="align-center mt-2">
                                             <div>
-                                                <a class="btn btn-primary align-center veiwBtn rounded-1"
+                                                <a class="btn orderbutton btn-primary align-center veiwBtn rounded-1"
                                                     style="height:26px; width:36px;" onClick=""
                                                     href="javascript:void(0);"><i
                                                         class="fe fe-eye icon-size fs-6"></i></a>
@@ -2305,13 +2329,16 @@
                 document.getElementById('total-drivers').textContent = data.total_drivers ? data.total_drivers : 0;
                 document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
                 document.getElementById('total-vehicles').textContent = data.total_vehicles ? data.total_vehicles : 0;
-                document.getElementById('total-earnings').textContent = '$' + (data.total_earnings ? data.total_earnings : 0);
-                document.getElementById('today-earnings').textContent = '$' + (data.today_earnings ? data.today_earnings : 0);
+                document.getElementById('total-earnings').textContent =
+                    '$' + (data.total_earnings ? Number(data.total_earnings).toLocaleString() : '0');
+                document.getElementById('today-earnings').textContent =
+                    '$' + (data.today_earnings ? Number(data.today_earnings).toLocaleString() : '0');
                 document.getElementById('total-supply').textContent = data.total_supply ? data.total_supply : 0;
                 document.getElementById('new-supply').textContent = data.new_supply ? data.new_supply : 0;
                 document.getElementById('cargo-order').textContent = data.total_Cargo ? data.total_Cargo : 0;
                 document.getElementById('air-order').textContent = data.total_Air ? data.total_Air : 0;
                 updateContainerCards(data.latest_containers || []);
+                updateUpcomingContainerCards(data.upcomingContainers || []);
 
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
@@ -2362,6 +2389,41 @@
             </div>
         `;
 
+                containerList.appendChild(card);
+            });
+        }
+
+
+        function updateUpcomingContainerCards(upcomingContainers) {
+            const containerList = document.getElementById('upcoming-container-list');
+            containerList.innerHTML = ''; // Remove existing cards
+            if (upcomingContainers.length === 0) {
+                return;
+            }
+            document.getElementById('upcoming-container-header').classList.remove('d-none');
+            document.getElementById('upcoming-container-card').classList.remove('d-none');
+            upcomingContainers.forEach((container, index) => {
+                console.log(container);
+                const isActive = container.container.status === 'Active';
+                const card = document.createElement('div');
+                card.className = 'col-md-5 col-xl-3 col-sm-6';
+                card.innerHTML = `
+            <div class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1' : ''}">
+                <div class="card2 d-flex flex-row justify-content-between">
+                    <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                        <p class="font13 fw-medium">
+                            <span class="col737">Seal No :</span> ${container.container.seal_no ?? "-"}
+                        </p>
+                        <h5 class="text-black countFontSize fw-medium">
+                            ${container.container.container_no_1 ?? "-"}
+                        </h5>
+                        <div class="cardFontSize mt-2 fw-medium">
+                            <span class="fw-regular col737">Total Order :</span> ${container.no_of_orders ?? 0}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
                 containerList.appendChild(card);
             });
         }

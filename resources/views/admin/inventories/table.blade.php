@@ -9,7 +9,8 @@
                         <th>ItemId</th>
                         <th>Image</th>
                         <th>description</th>
-                        <th>Price</th>
+                        <th>Shipping Price</th>
+                        <th>Retail Price</th>
                         <th>Cost</th>
                         <th>Type</th>
                         <th>Package Type</th>
@@ -22,11 +23,11 @@
                 <tbody>
                     @forelse ($inventories as $inventory)
                         <tr class="background-instock text-center" style="
-                                    @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                    @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                        @else background-color: #FFD6A5;
-                                    @endif
-                                ">
+                                                    @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                                    @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                                        @else background-color: #FFD6A5;
+                                                    @endif
+                                                ">
                             <td>
                                 {{ $inventory->unique_id }}
                             </td>
@@ -43,8 +44,13 @@
                                 <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="{{ $inventory->description ?? '-' }}">{{ $inventory->description ?? '-' }}</p>
                             </td>
-                            <td class="text-dark">{{ ($inventory->retail_shipping_price ?? '0') }}</td>
-                            <td class="text-dark"><span>{{ $inventory->price ?? '0' }}</span></td>
+                            <td class="text-dark">
+                                <span>${{ number_format($inventory->retail_shipping_price ?? 0, 2) }}
+                            </td>
+                            <td class="text-dark">
+                                <span>${{ number_format($inventory->retail_vaule_price ?? 0, 2) }}</span>
+                            </td>
+                            <td class="text-dark"><span>${{ number_format($inventory->price ?? 0, 2) }}</span></td>
                             <td class="text-dark"><span>{{ $inventory->inventary_sub_type ?? '-' }}</span></td>
                             <td class="text-dark"><span>{{ $inventory->package_type ?? '-' }}</span></td>
                             <td>
@@ -59,7 +65,11 @@
                                                         class="far fa-edit me-2"></i>Edit</a>
                                             </li>
                                             <li>
-
+                                                <a class="dropdown-item"
+                                                    href="{{ route('admin.inventories.show', $inventory->id) }}"><i
+                                                        class="far fa-eye me-2"></i>View</a>
+                                            </li>
+                                            <li>
                                                 <form action="{{ route('admin.inventories.destroy', $inventory->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf

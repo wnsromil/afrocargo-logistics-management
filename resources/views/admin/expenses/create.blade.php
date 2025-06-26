@@ -123,6 +123,22 @@
                                 @endif
 
                                 <div class="col-md-12 mb-1">
+                                    <label class="foncolor" for="Category">Currency <i
+                                            class="text-danger">*</i></label>
+                                          <select id="currency_select" class="form-control select2" name="currency">
+                                              <option selected="selected" value="">Select Currency</option>
+                                              @foreach (setting()->warehouseContries() as $country )
+                                                <option value="{{ $country['currency'] }}" {{ old('currency') == $country['currency'] ? 'selected' : '' }}>
+                                                    {{ $country['name'] }} - {{ $country['currency'] }}
+                                                </option>
+                                              @endforeach
+                                        </select>
+                                    @error('currency')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-1">
                                     <label> Amount <i class="text-danger">*</i></label>
                                     <input type="number" class="form-control inp" name="amount" value="{{ old('amount') }}"
                                         placeholder="Enter Amount" />

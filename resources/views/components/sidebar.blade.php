@@ -19,7 +19,7 @@
                             <a
                                 href="{{ $submenu->route && !in_array($submenu->route, ["#", "''"]) ? route($submenu->route) : 'javascript:void(0)' }}">
                                 @if ($submenu->icon)
-                                    <img src="{{ asset($submenu->icon) }}" alt="{{ $submenu->title }}">
+                                    <img class="iconSubmenu" src="{{ asset(path: $submenu->icon) }}" alt="{{ $submenu->title }}">
                                 @endif
                                 <span>
                                     <i class="fa fa-arrow-right tooltipped" data-position="top" data-tooltip="fa fa-arrow-right"></i>

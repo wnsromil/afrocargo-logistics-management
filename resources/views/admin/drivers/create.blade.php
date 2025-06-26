@@ -68,12 +68,37 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
+                            <input type="number" class="form-control flagInput inp" placeholder="Enter Contact Number"
                                 name="mobile_number" value="{{ old('mobile_number') }}"
                                 oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">The Contact Number field is required.</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="foncolor" for="phone">Office Contact Number <i class="text-danger">*</i></label>
+                        <div class="flaginputwrap">
+                            <div class="customflagselect">
+                                <select class="flag-select" name="alternative_mobile_number_code_id">
+                                    @foreach ($coutry as $key => $item)
+                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                            {{ $item->name }} +{{ $item->phonecode }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="number" class="form-control flagInput inp"
+                                placeholder="Enter Office Contact Number" name="alternative_mobile_number"
+                                value="{{ old('alternative_mobile_number') }}"
+                                oninput="this.value = this.value.slice(0, 10)">
+                        </div>
+                        @error('alternative_mobile_number')
+                            <small class="text-danger">The Office Contact Number field is required.</small>
                         @enderror
                     </div>
                 </div>
@@ -104,7 +129,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="foncolor" for="vehicle_type">Vehicle<i class="text-danger">*</i></label>
+                        <label class="foncolor" for="vehicle_type">Vehicle</label>
                         <select name="vehicle_type" class="form-control inp select2">
                             <option value="">Select Vehicle</option>
                             @foreach($Vehicle_data as $Vehicle)

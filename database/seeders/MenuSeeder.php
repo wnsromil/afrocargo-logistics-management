@@ -41,13 +41,18 @@ class MenuSeeder extends Seeder
                 'permissions' => ['warehouses.view'],
             ],
             [
-                'title' => 'Vehicle Management',
+                'title' => 'Vehicle',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 'route' => 'admin.vehicle.index',
-                //'route' => '#',
-                'active' => 'vehicle*,container*',
-                'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['vehicle_manage.view'],
+                'active' => 'vehicle*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Container',
+                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
+                'route' => 'admin.container.index',
+                'active' => 'container*',
+                'roles' => ['admin', 'warehouse_manager']
             ],
             [
                 'title' => 'Drivers',
@@ -156,7 +161,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Template Management',
                 'icon' => '<i class="menuIcon ti ti-template"></i>',
                 'route' => 'admin.Categorytemplate.index',
-               // 'route' => '#',
+                // 'route' => '#',
                 'active' => 'template_category*,templates*',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['template_management.view'],
@@ -188,6 +193,25 @@ class MenuSeeder extends Seeder
             Menu::create($menu);
         }
 
+        // $inventory = Menu::where('title', 'Inventory')->first();
+        // if ($inventory) {
+        //     Menu::create([
+        //         'title' => 'Service Inventory',
+        //         'route' => 'admin.inventories.index',
+        //         'active' => 'inventories*',
+        //         'parent_id' => $inventory->id,
+        //         'roles' => ['admin', 'warehouse_manager']
+        //     ]);
+
+        //     Menu::create([
+        //         'title' => 'Supply Inventory',
+        //         'route' => 'admin.supply_inventories.index',
+        //         'active' => 'supply_inventories*',
+        //         'parent_id' => $inventory->id,
+        //         'roles' => ['admin', 'warehouse_manager']
+        //     ]);
+        // }
+        
         // Add submenus
         $warehouse = Menu::where('title', 'Warehouses')->first();
         if ($warehouse) {
@@ -234,27 +258,6 @@ class MenuSeeder extends Seeder
             //     'parent_id' => $orderShip->id,
             //     'roles' => ['admin', 'warehouse_manager']
             // ]);
-        }
-
-        // Add submenus
-        $vehicle = Menu::where('title', 'Vehicle Management')->first();
-        if ($vehicle) {
-            Menu::create([
-                'title' => 'Vehicle List',
-                'route' => 'admin.vehicle.index',
-                'active' => 'vehicle*',
-                'parent_id' => $vehicle->id,
-                'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['vehicle_list.view'],
-            ]);
-            Menu::create([
-                'title' => 'Container List',
-                'route' => 'admin.container.index',
-                'active' => 'container*',
-                'parent_id' => $vehicle->id,
-                'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['container_list.view'],
-            ]);
         }
 
         // Add submenus

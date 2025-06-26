@@ -37,7 +37,7 @@ class InventoryController extends Controller
                 if ($main_type === 'Supply') {
                     return $q->where('inventary_sub_type', 'Supply');
                 } elseif ($main_type === 'Service') {
-                    return $q->whereIn('inventary_sub_type', ['Cargo', 'Air']);
+                    return $q->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo']);
                 }
             })
             // 🔹 Search Logic
@@ -109,19 +109,24 @@ class InventoryController extends Controller
     {
         // Common validation rules
         $rules = [
-            'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
+            'inventary_sub_type'         => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
             'name'                  => 'required|string',
             'barcode'               => 'required|string',
             'warehouse_id'          => 'required|exists:warehouses,id',
             'in_stock_quantity'     => 'required|numeric',
-            'low_stock_warning'     => 'required|numeric',
             'package_type'          => 'required|string',
-            'retail_shipping_price' => 'required|numeric',
             'description'           => 'required|string',
             'driver_app_access'     => 'required|in:Yes,No',
             'status'                => 'required|in:Active,Inactive',
             'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+            'country'               => 'required|string',
         ];
+
+        if ($request->inventary_sub_type === 'Ocean Cargo' || $request->inventary_sub_type === 'Air Cargo') {
+            $rules = array_merge($rules, [
+                'retail_shipping_price' => 'required|numeric',
+            ]);
+        }
 
         // Conditional rules for Supply type
         if ($request->inventary_sub_type === 'Supply') {
@@ -134,8 +139,17 @@ class InventoryController extends Controller
                 'tax_percentage'      => 'required|numeric',
                 're_order_point'     => 'required|numeric',
                 're_order_quantity'  => 'required|numeric',
+                'low_stock_warning'     => 'required|numeric',
+                'color' => 'required|string',
+                'open' => 'required|string',
+                'capacity' => 'required|string',
+                'un_rating' => 'required|string',
+                'model_number' => 'required|string',
+                'minimum_order_limit' => 'required|numeric',
             ]);
         }
+
+
 
         $validatedData = $request->validate($rules);
 
@@ -165,6 +179,9 @@ class InventoryController extends Controller
             'factor',
             'insurance_have',
             'insurance',
+            'city',
+            'state',
+
         ]);
         $data['price'] = $request->costprice ?? null;
         if ($request->inventary_sub_type === 'Supply') {
@@ -177,6 +194,12 @@ class InventoryController extends Controller
                 're_order_point',
                 're_order_quantity',
                 'tax_percentage',
+                'color',
+                'open',
+                'capacity',
+                'un_rating',
+                'model_number',
+                'minimum_order_limit'
             ]));
         }
 
@@ -195,15 +218,13 @@ class InventoryController extends Controller
             ->with('success', 'Inventory add successfully.');
     }
 
-
-
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
-        $inventories = Stock::where('inventory_id', $id)->latest('id')->paginate(10);
+        $inventories = Inventory::where('id', $id)->first();
         return view('admin.inventories.show', compact('inventories'));
     }
 
@@ -232,34 +253,40 @@ class InventoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
         // Common validation rules
         $rules = [
-            'inventary_sub_type'         => 'required|string|in:Cargo,Air,Supply',
-            'name'                  => 'required|string',
-            'barcode'               => 'required|string',
-            'warehouse_id'          => 'required|exists:warehouses,id',
-            'in_stock_quantity'     => 'required|numeric',
-            'low_stock_warning'     => 'required|numeric',
-            'package_type'          => 'required|string',
-            'retail_shipping_price' => 'required|numeric',
-            'description'           => 'required|string',
-            'driver_app_access'     => 'required|in:Yes,No',
-            //'status'                => 'required|in:Active,Inactive',
-            'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+            'inventary_sub_type'     => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
+            'name'                   => 'required|string',
+            'barcode'                => 'required|string',
+            'warehouse_id'           => 'required|exists:warehouses,id',
+            'in_stock_quantity'      => 'required|numeric',
+            'package_type'           => 'required|string',
+            'retail_shipping_price'  => 'required|numeric',
+            'description'            => 'required|string',
+            'driver_app_access'      => 'required|in:Yes,No',
+            // 'status'              => 'required|in:Active,Inactive', // optional if not needed
+            'img'                    => 'nullable|image|mimes:jpg,png|max:2048',
+            'country'                => 'required|string',
         ];
 
         // Conditional rules for Supply type
         if ($request->inventary_sub_type === 'Supply') {
             $rules = array_merge($rules, [
-                'qty_on_hand'         => 'required|numeric',
-                'retail_vaule_price'  => 'required|numeric',
-                'value_price'         => 'required|numeric',
-                'last_cost_received'  => 'required|numeric',
-                'last_date_received'  => 'nullable|date',
-                'tax_percentage'      => 'nullable|numeric',
-                're_order_point'     => 'nullable|numeric',
-                're_order_quantity'  => 'nullable|numeric',
+                'qty_on_hand'           => 'required|numeric',
+                'retail_vaule_price'    => 'required|numeric',
+                'value_price'           => 'required|numeric',
+                'last_cost_received'    => 'required|numeric',
+                'last_date_received'    => 'nullable|date',
+                'tax_percentage'        => 'nullable|numeric',
+                're_order_point'        => 'nullable|numeric',
+                're_order_quantity'     => 'nullable|numeric',
+                'low_stock_warning'     => 'required|numeric',
+                'color'                 => 'required|string',
+                'open'                  => 'required|string',
+                'capacity'              => 'required|string',
+                'un_rating'             => 'required|string',
+                'model_number'          => 'required|string',
+                'minimum_order_limit'   => 'required|numeric',
             ]);
         }
 
@@ -291,9 +318,14 @@ class InventoryController extends Controller
             'factor',
             'insurance_have',
             'insurance',
-            'name'
+            'name',
+            'city',
+            'state'
         ]);
+
         $data['price'] = $request->costprice ?? null;
+
+        // Supply-specific fields
         if ($request->inventary_sub_type === 'Supply') {
             $data = array_merge($data, $request->only([
                 'qty_on_hand',
@@ -304,18 +336,28 @@ class InventoryController extends Controller
                 'tax_percentage',
                 're_order_point',
                 're_order_quantity',
+                'color',
+                'open',
+                'capacity',
+                'un_rating',
+                'model_number',
+                'minimum_order_limit'
             ]));
         }
 
+        // Image handling
         if ($request->hasFile('img')) {
             $image = $request->file('img');
             $imageName = 'uploads/inventory/' . $image->getClientOriginalName();
             $image->move(public_path('uploads/inventory'), $imageName);
             $data['img'] = $imageName;
         }
+
+        // If user wants to delete the image
         if ($request->delete_img == "1") {
             $data['img'] = null;
         }
+
         $inventory->update($data);
 
         return redirect()->route('admin.inventories.index')

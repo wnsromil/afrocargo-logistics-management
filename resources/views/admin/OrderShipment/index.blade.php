@@ -127,7 +127,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('d-m-Y') : '-' }}</div>
+                                                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('m-d-Y') : '-' }}</div>
                                                             </td>
                                                             <td>
                                                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
@@ -181,7 +181,7 @@
                                                             };
                                                         @endphp
                                                             <td>
-                                                                <div>{{ $parcel->payment_type ?? "-"}}</div>
+                                                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
                                                             </td>
                                                             <td>
                                                                 <label class="{{ $classValue }}" for="status">

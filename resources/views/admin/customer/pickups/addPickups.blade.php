@@ -242,12 +242,9 @@
                                     placeholder="Enter Mobile No" id="Pickup_telePhone" name="Pickup_telePhone"
                                     value="{{ old('mobile_number') }}" oninput="this.value = this.value.slice(0, 10)">
                             </div>
-<<<<<<< HEAD
-=======
                             @error('alternate_mobile_no')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
->>>>>>> 11d3fe97fe149b05edc1be1e650ce9bc20521f4e
                         </div>
                     </div>
                     <div class="row align-items-center my-4">

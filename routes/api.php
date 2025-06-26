@@ -57,6 +57,7 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgetPassword', [ForgetPassword::class, 'forgetPassword']);
 Route::post('/warehouse-list', [WarehouseController::class, 'index']);
+Route::get('/warehouse-countries', [WarehouseController::class, 'getWarehouseCountries']);
 Route::post('/estimatPrice', [OrderShipmentController::class, 'estimatPrice']);
 
 Route::post('/vehicle/toggle-status', [ContainerController::class, 'toggleStatus']);
@@ -75,9 +76,12 @@ Route::post('/update-status-pick-up-with-driver', [OrderStatusManage::class, 'st
 Route::post('/update-status-arrived-warehouse', [OrderStatusManage::class, 'statusUpdate_ArrivedWarehouse']);
 Route::post('/update-status-transfer-to-hub', [OrderStatusManage::class, 'statusUpdate_transferToHub']);
 Route::post('/update-status-received-to-hub', [OrderStatusManage::class, 'statusUpdate_receivedToHub']);
-Route::post('/update-status-fully-loaded-container', [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
-Route::post('/update-status-fully-discharge-container', [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
-Route::post('/update-status-delivery-with-driver', [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
+Route::post('/update-status-fully-loaded-container', action: [OrderStatusManage::class, 'statusUpdate_fullyloadedcontainer']);
+Route::post('/update-status-fully-discharge-container', action: [OrderStatusManage::class, 'statusUpdate_fullydischargecontainer']);
+Route::post('/update-status-delivery-with-driver', action: [OrderStatusManage::class, 'statusUpdate_DeliveryWithDriver']);
+Route::post('/update-status-signature-self-delivery', action: [OrderStatusManage::class, 'statusUpdate_SignatureSelfDelivery']);
+Route::post('/update-status-admin-cancel', [OrderStatusManage::class, 'statusUpdateAdmin_Cancel']);
+Route::post('/update-status-admin-reschedule', [OrderStatusManage::class, 'statusUpdateAdmin_reschedule']);
 
 // Pickup
 Route::get('/pickup-users/{id}', [PickupController::class, 'getPickupUsers']);
@@ -99,6 +103,9 @@ Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsBy
 Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'getContainersByPortFreightId']);
 Route::delete('/port-freight-delete/{id}', [CBMCalculatoarController::class, 'destroyPortFreight']);
 Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'getFreightShippingData']);
+Route::post('/store-single-shipping-container-product', [CBMCalculatoarController::class, 'storeContainerAndProduct']);
+Route::delete('/delete-container-product/{id}', [CBMCalculatoarController::class, 'deleteContainerProduct']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -154,8 +161,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/productList', [CartController::class, 'productList']);
         Route::post('/delete-product', [CartController::class, 'destroyProduct']);
 
-        // Addresse Routes
+        // Address Routes
         Route::post('/address-list', [AddressController::class, 'getAddress']);
+        Route::get('/address-details/{id}', [AddressController::class, 'getAddressById']);
         Route::post('/addresse-create', [AddressController::class, 'createAddress']);
         Route::get('/addresse-delete/{id}', [AddressController::class, 'deleteAddress']);
         Route::post('/address-update/{id}', [AddressController::class, 'updateAddress']);
@@ -168,7 +176,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/invoice-order-create-supply', [OrderShipmentController::class, 'invoiceOrderCreateSupply']);
         Route::post('/order-create-supply', [OrderShipmentController::class, 'storeSupply']);
         Route::post('/parcel-pickup-driver', [OrderShipmentController::class, 'parcelPickupDriver']);
-        
+
         // Available slots Routes
         Route::post('/get-available-slots', [ScheduleController::class, 'getAvailableSlots']);
 
@@ -178,7 +186,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/get-expenses', [ExpensesController::class, 'getExpensesByUser']);
 
         // Driver Inventory
-        Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventorySolde']);
+        Route::get('/get-driver-inventory-sold', [DriverInventoryController::class, 'getDriverInventorySolde']);
+        Route::get('/get-driver-inventory', [DriverInventoryController::class, 'getDriverInventory']);
 
         // Schedule apis
         Route::post('/location-store', [AvailabilityController::class, 'locationStore']);
@@ -192,6 +201,10 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/update-status-delivered', [ServiceOrderStatusManage::class, 'statusUpdate_Delivered']);
         Route::post('/update-status-cancel', [ServiceOrderStatusManage::class, 'statusUpdate_Cancel']);
         Route::post('/update-status-reschedule', [ServiceOrderStatusManage::class, 'statusUpdate_reschedule']);
+
+        // Ship To mobile customer
+        Route::post('/customer-shipto-create', [ShiptoController::class, 'CustomerCreateShipTo']);
+        Route::post('/get-shipto-users', [ShiptoController::class, 'getCustomerShipToUsers']);
     });
 
     //invoice controller

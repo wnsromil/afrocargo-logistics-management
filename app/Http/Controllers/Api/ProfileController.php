@@ -15,21 +15,19 @@ class ProfileController extends Controller
 
     public function profile()
     {
-        $user = $this->user->load(['warehouse', 'vehicle', 'country', 'state', 'city']);
-    
+        $user = $this->user->load(['warehouse', 'vehicle', 'country', 'state', 'city', 'defaultAddress']);
+
         // Get only active vehicles for the user's warehouse
         $activeVehicles = Vehicle::where('warehouse_id', $user->warehouse_id)
             ->where('status', 'Active')
             ->get();
-    
+
         // Convert user to array and embed active vehicles inside
         $userData = $user->toArray();
         $userData['active_vehicles'] = $activeVehicles;
-    
+
         return $this->sendResponse($userData, 'User profile data.');
     }
-    
-    
     public function update(Request $request)
     {
         $user = $this->user;
@@ -93,6 +91,24 @@ class ProfileController extends Controller
 
         $user->save();
 
+        updateAddress($user->id, [
+            'user_id' => $user->id,
+            'address' => $request->address ?? $user->address,
+            'address_type' => 'pickup',
+            'mobile_number' => $request->phone ?? $user->phone,
+            'alternative_mobile_number' => $request->alternate_mobile_no ?? $user->phone_2,
+            'mobile_number_code_id'        =>  $request->country_code ?? $user->phone_code_id,
+            'alternative_mobile_number_code_id' => $request->country_code_2 ?? $user->phone_2_code_id_id,
+            'city_id' => $request->city_id ?? $user->city_id,
+            'country_id' => $request->country_id ?? $user->country_id,
+            'full_name' => $request->name ?? $user->name,
+            'pincode' => $request->pincode ?? $user->pincode,
+            'state_id' => $request->state_id ?? $user->state_id,
+            'warehouse_id' => $request->warehouse_id ?? $user->warehouse_id,
+            'lat' => $request->latitude ?? $user->latitude,
+            'long' => $request->longitude ?? $user->longitude,
+        ]);
+
         return $this->sendResponse($user, 'User updated successfully.');
     }
     public function changePassword(Request $request)
@@ -114,7 +130,6 @@ class ProfileController extends Controller
 
         return $this->sendResponse(false, 'Password changed successfully.');
     }
-
     public function updateProfilePicture(Request $request)
     {
         $user = $this->user; // Currently authenticated user
@@ -148,7 +163,7 @@ class ProfileController extends Controller
     }
     public function deletUsers(Request $request)
     {
-        User::whereIn(['id'=>$request->ids,'role'=>['customer','driver']])->delete();
+        User::whereIn(['id' => $request->ids, 'role' => ['customer', 'driver']])->delete();
         return response()->json([
             'success' => true,
             'message' => 'Users deleted successfully.'
