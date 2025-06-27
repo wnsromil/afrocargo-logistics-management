@@ -29,7 +29,9 @@ use App\Http\Controllers\Api\{
     ShiptoController,
     LocationController,
     OrderShipmentController,
-    ProductController
+    ProductController,
+    DriverController,
+    VehicleController
 };
 
 use App\Http\Controllers\Web\Admin\{
@@ -104,6 +106,13 @@ Route::delete('/delete-container-product/{id}', [CBMCalculatoarController::class
 
 // Notification
 Route::post('/mark-as-read-notification', [NotificationController::class, 'markAsReadNotification']);
+
+//Driver
+Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+
+//Vehicle
+Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);

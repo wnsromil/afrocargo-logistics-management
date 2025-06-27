@@ -201,14 +201,13 @@ class OrderShipmentController extends Controller
                 ->first();
 
             if ($containerHistory) {
-                // $containerHistory->increment('no_of_orders', 0);
+                $containerHistory->increment('no_of_orders', 0);
 
-                // Add financial fields
-                // $containerHistory->total_amount += $request->total_amount;
-                // $containerHistory->partial_payment += $request->partial_payment;
-                // $containerHistory->remaining_payment += $request->remaining_payment;
+                $containerHistory->total_amount += $request->total_amount;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
 
-                // $containerHistory->save();
+                $containerHistory->save();
                 $validatedData['container_history_id'] = $containerHistory->id;
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed

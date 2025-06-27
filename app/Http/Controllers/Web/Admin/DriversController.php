@@ -33,7 +33,7 @@ class DriversController extends Controller
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
         $warehouse_id = $request->input('warehouse_id');
-        $driversQuery = User::where('role_id', 4);
+        $driversQuery = User::where('role_id', 4)->with('vehicle');
 
         // If not admin, restrict by user's warehouse
         if ($this->user->role_id != 1) {
@@ -71,7 +71,7 @@ class DriversController extends Controller
 
         // Serial number base
         $serialStart = ($currentPage - 1) * $perPage;
-
+       // return $drivers;
         if ($request->ajax()) {
             return view('admin.drivers.table', compact('drivers', 'warehouses', 'serialStart'))->render();
         }
@@ -262,7 +262,7 @@ class DriversController extends Controller
     public function edit($id)
     {
 
-        $manager_data = User::find($id);
+        $driver_data = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
         $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
@@ -271,7 +271,7 @@ class DriversController extends Controller
         $Vehicle_data = Vehicle::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->select('id', 'vehicle_type')->get();
-        return view('admin.drivers.edit', compact('manager_data', 'roles', 'countries', 'warehouses', 'Vehicle_data'));
+        return view('admin.drivers.edit', compact('driver_data', 'roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
 
     /**

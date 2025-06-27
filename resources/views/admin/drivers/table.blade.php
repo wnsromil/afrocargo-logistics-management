@@ -34,8 +34,18 @@
                             <td>+{{ $driver->phone_code->phonecode ?? '' }} {{ $driver->phone ?? '-' }}
                             </td>
                             <td>
-                                <span>{{ $driver->vehicle->vehicle_type ?? '--' }}</span>
-                                <span> ({{ $driver->vehicle->vehicle_number ?? '--' }})</span>
+                                 @if($driver->vehicle)
+                                    <span>{{ $driver->vehicle->vehicle_type ?? 'N/A' }}</span>
+                                    <span>(
+                                        {{
+                                            $driver->vehicle->vehicle_type === 'Container'
+                                                ? ($driver->vehicle->container_no_1 ?? 'N/A')
+                                                : ($driver->vehicle->vehicle_number ?? 'N/A')
+                                        }}
+                                    )</span>
+                                @else
+                                    <span>N/A</span>
+                                @endif
                             </td>
                             <td>
                                 <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"

@@ -310,7 +310,7 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block mb-3">
                                     <div class="col-12">
-                                        <label class="foncolor">Delivery Man<i class="text-danger">*</i></label>
+                                        <label class="foncolor">Delivery Man</label>
                                     </div>
                                     <div class="col-12">
                                         <select class="js-example-basic-single select2" id="delivery_man"

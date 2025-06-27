@@ -123,10 +123,10 @@
                 );
                 hasError = true;
             }
-            if (!delivery_man) {
-                $("#delivery_manError").text("Please select a delivery man.");
-                hasError = true;
-            }
+            // if (!delivery_man) {
+            //     $("#delivery_manError").text("Please select a delivery man.");
+            //     hasError = true;
+            // }
 
             // If there are validation errors, stop further execution
             if (hasError) {
