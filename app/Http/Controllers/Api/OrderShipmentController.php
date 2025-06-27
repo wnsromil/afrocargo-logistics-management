@@ -176,9 +176,7 @@ class OrderShipmentController extends Controller
             //     }
             // }
 
-            // Create Parcel
-            $Parcel = Parcel::create($validatedData);
-
+        
             // Step 5: Get vehicles from this warehouse with vehicle_type = 1
             $vehicles = Vehicle::where('warehouse_id', $nearestWarehouse->id)
                 ->where('vehicle_type', 1)
@@ -201,7 +199,7 @@ class OrderShipmentController extends Controller
                 ->first();
 
             if ($containerHistory) {
-                $containerHistory->increment('no_of_orders', 0);
+                $containerHistory->increment('no_of_orders', 1);
 
                 $containerHistory->total_amount += $request->total_amount;
                 $containerHistory->partial_payment += $request->partial_payment;
@@ -212,6 +210,8 @@ class OrderShipmentController extends Controller
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
             }
+             // Create Parcel
+             $Parcel = Parcel::create($validatedData);
 
             // Create Parcel History
             ParcelHistory::create([

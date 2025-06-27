@@ -70,6 +70,23 @@
                                                     href="{{ route('admin.container.show', $vehicle->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
+                                                <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#In_time_model" href="javascript:void(0);"
+                                                            onclick="setContainerId({{ $vehicle->id }})">
+                                                            <i
+                                                                class="fa-solid fa-truck fa-flip-horizontal me-2"></i>Container
+                                                            In Time
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#Out_time_model" href="javascript:void(0);"
+                                                            onclick="setContainerId({{ $vehicle->id }})">
+                                                            <i class="fa-solid fa-truck me-2"></i>Container
+                                                            Out Time
+                                                        </a>
+                                                    </li>
                                             
                                         </ul>
                                     </div>

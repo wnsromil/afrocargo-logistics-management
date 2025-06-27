@@ -25,8 +25,13 @@ class HubTrackingController extends Controller
      */
     public function transfer_hub()
     {
+        $user = auth()->user(); // ya $this->user depending on your context
+        $warehouseId = $user->role_id != 1 ? $user->warehouse_id : null;
         // Vehicle data
         $vehicles = ContainerHistory::where('arrived_container', 'No')
+            ->when($warehouseId, function ($query, $warehouseId) {
+                return $query->where('warehouse_id', $warehouseId);
+            })
             ->whereIn('type', ['Transfer', 'Active'])
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
@@ -34,17 +39,28 @@ class HubTrackingController extends Controller
 
         // ContainerHistory data
         $historyVehicles = ContainerHistory::where('arrived_container', 'Yes')->where('type', 'Transfer')
+            ->when($warehouseId, function ($query, $warehouseId) {
+                return $query->where('warehouse_id', $warehouseId);
+            })
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
+
+             
 
         return view('admin.hubs.transfer_hub', compact('vehicles', 'historyVehicles'));
     }
 
     public function received_hub()
     {
+        $user = auth()->user(); // ya $this->user depending on your context
+        $warehouseId = $user->role_id != 1 ? $user->warehouse_id : null;
+
         // 1. Incoming containers (status = 5 or 7 for 'Arrived')
         $incoming_containers = ContainerHistory::whereIn('arrived_container', ['No', 'Yes'])
+          ->when($warehouseId, function ($query, $warehouseId) {
+                return $query->where('arrived_warehouse_id', $warehouseId);
+            })
             ->where('type', 'Arrived')
             ->where('full_discharge', 'No')
             ->with(['container', 'driver'])
@@ -55,7 +71,10 @@ class HubTrackingController extends Controller
 
         // 2. Container history (exclude status = 5 and 7 for 'Arrived')
         $container_historys = ContainerHistory::where('full_discharge', 'Yes')->where('type', 'Arrived')
-            ->with(['container', 'driver'])
+              ->when($warehouseId, function ($query, $warehouseId) {
+                return $query->where('arrived_warehouse_id', $warehouseId);
+            })
+        ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -63,13 +82,95 @@ class HubTrackingController extends Controller
         return view('admin.hubs.received_hub', compact('incoming_containers', 'container_historys'));
     }
 
-    public function received_orders()
+    public function received_orders(Request $request)
     {
-        //
-        $parcels = HubTracking::when($this->user->role_id != 1, function ($q) {
-            return $q->where('to_warehouse_id', $this->user->warehouse_id)->orWhere('from_warehouse_id', $this->user->warehouse_id);
-        })->with(['createdByUser', 'toWarehouse', 'fromWarehouse', 'vehicle'])->withCount('parcels')->paginate(10);
-        return view('admin.hubs.received_orders', compact('parcels'));
+       $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+        $driver_id = $request->input('driver_id');
+        $shipping_type = $request->input('shipping_type');
+        $status_search = $request->input('status_search');
+        $daysPickupType = $request->input('days_pickup_type'); // <-- NEW
+
+        $query = Parcel::where('parcel_type', 'Service')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('arrived_warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('tracking_number', 'LIKE', "%$search%")
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhere('estimate_cost', 'LIKE', "%$search%")
+                        ->orWhere('total_amount', 'LIKE', "%$search%");
+
+                    if (\DateTime::createFromFormat('d-m-Y', $search) !== false) {
+                        $formattedDate = \DateTime::createFromFormat('d-m-Y', $search)->format('Y-m-d');
+                        $query->orWhereDate('pickup_date', '=', $formattedDate);
+                    }
+                });
+            })
+            ->when($driver_id, fn($q) => $q->where('driver_id', $driver_id))
+            ->when($shipping_type, fn($q) => $q->where('transport_type', $shipping_type))
+            ->when($status_search, fn($q) => $q->where('status', $status_search))
+
+            // ✅ Filter by pickup day
+            ->when($daysPickupType, function ($q) use ($daysPickupType) {
+                $today = now()->toDateString();
+                $yesterday = now()->subDay()->toDateString();
+                $tomorrow = now()->addDay()->toDateString();
+
+                return $q->when($daysPickupType === 'Yesterdays_pickups', fn($q) => $q->whereDate('pickup_date', $yesterday))
+                    ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
+                    ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
+            })
+
+            ->latest('id');
+
+        $parcels = $query->paginate($perPage)->appends([
+            'search' => $search,
+            'per_page' => $perPage,
+            'driver_id' => $driver_id,
+            'shipping_type' => $shipping_type,
+            'status_search' => $status_search,
+            'days_pickup_type' => $daysPickupType,
+        ]);
+
+        $serialStart = ($currentPage - 1) * $perPage;
+
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+        $drivers = User::where('role_id', 4)
+            ->where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
+
+        if ($request->ajax()) {
+            return view('admin.hubs.received_table_orders', compact('parcels',
+            'drivers',
+            'warehouses',
+            'search',
+            'perPage',
+            'serialStart',
+            'daysPickupType'))->render();
+        }
+
+        return view('admin.hubs.received_orders', compact(
+            'parcels',
+            'drivers',
+            'warehouses',
+            'search',
+            'perPage',
+            'serialStart',
+            'daysPickupType' // optional: if you want to use this in blade
+        ));
     }
 
     public function container_order(Request $request, $id, $type)

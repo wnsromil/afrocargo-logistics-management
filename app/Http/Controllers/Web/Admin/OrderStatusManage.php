@@ -252,6 +252,7 @@ class OrderStatusManage extends Controller
             $parcel->update([
                 'status' => 5,
                 'arrived_container_history_id' => $containerHistory->id,
+                'arrived_warehouse_id' => $validated['to_warehouse_id'],
             ]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
@@ -331,7 +332,7 @@ class OrderStatusManage extends Controller
             $latestArrived->update([
                 'status' => 18,
                 'note' => $validated['note'],
-                 'arrived_container' => 'Yes',
+                'arrived_container' => 'Yes',
             ]);
         }
 

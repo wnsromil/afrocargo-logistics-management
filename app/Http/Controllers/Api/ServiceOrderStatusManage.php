@@ -175,11 +175,11 @@ class ServiceOrderStatusManage extends Controller
                 ->first();
 
             if ($containerHistory) {
-                $containerHistory->increment('no_of_orders', 1);
-                $containerHistory->total_amount += $request->estimate_cost;
-                $containerHistory->partial_payment += $request->partial_payment;
-                $containerHistory->remaining_payment += $request->remaining_payment;
-                $containerHistory->save();
+                // $containerHistory->increment('no_of_orders', 1);
+                // $containerHistory->total_amount += $request->estimate_cost;
+                // $containerHistory->partial_payment += $request->partial_payment;
+                // $containerHistory->remaining_payment += $request->remaining_payment;
+                // $containerHistory->save();
             }
         }
 
