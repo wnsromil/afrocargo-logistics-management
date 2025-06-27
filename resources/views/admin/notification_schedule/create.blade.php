@@ -64,10 +64,15 @@
                     <div class="input-block mb-3">
                         <label for="warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
                         <select name="warehouse_name" class="form-control inp select2">
-                            <option value="">Select Warehouse </option>
-                            <option></option>
-                            <option></option>
+                            <option value="">Select Warehouse Name</option>
+                            @foreach($warehouses as $warehouse)
+                                <option {{ old('warehouse_name') == $warehouse->id ? 'selected' : '' }}
+                                    value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                            @endforeach
                         </select>
+                        @error('warehouse_name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -301,11 +306,16 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="Warehouse_name" class="foncolor">Warehouse <i class="text-danger">*</i></label>
-                        <select name="Warehouse_name" class="form-control inp select2">
-                            <option value="" disabled hidden selected>Select Warehouses </option>
-                            <option>San Andrease </option>
-                            <option>California</option>
+                        <select name="warehouse_name" class="form-control inp select2">
+                            <option value="">Select Warehouse Name</option>
+                            @foreach($warehouses as $warehouse)
+                                <option {{ old('warehouse_name') == $warehouse->id ? 'selected' : '' }}
+                                    value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                            @endforeach
                         </select>
+                        @error('warehouse_name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">

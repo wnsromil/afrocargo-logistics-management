@@ -34,9 +34,9 @@
                             <td class="tabletext"><input type="checkbox"></td>
                             <td class="tabletext"><input type="checkbox"></td>
                             <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
-                            <td>${{number_format(328913.5)}}</td>
-                            <td>${{number_format(103311.5)}}</td>
-                            <td>${{number_format(227389)}}</td>                            
+                            <td>${{number_format(0)}}</td>
+                            <td>${{number_format(0)}}</td>
+                            <td>${{number_format(0)}}</td>                            
                             <td>
                                 <label
                                     class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
