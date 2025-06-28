@@ -7,8 +7,38 @@
         <p class="head">Service Order Management</p>
     </x-slot>
 
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
+
     <form id="expenseFilterForm" action="{{ route('admin.service_orders.index') }}" method="GET">
         <div class="row gx-3 inputheight40">
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
                 <div class="inputGroup height40 position-relative">
@@ -70,6 +100,8 @@
                     </option>
                 </select>
             </div>
+
+
 
 
             <div class="col-12 mb-3">
@@ -194,20 +226,21 @@
                                             {{  $parcel->descriptions ?? '-' }}
                                         </p>
                                     </td>
-                                      <td>
+                                    <td>
                                         <div>
-                                             <div class="row">
-                                            <div class="col-6">
-                                                <div class="row">Customer:</div>
-                                                <div class="row">Driver:</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="row">Customer:</div>
+                                                    <div class="row">Driver:</div>
                                                 </div>
-                                                <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                                <div class="col-6">
+                                                    <div class="row">
+                                                        ${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                                    </div>
+                                                    <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                     </td>
                                     <td>
                                         <div>{{ $parcel->driver->name ?? "-"}}</div>

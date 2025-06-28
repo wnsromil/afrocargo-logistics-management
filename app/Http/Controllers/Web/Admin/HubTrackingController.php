@@ -46,9 +46,11 @@ class HubTrackingController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-             
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
 
-        return view('admin.hubs.transfer_hub', compact('vehicles', 'historyVehicles'));
+        return view('admin.hubs.transfer_hub', compact('vehicles',  'historyVehicles'));
     }
 
     public function received_hub()
@@ -58,7 +60,7 @@ class HubTrackingController extends Controller
 
         // 1. Incoming containers (status = 5 or 7 for 'Arrived')
         $incoming_containers = ContainerHistory::whereIn('arrived_container', ['No', 'Yes'])
-          ->when($warehouseId, function ($query, $warehouseId) {
+            ->when($warehouseId, function ($query, $warehouseId) {
                 return $query->where('arrived_warehouse_id', $warehouseId);
             })
             ->where('type', 'Arrived')
@@ -71,10 +73,10 @@ class HubTrackingController extends Controller
 
         // 2. Container history (exclude status = 5 and 7 for 'Arrived')
         $container_historys = ContainerHistory::where('full_discharge', 'Yes')->where('type', 'Arrived')
-              ->when($warehouseId, function ($query, $warehouseId) {
+            ->when($warehouseId, function ($query, $warehouseId) {
                 return $query->where('arrived_warehouse_id', $warehouseId);
             })
-        ->with(['container', 'driver'])
+            ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -84,18 +86,20 @@ class HubTrackingController extends Controller
 
     public function received_orders(Request $request)
     {
-       $search = $request->input('search');
+        $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
         $driver_id = $request->input('driver_id');
         $shipping_type = $request->input('shipping_type');
         $status_search = $request->input('status_search');
         $daysPickupType = $request->input('days_pickup_type'); // <-- NEW
+        $warehouse_id = $request->input('warehouse_id');
 
         $query = Parcel::where('parcel_type', 'Service')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('arrived_warehouse_id', $this->user->warehouse_id);
             })
+            ->when($warehouse_id, fn($q) => $q->where('arrived_warehouse_id', $warehouse_id))
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('tracking_number', 'LIKE', "%$search%")
@@ -153,13 +157,15 @@ class HubTrackingController extends Controller
             ->get();
 
         if ($request->ajax()) {
-            return view('admin.hubs.received_table_orders', compact('parcels',
-            'drivers',
-            'warehouses',
-            'search',
-            'perPage',
-            'serialStart',
-            'daysPickupType'))->render();
+            return view('admin.hubs.received_table_orders', compact(
+                'parcels',
+                'drivers',
+                'warehouses',
+                'search',
+                'perPage',
+                'serialStart',
+                'daysPickupType'
+            ))->render();
         }
 
         return view('admin.hubs.received_orders', compact(
