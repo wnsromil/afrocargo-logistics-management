@@ -19,9 +19,9 @@
     </div>
     @endif --}}
 
-    <form action="{{ route('admin.supply_inventories.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.inventories.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-
+        <input type="hidden" name="price" id="">
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <div class="col-md-6">
@@ -48,7 +48,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 d-none">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Supply</label>
                                 <input class="form-check-input mt-0" type="radio" value="Supply"
@@ -159,6 +159,7 @@
                         @enderror
                     </div>
                 </div>
+
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="package_type" class="table-content col737 fw-medium">Package Type<i
@@ -174,13 +175,14 @@
                         @enderror
                     </div>
                 </div>
+                
                 <div class="col-lg-4 col-md-6 col-sm-12" id="retail_shipping_price">
                     <div class="input-block mb-3">
                         <label for="retail_shipping_price"
                             class="table-content col737 fw-medium required text-dark">Shipping
                             Price </label>
                         <div class="d-flex align-items-center justify-content-between form-control">
-                            <input class="no-border" type="number" name="retail_shipping_price"
+                            <input class="no-border" type="number" min="0.1" name="retail_shipping_price"
                                 value="{{ old('retail_shipping_price') }}" placeholder="Enter Shipping Price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                         </div>
@@ -196,7 +198,7 @@
                         <label for="retail_vaule_price" class="table-content col737 fw-medium required text-dark">Retail
                             Price</label>
                         <div class="d-flex align-items-center justify-content-between form-control">
-                            <input class="no-border" type="number" name="retail_vaule_price"
+                            <input class="no-border" min="0.1" type="number" name="retail_vaule_price"
                                 value="{{ old('retail_vaule_price') }}" placeholder="Enter retail price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                         </div>
@@ -409,24 +411,9 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
-                                <label for="in_price" class="table-content col737 fw-medium text-dark">Weight
-                                    Price</label>
-                                <div class="d-flex align-items-center justify-content-between form-control">
-                                    <input class="no-border" type="number" name="weight_price"
-                                        value="{{ old('weight_price') }}" placeholder="Enter Weight Price">
-                                    <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
-                                </div>
-
-                                @error('weight_price')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="input-block mb-3">
                                 <label for="height" class="table-content col737 fw-medium">Volume Price(1*1*1)</label>
                                 <input class="form-control input-padding" name="volume_price" id="volume_price"
-                                    type="number" step="any" value="{{ old('volume_total') }}"
+                                    type="number" step="any" value="{{ old('volume_price') }}"
                                     placeholder="Enter Volume Price" aria-label="default input example">
 
                                 @error('volume_price')
@@ -704,7 +691,7 @@
 
         <div class="add-customer-btns d-flex" style="justify-self: right">
             <div class="btnWrapper">
-                <button type="button" onclick="redirectTo('{{ route('admin.supply_inventories.index') }}')"
+                <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
                     class="btn btn-outline-primary custom-btn">Cancel</button>
                 <button type="submit" class="btn btn-primary ">Submit</button>
             </div>

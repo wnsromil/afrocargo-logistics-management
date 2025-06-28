@@ -22,7 +22,7 @@
     <form action="{{ route('admin.supply_inventories.update', $editData->id ?? '') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
+        <input type="hidden" name="price" id="">
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <!-- Inventory Type Selection -->
@@ -33,14 +33,14 @@
                                 <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3">
+                        <div class="col-lg-2 col-md-3 d-none">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Cargo</label>
                                 <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="inventary_sub_type"
                                     {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Ocean Cargo' ? 'checked' : '' }}>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3">
+                        <div class="col-lg-2 col-md-3 d-none">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Air</label>
                                 <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="inventary_sub_type"
@@ -124,7 +124,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="in_stock_quantity" class="table-content col737 fw-medium">Quantity<i class="text-danger">*</i></label>
-                        <input class="form-control input-padding" type="number" name="in_stock_quantity"
+                        <input class="form-control input-padding" type="number" min="0.1" name="in_stock_quantity"
                             value="{{ old('in_stock_quantity', $editData->in_stock_quantity ?? '') }}" placeholder="Enter quantity">
                         @error('in_stock_quantity')
                             <span class="text-danger">{{ $message }}</span>
@@ -135,7 +135,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12" id="low_stock_warning">
                     <div class="input-block mb-3">
                         <label for="low_stock_warning" class="table-content col737 fw-medium">Low Stock Warning <i class="text-danger">*</i></label>
-                        <input class="form-control text-dark" type="number" name="low_stock_warning"
+                        <input class="form-control text-dark" type="number" min="0.1" name="low_stock_warning"
                             value="{{ old('low_stock_warning', $editData->low_stock_warning ?? '') }}" placeholder="Enter Low Stock Warning">
                         @error('low_stock_warning')
                             <span class="text-danger">{{ $message }}</span>
@@ -163,7 +163,7 @@
                     <div class="input-block mb-3">
                         <label for="retail_shipping_price" class="table-content col737 fw-medium required text-dark">Shipping Price </label>
                         <div class="d-flex align-items-center justify-content-between form-control">
-                            <input class="no-border" type="number" name="retail_shipping_price"
+                            <input class="no-border" type="number" min="0.1" name="retail_shipping_price"
                                 value="{{ old('retail_shipping_price', $editData->retail_shipping_price ?? '') }}"
                                 placeholder="Enter Shipping Price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
@@ -425,7 +425,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="qty_on_hand" class="table-content col737 fw-medium">Qty on hand<i class="text-danger">*</i></label>
-                                <input class="form-control input-padding" readonly type="number" name="qty_on_hand"
+                                <input class="form-control input-padding" readonly type="number" min="0.1" name="qty_on_hand"
                                     value="{{ old('qty_on_hand', 0) }}" placeholder="Qty on hand" step="any" aria-label="default input example">
                                 @error('qty_on_hand')
                                     <span class="text-danger">{{ $message }}</span>
@@ -436,7 +436,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="weight" class="table-content col737 fw-medium">Retail Value Price<i class="text-danger">*</i></label>
-                                <input class="form-control input-padding" readonly type="number" name="retail_vaule_price"
+                                <input class="form-control input-padding" readonly type="number" min="0.1" name="retail_vaule_price"
                                     value="{{ old('retail_vaule_price', 0) }}" placeholder="Retail Value Price" step="any" aria-label="default input example">
                                 @error('retail_vaule_price')
                                     <span class="text-danger">{{ $message }}</span>
@@ -447,7 +447,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="value_price" class="table-content col737 fw-medium">Value Price<i class="text-danger">*</i></label>
-                                <input class="form-control input-padding" readonly type="number" name="value_price"
+                                <input class="form-control input-padding" readonly type="number" name="value_price" min="0.1"
                                     value="{{ old('value_price', default: 0) }}" placeholder="Value Price" step="any" aria-label="default input example">
                                 @error('value_price')
                                     <span class="text-danger">{{ $message }}</span>
@@ -458,7 +458,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="last_cost_received" class="table-content col737 fw-medium">Last Cost Received<i class="text-danger">*</i></label>
-                                <input class="form-control input-padding" type="number" name="last_cost_received"
+                                <input class="form-control input-padding" type="number" name="last_cost_received" min="0.1"
                                     placeholder="Enter Last Cost Received" readonly value="{{ old('last_cost_received', 0) }}"
                                     aria-label="default input example">
                                 @error('last_cost_received')
@@ -470,7 +470,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="re_order_point" class="table-content col737 fw-medium">Re-order Point</label>
-                                <input class="form-control input-padding" type="number" name="re_order_point"
+                                <input class="form-control input-padding" type="number" name="re_order_point" min="0.1"
                                     value="{{ old('re_order_point', $editData->re_order_point ?? '') }}" placeholder="Enter Re-order Point" aria-label="default input example">
                             </div>
                         </div>

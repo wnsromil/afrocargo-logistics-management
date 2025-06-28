@@ -76,3 +76,4 @@ function setting(){
 function sum(...$numbers) {
     return array_sum($numbers);
 }
+

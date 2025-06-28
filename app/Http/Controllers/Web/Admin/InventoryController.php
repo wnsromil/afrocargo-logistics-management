@@ -33,13 +33,14 @@ class InventoryController extends Controller
                 return $q->where('warehouse_id', $warehouse_id);
             })
             // 🔹 Filter by main_type and sub_type logic
-            ->when($main_type, function ($q) use ($main_type) {
-                if ($main_type === 'Supply') {
-                    return $q->where('inventary_sub_type', 'Supply');
-                } elseif ($main_type === 'Service') {
-                    return $q->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo']);
-                }
-            })
+            // ->when($main_type, function ($q) use ($main_type) {
+            //     if ($main_type === 'Supply') {
+            //         return $q->where('inventary_sub_type', 'Supply');
+            //     } elseif ($main_type === 'Service') {
+            //         return $q->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo']);
+            //     }
+            // })
+            ->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo'])
             // 🔹 Search Logic
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
@@ -122,11 +123,10 @@ class InventoryController extends Controller
             'country'               => 'required|string',
         ];
 
-        if ($request->inventary_sub_type === 'Ocean Cargo' || $request->inventary_sub_type === 'Air Cargo') {
-            $rules = array_merge($rules, [
-                'retail_shipping_price' => 'required|numeric',
-            ]);
-        }
+        $rules = array_merge($rules, [
+            'retail_shipping_price' => 'required|numeric',
+            'price' => 'nullable',
+        ]);
 
         // Conditional rules for Supply type
         if ($request->inventary_sub_type === 'Supply') {
@@ -181,27 +181,23 @@ class InventoryController extends Controller
             'insurance',
             'city',
             'state',
+            'qty_on_hand',
+            'retail_vaule_price',
+            'value_price',
+            'last_cost_received',
+            'last_date_received',
+            're_order_point',
+            're_order_quantity',
+            'tax_percentage',
+            'color',
+            'open',
+            'capacity',
+            'un_rating',
+            'model_number',
+            'minimum_order_limit',
+            'price'
 
         ]);
-        $data['price'] = $request->costprice ?? null;
-        if ($request->inventary_sub_type === 'Supply') {
-            $data = array_merge($data, $request->only([
-                'qty_on_hand',
-                'retail_vaule_price',
-                'value_price',
-                'last_cost_received',
-                'last_date_received',
-                're_order_point',
-                're_order_quantity',
-                'tax_percentage',
-                'color',
-                'open',
-                'capacity',
-                'un_rating',
-                'model_number',
-                'minimum_order_limit'
-            ]));
-        }
 
         if ($request->hasFile('img')) {
             $image = $request->file('img');
@@ -294,10 +290,12 @@ class InventoryController extends Controller
 
         $inventory = Inventory::findOrFail($id);
 
+        // Store logic here
         $data = $request->only([
             'inventary_sub_type',
             'barcode',
             'warehouse_id',
+            'name',
             'in_stock_quantity',
             'low_stock_warning',
             'package_type',
@@ -318,12 +316,25 @@ class InventoryController extends Controller
             'factor',
             'insurance_have',
             'insurance',
-            'name',
             'city',
-            'state'
-        ]);
+            'state',
+            'qty_on_hand',
+            'retail_vaule_price',
+            'value_price',
+            'last_cost_received',
+            'last_date_received',
+            're_order_point',
+            're_order_quantity',
+            'tax_percentage',
+            'color',
+            'open',
+            'capacity',
+            'un_rating',
+            'model_number',
+            'minimum_order_limit',
+            'price'
 
-        $data['price'] = $request->costprice ?? null;
+        ]);
 
         // Supply-specific fields
         if ($request->inventary_sub_type === 'Supply') {
