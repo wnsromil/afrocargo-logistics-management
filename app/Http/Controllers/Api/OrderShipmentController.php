@@ -151,19 +151,20 @@ class OrderShipmentController extends Controller
 
             $driverId = collect($userIds)->filter(function($driver_id)use($bookedDriver){
                 return !in_array($driver_id,$bookedDriver);
-            })->first();
+            })->values();
 
-            // Initialize nearestWarehouseId as null
             $nearestWarehouseId = null;
+            $driverData = null;
 
             // Try to assign a driver and get their warehouse
             if (!empty($driverId)) {
-                $driverData = User::where('id', $driverId)
+                $driverData = User::whereIn('id', $driverId)
                     ->whereNotNull('warehouse_id')
+                    ->latest()
                     ->first();
 
                 if ($driverData) {
-                    $validatedData['driver_id'] = $driverId;
+                    $validatedData['driver_id'] = $driverData->id;
                     $nearestWarehouseId = $driverData->warehouse_id;
                 }
             }
@@ -228,6 +229,19 @@ class OrderShipmentController extends Controller
                 'parcel_status' => 1,
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
+
+            if(empty($driverData)){
+                ParcelHistory::create([
+                    'parcel_id' => $Parcel->id,
+                    'created_user_id' => $this->user->id,
+                    'customer_id' => $validatedData['customer_id'],
+                    'warehouse_id' => $nearestWarehouseId,
+                    'status' => 'Created',
+                    'parcel_status' => 2,
+                    'description' => json_encode($Parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+                ]);
+
+            }
  
             return $this->sendResponse($Parcel, 'Order added successfully.');
         } catch (Exception $e) {
