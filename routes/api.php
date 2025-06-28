@@ -29,12 +29,14 @@ use App\Http\Controllers\Api\{
     ShiptoController,
     LocationController,
     OrderShipmentController,
-    ProductController
+    ProductController,
+    DriverController,
+    VehicleController
 };
 
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
-    CBMCalculatoarController
+    CBMCalculatoarController,
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -102,6 +104,15 @@ Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'get
 Route::post('/store-single-shipping-container-product', [CBMCalculatoarController::class, 'storeContainerAndProduct']);
 Route::delete('/delete-container-product/{id}', [CBMCalculatoarController::class, 'deleteContainerProduct']);
 
+// Notification
+Route::post('/mark-as-read-notification', [NotificationController::class, 'markAsReadNotification']);
+
+//Driver
+Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+
+//Vehicle
+Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -123,8 +134,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('availabilities', AvailabilityController::class);
     Route::apiResource('weekly-schedules', WeeklySchedulesController::class);
     Route::get('/deletUsers', [ProfileController::class, 'deletUsers']);
-
-
 
 
     Route::middleware(['apiAuthCheck'])->group(function () {

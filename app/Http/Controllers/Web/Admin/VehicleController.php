@@ -24,37 +24,60 @@ class VehicleController extends Controller
     public function index(Request $request)
     {
         $query = $request->search;
-        $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
-        $currentPage = $request->input('page', 1); // ✅ Current page number
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+        $warehouse_id = $request->input('warehouse_id');
 
-        $vehicles = Vehicle::with(['driver', 'warehouse'])->where('vehicle_type', '!=', '1')
-            ->withCount('parcelsCount')
-            ->when($this->user->role_id != 1, function ($q) {
-                return $q->where('warehouse_id', $this->user->warehouse_id);
-            })
-            ->when($query, function ($q) use ($query) {
-                return $q->where('vehicle_type', 'like', '%' . $query . '%')
-                    ->orWhere('unique_id', 'like', '%' . $query . '%')
+        $vehiclesQuery = Vehicle::with(['driver', 'warehouse'])
+            ->where('vehicle_type', '!=', '1')
+            ->withCount('parcelsCount');
+
+        // ✅ Filter by current user's warehouse if not admin
+        if ($this->user->role_id != 1) {
+            $vehiclesQuery->where('warehouse_id', $this->user->warehouse_id);
+        }
+
+        // ✅ Filter by warehouse_id if selected from dropdown
+        if ($warehouse_id) {
+            $vehiclesQuery->where('warehouse_id', $warehouse_id);
+        }
+
+        // ✅ Apply search filter
+        if ($query) {
+            $vehiclesQuery->where(function ($q) use ($query) {
+                $q->where('vehicle_type', 'like', "%$query%")
+                    ->orWhere('unique_id', 'like', "%$query%")
                     ->orWhereHas('driver', function ($q) use ($query) {
-                        $q->where('name', 'like', '%' . $query . '%');
+                        $q->where('name', 'like', "%$query%");
                     })
                     ->orWhereHas('warehouse', function ($q) use ($query) {
-                        $q->where('warehouse_name', 'like', '%' . $query . '%');
+                        $q->where('warehouse_name', 'like', "%$query%");
                     });
-            })
-            ->latest()
-            ->paginate($perPage)
-            ->appends(['search' => $query, 'per_page' => $perPage]); // ✅ URL parameters add karega
+            });
+        }
 
-        // ✅ Serial number start point
+        $vehicles = $vehiclesQuery->latest()
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
+
+        // ✅ Fetch Warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
+        // ✅ Serial number for table
         $serialStart = ($currentPage - 1) * $perPage;
 
         if ($request->ajax()) {
-            return view('admin.vehicles.table', compact('vehicles', 'serialStart'))->render();
+            return view('admin.vehicles.table', compact('vehicles', 'warehouses', 'serialStart'))->render();
         }
 
-        return view('admin.vehicles.index', compact('vehicles', 'query', 'perPage', 'serialStart'));
+        return view('admin.vehicles.index', compact('vehicles', 'query', 'warehouses', 'perPage', 'serialStart'));
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -33,7 +33,6 @@ class Vehicle extends Model
         return $this->belongsTo(Warehouse::class, 'arrived_warehouse_id');
     }
 
-
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id');
@@ -47,14 +46,13 @@ class Vehicle extends Model
             ->groupBy('container_id');
     }
 
-      public function parcelsCountTransferToWarehouse()
+    public function parcelsCountTransferToWarehouse()
     {
         return $this->hasMany(Parcel::class, 'container_id')
             ->selectRaw('container_id, COUNT(*) as count')
-             ->whereIn('status', [1, 2, 3, 4])
+            ->whereIn('status', [1, 2, 3, 4])
             ->groupBy('container_id');
     }
-
 
     public function parcels()
     {
@@ -65,6 +63,7 @@ class Vehicle extends Model
     {
         return $this->belongsTo(User::class, 'gate_in_driver_id');
     }
+
     public function gateOutDriver()
     {
         return $this->belongsTo(User::class, 'gate_out_driver_id');
@@ -82,15 +81,18 @@ class Vehicle extends Model
 
     public function ContainerSize()
     {
-        return $this->belongsTo(ContainerSize::class, foreignKey: 'container_size');
+        return $this->belongsTo(ContainerSize::class, 'container_size', 'id');
     }
 
+    public function vehicleType()
+    {
+        return $this->belongsTo(VehicleType::class, 'vehicle_type', 'name');
+    }
 
     public function brokerData()
     {
         return $this->belongsTo(Broker::class, 'broker');
     }
-
 
     public function getVehicleTypeAttribute($value)
     {

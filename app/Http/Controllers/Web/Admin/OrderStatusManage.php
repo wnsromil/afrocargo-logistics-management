@@ -65,6 +65,7 @@ class OrderStatusManage extends Controller
 
     public function statusUpdate_PickUpWithDriver(Request $request)
     {
+        dd($request->all());
 
         // Validate the request data
         $request->validate([
@@ -179,7 +180,7 @@ class OrderStatusManage extends Controller
         $validated = $request->validate([
             'from_warehouse_id' => 'required|exists:warehouses,id',
             'to_warehouse_id' => 'required|exists:warehouses,id',
-            'delivery_man' => 'required|exists:users,id',
+            'delivery_man' => 'nullable|exists:users,id',
             'note' => 'nullable|string',
             'vehicle_id_hidden' => 'required|exists:vehicles,id',
             'partial_payment_sum_input_hidden' => 'required',
@@ -201,7 +202,7 @@ class OrderStatusManage extends Controller
         if ($TransfercontainerHistory) {
             $TransfercontainerHistory->update([
                 'transfer_date'         => now()->format('Y-m-d'),
-                'driver_id'             => $validated['delivery_man'],
+                'driver_id'             => $validated['delivery_man'] ?? null,
                 'status'                => 17,
                 'type'                  => 'Transfer',
                 'description'           => $vehicleData,
@@ -215,7 +216,7 @@ class OrderStatusManage extends Controller
         $containerHistory = ContainerHistory::create([
             'container_id' => $vehicle->id,
             'transfer_date' => now()->format('Y-m-d'),
-            'driver_id' => $validated['delivery_man'],
+            'driver_id' => $validated['delivery_man'] ?? null,
             'status' => 5,
             'type' => 'Arrived',
             'no_of_orders' => $validated['no_of_orders_input_hidden'],
@@ -251,6 +252,7 @@ class OrderStatusManage extends Controller
             $parcel->update([
                 'status' => 5,
                 'arrived_container_history_id' => $containerHistory->id,
+                'arrived_warehouse_id' => $validated['to_warehouse_id'],
             ]);
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
@@ -330,7 +332,7 @@ class OrderStatusManage extends Controller
             $latestArrived->update([
                 'status' => 18,
                 'note' => $validated['note'],
-                 'arrived_container' => 'Yes',
+                'arrived_container' => 'Yes',
             ]);
         }
 

@@ -131,8 +131,8 @@ class ContainerController extends Controller
             'trucking_company' => 'required|string',
             'chassis_number' => 'required|string',
 
-            'gate_in_driver_id'     => 'required|integer|exists:users,id',
-            'gate_out_driver_id'    => 'required|integer|exists:users,id',
+            'gate_in_driver_id'     => 'nullable|integer|exists:users,id',
+            'gate_out_driver_id'    => 'nullable|integer|exists:users,id',
             'port_of_loading'       => 'required|string|max:255',
             'port_of_discharge'     => 'required|string|max:255',
             'celliling_date'        => 'required|date',
@@ -200,8 +200,8 @@ class ContainerController extends Controller
         $vehicleStore->tir_number = $request->tir_number;
         $vehicleStore->container_in_date = $containerInDate;
         $vehicleStore->container_in_time = $containerInTime;
-        $vehicleStore->gate_in_driver_id = $request->gate_in_driver_id;
-        $vehicleStore->gate_out_driver_id = $request->gate_out_driver_id;
+        $vehicleStore->gate_in_driver_id = $request->gate_in_driver_id ?? null;
+        $vehicleStore->gate_out_driver_id = $request->gate_out_driver_id ?? null;
         $vehicleStore->port_of_loading = $request->port_of_loading;
         $vehicleStore->port_of_discharge = $request->port_of_discharge;
         $vehicleStore->celliling_date = Carbon::createFromFormat('m/d/Y', $request->celliling_date)->format('Y-m-d');
@@ -212,7 +212,7 @@ class ContainerController extends Controller
         $insertedId = $vehicleStore->id;
         $vehicle = Vehicle::find($insertedId);
 
-        return redirect()->route('admin.container.show', ['id' => $vehicle->id])->with('success', 'Container added successfully.');
+        return redirect()->route('admin.container.show', ['container' => $vehicle->id])->with('success', 'Container added successfully.');
     }
 
 
@@ -268,9 +268,8 @@ class ContainerController extends Controller
             'trucking_company' => 'required|string',
             'chassis_number' => 'required|string',
             'vessel_voyage' => 'required|string',
-
-            'gate_in_driver_id'     => 'required|integer|exists:users,id',
-            'gate_out_driver_id'    => 'required|integer|exists:users,id',
+            'gate_in_driver_id'     => 'nullable|integer|exists:users,id',
+            'gate_out_driver_id'    => 'nullable|integer|exists:users,id',
             'port_of_loading'       => 'required|string|max:255',
             'port_of_discharge'     => 'required|string|max:255',
             'edit_celliling_date'        => 'required|date',
@@ -337,8 +336,8 @@ class ContainerController extends Controller
         $vehicle->tir_number = $request->tir_number;
         // $vehicle->container_in_date = $containerInDate;
         // $vehicle->container_in_time = $containerInTime;
-        $vehicle->gate_in_driver_id = $request->gate_in_driver_id;
-        $vehicle->gate_out_driver_id = $request->gate_out_driver_id;
+        $vehicle->gate_in_driver_id = $request->gate_in_driver_id ?? null;
+        $vehicle->gate_out_driver_id = $request->gate_out_driver_id ?? null;
         $vehicle->port_of_loading = $request->port_of_loading;
         $vehicle->port_of_discharge = $request->port_of_discharge;
         $vehicle->celliling_date = Carbon::createFromFormat('m/d/Y', $request->edit_celliling_date)->format('Y-m-d');
