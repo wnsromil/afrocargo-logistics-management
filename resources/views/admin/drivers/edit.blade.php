@@ -7,7 +7,7 @@
         <p class="subhead">Edit Driver</p>
     </x-slot>
 
-    <form action="{{ route('admin.drivers.update', $manager_data->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.drivers.update', $driver_data->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group-customer customer-additional-form">
@@ -18,20 +18,19 @@
                     <div class="input-block mb-3">
                         <label class="foncolor" for="company_name"> Driver ID</label>
                         <input type="text" class="form-control inp" id="unique_id" name="unique_id" style="background: #ececec;" placeholder=""
-                            value="{{ $manager_data->unique_id }}" readonly>
+                            value="{{ $driver_data->unique_id }}" readonly>
                     </div>
                 </div>
                     
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="warehouse_name">Warehouse Name<i class="text-danger">*</i></label>
-                        <select name="warehouse_name" class="form-control inp select2">
+                        <select name="warehouse_name" id="warehouseSelect" class="form-control inp select2">
                             <option value="">Select Warehouse Name</option>
                             @foreach($warehouses as $warehouse)
-                                <option {{ $manager_data->warehouse_id == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                <option {{ $driver_data->warehouse_id == $warehouse->id ? 'selected' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
-
                         @error('warehouse_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -43,7 +42,7 @@
                     <div class="input-block mb-3">
                         <label for="driver_name">Driver Name<i class="text-danger">*</i></label>
                         <input type="text" name="driver_name" class="form-control" placeholder="Enter Warehouse Code"
-                            value="{{$manager_data->name ?? old('driver_name') }}">
+                            value="{{$driver_data->name ?? old('driver_name') }}">
                         @error('driver_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -55,7 +54,7 @@
                     <div class="input-block mb-3">
                         <label for="email">E-mail <i class="text-danger">*</i></label>
                         <input type="email" name="email" class="form-control" placeholder="Enter Contact Number"
-                            value="{{$manager_data->email ?? old('email') }}">
+                            value="{{$driver_data->email ?? old('email') }}">
                         @error('email')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -72,7 +71,7 @@
                                 @foreach ($coutry as $key => $item)
                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                        {{ $item->id == old('mobile_number_code_id', $manager_data->phone_code_id) ? 'selected' : '' }}>
+                                        {{ $item->id == old('mobile_number_code_id', $driver_data->phone_code_id) ? 'selected' : '' }}>
                                         {{ $item->name }} +{{ $item->phonecode }}
                                     </option>
                                 @endforeach
@@ -80,7 +79,7 @@
                         </div>
                         <input type="number" class="form-control flagInput inp"
                             placeholder="Enter Contact Number" name="mobile_number"
-                            value="{{ old('mobile_number', $manager_data->phone) }}"
+                            value="{{ old('mobile_number', $driver_data->phone) }}"
                             oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('mobile_number')
@@ -99,7 +98,7 @@
                                 @foreach ($coutry as $key => $item)
                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                        {{ $item->id == old('alternative_mobile_number_code_id', $manager_data->phone_2_code_id_id) ? 'selected' : '' }}>
+                                        {{ $item->id == old('alternative_mobile_number_code_id', $driver_data->phone_2_code_id_id) ? 'selected' : '' }}>
                                         {{ $item->name }} +{{ $item->phonecode }}
                                     </option>
                                 @endforeach
@@ -107,7 +106,7 @@
                         </div>
                         <input type="number" class="form-control flagInput inp"
                             placeholder="Enter Office Contact Number" name="alternative_mobile_number"
-                            value="{{ old('alternative_mobile_number', $manager_data->phone_2) }}"
+                            value="{{ old('alternative_mobile_number', $driver_data->phone_2) }}"
                             oninput="this.value = this.value.slice(0, 10)">
                         </div>
                         @error('alternative_mobile_number')
@@ -122,7 +121,7 @@
                     <div class="input-block mb-3">
                         <label for="address">Address<i class="text-danger">*</i> </label>
                         <input type="text" name="address_1" class="form-control" placeholder="Enter Address"
-                            value="{{$manager_data->address ?? old('address_1') }}">
+                            value="{{$driver_data->address ?? old('address_1') }}">
                         @error('address')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -155,13 +154,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle</label>
-                        <select name="vehicle_type" class="form-control">
-                            <option value="">Select Vehicle</option>
-                            @foreach($Vehicle_data as $Vehicle)
-                                <option {{ $manager_data->vehicle_id == $Vehicle->id ? 'selected' : '' }}
-                                    value="{{ $Vehicle->id }}">{{ $Vehicle->vehicle_type }}</option>
-                            @endforeach
-                        </select>
+                     <select name="vehicle_type" id="vehicleSelect" class="form-control select2">
+                      <option value="">Select Vehicle</option>
+                                {{-- Options will be loaded via JS --}}
+                      </select>
                         @error('vehicle_type')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -173,7 +169,7 @@
                     <div class="input-block mb-3">
                         <label for="license_number">License Number<i class="text-danger">*</i></label>
                         <input type="text" name="license_number" class="form-control" placeholder="Enter Address"
-                            value="{{ $manager_data->license_number }}">
+                            value="{{ $driver_data->license_number }}">
                         @error('license_number')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -185,7 +181,7 @@
                     <div class="input-block mb-3">
                         <label for="edit_license_expiry_date">License Expiry Date<i class="text-danger">*</i></label>
                         <input type="text" name="edit_license_expiry_date" class="form-control" placeholder="MM-DD-YYYY" readonly style="cursor: pointer;"
-                             value="{{ old('edit_license_expiry_date', $manager_data->license_expiry_date ? \Carbon\Carbon::parse($manager_data->license_expiry_date)->format('n/j/Y') : '') }}">
+                             value="{{ old('edit_license_expiry_date', $driver_data->license_expiry_date ? \Carbon\Carbon::parse($driver_data->license_expiry_date)->format('n/j/Y') : '') }}">
                         @error('edit_license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -204,9 +200,9 @@
                         @enderror
                 
                         {{-- Image Preview Area --}}
-                        <div id="license_preview_area" class="mt-2" style="{{ $manager_data->license_document ? '' : 'display:none;' }}">
+                        <div id="license_preview_area" class="mt-2" style="{{ $driver_data->license_document ? '' : 'display:none;' }}">
                             <img id="license_preview_img"
-                                src="{{ $manager_data->license_document ? asset($manager_data->license_document) : '' }}"
+                                src="{{ $driver_data->license_document ? asset($driver_data->license_document) : '' }}"
                                 alt="Preview"
                                 style="max-width: 200px; max-height: 150px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
                             <button type="button" class="btn btn-sm btn-danger ms-2" id="remove_license_btn">✕</button>
@@ -221,7 +217,7 @@
                         <div class="status-toggle d-flex align-items-center">
                             <span id="inactiveText" class="bold">Active</span>
                             <input id="cb-switch" class="check" type="checkbox" name="status" value="Active"
-                            {{ old('status', $manager_data->status) == 'Inactive' ? 'checked' : '' }}>
+                            {{ old('status', $driver_data->status) == 'Inactive' ? 'checked' : '' }}>
                             <label for="cb-switch" class="checktoggle checkbox-bg togc"></label>
                             <span id="activeText">Inactive</span>
                         </div>
@@ -235,7 +231,7 @@
                         <label for="status">Status</label>
                         <div class="toggle-switch">
                             <label for="cb-switch">
-                                <input type="checkbox" id="cb-switch" name="status" value="Active" @checked($manager_data->status === 'Active')>
+                                <input type="checkbox" id="cb-switch" name="status" value="Active" @checked($driver_data->status === 'Active')>
                                 <span>
                                     <small></small>
                                 </span>
@@ -249,12 +245,16 @@
             </div>
         </div>
 
-          <input type="hidden" name="latitude"
-            value="{{ old('latitude', $manager_data->latitude) }}" class="form-control inp"
+            <input type="hidden" name="vehicle_id_hidden"
+            value="{{ old('vehicle_id_hidden', $driver_data->vehicle_id) }}" class="form-control inp"
             placeholder="0" readonly style="background: #ececec;">
 
-                <input type="hidden" name="longitude"
-            value="{{ old('longitude', $manager_data->longitude) }}" class="form-control inp"
+          <input type="hidden" name="latitude"
+            value="{{ old('latitude', $driver_data->latitude) }}" class="form-control inp"
+            placeholder="0" readonly style="background: #ececec;">
+
+          <input type="hidden" name="longitude"
+            value="{{ old('longitude', $driver_data->longitude) }}" class="form-control inp"
             placeholder="0" readonly style="background: #ececec;">
 
         <div class="add-customer-btns text-end">
@@ -267,6 +267,8 @@
             <button type="submit" class="btn customer-btn-save">Update</button>
         </div> -->
     </form>
+
+    @section('script')
     <script>
         const fileInput = document.querySelector('input[name="license_document"]');
         const previewArea = document.getElementById('license_preview_area');
@@ -296,8 +298,6 @@
             imageRemovedInput.value = '1'; // Mark image as removed
         });
     </script>
-    
-    
     <script>
         $('#country_code').val($('.edit_mobile_code_driver').find('.iti__selected-dial-code').text());
         $('.col-md-12').on('click', () => {            
@@ -327,9 +327,9 @@
                     });
                 }
                 // Initialize for both mobile fields
-                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $manager_data->country_code }}");
+                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $driver_data->country_code }}");
             });
-        </script>
+     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let statusToggle = document.getElementById("cb-switch");
@@ -348,4 +348,58 @@
             statusToggle.addEventListener("change", updateTextColor);
         });
     </script>
+    <script>
+    $(document).ready(function () {
+        let selectedWarehouseId = '{{ old("warehouse_name", $driver_data->warehouse_id) }}';
+        let selectedVehicleId = '{{ old("vehicle_type", $driver_data->vehicle_id) }}';
+
+        function loadVehicles(warehouseId, selectedVehicle = null) {
+            if (warehouseId) {
+                $.ajax({
+                    url: '/api/warehouse-vehicles/' + warehouseId,
+                    type: 'GET',
+                    success: function (response) {
+                        let vehicles = response.data || [];
+                        $('#vehicleSelect').empty().append('<option value="">Select Vehicle</option>');
+
+                        $.each(vehicles, function (key, vehicle) {
+                            let vehicleLabel = vehicle.vehicle_type.id == 1
+                                ? vehicle.container_no_1
+                                : (vehicle.vehicle_number ?? 'N/A');
+
+                            let vehicleTypeText = vehicle.vehicle_type.id == 1 ? 'Container' : vehicle.vehicle_type.name;
+                            let selected = (vehicle.id == selectedVehicle) ? 'selected' : '';
+
+                            let option = '<option value="' + vehicle.id + '" ' + selected + '>' +
+                                vehicleTypeText + ' (' + vehicleLabel + ')' +
+                                '</option>';
+
+                            $('#vehicleSelect').append(option);
+                        });
+
+                        $('#vehicleSelect').trigger('change.select2');
+                    },
+                    error: function () {
+                        $('#vehicleSelect').empty().append('<option value="">No Vehicle Found</option>');
+                    }
+                });
+            } else {
+                $('#vehicleSelect').empty().append('<option value="">Select Vehicle</option>');
+            }
+        }
+
+        // 1. Load vehicles on page load if warehouse already selected
+        if (selectedWarehouseId) {
+            loadVehicles(selectedWarehouseId, selectedVehicleId);
+        }
+
+        // 2. On warehouse change (manual)
+        $('#warehouseSelect').on('change', function () {
+            let warehouseId = $(this).val();
+            loadVehicles(warehouseId, null); // reset vehicle select
+        });
+    });
+    </script>
+    @endsection
+
 </x-app-layout>

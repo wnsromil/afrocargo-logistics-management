@@ -232,6 +232,8 @@
                                         </div>
                                         <input type="hidden" id="selected_user_id"
                                             value="{{ $expense->creator_user_id ?? '' }}">
+                                            <input type="hidden" id="delete_img"  name="delete_img"
+                                            value="No">
                                         <input type="hidden" id="selected_container_id"
                                             value="{{ $expense->container_id ?? '' }}">
                                         <div class="add-customer-btns">
@@ -256,12 +258,15 @@
                 const reader = new FileReader();
                 reader.onload = e => preview.src = e.target.result;
                 reader.readAsDataURL(input.files[0]);
+                 document.getElementById('delete_img').value = "No";
             }
         }
 
         function removeImage(previewId, inputId) {
+            console.log("gfdgfdg");
             document.getElementById(previewId).src = "{{ asset('assets/img.png') }}";
             document.getElementById(inputId).value = '';
+             document.getElementById('delete_img').value = "Yes"; 
         }
     </script>
     <script>

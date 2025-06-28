@@ -215,6 +215,8 @@ class OrderShipmentController extends Controller
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
             }
+             // Create Parcel
+             $Parcel = Parcel::create($validatedData);
 
             // Create Parcel
             $Parcel = Parcel::create($validatedData);

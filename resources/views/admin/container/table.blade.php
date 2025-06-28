@@ -34,9 +34,9 @@
                             <td class="tabletext"><input type="checkbox"></td>
                             <td class="tabletext"><input type="checkbox"></td>
                             <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
-                            <td>${{number_format(328913.5)}}</td>
-                            <td>${{number_format(103311.5)}}</td>
-                            <td>${{number_format(227389)}}</td>                            
+                            <td>${{number_format(0)}}</td>
+                            <td>${{number_format(0)}}</td>
+                            <td>${{number_format(0)}}</td>                            
                             <td>
                                 <label
                                     class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
@@ -70,6 +70,23 @@
                                                     href="{{ route('admin.container.show', $vehicle->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
+                                                <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#In_time_model" href="javascript:void(0);"
+                                                            onclick="setContainerId({{ $vehicle->id }})">
+                                                            <i
+                                                                class="fa-solid fa-truck fa-flip-horizontal me-2"></i>Container
+                                                            In Time
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#Out_time_model" href="javascript:void(0);"
+                                                            onclick="setContainerId({{ $vehicle->id }})">
+                                                            <i class="fa-solid fa-truck me-2"></i>Container
+                                                            Out Time
+                                                        </a>
+                                                    </li>
                                             
                                         </ul>
                                     </div>

@@ -30,7 +30,9 @@ use App\Http\Controllers\Api\{
     ShiptoController,
     LocationController,
     OrderShipmentController,
-    ProductController
+    ProductController,
+    DriverController,
+    VehicleController
 };
 
 use App\Http\Controllers\Web\Admin\{
@@ -106,6 +108,15 @@ Route::post('/get-freight-data-shipping', [CBMCalculatoarController::class, 'get
 Route::post('/store-single-shipping-container-product', [CBMCalculatoarController::class, 'storeContainerAndProduct']);
 Route::delete('/delete-container-product/{id}', [CBMCalculatoarController::class, 'deleteContainerProduct']);
 
+// Notification
+Route::post('/mark-as-read-notification', [NotificationController::class, 'markAsReadNotification']);
+
+//Driver
+Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+
+//Vehicle
+Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -129,8 +140,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/deletUsers', [ProfileController::class, 'deletUsers']);
     Route::get('/getUserPermissions', [PermissionController::class, 'getUserPermissions']);
     Route::post('/updatePermissions', [PermissionController::class, 'updatePermissions']);
-
-
 
 
     Route::middleware(['apiAuthCheck'])->group(function () {

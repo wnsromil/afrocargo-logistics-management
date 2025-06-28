@@ -40,10 +40,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block fwNormal mb-3">
                         <label for="warehouse_location" class="foncolor">Warehouse<i class="text-danger">*</i></label>
-                        <select name="warehouse_name" class="js-example-basic-single select2">
+                        <select name="warehouse_name" id="warehouseSelect" class="js-example-basic-single select2">
                             <option value="">Select Warehouse </option>
                             @foreach($warehouses as $warehouse)
-                                                    <option {{ old('warehouse_name', $vehicle->warehouse_id) == $warehouse->id ? 'selected' : '' }} value="{{
+                            <option {{ old('warehouse_name', $vehicle->warehouse_id) == $warehouse->id ? 'selected' : '' }} value="{{
                                 $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                             @endforeach
                         </select>
@@ -217,55 +217,27 @@
                     </div>
                 </div>
 
-                {{-- In Date & Time --}}
-                 {{-- @php
-                    $defaultDateTime = old('edit_container_date_time');
-                    if (!$defaultDateTime && isset($vehicle->container_in_date, $vehicle->container_in_time)) {
-                        $defaultDateTime = \Carbon\Carbon::parse($vehicle->container_in_date . ' ' . $vehicle->container_in_time)->format('m/d/Y h:i A');
-                    }
-                @endphp
-                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
-                    <label class="foncolor mt-0 pt-0">In Date & Time</label>
-                    <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                        <input type="text" name="edit_container_date_time" style="cursor: pointer; background: #ececec;"  readonly
-                            class="btn-filters form-cs inp"
-                            value="{{ $defaultDateTime }}"
-                            placeholder="M/DD/YYYY hh:mm A" />
-                    </div>
-                </div> --}}
-
-                  <!-- Gate In Driver -->
+              <!-- Gate In Driver -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block fwNormal mb-3">
-                        <label for="gate_in_driver_id" class="foncolor">Gate In Driver<i
-                                class="text-danger">*</i></label>
-                        <select name="gate_in_driver_id" class="js-example-basic-single select2">
-                            <option value="">Select Driver </option>
-                            @foreach($drivers as $driver)
-                                <option 
-                                {{ $driver->id == old('gate_in_driver_id', $vehicle->gate_in_driver_id) ? 'selected' : '' }}
-                                value="{{$driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
+                        <label for="gate_in_driver_id" class="foncolor">Gate In Driver</label>
+                        <select name="gate_in_driver_id" id="gateInDriver" class="js-example-basic-single select2">
+                        <option value="">Select Driver</option>
+                        {{-- Options will be filled by JS --}}
                         </select>
                         @error('gate_in_driver_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-
                 <!-- Gate Out Driver -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block fwNormal mb-3">
-                        <label for="gate_out_driver_id" class="foncolor">Gate Out Driver<i
-                                class="text-danger">*</i></label>
-                        <select name="gate_out_driver_id" class="js-example-basic-single select2">
-                            <option value="">Select driver </option>
-                            @foreach($drivers as $driver)
-                                <option 
-                             {{ $driver->id == old('gate_out_driver_id', $vehicle->gate_out_driver_id) ? 'selected' : '' }}
-                                value="{{$driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
+                        <label for="gate_out_driver_id" class="foncolor">Gate Out Driver</label>
+                         <select name="gate_out_driver_id" id="gateOutDriver" class="js-example-basic-single select2">
+                        <option value="">Select Driver</option>
+                        {{-- Options will be filled by JS --}}
+                    </select>
                         @error('gate_out_driver_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -378,23 +350,14 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
                     <label class="foncolor" for="ship_to_country">Ship To Country <i class="text-danger">*</i></label>
                     <div class="widthmannual">
-                         <select id="country" name="ship_to_country" class="js-example-basic-single select2">
-                                <option value="" disabled hidden {{ old('ship_to_country', $vehicle->ship_to_country) ? '' : 'selected' }}>Select Country</option>
-                                <option value="Bangladesh" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Bangladesh' ? 'selected' : '' }}>Bangladesh</option>
-                                <option value="Belgium" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Belgium' ? 'selected' : '' }}>Belgium</option>
-                                <option value="Kuwait" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Kuwait' ? 'selected' : '' }}>Kuwait</option>
-                                <option value="Dominica" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Dominica' ? 'selected' : '' }}>Dominica</option>
-                                <option value="India" {{ old('ship_to_country', $vehicle->ship_to_country) == 'India' ? 'selected' : '' }}>India</option>
-                                <option value="Dominican Republic" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
-                                <option value="Andorra" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Andorra' ? 'selected' : '' }}>Andorra</option>
-                                <option value="Chile" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Chile' ? 'selected' : '' }}>Chile</option>
-                                <option value="United States" {{ old('ship_to_country', $vehicle->ship_to_country) == 'United States' ? 'selected' : '' }}>United States</option>
-                                <option value="Greenland" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Greenland' ? 'selected' : '' }}>Greenland</option>
-                                <option value="Cabo Verde" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Cabo Verde' ? 'selected' : '' }}>Cabo Verde</option>
-                                <option value="Côte d'Ivoire" {{ old('ship_to_country', $vehicle->ship_to_country) == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
-                                <option value="Mali" {{ old('ship_to_country', $vehicle->ship_to_country) == 'Mali' ? 'selected' : '' }}>Mali</option>
-                                <option value="European Union" {{ old('ship_to_country', $vehicle->ship_to_country) == 'European Union' ? 'selected' : '' }}>European Union</option>
-                            </select>
+                        <select id="country" name="ship_to_country" class="js-example-basic-single select2">
+                          <option value="" disabled hidden {{ old('ship_to_country', $vehicle->ship_to_country) ? '' : 'selected' }}>Select Country</option>
+                        @foreach (setting()->warehouseContries() as $country )
+                        <option value="{{ $country['name'] }}" {{ old('ship_to_country', $vehicle->ship_to_country) == $country['name'] ? 'selected' : '' }}>
+                            {{ $country['name'] }}
+                        </option>
+                        @endforeach
+                        </select>
                     </div>
                     @error('ship_to_country')
                         <small class="text-danger">{{ $message }}</small>
@@ -472,6 +435,53 @@
             }
         });
 
+        </script>
+        <script>
+                $(document).ready(function () {
+                    let selectedWarehouseId = '{{ old("warehouse_name", $vehicle->warehouse_id) }}';
+                    let selectedGateInDriver = '{{ old("gate_in_driver_id", $vehicle->gate_in_driver_id) }}';
+                    let selectedGateOutDriver = '{{ old("gate_out_driver_id", $vehicle->gate_out_driver_id) }}';
+
+                    function loadDrivers(warehouseId, preselectedIn, preselectedOut) {
+                        
+                        if (warehouseId) {
+                            $.ajax({
+                                url: '/api/warehouse-drivers/' + warehouseId,
+                                type: 'GET',
+                                success: function (response) {
+                                    let drivers = response.data || [];
+
+                                    $('#gateInDriver').empty().append('<option value="">Select Driver</option>');
+                                    $('#gateOutDriver').empty().append('<option value="">Select Driver</option>');
+
+                                    drivers.forEach(function (driver) {
+                                        console.log(preselectedIn);
+                                          console.log(driver.id);
+                                        let selectedIn = driver.id == preselectedIn ? 'selected' : '';
+                                        let selectedOut = driver.id == preselectedOut ? 'selected' : '';
+
+                                        $('#gateInDriver').append('<option value="' + driver.id + '" ' + selectedIn + '>' + driver.name + '</option>');
+                                        $('#gateOutDriver').append('<option value="' + driver.id + '" ' + selectedOut + '>' + driver.name + '</option>');
+                                    });
+
+                                    $('#gateInDriver').trigger('change.select2');
+                                    $('#gateOutDriver').trigger('change.select2');
+                                }
+                            });
+                        }
+                    }
+
+                    // Load on page load (edit mode)
+                    if (selectedWarehouseId) {
+                        loadDrivers(selectedWarehouseId, selectedGateInDriver, selectedGateOutDriver);
+                    }
+
+                    // Reload on warehouse change
+                    $('#warehouseSelect').on('change', function () {
+                        let warehouseId = $(this).val();
+                        loadDrivers(warehouseId, null, null);
+                    });
+                });
         </script>
     @endsection
 

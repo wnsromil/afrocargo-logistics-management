@@ -236,6 +236,13 @@ class MenuSeeder extends Seeder
                 'permissions' => ['order.view'],
             ]);
             Menu::create([
+                'title' => 'Received Order',
+                'route' => 'admin.received.orders.hub.list',
+                'active' => 'receivedOrders*',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+            Menu::create([
                 'title' => 'Transfer To Hub',
                 'route' => 'admin.transfer.hub.list',
                 'active' => 'transferHub*',

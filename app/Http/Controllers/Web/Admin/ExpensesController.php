@@ -247,6 +247,7 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, string $id)
     {
+       // dd($request->all());
         $request->validate([
             'edit_expense_date' => 'required|date',
             'warehouse' => 'required|exists:warehouses,id',
@@ -279,6 +280,9 @@ class ExpensesController extends Controller
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/expenses', $filename, 'public'); // Store in 's
             $expense->img = 'storage/' . $filePath;
+        }
+        if($request->delete_img == "Yes"){
+           $expense->img = null;
         }
 
         $expense->save();

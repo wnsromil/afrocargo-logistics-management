@@ -152,7 +152,6 @@ class ContainerController extends Controller
             'message' => 'Container date and time updated successfully.',
         ]);
     }
-
     public function updateContainerOutDateTime(Request $request)
     {
         // Validate input

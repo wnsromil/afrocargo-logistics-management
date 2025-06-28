@@ -20,28 +20,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($warehouses as $index => $warehouse)
+                    @forelse ($drivers as $index => $driver)
                         @php
-                            $result = checkExpiryStatus($warehouse->license_expiry_date);
+                            $result = checkExpiryStatus($driver->license_expiry_date);
                         @endphp
+
                         <tr class="{{ $result['bg_class'] ?? '' }}">
                             <td>
-                                {{ $warehouse->unique_id }}
+                                {{ $driver->unique_id }}
                             </td>
-                            <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '--') }}</td>
-                            <td><span>{{ ucfirst($warehouse->name ?? '--') }}</span></td>
-                            <td>+{{ $warehouse->phone_code->phonecode ?? '' }} {{ $warehouse->phone ?? '-' }}</td>
-                            <td>
-                                <span>{{ $warehouse->vehicle->vehicle_type ?? '--' }}</span>
-                                <span> ({{ $warehouse->vehicle->vehicle_number ?? '--' }})</span>
+                            <td>{{ ucfirst($driver->warehouse->warehouse_name ?? '--') }}</td>
+                            <td><span>{{ ucfirst($driver->name ?? '--') }}</span></td>
+                            <td>+{{ $driver->phone_code->phonecode ?? '' }} {{ $driver->phone ?? '-' }}
                             </td>
-                            <td>{{ $warehouse->address ?? '--' }}</td>
-                            <td>{{ $warehouse->license_number ?? '--' }}</td>
-                            <td>{{ $warehouse->license_expiry_date ?? '--' }}</td>
                             <td>
-                                @if (!empty($warehouse->license_document))
-                                    <a href="{{ asset($warehouse->license_document) }}" target="_blank"
-                                        class="justify-content-center" download>
+                                 @if($driver->vehicle)
+                                    <span>{{ $driver->vehicle->vehicle_type ?? 'N/A' }}</span>
+                                    <span>(
+                                        {{
+                                            $driver->vehicle->vehicle_type === 'Container'
+                                                ? ($driver->vehicle->container_no_1 ?? 'N/A')
+                                                : ($driver->vehicle->vehicle_number ?? 'N/A')
+                                        }}
+                                    )</span>
+                                @else
+                                    <span>N/A</span>
+                                @endif
+                            </td>
+                            <td>
+                                <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="{{ $driver->address ?? '-' }}">{{ $driver->address ?? '-' }}
+                            </td>
+                            <td>{{ $driver->license_number ?? '--' }}</td>
+                            <td>{{ $driver->license_expiry_date ?? '--' }}</td>
+                            <td>
+                                @if (!empty($driver->license_document))
+                                    <a href="{{ asset($driver->license_document) }}" target="_blank"
+                                        class="justify-content-center downloadbtn" download>
                                         <i class="fa fa-download"></i>
                                     </a>
                                 @else
@@ -50,21 +65,14 @@
                             </td>
                             <td>
                                 <a class="btn btn-primary icon_btn"
-                                    href="{{ route('admin.drivers.schedule', $warehouse->id) }}">
+                                    href="{{ route('admin.drivers.schedule', $driver->id) }}">
                                     <i class="ti ti-calendar-clock"></i></a>
                             </td>
                             <td>
-                                @if ($warehouse->status == 'Active')
-                                    <div class="container">
-                                        <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
-                                        <p>Active</p>
-                                    </div>
-                                @else
-                                    <div class="container">
-                                        <img src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
-                                        <p>Inactive</p>
-                                    </div>
-                                @endif
+                                <label class="labelstatus {{ $driver->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                    for="{{ $driver->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                    {{ $driver->status == 'Active' ? 'Active' : 'Inactive' }}
+                                </label>
                             </td>
                             <td class="d-flex align-items-center">
                                 {{-- <a href="add-invoice.html" class="btn btn-greys me-2"><i
@@ -78,25 +86,25 @@
                                         <ul>
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('admin.drivers.edit', $warehouse->id) }}"><i
+                                                    href="{{ route('admin.drivers.edit', $driver->id) }}"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('admin.drivers.show', $warehouse->id) }}"><i
+                                                    href="{{ route('admin.drivers.show', $driver->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
-                                            @if($warehouse->status == 'Active')
+                                            @if($driver->status == 'Active')
                                                 <li>
                                                     <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                        data-id="{{ $warehouse->id }}" data-status="Inactive">
+                                                        data-id="{{ $driver->id }}" data-status="Inactive">
                                                         <i class="far fa-bell-slash me-2"></i>Deactivate
                                                     </a>
                                                 </li>
-                                            @elseif($warehouse->status == 'Inactive')
+                                            @elseif($driver->status == 'Inactive')
                                                 <li>
                                                     <a class="dropdown-item activate" href="javascript:void(0)"
-                                                        data-id="{{ $warehouse->id }}" data-status="Active">
+                                                        data-id="{{ $driver->id }}" data-status="Active">
                                                         <i class="fa-solid fa-power-off me-2"></i>Activate
                                                     </a>
                                                 </li>
@@ -106,6 +114,7 @@
                                     </div>
                                 </div>
                             </td>
+
 
                         </tr>
                     @empty
@@ -136,7 +145,7 @@
     <div class="col-md-6">
         <div class="float-end">
             <div class="bottom-user-page mt-3">
-                {!! $warehouses->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
+                {!! $drivers->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

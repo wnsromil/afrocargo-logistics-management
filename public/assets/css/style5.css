@@ -1209,9 +1209,25 @@ input[type="checkbox"]:checked::after {
 
 .expiry_date_bg_alert {
     background-color: #f8d7da !important; /* Halka red */
-       color: #181111 !important; /* White text */
+    color: #181111 !important; /* White text */
 }
 
 .expiry_date_text_alert {
     color: #f00505 !important; /* White text */
+}
+
+.notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 50%;
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+    z-index: 10;
 }

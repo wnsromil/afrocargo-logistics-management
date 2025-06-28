@@ -30,36 +30,55 @@ class DriversController extends Controller
     public function index(Request $request)
     {
         $query = $request->search;
-        $perPage = $request->input('per_page', 10); // ✅ Default per_page 10
-        $currentPage = $request->input('page', 1); // ✅ Current page number
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+        $warehouse_id = $request->input('warehouse_id');
+        $driversQuery = User::where('role_id', 4)->with('vehicle');
 
-        $warehouses = User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })
-            ->where('role_id', 4)
-            ->when($query, function ($q) use ($query) {
-                return $q->where(function ($q) use ($query) {
-                    $q->where('name', 'LIKE', "%$query%")
-                        ->orWhere('unique_id', 'LIKE', '%' . $query . '%')
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orWhere('phone', 'LIKE', "%$query%")
-                        ->orWhere('address', 'LIKE', "%$query%")
-                        ->orWhere('status', 'LIKE', "%$query%");
-                });
-            })
-            ->latest()
+        // If not admin, restrict by user's warehouse
+        if ($this->user->role_id != 1) {
+            $driversQuery->where('warehouse_id', $this->user->warehouse_id);
+        }
+
+        // If warehouse_id passed from filter
+        if ($warehouse_id) {
+            $driversQuery->where('warehouse_id', $warehouse_id);
+        }
+
+        // Search filter
+        if ($query) {
+            $driversQuery->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%$query%")
+                    ->orWhere('unique_id', 'LIKE', "%$query%")
+                    ->orWhere('email', 'LIKE', "%$query%")
+                    ->orWhere('phone', 'LIKE', "%$query%")
+                    ->orWhere('address', 'LIKE', "%$query%")
+                    ->orWhere('status', 'LIKE', "%$query%");
+            });
+        }
+
+        $drivers = $driversQuery->latest()
             ->paginate($perPage)
             ->appends(['search' => $query, 'per_page' => $perPage]);
 
-        // ✅ Serial number start point
-        $serialStart = ($currentPage - 1) * $perPage;
+        // Get warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
 
+        // Serial number base
+        $serialStart = ($currentPage - 1) * $perPage;
+       // return $drivers;
         if ($request->ajax()) {
-            return view('admin.drivers.table', compact('warehouses', 'serialStart'))->render();
+            return view('admin.drivers.table', compact('drivers', 'warehouses', 'serialStart'))->render();
         }
 
-        return view('admin.drivers.index', compact('warehouses', 'query', 'perPage', 'serialStart'));
+        return view('admin.drivers.index', compact('drivers', 'warehouses', 'query', 'perPage', 'serialStart'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -73,6 +92,7 @@ class DriversController extends Controller
         $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->select('id', 'warehouse_name')->get();
+
         $Vehicle_data = Vehicle::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->select('id', 'vehicle_type', 'vehicle_number', 'container_no_1')->get();
@@ -242,7 +262,7 @@ class DriversController extends Controller
     public function edit($id)
     {
 
-        $manager_data = User::find($id);
+        $driver_data = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $countries = Country::get();
         $warehouses = Warehouse::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
@@ -251,7 +271,7 @@ class DriversController extends Controller
         $Vehicle_data = Vehicle::where('status', 'Active')->when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->select('id', 'vehicle_type')->get();
-        return view('admin.drivers.edit', compact('manager_data', 'roles', 'countries', 'warehouses', 'Vehicle_data'));
+        return view('admin.drivers.edit', compact('driver_data', 'roles', 'countries', 'warehouses', 'Vehicle_data'));
     }
 
     /**

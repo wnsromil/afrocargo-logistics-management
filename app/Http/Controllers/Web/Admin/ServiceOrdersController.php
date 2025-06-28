@@ -32,11 +32,13 @@ class ServiceOrdersController extends Controller
         $shipping_type = $request->input('shipping_type');
         $status_search = $request->input('status_search');
         $daysPickupType = $request->input('days_pickup_type'); // <-- NEW
+        $warehouse_id = $request->input('warehouse_id');
 
         $query = Parcel::where('parcel_type', 'Service')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
+            ->when($warehouse_id, fn($q) => $q->where('warehouse_id', $warehouse_id)) // ✅ New condition
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('tracking_number', 'LIKE', "%$search%")
@@ -53,8 +55,6 @@ class ServiceOrdersController extends Controller
             ->when($driver_id, fn($q) => $q->where('driver_id', $driver_id))
             ->when($shipping_type, fn($q) => $q->where('transport_type', $shipping_type))
             ->when($status_search, fn($q) => $q->where('status', $status_search))
-
-            // ✅ Filter by pickup day
             ->when($daysPickupType, function ($q) use ($daysPickupType) {
                 $today = now()->toDateString();
                 $yesterday = now()->subDay()->toDateString();
@@ -64,8 +64,8 @@ class ServiceOrdersController extends Controller
                     ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
                     ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
             })
-
             ->latest('id');
+
 
         $parcels = $query->paginate($perPage)->appends([
             'search' => $search,

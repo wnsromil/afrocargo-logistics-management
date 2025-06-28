@@ -84,9 +84,9 @@
 
     <div class="usersearch d-flex align-items-center justify-content-between">
         <div class="lablewrap d-flex text-dark">
-            <label class="me-sm-4 me-2 mb-0">Total Billed: $<b>{{number_format(328913.5)}}</b></label>
-            <label class="me-sm-4 me-2 mb-0">Total Collected: $<b>{{number_format(103311.5)}}</b></label>
-            <label class="me-sm-4 me-2 mb-0">Total Balance: $<b>{{number_format(227389)}}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Billed: $<b>{{number_format(0)}}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Collected: $<b>{{number_format(0)}}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Balance: $<b>{{number_format(0)}}</b></label>
         </div>
     </div>
 
@@ -130,9 +130,9 @@
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td class="tabletext"><input type="checkbox"></td>
                                     <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
-                                    <td>${{number_format(328913.5)}}</td>
-                                    <td>${{number_format(103311.5)}}</td>
-                                    <td>${{number_format(227389)}}</td>
+                                    <td>${{number_format(0)}}</td>
+                                    <td>${{number_format(0)}}</td>
+                                    <td>${{number_format(0)}}</td>
                                     <td>
                                         <label
                                             class="labelstatus {{ $vehicle->status == 'Active' ? 'Active' : 'Inactive' }}"
