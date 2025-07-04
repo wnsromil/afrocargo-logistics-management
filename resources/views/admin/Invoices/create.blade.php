@@ -45,7 +45,7 @@
                             <label for="customer_id">Customer <i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <input type="hidden" name="type" value="delivery">
+                            <input type="hidden" name="type" value="pickup">
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
@@ -164,7 +164,7 @@
 
                 <div class="col-md-6">
                     <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
-                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="pick_up">
+                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="delivery_to_address">
                             <div class="row gx-3 gy-2">
 
                                 @csrf
@@ -173,7 +173,7 @@
                                 <input type="hidden" name="address_id">
 
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="warehouse_name">First Name <i
+                                    <label class="foncolor" for="first_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
                                         placeholder="Enter First Name">
@@ -303,7 +303,7 @@
                                 <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
 
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="warehouse_name">First Name <i
+                                    <label class="foncolor" for="first_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
                                         placeholder="Enter First Name">
@@ -430,10 +430,33 @@
                 <div>
                     <div class="row mt-4 pt-3 g-3" id="ship_to_address">
                         <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="input-block mb-3 d-flex align-items-center">
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
+                                        <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="input-block mb-3 d-flex align-items-center">
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
+                                        <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters datetimepicker form-control form-cs inp "
-                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ date('m-d-Y') }}" />
+                                <input type="text" class="btn-filters datetimepickerDefault form-control form-cs inp "
+                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ carbon()->now()->addDays(15)->format('Y/m/d') }}" />
                                 <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
                                     readonly value="08:30 AM" name="currentTime">
                             </div>
@@ -498,33 +521,12 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="input-block">
-                                        <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
-                                        <input class="form-check-input mt-0" type="radio" value="cargo" name="transport_type">
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
-                                        <input class="form-check-input mt-0" type="radio" value="air" name="transport_type">
-                                    </div>
-                                </div>
-                            </div>
-                            <label>Container<i class="text-danger">*</i></label>
+                            <label>Container</label>
                             <select name="container_id" class="form-control select2">
                                 <option value="">Select Container</option>
                                 @foreach($containers as $container)
                                                             <option {{ old('container_id') == $container->id ? 'selected' : '' }} value="{{
-                                    $container->id }}">{{ $container->unique_id }}</option>
+                                    $container->id }}">{{ $container->unique_id }}{{ $container->ship_to_country ?  ', '.$container->ship_to_country:''}}</option>
                                 @endforeach
                             </select>
                             @error('container_id')
@@ -559,7 +561,7 @@
                                 style="font-weight:400px !important">
                                 <option value="">Select Warehouse </option>
                                 @foreach($warehouses as $warehouse)
-                                                            <option {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }} value="{{
+                                                            <option {{ old('warehouse_id',auth()->user()->role_id !=1 ? auth()->user()->warehouse_id :'' ) == $warehouse->id ? 'selected' : '' }} value="{{
                                     $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                                 @endforeach
                             </select>
@@ -770,7 +772,7 @@
                 setTimeout(() => {
                     console.log("invoce_typ", invoce_type);
                     toggleLoginForm(invoce_type);
-                    if ($('input[name="transport_type"]').val() != "air") {
+                    if ($('input[name="transport_type"]').val() != "Air Cargo") {
                         $('select[name="container_id"]')
                             .prop("disabled", true) // this is essential
                             .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events

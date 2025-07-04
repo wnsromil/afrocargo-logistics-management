@@ -17,26 +17,30 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="subhead fs_18">Update Invoice</p>
-        <div class="card invoices-tabs-card edit mb-0 pt-0 me-sm-2">
+        <div class="row">
+        <p class="subhead fs_18 mt-2">Update Invoice</p>
+        <!-- ---------------------------- Modals ------------------------- -->
+        <div class="col-md-12 mt-5">
+            @include('admin.Invoices.modals')
+        </div>
+        <div class="col-md-12 card invoices-tabs-card edit mb-0 pt-0 me-sm-2">
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="d-block">
                         <div class="authTabDiv">
                             <div id="click"></div>
                             <button id="servicesBtn" type="button"
-                                class="btnBorder th-font col737 bg-light me-1 ms-0 activity-feed"
-                                onclick="toggleLoginForm('services')">Services</button>
-                            <button id="suppliesBtn" type="button" class="btnBorder th-font col737 bg-light"
-                                onclick="toggleLoginForm('supplies')">Supplies</button>
+                                class="btnBorder th-font col737 bg-light me-1 ms-0 @if($invoice->invoce =='services') activity-feed @endif"
+                                {{--onclick="toggleLoginForm('services')"--}}>Services</button>
+                            <button id="suppliesBtn" type="button" class="btnBorder th-font col737 bg-light @if($invoice->invoce =='supplies') activity-feed @endif""
+                                {{--onclick="toggleLoginForm('supplies')"--}}>Supplies</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- ---------------------------- Modals ------------------------- -->
-        @include('admin.Invoices.modals')
+
+        </div>
     </x-slot>
 
     @if ($errors->any())
@@ -59,7 +63,7 @@
                             <label for="customer_id">Customer <i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <input type="hidden" name="type" value="delivery">
+                            <input type="hidden" name="type" value="pickup">
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
@@ -179,7 +183,7 @@
             <div class="row mt-5 g-3">
                 <div class="col-md-6">
                     <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
-                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="pick_up">
+                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="delivery_to_address">
                             <div class="row gx-3 gy-2">
 
                                 @csrf
@@ -410,11 +414,36 @@
                 <div>
                     <div class="row mt-4 pt-3 g-3" id="ship_to_address">
                         <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="input-block mb-3 d-flex align-items-center">
+                                        <p class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</p>
+                                        <input class="form-check-input mt-0" type="radio" value="Ocean Cargo"
+                                            name="transport_type" {{ $invoice->transport_type == 'Ocean Cargo' ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="input-block mb-3 d-flex align-items-center">
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
+                                        <input class="form-check-input mt-0" type="radio" value="Air Cargo"
+                                            name="transport_type" {{ $invoice->transport_type == 'Air Cargo' ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters datetimepicker form-control form-cs inp "
+                                <input type="text" class="btn-filters datetimepickerDefault form-control form-cs inp "
                                     name="currentdate" placeholder="mm-dd-yyyy"
-                                    value="{{ $invoice->currentdate ? $invoice->currentdate->format('m-d-Y') : date('m-d-Y') }}" />
+                                    value="{{ $invoice->currentdate ? $invoice->currentdate : date('Y/m/d') }}" />
                                 <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
                                     readonly value="{{$invoice->currentTime ?? '08:30 AM'}}" name="currentTime">
                             </div>
@@ -482,36 +511,13 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="input-block">
-                                        <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
-                                        <input class="form-check-input mt-0" type="radio" value="cargo"
-                                            name="transport_type" {{ $invoice->transport_type == 'cargo' ? 'checked' : '' }}>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
-                                        <input class="form-check-input mt-0" type="radio" value="air"
-                                            name="transport_type" {{ $invoice->transport_type == 'air' ? 'checked' : '' }}>
-                                    </div>
-                                </div>
-                            </div>
-                            <label>Container<i class="text-danger">*</i></label>
+                            <label>Container</label>
                             <select name="container_id" class="form-control select2" >
                                 <option value="">Select Container</option>
                                 @foreach($containers as $container)
                                 <option {{ old('container_id',$invoice->container_id)==$container->id ? 'selected' : ''
                                     }} value="{{
-                                    $container->id }}">{{ $container->unique_id }}</option>
+                                    $container->id }}">{{ $container->unique_id }}{{ $container->ship_to_country ?  ', '.$container->ship_to_country:''}}</option>
                                 @endforeach
                             </select>
                             @error('container_id')
@@ -853,7 +859,7 @@
             setTimeout(() => {
                 console.log("invoce_typ", invoce_type);
                 toggleLoginForm(invoce_type);
-                if ($('input[name="transport_type"]').val() != "air") {
+                if ($('input[name="transport_type"]').val() != "Air Cargo") {
                     $('select[name="container_id"]')
                         .prop("disabled", true) // this is essential
                         .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events

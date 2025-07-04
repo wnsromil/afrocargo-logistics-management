@@ -214,6 +214,8 @@ Route::middleware('auth:api')->group(function () {
         // Ship To mobile customer
         Route::post('/customer-shipto-create', [ShiptoController::class, 'CustomerCreateShipTo']);
         Route::post('/get-shipto-users', [ShiptoController::class, 'getCustomerShipToUsers']);
+
+        Route::post('/invoiceUpdate/{id}', [InvoiceController::class, 'invoiceUpdate']);
     });
 
     //invoice controller

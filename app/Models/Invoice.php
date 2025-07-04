@@ -32,18 +32,7 @@ class Invoice extends Model
     public function invoiceParcelData()
     {
         return $this->belongsTo(Parcel::class, 'parcel_id')
-            ->select([
-                'id',
-                'customer_id',
-                'ship_customer_id',
-                'driver_id',
-                'arrived_warehouse_id',
-                'driver_subcategories_data',
-                'total_amount',
-                'estimate_cost',
-                'container_id',
-                'percel_comment'
-            ])->with(['arrivedWarehouse','driver' => function ($query) {
+            ->with(['arrivedWarehouse','driver' => function ($query) {
                 return $query->select([
                     'id',
                     'name',

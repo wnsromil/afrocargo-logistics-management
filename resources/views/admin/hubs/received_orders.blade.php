@@ -242,7 +242,7 @@
                                             </div>
                                     </td>
                                     <td>
-                                        <div>{{ $parcel->driver->name ?? "-"}}</div>
+                                        <div>{{ $parcel->arrivedDriver->name ?? "-"}}</div>
                                     </td>
                                     <td>
                                         <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
@@ -439,7 +439,7 @@
                                         </li>
                                     </td>
                                     <td class="btntext">
-                                        <a href="{{ route('admin.service_orders.show', $parcel->id) }}"> <button
+                                        <a href="{{ route('admin.received.received_orders_show', $parcel->id) }}"> <button
                                                 class=orderbutton><img
                                                     src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
                                     </td>

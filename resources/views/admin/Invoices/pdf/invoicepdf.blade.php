@@ -129,7 +129,7 @@
             </tr>
         </thead>
         <tbody>
-            @if ($invoice->invoce_item && count($invoice->invoce_item) > 0)
+            @if ($invoice->invoce_item && is_array($invoice->invoce_item) && count($invoice->invoce_item) > 0)
                 @foreach($invoice->invoce_item as $index => $item)
                 <tr style="border: 1px solid black;">
                     <td style="border: 1px solid black; padding: 5px;">{{ $index + 1 }}</td>
@@ -139,8 +139,8 @@
                     <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['price'], 2) }}</td>
                     <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['discount'] ?? 0, 2) }}</td>
                     <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['ins'], 2) }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['tax'], 2) }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">${{ number_format($item['total'], 2) }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ !empty($item['total']) ? number_format($item['tax'], 2):0 }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">${{ !empty($item['total']) ? number_format($item['total'], 2) :'0' }}</td>
                 </tr>
                 @endforeach
             @endif

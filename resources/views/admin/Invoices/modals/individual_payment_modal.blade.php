@@ -180,12 +180,12 @@
                                         <tr>
                                             <td>{{ $invoice->invoice_no ?? '' }}</td>
                                             <td>
-                                                <p class="overflow-ellpise" data-bs-toggle="tooltip"
+                                                <span data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
                                                     title="{{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}">
                                                     {{ $payment->createdByUser->name ?? '' }} {{
                                                     $payment->createdByUser->last_name ?? '' }}
-                                                </p>
+                                                </span>
                                             </td>
                                             <td>{{ ucfirst($payment->payment_type ?? '-') }}</td>
                                             <td>{{ $payment->payment_date ?

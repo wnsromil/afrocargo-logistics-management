@@ -198,10 +198,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 $(document).ready(function () {
     // Initialize Select2 for customer search
-    var address_type = "pickup";
+    var address_type = "delivery";
     $(".middleDiv").on("click", (e) => {
         address_type =
-            $(e.currentTarget).find('input[name="type"]').val() ?? "pickup";
+            $(e.currentTarget).find('input[name="type"]').val() ?? "delivery";
         console.log("address_type", address_type);
     });
 
@@ -216,7 +216,7 @@ $(document).ready(function () {
                     address_type: address_type,
                     invoice_type: invoce_type,
                     invoice_custmore_id:
-                        address_type == "pickup"
+                        address_type == "delivery"
                             ? $('input[name="invoice_custmore_id"]').val()
                             : null,
                 };
@@ -225,7 +225,7 @@ $(document).ready(function () {
                 return {
                     results: data.data
                         .map(function (customer) {
-                            if (customer.address_type == "pickup") {
+                            if (customer.address_type != "delivery") {
                                 return {
                                     id: customer.pickup_address.id ?? "",
                                     text: customer.pickup_address.text ?? "",
@@ -439,23 +439,22 @@ function setPickupDeleveryFormValue(customer) {
     let userAddress = "";
     if (customer) {
         userAddress =
-            customer.address_type == "pickup"
-                ? $("#ship_to_address")
-                : $("#pick_up");
+            customer.address_type == "delivery"
+                ? $("#ship_to_address"):$("#delivery_to_address");
         // Split full name into first and last name
         // var names = customer.full_name.split(' ');
         // var firstName = names[0];
         // var lastName = names.length > 1 ? names.slice(1).join(' ') : '';
         let newOption = new Option(customer.text, customer.id, true, true);
 
-        if (customer.address_type == "pickup") {
+        if (customer.address_type == "delivery") {
             $('input[name="pickup_address_id"]').val(customer.id);
 
             // Add new option if not already present
             $("#ship_customer").append(newOption).trigger("change");
         } else {
             $('input[name="delivery_address_id"]').val(customer.id);
-            $('input[name="invoice_custmore_id"]').val(customer.id);
+            $('input[name="invoice_custmore_id"]').val(customer.user_id);
             // delevery select box
             // Add new option if not already present
             $("#delevery_customer_id").append(newOption).trigger("change");
@@ -540,10 +539,10 @@ $(document).on("click", ".confirm-supply", function () {
         currentRow.find('input[name="valume"]').val(selectedItem.valume ?? 0);
 
         currentRow.find('input[name="qty"]').val(1);
-        currentRow.find('input[name="label_qty"]').val(1);
-        currentRow.find('input[name="ins"]').val(0);
-        currentRow.find('input[name="discount"]').val(0);
-        currentRow.find('input[name="tax"]').val(0);
+        currentRow.find('input[name="label_qty"]').val(selectedItem.label_qty ?? '-');
+        currentRow.find('input[name="ins"]').val(selectedItem.ins ?? 0);
+        currentRow.find('input[name="discount"]').val(selectedItem.discount ?? 0);
+        currentRow.find('input[name="tax"]').val(selectedItem.tax ?? 0);
         currentRow.find('input[name="price"]').val(selectedItem.price ?? 1);
         currentRow
             .find('input[name="total"]')
@@ -838,13 +837,10 @@ function getInvoiceItemsJSON() {
             supply_name: $(this).find('[name="supply_name"]').val(),
             supply_id: $(this).find('[name="supply_id"]').val(),
             qty: parseFloat($(this).find('[name="qty"]').val()) || 0,
-            label_qty:
-                parseFloat($(this).find('[name="label_qty"]').val()) || 0,
+            label_qty:$(this).find('[name="label_qty"]').val() || '-',
             volume: parseFloat($(this).find('[name="volume"]').val()) || 0,
             price: parseFloat($(this).find('[name="price"]').val()) || 0,
-            value:
-                parseFloat($(this).find('[name="label_qty"]').val()) *
-                    parseFloat($(this).find('[name="price"]').val()) || 0,
+            value: parseFloat($(this).find('[name="value"]').val()) || 0,
             ins: parseFloat($(this).find('[name="ins"]').val()) || 0,
             discount: parseFloat($(this).find('[name="discount"]').val()) || 0,
             tax: parseFloat($(this).find('[name="tax"]').val()) || 0,
@@ -875,7 +871,7 @@ $("#services").on("submit", function (e) {
         total_price: "required|numeric",
         total_qty: "required|numeric",
         duedaterange: "",
-        currentdate: "date_format:m-d-Y",
+        currentdate: "date_format:Y-m-d",
         currentTime: "",
         invoice_no: "max:255",
         total_amount: "required|numeric",
@@ -1179,9 +1175,15 @@ $(document)
         if ($(this).val() === "email") {
             $("#emailDiv").show();
             $("#textorsmsDiv").hide();
+            $("#whatsappDiv").hide();
+        } else if ($(this).val() === "whatsapp") {
+            $("#emailDiv").hide();
+            $("#textorsmsDiv").hide();
+            $("#whatsappDiv").show();
         } else {
             $("#emailDiv").hide();
             $("#textorsmsDiv").show();
+            $("#whatsappDiv").hide();
         }
     });
 
@@ -1250,3 +1252,16 @@ $(document)
             },
         });
     });
+
+
+    if ($(".datetimepickerDefault").length > 0) {
+        $(".datetimepickerDefault").datetimepicker({
+            format: "YYYY/MM/DD",
+            icons: {
+                up: "fas fa-angle-up",
+                down: "fas fa-angle-down",
+                next: "fas fa-angle-right",
+                previous: "fas fa-angle-left",
+            },
+        });
+    }

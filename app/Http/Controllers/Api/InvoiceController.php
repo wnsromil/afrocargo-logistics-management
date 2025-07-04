@@ -74,85 +74,60 @@ class InvoiceController extends Controller
         }
     }
 
-    public function invoiceOrderCreateServiceold(Request $request)
+    public function store(Request $request)
     {
-        // return $request->all();
         try {
-            // Validate incoming request data
+            $user = auth()->user();
+
             $validatedData = $request->validate([
-                // 'customer_id' => 'required',
-                // 'ship_customer_id' => 'required',
-                // 'container_id' => 'required',
-                'customer_subcategories_data' => 'nullable', // JSON format required
-                'driver_subcategories_data' => 'nullable',   // JSON format required
-                'total_amount' => 'required|numeric|min:0',
-                'parcel_card_ids' => 'required|array',
-                'payment_type' => 'required|in:COD,Online,Cash',
-                // 'status' => 'required|in:Pending',
-                'pickup_time' => 'required|string',
-                'pickup_date' => 'required|date',
+                'customer_id' => 'required|exists:users,id',
+                'shipping_user_id' => 'required',
+                'category_id' => 'required|exists:categories,id',
+                'total_price' => 'required|numeric',
+                'inventory_ids.*' => 'exists:inventories,id',
             ]);
 
-            // Assign customer ID
-            $validatedData['driver_id'] = $this->user->id;
-            $validatedData['parcel_type'] = 'Service';
-            $validatedData['add_order'] = 'driver';
-            $validatedData['estimate_cost'] = $request->estimate_cost ?? null;
-            // Convert parcel_card_ids to parcel_car_ids
-            $validatedData['parcel_car_ids'] = $validatedData['parcel_card_ids'];
-            unset($validatedData['parcel_card_ids']);
-
-            // **JSON Encode Arrays Properly**
-            if (!empty($request->customer_subcategories_data)) {
-                // Ensure it's an array before encoding
-                $customerData = is_string($request->customer_subcategories_data) ? json_decode($request->customer_subcategories_data, true) : $request->customer_subcategories_data;
-                $validatedData['customer_subcategories_data'] = json_encode($customerData, JSON_UNESCAPED_UNICODE);
-            }
-
-            if (!empty($request->driver_subcategories_data)) {
-                // Ensure it's an array before encoding
-                $driverData = is_string($request->driver_subcategories_data) ? json_decode($request->driver_subcategories_data, true) : $request->driver_subcategories_data;
-                $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
-            }
-
-            // Create Parcel
-            $Parcel = Parcel::create($validatedData);
-
-            // Create Parcel History
-            ParcelHistory::create([
-                'parcel_id' => $Parcel->id,
-                'created_user_id' => $this->user->id,
+            // Create New Invoice
+            $invice = Invoice::create([
                 'customer_id' => $validatedData['customer_id'],
-                'status' => 'Created',
-                'parcel_status' => 1,
-                'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
+                'shipping_user_id' => $validatedData['shipping_user_id'],
+                'category_id' => $validatedData['category_id'],
+                'total_price' => $validatedData['total_price'],
+                'status' => $validatedData['status'],
+                'created_by' => $user->id,
+                'inventory_ids' => $validatedData['inventory_ids'],
             ]);
 
-            Invoice::create([
-                'generated_by' => 'driver',
-                'generated_status' => 'view_only',
-                'issue_date' => now()->format('Y-m-d'),
-                'parcel_id' => $Parcel->id,
-                'user_id' => $this->user->id,
-                'total_amount' => $request->total_amount,
-                'is_paid' => $request->payment_status === 'Paid' ? 1 : 0,
-                'invoice_no' => 'INV-' . rand(1000000, 9999999),
-            ]);
-
-            return $this->sendResponse($Parcel, 'Order added successfully.');
-        } catch (Exception $e) {
-            // Log the error
-            Log::error('Parcel Store Error: ' . $e->getMessage());
-
-            // Return error response
             return response()->json([
-                'success' => false,
-                'message' => 'Something went wrong while creating the parcel.',
-                'error' => $e->getMessage(),
+                'status' => 'success',
+                'message' => 'Invoice created successfully!',
+                'invice' => $invice
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
             ], 500);
         }
     }
-    
+
+    public function destroy(string $id)
+    {
+        $invoice = Invoice::findOrFail($id);
+
+        // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
+        // InvoiceHistory::where('invoice_id', $id)->delete();
+        IndividualPayment::where('invoice_id', $id)->delete();
+        ParcelInventorie::where('invoice_id', $id)->update(['invoice_id'=>null]);
+
+        $invoice->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Invoice deleted successfully',
+        ]);
+    }
 
     public function inventaries()
     {
@@ -184,16 +159,17 @@ class InvoiceController extends Controller
 
     public function invoicesGet($type)
     {
-        $id = $this->user->id;
-        $query = Invoice::where('user_id', $id)->with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims']);
-        
-        // Invoice::where('user_id', $id)->select(['id', 'issue_date', 'invoice_no', 'parcel_id'])
-        //     ->with(['parcel']); // Assuming relation name is 'parcel'
+
+        $query = Invoice::
+        when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->
+        with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims']);
 
         if ($type !== 'All') {
             // Join with parcel and filter by parcel_type
-            $query->whereHas('parcel', function ($q) use ($type) {
-                $q->where('parcel_type', $type);
+            $query->when($type, function ($q) use ($type) {
+                $q->where('invoce_type', $type);
             });
         }
 
@@ -208,26 +184,42 @@ class InvoiceController extends Controller
 
     public function invoices_download(Request $request, $b64id)
     {
-        // Validate that $b64id is a non-empty string
-        if (empty($b64id) || !is_string($b64id)) {
+        // Check if $b64id is a base64-encoded string or a simple integer ID
+        if (is_numeric($b64id)) {
+            $id = (int)$b64id;
+        } else {
+            // Validate that $b64id is a non-empty string
+            if (empty($b64id) || !is_string($b64id)) {
             return response()->json([
-            'status' => 'error',
-            'message' => 'Invalid invoice identifier.',
+                'status' => 'error',
+                'message' => 'Invalid invoice identifier.',
             ], 400);
-        }
+            }
 
-        try {
+            try {
             $id = decrypt($b64id); // Decrypt the ID from base64
-        } catch (\Exception $e) {
+            } catch (\Exception $e) {
             return response()->json([
-            'status' => 'error',
-            'message' => 'Failed to decrypt invoice identifier.',
+                'status' => 'error',
+                'message' => 'Failed to decrypt invoice identifier.',
             ], 400);
+            }
         }
-        $invoice = Invoice::with(['deliveryAddress', 'pickupAddress','individualPayment'])->findOrFail($id);
+        $invoice = Invoice::with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->where('id',$id)->first();
         $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->get();
-        // return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
+        if($request->type == 'page'){
+            return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
+        }
+        if($request->type == 'pagenew'){
+            return view('admin.Invoices.pdf.labels_new', compact('invoice', 'invoiceHistory'));
+        }
         if($request->type == 'labels'){
+            if(empty($invoice->barcodes)){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Barcode not generated yet.',
+                ]);
+            }
             $pdf = Pdf::loadView('admin.Invoices.pdf.labels', [
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
@@ -262,8 +254,13 @@ class InvoiceController extends Controller
         // return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
     }
 
+
     public function sendInvoice(Request $request)
     {
+        $validator = $request->validate([
+            'invoice_id' => 'required|exists:invoices,id',
+            'send_type' => 'required|string',
+        ]);
         $id = $request->invoice_id;
         $invoice = Invoice::with(['deliveryAddress', 'pickupAddress','individualPayment'])->findOrFail($id);
         $email = $request->email;
@@ -324,27 +321,14 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function getContainersByWarehouse(Request $request)
-    {
-        $containers = Vehicle::when($request->warehouse_id,function(){
-            return Vehicle::where('warehouse_id', request()->warehouse_id);
-        })->where('vehicle_type','Container')->get();
-
-        return response()->json([
-            'status' => 'success',
-            'containers' => $containers
-        ]);
-    }
-
-
     public function invoiceOrderCreateService(Request $request)
     {
         // return $request->all();
         
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
-            'customer_id' => 'required|exists:addresses,id',
-            'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
+            'customer_id' => 'required|exists:users,id',
+            'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:users,id',
             'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
@@ -352,9 +336,10 @@ class InvoiceController extends Controller
             'tax' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
             'balance' => 'nullable|numeric',
+            'service_fee' => 'nullable|numeric',
             'total_price' => 'required|numeric',
             'total_qty' => 'required|numeric',
-            'customer_subcategories_data' => 'nullable|string',
+            'customer_subcategories_data' => 'nullable|array',
             'duedaterange' => 'nullable|string',
             'pickup_date' => 'nullable|date_format:Y-m-d',
             'pickup_time' => 'nullable',
@@ -362,10 +347,11 @@ class InvoiceController extends Controller
             'total_amount' => 'required|numeric',
             'grand_total' => 'required|numeric',
             'payment' => 'required|numeric',
-            'status' => 'required',
+            'status' => 'nullable|string',
             'is_paid' => 'nullable|boolean'
         ]);
-        $invoiceItems = json_decode($request->input('customer_subcategories_data'), true);
+        $invoiceItems = $request->input('customer_subcategories_data');
+        // $invoiceItems = is_array($request->input('customer_subcategories_data')) ? $request->input('customer_subcategories_data'):json_decode($request->input('customer_subcategories_data'), true);
         $invoice = null;
         if(!empty($request->parcel_id)){
             $invoice = Invoice::where('parcel_id',$request->parcel_id)->first();
@@ -374,24 +360,25 @@ class InvoiceController extends Controller
             $invoice = new Invoice();
         }
         
-        $invoice->generated_by = 'admin';
+        $invoice->generated_by = \Auth::user()->role ?? 'admin';
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
-        $invoice->delivery_address_id = $request->customer_id;
-        $invoice->pickup_address_id = $request->ship_customer_id ?? null;
+        $invoice->delivery_address_id = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first()->id ?? null;
+        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null; 
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
         $invoice->weight = $request->weight ?? 0;
         $invoice->price = $request->value ?? 0;
         $invoice->balance = $request->balance ?? 0;
+        $invoice->service_fee = $request->service_fee ?? 0;
         $invoice->total_price = $request->total_price;
         $invoice->total_qty = $request->total_qty ?? 0;
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
         $invoice->duedaterange = $request->pickup_time;
         $invoice->currentdate = $request->pickup_date; 
-        $invoice->warehouse_id = $request->warehouse_id;
+        $invoice->warehouse_id = $this->user->warehouse_id;
         $invoice->driver_id = auth()->id();
         if($request->container_id){
             $invoice->container_id = $request->container_id;
@@ -438,7 +425,93 @@ class InvoiceController extends Controller
             $data = $this->individualPayment($validated);
         }
 
+        $this->saveInvoiceHistory($invoice->id,"updated");
+
         return $this->sendResponse($invoice, 'Invoice saved successfully.');
+   
+    }
+
+    public function invoiceUpdate(Request $request, $id)
+    {
+        // return $request->all();
+        
+        $validated = $request->validate([
+            'invoce_type' => 'required|in:services,supplies',
+            'customer_id' => 'required|exists:users,id',
+            'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:users,id',
+            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'warehouse_id' => 'nullable|numeric',
+            'ins' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'tax' => 'nullable|numeric',
+            'weight' => 'nullable|numeric',
+            'balance' => 'nullable|numeric',
+            'service_fee' => 'nullable|numeric',
+            'total_price' => 'required|numeric',
+            'total_qty' => 'required|numeric',
+            'customer_subcategories_data' => 'nullable|array',
+            'duedaterange' => 'nullable|string',
+            'pickup_date' => 'nullable|date_format:Y-m-d',
+            'pickup_time' => 'nullable',
+            'invoice_no' => 'nullable|string|max:255',
+            'total_amount' => 'required|numeric',
+            'grand_total' => 'required|numeric',
+            'payment' => 'required|numeric',
+            'status' => 'nullable|string',
+            'is_paid' => 'nullable|boolean'
+        ]);
+
+        $invoiceItems = $request->input('customer_subcategories_data');
+        
+        $invoice = Invoice::findOrFail($id);
+        $invoice->generated_by = \Auth::user()->role ?? $invoice->generated_by;
+        $invoice->invoce_type = $request->invoce_type;
+        
+
+        // $invoice->generated_by = auth()->user()->role ?? 'admin';
+        $invoice->invoce_type = $request->invoce_type;
+        $invoice->delivery_address_id = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first()->id ?? null;
+        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null; 
+        $invoice->ins = $request->ins ?? 0;
+        $invoice->discount = $request->discount ?? 0;
+        $invoice->tax = $request->tax ?? 0;
+        $invoice->weight = $request->weight ?? 0;
+        $invoice->price = $request->value ?? 0;
+        $invoice->balance = $request->balance ?? 0;
+        $invoice->service_fee = $request->service_fee ?? 0;
+        $invoice->total_price = $request->total_price;
+        $invoice->total_qty = $request->total_qty ?? 0;
+        $invoice->descrition = $request->descrition ?? null;
+        $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
+        $invoice->duedaterange = $request->pickup_time;
+        $invoice->currentdate = $request->pickup_date; 
+        $invoice->warehouse_id = $this->user->warehouse_id;
+        $invoice->driver_id = auth()->id();
+        if($request->container_id){
+            $invoice->container_id = $request->container_id;
+        }
+        $invoice->currentTime = $request->currentTime;
+        $invoice->generated_status = $request->generated_status ?? 'generated';
+        $invoice->issue_date = now();
+        $invoice->user_id = auth()->id();
+        // $invoice->create_by = auth()->id();
+        $invoice->total_amount = $request->total_amount;
+        $invoice->grand_total = $request->grand_total;
+        $invoice->payment = $request->payment;
+        $invoice->status = $request->status;
+        $invoice->is_paid = $request->is_paid ?? 0;
+        if ($request->invoice_no) {
+            $invoice->invoice_no = $request->invoice_no;
+        }
+        if($request->transport_type){
+            $invoice->transport_type = $request->transport_type;
+        }
+
+        $invoice->save();
+
+        $this->saveInvoiceHistory($invoice->id,"updated");
+
+        return $this->sendResponse($invoice, 'Invoice updated successfully.');
    
     }
     

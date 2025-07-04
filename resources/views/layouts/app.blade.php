@@ -209,10 +209,18 @@
             });
         }
 
-        function deleteRaw(url){
+        function alertMsg(msg = '', icon = '') {
+            Swal.fire({
+            text: msg,
+            icon: icon,
+            confirmButtonText: 'OK'
+            });
+        }
+
+        function deleteRaw(url,msg="You won't be able to revert this!"){
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: msg,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545', // Bootstrap btn-danger

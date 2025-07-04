@@ -24,7 +24,7 @@
         <input type="hidden" name="price" id="">
         <div class="form-group-customer customer-additional-form">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="row">
                         <div class="col-md-2">
                             <div class="input-block">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-5 col-sm-12">
                     <div class="row justify-content-end">
                         <div class="col-md-3">
                             <div class="input-block">

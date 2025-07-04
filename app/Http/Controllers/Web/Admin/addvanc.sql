@@ -94,3 +94,7 @@ FROM
 
     -- 28/05/25
     ALTER TABLE `parcels` CHANGE `transport_type` `transport_type` ENUM('Ocean Cargo','Air Cargo','null') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'null';
+
+    ALTER TABLE `invoices` ADD `service_fee` DECIMAL(10,2) NULL AFTER `total_amount`;
+
+    ALTER TABLE `parcel_inventories` CHANGE `label_qty` `label_qty` TEXT NULL DEFAULT NULL;

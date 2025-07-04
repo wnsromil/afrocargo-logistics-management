@@ -130,71 +130,7 @@
 <!-- /Individual Payment Modal -->
 
 <!-- Send Invoice Pdf Modal -->
-<div class="modal custom-modal invoiceSModel fade" id="sendinvoicepdf{{$invoice->id ?? ''}}" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 border-bottom py-3">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="mb-0">Send Invoice Pdf</h4>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
-                </button>
-            </div>
-            <div class="modal-body pt-3 pb-2">
-                <form action="" method="POST" enctype="multipart/form-data" id="sendInvoiceForm">
-                    @csrf
-                    <div class="row pb-2">
-                        <div class="col-12">
-                            <div class="input-block mb-1">
-                                <label class="foncolor" for="templateTitle">Send Invoice from<i
-                                        class="text-danger">*</i></label>
-                            </div>
-                        </div>
-                        <input type="hidden" name="invoiceId" value="{{ $invoice->id ?? '' }}">
-                        <div class="col-md-2 col-6">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-3 col3A" for="templateTitle">Email</label> <input
-                                    class="form-check-input mt-0" checked type="radio" value="email"
-                                    name="sentInvoicePdf">
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-3 col3A" for="templateTitle">Text/SMS</label> <input
-                                    class="form-check-input mt-0" type="radio" value="sms" name="sentInvoicePdf">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div id="emailDiv">
-                                <div class="input-block mb-3">
-                                    <label class="foncolor" for="email">Email Id<i class="text-danger">*</i></label>
-                                    <input type="text" name="email" class="form-control inp"
-                                        placeholder="Enter Email ID">
-                                </div>
-                            </div>
-
-                            <div id="textorsmsDiv" style="display:none;">
-                                <div class="input-block mb-3">
-                                    <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
-                                    <input type="tel" id="alternate_mobile_no" name="alternate_mobile_no"
-                                        class="form-control inp" placeholder="Enter Alternate Mobile No.">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="add-customer-btns text-end">
-                                <button type="button" class="btn btn-outline-primary custom-btn" data-bs-dismiss="modal"
-                                    aria-label="Close">Cancel</button>
-                                <button type="submit" class="btn btn-primary ">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@include('admin.Invoices.modals.send_invoice_pdf_modal')
 <!--/Send Invoice Pdf Modal -->
 
 <!-- Claim Modal -->
@@ -408,7 +344,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="padding: 10px 20px; border-top: 3px solid #EFEFEF;">
-                            <table width="100%">
+                            {{-- <table width="100%">
                                 <tr>
                                     <td style="width: 40%; color: #3a3a3a;">Date & Time Printed: 
                                         <b style="color: #000000;">
@@ -422,7 +358,7 @@
                                     <td style="width: 20%; color: #3a3a3a; font-size: 20px;">Cont: <b
                                             style="color: #000000;">{{$invoice->container && $invoice->container->unique_id ? $invoice->container->unique_id:'' }}</b></td>
                                 </tr>
-                            </table>
+                            </table> --}}
                         </td>
                     </tr>
                     <tr>
@@ -439,7 +375,7 @@
                                 </tr> --}}
                                 <tr style="background-color: #f2f2f2; border: 1px solid black; ">
                                     <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
-                                        Tracking# : <b>{{$invoice->tracking_number ?? ''}}</b>
+                                        Tracking# : <b>{{$invoice->invoiceParcelData && !empty($invoice->invoiceParcelData->tracking_number) ? $invoice->invoiceParcelData->tracking_number:''}}</b>
                                     </td>
                                     <td style="border: 1px solid black; padding: 10px 20px;text-align: start;">
                                         ivnoce# : <b>{{$invoice->invoice_no ?? ''}}</b>
@@ -451,7 +387,7 @@
                                         country#: <b>{{ $invoice->deliveryAddress && $invoice->deliveryAddress->country_id ? $invoice->deliveryAddress->country_id : '' }}</b>
                                     </td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td style="width: 50%; padding: 10px 20px;">
                                         <span style="font-size: 17px;">
                                             Invoice Date: <b>{{$invoice->created_at->format('d/m/Y') ?? ''}}</b><br>
@@ -466,7 +402,7 @@
                                             User: <b>{{ $invoice->createdByUser->name ?? '' }} {{ $invoice->createdByUser->last_name ?? '' }}</b>
                                         </span>
                                     </td>
-                                </tr>
+                                </tr> --}}
                             </table>
                         </td>
                     </tr>
@@ -481,7 +417,12 @@
                                     <th style="border: 1px solid black; font-weight: 500; padding: 5px;">Qty.</th>
                                     <th style="border: 1px solid black; font-weight: 500; padding: 5px;">Unit</th>
                                     <th style="border: 1px solid black; font-weight: 500; padding: 5px; width: 200px;">
-                                        Product / Service</th>
+                                        @if($invoice->invoce_type == 'supplies')
+                                        Description
+                                        @else
+                                        Air Cargo/Ocean Cargo
+                                        @endif
+                                    </th>
                                     <th style="border: 1px solid black; font-weight: 500; padding: 5px;">Value</th>
                                     <th style="border: 1px solid black; font-weight: 500; padding: 5px;">Price</th>
                                     <th style="border: 1px solid black; font-weight: 500; padding: 5px;">Disc.</th>
@@ -1380,7 +1321,7 @@
         <div class="modal-content">
             <div class="modal-header border-0 border-bottom py-3">
                 <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="mb-0">Labels <a href="#" class="btn btn-primary ms-2">Print</a> </h4>
+                    <h4 class="mb-0">Labels <a href="javascript::void(0)" onclick="printLabel()" class="btn btn-primary ms-2">Print</a> </h4>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 

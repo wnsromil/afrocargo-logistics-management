@@ -20,21 +20,37 @@
 
     <form>
         <div class="row">
-            <div class="col-md-4">
+            <!-- Warehouse Name -->
+            <div class="col-md-3">
+                <div class="input-block fwNormal mb-3">
+                    <label for="warehouse_location" class="foncolor">Warehouse<i class="text-danger">*</i></label>
+                    <select name="warehouse_name" id="warehouseSelect" class="js-example-basic-single select2">
+                        <option value="">Select Warehouse </option>
+                        @foreach($warehouses as $warehouse)
+                        <option {{ old('warehouse_name') == $warehouse->id ? 'selected' : '' }} value="{{
+                            $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('warehouse_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-3">
                 <!-- Moment.js (required for daterangepicker) -->
                 <div class="mb-3">
                     <label>Driver</label>
-                    <select name="driver_id" class="form-control select2">
+                    <select name="driver_id" class="form-control select2" id="gateOutDriver">
                         <option value="">Select Driver</option>
-                        @foreach($users as $user)
+                        {{--@foreach($users as $user)
                             <option value="{{ $user->id }}" {{ request()->query('driver_id') == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }}
                             </option>
-                        @endforeach
+                        @endforeach--}}
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="mb-3">
 
                     <label>Date</label>
@@ -44,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4  top-50 start-100 twobutton2">
+            <div class="col-md-3  top-50 start-100 twobutton2">
                 <button type="submit" class="btn btn-primary btnf me-2">Search</button>
                 <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
             </div>
@@ -93,7 +109,7 @@
                                             </td>
                                         </tr>
                                          <tr style="background-color: #fff;">
-                                              @php
+                                           @php
                                                     $result = calculateDriverInventoryDetails($item->id);
                                                 @endphp
 
@@ -219,12 +235,58 @@
             </div>
         </div>
     </div>
+    @section('script')
+<script>
+    // Function to reset the form fields
+    function resetForm() {
+        window.location.href = "{{ route('admin.driver_inventory.index') }}";
+    }
 
-    <script>
-        // Function to reset the form fields
-        function resetForm() {
-            window.location.href = "{{ route('admin.driver_inventory.index') }}";
-        }
-    </script>
+    $(document).ready(function () {
+        // Initialize Select2
+        $('.select2').select2();
+        
+        $('#warehouseSelect').on('change', function () {
+            var warehouseId = $(this).val();
+            var driverSelect = $('#gateOutDriver');
+
+            if (warehouseId) {
+                $.ajax({
+                    url: '/api/warehouse-drivers/' + warehouseId,
+                    type: 'GET',
+                    success: function (data) {
+                        // Clear existing options
+                        driverSelect.empty().append('<option value="">Select Driver</option>');
+
+                        // Add new driver options
+                        if (data.data && data.data.length > 0) {
+                            $.each(data.data, function (key, driver) {
+                                driverSelect.append('<option value="' + driver.id + '">' + driver.name + '</option>');
+                            });
+                        }
+
+                        // Refresh Select2
+                        driverSelect.trigger('change');
+                    },
+                    error: function (xhr) {
+                        console.error('Error fetching drivers:', xhr.responseText);
+                        driverSelect.empty().append('<option value="">Select Driver</option>');
+                        driverSelect.trigger('change');
+                    }
+                });
+            } else {
+                // Reset if no warehouse selected
+                driverSelect.empty().append('<option value="">Select Driver</option>');
+                driverSelect.trigger('change');
+            }
+        });
+
+        // Trigger change on page load if warehouse is already selected
+        @if(request()->has('warehouse_name'))
+            $('#warehouseSelect').trigger('change');
+        @endif
+    });
+</script>
+@endsection
 
 </x-app-layout>

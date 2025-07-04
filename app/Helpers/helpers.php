@@ -73,6 +73,10 @@ function setting(){
     return new SettingsHelper();
 }
 
+function carbon() {
+    return new \Carbon\Carbon();
+}
+
 function sum(...$numbers) {
     return array_sum($numbers);
 }

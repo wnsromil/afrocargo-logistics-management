@@ -141,19 +141,16 @@
                 url: "/api/update-status-transfer-to-hub", // API endpoint
                 type: "POST",
                 data: {
-                    from_warehouse_id: from_warehouse_id,
-                    to_warehouse_id: to_warehouse_id,
-                    delivery_man: delivery_man,
-                    note: note,
-                    vehicle_id_hidden: vehicle_id_hidden,
-                    partial_payment_sum_input_hidden:
-                        partial_payment_sum_input_hidden,
-                    remaining_payment_sum_input_hidden:
-                        remaining_payment_sum_input_hidden,
-                    total_amount_sum_input_hidden:
-                        total_amount_sum_input_hidden,
-                    no_of_orders_input_hidden: no_of_orders_input_hidden,
-                    containerHistoryId: container_history_id_input_hidden,
+                    from_warehouse_id: from_warehouse_id || null,
+                    to_warehouse_id: to_warehouse_id || null,
+                    delivery_man: delivery_man || null,
+                    note: note || null,
+                    vehicle_id_hidden: vehicle_id_hidden || null,
+                    partial_payment_sum_input_hidden: partial_payment_sum_input_hidden || null,
+                    remaining_payment_sum_input_hidden: remaining_payment_sum_input_hidden || null,
+                    total_amount_sum_input_hidden: total_amount_sum_input_hidden || null,
+                    no_of_orders_input_hidden: no_of_orders_input_hidden || null,
+                    containerHistoryId: container_history_id_input_hidden || null,
                 },
                 headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
@@ -176,6 +173,19 @@
                 error: function (xhr, status, error) {
                     // Handle Server-Side Validation Errors
                     let errors = xhr.responseJSON?.errors || {};
+                    let errorMessages = [];
+                    for (let key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            errorMessages.push(errors[key][0]);
+                        }
+                    }
+                    if (errorMessages.length > 0) {
+                        Swal.fire({
+                            title: "Validation Error",
+                            text: errorMessages.join('\n'),
+                            icon: "error",
+                        });
+                    }
                 },
                 complete: function () {
                     // Re-enable Save Button
