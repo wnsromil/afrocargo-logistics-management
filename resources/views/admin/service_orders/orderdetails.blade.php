@@ -71,7 +71,9 @@
                             <th>To</th>
                             <th>Pickup Date</th>
                             <th>Delivery Date</th>
-                            <th>Capture Image</th>
+                            <th>Container ID</th>
+                            <th>From Warehouse</th>
+                            <th>To Warehouse</th>
                             <th>Items</th>
                             <th>Estimate cost</th>
                             <th>Driver Name</th>
@@ -153,7 +155,13 @@
                                 </div>
                             </td>
                             <td>
-                                <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
+                                <div>{{$parcel->container->unique_id ?? "--"}} </div>
+                            </td>
+                            <td>
+                                <div>{{$parcel->warehouse->warehouse_name ?? "--"}} </div>
+                            </td>
+                            <td>
+                                <div>{{$parcel->arrivedWarehouse->warehouse_name ?? "--"}} </div>
                             </td>
                             <td>
                                 <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
