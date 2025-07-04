@@ -45,7 +45,7 @@
                             <label for="customer_id">Customer <i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <input type="hidden" name="type" value="delivery">
+                            <input type="hidden" name="type" value="pickup">
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
@@ -114,13 +114,57 @@
 
             </div>
 
+            <!-- country wis address search -->
+            <div class="row mt-5 g-3 d-none" id="add_location">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <div class="d-sm-flex align-items-center">
+                        <div class="first">
+                            <label for="customer_id">Country<i class="text-danger">*</i></label>
+                        </div>
+                        <div class="middleDiv">
+                            <select class="form-control select2" id="countryForLocation">
+                                    @foreach (setting()->warehouseContries() as $key => $item)
+                                    <option value="{{ $item->iso2 ?? 'AF' }}">
+                                        {{ $item->name ?? '' }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
+                        <div class="last">
+                            <div>
+                                <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#locationModal" id="locationModalShow">
+                                    location
+                                </button>
+                            </div>
+                            <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Select Location</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" class="form-control" id="locationSearchBox" placeholder="Enter location..." />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary confirm-supply"
+                                                data-bs-dismiss="modal" aria-label="Close">Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
             <!-- first row end pick up  -->
             <div class="row mt-5 g-3">
 
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="pick_up_customer_inf_form">
-                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="pick_up">
+                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
+                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="delivery_to_address">
                             <div class="row gx-3 gy-2">
 
                                 @csrf
@@ -129,7 +173,7 @@
                                 <input type="hidden" name="address_id">
 
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="warehouse_name">First Name <i
+                                    <label class="foncolor" for="first_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
                                         placeholder="Enter First Name">
@@ -179,8 +223,22 @@
 
                                 </div>
                                 <div class="col-md-6">
+                                    <label class="foncolor" for="Address.1">Address 1 <i
+                                            class="text-danger">*</i></label>
+                                    <!-- Address 1 -->
+                                    <input type="text" name="address" class="form-control inp address"
+                                        placeholder="Enter Address 1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="Address.2">Address 2 </label>
+                                    <!-- Address 2 — optional, you may remove or merge -->
+                                    <input type="text" name="address_2" class="form-control inp"
+                                        placeholder="Enter Address 2">
+                                </div>
+                                <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                    <select name="country_id" id="country"
+                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country">
+                                    {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $country)
@@ -189,7 +247,7 @@
                                                                                 {{ $country->name }}
                                                                             </option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
 
                                     @error('country_id')
                                         <span class="text-danger">{{ $message }}</span>
@@ -197,12 +255,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <select name="state_id" id="state" class="form-control inp select2">
+                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state">
+                                    {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
                                             <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('state_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -210,12 +269,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                    <select name="city_id" id="city" class="form-control inp select2">
+                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
+                                    {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
                                             <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('city_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -224,19 +284,6 @@
                                     <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.1">Address 1 <i
-                                            class="text-danger">*</i></label>
-                                    <!-- Address 1 -->
-                                    <input type="text" name="address" class="form-control inp"
-                                        placeholder="Enter Address 1">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.2">Address 2 </label>
-                                    <!-- Address 2 — optional, you may remove or merge -->
-                                    <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
                                 </div>
                             </div>
                         </div>
@@ -252,9 +299,11 @@
                                 @csrf
                                 <input type="hidden" name="address_type" value="pickup">
                                 <input type="hidden" name="address_id">
+                                <input type="hidden" name="invoice_custmore_type" value="ship_to">
+                                <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
 
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="warehouse_name">First Name <i
+                                    <label class="foncolor" for="first_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
                                         placeholder="Enter First Name">
@@ -303,9 +352,22 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="pickup_country">Country <i
+                                    <label class="foncolor" for="Address.1">Address 1 <i
                                             class="text-danger">*</i></label>
-                                    <select name="country_id" id="pickup_country"
+                                    <!-- Address 1 -->
+                                    <input type="text" name="address" class="form-control inp address"
+                                        placeholder="Enter Address 1" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="Address.2 address">Address 2 </label>
+                                    <!-- Address 2 — optional, you may remove or merge -->
+                                    <input type="text" name="address_2" class="form-control inp"
+                                        placeholder="Enter Address 2">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
+                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country" readonly>
+                                    {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $country)
@@ -314,33 +376,35 @@
                                                                                 {{ $country->name }}
                                                                             </option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
 
                                     @error('country_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-md-6">
+                                <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <select name="state_id" id="state" class="form-control inp select2">
+                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state" readonly>
+                                    {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
                                         <option value="{{ old('state_id') }}" selected>{{ old('state_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('state_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                </div> --}}
+                                </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="pickup_city">City <i class="text-danger">*</i></label>
-                                    <select name="city_id" id="pickup_city" class="form-control inp select2">
+                                    <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city" readonly>
+                                    {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
                                             <option value="{{ old('city_id') }}" selected>{{ old('city_id') }}</option>
                                         @endif
-                                    </select>
+                                    </select> --}}
                                     @error('city_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -348,21 +412,9 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
+                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.1">Address 1 <i
-                                            class="text-danger">*</i></label>
-                                    <!-- Address 1 -->
-                                    <input type="text" name="address" class="form-control inp"
-                                        placeholder="Enter Address 1">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="foncolor" for="Address.2">Address 2 </label>
-                                    <!-- Address 2 — optional, you may remove or merge -->
-                                    <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
-                                </div>
+                                
                             </div>
                         </div>
                     </form>
@@ -378,10 +430,33 @@
                 <div>
                     <div class="row mt-4 pt-3 g-3" id="ship_to_address">
                         <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="input-block mb-3 d-flex align-items-center">
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
+                                        <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="input-block mb-3 d-flex align-items-center">
+                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
+                                        <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters datetimepicker form-control form-cs inp "
-                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ date('m-d-Y') }}" />
+                                <input type="text" class="btn-filters datetimepickerDefault form-control form-cs inp "
+                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ carbon()->now()->addDays(15)->format('Y/m/d') }}" />
                                 <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
                                     readonly value="08:30 AM" name="currentTime">
                             </div>
@@ -446,12 +521,12 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>Container<i class="text-danger">*</i></label>
+                            <label>Container</label>
                             <select name="container_id" class="form-control select2">
                                 <option value="">Select Container</option>
                                 @foreach($containers as $container)
                                                             <option {{ old('container_id') == $container->id ? 'selected' : '' }} value="{{
-                                    $container->id }}">{{ $container->vehicle_number }}</option>
+                                    $container->id }}">{{ $container->unique_id }}{{ $container->ship_to_country ?  ', '.$container->ship_to_country:''}}</option>
                                 @endforeach
                             </select>
                             @error('container_id')
@@ -486,7 +561,7 @@
                                 style="font-weight:400px !important">
                                 <option value="">Select Warehouse </option>
                                 @foreach($warehouses as $warehouse)
-                                                            <option {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }} value="{{
+                                                            <option {{ old('warehouse_id',auth()->user()->role_id !=1 ? auth()->user()->warehouse_id :'' ) == $warehouse->id ? 'selected' : '' }} value="{{
                                     $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                                 @endforeach
                             </select>
@@ -508,14 +583,15 @@
                 </div>
 
                 <!-- total  -->
-                <div class="card-body curve_tabel notAction p-0 mt-5">
-                    <div class="table-responsive p-1" id="supplies_items">
-                        <table class="table table-bordered" id="dynamicTable">
+                <div class="card-body curve_tabel p-0 mt-5">
+                    <div class="table-responsive p-1 " id="supplies_items">
+                        <table class="table table-bordered " id="dynamicTable">
                             <thead>
                                 <tr>
                                     <th style="width:57px;">Item</th>
                                     <th class="thwidth">Qty</th>
-                                    <th class="thwidth">Label Qty</th>
+                                    <th class="thwidth">Description</th>
+                                    <th class="thwidth">Volume</th>
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
                                     <th class="thwidth">Ins</th>
@@ -541,7 +617,12 @@
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="label_qty"></td>
+                                            name="label_qty">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="{{ $item['volume'] ?? '0' }}">
+                                    </td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput"><input type="text"
                                                 class="form-control inputcolor" placeholder="" name="price"><button
@@ -616,8 +697,9 @@
             <input type="hidden" name="total_amount">
             <input type="hidden" name="pickup_address_id">
             <input type="hidden" name="delivery_address_id">
+            <input type="hidden" name="parcel_id">
 
-            <div class="modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
+            <div class="modal custom-modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -625,15 +707,40 @@
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                @if(!$inventories)
+                                @if($inventories && $inventories->get('Supply'))
                                     @foreach ($inventories->get('Supply') as $supply)
-                                        <option value="{{ $supply->id }}">{{ $supply->name }}</option>
+                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}' data-supply='@json($supply)'>{{ $supply->name }}</option>
                                     @endforeach
                                 @endif
                             </select>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label>Volume Total</label>
+                                    <div id="volume_total_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Price</label>
+                                    <div id="price_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 d-none">
+                                    <label>Volume Price</label>
+                                    <div id="volume_price_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Height</label>
+                                    <div id="height_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label>Width</label>
+                                    <div id="width_display" class="form-control-plaintext"></div>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label>Weight</label>
+                                    <div id="weight_display" class="form-control-plaintext"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-
                             <button type="button" class="btn btn-primary confirm-supply"
                                 data-bs-dismiss="modal">Confirm</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -658,6 +765,28 @@
             var supplyItems = @json($inventories->get('Supply'));
             var currentRow = null;
 
+            window.onload = function () {
+                // const urlParams = new URLSearchParams(window.location.search);
+                // const formType = urlParams.get('id') || 'services';
+                // toggleLoginForm(formType);
+                setTimeout(() => {
+                    console.log("invoce_typ", invoce_type);
+                    toggleLoginForm(invoce_type);
+                    if ($('input[name="transport_type"]').val() != "Air Cargo") {
+                        $('select[name="container_id"]')
+                            .prop("disabled", true) // this is essential
+                            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+                            .css("opacity", "1"); // optional: restores visual state
+                    } else {
+                        $('select[name="container_id"]').prop("disabled", false);
+                    }
+                }, 600);
+            };
+
+            document.getElementById("addCustomer").onclick = () => {
+                // it's deliver address code
+                document.querySelector(".newCustomerAdd").classList.toggle("none");
+            };
         </script>
     @endsection
 

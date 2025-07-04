@@ -24,14 +24,14 @@ class CartController extends Controller
         //
 
         $cart = Cart::where('user_id', auth()->id())
-            ->with('products:id,name,description,category_id,price,in_stock_quantity,img,retail_shipping_price')
+            ->with('products')
             ->latest('id')
             ->get()
             ->map(function ($item) {
                 if (!empty($item->products)) {
-                    $item->products->total_price = (!empty($item->products) ? $item->products->retail_shipping_price : 0) * $item->quantity;
+                    $item->products->total_price = (!empty($item->products) ? $item->products->price : 0) * $item->quantity;
                 }
-                $item->total_price = (!empty($item->products) ? $item->products->retail_shipping_price : 0) * $item->quantity; // Attach total_price to the cart item
+                $item->total_price = (!empty($item->products) ? $item->products->price : 0) * $item->quantity; // Attach total_price to the cart item
                 return $item;
             });
 
@@ -89,12 +89,23 @@ class CartController extends Controller
             return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
         }
 
-        $warehouseIds = Warehouse::where('id', $nearestWarehouse->id)->pluck('id');
+        // Step 1: Warehouse IDs based on city_id, or fallback to single warehouse_id
+        $warehouseData = Warehouse::where('id', $nearestWarehouse->id)->latest()->get();
+
+
+        if($request->inventory_type == 'Supply'){
+            $warehouses = $warehouseData->first();
+            $warehouseIds[] = $warehouses->id;
+        }else{
+            $warehouses = $warehouseData;
+            $warehouseIds = $warehouseData->pluck('id');
+        }
 
         // Step 2: Query Inventory with relationships and filters
         $inventories = Inventory::with(['cart' => function ($q) use ($user) {
             $q->where('user_id', $user->id);
         }])
+        ->where('status', '!=', 'Inactive')
             ->whereIn('warehouse_id', $warehouseIds)
             ->when($request->inventory_type, function ($q) use ($request) {
                 return $q->where('inventary_sub_type', $request->inventory_type);
@@ -102,12 +113,14 @@ class CartController extends Controller
             ->latest('id')
             ->paginate(10);
 
-        return $this->sendResponse($inventories, 'Fetch Product list successfully.');
+        return response()->json([
+            'warehouses'=>$warehouses,
+            'data' => $inventories,
+            "message"=>"Fetch Product list successfully."
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         //

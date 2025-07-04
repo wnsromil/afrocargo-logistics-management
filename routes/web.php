@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserPermissionController;
 use App\Http\Controllers\Web\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Admin\{
@@ -34,7 +35,9 @@ use App\Http\Controllers\Web\Admin\{
     BillofLadingController,
     LadingDetailsController,
     CBMCalculatoarController,
-    SupplyInventoryController
+    CustomReportController,
+    VerifyLicenseController,
+    SupplyInventoryController,
 };
 use App\Mail\RegistorMail;
 
@@ -203,23 +206,28 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('expenses', ExpensesController::class);
         Route::resource('signature', SignatureController::class);
         Route::resource('notification_schedule', NotificationScheduleController::class);
-        Route::resource('user_role', RoleManagementController::class);
+        Route::resource('custom-reports', CustomReportController::class);
+        Route::post('updateCustomReportContainer', [CustomReportController::class, 'updateCustomReportContainer'])->name('custom-reports.updateCustomReportContainer');
+        Route::resource('verify-license', VerifyLicenseController::class);
+       
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
         Route::resource('bill_of_lading', BillofLadingController::class);
         Route::resource('lading_details', LadingDetailsController::class);
+        Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
-        Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
         Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
         Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
-        Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('updateNote');
+        Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('invoice.updateNote');
+        Route::post('updateClaim', [InvoiceController::class, 'updateClaim'])->name('invoice.updateClaim');
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
+        Route::get('receivedOrders/{id}', [HubTrackingController::class, 'received_orders_show'])->name('received.received_orders_show');
         Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
 
         Route::get('drivers/search', [DriversController::class, 'index'])->name('drivers.search');
@@ -265,6 +273,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         //Expenses
         Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
 
+        Route::get('user_role', [RoleManagementController::class,'index'])->name('user_role.index');
+        Route::get('user_role/create', [RoleManagementController::class,'create'])->name('user_role.create');
+        Route::post('user_role/store', [RoleManagementController::class,'store'])->name('user_role.store');
         //CBM Calculatoar
         Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
         Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
@@ -290,6 +301,12 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.user_role.create');
         })->name('create');
     });
+});
+
+// routes/web.php
+Route::prefix('users/{user}/permissions')->group(function () {
+    Route::get('edit', [RoleManagementController::class, 'edit'])->name('user-permissions.edit');
+    Route::put('update', [RoleManagementController::class, 'update'])->name('user-permissions.update');
 });
 
 require __DIR__ . '/auth.php';

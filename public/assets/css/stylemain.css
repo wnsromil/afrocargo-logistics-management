@@ -4079,3 +4079,7 @@ textarea {
 .select-tag-width {
     max-width: 155px !important;
 }
+
+.pac-container.pac-logo {
+    z-index: 99999;
+}

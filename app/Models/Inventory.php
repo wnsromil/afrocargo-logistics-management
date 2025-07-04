@@ -59,6 +59,14 @@ class Inventory extends Model
     //
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'warehouse_id'=>'integer',
+            'driver_id'=>'integer',
+        ];
+    }
+
     // protected $appends = ['formatted_created_at'];
 
     public function getFormattedCreatedAtAttribute()

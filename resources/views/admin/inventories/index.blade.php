@@ -61,7 +61,7 @@
                 @enderror
             </div>
 
-            <div class="col-md-3 mb-3">
+            {{-- <div class="col-md-3 mb-3">
                 <label>Main Type</label>
                 <select class="js-example-basic-single select2" name="main_type">
                     <option value="">Select Main Type</option>
@@ -70,7 +70,7 @@
                     <option value="Supply" {{ request()->query('main_type') == "Supply" ? 'selected' : '' }}>Supplies
                     </option>
                 </select>
-            </div>
+            </div> --}}
 
             <div class="col-12">
 
@@ -96,7 +96,7 @@
                                 <th>Image</th>
                                 <th>description</th>
                                 <th>Shipping Price</th>
-                                <th>Retail Price</th>
+                                {{-- <th>Retail Price</th> --}}
                                 <th>Cost</th>
                                 <th>Type</th>
                                 <th>Package Type</th>
@@ -136,9 +136,9 @@
                                     <td class="text-dark">
                                         <span>${{ number_format($inventory->retail_shipping_price ?? 0, 2) }}
                                     </td>
-                                    <td class="text-dark">
+                                    {{-- <td class="text-dark">
                                         <span>${{ number_format($inventory->retail_vaule_price ?? 0, 2) }}</span>
-                                    </td>
+                                    </td> --}}
                                     <td class="text-dark">
                                         <span>${{ number_format($inventory->price ?? 0, 2) }}</span>
                                     </td>
@@ -206,10 +206,7 @@
             <div class="col-md-6">
                 <div class="float-end">
                     <div class="bottom-user-page mt-3">
-                        {!! $inventories->appends([
-    'per_page' =>
-        request('per_page')
-])->links('pagination::bootstrap-5') !!}
+                        {!! $inventories->appends(['per_page' =>request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
             </div>

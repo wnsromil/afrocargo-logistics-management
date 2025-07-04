@@ -22,11 +22,11 @@
     <form action="{{ route('admin.inventories.update', $editData->id ?? '') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
+        <input type="hidden" name="price" id="">
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <!-- Inventory Type Selection -->
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="row">
                         <div class="col-md-2">
                             <div class="input-block">
@@ -47,7 +47,7 @@
                                     {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Air Cargo' ? 'checked' : '' }}>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 d-none">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Supply</label>
                                 <input class="form-check-input mt-0" type="radio" value="Supply" name="inventary_sub_type"
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <!-- Barcode Selection -->
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-5 col-sm-12">
                     <div class="row justify-content-end">
                         <div class="col-md-3">
                             <div class="input-block">
@@ -102,7 +102,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="costprice" class="table-content col737 fw-medium">Cost Price <i class="text-danger">*</i></label>
-                        <input class="form-control input-padding" name="costprice" type="text"
+                        <input class="form-control input-padding" name="costprice" min="0.1" type="text"
                             value="0" readonly style="background: #ececec;">
                         @error('costprice')
                             <span class="text-danger">{{ $message }}</span>
@@ -124,7 +124,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="in_stock_quantity" class="table-content col737 fw-medium">Quantity<i class="text-danger">*</i></label>
-                        <input class="form-control input-padding" type="number" name="in_stock_quantity"
+                        <input class="form-control input-padding" min="0.1" type="number" name="in_stock_quantity"
                             value="{{ old('in_stock_quantity', $editData->in_stock_quantity ?? '') }}" placeholder="Enter quantity">
                         @error('in_stock_quantity')
                             <span class="text-danger">{{ $message }}</span>
@@ -135,7 +135,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12" id="low_stock_warning">
                     <div class="input-block mb-3">
                         <label for="low_stock_warning" class="table-content col737 fw-medium">Low Stock Warning <i class="text-danger">*</i></label>
-                        <input class="form-control text-dark" type="number" name="low_stock_warning"
+                        <input class="form-control text-dark" min="0.1" type="number" name="low_stock_warning"
                             value="{{ old('low_stock_warning', $editData->low_stock_warning ?? '') }}" placeholder="Enter Low Stock Warning">
                         @error('low_stock_warning')
                             <span class="text-danger">{{ $message }}</span>
@@ -147,7 +147,7 @@
                     <div class="input-block mb-3">
                         <label for="minimum_order_limit" class="table-content col737 fw-medium">Minimum Order Limit
                             <i class="text-danger">*</i></label>
-                        <input class="form-control text-dark" type="number" name="minimum_order_limit"
+                        <input class="form-control text-dark" type="number" min="0.1" name="minimum_order_limit"
                             value="{{ old('minimum_order_limit', $editData->minimum_order_limit) }}" placeholder="Enter Minimum Order Limit"
                             aria-label="default input example">
                         @error('minimum_order_limit')
@@ -177,7 +177,7 @@
                     <div class="input-block mb-3">
                         <label for="retail_shipping_price" class="table-content col737 fw-medium required text-dark">Shipping Price </label>
                         <div class="d-flex align-items-center justify-content-between form-control">
-                            <input class="no-border" type="number" name="retail_shipping_price"
+                            <input class="no-border" type="number" min="0.1" name="retail_shipping_price"
                                 value="{{ old('retail_shipping_price', $editData->retail_shipping_price ?? '') }}"
                                 placeholder="Enter Shipping Price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>

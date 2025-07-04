@@ -8,4 +8,9 @@ class IndividualPayment extends Model
 {
     //
     protected $guarded=[];
+
+    public function createdByUser()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

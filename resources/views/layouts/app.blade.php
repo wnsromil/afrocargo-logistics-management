@@ -132,6 +132,7 @@
 
     <!-- /Theme Setting -->
     <!-- jQuery -->
+    @include('partial.loader')
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
@@ -162,6 +163,7 @@
     <script src="{{ asset('assets/js/greedynav.js') }}"></script>
     <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/admin/select2.js') }}"></script>
+    <script src="{{ asset('js/validate.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script> --}}
 
     <!-- Intl Tell Input js -->
@@ -203,6 +205,41 @@
                 if (result.isConfirmed) {
                     // Assuming the button that calls deleteData is inside a form
                     $(self).closest('form').submit(); // Finds the closest form and submits it
+                }
+            });
+        }
+
+        function alertMsg(msg = '', icon = '') {
+            Swal.fire({
+            text: msg,
+            icon: icon,
+            confirmButtonText: 'OK'
+            });
+        }
+
+        function deleteRaw(url,msg="You won't be able to revert this!"){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: msg,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545', // Bootstrap btn-danger
+                cancelButtonColor: '#6c757d',  // Bootstrap btn-secondary
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit a form or send AJAX request to delete
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        location.reload();
+                    });
                 }
             });
         }
@@ -263,59 +300,6 @@
                 location.href = window.location.pathname; // Reload without query parameters
             }
         });
-
-
-
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const searchInput = document.getElementById("searchInput");
-
-        //     function fetchData(query) {
-        //         let url = new URL(window.location.href);
-        //         if (query) {
-        //             url.searchParams.set("search", query);
-        //         } else {
-        //             url.searchParams.delete("search");
-        //         }
-
-        //         // ✅ Update URL without reloading the page
-        //         window.history.pushState({}, "", url);
-
-        //         // ✅ Fetch search results via AJAX (No Full Page Reload)
-        //         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-        //             .then(response => response.text())
-        //             .then(html => {
-        //                 document.getElementById("ajexTable").innerHTML = html;
-        //             })
-        //             .catch(error => console.error("Error fetching data:", error));
-        //     }
-
-        //     searchInput.addEventListener("input", function () {
-        //         fetchData(searchInput.value.trim());
-        //     });
-        // });
-
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     const pageSizeSelect = document.querySelector(".form-select");
-
-        //     pageSizeSelect.addEventListener("change", function () {
-        //         let selectedValue = this.value;
-        //         let url = new URL(window.location.href);
-
-        //         // ✅ Update URL parameter
-        //         url.searchParams.set("per_page", selectedValue);
-
-        //         // ✅ Update URL without reloading the whole page
-        //         window.history.pushState({}, "", url);
-
-        //         // ✅ Fetch data using AJAX
-        //         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-        //             .then(response => response.text())
-        //             .then(html => {
-        //                 document.getElementById("ajexTable").innerHTML = html;
-        //             })
-        //             .catch(error => console.error("Error fetching data:", error));
-        //     });
-        // });
 
         $(document).ready(function() {
             function formatOption(option) {

@@ -180,4 +180,58 @@ class ContainerController extends Controller
             'message' => 'Container date and time updated successfully.',
         ]);
     }
+
+    public function updateContainer(Request $request){
+        // Validate input
+        $request->validate([
+            'container_id' => 'required|exists:vehicles,id',
+            'container_number' => 'nullable|string|max:255',
+            'container_type' => 'nullable|string|max:255',
+            'container_capacity' => 'nullable|numeric|min:0',
+            'container_status' => 'nullable|integer',
+            'warehouse_id' => 'nullable|exists:warehouses,id',
+            'doc_id' => 'nullable|string|max:255',
+            'bill_of_lading' => 'nullable|string|max:255',
+        ]);
+
+        // Vehicle model se record find karo
+        $vehicle = Vehicle::find($request->container_id);
+
+        // Update fields
+        if ($request->container_number) {
+            $vehicle->container_number = $request->container_number;
+        }
+        if($request->container_in_date || $request->container_in_time) {
+            $vehicle->container_in_date = $request->container_in_date ?? null;
+            $vehicle->container_in_time = $request->container_in_time ?? null;
+        }
+        if($request->container_type){
+            $vehicle->container_type = $request->container_type;
+        }
+        if($request->container_capacity) {
+            $vehicle->container_capacity = $request->container_capacity;
+        }
+        if($request->warehouse_id) {
+            $vehicle->warehouse_id = $request->warehouse_id;
+        }
+        if($request->container_status) {
+            $vehicle->container_status = $request->container_status;
+        }
+        if($request->doc_id) {
+            $vehicle->doc_id = $request->doc_id;
+        }
+        if($request->bill_of_lading) {
+            $vehicle->bill_of_lading = $request->bill_of_lading;
+        }
+        
+
+        // Save changes
+        $vehicle->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Container updated successfully.',
+            'container' => $vehicle,
+        ]);
+    }
 }

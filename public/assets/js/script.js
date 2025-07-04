@@ -12,7 +12,7 @@ Version      : 1.0
     var $wrapper = $(".main-wrapper");
     var $pageWrapper = $(".page-wrapper");
     var $slimScrolls = $(".slimscroll");
-    var scheduleData;
+    var scheduleData = null;
 
     // Sidebar
     // var Sidemenu = function () {
@@ -1940,70 +1940,81 @@ Version      : 1.0
         });
     }
 
-    function initAutocompleteById() {
-        const input = document.querySelector(".address");
-        if (!input) return; // Input not found, exit safely
+    function initAutocompleteByCls() {
+        // For each .address input, attach a separate autocomplete instance
+        const addressInputs = document.querySelectorAll("input.address");
+        if (!addressInputs.length) return;
 
-        const autocomplete = new google.maps.places.Autocomplete(input, {
-            types: ["geocode"],
-            // componentRestrictions: { country: "in" }
-        });
+        addressInputs.forEach(function (input) {
+            // Prevent double-initialization
+            if (input._autocompleteInitialized) return;
+            input._autocompleteInitialized = true;
 
-        autocomplete.addListener("place_changed", function () {
-            const place = autocomplete.getPlace();
-            if (!place) return;
-
-            console.log("Selected address:", place.formatted_address || "N/A");
-
-            const addressComponents = place.address_components || [];
-
-            let postalCode = "",
-                country = "",
-                state = "",
-                city = "",
-                lat = "",
-                lng = "";
-
-            addressComponents.forEach((component) => {
-                const types = component.types || [];
-
-                if (types.includes("postal_code")) {
-                    postalCode = component.long_name || "";
-                }
-                if (types.includes("country")) {
-                    country = component.long_name || "";
-                }
-                if (types.includes("administrative_area_level_1")) {
-                    state = component.long_name || "";
-                }
-                if (types.includes("locality")) {
-                    city = component.long_name || "";
-                }
-                if (types.includes("administrative_area_level_2") && !city) {
-                    city = component.long_name || "";
-                }
+            const autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ["geocode"],
+                // componentRestrictions: { country: "in" }
             });
 
-            // Get Latitude and Longitude
-            if (place.geometry && place.geometry.location) {
-                lat = place.geometry.location.lat() || "";
-                lng = place.geometry.location.lng() || "";
-            }
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                if (!place) return;
 
-            // Safely fill the fields (if they exist)
-            const setField = (name, value) => {
-                const field = document.getElementsByName(name)[0];
-                if (field) field.value = value;
-            };
+                // Find the closest form to this input
+                const form = input.closest("form");
 
-            setField("Zip_code", postalCode);
-            setField("country", country);
-            setField("state", state);
-            setField("city", city);
-            setField("latitude", lat);
-            setField("longitude", lng);
-            setField("Shipto_latitude", lat);
-            setField("Shipto_longitude", lng);
+                const addressComponents = place.address_components || [];
+
+                let postalCode = "",
+                    country = "",
+                    state = "",
+                    city = "",
+                    lat = "",
+                    lng = "";
+
+                addressComponents.forEach((component) => {
+                    const types = component.types || [];
+
+                    if (types.includes("postal_code")) {
+                        postalCode = component.long_name || "";
+                    }
+                    if (types.includes("country")) {
+                        country = component.long_name || "";
+                    }
+                    if (types.includes("administrative_area_level_1")) {
+                        state = component.long_name || "";
+                    }
+                    if (types.includes("locality")) {
+                        city = component.long_name || "";
+                    }
+                    if (
+                        types.includes("administrative_area_level_2") &&
+                        !city
+                    ) {
+                        city = component.long_name || "";
+                    }
+                });
+
+                // Get Latitude and Longitude
+                if (place.geometry && place.geometry.location) {
+                    lat = place.geometry.location.lat() || "";
+                    lng = place.geometry.location.lng() || "";
+                }
+
+                // Fill only fields within the same form
+                function setField(name, value) {
+                    if (!form) return;
+                    const field = form.querySelector(`[name="${name}"]`);
+                    if (field) field.value = value;
+                }
+
+                setField("zip_code", postalCode);
+                setField("country", country);
+                setField("state", state);
+                setField("city", city);
+                // If you have latitude/longitude fields, add them here as needed
+                // setField("latitude", lat);
+                // setField("longitude", lng);
+            });
         });
     }
 
@@ -2186,12 +2197,121 @@ Version      : 1.0
         //     input.dispatchEvent(ev);
         // });
     }
+
+    function initLocationAutocomplete() {
+        // let selectedCountry = '';
+
+        // // 1. When country changes, update selectedCountry
+        // document.querySelector('#countryForLocation').addEventListener('change', function () {
+        //     selectedCountry = this.value.toLowerCase();
+        //     console.log("Selected Country:", selectedCountry);
+        // });
+
+        // 2. When location modal is opened, attach Google Autocomplete
+        let locationModalShow = document.getElementById("locationModalShow");
+        if (locationModalShow) {
+            locationModalShow.addEventListener("click", function () {
+                const input = document.getElementById("locationSearchBox");
+                let countryForLocation =
+                    document.getElementById("countryForLocation");
+
+                if (!input) return;
+                if (!countryForLocation) return;
+                let selectedCountry =
+                    countryForLocation.value.toLowerCase() || "us"; // Default to 'us' if no country selected
+                console.log("Selected Country:", selectedCountry);
+                // Clear previous autocomplete instance by cloning node
+                const newInput = input.cloneNode(true);
+                input.parentNode.replaceChild(newInput, input);
+
+                // Initialize autocomplete
+                const autocomplete = new google.maps.places.Autocomplete(
+                    newInput,
+                    {
+                        types: ["geocode"],
+                        componentRestrictions: { country: selectedCountry },
+                    }
+                );
+
+                autocomplete.addListener("place_changed", function () {
+                    const place = autocomplete.getPlace();
+                    if (!place) return;
+
+                    // Find the closest form to this input
+                    const form = document.getElementById('pick_up_customer_inf_form');
+                    const addressComponents = place.address_components || [];
+
+                    let postalCode = "",
+                        country = "",
+                        state = "",
+                        city = "",
+                        lat = "",
+                        lng = "",
+                        address = place.formatted_address || "";
+
+                    addressComponents.forEach((component) => {
+                        const types = component.types || [];
+
+                        if (types.includes("postal_code")) {
+                            postalCode = component.long_name || "";
+                        }
+                        if (types.includes("country")) {
+                            country = component.long_name || "";
+                        }
+                        if (types.includes("administrative_area_level_1")) {
+                            state = component.long_name || "";
+                        }
+                        if (types.includes("locality")) {
+                            city = component.long_name || "";
+                        }
+                        if (
+                            types.includes("administrative_area_level_2") &&
+                            !city
+                        ) {
+                            city = component.long_name || "";
+                        }
+                    });
+
+                    // Get Latitude and Longitude
+                    if (place.geometry && place.geometry.location) {
+                        lat = place.geometry.location.lat() || "";
+                        lng = place.geometry.location.lng() || "";
+                    }
+                
+                    // Fill only fields within the same form
+                    function setField(name, value) {
+                        if (!form) return;
+                        const field = form.querySelector(`[name="${name}"]`);
+                        if (field) field.value = value;
+                    }
+
+                    setField("zip_code", postalCode);
+                    setField("country", country);
+                    setField("state", state);
+                    setField("city", city);
+                    setField("latitude", lat);
+                    setField("longitude", lng);
+                    setField("shipto_latitude", lat);
+                    setField("shipto_longitude", lng);
+                    setField("address", address);
+                });
+
+                // Show modal
+                // const modal = new bootstrap.Modal(
+                //     document.getElementById("locationModal")
+                // );
+                // modal.show();
+            });
+        }
+    }
+
     window.addEventListener("load", function () {
         initAutocomplete();
-        initAutocompleteById();
+        initAutocompleteByCls();
         initAutocomplete_1();
         initAutocomplete_2();
         initAutocomplete_3();
         init_transit_Autocomplete();
+        initLocationAutocomplete();
     });
 })(jQuery);

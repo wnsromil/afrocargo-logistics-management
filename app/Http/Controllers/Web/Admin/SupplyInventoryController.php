@@ -33,13 +33,14 @@ class SupplyInventoryController extends Controller
                 return $q->where('warehouse_id', $warehouse_id);
             })
             // 🔹 Filter by main_type and sub_type logic
-            ->when($main_type, function ($q) use ($main_type) {
-                if ($main_type === 'Supply') {
-                    return $q->where('inventary_sub_type', 'Supply');
-                } elseif ($main_type === 'Service') {
-                    return $q->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo']);
-                }
-            })
+            // ->when($main_type, function ($q) use ($main_type) {
+            //     if ($main_type === 'Supply') {
+            //         return $q->where('inventary_sub_type', 'Supply');
+            //     } elseif ($main_type === 'Service') {
+            //         return $q->whereIn('inventary_sub_type', ['Ocean Cargo', 'Air Cargo']);
+            //     }
+            // })
+            ->where('inventary_sub_type', 'Supply')
             // 🔹 Search Logic
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
@@ -67,10 +68,10 @@ class SupplyInventoryController extends Controller
             ->get();
 
         if ($request->ajax()) {
-            return view('admin.supply_inventories.table', compact('inventories', 'warehouses'))->render();
+            return view('admin.inventories_supply.table', compact('inventories', 'warehouses'))->render();
         }
 
-        return view('admin.supply_inventories.index', compact(
+        return view('admin.inventories_supply.index', compact(
             'inventories',
             'search',
             'perPage',
@@ -99,7 +100,7 @@ class SupplyInventoryController extends Controller
         ]);
 
 
-        return view('admin.supply_inventories.create', compact('warehouses', 'categories'));
+        return view('admin.inventories_supply.create', compact('warehouses', 'categories'));
     }
 
     /**
@@ -107,51 +108,36 @@ class SupplyInventoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Common validation rules
-        $rules = [
-            'inventary_sub_type'         => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
-            'name'                  => 'required|string',
-            'barcode'               => 'required|string',
-            'warehouse_id'          => 'required|exists:warehouses,id',
-            'in_stock_quantity'     => 'required|numeric',
-            'package_type'          => 'required|string',
-            'description'           => 'required|string',
-            'driver_app_access'     => 'required|in:Yes,No',
-            'status'                => 'required|in:Active,Inactive',
-            'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
-            'country'               => 'required|string',
-        ];
 
-        if ($request->inventary_sub_type === 'Ocean Cargo' || $request->inventary_sub_type === 'Air Cargo') {
-            $rules = array_merge($rules, [
-                'retail_shipping_price' => 'required|numeric',
-            ]);
-        }
-
-        // Conditional rules for Supply type
-        if ($request->inventary_sub_type === 'Supply') {
-            $rules = array_merge($rules, [
-                'qty_on_hand'         => 'required|numeric',
-                'retail_vaule_price'  => 'required|numeric',
-                'value_price'         => 'required|numeric',
-                'last_cost_received'  => 'required|numeric',
-                'last_date_received'  => 'nullable|date',
-                'tax_percentage'      => 'required|numeric',
-                're_order_point'     => 'required|numeric',
-                're_order_quantity'  => 'required|numeric',
+        $validatedData = $request->validate([
+                'qty_on_hand'           => 'nullable|numeric',
+                'retail_vaule_price'    => 'required|numeric',
+                'value_price'           => 'nullable|numeric',
+                'last_cost_received'    => 'nullable|numeric',
+                'last_date_received'    => 'nullable|date',
+                'tax_percentage'        => 'nullable|numeric',
+                're_order_point'        => 'nullable|numeric',
+                're_order_quantity'     => 'nullable|numeric',
                 'low_stock_warning'     => 'required|numeric',
-                'color' => 'required|string',
-                'open' => 'required|string',
-                'capacity' => 'required|string',
-                'un_rating' => 'required|string',
-                'model_number' => 'required|string',
-                'minimum_order_limit' => 'required|numeric',
+                'color'                 => 'nullable|string',
+                'open'                  => 'nullable|string',
+                'capacity'              => 'required|string',
+                'un_rating'             => 'nullable|string',
+                'model_number'          => 'nullable|string',
+                'minimum_order_limit'   => 'required|numeric',
+                'retail_shipping_price' => 'nullable|numeric',
+                'inventary_sub_type'    => 'nullable|string|in:Ocean Cargo,Air Cargo,Supply',
+                'name'                  => 'required|string',
+                'barcode'               => 'nullable|string',
+                'warehouse_id'          => 'nullable|exists:warehouses,id',
+                'in_stock_quantity'     => 'required|numeric',
+                'package_type'          => 'required|string',
+                'description'           => 'required|string',
+                'driver_app_access'     => 'nullable|in:Yes,No',
+                'status'                => 'nullable|in:Active,Inactive',
+                'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+                'country'               => 'required|string',
             ]);
-        }
-
-
-
-        $validatedData = $request->validate($rules);
 
         // Store logic here
         $data = $request->only([
@@ -181,27 +167,23 @@ class SupplyInventoryController extends Controller
             'insurance',
             'city',
             'state',
+            'qty_on_hand',
+            'retail_vaule_price',
+            'value_price',
+            'last_cost_received',
+            'last_date_received',
+            're_order_point',
+            're_order_quantity',
+            'tax_percentage',
+            'color',
+            'open',
+            'capacity',
+            'un_rating',
+            'model_number',
+            'minimum_order_limit',
+            'price'
 
         ]);
-        $data['price'] = $request->costprice ?? null;
-        if ($request->inventary_sub_type === 'Supply') {
-            $data = array_merge($data, $request->only([
-                'qty_on_hand',
-                'retail_vaule_price',
-                'value_price',
-                'last_cost_received',
-                'last_date_received',
-                're_order_point',
-                're_order_quantity',
-                'tax_percentage',
-                'color',
-                'open',
-                'capacity',
-                'un_rating',
-                'model_number',
-                'minimum_order_limit'
-            ]));
-        }
 
         if ($request->hasFile('img')) {
             $image = $request->file('img');
@@ -225,7 +207,7 @@ class SupplyInventoryController extends Controller
     {
         //
         $inventories = Inventory::where('id', $id)->first();
-        return view('admin.supply_inventories.show', compact('inventories'));
+        return view('admin.inventories_supply.show', compact('inventories'));
     }
 
     /**
@@ -245,7 +227,7 @@ class SupplyInventoryController extends Controller
         $editData = Inventory::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
-        return view('admin.supply_inventories.edit', compact('editData', 'warehouses', 'categories'));
+        return view('admin.inventories_supply.edit', compact('editData', 'warehouses', 'categories'));
     }
 
     /**
@@ -254,44 +236,44 @@ class SupplyInventoryController extends Controller
     public function update(Request $request, string $id)
     {
 
-        // Common validation rules
-        $rules = [
-            'inventary_sub_type'         => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
-            'name'                  => 'required|string',
-            'barcode'               => 'required|string',
-            'warehouse_id'          => 'required|exists:warehouses,id',
-            'in_stock_quantity'     => 'required|numeric',
-            'package_type'          => 'required|string',
-            'retail_shipping_price' => 'required|numeric',
-            'description'           => 'required|string',
-            'driver_app_access'     => 'required|in:Yes,No',
-            //'status'                => 'required|in:Active,Inactive',
-            'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
-        ];
-
-        // Conditional rules for Supply type
-        if ($request->inventary_sub_type === 'Supply') {
-            $rules = array_merge($rules, [
-                'qty_on_hand'         => 'required|numeric',
-                'retail_vaule_price'  => 'required|numeric',
-                'value_price'         => 'required|numeric',
-                'last_cost_received'  => 'required|numeric',
-                'last_date_received'  => 'nullable|date',
-                'tax_percentage'      => 'nullable|numeric',
-                're_order_point'     => 'nullable|numeric',
-                're_order_quantity'  => 'nullable|numeric',
+        $validatedData = $request->validate([
+                'qty_on_hand'           => 'nullable|numeric',
+                'retail_vaule_price'    => 'required|numeric',
+                'value_price'           => 'nullable|numeric',
+                'last_cost_received'    => 'nullable|numeric',
+                'last_date_received'    => 'nullable|date',
+                'tax_percentage'        => 'nullable|numeric',
+                're_order_point'        => 'nullable|numeric',
+                're_order_quantity'     => 'nullable|numeric',
                 'low_stock_warning'     => 'required|numeric',
-            ]);
-        }
-
-        $validatedData = $request->validate($rules);
+                'color'                 => 'nullable|string',
+                'open'                  => 'nullable|string',
+                'capacity'              => 'required|string',
+                'un_rating'             => 'nullable|string',
+                'model_number'          => 'nullable|string',
+                'minimum_order_limit'   => 'required|numeric',
+                'retail_shipping_price' => 'nullable|numeric',
+                'inventary_sub_type'    => 'nullable|string|in:Ocean Cargo,Air Cargo,Supply',
+                'name'                  => 'required|string',
+                'barcode'               => 'nullable|string',
+                'warehouse_id'          => 'nullable|exists:warehouses,id',
+                'in_stock_quantity'     => 'required|numeric',
+                'package_type'          => 'required|string',
+                'description'           => 'required|string',
+                'driver_app_access'     => 'nullable|in:Yes,No',
+                'status'                => 'nullable|in:Active,Inactive',
+                'img'                   => 'nullable|image|mimes:jpg,png|max:2048',
+                'country'               => 'required|string',
+            ]);// validation rules
 
         $inventory = Inventory::findOrFail($id);
 
+        // Store logic here
         $data = $request->only([
             'inventary_sub_type',
             'barcode',
             'warehouse_id',
+            'name',
             'in_stock_quantity',
             'low_stock_warning',
             'package_type',
@@ -312,21 +294,25 @@ class SupplyInventoryController extends Controller
             'factor',
             'insurance_have',
             'insurance',
-            'name'
+            'city',
+            'state',
+            'qty_on_hand',
+            'retail_vaule_price',
+            'value_price',
+            'last_cost_received',
+            'last_date_received',
+            're_order_point',
+            're_order_quantity',
+            'tax_percentage',
+            'color',
+            'open',
+            'capacity',
+            'un_rating',
+            'model_number',
+            'minimum_order_limit',
+            'price'
+
         ]);
-        $data['price'] = $request->costprice ?? null;
-        if ($request->inventary_sub_type === 'Supply') {
-            $data = array_merge($data, $request->only([
-                'qty_on_hand',
-                'retail_vaule_price',
-                'value_price',
-                'last_cost_received',
-                'last_date_received',
-                'tax_percentage',
-                're_order_point',
-                're_order_quantity',
-            ]));
-        }
 
         if ($request->hasFile('img')) {
             $image = $request->file('img');

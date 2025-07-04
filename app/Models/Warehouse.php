@@ -69,4 +69,9 @@ class Warehouse extends Model
             $warehouse->unique_id = $fullPrefix . $newNumber;
         });
     }
+
+    public function signature()
+    {
+        return $this->hasOne(Signature::class, 'warehouse_id');
+    }
 }

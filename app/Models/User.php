@@ -168,10 +168,18 @@ class User extends Authenticatable
     {
         return $this->hasOne(Address::class, 'user_id');
     }
+    public function addrs()
+    {
+        return $this->hasMany(Address::class);
+    }
+    public function parcels()
+    {
+        return $this->hasMany(Parcel::class);
+    }
 
     public function defaultAddress()
     {
-        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes');
+        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes')->select('*');
     }
 
     protected function profilePic(): Attribute
@@ -181,6 +189,19 @@ class User extends Authenticatable
         );
     }
 
+    protected function licenseDocument(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => !empty($value) ? url('storage/' . $value) : null,
+        );
+    }
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => trim($this->name . ' ' . $this->last_name)
+        );
+    }
 
     public static function generateUniqueId($role_id, $country_id = null, $warehouse_id = null)
     {
@@ -237,6 +258,7 @@ class User extends Authenticatable
 
         return $fullPrefix . $newNumber;
     }
+
 
 
     public static function boot()

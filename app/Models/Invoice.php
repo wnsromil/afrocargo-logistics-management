@@ -10,6 +10,7 @@ class Invoice extends Model
 
     protected $casts = [
         'invoce_item' => 'array',
+        'currentdate'=>'date'
     ];
 
     public function parcel()
@@ -19,29 +20,19 @@ class Invoice extends Model
 
     public function deliveryAddress()
     {
-        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user','country','city','state']);
+        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user']);
     }
 
     public function pickupAddress()
     {
-        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user','country','city','state']);
+        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user']);
     }
 
 
     public function invoiceParcelData()
     {
         return $this->belongsTo(Parcel::class, 'parcel_id')
-            ->select([
-                'id',
-                'customer_id',
-                'ship_customer_id',
-                'driver_id',
-                'driver_subcategories_data',
-                'total_amount',
-                'estimate_cost',
-                'container_id',
-                'percel_comment'
-            ])->with(['driver' => function ($query) {
+            ->with(['arrivedWarehouse','driver' => function ($query) {
                 return $query->select([
                     'id',
                     'name',
@@ -130,21 +121,50 @@ class Invoice extends Model
 
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id')->with(['country', 'state', 'city']);
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
+        return $this->belongsTo(User::class, 'driver_id');
     }
 
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class)->with(['country', 'state', 'city']);
+        return $this->belongsTo(Warehouse::class)->with('signature');
+    }
+
+    public function container()
+    {
+        return $this->belongsTo(Vehicle::class,'container_id');
     }
 
     public function createdByUser()
     {
         return $this->belongsTo(User::class, 'created_by')->select('id','name','last_name','role','role_id');
+    }
+    public function comments()
+    {
+        return $this->hasMany(InvoiceComment::class, 'invoice_id')->where('is_deleted', false)->where('is_active', true)
+            ->with(['createdByUser' => function ($query) {
+                $query->select('id', 'name', 'last_name');
+            }]);
+    }
+    public function individualPayment()
+    {
+        return $this->hasMany(IndividualPayment::class, 'invoice_id')
+            ->with(['createdByUser' => function ($query) {
+                $query->select('id', 'name', 'last_name');
+            }]);
+    }
+
+    public function barcodes()
+    {
+        return $this->hasMany(Barcode::class, 'invoice_id')->with('ParcelInventory');
+    }
+
+    public function claims()
+    {
+        return $this->hasMany(Claim::class, 'invoice_id')->with(['user']);
     }
 }

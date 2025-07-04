@@ -17,18 +17,34 @@
         </div>
     @endsection
     <div class="customerhead">
-        <div class="d-flex align-items-center position-relative">
+        <div class="page-header">
+                            <div class="content-page-header">
+                                                                    <div class="d-flex innertopnav w-100 justify-content-between">
+            <p class="head">Customer ID - {{$user->unique_id ?? "N/A"}}</p>
+            <!-- <div class="btnwrapper">
+                <button id="printBtn" class="btn btn-primary buttons me-1">Print</button>
+                <button id="exportBtn" class="btn btn-primary buttons">Export</button>
+            </div> -->
+        </div>
+                                                            </div>
+                                                    </div>
+        
+        <div class="d-flex">
             <div>
 
                 @if ($user->profile_pic)
-                    <img class="profileImg" src="{{ ($user->profile_pic) }}" alt="license">
+                    <img src="{{ ($user->profile_pic) }}" alt="license" style="margin-left: 15px; max-width: 150px; 
+                               border-top-left-radius: 50% 50%; 
+                               border-top-right-radius: 50% 50%; 
+                               border-bottom-right-radius: 50% 50%; 
+                               border-bottom-left-radius: 50% 50%;">
 
                 @else
                     <p> - No Image</p>
                 @endif
             </div>
-            <div class="ms-4">
-                <div>
+            <div>
+                <div style="margin-left: 30px !important;margin-top: 20px;">
                     <p style="font-size=22px;font-weight:600px;color:#000000">{{ $user->name }}</p>
                     <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->last_name }}</p>
                     <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->email }}</p>
@@ -57,7 +73,6 @@
                 @else
                     -
                 @endif
-
             </p>
         </div>
         <div class="col-4 customerr">
@@ -97,7 +112,7 @@
         <div class="col-4 customerr">
             <p class="phead">Signature Date</p>
             <p class="pdata">
-                {{ $user->signature_date ? \Carbon\Carbon::parse($user->signature_date)->format('m-d-Y') : '-' }}
+                {{ $user->signature_date ? \Carbon\Carbon::parse($user->signature_date)->format('d-m-Y') : '-' }}
             </p>
         </div>
         <div class="col-4 customerr">
@@ -110,12 +125,12 @@
     <div class="row">
         <div class="col-4 customerr">
             <p class="phead">License ID</p>
-            <p class="pdata">{{ $user->license_number ?? '-' }}</p>
+            <p>{{ $user->license_number ?? '-' }}</p>
         </div>
         <div class="col-4 customerr">
             <p class="phead">Lic Expired Date</p>
             <p class="pdata">
-                {{ $user->license_expiry_date ? \Carbon\Carbon::parse($user->license_expiry_date)->format('m-d-Y') : '-' }}
+                {{ $user->license_expiry_date ? \Carbon\Carbon::parse($user->license_expiry_date)->format('d-m-Y') : '-' }}
             </p>
         </div>
         <div class="col-4 customerr">
@@ -136,60 +151,12 @@
             <p class="pdata">{{ $user->read_comment ?? '-' }}
             </p>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-4 customerr">
-            <p class="phead">Contract</p>
-            <p class="pdata">{{ $user->contract ?? '-' }}</p>
-        </div>
-        <div class="col-4 customerr">
-            <p class="phead">Text Cust</p>
-            <p class="pdata">
-                {{ $user->text_cust ?? '-' }}
-            </p>
-        </div>
-        <div class="col-4 customerr">
-            <p class="phead">Voice Call</p>
-            <p class="pdata">{{ $user->voice_call ?? '-' }}</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-4 customerr">
-            <p class="phead">Cash Cust</p>
-            <p class="pdata">{{ $user->cash_cust ?? '-' }}</p>
-        </div>
-        <div class="col-4 customerr">
-            <p class="phead">Is License Pic</p>
-            <p class="pdata">
-                {{ $user->is_license_pic ?? '-' }}
-            </p>
-        </div>
-        <div class="col-4 customerr">
-            <p class="phead">No Service</p>
-            <p class="pdata">{{ $user->no_service ?? '-' }}</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-4 customerr">
-            <p class="phead">Call</p>
-            <p class="pdata">{{ $user->call ?? '-' }}</p>
-        </div>
-        <div class="col-4 customerr">
-            <p class="phead">Sales Call</p>
-            <p class="pdata">
-                {{ $user->sales_call ?? '-' }}
-            </p>
-        </div>
         <div class="col-4 customerr">
             <p class="phead">Created At </p>
             <p class="pdata">
                 {{$user->created_at ? $user->created_at->format('m/d/Y') : "-"}}
             </p>
         </div>
-
     </div>
 
     <div class="row">
@@ -209,7 +176,7 @@
         <div class="col-4">
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Contract Signature </p>
-                @if ($user->signature_img)
+                @if ($user->contract_signature_img)
                     <img src="{{ asset('storage/' . $user->contract_signature_img) }}" alt="license"
                         style="margin-left: 15px; max-width: 150px;">
                 @else
@@ -223,17 +190,16 @@
             <div class="d-flex align-items-center">
                 <p class="phead" style="margin-bottom: 0;">Licence Picture </p>
                 @if ($user->license_document)
-                    <img src="{{ asset('`/' . $user->license_document) }}" alt="license"
-                        style="margin-left: 15px; max-width: 150px;">
+                    <img src="{{ $user->license_document }}" alt="license" style="margin-left: 15px; max-width: 150px;">
                 @else
                     <p> - No Image</p>
                 @endif
             </div>
         </div>
+
+
+
     </div>
-
-
-
 
 
 </x-app-layout>

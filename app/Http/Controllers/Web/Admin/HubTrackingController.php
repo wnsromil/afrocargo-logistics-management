@@ -179,6 +179,23 @@ class HubTrackingController extends Controller
         ));
     }
 
+    public function received_orders_show(Request $request, $id){
+    
+        //
+        $ParcelHistories = ParcelHistory::where('parcel_id', $id)
+            ->with(['warehouse', 'customer', 'createdByUser'])->get();
+
+        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
+
+        $parcel = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('arrived_warehouse_id', $this->user->warehouse_id);
+        })->where('id', $id)->first();
+
+        $parcelItems = ParcelPickupDriver::where('parcel_id', $id)->get();
+
+        return view('admin.service_orders.orderdetails', compact('parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel'));
+    }
+
     public function container_order(Request $request, $id, $type)
     {
         $search = $request->input('search');

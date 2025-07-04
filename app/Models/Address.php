@@ -22,12 +22,6 @@ class Address extends Model
         return $this->belongsTo(City::class,'city_id');
     }
     public function user(){
-        return $this->belongsTo(User::class,'user_id')->select([
-            "id","name","last_name","profile_pic","unique_id",
-            "email","phone","address","address_2",
-            "country_id","state_id","city_id","pincode",
-            "warehouse_id","role","role_id",
-            "latitude","longitude","created_at"
-        ]);
+        return $this->belongsTo(User::class,'user_id');
     }
 }

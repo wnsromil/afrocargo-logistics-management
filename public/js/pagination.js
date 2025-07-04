@@ -1,46 +1,99 @@
 document.addEventListener("DOMContentLoaded", function () {
-    paginate();
 
+      paginate({
+                showLoader: showLoader,
+                hideLoader: hideLoader,
+            });
+    
+
+    const dataTable = document.getElementById('ajexTable');
+
+    if (dataTable) {
+        dataTable.addEventListener("click", function (e) {
+            
+            const target = e.target.closest("#pageSizeSelect");
+            if (target) {
+                console.log("Page size select clicked");
+                paginate({
+                    showLoader: showLoader,
+                    hideLoader: hideLoader,
+                });
+            }
+            
+        });
+    }
+    
     function paginate(obj = {}) {
         const {
             searchIn = 'searchInput',
             ajexTable = 'ajexTable',
             pageSizeSlt = 'pageSizeSelect',
-            type = null
+            type = null,
+            showLoader = false,
+            hideLoader = false,
+            
         } = obj;
+        const ajxtbl = document.getElementById(ajexTable);
+        const searchInput = document.querySelector(`#${searchIn}`);
+        let pageSizeSelect = null;
 
-        const searchInput = document.getElementById(searchIn);
-        const pageSizeSelect = document.getElementById(pageSizeSlt);
+        if (ajxtbl) {
+            pageSizeSelect = ajxtbl.querySelector(`#${pageSizeSlt}`);
+        }
 
-        function updateTable(url) {
+
+        // Debounce utility
+        function debounce(fn, delay) {
+            let timer;
+            return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+            };
+        }
+
+        // Debounced updateTable
+        const debouncedUpdateTable = debounce(function(url) {
             // ✅ Push new URL to browser history (without reloading)
             window.history.pushState({}, "", url);
 
+            if(showLoader) {
+                showLoader();
+            }
             // ✅ Fetch updated data using AJAX
-            fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-                .then((response) => response.text())
-                .then((html) => {
-                    document.getElementById(ajexTable).innerHTML = html;
-                    initializeSorting();
-                })
-                .catch((error) => console.error("Error fetching data:", error));
+            fetch(url+'&isAjaxPagination=1', { headers: { "X-Requested-With": "XMLHttpRequest" } })
+            .then((response) => response.text())
+            .then((html) => {
+                ajxtbl.innerHTML = html;
+                if(hideLoader) {
+                    hideLoader();
+                }
+                initializeSorting();
+            })
+            .catch((error) => {
+                if(hideLoader) {
+                    hideLoader();
+                }
+                console.error("Error fetching data:", error);
+            });
+        }, 300);
+
+        // Use debouncedUpdateTable instead of updateTable
+        function updateTable(url) {
+            debouncedUpdateTable(url);
         }
 
         // 🔹 2. Handle Per-Page Change
         if (pageSizeSelect) {
-            pageSizeSelect.addEventListener("change", function (event) {
-                if (event.target.closest(".form-select")) {
-                    let selectedValue = pageSizeSelect.value;
-                    let url = new URL(window.location.href);
+            console.log("Page size changed sdsd",pageSizeSelect,pageSizeSelect.value);
+            let selectedValue = pageSizeSelect.value;
+            let url = new URL(window.location.href);
 
-                    url.searchParams.set("per_page", selectedValue);
-                    url.searchParams.set("page", 1); // Reset pagination
-                    if (type) {
-                        url.searchParams.set("type", type); // ✅ Add type if provided
-                    }
-                    updateTable(url);
-                }
-            });
+            url.searchParams.set("per_page", selectedValue);
+            url.searchParams.set("page", 1); // Reset pagination
+            if (type) {
+                url.searchParams.set("type", type); // ✅ Add type if provided
+            }
+            updateTable(url);
         }
 
         // 🔹 3. Handle Search Input
@@ -62,12 +115,16 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 🔹 4. Handle Pagination Clicks (if needed)
-        document.addEventListener("click", function (event) {
-            if (event.target.closest(".pagination a")) {
-                // You can implement pagination click logic here
-            }
-        });
+        // 🔹 4. Handle Pagination Clicks (Event Delegation)
+        if (ajxtbl) {
+            ajxtbl.addEventListener("click", function (event) {
+                if (event.target.closest(".pagination a")) {
+                    event.preventDefault();
+                    let url = event.target.getAttribute("href");
+                    updateTable(url);
+                }
+            });
+        }
 
         initializeSorting();
 

@@ -9,7 +9,9 @@
                         <th>Tracking ID</th>
                         <th>From</th>
                         <th>To</th>
+                        <th>Shipping Type</th>
                         <th>Pickup Date</th>
+                        <th>Delivery Date</th>
                         <th>Capture Image</th>
                         <th>Items</th>
                         <th>Estimate cost</th>
@@ -18,8 +20,12 @@
                         <th>Payment Status</th>
                         <th>Amount</th>
                         <th>Payment Mode</th>
+                        {{-- <th>Warehouse</th> --}}
                         <th>Status</th>
-
+                        <th>Pickup Type</th>
+                        <th>Delivery Type</th>
+                        <th>Status update</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,7 +89,17 @@
                                 </div>
                             </td>
                             <td>
-                                <div>{{ $parcel->pickup_date ? $parcel->pickup_date->format('m-d-Y') : '-' }}</div>
+                                <div>{{ ucfirst($parcel->transport_type) ?? '-' }}</div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m-d-Y') : '-' }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m-d-Y') : '-' }}
+                                </div>
                             </td>
                             <td>
                                 <div><img src="{{asset('assets/img/Rectangle 25.png')}}" alt="image"></div>
@@ -96,8 +112,18 @@
                             </td>
                             <td>
                                 <div>
-                                    ${{ number_format($parcel->estimate_cost ?? 0, 2) }}
-                                </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">Customer:</div>
+                                            <div class="row">Driver:</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                            </div>
+                                            <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
+                                            </div>
+                                        </div>
+                                    </div>
                             </td>
                             <td>
                                 <div>{{ $parcel->driver->name ?? "-"}}</div>
@@ -126,14 +152,18 @@
                                         <div class="row">Total:</div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}</div>
-                                        <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}</div>
+                                        <div class="row">${{ number_format($parcel->partial_payment ?? 0, 2) }}
+                                        </div>
+                                        <div class="row">${{ number_format($parcel->remaining_payment ?? 0, 2) }}
+                                        </div>
                                         <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}</div>
+                                <div>
+                                    {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                </div>
                             </td>
                             @php
                                 $status_class = $parcel->status ?? null;
@@ -154,13 +184,144 @@
                                     "15" => 'badge-abandoned',
                                     "21" => 'badge-picked-up',
                                     "22" => 'badge-in-transit',
+                                    "23" => 'badge-pickup_re-schedule',
                                     default => 'badge-pending',
                                 };
+
                             @endphp
                             <td>
                                 <label class="{{ $classValue }}" for="status">
                                     {{ $parcelStatus ?? '-' }}
                                 </label>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
+                                </div>
+                            </td>
+                            <td>
+                                <li class="nav-item dropdown">
+                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
+                                        data-bs-toggle="dropdown">
+
+                                        <span class="user-content droparrow droparrow">
+                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu menu-drop-user">
+                                        <div class="profilemenu">
+                                            <div class="subscription-menu">
+                                                <ul>
+                                                    @php
+                                                        // Assuming $parcel->parcelStatus->id contains the ID of the current status
+                                                        $currentStatusId = $parcel->parcelStatus->id ?? null;
+                                                    @endphp
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 1 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">Pending</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 2 ? 'active disabled-link-for-active-service' : ($currentStatusId == 1 || $currentStatusId == 23 ? '' : 'disabled-link') }}"
+                                                            data-bs-toggle="modal" data-bs-target="#Pick_up_with_driver"
+                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                            Pick up with driver
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 3 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">Picked up</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item  {{ $currentStatusId == 4 ? 'active disabled-link-for-active-service' : ($currentStatusId == 3 ? '' : 'disabled-link') }}"
+                                                            data-bs-toggle="modal" data-bs-target="#arrived_warehouse"
+                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                            Arrived at warehouse
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 5 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">In transit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 8 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">Arrived at final destination
+                                                            warehouse</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 9 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">Ready for pick up</a>
+                                                    </li>
+                                                    <li>
+                                                        <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
+                                                            class="dropdown-item {{ $currentStatusId == 21 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
+                                                            data-bs-toggle="modal" data-id="{{ $parcel->id }}"
+                                                            data-bs-target="#ready_for_signature_pick_up"
+                                                            href="javascript:void(0);">
+                                                            Ready for self pick up
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
+                                                            class="dropdown-item {{ $currentStatusId == 22 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
+                                                            data-bs-toggle="modal" data-id="{{ $parcel->id }}"
+                                                            data-bs-target="#delivery_with_driver"
+                                                            href="javascript:void(0);">
+                                                            Assign delivery with driver
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 10 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">Out for delivery</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item  {{ $currentStatusId == 11 ? 'active disabled-link-for-active-service' : ($currentStatusId == 21 ? '' : 'disabled-link') }}"
+                                                            href="javascript:void(0);">Delivered</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 13 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
+                                                            href="javascript:void(0);">Custom hold</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item open-reschedule-pickup-modal {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                            data-bs-toggle="modal" data-bs-target="#Re_schedule_pickup"
+                                                            data-id="{{ $parcel->id }}"
+                                                            data-date="{{ $parcel->pickup_date ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m/d/Y') : '' }}"
+                                                            href="javascript:void(0);">
+                                                            Re-schedule pickup
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item open-reschedule-delivery-modal {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                            data-bs-toggle="modal" data-bs-target="#Re_schedule_delivery"
+                                                            data-id="{{ $parcel->id }}"
+                                                            data-date="{{ $parcel->delivery_date ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m/d/Y') : '' }}"
+                                                            href="javascript:void(0);">
+                                                            Re-schedule delivery
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item {{ $currentStatusId == 11 || $currentStatusId == 14 ? 'disabled-link' : '' }}"
+                                                            data-bs-toggle="modal" data-bs-target="#Cancelled"
+                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                            Cancelled
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </td>
+                            <td class="btntext">
+                                <a href="{{route('admin.received.received_orders_show', $parcel->id) }}"> <button
+                                        class=orderbutton><img
+                                            src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
                             </td>
                         </tr>
                     @empty
