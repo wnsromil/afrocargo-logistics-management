@@ -15,6 +15,7 @@ class Signature extends Model
         'signature_name',
         'signature_file',
         'creator_user_id',
+        'signature_type',
     ];
 
     public function warehouse()

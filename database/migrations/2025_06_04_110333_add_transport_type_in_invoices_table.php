@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('invoices', function (Blueprint $table) {
             //
-            $table->string('transport_type')->nullable()->after('invoce_type');
+            $table->string('transport_type')->nullable()->after('id');
         });
     }
 

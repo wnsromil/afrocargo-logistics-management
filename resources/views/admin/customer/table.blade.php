@@ -39,7 +39,7 @@
                                     </a>
                                 </h2>
                             </td>
-                            <td>{{ ucfirst($customer->name ?? '') }}</td>
+                             <td>{{ ucfirst($customer->name ?? '') }} {{$customer->last_name ?? ""}}</td>
                             <td>{{ $customer->username ?? '' }}</td>
                             <td>{{ $customer->email ?? '-' }}</td>
                             <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>

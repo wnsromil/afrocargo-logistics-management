@@ -26,6 +26,7 @@ class UserPickupDetail extends Model
         'Barrel_quantity',
         'Tapes_quantity',
         'pickup_type',
+        'pickup_status_type',
     ];
 
     public function driver()

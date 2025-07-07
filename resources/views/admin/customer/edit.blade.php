@@ -65,6 +65,16 @@
                                         @enderror
                                     </div>
 
+                                    <div class="col-md-12 mb-2">
+                                        <label class="foncolor" for="last_name">Last Name <i
+                                                class="text-danger">*</i></label>
+                                        <input type="text" name="last_name" class="form-control inp"
+                                            placeholder="Enter Last Name" value="{{ old('last_name', $user->last_name) }}">
+                                        @error('last_name')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
                                     <div class="col-md-12 edit_mobile_code_class mb-2" style="display: grid;">
                                         <label class="foncolor" for="edit_mobile_code">Mobile No. <i
                                                 class="text-danger">*</i></label>
@@ -797,14 +807,22 @@
                                             @foreach($ShipToCustomer as $child)
                                                 <tr>
                                                     <td>{{ $child->unique_id ?? '-' }}</td>
-                                                    <td>{{ $child->name ?? '-'}}</td>
+                                                    <td>{{ ucfirst($child->name ?? '')}} {{ $child->last_name ?? ''}}</td>
                                                     <td>{{ $child->address ?? '-' }}</td>
-                                                    <td>+{{ $child->phone_code->phonecode ?? '' }}
-                                                        {{ $child->phone ?? '-' }}
-                                                    </td>
-                                                    <td>+{{ $child->phone_2_code->phonecode ?? '' }}
-                                                        {{ $child->phone_2 ?? '-' }}
-                                                    </td>
+                                                  <td>
+                                                    @if($child->phone)
+                                                        +{{ $child->phone_code->phonecode ?? '' }} {{ $child->phone }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($child->phone_2)
+                                                        +{{ $child->phone_2_code->phonecode ?? '' }} {{ $child->phone_2 }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                     <td>{{ $child->license_number ?? '-' }}</td>
                                                     <td>
                                                         <div class="dropdown dropdown-action">
@@ -893,19 +911,23 @@
                                     <tbody>
                                         @foreach($Pickups as $child)
                                             <tr>
-                                                <td class="text-start">{{$child->pickupAddress->name ?? "-"}}</td>
-                                                <td>{{$child->pickupAddress->name ?? "-"}}</td>
-                                                <td>{{$child->pickupAddress->name ?? "-"}}</td>
-                                                <td>+{{ $child->pickupAddress->phone_code->phonecode ?? '' }}
-                                                    {{ $child->pickupAddress->phone ?? '-' }}
+                                                <td class="text-start">{{ucfirst($child->pickupAddress->name ?? "")}} {{$child->pickupAddress->last_name ?? ""}}</td>
+                                                <td>{{$child->pickupAddress->address ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->city ?? "-"}}</td>
+                                                <td>
+                                                    @if($child->pickupAddress && $child->pickupAddress->phone)
+                                                        +{{ $child->pickupAddress->phone_code->phonecode ?? '' }} {{ $child->pickupAddress->phone }}
+                                                    @else
+                                                        -
+                                                    @endif
                                                 </td>
                                                 <td>{{$child->Zone ?? "-"}}</td>
                                                 <td>{{$child->pickup_type ?? "-"}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($child->Date)->format('m-d-Y') }}</td>
                                                 <td>{{$child->pickupAddress->pincode ?? "-"}}</td>
-                                                <td>{{$child->pickupAddress->driver ?? "-"}}</td>
+                                                <td>{{ucfirst($child->driver->name ?? "")}} {{($child->driver->last_name ?? "")}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($child->updated_at)->format('m-d-Y') }}</td>
-                                                <td>{{$child->unique_id ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->unique_id ?? "-"}}</td>
                                                 <td>
                                                     <div class="dropdown dropdown-action">
                                                         <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
@@ -989,14 +1011,22 @@
                                             @foreach($PickupCustomer as $child)
                                                 <tr>
                                                     <td>{{ $child->unique_id ?? '-' }}</td>
-                                                    <td>{{ $child->name ?? '-'}}</td>
+                                                    <td>{{ ucfirst($child->name ?? '')}} {{ $child->last_name ?? ''}}</td>
                                                     <td>{{ $child->address ?? '-' }}</td>
-                                                    <td>+{{ $child->phone_code->phonecode ?? '' }}
-                                                        {{ $child->phone ?? '-' }}
-                                                    </td>
-                                                    <td>+{{ $child->phone_2_code->phonecode ?? '' }}
-                                                        {{ $child->phone_2 ?? '-' }}
-                                                    </td>
+                                                    <td>
+                                                    @if($child->phone)
+                                                        +{{ $child->phone_code->phonecode ?? '' }} {{ $child->phone }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($child->phone_2)
+                                                        +{{ $child->phone_2_code->phonecode ?? '' }} {{ $child->phone_2 }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                     <td>
                                                         <div class="dropdown dropdown-action">
                                                             <a href="#" class="btn-action-icon fas"

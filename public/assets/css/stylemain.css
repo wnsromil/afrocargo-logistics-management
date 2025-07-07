@@ -1443,7 +1443,7 @@ body.mini-sidebar.expand-menu .sidebar {
 }
 
 .service-upload .img-thumbnail {
-    max-width: 150px !important;
+    max-width: 150px;
 }
 
 .basic-info-detail h6 {

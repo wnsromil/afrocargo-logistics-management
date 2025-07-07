@@ -32,9 +32,10 @@ class PickupController extends Controller
             [
                 'company_name' => 'required|string|max:255',
                 'full_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
                 'mobile_number_code_id' => 'required',
                 'mobile_number' => 'required|digits:10|unique:users,phone',
-                'alternative_mobile_number_code_id' => 'required',
+                'alternative_mobile_number_code_id' => 'nullable',
                 'alternative_mobile_number' => 'nullable|max:10',
                 'Model_Pickup_address_1' => 'required|string|max:255',
                 'latitude' => 'required|numeric',
@@ -56,10 +57,11 @@ class PickupController extends Controller
         try {
             $userData = [
                 'name'               => $validated['full_name'], // ✅ fixed
+                'last_name'               => $validated['last_name'],
                 'phone'              => $validated['mobile_number'],
-                'phone_2'            => $validated['alternative_mobile_number'] ?? null,
+                'phone_2'            => $request->alternate_mobile_no ?? null,
                 'phone_code_id'      => (int) $validated['mobile_number_code_id'],
-                'phone_2_code_id_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'phone_2_code_id_id' => (int) $request->alternative_mobile_number_code_id,
                 'address'            => $validated['Model_Pickup_address_1'],
                 'address_2'          => $request->address_2,
                 'latitude'           => $validated['latitude'],
@@ -92,5 +94,4 @@ class PickupController extends Controller
             ], 500);
         }
     }
-
 }

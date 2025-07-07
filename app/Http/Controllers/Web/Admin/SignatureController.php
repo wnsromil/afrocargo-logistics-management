@@ -17,6 +17,7 @@ use App\Models\{
     HubTracking,
     Signature
 };
+use Illuminate\Support\Facades\File;
 
 class SignatureController extends Controller
 {
@@ -82,48 +83,66 @@ class SignatureController extends Controller
 
     public function store(Request $request)
     {
-        // Step 1: Validate input
+        // Step 1: Validate common fields
         $request->validate([
             'warehouse_name'   => 'required|exists:warehouses,id',
             'signature_name'   => 'required|string|max:255',
-            'img'              => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'signature_type'   => 'required|in:image,draw',
         ]);
 
-        // Step 2: Upload signature file
         $data = [];
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $imageName = 'uploads/signature/' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/signature'), $imageName);
-            $data['img'] = $imageName;
+
+        if ($request->signature_type === 'image') {
+            $request->validate([
+                'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            if ($request->hasFile('img')) {
+                $image = $request->file('img');
+                $imageName = 'uploads/signature/' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/signature'), $imageName);
+                $data['signature_file'] = $imageName;
+            }
+        } else {
+            $request->validate([
+                'signature_drawn' => 'required|string',
+            ]);
+          
+            $drawnData = $request->signature_drawn;
+            $imageName = 'uploads/signature/drawn_' . uniqid() . '.png';
+            $drawnData = str_replace('data:image/png;base64,', '', $drawnData);
+            $drawnData = str_replace(' ', '+', $drawnData);
+            \File::put(public_path($imageName), base64_decode($drawnData));
+            $data['signature_file'] = $imageName;
         }
 
-        // Step 3: Check if signature already exists for warehouse & is_deleted = 'Yes'
+        // Step 2: Check if record already exists
         $existing = Signature::where('warehouse_id', $request->warehouse_name)
             ->where('is_deleted', 'No')
             ->first();
 
         if ($existing) {
-            // Update only image
             $existing->update([
-                'signature_file' => $data['img'],
+                'signature_file' => $data['signature_file'],
             ]);
 
             return redirect()->route('admin.signature.index')
                 ->with('success', 'Signature image updated successfully.');
         }
 
-        // Step 4: Create new signature record
+        // Step 3: Create new signature
         Signature::create([
             'warehouse_id'     => $request->warehouse_name,
             'signature_name'   => $request->signature_name,
-            'signature_file'   => $data['img'],
+            'signature_type'   => $request->signature_type,
+            'signature_file'   => $data['signature_file'],
             'creator_user_id'  => auth()->id(),
         ]);
 
         return redirect()->route('admin.signature.index')
             ->with('success', 'Signature added successfully.');
     }
+
 
 
     /**
@@ -162,33 +181,64 @@ class SignatureController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Step 1: Validate input
-        $validated = $request->validate([
+
+        // Step 1: Validate base fields
+        $request->validate([
             'warehouse_name'   => 'required|exists:warehouses,id',
             'signature_name'   => 'required|string|max:255',
-            'img'              => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'signature_type'   => 'required|in:image,draw',
         ]);
 
-        // Step 2: Find existing signature record
         $signature = Signature::findOrFail($id);
 
-        // Step 3: Handle image upload if provided
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $imageName = 'uploads/signature/' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/signature'), $imageName);
-            $signature->signature_file = $imageName;
+        $filePath = $signature->signature_file; // Default existing path
+
+        // Step 2: Check for deletion
+        if ($request->delete_img == '1') {
+            if ($filePath && file_exists(public_path($filePath))) {
+                unlink(public_path($filePath));
+            }
+            $filePath = null;
+            $request->validate([
+                'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'signature_drawn' => 'required|string',
+            ]);
         }
 
-        // Step 4: Update other fields
-        $signature->warehouse_id = $request->warehouse_name;
-        $signature->signature_name = $request->signature_name;
+        // Step 3: New image upload
+        if ($request->signature_type === 'image' && $request->hasFile('img')) {
+            $request->validate([
+                'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $image = $request->file('img');
+            $filePath = 'uploads/signature/' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/signature'), $filePath);
+        }
 
-        $signature->save();
+        // Step 4: Handle drawn signature
+        if ($request->signature_type === 'draw') {
+            $request->validate([
+                'signature_drawn' => 'required|string',
+            ]);
+            $drawnData = $request->signature_drawn;
+            $drawnData = str_replace('data:image/png;base64,', '', $drawnData);
+            $drawnData = str_replace(' ', '+', $drawnData);
+            $filePath = 'uploads/signature/drawn_' . uniqid() . '.png';
+            \File::put(public_path($filePath), base64_decode($drawnData));
+        }
+
+        // Step 5: Save all data
+        $signature->update([
+            'warehouse_id'     => $request->warehouse_name,
+            'signature_name'   => $request->signature_name,
+            'signature_file'   => $filePath,
+            'signature_type'   => $request->signature_type,
+        ]);
 
         return redirect()->route('admin.signature.index')
             ->with('success', 'Signature updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
