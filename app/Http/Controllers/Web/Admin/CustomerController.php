@@ -48,7 +48,8 @@ class CustomerController extends Controller
                         ->orWhere('email', 'LIKE', "%$search%")
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%");
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
                 });
             })
             ->latest('id')
@@ -98,6 +99,7 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => [
                 'required',
                 'email',
@@ -148,6 +150,7 @@ class CustomerController extends Controller
             // 🛠 Mapping Request Fields to Database Fields
             $userData = [
                 'name'          => $validated['first_name'],
+                'last_name'  => $validated['last_name'],
                 'email'          => $validated['email'] ?? null,
                 'phone'      => $validated['mobile_number'],
                 'phone_code_id'        => (int) $validated['mobile_number_code_id'],
@@ -287,7 +290,8 @@ class CustomerController extends Controller
                         ->orWhere('email', 'LIKE', "%$search%")
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%");
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
                 });
             })
             ->where('role_id', 5)
@@ -304,7 +308,8 @@ class CustomerController extends Controller
                         ->orWhere('unique_id', 'LIKE', "%$search%")
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%");
+                        ->orWhere('status', 'LIKE', "%$search%")
+                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
                 });
             })
             ->where('role_id', 6)
@@ -354,6 +359,7 @@ class CustomerController extends Controller
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => [
                 'required',
                 'email',
@@ -398,6 +404,7 @@ class CustomerController extends Controller
         // 🔹 Updating User Data
         $userData = [
             'name'        => $validated['first_name'],
+            'last_name'  => $validated['last_name'],
             'email'       => $validated['email'],
             'phone'      => $validated['mobile_number'],
             'unique_id' => $request->unique_id,
@@ -601,7 +608,7 @@ class CustomerController extends Controller
                     // 🔹 Agar profile_pics hai to alag folder me store kare
                     // 🔹 Baaki images customer folder me store ho
                     $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
-                    $imagePaths[$imageType] = 'uploads/customer/' . $fileName; // Store path in DB
+                    $imagePaths[$imageType] = 'storage/uploads/customer/' . $fileName; // Store path in DB
                 }
             }
 
@@ -649,7 +656,7 @@ class CustomerController extends Controller
     public function updateShipTo($id)
     {
         $user = User::find($id);
-        return view('admin.customer.shipto.update', compact('user', 'id'));
+        return view('admin.customer.shipto.updateShipTo', compact('user', 'id'));
     }
 
     public function editeShipTo(Request $request, $id)
@@ -691,7 +698,7 @@ class CustomerController extends Controller
                     $file = $request->file($imageType);
                     $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
                     $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
-                    $imagePaths[$imageType] = $filePath;
+                    $imagePaths[$imageType] = 'storage/uploads/customer/' . $fileName;
                 }
             }
 
@@ -906,7 +913,7 @@ class CustomerController extends Controller
             'pickup_status_type' => 'required|string|max:255',
             'zone' => 'required',
             'pickup_type' => 'required|string', // pickup_type validate karna zaroori hai
-            'Country' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_country' => 'required_if:pickup_type,Pickup|string|max:255',
             'shipto_name' => 'required_if:pickup_type,Pickup|string|max:255',
             'shipto_address_1' => 'required_if:pickup_type,Pickup|string|max:255',
             'shipto_cell_phone' => 'required_if:pickup_type,Pickup|digits:10',
@@ -924,7 +931,7 @@ class CustomerController extends Controller
             'pickup_status_type.required' => 'Status is required.',
             'zone.required' => 'Zone is required.',
             'pickup_type.required' => 'Pickup Type is required.',
-            'Country.required' => 'Country is required for No Shipto.',
+            'shipto_country.required' => 'Country is required for No Shipto.',
             'shipto_name.required_if' => 'Shipto full name is required.',
             'shipto_address_1.required_if' => 'Shipto address  is required.',
             'shipto_cell_phone.required_if' => 'Cell Phone is required.',
@@ -984,9 +991,9 @@ class CustomerController extends Controller
             'Item1' => $request->item1,
             'Item2' => $request->item2,
             'pickup_delivery' => $request->inlineRadioOptions,
-            'Date' => $request->pickup_date,
+            'Date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->pickup_date)->format('Y-m-d'),
             'Time' => $request->pickup_time,
-            'Done_Date' => $request->done_date,
+            'Done_Date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->done_date)->format('Y-m-d'),
             'Zone' => $request->zone,
             'Driver_id' => $request->Driver_id, // update later if needed
             'Note' => $request->note,
@@ -1028,7 +1035,7 @@ class CustomerController extends Controller
             'pickup_status_type' => 'required|string|max:255',
             'zone' => 'required',
             'pickup_type' => 'required|string',
-            'Country' => 'required_if:pickup_type,Pickup|string|max:255',
+            'shipto_country' => 'required_if:pickup_type,Pickup|string|max:255',
             'shipto_name' => 'required_if:pickup_type,Pickup|string|max:255',
             'shipto_address_1' => 'required_if:pickup_type,Pickup|string|max:255',
             'shipto_cell_phone' => 'required_if:pickup_type,Pickup|digits:10',
@@ -1088,9 +1095,9 @@ class CustomerController extends Controller
                 'Item1' => $request->item1,
                 'Item2' => $request->item2,
                 'pickup_delivery' => $request->inlineRadioOptions,
-                'Date' => $request->pickup_date,
+                'Date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->pickup_date)->format('Y-m-d'),
                 'Time' => $request->pickup_time,
-                'Done_Date' => $request->done_date,
+                'Done_Date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->done_date)->format('Y-m-d'),
                 'Zone' => $request->zone,
                 'Driver_id' => $request->Driver_id,
                 'Note' => $request->note,

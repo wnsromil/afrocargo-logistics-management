@@ -929,9 +929,7 @@ Version      : 1.0
         $('input[name="pickup_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
-            // maxDate: moment().startOf("day"), // Past Dates Disabled
-            // startDate: moment().startOf("day"), // Default Today Selected
-            autoUpdateInput: true, // Auto Update Input With Default Date
+          //  autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
                 format: "MM/DD/YYYY", // Date Format
             },
@@ -950,8 +948,6 @@ Version      : 1.0
         $('input[name="done_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
-            // maxDate: moment().startOf("day"), // Past Dates Disabled
-            // startDate: moment().startOf("day"), // Default Today Selected
             autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
                 format: "MM/DD/YYYY", // Date Format
@@ -2238,7 +2234,9 @@ Version      : 1.0
                     if (!place) return;
 
                     // Find the closest form to this input
-                    const form = document.getElementById('pick_up_customer_inf_form');
+                    const form = document.getElementById(
+                        "pick_up_customer_inf_form"
+                    );
                     const addressComponents = place.address_components || [];
 
                     let postalCode = "",
@@ -2277,7 +2275,7 @@ Version      : 1.0
                         lat = place.geometry.location.lat() || "";
                         lng = place.geometry.location.lng() || "";
                     }
-                
+
                     // Fill only fields within the same form
                     function setField(name, value) {
                         if (!form) return;

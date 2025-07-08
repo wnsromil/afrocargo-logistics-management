@@ -9,24 +9,25 @@
         </div>
     </x-slot>
 
-        {{-- @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif --}}
+    {{-- @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif --}}
 
-    <form action="{{ route('admin.inventories.update', $editData->id ?? '') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.inventories.update', $editData->id ?? '') }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <input type="hidden" name="price" id="">
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 <!-- Inventory Type Selection -->
-                <div class="col-md-7">
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-2">
                             <div class="input-block">
@@ -36,28 +37,21 @@
                         <div class="col-md-3">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
-                                <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="inventary_sub_type"
-                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Ocean Cargo' ? 'checked' : '' }}>
+                                <input class="form-check-input mt-0" type="radio" value="Ocean Cargo"
+                                    name="inventary_sub_type" {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Ocean Cargo' ? 'checked' : '' }}>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Air cargo</label>
-                                <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="inventary_sub_type"
-                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Air Cargo' ? 'checked' : '' }}>
-                            </div>
-                        </div>
-                        <div class="col-md-3 d-none">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">Supply</label>
-                                <input class="form-check-input mt-0" type="radio" value="Supply" name="inventary_sub_type"
-                                    {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Supply' ? 'checked' : '' }}>
+                                <input class="form-check-input mt-0" type="radio" value="Air Cargo"
+                                    name="inventary_sub_type" {{ old('inventary_sub_type', $editData->inventary_sub_type ?? '') === 'Air Cargo' ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Barcode Selection -->
-                <div class="col-md-5 col-sm-12">
+                {{-- <div class="col-md-5 col-sm-12">
                     <div class="row justify-content-end">
                         <div class="col-md-3">
                             <div class="input-block">
@@ -67,28 +61,28 @@
                         <div class="col-md-2">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label>
-                                <input class="form-check-input mt-0" type="radio" value="Yes" name="barcode"
-                                    {{ old('barcode', $editData->barcode_have ?? '') === 'Yes' ? 'checked' : '' }}>
+                                <input class="form-check-input mt-0" type="radio" value="Yes" name="barcode" {{
+                                    old('barcode', $editData->barcode_have ?? '') === 'Yes' ? 'checked' : '' }}>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">No</label>
-                                <input class="form-check-input mt-0" type="radio" value="No" name="barcode"
-                                    {{ old('barcode', $editData->barcode_have ?? '') === 'No' ? 'checked' : '' }}>
+                                <input class="form-check-input mt-0" type="radio" value="No" name="barcode" {{
+                                    old('barcode', $editData->barcode_have ?? '') === 'No' ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!-- Warehouse Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block border-0 mb-3">
-                        <label for="warehouse_id" class="table-content col737 fw-medium">Warehouse Name <i class="text-danger">*</i></label>
+                        <label for="warehouse_id" class="table-content col737 fw-medium">Warehouse Name <i
+                                class="text-danger">*</i></label>
                         <select class="form-control select2" name="warehouse_id">
                             <option disabled hidden value="">Select Warehouse Name</option>
                             @foreach ($warehouses as $warehouse)
-                                <option value="{{ $warehouse->id }}"
-                                    {{ old('warehouse_id', $editData->warehouse_id ?? '') == $warehouse->id ? 'selected' : '' }}>
+                                <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $editData->warehouse_id ?? '') == $warehouse->id ? 'selected' : '' }}>
                                     {{ $warehouse->warehouse_name }}
                                 </option>
                             @endforeach
@@ -101,9 +95,10 @@
                 <!-- Cost Price -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="costprice" class="table-content col737 fw-medium">Cost Price <i class="text-danger">*</i></label>
-                        <input class="form-control input-padding" name="costprice" min="0.1" type="text"
-                            value="0" readonly style="background: #ececec;">
+                        <label for="costprice" class="table-content col737 fw-medium">Cost Price <i
+                                class="text-danger">*</i></label>
+                        <input class="form-control input-padding" name="costprice" min="0.1" type="text" value="0"
+                            readonly style="background: #ececec;">
                         @error('costprice')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -112,7 +107,8 @@
                 <!-- Item Name -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="name" class="table-content col737 fw-medium">Item Name <i class="text-danger">*</i></label>
+                        <label for="name" class="table-content col737 fw-medium">Item Name <i
+                                class="text-danger">*</i></label>
                         <input class="form-control input-padding" name="name" type="text"
                             value="{{ old('name', $editData->name ?? '') }}" placeholder="Enter Item Name">
                         @error('name')
@@ -123,47 +119,24 @@
                 <!-- Quantity -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="in_stock_quantity" class="table-content col737 fw-medium">Quantity<i class="text-danger">*</i></label>
-                        <input class="form-control input-padding" min="0.1" type="number" name="in_stock_quantity"
-                            value="{{ old('in_stock_quantity', $editData->in_stock_quantity ?? '') }}" placeholder="Enter quantity">
+                        <label for="in_stock_quantity" class="table-content col737 fw-medium">Quantity<i
+                                class="text-danger">*</i></label>
+                        <input class="form-control input-padding" type="number" name="in_stock_quantity"
+                            value="{{ old('in_stock_quantity', $editData->in_stock_quantity ?? '') }}"
+                            placeholder="Enter quantity">
                         @error('in_stock_quantity')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-                <!-- Low Stock Warning -->
-                <div class="col-lg-4 col-md-6 col-sm-12" id="low_stock_warning">
-                    <div class="input-block mb-3">
-                        <label for="low_stock_warning" class="table-content col737 fw-medium">Low Stock Warning <i class="text-danger">*</i></label>
-                        <input class="form-control text-dark" min="0.1" type="number" name="low_stock_warning"
-                            value="{{ old('low_stock_warning', $editData->low_stock_warning ?? '') }}" placeholder="Enter Low Stock Warning">
-                        @error('low_stock_warning')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12" id="minimum_order_limit" style="display: none;">
-                    <div class="input-block mb-3">
-                        <label for="minimum_order_limit" class="table-content col737 fw-medium">Minimum Order Limit
-                            <i class="text-danger">*</i></label>
-                        <input class="form-control text-dark" type="number" min="0.1" name="minimum_order_limit"
-                            value="{{ old('minimum_order_limit', $editData->minimum_order_limit) }}" placeholder="Enter Minimum Order Limit"
-                            aria-label="default input example">
-                        @error('minimum_order_limit')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
                 <!-- Package Type -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="package_type" class="table-content col737 fw-medium">Package Type<i class="text-danger">*</i></label>
+                        <label for="package_type" class="table-content col737 fw-medium">Package Type<i
+                                class="text-danger">*</i></label>
                         <select class="form-select fw-normal profileUpdateFont select2" name="package_type">
                             <option value="">Select Package Type</option>
-                            <option value="Imported"
-                                {{ old('package_type', $editData->package_type ?? '') == 'Imported' ? 'selected' : '' }}>
+                            <option value="Imported" {{ old('package_type', $editData->package_type ?? '') == 'Imported' ? 'selected' : '' }}>
                                 Imported
                             </option>
                         </select>
@@ -175,9 +148,10 @@
                 <!-- Retail/Shipping Price -->
                 <div class="col-lg-4 col-md-6 col-sm-12" id="retail_shipping_price">
                     <div class="input-block mb-3">
-                        <label for="retail_shipping_price" class="table-content col737 fw-medium required text-dark">Shipping Price </label>
+                        <label for="retail_shipping_price"
+                            class="table-content col737 fw-medium required text-dark">Shipping Price </label>
                         <div class="d-flex align-items-center justify-content-between form-control">
-                            <input class="no-border" type="number" min="0.1" name="retail_shipping_price"
+                            <input class="no-border" type="number" name="retail_shipping_price"
                                 value="{{ old('retail_shipping_price', $editData->retail_shipping_price ?? '') }}"
                                 placeholder="Enter Shipping Price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
@@ -194,7 +168,8 @@
                             Price</label>
                         <div class="d-flex align-items-center justify-content-between form-control">
                             <input class="no-border" type="number" name="retail_vaule_price"
-                                value="{{ old('retail_vaule_price' , $editData->retail_vaule_price) }}" placeholder="Enter retail price">
+                                value="{{ old('retail_vaule_price', $editData->retail_vaule_price) }}"
+                                placeholder="Enter retail price">
                             <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                         </div>
                         @error('retail_vaule_price')
@@ -206,7 +181,8 @@
                 <!-- Description -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label for="description" class="table-content col737 fw-medium required text-dark">Description</label>
+                        <label for="description"
+                            class="table-content col737 fw-medium required text-dark">Description</label>
                         <div class="d-flex align-items-center justify-content-between form-control">
                             <input class="no-border" type="text" name="description"
                                 value="{{ old('description', $editData->description ?? '') }}"
@@ -219,32 +195,33 @@
                 </div>
                 <!-- Inventory Image -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                  <div class="input-block">
-                    <label>Inventory Image</label>
+                    <div class="input-block">
+                        <label>Inventory Image</label>
                         <div class="input-block mb-3 service-upload img-size2 mb-0">
-                    <!-- Preview Image -->
-                    <img id="inventory_img_preview"
-                        src="{{ !empty($editData->img) ? $editData->img : '' }}"
-                        alt="Inventory Image"
-                        class="img-thumbnail mb-2 {{ empty($editData->img) ? 'd-none' : '' }}"
-                        style="max-width: 150px; height: auto;">
+                            <!-- Preview Image -->
+                            <img id="inventory_img_preview" src="{{ !empty($editData->img) ? $editData->img : '' }}"
+                                alt="Inventory Image"
+                                class="img-thumbnail mb-2 {{ empty($editData->img) ? 'd-none' : '' }}"
+                                style="max-width: 150px; height: auto;">
 
-                    <!-- Hidden File Input -->
-                    <input type="file" name="img" id="inventory_image" class="d-none">
+                            <!-- Hidden File Input -->
+                            <input type="file" name="img" id="inventory_image" class="d-none">
 
-                    <!-- Action Icons -->
-                    <div>
-                        <img src="{{ asset('assets/img/edit (1).png') }}" alt="Edit" style="cursor: pointer;" onclick="openImagePicker()">
-                        <img src="{{ asset('assets/img/dlt (1).png') }}" alt="Delete" style="cursor: pointer;" onclick="removeImage()">
+                            <!-- Action Icons -->
+                            <div>
+                                <img src="{{ asset('assets/img/edit (1).png') }}" alt="Edit" style="cursor: pointer;"
+                                    onclick="openImagePicker()">
+                                <img src="{{ asset('assets/img/dlt (1).png') }}" alt="Delete" style="cursor: pointer;"
+                                    onclick="removeImage()">
+                            </div>
+
+                            <!-- Delete Flag -->
+                            <input type="hidden" name="delete_img" id="delete_img" value="0">
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Delete Flag -->
-                    <input type="hidden" name="delete_img" id="delete_img" value="0">
-                      </div>
-                </div>
-                </div>
-                
-                 <div class="col-md-4 col-sm-12">
+                {{-- <div class="col-md-4 col-sm-12">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-block">
@@ -255,30 +232,28 @@
                         <div class="col-md-2">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label> <input
-                                    class="form-check-input mt-0" type="radio" value="Yes" name="driver_app_access"
-                                    {{ old('driver_app_access', $editData->driver_app_access ?? '') === 'Yes' ? 'checked' : '' }}>
+                                    class="form-check-input mt-0" type="radio" value="Yes" name="driver_app_access" {{
+                                    old('driver_app_access', $editData->driver_app_access ?? '') === 'Yes' ? 'checked' :
+                                '' }}>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">No</label> <input
-                                    class="form-check-input mt-0" {{ old('driver_app_access', $editData->driver_app_access ?? '') === 'No' ? 'checked' : '' }}
-                                     type="radio" value="No" name="driver_app_access">
+                                    class="form-check-input mt-0" {{ old('driver_app_access',
+                                    $editData->driver_app_access ?? '') === 'No' ? 'checked' : '' }}
+                                type="radio" value="No" name="driver_app_access">
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Ocean Cargo/Air Cargo Section -->
             <div class="col-12 pt-3 mt-3 border-top">
-              <div class="row">
+                <div class="row">
                     <div class="col-12" id="CargoTagDiv">
                         <p class="heading mb-3">Ocean Cargo/Air Cargo</p>
-                    </div>
-
-                    <div class="col-12" style="display: none;" id="SupplyTagDiv">
-                        <p class="heading mb-3">Supply</p>
                     </div>
 
                     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -287,6 +262,13 @@
                                     class="text-danger">*</i></label>
                             <select class="form-control " id="country" name="country">
                                 <option value="" disabled selected>Select Country</option>
+                                <option value="" {{ old('country', $editData->name ?? '') == '' ? 'selected' : '' }}>
+                                    Select Country</option>
+                                @foreach (setting()->warehouseContries() as $country)
+                                    <option data-id="{{ $country['id'] }}" value="{{ $country['name'] }}" {{ $editData->country == $country['name'] ? 'selected' : '' }}>
+                                        {{ $country['name'] }}
+                                    </option>
+                                @endforeach
                             </select>
 
                             @error('country')
@@ -331,8 +313,8 @@
                             <label for="item_length_inch" class="table-content col737 fw-medium">Item Length(inch)
                             </label>
                             <input class="form-control input-padding" name="item_length_inch" id="length" type="number"
-                                step="any" value="{{ old('item_length_inch', $editData->item_length_inch) }}" placeholder="Enter Item Length"
-                                aria-label="default input example">
+                                step="any" value="{{ old('item_length_inch', $editData->item_length_inch) }}"
+                                placeholder="Enter Item Length" aria-label="default input example">
                         </div>
                     </div>
 
@@ -366,8 +348,8 @@
                         <div class="input-block mb-3">
                             <label for="volume_total" class="table-content col737 fw-medium">Volume(L*W*H)</label>
                             <input class="form-control input-padding" readonly name="volume_total" id="volume"
-                                type="number" step="any" value="{{ old('volume_total', $editData->volume_total) }}" placeholder="value"
-                                aria-label="default input example">
+                                type="number" step="any" value="{{ old('volume_total', $editData->volume_total) }}"
+                                placeholder="value" aria-label="default input example">
 
                             @error('volume_total')
                                 <span class="text-danger">{{ $message }}</span>
@@ -381,7 +363,8 @@
                                 Price</label>
                             <div class="d-flex align-items-center justify-content-between form-control">
                                 <input class="no-border" type="number" name="weight_price"
-                                    value="{{ old('weight_price', $editData->weight_price) }}" placeholder="Enter Weight Price">
+                                    value="{{ old('weight_price', $editData->weight_price) }}"
+                                    placeholder="Enter Weight Price">
                                 <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
                             </div>
 
@@ -396,8 +379,8 @@
                             <label for="capacity" class="table-content col737 fw-medium">Capacity<i
                                     class="text-danger">*</i></label>
                             <input class="form-control input-padding" name="capacity" id="capacity_supply" type="text"
-                                step="any" value="{{ old('capacity', $editData->capacity) }}" placeholder="Enter Item Capacity"
-                                aria-label="default input example">
+                                step="any" value="{{ old('capacity', $editData->capacity) }}"
+                                placeholder="Enter Item Capacity" aria-label="default input example">
                             @error('capacity')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -411,7 +394,7 @@
                             <div class="input-block mb-3">
                                 <label for="height" class="table-content col737 fw-medium">Volume Price(1*1*1)</label>
                                 <input class="form-control input-padding" name="volume_price" id="volume_price"
-                                    type="number" step="any" value="{{ old('volume_price',$editData->volume_price ) }}"
+                                    type="number" step="any" value="{{ old('volume_price', $editData->volume_price) }}"
                                     placeholder="Enter Volume Price" aria-label="default input example">
 
                                 @error('volume_price')
@@ -437,13 +420,15 @@
                                 <div class="col-md-2">
                                     <div class="input-block mb-3 d-flex align-items-center">
                                         <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label> <input
-                                            class="form-check-input mt-0"  {{ old('insurance_have', $editData->insurance_have ?? 'Yes') === 'Yes' ? 'checked' : '' }} type="radio" value="Yes" name="insurance_have">
+                                            class="form-check-input mt-0" {{ old('insurance_have', $editData->insurance_have ?? 'Yes') === 'Yes' ? 'checked' : '' }} type="radio"
+                                            value="Yes" name="insurance_have">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-block mb-3 d-flex align-items-center">
                                         <label class="foncolor mb-0 pt-0 me-2 col3A">No</label> <input
-                                            class="form-check-input mt-0"  {{ old('insurance_have', $editData->insurance_have ?? 'No') === 'No' ? 'checked' : '' }} type="radio" value="No" name="insurance_have">
+                                            class="form-check-input mt-0" {{ old('insurance_have', $editData->insurance_have ?? 'No') === 'No' ? 'checked' : '' }} type="radio"
+                                            value="No" name="insurance_have">
                                     </div>
                                 </div>
                             </div>
@@ -468,26 +453,78 @@
                             <div class="input-block border-0 mb-3">
                                 <label for="color" class="table-content col737 fw-medium">Color<i
                                         class="text-danger">*</i></label>
-                               <select class="js-example-basic-single select2" id="color" name="color">
-                                        <option value="" disabled {{ old('color', $editData->color ?? '') ? '' : 'selected' }}>Select Color</option>
+                                <select class="js-example-basic-single select2" id="color" name="color">
+                                    <option value="" disabled {{ old('color', $editData->color ?? '') ? '' : 'selected' }}>Select Color</option>
 
-                                        @php
-                                            $colors = [
-                                                "Amber", "Aqua", "Beige", "Black", "Blue", "Bronze", "Brown", "Burgundy", "Charcoal", "Cherry", "Cyan",
-                                                "Dark Blue", "Dark Green", "Dark Grey", "Emerald", "Fuchsia", "Gold", "Gray", "Green", "Hot Pink", "Indigo",
-                                                "Ivory", "Lavender", "Lemon", "Light Blue", "Light Brown", "Light Green", "Light Grey", "Lime", "Magenta",
-                                                "Maroon", "Mauve", "Mint", "Mustard", "Navy", "Olive", "Orange", "Peach", "Pink", "Plum", "Purple", "Red",
-                                                "Rose", "Ruby", "Rust", "Salmon", "Sand", "Silver", "Sky Blue", "Slate Grey", "Tan", "Teal", "Turquoise",
-                                                "Violet", "White", "Wine", "Yellow"
-                                            ];
+                                    @php
+                                        $colors = [
+                                            "Amber",
+                                            "Aqua",
+                                            "Beige",
+                                            "Black",
+                                            "Blue",
+                                            "Bronze",
+                                            "Brown",
+                                            "Burgundy",
+                                            "Charcoal",
+                                            "Cherry",
+                                            "Cyan",
+                                            "Dark Blue",
+                                            "Dark Green",
+                                            "Dark Grey",
+                                            "Emerald",
+                                            "Fuchsia",
+                                            "Gold",
+                                            "Gray",
+                                            "Green",
+                                            "Hot Pink",
+                                            "Indigo",
+                                            "Ivory",
+                                            "Lavender",
+                                            "Lemon",
+                                            "Light Blue",
+                                            "Light Brown",
+                                            "Light Green",
+                                            "Light Grey",
+                                            "Lime",
+                                            "Magenta",
+                                            "Maroon",
+                                            "Mauve",
+                                            "Mint",
+                                            "Mustard",
+                                            "Navy",
+                                            "Olive",
+                                            "Orange",
+                                            "Peach",
+                                            "Pink",
+                                            "Plum",
+                                            "Purple",
+                                            "Red",
+                                            "Rose",
+                                            "Ruby",
+                                            "Rust",
+                                            "Salmon",
+                                            "Sand",
+                                            "Silver",
+                                            "Sky Blue",
+                                            "Slate Grey",
+                                            "Tan",
+                                            "Teal",
+                                            "Turquoise",
+                                            "Violet",
+                                            "White",
+                                            "Wine",
+                                            "Yellow"
+                                        ];
 
-                                            $selectedColor = old('color', $editData->color ?? '');
-                                        @endphp
+                                        $selectedColor = old('color', $editData->color ?? '');
+                                    @endphp
 
-                                        @foreach ($colors as $color)
-                                            <option value="{{ $color }}" {{ $selectedColor == $color ? 'selected' : '' }}>{{ $color }}</option>
-                                        @endforeach
-                                    </select>
+                                    @foreach ($colors as $color)
+                                        <option value="{{ $color }}" {{ $selectedColor == $color ? 'selected' : '' }}>
+                                            {{ $color }}</option>
+                                    @endforeach
+                                </select>
 
                                 @error('color')
                                     <span class="text-danger">{{ $message }}</span>
@@ -513,7 +550,8 @@
                                 <label for="model_number" class="table-content col737 fw-medium">Model Number<i
                                         class="text-danger">*</i></label>
                                 <input type="text" class="form-control input-padding" name="model_number"
-                                    id="model_number_supply" step="any" value="{{ old('model_number',$editData->model_number) }}"
+                                    id="model_number_supply" step="any"
+                                    value="{{ old('model_number', $editData->model_number) }}"
                                     placeholder="Enter Item Model Number" aria-label="default input example">
                                 @error('model_number')
                                     <span class="text-danger">{{ $message }}</span>
@@ -525,21 +563,25 @@
                             <div class="input-block border-0 mb-3">
                                 <label for="open" class="table-content col737 fw-medium">Open <i
                                         class="text-danger">*</i></label>
-                                    @php
-                                        $selectedOpen = old('open', $editData->open ?? '');
-                                    @endphp
-                                    <select class="js-example-basic-single select2" id="open_supply" name="open">
-                                        <option value="" disabled {{ $selectedOpen ? '' : 'selected' }}>Select Open</option>
-                                        <option value="Top" {{ $selectedOpen == 'Top' ? 'selected' : '' }}>Top</option>
-                                        <option value="Bottom" {{ $selectedOpen == 'Bottom' ? 'selected' : '' }}>Bottom</option>
-                                        <option value="Left" {{ $selectedOpen == 'Left' ? 'selected' : '' }}>Left</option>
-                                        <option value="Right" {{ $selectedOpen == 'Right' ? 'selected' : '' }}>Right</option>
-                                        <option value="Front" {{ $selectedOpen == 'Front' ? 'selected' : '' }}>Front</option>
-                                        <option value="Back" {{ $selectedOpen == 'Back' ? 'selected' : '' }}>Back</option>
-                                        <option value="Top & Bottom" {{ $selectedOpen == 'Top & Bottom' ? 'selected' : '' }}>Top & Bottom</option>
-                                        <option value="Left & Right" {{ $selectedOpen == 'Left & Right' ? 'selected' : '' }}>Left & Right</option>
-                                        <option value="All Sides" {{ $selectedOpen == 'All Sides' ? 'selected' : '' }}>All Sides</option>
-                                    </select>
+                                @php
+                                    $selectedOpen = old('open', $editData->open ?? '');
+                                @endphp
+                                <select class="js-example-basic-single select2" id="open_supply" name="open">
+                                    <option value="" disabled {{ $selectedOpen ? '' : 'selected' }}>Select Open</option>
+                                    <option value="Top" {{ $selectedOpen == 'Top' ? 'selected' : '' }}>Top</option>
+                                    <option value="Bottom" {{ $selectedOpen == 'Bottom' ? 'selected' : '' }}>Bottom
+                                    </option>
+                                    <option value="Left" {{ $selectedOpen == 'Left' ? 'selected' : '' }}>Left</option>
+                                    <option value="Right" {{ $selectedOpen == 'Right' ? 'selected' : '' }}>Right</option>
+                                    <option value="Front" {{ $selectedOpen == 'Front' ? 'selected' : '' }}>Front</option>
+                                    <option value="Back" {{ $selectedOpen == 'Back' ? 'selected' : '' }}>Back</option>
+                                    <option value="Top & Bottom" {{ $selectedOpen == 'Top & Bottom' ? 'selected' : '' }}>
+                                        Top & Bottom</option>
+                                    <option value="Left & Right" {{ $selectedOpen == 'Left & Right' ? 'selected' : '' }}>
+                                        Left & Right</option>
+                                    <option value="All Sides" {{ $selectedOpen == 'All Sides' ? 'selected' : '' }}>All
+                                        Sides</option>
+                                </select>
                                 @error('open')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -588,8 +630,8 @@
                                 <label for="re_order_point" class="table-content col737 fw-medium">Re-order
                                     Point</label>
                                 <input class="form-control input-padding" type="number" name="re_order_point"
-                                    value="{{ old('re_order_point', $editData->re_order_point) }}" placeholder="Enter Re-order Point"
-                                    aria-label="default input example">
+                                    value="{{ old('re_order_point', $editData->re_order_point) }}"
+                                    placeholder="Enter Re-order Point" aria-label="default input example">
                             </div>
                         </div>
 
@@ -598,8 +640,8 @@
                                 <label for="re_order_quantity" class="table-content col737 fw-medium">Re-order
                                     Quantity</label>
                                 <input class="form-control input-padding" type="number" name="re_order_quantity"
-                                    value="{{ old('re_order_quantity', $editData->re_order_quantity) }}" placeholder="Enter Re-order Quantity"
-                                    aria-label="default input example">
+                                    value="{{ old('re_order_quantity', $editData->re_order_quantity) }}"
+                                    placeholder="Enter Re-order Quantity" aria-label="default input example">
                             </div>
                         </div>
 
@@ -621,9 +663,9 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="input-block mb-3">
                                 <label for="weight" class="table-content col737 fw-medium">Tax(%)</label>
-                                <input class="form-control input-padding" value="{{ old('tax_percentage', $editData->tax_percentage) }}"
-                                    type="number" name="tax_percentage" placeholder="Enter Tax"
-                                    aria-label="default input example">
+                                <input class="form-control input-padding"
+                                    value="{{ old('tax_percentage', $editData->tax_percentage) }}" type="number"
+                                    name="tax_percentage" placeholder="Enter Tax" aria-label="default input example">
                                 @error('tax_percentage')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -633,15 +675,19 @@
                     </div>
                 </div>
 
-                <input class="no-border" type="hidden" name="country_hidden" value="{{ old('country_hidden', $editData->country) }}">
-                <input class="no-border" type="hidden" name="state_hidden" value="{{ old('state_hidden', $editData->state) }}">
-                <input class="no-border" type="hidden" name="city_hidden" value="{{ old('city_hidden', $editData->city) }}">
+                <input class="no-border" type="hidden" name="country_hidden"
+                    value="{{ old('country_hidden', $editData->country) }}">
+                <input class="no-border" type="hidden" name="state_hidden"
+                    value="{{ old('state_hidden', $editData->state) }}">
+                <input class="no-border" type="hidden" name="city_hidden"
+                    value="{{ old('city_hidden', $editData->city) }}">
 
             </div>
             <!-- Status and Buttons -->
             <div class="add-customer-btns d-flex" style="justify-self: right">
                 <div class="btnWrapper">
-                    <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
+                    <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
+                        class="btn btn-outline-primary custom-btn">Cancel</button>
                     <button type="submit" class="btn btn-primary ">Submit</button>
                 </div>
             </div>
@@ -691,86 +737,6 @@
 
         <script>
             const originalCountryOptions = $('#country option').clone();
-            function updateInventoryDivs(selectedValue) {
-                // === Existing UI Visibility Logic ===
-                if (selectedValue === 'Ocean Cargo' || selectedValue === 'Air Cargo') {
-                    document.getElementById('cargoDiv').style.display = 'block';
-                    document.getElementById('low_stock_warning').style.display = 'none';
-                    document.getElementById('minimum_order_limit').style.display = 'none';
-                    document.getElementById('retail_vaule_price').style.display = 'none';
-                    document.getElementById('retail_shipping_price').style.display = 'block';
-                    document.getElementById('CargoTagDiv').style.display = 'block';
-                    document.getElementById('SupplyTagDiv').style.display = 'none';
-                    document.getElementById('capacityDiv').style.display = 'none';
-                    document.getElementById('weightPriceDiv').style.display = 'block';
-                } else {
-                    document.getElementById('cargoDiv').style.display = 'none';
-                    document.getElementById('low_stock_warning').style.display = 'block';
-                    document.getElementById('minimum_order_limit').style.display = 'block';
-                    document.getElementById('retail_vaule_price').style.display = 'block';
-                    document.getElementById('retail_shipping_price').style.display = 'none';
-                    document.getElementById('SupplyTagDiv').style.display = 'block';
-                    document.getElementById('CargoTagDiv').style.display = 'none';
-                    document.getElementById('capacityDiv').style.display = 'block';
-                    document.getElementById('weightPriceDiv').style.display = 'none';
-                }
-
-                document.getElementById('supplyDiv').style.display = selectedValue === 'Supply' ? 'block' : 'none';
-
-                // === Country Select Box Logic ===
-
-
-               let countryOptionsData = @json(setting()->warehouseContries());
-                let selectedCountry = $('input[name="country_hidden"]').val(); // hidden input se selected value le rahe hain
-
-                let countryOptions = '<option value="" disabled>Select Country</option>';
-
-                if (selectedValue === 'Ocean Cargo' || selectedValue === 'Air Cargo') {
-                    countryOptions += countryOptionsData.map(country => {
-                        let selectedAttr = country.name === selectedCountry ? 'selected' : '';
-                        return `<option value="${country.name}" data-id="${country.id}" ${selectedAttr}>${country.name}</option>`;
-                    }).join('');
-                    $('#country').html(countryOptions);
-                } else {
-                    let selectedAttr = selectedCountry === 'United States' ? 'selected' : '';
-                    $('#country').html(
-                        countryOptions + `<option data-id="233" value="United States" ${selectedAttr}>United States</option>`
-                    );
-                }
-
-            }
-
-
-            document.querySelectorAll('input[name="inventary_sub_type"]').forEach(function (radio) {
-                radio.addEventListener('change', function () {
-                    updateInventoryDivs(this.value);
-                });
-            });
-
-            window.addEventListener('DOMContentLoaded', function () {
-                const checkedRadio = document.querySelector('input[name="inventary_sub_type"]:checked');
-                if (checkedRadio) {
-                    updateInventoryDivs(checkedRadio.value);
-                }
-            });
-
-            // document.addEventListener("DOMContentLoaded", function () {
-            //     let statusToggle = document.getElementById("status");
-            //     let activeText = document.getElementById("activeText");
-            //     let inactiveText = document.getElementById("inactiveText");
-            //     function updateTextColor() {
-            //         if (statusToggle.checked) {
-            //             activeText.classList.add("bold");
-            //             inactiveText.classList.remove("bold");
-            //         } else {
-            //             activeText.classList.remove("bold");
-            //             inactiveText.classList.add("bold");
-            //         }
-            //     }
-            //     updateTextColor();
-            //     statusToggle.addEventListener("change", updateTextColor);
-            // });
-
             const inventoryImageInput = document.getElementById('inventory_image');
             const preview = document.getElementById('preview');
             const uploadedImg = document.querySelector('#upload_inventory_image img');
@@ -798,124 +764,124 @@
         </script>
 
         <script>
-        function openImagePicker() {
-            document.getElementById('inventory_image').click();
-        }
+            function openImagePicker() {
+                document.getElementById('inventory_image').click();
+            }
 
-        document.getElementById('inventory_image').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            document.getElementById('inventory_image').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById('inventory_img_preview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    preview.style.display = 'inline-block';
+                    preview.style.maxWidth = '150px';
+                    preview.style.height = 'auto';
+                };
+                reader.readAsDataURL(file);
+
+                // Reset delete flag
+                document.getElementById('delete_img').value = '0';
+            });
+
+            function removeImage() {
                 const preview = document.getElementById('inventory_img_preview');
-                preview.src = e.target.result;
-                preview.classList.remove('d-none');
-                preview.style.display = 'inline-block';
-                preview.style.maxWidth = '150px';
-                preview.style.height = 'auto';
-            };
-            reader.readAsDataURL(file);
+                const fileInput = document.getElementById('inventory_image');
+                const deleteInput = document.getElementById('delete_img');
 
-            // Reset delete flag
-            document.getElementById('delete_img').value = '0';
-         });
-
-        function removeImage() {
-            const preview = document.getElementById('inventory_img_preview');
-            const fileInput = document.getElementById('inventory_image');
-            const deleteInput = document.getElementById('delete_img');
-
-            preview.src = '';
-            preview.classList.add('d-none');
-            fileInput.value = '';
-            deleteInput.value = '1';
-          }
+                preview.src = '';
+                preview.classList.add('d-none');
+                fileInput.value = '';
+                deleteInput.value = '1';
+            }
         </script>
 
         <script>
-                $(document).ready(function () {
-                    const countrySelectors = ['#country', '#country_supply'];
-                    const stateSelectors = ['#state', '#state_supply'];
-                    const citySelectors = ['#city', '#city_supply'];
+            $(document).ready(function () {
+                const countrySelectors = ['#country'];
+                const stateSelectors = ['#state'];
+                const citySelectors = ['#city'];
 
-                    const hiddenCountry = $('input[name="country_hidden"]').val();
-                    const hiddenState = $('input[name="state_hidden"]').val();
-                    const hiddenCity = $('input[name="city_hidden"]').val();
+                const hiddenCountry = $('input[name="country_hidden"]').val();
+                const hiddenState = $('input[name="state_hidden"]').val();
+                const hiddenCity = $('input[name="city_hidden"]').val();
 
-                    // Load states based on country data-id
-                    function loadStates(countryId, stateSelector, selectedState = '') {
-                        $(stateSelector).html('<option selected>Loading...</option>');
-                        $.get('/api/get-states/' + countryId, function (states) {
-                            let stateOptions = '<option value="">Select State</option>';
-                            $.each(states, function (i, state) {
-                                const selected = state.name === selectedState ? 'selected' : '';
-                                stateOptions += `<option value="${state.name}" data-id="${state.id}" ${selected}>${state.name}</option>`;
-                            });
-                            $(stateSelector).html(stateOptions);
-
-                            // Load cities if selectedState is passed
-                            if (selectedState) {
-                                const selectedOption = $(stateSelector).find('option:selected');
-                                const stateId = selectedOption.data('id');
-                                const citySelector = getCitySelector(stateSelector);
-                                loadCities(stateId, citySelector, hiddenCity);
-                            }
+                // Load states based on country data-id
+                function loadStates(countryId, stateSelector, selectedState = '') {
+                    $(stateSelector).html('<option selected>Loading...</option>');
+                    $.get('/api/get-states/' + countryId, function (states) {
+                        let stateOptions = '<option value="">Select State</option>';
+                        $.each(states, function (i, state) {
+                            const selected = state.name === selectedState ? 'selected' : '';
+                            stateOptions += `<option value="${state.name}" data-id="${state.id}" ${selected}>${state.name}</option>`;
                         });
-                    }
+                        $(stateSelector).html(stateOptions);
 
-                    // Load cities based on state data-id
-                    function loadCities(stateId, citySelector, selectedCity = '') {
-                        $(citySelector).html('<option selected>Loading...</option>');
-                        $.get('/api/get-cities/' + stateId, function (cities) {
-                            let cityOptions = '<option value="">Select City</option>';
-                            $.each(cities, function (i, city) {
-                                const selected = city.name === selectedCity ? 'selected' : '';
-                                cityOptions += `<option value="${city.name}" data-id="${city.id}" ${selected}>${city.name}</option>`;
-                            });
-                            $(citySelector).html(cityOptions);
-                        });
-                    }
-
-                    // Identify which city selector to use based on state selector
-                    function getCitySelector(stateSelector) {
-                        return stateSelector.includes('_supply') ? '#city_supply' : '#city';
-                    }
-
-                    // Handle country change
-                    $('#country, #country_supply').change(function () {
-                        const selectedOption = $(this).find('option:selected');
-                        const countryId = selectedOption.data('id');
-                        const stateSelector = $(this).attr('id') === 'country' ? '#state' : '#state_supply';
-                        const citySelector = getCitySelector(stateSelector);
-
-                        // Reset state & city
-                        $(stateSelector).html('<option selected>Loading...</option>');
-                        $(citySelector).html('<option value="">Select City</option>');
-
-                        loadStates(countryId, stateSelector);
-                    });
-
-                    // Handle state change
-                    $('#state, #state_supply').change(function () {
-                        const selectedOption = $(this).find('option:selected');
-                        const stateId = selectedOption.data('id');
-                        const citySelector = getCitySelector($(this).attr('id'));
-                        loadCities(stateId, citySelector);
-                    });
-
-                    // Page load: auto select by hidden values
-                    countrySelectors.forEach(selector => {
-                        const countryOption = $(`${selector} option[value="${hiddenCountry}"]`);
-                        if (countryOption.length) {
-                            countryOption.prop('selected', true);
-                            const stateSelector = selector.includes('_supply') ? '#state_supply' : '#state';
-                            const countryId = countryOption.data('id');
-                            loadStates(countryId, stateSelector, hiddenState);
+                        // Load cities if selectedState is passed
+                        if (selectedState) {
+                            const selectedOption = $(stateSelector).find('option:selected');
+                            const stateId = selectedOption.data('id');
+                            const citySelector = getCitySelector(stateSelector);
+                            loadCities(stateId, citySelector, hiddenCity);
                         }
                     });
+                }
+
+                // Load cities based on state data-id
+                function loadCities(stateId, citySelector, selectedCity = '') {
+                    $(citySelector).html('<option selected>Loading...</option>');
+                    $.get('/api/get-cities/' + stateId, function (cities) {
+                        let cityOptions = '<option value="">Select City</option>';
+                        $.each(cities, function (i, city) {
+                            const selected = city.name === selectedCity ? 'selected' : '';
+                            cityOptions += `<option value="${city.name}" data-id="${city.id}" ${selected}>${city.name}</option>`;
+                        });
+                        $(citySelector).html(cityOptions);
+                    });
+                }
+
+                // Identify which city selector to use based on state selector
+                function getCitySelector(stateSelector) {
+                    return stateSelector.includes('_supply') ? '' : '#city';
+                }
+
+                // Handle country change
+                $('#country').change(function () {
+                    const selectedOption = $(this).find('option:selected');
+                    const countryId = selectedOption.data('id');
+                    const stateSelector = $(this).attr('id') === 'country' ? '#state' : '';
+                    const citySelector = getCitySelector(stateSelector);
+
+                    // Reset state & city
+                    $(stateSelector).html('<option selected>Loading...</option>');
+                    $(citySelector).html('<option value="">Select City</option>');
+
+                    loadStates(countryId, stateSelector);
                 });
-            </script>
+
+                // Handle state change
+                $('#state').change(function () {
+                    const selectedOption = $(this).find('option:selected');
+                    const stateId = selectedOption.data('id');
+                    const citySelector = getCitySelector($(this).attr('id'));
+                    loadCities(stateId, citySelector);
+                });
+
+                // Page load: auto select by hidden values
+                countrySelectors.forEach(selector => {
+                    const countryOption = $(`${selector} option[value="${hiddenCountry}"]`);
+                    if (countryOption.length) {
+                        countryOption.prop('selected', true);
+                        const stateSelector = selector.includes('_supply') ? '' : '#state';
+                        const countryId = countryOption.data('id');
+                        loadStates(countryId, stateSelector, hiddenState);
+                    }
+                });
+            });
+        </script>
     @endsection
 
 </x-app-layout>

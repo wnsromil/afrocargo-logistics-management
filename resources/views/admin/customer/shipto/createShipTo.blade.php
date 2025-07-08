@@ -63,10 +63,18 @@
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="foncolor" for="fullName">Full Name <i class="text-danger">*</i></label>
-                            <input type="text" name="first_name" class="form-control inp" placeholder="Enter Full Name"
+                            <label class="foncolor" for="fullName">First Name <i class="text-danger">*</i></label>
+                            <input type="text" name="first_name" class="form-control inp" placeholder="Enter First Name"
                                 value="{{ old('first_name') }}">
                             @error('first_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                          <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="last_name">Last Name <i class="text-danger">*</i></label>
+                            <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name"
+                                value="{{ old('last_name') }}">
+                            @error('last_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        \DB::statement("ALTER TABLE `individual_payments` ADD `currency` VARCHAR(20) NULL DEFAULT 'USD' AFTER `local_currency`");
+        // \DB::statement("ALTER TABLE `individual_payments` ADD `currency` VARCHAR(20) NULL DEFAULT 'USD' AFTER `id`");
         \DB::statement("ALTER TABLE `individual_payments` CHANGE `currency` `local_currency` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL");
         
     }

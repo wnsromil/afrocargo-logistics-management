@@ -52,14 +52,24 @@
                                             placeholder="Enter Company Name" value="{{ old('company_name') }}">
                                     </div>
                                     <div class="col-md-12 mb-2">
-                                        <label class="foncolor" for="first_name">Full Name <i
+                                        <label class="foncolor" for="first_name">First Name <i
                                                 class="text-danger">*</i></label>
                                         <input type="text" name="first_name" class="form-control inp"
-                                            placeholder="Enter Full Name" value="{{ old('first_name') }}">
+                                            placeholder="Enter First Name" value="{{ old('first_name') }}">
                                         @error('first_name')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="foncolor" for="last_name">Last Name <i
+                                                class="text-danger">*</i></label>
+                                        <input type="text" name="last_name" class="form-control inp"
+                                            placeholder="Enter Last Name" value="{{ old('last_name') }}">
+                                        @error('last_name')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
                                     <div class="col-md-12 mb-2 mobile_code">
                                         <label class="foncolor" for="alternate_mobile_no">Mobile No.</label>
                                         <div class="flaginputwrap">

@@ -65,8 +65,6 @@ class OrderStatusManage extends Controller
 
     public function statusUpdate_PickUpWithDriver(Request $request)
     {
-        dd($request->all());
-
         // Validate the request data
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',

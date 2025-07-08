@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add pickup Address') }}
+            {{ __('Edit pickup Address') }}
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
         <div class="d-flex innertopnav w-100 justify-content-between">
-            <p class="subhead pheads">Add pickup Address</p>
+            <p class="subhead pheads">Edit pickup Address</p>
 
         </div>
     </x-slot>
@@ -15,9 +15,20 @@
         $pickupDate = isset($UserPickupDetail->pickup_date) ? Carbon::parse($UserPickupDetail->Date)->format('Y-m-d') : '';
     @endphp
 
+
+    {{-- @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif --}}
+
     <div class="container p-0">
         <div class="row">
-            <div class="col-md-auto pickup-font-1 text-dark-shade">Add Pickups</div>
+            <div class="col-md-auto pickup-font-1 text-dark-shade">Edit Pickups</div>
             <div class="col-md-auto pickup-font-2 text-dark-shade mx-4">Customer Balance: <span
                     class="danger-shade pickup-font-1">
                     $
@@ -33,7 +44,7 @@
                 Pickups</a>
         </div>
         <div class="d-flex justify-content-end pickup-margin">
-            <button type="button" class="btn btn-color fw-medium">Back</button>
+            <a href="{{ url()->previous() }}" class="btn btn-color fw-medium">Back</a>
         </div>
     </div>
     {{--
@@ -47,7 +58,8 @@
     </div>
     @endif --}}
 
-    <form action="{{ route('admin.customer.pickup-edit', $UserPickupDetail->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.customer.pickup-edit', $UserPickupDetail->id) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         <div class="row border rounded-top px-1 py-1">
             <div class="row px-3 py-2">
@@ -92,7 +104,7 @@
                     </div>
                     <div class="row align-items-center my-4">
                         <div class="col-4 px-0 text-end">
-                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Full
+                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">First
                                 Name
                                 <i class="text-danger">*</i>
                             </label>
@@ -100,9 +112,25 @@
                         <div class="col-8 justify-content-end">
                             <input type="text" id="pickup_name" name="pickup_name"
                                 value="{{ old('pickup_name', $UserPickupDetail->pickupAddress->name ?? null) }}"
-                                class="form-control form-control-sm" placeholder="Enter Name" value="">
+                                class="form-control form-control-sm" placeholder="Enter First Name" value="">
                             @error('pickup_name')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger">First name is required</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row align-items-center my-4">
+                        <div class="col-4 px-0 text-end">
+                            <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Last
+                                Name
+                                <i class="text-danger">*</i>
+                            </label>
+                        </div>
+                        <div class="col-8 justify-content-end">
+                            <input type="text" id="pickup_last_name" name="pickup_last_name"
+                                value="{{ old('pickup_last_name', $UserPickupDetail->pickupAddress->last_name ?? null) }}"
+                                class="form-control form-control-sm" placeholder="Enter Name" value="">
+                            @error('pickup_last_name')
+                                <small class="text-danger">Last name is required</small>
                             @enderror
                         </div>
                     </div>
@@ -303,7 +331,7 @@
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
                                     placeholder="Enter Item 2"
-                                    value="{{ old('item2', $UserPickupDetail->item2 ?? null) }}" name="item2">
+                                    value="{{ old('item2', $UserPickupDetail->Item2 ?? null) }}" name="item2">
                             </div>
                         </div>
                         <div class="row align-items-center my-3">
@@ -355,7 +383,8 @@
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    value="{{ $pickupDate }}" placeholder="Enter Date" name="pickup_date" readonly style="background:#d3d3d3">
+                                    value="{{ old('pickup_date', \Carbon\Carbon::parse($UserPickupDetail->Date ?? '')->format('m/d/Y')) }}"
+                                    placeholder="Enter Date" name="pickup_date" readonly style="background:#d3d3d3">
                                 @error('pickup_date')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -369,7 +398,8 @@
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="time" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    value="" placeholder="Enter Date" name="pickup_time">
+                                    value="{{ old('pickup_time', \Carbon\Carbon::parse($UserPickupDetail->time ?? '')->format('H:i')) }}"
+                                    placeholder="Enter Time" name="pickup_time">
                             </div>
                         </div>
 
@@ -380,8 +410,19 @@
                                     Date</label>
                             </div>
                             <div class="col-8 justify-content-end">
-                                <input type="text" id="masterPickUpAddressId" class="form-control form-control-sm"
-                                    value="" placeholder="Enter Date" name="done_date" readonly style="background:#d3d3d3">
+                                @php
+                                    $doneDate = '';
+                                    if (!empty($UserPickupDetail->Done_Date)) {
+                                        try {
+                                            $doneDate = \Carbon\Carbon::parse($UserPickupDetail->Done_Date)->format('m/d/Y'); // ✅ MM/DD/YYYY
+                                        } catch (\Exception $e) {
+                                            $doneDate = '';
+                                        }
+                                    }
+                                @endphp
+                                <input type="text" name="done_date" class="form-control form-control-sm"
+                                    value="{{ old('done_date', $doneDate) }}" placeholder="Enter Date" readonly
+                                    style="background:#d3d3d3">
                             </div>
                         </div>
                     </div>
@@ -433,6 +474,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 col-sm-6 col-lg-3 my-3">
                         <div class="row align-items-center">
                             <div class="col-4 px-0 text-end">
@@ -538,15 +580,30 @@
                         <div class="row align-items-center my-3">
                             <div class="col-4 px-0 text-end">
                                 <label for="masterPickUpAddressId"
-                                    class="col-form-label font-size-label text-dark-shade">Full
+                                    class="col-form-label font-size-label text-dark-shade">First
                                     Name<i class="text-danger">*</i>
                                 </label>
                             </div>
                             <div class="col-8 justify-content-end">
                                 <input type="text" name="shipto_name" id="shipto_name"
-                                    class="form-control form-control-sm" placeholder="Enter Full Name">
+                                    class="form-control form-control-sm" placeholder="Enter First Name">
                                 @error('shipto_name')
                                     <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row align-items-center my-3">
+                            <div class="col-4 px-0 text-end">
+                                <label for="masterPickUpAddressId"
+                                    class="col-form-label font-size-label text-dark-shade">Last
+                                    Name<i class="text-danger">*</i>
+                                </label>
+                            </div>
+                            <div class="col-8 justify-content-end">
+                                <input type="text" name="shipto_last_name" id="shipto_last_name"
+                                    class="form-control form-control-sm" placeholder="Enter Last Name">
+                                @error('shipto_last_name')
+                                    <small class="text-danger">Shipto last name is required</small>
                                 @enderror
                             </div>
                         </div>
@@ -720,12 +777,23 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col px-0 text-end">
-                                        <label class="foncolor" for="country">Full
+                                        <label class="col-form-label text-dark" for="country">First
                                             Name<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" id="" name="full_name" class="form-control form-control-sm"
-                                            placeholder="Enter Full Name" value="">
+                                            placeholder="Enter First Name" value="">
+
+                                    </div>
+                                </div>
+                                <div class="row align-items-center margin-top-top">
+                                    <div class="col px-0 text-end">
+                                        <label class="col-form-label text-dark" for="country">Last
+                                            Name<i class="text-danger">*</i></label>
+                                    </div>
+                                    <div class="col-9 justify-content-end">
+                                        <input type="text" id="" name="last_name" class="form-control form-control-sm"
+                                            placeholder="Enter Last Name" value="">
 
                                     </div>
                                 </div>
@@ -749,7 +817,7 @@
                                                 </select>
                                             </div>
                                             <input type="number" class="form-control form-control-sm flagInput inp"
-                                                placeholder="201-747-3177" name="mobile_number"
+                                                placeholder="Enter Cell Phone" name="mobile_number"
                                                 value="{{ old('mobile_number') }}"
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
@@ -778,7 +846,7 @@
                                                 </select>
                                             </div>
                                             <input type="number" class="form-control form-control-sm flagInput inp"
-                                                placeholder="201-747-3177" name="alternate_mobile_no"
+                                                placeholder="Enter TelePhone" name="alternate_mobile_no"
                                                 value="{{ old('alternate_mobile_no') }}"
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
@@ -887,18 +955,16 @@
                             </div>
                             <div class="text-end mt-3">
                                 <button type="button"
-                                    onclick="redirectTo('{{ route('admin.customer.viewPickups', $id) }}')"
+                                    onclick="redirectTo('{{ route('admin.customer.updatePickup', $id) }}')"
                                     class="btn btn-outline-dark btn-sm">Cancel</button>
                                 <button type="submit" id="modelsubmitBtn" class="btn btn-dark btn-sm">Save</button>
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
-
     <!-- ------------------- 2nd modal ---------------------------- -->
 
     <div class="modal custom-modal fade" id="shiptoAddressModal" aria-labelledby="shiptoAddressModalLabel"
@@ -974,12 +1040,22 @@
                                 </div>
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col px-0 text-end">
-                                        <label for="masterPickUpAddressId" class="col-form-label text-dark">Full
+                                        <label for="masterPickUpAddressId" class="col-form-label text-dark">First
                                             Name<i class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" name="first_name" class="form-control inp"
-                                            placeholder="Enter Full Name" value="{{ old('first_name') }}">
+                                            placeholder="Enter First Name" value="{{ old('first_name') }}">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center margin-top-top">
+                                    <div class="col px-0 text-end">
+                                        <label for="masterPickUpAddressId" class="col-form-label text-dark">Last
+                                            Name<i class="text-danger">*</i></label>
+                                    </div>
+                                    <div class="col-9 justify-content-end">
+                                        <input type="text" name="last_name" class="form-control inp"
+                                            placeholder="Enter Last Name" value="{{ old('last_name') }}">
                                     </div>
                                 </div>
                                 <div class="row align-items-center margin-top-top">
@@ -1028,7 +1104,7 @@
                                                 </select>
                                             </div>
                                             <input type="number" class="form-control flagInput inp"
-                                                placeholder="Enter Mobile No. 2" name="alternative_mobile_number"
+                                                placeholder="Enter TelePhone" name="alternative_mobile_number"
                                                 value="{{ old('alternative_mobile_number') }}"
                                                 oninput="this.value = this.value.slice(0, 10)">
                                         </div>
@@ -1137,7 +1213,7 @@
                                         <label for="License_Id" class="col-form-label text-dark">License Picture</label>
                                     </div>
                                     <div class="col-9 justify-content-end">
-                                        <div class="" style="position: relative;">
+                                        <div class="" style="position: relative; width: fit-content;">
                                             <!-- Image Preview -->
                                             <img id="preview_license_picture" class="avtars avtarc"
                                                 src="{{ asset('assets/img/licenceID_placeholder.jpg') }}" alt="avatar">
@@ -1147,7 +1223,7 @@
                                                 accept="image/png, image/jpeg" style="display: none;"
                                                 onchange="previewImage(this, 'license_picture')">
 
-                                            <div class="divedit">
+                                            <div class="divedit" style="top: 0px !important;">
                                                 <!-- Edit Button -->
                                                 <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}"
                                                     alt="edit" style="cursor: pointer;"
@@ -1167,14 +1243,13 @@
                             <!-- #region -->
                             <div class="text-end mt-3">
                                 <button type="button"
-                                    onclick="redirectTo('{{ route('admin.customer.viewPickups', $id) }}')"
+                                    onclick="redirectTo('{{ route('admin.customer.updatePickup', $id) }}')"
                                     class="btn btn-outline-dark btn-sm">Cancel</button>
                                 <button type="submit" id="model_ship_submit_Btn"
                                     class="btn btn-dark btn-sm">Save</button>
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -1443,6 +1518,7 @@
                 function fillPickupUserDetails(user) {
                     document.getElementById('unique_id').value = user.unique_id || '';
                     document.getElementById('pickup_name').value = user.name || '';
+                    document.getElementById('pickup_last_name').value = user.last_name || '';
                     document.getElementById('latitude').value = user.latitude || '';
                     document.getElementById('longitude').value = user.longitude || '';
                     document.getElementById('address').value = user.address || '';
@@ -1510,6 +1586,7 @@
 
                 function fillShipToUserDetails(user) {
                     document.getElementById('shipto_name').value = user.name || '';
+                    document.getElementById('shipto_last_name').value = user.last_name || '';
                     document.getElementById('shipto_latitude').value = user.latitude || '';
                     document.getElementById('shipto_longitude').value = user.longitude || '';
                     document.getElementById('shipto_address').value = user.address || '';

@@ -56,6 +56,11 @@ class Parcel extends Model
         return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
     }
 
+    public function container()
+    {
+        return $this->belongsTo(Vehicle::class, 'container_id');
+    }
+
     public function arrivedDriver()
     {
         return $this->belongsTo(User::class, 'arrived_driver_id')->with(['country', 'state', 'city']);
@@ -90,12 +95,12 @@ class Parcel extends Model
 
     public function pickupaddress()
     {
-        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user','country','city','state']);
+        return $this->belongsTo(Address::class, 'pickup_address_id')->with(['user', 'country', 'city', 'state']);
     }
 
     public function deliveryaddress()
     {
-        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user','country','city','state']);
+        return $this->belongsTo(Address::class, 'delivery_address_id')->with(['user', 'country', 'city', 'state']);
     }
 
     public function getCategoryNamesAttribute()
