@@ -6,6 +6,7 @@
                     <tr>
                         <th>S. No.</th>
                         <th>Date</th>
+                        <th>Invoice Type</th>
                         <th>Customer</th>
                         <th>Address</th>
                         <th>Consignee</th>
@@ -14,7 +15,7 @@
                         <th>Balance</th>
                         <th>Container</th>
                         <th>User</th>
-                        <th>Warehouse   </th>
+                        <th>Warehouse </th>
                         {{-- <th>Items</th> --}}
                         <th>Action</th>
                     </tr>
@@ -24,6 +25,7 @@
                     <tr>
                         <td>{{ ++$index }}</td>
                         <td>{{ $invoice->created_at->format('d/m/Y H:i') ?? '-' }}</td>
+                        <td>{{ $invoice->transport_type ?? '' }}</td>
                         <td><a href="{{route('admin.invoices.edit',$invoice->id)}}" class="text-danger">
                                 {{ $invoice->deliveryAddress->full_name ?? '-' }}</a>
                         </td>
@@ -133,7 +135,7 @@
                                                         <div class="col-md-2"><small
                                                                 class="d-md-none fw-bold">Currency:</small> {{
                                                             $payment->currency ?? '-' }}</div>
-                                                        
+
                                                     </div>
                                                     @empty
                                                     <div class="text-center py-3 text-muted">No Payments Found</div>
@@ -206,12 +208,20 @@
                                                                 data-bs-target="#InvoiceLabel{{$invoice->id ?? ''}}">
                                                                 <i class="ti ti-tag-starred me-2"></i>Labels</a> --}}
 
-                                                            @if (!empty($invoice->barcodes) && $invoice->barcodes->where('ParcelInventory', '!=', null)->isNotEmpty())
-                                                                <a class="dropdown-item" title="Labels" href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels" target="_blank">
+                                                            @if (!empty($invoice->barcodes) && count($invoice->barcodes) > 0)
+                                                            <a class="dropdown-item" title="Labels"
+                                                                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
+                                                                target="_blank">
                                                                 <i class="ti ti-tag-starred me-2"></i>Labels</a>
                                                             @else
-                                                                <a class="dropdown-item" title="Labels" href="javascript:void(0)" onclick="alertMsg('No labels have been generated for this invoice yet.','error')">
+                                                            <a class="dropdown-item" title="Labels"
+                                                                href="javascript:void(0)"
+                                                                onclick="alertMsg('Please generated labels, No labels have been generated for this invoice yet.','error')"
+                                                                data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
+                                                                data-bs-target="#createLabel{{$invoice->id ?? ''}}">
                                                                 <i class="ti ti-tag-starred me-2"></i>Labels</a>
+
+                                                                
                                                             @endif
                                                         </li>
                                                         <li>
@@ -238,6 +248,7 @@
                                                         </li> --}}
                                                     </ul>
                                                 </div>
+                                                
 
                                         </td>
 
@@ -252,7 +263,8 @@
 
             </table>
             @foreach ($invoices as $invoice)
-            @include('admin.Invoices.modals.individual_payment_modal')
+                @include('admin.Invoices.modals.AddnewLable')
+                @include('admin.Invoices.modals.individual_payment_modal')
             @endforeach
         </div>
     </div>

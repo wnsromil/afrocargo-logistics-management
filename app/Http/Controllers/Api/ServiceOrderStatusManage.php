@@ -27,7 +27,7 @@ class ServiceOrderStatusManage extends Controller
         $status = $request->status;
         $search = $request->search;
 
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse']);
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse','container']);
 
         // Filter by driver type
         if ($percelType === 'Service') {

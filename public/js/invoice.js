@@ -3,6 +3,7 @@
 var supplyItems = {};
 var pickupAddress = {};
 var deliveryAddress = {};
+var sipToAddress = [];
 var currentRow = null;
 var invoce_type = "services";
 let exchangeRates = [];
@@ -14,44 +15,50 @@ function toggleLoginForm(type) {
         // document.getElementById('supplies').style.display = 'none';
         document.getElementById("servicesBtn").classList.add("active3");
         document.getElementById("suppliesBtn").classList.remove("active3");
+        $('#service_type').removeClass('d-none');
 
         $('input[name="invoce_type"]').val("services");
         invoce_type = "services";
 
-        $("#addShiptoAddress")
-            .removeClass("disabled")
-            .css("pointer-events", "auto")
-            .css("opacity", "1");
+        // $("#addShiptoAddress")
+        //     .removeClass("disabled")
+        //     .css("pointer-events", "auto")
+        //     .css("opacity", "1");
 
         $("#ship_customer").prop("disabled", false);
 
         // $("#supplies_items").addClass("d-none");
-        $("#description_services_items").removeClass("d-none");
-        $("#weight_services_items").removeClass("d-none");
-        if ($('input[name="transport_type"]').val() == "air") {
+        // $("#description_services_items").removeClass("d-none");//old code
+        // $("#weight_services_items").removeClass("d-none");//old code
+        if ($('input[name="transport_type"]').val() == "Air Cargo") {
             $('select[name="container_id"]').prop("disabled", true);
         } else {
             $('select[name="container_id"]').prop("disabled", false);
         }
+
     } else if (type === "supplies") {
         // document.getElementById('services').style.display = 'none';
         // document.getElementById('supplies').style.display = 'block';
         document.getElementById("servicesBtn").classList.remove("active3");
         document.getElementById("suppliesBtn").classList.add("active3");
+        $('#service_type').addClass('d-none');
 
         $('input[name="invoce_type"]').val("supplies");
         invoce_type = "supplies";
 
-        $("#addShiptoAddress")
-            .addClass("disabled") // Add a visual cue
-            .css("pointer-events", "none") // Disable clicking
-            .css("opacity", "0.6"); // Optional: faded look
+        // $("#addShiptoAddress")
+        //     .addClass("disabled") // Add a visual cue
+        //     .css("pointer-events", "none") // Disable clicking
+        //     .css("opacity", "0.6"); // Optional: faded look
 
         $("#ship_customer").prop("disabled", true);
 
         // $("#supplies_items").removeClass("d-none");
-        $("#description_services_items").addClass("d-none");
-        $("#weight_services_items").addClass("d-none");
+        // $("#description_services_items").addClass("d-none"); //old code
+
+        // $("#weight_services_items").addClass("d-none");//old code
+
+
         $('select[name="container_id"]') // optional: if you use this class for styling
             .prop("disabled", true) // this is essential
             .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
@@ -62,7 +69,7 @@ function toggleLoginForm(type) {
 $('input[name="transport_type"]').on("click", function () {
     const transportType = $(this).val();
     console.log("Transport Type:", transportType);
-    if (transportType == "air") {
+    if (transportType == "Air Cargo") {
         $('select[name="container_id"]')
             .prop("disabled", true) // this is essential
             .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
@@ -205,8 +212,18 @@ $(document).ready(function () {
         console.log("address_type", address_type);
     });
 
-    $('select[name="customer_id"]').select2({
+    $('#delevery_customer_id').select2({
         ajax: {
+            transport: function (params, success, failure) {
+                // Only make API call if address_type is 'pickup'
+                if (address_type === "pickup") {
+                    return $.ajax(params).then(success, failure);
+                } else {
+                    // Return empty results if not pickup
+                    success({ results: [] });
+                    return null;
+                }
+            },
             url: "/customerSearch",
             dataType: "json",
             delay: 250,
@@ -230,19 +247,28 @@ $(document).ready(function () {
                                     id: customer.pickup_address.id ?? "",
                                     text: customer.pickup_address.text ?? "",
                                     customer: customer ?? "", // Store the full customer object
+                                    delivery_address:customer.delivery_address
                                 };
-                            } else if (customer.delivery_address) {
-                                return {
-                                    id: customer.delivery_address.id ?? "",
-                                    text: customer.delivery_address.text ?? "",
-                                    customer: customer ?? "", // Store the full customer object
-                                };
-                            } else {
+                            } 
+                            // if(customer.delivery_address){
+                            //     customer.delivery_address.forEach(addr => {
+                            //         let newOption = new Option(addr.text, addr.id, true, true);
+                            //         // Add new option if not already present
+                            //         $("#ship_customer").append(newOption).trigger("change");
+                            //     });
+                            // }
+                            // else if (customer.delivery_address) {
+                            //     return {
+                            //         id: customer.delivery_address.id ?? "",
+                            //         text: customer.delivery_address.text ?? "",
+                            //         customer: customer ?? "", // Store the full customer object
+                            //     };
+                            // } 
+                            else {
                                 return false;
                             }
-                            // Return false if no address type matches
                         })
-                        .filter((i) => i), // Filter out any empty results
+                        .filter((i) => i),
                 };
             },
             cache: true,
@@ -251,9 +277,44 @@ $(document).ready(function () {
         minimumInputLength: 1,
     });
 
-    $('select[name="customer_id"]').on("select2:select", function (e) {
+    $('#delevery_customer_id').on("select2:select", function (e) {
         var data = e.params.data;
         var customer = data.customer;
+        sipToAddress = data.delivery_address;
+        // Add sipToAddress as a Select2 option to the ship_customer select box if present
+        if (sipToAddress) {
+            // Check if option already exists in Select2
+
+            // Clear existing options
+            $('#ship_customer').empty();
+            // Add new options to the select element
+            sipToAddress.forEach(function(addr) {
+                let option = new Option(addr.text, addr.id, false, false);
+                $('#ship_customer').append(option);
+            });
+            // Re-initialize Select2 to reflect the new options
+            $('#ship_customer').val(null).trigger('change');
+            $('#ship_customer').select2({
+                placeholder: "Search Customer"
+            });
+
+            // $('#ship_customer').empty().select2({
+            //     data: sipToAddress.map(function(addr){
+            //         return {
+            //             id: addr.id,
+            //             text: addr.text,
+            //             customer: addr
+            //         }
+            //     }),
+            //     placeholder: "Search Customer"
+            // }).trigger('change');
+
+        
+        }
+        
+
+        
+        console.log("sipToAddress customer:", sipToAddress);
         $('input[name="parcel_id"]').val(customer.id);
 
         // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
@@ -265,6 +326,122 @@ $(document).ready(function () {
         // Show table if hidden
         // $("#supplies_items").removeClass("d-none");
 
+        // Clear existing rows
+        dynamicInventoryTable(inventoryItems)
+
+        // Recalculate totals
+        setTimeout(() => {
+            $("#dynamicTable tbody tr").each(function () {
+                const row = $(this);
+                syncSummary(row);
+            });
+        }, 100); // Adjust the timeout as needed
+        // }else{
+        $('input[name="descriptions"]').val(customer.descriptions);
+        $('input[name="weight"]').val(customer.weight);
+        $('input[name="parcel_id"]').val(customer.parcel_id);
+        // }
+
+        if (customer.address_type == "delivery" && customer.delivery_address) {
+            console.log("delivery pickup_address", customer.pickup_address);
+            setPickupDeleveryFormValue(customer.delivery_address);
+        }
+        if (
+            customer.invoice_type == "Service" &&
+            inventoryItems &&
+            inventoryItems.length > 0
+        ) {
+            console.log("service pickup_address", customer.pickup_address);
+            setPickupDeleveryFormValue(customer.pickup_address);
+        }
+        if (
+            customer.invoice_type == "Service" &&
+            customer.address_type == "pickup"
+        ) {
+            console.log(
+                "service pickup pickup_address",
+                customer.pickup_address
+            );
+            setPickupDeleveryFormValue(customer.pickup_address);
+        }
+        if (customer.invoice_type != "Service" && customer.pickup_address) {
+            setPickupDeleveryFormValue(customer.pickup_address);
+            console.log("supply pickup_address", customer.pickup_address, data);
+        }
+    });
+
+    $('#ship_customer').on("select2:select", function (e) {
+
+        var data = e.params.data;
+        console.log("ship_customer data:", e,data);
+        // var customer = data.customer;
+        var customer = sipToAddress.find(function (addr) {
+            return addr.id == data.id;
+        }) || {};
+        // Add sipToAddress as a Select2 option to the ship_customer select box if present
+
+
+        
+        if(customer){
+            setPickupDeleveryFormValue(customer);
+        }
+        console.log("selected sipToAddress customer:", customer,sipToAddress);
+        // $('input[name="parcel_id"]').val(customer.id ?? null);
+
+        // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
+        // $('input[name="invoce_item"]').val(customer.parcel_inventory);
+        // $('input[name="transport_type"]').val(customer.transport_type);
+
+        // let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
+
+        // Show table if hidden
+        // $("#supplies_items").removeClass("d-none");
+
+        // dynamicInventoryTable(inventoryItems);
+        
+
+        // Recalculate totals
+        // setTimeout(() => {
+        //     $("#dynamicTable tbody tr").each(function () {
+        //         const row = $(this);
+        //         syncSummary(row);
+        //     });
+        // }, 100); // Adjust the timeout as needed
+        // }else{
+        // $('input[name="descriptions"]').val(customer.descriptions);
+        // $('input[name="weight"]').val(customer.weight);
+        // $('input[name="parcel_id"]').val(customer.parcel_id ?? null);
+        // }
+
+        // if (customer.address_type == "delivery" && customer.delivery_address) {
+        //     console.log("delivery pickup_address", customer.pickup_address);
+        //     setPickupDeleveryFormValue(customer.delivery_address);
+        // }
+        // if (
+        //     customer.invoice_type == "Service" &&
+        //     inventoryItems &&
+        //     inventoryItems.length > 0
+        // ) {
+        //     console.log("service pickup_address", customer.pickup_address);
+        //     setPickupDeleveryFormValue(customer.pickup_address);
+        // }
+        // if (
+        //     customer.invoice_type == "Service" &&
+        //     customer.address_type == "pickup"
+        // ) {
+        //     console.log(
+        //         "service pickup pickup_address",
+        //         customer.pickup_address
+        //     );
+        //     setPickupDeleveryFormValue(customer.pickup_address);
+        // }
+        // if (customer.invoice_type != "Service" && customer.pickup_address) {
+        //     setPickupDeleveryFormValue(customer.pickup_address);
+        //     console.log("supply pickup_address", customer.pickup_address, data);
+        // }
+    });
+
+    function dynamicInventoryTable(inventoryItems) {
         // Clear existing rows
         $("#dynamicTable tbody").empty();
         if (inventoryItems && inventoryItems.length > 0) {
@@ -385,51 +562,11 @@ $(document).ready(function () {
 
                                 </tr>`);
         }
-
-        // Recalculate totals
-        setTimeout(() => {
-            $("#dynamicTable tbody tr").each(function () {
-                const row = $(this);
-                syncSummary(row);
-            });
-        }, 100); // Adjust the timeout as needed
-        // }else{
-        $('input[name="descriptions"]').val(customer.descriptions);
-        $('input[name="weight"]').val(customer.weight);
-        $('input[name="parcel_id"]').val(customer.parcel_id);
-        // }
-
-        if (customer.address_type == "delivery" && customer.delivery_address) {
-            console.log("delivery pickup_address", customer.pickup_address);
-            setPickupDeleveryFormValue(customer.delivery_address);
-        }
-        if (
-            customer.invoice_type == "Service" &&
-            inventoryItems &&
-            inventoryItems.length > 0
-        ) {
-            console.log("service pickup_address", customer.pickup_address);
-            setPickupDeleveryFormValue(customer.pickup_address);
-        }
-        if (
-            customer.invoice_type == "Service" &&
-            customer.address_type == "pickup"
-        ) {
-            console.log(
-                "service pickup pickup_address",
-                customer.pickup_address
-            );
-            setPickupDeleveryFormValue(customer.pickup_address);
-        }
-        if (customer.invoice_type != "Service" && customer.pickup_address) {
-            setPickupDeleveryFormValue(customer.pickup_address);
-            console.log("supply pickup_address", customer.pickup_address, data);
-        }
-    });
+    }
 
     // Toggle new customer form
     $("#addCustomer").click(function () {
-        $(".newCustomerAdd").toggleClass("disablesectionnew");
+        // $(".newCustomerAdd").toggleClass("disablesectionnew");
     });
 });
 
@@ -737,7 +874,6 @@ $(document).ready(function () {
             "country",
             "state",
             "city",
-            "zip_code",
             "alternative_mobile_number_code_id",
             "mobile_number_code_id",
         ];
@@ -858,11 +994,11 @@ $("#services").on("submit", function (e) {
     const rules = {
         invoce_type: "required|in:services,supplies",
         delivery_address_id: "required",
-        pickup_address_id: "required_if:invoce_type,services",
+        // pickup_address_id: "required_if:invoce_type,services",
         // container_id:
         //     "required_if:invoce_type,services|required_if:transport_type,cargo|numeric",
         driver_id: "numeric",
-        warehouse_id: "numeric",
+        warehouse_id: "required|numeric",
         ins: "numeric",
         discount: "numeric",
         tax: "numeric",
@@ -879,6 +1015,26 @@ $("#services").on("submit", function (e) {
         payment: "required|numeric",
         status: "required",
     };
+
+    if(invoce_type == "services") {
+        rules.pickup_address_id = "required";
+        // rules.transport_type = "required";
+        // If transport_type is a checkbox group, check if any checked value is "Ocean Cargo"
+        // Also check if transport_type is checked at all
+        var $checkedTransport = $('input[name="transport_type"]:checked');
+        if ($checkedTransport.length === 0) {
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please select a transport type.",
+            });
+            e.preventDefault();
+            return false;
+        }
+        if ($checkedTransport.length > 0 && $checkedTransport.filter(function() { return $(this).val() === "Ocean Cargo"; }).length > 0) {
+            rules.container_id = "required|numeric";
+        }
+    }
 
     if (!jsValidator(rules, $("#services"))) {
         // alert("Please fix the errors");

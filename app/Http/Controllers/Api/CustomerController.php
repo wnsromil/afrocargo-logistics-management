@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Address;
-use App\Models\Parcel;
 use App\Models\Vehicle;
+use App\Models\Parcel;
 use App\Models\ShippingUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistorMail;
-use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller
@@ -51,6 +51,8 @@ class CustomerController extends Controller
             }
         }
 
+
+
         return response()->json(['customers' => $customers], 200);
     }
 
@@ -66,8 +68,7 @@ class CustomerController extends Controller
         $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
         $query->where('created_by_id', $DriverCustomerId);
         $query->where('invoice_custmore_type', 'from_to'); // Assuming you want to filter by 'from_to' type
-        $query->where('invoice_custmore_id', null);
-
+        // $query->where('invoice_custmore_id', null);
 
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
@@ -88,6 +89,52 @@ class CustomerController extends Controller
             }
         }
 
+
+        return response()->json(['customers' => $customers], 200);
+    }
+
+    public function getCustomers(Request $request)
+    {
+        $request->validate([
+            'invoice_custmore_type' => 'nullable|in:from_to,ship_to,all',
+            'invoice_custmore_id' => 'nullable|integer',
+            'search' => 'nullable|string|max:255',
+        ]);
+
+        $type = $request->query('invoice_custmore_type');
+        $invoiceCustomerId = $request->query('invoice_custmore_id');
+
+        $query = User::where('role', 'customer')->orderBy('id', 'desc');
+
+
+        if ($invoiceCustomerId) {
+            // Only fetch this specific customer by ID
+            $query->where('invoice_custmore_id', $invoiceCustomerId);
+        } else {
+            // Apply type filter only if invoice_custmore_id not provided
+            if ($type && in_array($type, ['from_to', 'ship_to'])) {
+                $query->where('invoice_custmore_type', $type);
+            }
+        }
+
+        if ($request->has('search') && !empty($request->query('search'))) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+
+        foreach ($customers as $customer) {
+            $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
+            if ($address && !empty($address->address)) {
+                $customer->address = $address->address;
+            } else {
+                $customer->address = $customer->address ?? null;
+            }
+        }
 
         return response()->json(['customers' => $customers], 200);
     }
@@ -121,11 +168,13 @@ class CustomerController extends Controller
         ], 200);
     }
 
+
     public function createCustomer(Request $request)
     {
 
         $validated =  $request->validate([
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_code' => 'required|max:13|unique:users,phone',
             'email' => 'required|email|max:255|unique:users,email',
             'alternate_mobile_no' => 'nullable|max:13',
@@ -163,6 +212,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
                 'email' => $validated['email'] ?? null,
                 'phone' => $validated['mobile_code'],
                 'phone_2' => $validated['alternate_mobile_no'] ?? null,
@@ -240,6 +290,7 @@ class CustomerController extends Controller
                 'default_address' => 'Yes'
             ]);
 
+
             return response()->json([
                 'success' => true,
                 'message' => 'Customer added successfully',
@@ -256,11 +307,174 @@ class CustomerController extends Controller
             ], 500);
         }
     }
+
+    public function createShippingCustomer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'required|integer|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'phone' => 'required|string|max:255',
+            'phone_2' => 'nullable|string|max:255',
+            'country_id' => 'required|string|max:15',
+            // 'state_id' => 'required|string|max:255',
+            // 'city_id' => 'required|string|max:255',
+            'address_1' => 'required|string|max:255',
+            'address_2' => 'nullable|string|max:255',
+            'ship_to_id' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
+            'apartment' => 'nullable|string|max:255',
+            'latitude' => 'nullable|string',
+            'longitude' => 'nullable|string',
+            'lookup_name' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'municipal' => 'nullable|string|max:255',
+            'sector' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Check if user exists based on phone or phone_2
+        $existingUser = User::where('phone', $request->phone)
+            ->orWhere('phone_2', $request->phone)
+            ->first();
+
+        if (!$existingUser) {
+
+            // Call createCustomer if user does not exist
+            $newUser = $this->createCustomer($request->all());
+            $customer_id = $newUser->id;
+        } else {
+            $customer_id = $existingUser->id;
+        }
+
+
+
+        // Example dynamic data
+        $userName = $request->first_name;
+        $email = $request->email ?? null;
+        $mobileNumber = $request->phone;
+        $password = '12345678';
+        $loginUrl = route('login');
+
+        // Send the email
+        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
+
+        // Create new ShippingUser entry
+        $shippingUser = new ShippingUser();
+        $shippingUser->shipping_user_id = $customer_id;
+        $shippingUser->customer_id = $customer_id;
+        $shippingUser->created_id = $this->user->id;
+        $shippingUser->country_id = $request->country_id;
+        $shippingUser->address_1 = $request->address_1;
+        $shippingUser->address_2 = $request->address_2;
+        $shippingUser->ship_to_id = $request->ship_to_id ?? 'Done';
+        $shippingUser->company_name = $request->company_name;
+        $shippingUser->apartment = $request->apartment;
+        $shippingUser->latitude = $request->latitude;
+        $shippingUser->longitude = $request->longitude;
+        $shippingUser->lookup_name = $request->lookup_name;
+        $shippingUser->province = $request->province;
+        $shippingUser->municipal = $request->municipal;
+        $shippingUser->sector = $request->sector;
+        $shippingUser->language = $request->language;
+        $shippingUser->save();
+
+        return response()->json(['shipping_user' => $shippingUser], 200);
+    }
+
+    public function shippingCustomerList($id)
+    {
+        $customers = ShippingUser::where('user_id', $id)->get();
+
+        if ($customers->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No shipping records found for this customer.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Shipping customer details retrieved successfully.',
+            'data' => $customers
+        ], 200);
+    }
+
+    public function deleteCustomer(Request $request)
+    {
+        $user = User::find($request->id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User marked as deleted successfully',
+            'user' => $user
+        ], 200);
+    }
+
+    public function getUsersByWarehouse(Request $request)
+    {
+        $warehouseId = $request->warehouse_id;
+        $role = $request->role_id;
+
+        if (!$warehouseId) {
+            return response()->json(['message' => 'Warehouse ID is required'], 400);
+        }
+
+        // Step 1: Get user IDs from given warehouse
+        $userIdsFromWarehouse = User::where('warehouse_id', $warehouseId)->pluck('id');
+
+        // Step 2: Filter those users with conditions
+        $users = User::whereIn('id', $userIdsFromWarehouse)
+            ->where('status', 'Active')
+            ->whereIn('role_id', [2, 4])
+            ->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found for the given warehouse.'], 404);
+        }
+
+        return response()->json(['users' => $users->when(!empty($role), function ($q) {
+            return $q->where('role_id', request()->role_id);
+        })->values()], 200);
+    }
+
+    public function getVehiclesByWarehouse(Request $request)
+    {
+        $warehouseId = $request->warehouse_id;
+
+        if (!$warehouseId) {
+            return response()->json(['message' => 'Warehouse ID is required'], 400);
+        }
+
+        // Step 1: Get vehicles based on warehouse_id
+        $vehicles = Vehicle::where('vehicle_type', '1')->where('warehouse_id', $warehouseId)->get();
+
+        if ($vehicles->isEmpty()) {
+            return response()->json(['message' => 'No vehicles found for the given warehouse.'], 404);
+        }
+
+        return response()->json(['vehicles' => $vehicles], 200);
+    }
+
     public function updateCustomer(Request $request)
     {
         $validated = $request->validate([
             'customer_id' => 'required|integer|exists:users,id',
             'first_name' => 'sometimes|string|max:255',
+            'last_name' => 'sometimes|string|max:255',
             'mobile_no' => 'sometimes|max:13|unique:users,phone,' . $request->customer_id,
             'email' => 'sometimes|email|max:255|unique:users,email,' . $request->customer_id,
             'alternate_mobile_no' => 'sometimes|nullable|max:13',
@@ -288,7 +502,7 @@ class CustomerController extends Controller
                     $filePath = $file->storeAs($folder, $fileName, 'public');
 
                     if ($imageType === 'license_picture') {
-                        $filePath = 'storage/' . $filePath;
+                        $filePath =  $filePath;
                     }
 
                     $imagePaths[$imageType] = $filePath;
@@ -296,7 +510,8 @@ class CustomerController extends Controller
             }
 
             $userData = [];
-            if (isset($validated['first_name'])) $userData['name'] = $validated['first_name'];
+            if (isset($validated['last_name'])) $userData['name'] = $validated['last_name'];
+            if (isset($validated['last_name'])) $userData['last_name'] = $validated['last_name'];
             if (isset($validated['email'])) $userData['email'] = $validated['email'];
             if (isset($validated['mobile_no'])) $userData['phone'] = $validated['mobile_no'];
             if (array_key_exists('alternate_mobile_no', $validated)) $userData['phone_2'] = $validated['alternate_mobile_no'];
@@ -365,182 +580,5 @@ class CustomerController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function createShippingCustomer(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'customer_id' => 'required|integer|max:255',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'phone' => 'required|string|max:255',
-            'phone_2' => 'nullable|string|max:255',
-            'country_id' => 'required|string|max:15',
-            // 'state_id' => 'required|string|max:255',
-            // 'city_id' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'address_2' => 'nullable|string|max:255',
-            'ship_to_id' => 'nullable|string|max:255',
-            'company_name' => 'nullable|string|max:255',
-            'apartment' => 'nullable|string|max:255',
-            'latitude' => 'nullable|string',
-            'longitude' => 'nullable|string',
-            'lookup_name' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'municipal' => 'nullable|string|max:255',
-            'sector' => 'nullable|string|max:255',
-            'language' => 'nullable|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        // Check if user exists based on phone or phone_2
-        $existingUser = User::where('phone', $request->phone)
-            ->orWhere('phone_2', $request->phone)
-            ->first();
-
-        if (!$existingUser) {
-
-            // Call createCustomer if user does not exist
-            $newUser = $this->createCustomer($request->all());
-            $customer_id = $newUser->id;
-        } else {
-            $customer_id = $existingUser->id;
-        }
-
-        // Example dynamic data
-        $userName = $request->first_name;
-        $email = $request->email ?? null;
-        $mobileNumber = $request->phone;
-        $password = '12345678';
-        $loginUrl = route('login');
-
-        // Send the email
-        Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
-
-
-        // Create new ShippingUser entry
-        $shippingUser = new ShippingUser();
-        $shippingUser->shipping_user_id = $customer_id;
-        $shippingUser->customer_id = $customer_id;
-        $shippingUser->created_id = $this->user->id;
-        $shippingUser->country_id = $request->country_id;
-        $shippingUser->address = $request->address_1;
-        $shippingUser->address_2 = $request->address_2;
-        $shippingUser->ship_to_id = $request->ship_to_id ?? 'Done';
-        $shippingUser->company_name = $request->company_name;
-        $shippingUser->apartment = $request->apartment;
-        $shippingUser->latitude = $request->latitude;
-        $shippingUser->longitude = $request->longitude;
-        $shippingUser->lookup_name = $request->lookup_name;
-        $shippingUser->province = $request->province;
-        $shippingUser->municipal = $request->municipal;
-        $shippingUser->sector = $request->sector;
-        $shippingUser->language = $request->language;
-        $shippingUser->save();
-
-        // insertAddress([
-        //     'user_id' => $shippingUser->id,
-        //     'address' => $request->address_1,
-        //     'address_type' => 'shipping',
-        //     'mobile_number' => $request->phone ?? null,
-        //     'alternative_mobile_number' => $request->alternate_mobile_no ?? null,
-        //     'mobile_number_code_id' => $request->country_code ?? null,
-        //     'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
-        //     'city_id' => $request->city ?? null,
-        //     'country_id' => $request->country ?? null,
-        //     'full_name' => $request->first_name,
-        //     'pincode' => $request->Zip_code ?? null,
-        //     'state_id' => $request->state ?? null,
-        //     'warehouse_id' => $request->warehouse_id ?? null,
-        //     'lat' => $request->latitude ?? null,
-        //     'long' => $request->longitude ?? null,
-        // ]);
-
-        return response()->json(['shipping_user' => $shippingUser], 200);
-    }
-
-    public function shippingCustomerList($id)
-    {
-        $customers = ShippingUser::where('user_id', $id)->get();
-
-        if ($customers->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No shipping records found for this customer.',
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Shipping customer details retrieved successfully.',
-            'data' => $customers
-        ], 200);
-    }
-
-    public function deleteCustomer(Request $request)
-    {
-        $user = User::find($request->id);
-
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found'
-            ], 404);
-        }
-
-        $user->update(['is_deleted' => "Yes"]); // is_deleted ko "Yes" update kar rahe hain
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User marked as deleted successfully',
-            'user' => $user
-        ], 200);
-    }
-
-    public function getUsersByWarehouse(Request $request)
-    {
-        $warehouseId = $request->warehouse_id;
-        $role = $request->role_id;
-        if (!$warehouseId) {
-            return response()->json(['message' => 'Warehouse ID is required'], 400);
-        }
-
-        // Step 1: Get user IDs from given warehouse
-        $userIdsFromWarehouse = User::where('warehouse_id', $warehouseId)->pluck('id');
-
-        // Step 2: Filter those users with conditions
-        $users = User::whereIn('id', $userIdsFromWarehouse)
-            ->where('status', 'Active')
-            ->whereIn('role_id', [2, 4])
-            ->get();
-
-        if ($users->isEmpty()) {
-            return response()->json(['message' => 'No users found for the given warehouse.'], 404);
-        }
-
-        return response()->json(['users' => $users->when(!empty($role),function($q){
-            return $q->where('role_id',request()->role_id);
-        })->values()], 200);
-    }
-
-    public function getVehiclesByWarehouse(Request $request)
-    {
-        $warehouseId = $request->warehouse_id;
-
-        if (!$warehouseId) {
-            return response()->json(['message' => 'Warehouse ID is required'], 400);
-        }
-
-        // Step 1: Get vehicles based on warehouse_id
-        $vehicles = Vehicle::where('vehicle_type', '1')->where('warehouse_id', $warehouseId)->get();
-
-        if ($vehicles->isEmpty()) {
-            return response()->json(['message' => 'No vehicles found for the given warehouse.'], 404);
-        }
-
-        return response()->json(['vehicles' => $vehicles], 200);
     }
 }

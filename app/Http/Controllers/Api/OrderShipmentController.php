@@ -863,6 +863,23 @@ class OrderShipmentController extends Controller
 
         $parcel = ParcelPickupDriver::create($data);
 
+        $supply =  ParcelInventorie::create(
+                    [
+                        'invoice_id' => $invoice->id ?? null,
+                        'inventorie_id' => $request->supply_id ?? null,
+                        'parcel_id' => $request->parcel_id,
+                        'inventorie_item_quantity' => $request->quantity,
+                        'inventory_name' => $request->name,
+                        'label_qty' => $request->label_qty ?? $request->name,
+                        'price' => $request->price ?? 0,
+                        'volume' => $request->volume ?? 0,
+                        'ins' => $request->ins ?? 0,
+                        'tax' => $request->tax ?? 0,
+                        'discount' => $request->discount ?? 0,
+                        'total' => $request->total ?? 0,
+                    ]
+                );
+
         return response()->json([
             'success' => true,
             'message' => 'Parcel pickup driver data saved successfully.',
