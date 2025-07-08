@@ -28,6 +28,7 @@ class RegisterController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
                 // 'email' => 'required|email|unique:users,email',
                 'password' => [
                     'required',
@@ -40,8 +41,8 @@ class RegisterController extends Controller
                 'address' => 'required|string|max:255',
                 'country_id' => 'required|string|max:255',
                 'state_id' => 'required|string|max:255',
-                'city_id' => 'required|string|max:255',
-                'pincode' => 'required|numeric',
+                'city_id' => 'nullable|string|max:255',
+                'pincode' => 'nullable',
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
             ]);
@@ -67,10 +68,11 @@ class RegisterController extends Controller
             try {
                 $user = User::create([
                     'name' => $request->name,
+                    'last_name' => $request->last_name,
                     'email' => $request->email ?? null,
-                    'phone' => $request->phone,
                     'latitude' => $request->latitude ?? null,
                     'longitude' => $request->longitude ?? null,
+                    'phone' => $request->phone,
                     'password' => bcrypt($request->password),
                     'role' => $userRole->name,
                     'role_id' => $userRole->id,
@@ -91,7 +93,7 @@ class RegisterController extends Controller
                     'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
                     'city_id' => $request->city_id ?? null,
                     'country_id' => $request->country_id ?? null,
-                    'full_name' => $request->name,
+                    'full_name' => $request->name ?? null,
                     'pincode' => $request->pincode ?? null,
                     'state_id' => $request->state_id ?? null,
                     'warehouse_id' => $request->warehouse_id ?? null,

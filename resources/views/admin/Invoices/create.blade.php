@@ -38,6 +38,39 @@
     <div class="invoiceForm">
         <!-- ------------------------------- Services form ------------------------------------- -->
         <div class="form-group-customer customer-additional-form">
+            <div class="row mb-4 g-3">
+                <div class="col-md-6">
+                    <div class="d-sm-flex align-items-center">
+                        <div class="first">
+                            <label for="customer_id">Country<i class="text-danger">*</i></label>
+                        </div>
+                        <div class="middleDiv">
+                            <select class="form-control select2" name="sip_country" id="sip_country">
+                                <option value="">Select Country</option>
+                                    @foreach (setting()->warehouseContries() as $key => $item)
+                                    <option value="{{ $item->iso2 ?? 'AF' }}">
+                                        {{ $item->name ?? '' }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-sm-flex align-items-center">
+                        <div class="first">
+                            <label for="customer_id">Country<i class="text-danger">*</i></label>
+                        </div>
+                        <div class="middleDiv">
+                            <select class="form-control select2" >
+                                    @foreach (setting()->warehouseContries() as $key => $item)
+                                    <option value="{{ $item->iso2 ?? 'AF' }}">
+                                        {{ $item->name ?? '' }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="d-sm-flex align-items-center">
@@ -49,10 +82,10 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
-                                @foreach($customers as $customer)
+                                {{-- @foreach($customers as $customer)
                                                             <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                             @error('customer_id')
                                 <span class="text-danger">{{ $message }}</span>
@@ -84,10 +117,10 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="ship_customer">
                                 <option value="">Search Customer</option>
-                                @foreach($customers as $customer)
+                                {{-- @foreach($customers as $customer)
                                                             <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                             @error('customer_id')
                                 <span class="text-danger">{{ $message }}</span>
@@ -164,7 +197,7 @@
 
                 <div class="col-md-6">
                     <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
-                        <div class="borderset position-relative newCustomerAdd disablesectionnew" id="delivery_to_address">
+                        <div class="borderset position-relative newCustomerAdd {{--disablesectionnew--}}" id="delivery_to_address">
                             <div class="row gx-3 gy-2">
 
                                 @csrf
@@ -292,7 +325,7 @@
 
                 <div class="col-md-6">
                     <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="pick_up_customer_inf_form">
-                        <div class="borderset position-relative newShipmentAddress disablesectionnew"
+                        <div class="borderset position-relative newShipmentAddress {{--disablesectionnew--}}"
                             id="ship_to_address">
                             <div class="row gx-3 gy-2">
 
@@ -429,26 +462,26 @@
                 <!-- inventory suplay and service add start -->
                 <div>
                     <div class="row mt-4 pt-3 g-3" id="ship_to_address">
-                        <div class="col-md-3">
+                        <div class="col-md-12 d-none" id="service_type">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12">
                                     <div class="input-block">
                                         <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                                     </div>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
-                                        <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
+                                    <div class="d-fex justify-content-between flex-wrap row mt-2">
+                                        <div class="input-block mb-3 col-lg-2 col-md-2">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
+                                        </div>
+                                        <div class="input-block mb-3 col-lg-2 col-md-2">
+                                            <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
+                                            <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
+                                        </div>
+                                        <div class="col-8"></div>
                                     </div>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
-                                        <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
-                                    </div>
+                                    @error('transport_type')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

@@ -9,18 +9,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const dataTable = document.getElementById('ajexTable');
 
     if (dataTable) {
-        dataTable.addEventListener("click", function (e) {
-            
-            const target = e.target.closest("#pageSizeSelect");
-            if (target) {
-                console.log("Page size select clicked");
-                paginate({
-                    showLoader: showLoader,
-                    hideLoader: hideLoader,
-                });
-            }
-            
-        });
+        const pageSizeSelect = dataTable.querySelector("#pageSizeSelect");
+        if (pageSizeSelect) {
+            pageSizeSelect.addEventListener("change", function (e) {
+                let selectedNumber = e.target.value ?? null;
+                if (selectedNumber && selectedNumber !== "") {
+                    console.log("Page size select changed");
+                    paginate({
+                        showLoader: showLoader,
+                        hideLoader: hideLoader,
+                    });
+                }
+            });
+        }
     }
     
     function paginate(obj = {}) {

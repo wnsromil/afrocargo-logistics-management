@@ -55,7 +55,7 @@
                 <label for="datetrange">Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
                     <input type="text" id="datetrange" class="btn-filters form-control bookingrange form-cs info" name="datetrange"
-                        placeholder="From Date - To Date" value="{{ request('datetrange') }}" autocomplete="off" />
+                        placeholder="From Date - To Date" value="{{ request('datetrange') ?? '' }}" autocomplete="off" />
                 </div>
             </div>
 
@@ -91,7 +91,17 @@
                 <input type="text" id="invoice_item" name="invoice_item" class="form-control form-cs" placeholder="Enter Invoice Item" value="{{ request('invoice_item') }}">
             </div>
 
-            <div class="col-md-3 text-end align-content-end">
+            <div class="col-md-3 dposition">
+                <label for="transport_type">Invoice Type</label>
+                <select id="transport_type" name="transport_type" class="js-example-basic-single select2 form-cs">
+                    <option value="">Select Invoice Type</option>
+                    <option value="Supply" {{ request('transport_type') == 'Supply' ? 'selected' : '' }}>Supply</option>
+                    <option value="Air Cargo" {{ request('transport_type') == 'Air Cargo' ? 'selected' : '' }}>Air Cargo</option>
+                    <option value="Ocean Cargo" {{ request('transport_type') == 'Ocean Cargo' ? 'selected' : '' }}>Ocean Cargo</option>
+                </select>
+            </div>  
+
+            <div class="col-md-3 {{--text-end align-content-end--}}">
                 <button type="submit" class="btn px-4 btn-primary me-2">Filter</button>
                 <a href="{{ route('admin.invoices.index') }}" class="btn px-4 btn-outline-danger">Reset</a>
             </div>

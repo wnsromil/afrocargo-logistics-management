@@ -61,12 +61,25 @@ class InvoiceController extends Controller
             ->when($request->input('invoice_id'), function ($q) use ($request) {
             return $q->where('invoice_no', $request->input('invoice_id'));
             })
+            ->when($request->input('transport_type'), function ($q) use ($request) {
+            return $q->where('transport_type', $request->input('transport_type'));
+            })
             ->when($request->input('datetrange'), function ($q) use ($request) {
                 $dates = explode(' - ', $request->input('datetrange'));
                 if (count($dates) === 2) {
-                    $start = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[0]))->startOfDay();
-                    $end = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[1]))->endOfDay();
-                    $q->whereBetween('created_at', [$start, $end]);
+                    try {
+                        $start = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[0]))->startOfDay();
+                        $end = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[1]))->endOfDay();
+                        // dd($start!=$end,$start,$end);
+                        if ($start->format('Y-m-d')!=$end->format('Y-m-d')) {
+                            $q->whereBetween('created_at', [
+                                $start->format('Y-m-d H:i:s'),
+                                $end->format('Y-m-d H:i:s')
+                            ]);
+                        }
+                    } catch (\Exception $e) {
+                        // Invalid date format, do not apply filter
+                    }
                 }
             })
             ->when($search, function ($q) use ($search) {
@@ -90,7 +103,14 @@ class InvoiceController extends Controller
             })
             ->latest()
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage]);
+            ->appends([
+                'search' => $search,
+                'per_page' => $perPage,
+                'warehouse_id' => $request->input('warehouse_id'),
+                'driver_id' => $request->input('driver_id'),
+                'invoice_id' => $request->input('invoice_id'),
+                'datetrange' => $request->input('datetrange'),
+            ]);
 
         if ($request->ajax() && $request->isAjaxPagination==1) {
             // dd($request);
@@ -136,10 +156,11 @@ class InvoiceController extends Controller
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 
-        $inventories = Inventory::whereIn('inventory_type', ["Supply", "Service"])
+        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service"])
+        ->where('status', 'Active')
         ->get()
         ->groupBy(function ($item) {
-            return ucfirst($item->inventory_type);
+            return ucfirst($item->inventary_sub_type);
         });
     
 
@@ -157,6 +178,7 @@ class InvoiceController extends Controller
         
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
+            'transport_type'=>'nullable|required_if:invoce_type,services|in:Air Cargo,Ocean Cargo',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
             // 'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
@@ -247,8 +269,10 @@ class InvoiceController extends Controller
         if($request->invoice_no){
             $invoice->invoice_no = $request->invoice_no;
         }
-        if($request->transport_type){
+        if($request->transport_type && $request->invoce_type=='services'){
             $invoice->transport_type = $request->transport_type;
+        }else{
+            $invoice->transport_type = 'Supply';
         }
     
         $invoice->save();
@@ -352,6 +376,7 @@ class InvoiceController extends Controller
         // return $request->all();
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
+            'transport_type'=>'nullable|required_if:invoce_type,services|in:Air Cargo,Ocean Cargo',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
             // 'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
@@ -439,8 +464,10 @@ class InvoiceController extends Controller
         if ($request->invoice_no) {
             $invoice->invoice_no = $request->invoice_no;
         }
-        if($request->transport_type){
+        if($request->transport_type && $request->invoce_type=='services'){
             $invoice->transport_type = $request->transport_type;
+        }else{
+            $invoice->transport_type = 'Supply';
         }
 
         $invoice->save();
@@ -620,7 +647,7 @@ class InvoiceController extends Controller
                 "invoice_custmore_id"=> $user->invoice_custmore_id ?? null,
                 "role_id" => $user->role_id ?? 3,
                 "pickup_address" => $this->formatAddress($user,null,'pickup'),
-                "delivery_address" => $this->formatAddress($user,null,'delivery'),
+                "delivery_address" => $this->shipToAddress($user,null,'delivery'),
                 "category_names" => [],
                 "pickupaddress" => null,
                 "deliveryaddress" => null,
@@ -666,9 +693,12 @@ class InvoiceController extends Controller
         }
 
         $resultsData = collect($results)
-        // ->when(!empty(request()->invoice_custmore_id),function($query) {
-        //     $query->where('invoice_custmore_id', request()->invoice_custmore_id);
-        // })
+        ->when(!empty(request()->invoice_custmore_id),function($query) {
+            $query->where('invoice_custmore_id', request()->invoice_custmore_id);
+        })
+        ->when(!empty(request()->sip_country),function($query) {
+            $query->where('country_id', setting()->warehouseContries()->where('iso2',request()->sip_country)->first()->name);
+        })
         // ->when(empty(request()->invoice_custmore_id),function($query) {
         //     $query->where('invoice_custmore_type', '!=', 'ship_to');
         // })
@@ -1016,7 +1046,8 @@ class InvoiceController extends Controller
                 'country' => $address->country_id,
                 'state' => $address->state_id,
                 'city' => $address->city_id,
-                'address_type' => request()->address_type ?? $type ?? $address->address_type,
+                // 'address_type' => request()->address_type ?? $type ?? $address->address_type,
+                'address_type' => $type ?? $address->address_type,
             ];
         }
 
@@ -1043,9 +1074,21 @@ class InvoiceController extends Controller
                 'state' => $address->state_id,
                 'city' => $address->city_id,
                 'address_type' => $type,
-                'address_type_t' => request()->address_type ?? $type ?? $address->address_type,
+                'address_type_t' => $type ?? $address->address_type,
             ];
         
+    }
+
+
+    protected function shipToAddress($user, $parcel = null,$type=null) {
+        $user = User::with(['shipToAddress'])->find($user->id);
+        
+        if (empty($user) || empty($user->shipToAddress) || $user->shipToAddress->isEmpty()) return null;
+        $users = $user->shipToAddress;
+        if ($users->isEmpty()) return null;
+        return $users->map(function ($usr) use ($type,$parcel) {
+            return $this->formatAddress($usr->defaultAddress, $parcel, $type);
+        });
     }
 
 

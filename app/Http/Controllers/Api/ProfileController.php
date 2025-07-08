@@ -33,6 +33,7 @@ class ProfileController extends Controller
         $user = $this->user;
         $request->validate([
             'name' => 'nullable|string',
+            'last_name' => 'nullable|string',
             'email' => 'nullable|email|unique:users,email,' . $user->id, // Ignore current user ID
             'address' => 'nullable|string|max:500',
             'phone' => 'nullable|string|max:15|unique:users,phone,' . $user->id,
@@ -49,6 +50,9 @@ class ProfileController extends Controller
         // Update user with validated data
         if (!empty($request->name)) {
             $user->name = $request->name;
+        }
+        if (!empty($request->last_name)) {
+            $user->last_name = $request->last_name;
         }
         if (!empty($request->address)) {
             $user->address = $request->address;

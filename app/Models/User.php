@@ -179,7 +179,7 @@ class User extends Authenticatable
 
     public function defaultAddress()
     {
-        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes')->select('*');
+        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes');
     }
 
     protected function profilePic(): Attribute
@@ -257,6 +257,10 @@ class User extends Authenticatable
         $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
 
         return $fullPrefix . $newNumber;
+    }
+
+    public function shipToAddress(){
+        return $this->hasMany(User::class, 'invoice_custmore_id')->with('defaultAddress');
     }
 
 

@@ -98,3 +98,6 @@ FROM
     ALTER TABLE `invoices` ADD `service_fee` DECIMAL(10,2) NULL AFTER `total_amount`;
 
     ALTER TABLE `parcel_inventories` CHANGE `label_qty` `label_qty` TEXT NULL DEFAULT NULL;
+
+    -- 07/05/25
+    ALTER TABLE `parcel_inventories` ADD `volume` DECIMAL(10,2) NULL AFTER `inventorie_item_quantity`;
