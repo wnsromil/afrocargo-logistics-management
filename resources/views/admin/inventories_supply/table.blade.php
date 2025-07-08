@@ -12,7 +12,6 @@
                                 <th>description</th>
                                 {{-- <th>Shipping Price</th> --}}
                                 <th>Retail Price</th>
-                                <th>Cost</th>
                                 <th>Type</th>
                                 <th>Package Type</th>
                                 <th>Action</th>
@@ -54,9 +53,6 @@
                                     </td> --}}
                                     <td class="text-dark">
                                         <span>${{ number_format($inventory->retail_vaule_price ?? 0, 2) }}</span>
-                                    </td>
-                                    <td class="text-dark">
-                                        <span>${{ number_format($inventory->price ?? 0, 2) }}</span>
                                     </td>
                                     <td class="text-dark"><span>{{ $inventory->inventary_sub_type ?? '-' }}</span></td>
                                     <td class="text-dark"><span>{{ $inventory->package_type ?? '-' }}</span></td>

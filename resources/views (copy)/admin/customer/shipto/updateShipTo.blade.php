@@ -30,20 +30,11 @@
                         <div class="widthmannual">
                             <select id="country" name="country" class="js-example-basic-single select2">
                                 <option value="" disabled hidden {{ old('country', $user->country_id) ? '' : 'selected' }}>Select Country</option>
-                                <option value="Bangladesh" {{ old('country', $user->country_id) == 'Bangladesh' ? 'selected' : '' }}>Bangladesh</option>
-                                <option value="Belgium" {{ old('country', $user->country_id) == 'Belgium' ? 'selected' : '' }}>Belgium</option>
-                                <option value="Kuwait" {{ old('country', $user->country_id) == 'Kuwait' ? 'selected' : '' }}>Kuwait</option>
-                                <option value="Dominica" {{ old('country', $user->country_id) == 'Dominica' ? 'selected' : '' }}>Dominica</option>
-                                <option value="India" {{ old('country', $user->country_id) == 'India' ? 'selected' : '' }}>India</option>
-                                <option value="Dominican Republic" {{ old('country', $user->country_id) == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
-                                <option value="Andorra" {{ old('country', $user->country_id) == 'Andorra' ? 'selected' : '' }}>Andorra</option>
-                                <option value="Chile" {{ old('country', $user->country_id) == 'Chile' ? 'selected' : '' }}>Chile</option>
-                                <option value="United States" {{ old('country', $user->country_id) == 'United States' ? 'selected' : '' }}>United States</option>
-                                <option value="Greenland" {{ old('country', $user->country_id) == 'Greenland' ? 'selected' : '' }}>Greenland</option>
-                                <option value="Cabo Verde" {{ old('country', $user->country_id) == 'Cabo Verde' ? 'selected' : '' }}>Cabo Verde</option>
-                                <option value="Côte d'Ivoire" {{ old('country', $user->country_id) == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
-                                <option value="Mali" {{ old('country', $user->country_id) == 'Mali' ? 'selected' : '' }}>Mali</option>
-                                <option value="European Union" {{ old('country', $user->country_id) == 'European Union' ? 'selected' : '' }}>European Union</option>
+                                    @foreach (setting()->warehouseContries() as $country)
+                                        <option value="{{ $country['name'] }}" {{ old('country', $user->country_id) == $country['name'] ? 'selected' : '' }}>
+                                            {{ $country['name'] }}
+                                        </option>
+                                @endforeach
                             </select>
                             <button class="btn btn-primary">Location</button>
                         </div>

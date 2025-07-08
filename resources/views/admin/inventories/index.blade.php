@@ -107,12 +107,7 @@
 
                         <tbody>
                             @forelse ($inventories as $inventory)
-                                <tr class="background-instock text-center" style="
-                                                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                                                    @else background-color: #FFD6A5;
-                                                                @endif
-                                                            ">
+                                <tr class="background-instock text-center">
                                     <td>
                                         {{ $inventory->unique_id }}
                                     </td>
@@ -210,7 +205,7 @@
     </div>
 
     @section('script')
-        <script>
+        {{-- <script>
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll("#setBackground tbody tr").forEach(row => {
                     let back = row.cells[12].querySelector('span').innerText.trim();
@@ -228,7 +223,7 @@
                 });
             });
 
-        </script>
+        </script> --}}
         <script>
             // Function to reset the form fields
             function resetForm() {
