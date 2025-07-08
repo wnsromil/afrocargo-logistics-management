@@ -18,26 +18,26 @@
     @endsection
     <div class="customerhead">
         <div class="page-header">
-                            <div class="content-page-header">
-                                                                    <div class="d-flex innertopnav w-100 justify-content-between">
-            <p class="head">Customer ID - {{$user->unique_id ?? "N/A"}}</p>
-            <!-- <div class="btnwrapper">
+            <div class="content-page-header">
+                <div class="d-flex innertopnav w-100 justify-content-between">
+                    <p class="head">Customer ID - {{$user->unique_id ?? "N/A"}}</p>
+                    <!-- <div class="btnwrapper">
                 <button id="printBtn" class="btn btn-primary buttons me-1">Print</button>
                 <button id="exportBtn" class="btn btn-primary buttons">Export</button>
             </div> -->
+                </div>
+            </div>
         </div>
-                                                            </div>
-                                                    </div>
-        
+
         <div class="d-flex">
             <div>
 
                 @if ($user->profile_pic)
                     <img src="{{ ($user->profile_pic) }}" alt="license" style="margin-left: 15px; max-width: 150px; 
-                               border-top-left-radius: 50% 50%; 
-                               border-top-right-radius: 50% 50%; 
-                               border-bottom-right-radius: 50% 50%; 
-                               border-bottom-left-radius: 50% 50%;">
+                                   border-top-left-radius: 50% 50%; 
+                                   border-top-right-radius: 50% 50%; 
+                                   border-bottom-right-radius: 50% 50%; 
+                                   border-bottom-left-radius: 50% 50%;">
 
                 @else
                     <p> - No Image</p>
@@ -45,8 +45,8 @@
             </div>
             <div>
                 <div style="margin-left: 30px !important;margin-top: 20px;">
-                    <p style="font-size=22px;font-weight:600px;color:#000000">{{ $user->name }}</p>
-                    <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->last_name }}</p>
+                    <p style="font-size=22px;font-weight:600px;color:#000000">{{ ucfirst($user->name ?? '') }}
+                        {{$user->last_name ?? ""}}</p>
                     <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->email }}</p>
                 </div>
             </div>

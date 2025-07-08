@@ -60,13 +60,23 @@
                         @enderror
                     </div>
                     <div class="col-md-12 mb-2">
-                        <label class="foncolor" for="fullName">Full Name <i class="text-danger">*</i></label>
+                        <label class="foncolor" for="fullName">First Name <i class="text-danger">*</i></label>
                         <input type="text" name="first_name" class="form-control inp" placeholder="Enter Full Name"
                                value="{{ old('first_name', $user->name) }}">
                         @error('first_name')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+
+                       <div class="col-md-12 mb-2">
+                            <label class="foncolor" for="last_name">Last Name <i class="text-danger">*</i></label>
+                            <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name"
+                                value="{{ old('last_name', $user->last_name) }}">
+                            @error('last_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        
                     <div class="col-md-12 mb-2">
                         <label class="foncolor">Cellphone<span class="text-danger">*</span></label>
                         <div class="flaginputwrap">
@@ -171,7 +181,7 @@
                             <div class="" style="position: relative;">
                                 <!-- Image Preview -->
                                 <img id="preview_license_picture" class="avtars avtarc"
-                                     src="{{ $user->license_document ? asset('storage/'.$user->license_document) : asset('assets/img/licenceID_placeholder.jpg') }}"
+                                     src="{{ $user->license_document ? asset($user->license_document) : asset('assets/img/licenceID_placeholder.jpg') }}"
                                      alt="avatar">
                                 <!-- File Input (Hidden by Default) -->
                                 <input type="file" id="file_license_picture" name="license_picture"

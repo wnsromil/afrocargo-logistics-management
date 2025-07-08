@@ -31,6 +31,7 @@ class ShiptoController extends Controller
                 'country' => 'required|string',
                 'company_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
                 'mobile_number_code_id' => 'required',
                 'mobile_number' => 'required|digits:10|unique:users,phone',
                 'alternative_mobile_number_code_id' => 'nullable',
@@ -69,6 +70,7 @@ class ShiptoController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name'       => $validated['last_name'],
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'],
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,

@@ -253,38 +253,17 @@ class InventoryController extends Controller
         $rules = [
             'inventary_sub_type'     => 'required|string|in:Ocean Cargo,Air Cargo,Supply',
             'name'                   => 'required|string',
-            'barcode'                => 'required|string',
+           // 'barcode'                => 'required|string',
             'warehouse_id'           => 'required|exists:warehouses,id',
             'in_stock_quantity'      => 'required|numeric',
             'package_type'           => 'required|string',
             'retail_shipping_price'  => 'required|numeric',
             'description'            => 'required|string',
-            'driver_app_access'      => 'required|in:Yes,No',
+           // 'driver_app_access'      => 'required|in:Yes,No',
             // 'status'              => 'required|in:Active,Inactive', // optional if not needed
             'img'                    => 'nullable|image|mimes:jpg,png|max:2048',
             'country'                => 'required|string',
         ];
-
-        // Conditional rules for Supply type
-        if ($request->inventary_sub_type === 'Supply') {
-            $rules = array_merge($rules, [
-                'qty_on_hand'           => 'required|numeric',
-                'retail_vaule_price'    => 'required|numeric',
-                'value_price'           => 'required|numeric',
-                'last_cost_received'    => 'required|numeric',
-                'last_date_received'    => 'nullable|date',
-                'tax_percentage'        => 'nullable|numeric',
-                're_order_point'        => 'nullable|numeric',
-                're_order_quantity'     => 'nullable|numeric',
-                'low_stock_warning'     => 'required|numeric',
-                'color'                 => 'required|string',
-                'open'                  => 'required|string',
-                'capacity'              => 'required|string',
-                'un_rating'             => 'required|string',
-                'model_number'          => 'required|string',
-                'minimum_order_limit'   => 'required|numeric',
-            ]);
-        }
 
         $validatedData = $request->validate($rules);
 
@@ -293,7 +272,7 @@ class InventoryController extends Controller
         // Store logic here
         $data = $request->only([
             'inventary_sub_type',
-            'barcode',
+           // 'barcode',
             'warehouse_id',
             'name',
             'in_stock_quantity',
@@ -301,7 +280,7 @@ class InventoryController extends Controller
             'package_type',
             'retail_shipping_price',
             'description',
-            'driver_app_access',
+            //'driver_app_access',
             'status',
             'costprice',
             'country',

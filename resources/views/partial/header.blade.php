@@ -88,8 +88,7 @@
                     <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <a class="dropdown-item" href="#" onclick="event.preventDefault();
-                this.closest('form').submit();">
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); this.closest('form').submit();">
                                 <i class="ti ti-power"></i>
                                 <Span class="drop-span">{{ __('Log Out') }}</Span>
 

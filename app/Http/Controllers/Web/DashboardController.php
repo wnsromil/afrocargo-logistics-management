@@ -34,9 +34,26 @@ class DashboardController extends Controller
             return $q->where('arrived_warehouse_id', $this->user->warehouse_id);
         })->with(['container', 'driver'])
             ->where('type', 'Arrived')
-             ->where('status', 5)
+            ->where('status', 5)
             ->get();
 
-        return view('dashboard', compact('latestContainers', 'warehouses', 'upcomingContainers'));
+
+        $serviceOrders = Parcel::where('parcel_type', 'Service')
+            ->when(auth()->user()->role_id != 1, function ($query) {
+                return $query->where('warehouse_id', auth()->user()->warehouse_id);
+            })
+            ->latest('id')
+            ->take(10)
+            ->get();
+
+        $supplyOrders = Parcel::where('parcel_type', 'Supply')
+            ->when(auth()->user()->role_id != 1, function ($query) {
+                return $query->where('warehouse_id', auth()->user()->warehouse_id);
+            })
+            ->latest('id')
+            ->take(10)
+            ->get();
+
+        return view('dashboard', compact('serviceOrders', 'supplyOrders', 'latestContainers', 'warehouses', 'upcomingContainers'));
     }
 }
