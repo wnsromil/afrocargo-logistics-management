@@ -38,6 +38,8 @@ use App\Http\Controllers\Web\Admin\{
     CustomReportController,
     VerifyLicenseController,
     SupplyInventoryController,
+    RoRoShippingController,
+    InspectionScheduleController
 };
 use App\Mail\RegistorMail;
 
@@ -93,7 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::get('/send', function () {
-    Mail::to('krishnapawarwns@gmail.com')->send(new  RegistorMail());
+    Mail::to('krishnapawarwns@gmail.com')->send(new RegistorMail());
     return [
         'message' => 'Welcome to this api',
     ];
@@ -209,11 +211,13 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('custom-reports', CustomReportController::class);
         Route::post('updateCustomReportContainer', [CustomReportController::class, 'updateCustomReportContainer'])->name('custom-reports.updateCustomReportContainer');
         Route::resource('verify-license', VerifyLicenseController::class);
-       
+
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
         Route::resource('bill_of_lading', BillofLadingController::class);
+        Route::resource('ro-ro-shipping', RoRoShippingController::class);
+        Route::resource('vehicle_inspection', InspectionScheduleController::class);
         Route::resource('lading_details', LadingDetailsController::class);
         Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
 
@@ -237,7 +241,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
-        // Customer 
+        // Customer
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
 
         // Customer Ship To Address
@@ -260,10 +264,10 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/update-Pickup/{id}', [CustomerController::class, 'updatePickup'])->name('customer.updatePickup');
         Route::post('/edit-Pickup/{id}', [CustomerController::class, 'Editupdate'])->name('customer.pickup-edit');
 
-        // Warehouse 
+        // Warehouse
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
 
-        // Warehouse manager 
+        // Warehouse manager
         Route::post('warehouse_manager/status/{id}', [WarehouseManagerController::class, 'changeStatus'])->name('warehouse_manager.status');
 
         // Schedule
@@ -273,9 +277,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         //Expenses
         Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
 
-        Route::get('user_role', [RoleManagementController::class,'index'])->name('user_role.index');
-        Route::get('user_role/create', [RoleManagementController::class,'create'])->name('user_role.create');
-        Route::post('user_role/store', [RoleManagementController::class,'store'])->name('user_role.store');
+        Route::get('user_role', [RoleManagementController::class, 'index'])->name('user_role.index');
+        Route::get('user_role/create', [RoleManagementController::class, 'create'])->name('user_role.create');
+        Route::post('user_role/store', [RoleManagementController::class, 'store'])->name('user_role.store');
         //CBM Calculatoar
         Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
         Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
@@ -284,7 +288,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('/container-sizes/update', [CBMCalculatoarController::class, 'ContainerSizeStore'])->name('cbm_calculator.container-sizes.update');
         Route::post('/store-port-freight', [CBMCalculatoarController::class, 'storePortFreight'])->name('cbm_calculator.store-port-freight');
 
-        // Customer 
+        // Customer
         Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
 
 
@@ -295,7 +299,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.serviceorderdetails.orderdetails');
         })->name('serviceorderdetails.orderdetails');
 
-        
+
 
         Route::get('/add-role', function () {
             return view('admin.user_role.create');

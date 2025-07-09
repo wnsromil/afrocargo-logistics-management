@@ -29,7 +29,7 @@
                                     style="width: 30% !important; height: 3px !important; font-size: 14px; text-align: left; padding: 1px">
                                     DocId:Billaly3Cars
                                 </td>
-                                <!-- 
+                                <!--
                             <td style="width:30% !important; height: 3px !important;"></td> -->
                             </tr>
 
@@ -77,49 +77,49 @@
             <tr>
                 <td colspan="3">
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 2px; margin-top: 5px;">
-                        <thead style="text-align: center !important; border: 2px solid #c13232 !important">
+                        <thead style="text-align: center !important; border: 2px solid #203a5d !important">
                             <tr>
                                 <th
-                                    style="width:30% !important; border: 2px solid #c13232; font-size: 16px !important; font-weight:500 !important; border: 2px solid #c13232 !important; padding: 5px;">
+                                    style="width:30% !important; border: 2px solid #203a5d; font-size: 16px !important; font-weight:500 !important; border: 2px solid #203a5d !important; padding: 8px 15px;">
                                     Items</th>
                                 <th
-                                    style="width:30% !important; border: 2px solid #c13232; font-size: 16px !important; font-weight:500 !important; border: 2px solid #c13232 !important; padding: 5px;">
+                                    style="width:30% !important; border: 2px solid #203a5d; font-size: 16px !important; font-weight:500 !important; border: 2px solid #203a5d !important; padding: 8px 15px;">
                                     Item
                                     Description</th>
                                 <th
-                                    style="width:30% !important; border: 2px solid #c13232; font-size: 16px !important; font-weight:500 !important; border: 2px solid #c13232 !important; padding: 5px;">
+                                    style="width:30% !important; border: 2px solid #203a5d; font-size: 16px !important; font-weight:500 !important; border: 2px solid #203a5d !important; padding: 8px 15px;">
                                     Qty</th>
                             </tr>
                         </thead>
-                        <tbody style="text-align: left; border: 2px solid #c13232 !important">
+                        <tbody style="text-align: left; border: 2px solid #203a5d !important">
                             <tr>
-                                <td style="border-right:2px solid #c13232;  padding: 5px; ">
+                                <td style="border-right:2px solid #203a5d;  padding: 15px; ">
                                     TII-002967</td>
                                 <td
-                                    style="border-right:2px solid #c13232;  padding: 5px; text-align: center !important">
+                                    style="border-right:2px solid #203a5d;  padding: 15px; text-align: center !important">
                                     Medium Vehicle Hyundai Tucson
                                     HYUNKM8J3CAL5LU151379</td>
-                                <td style="border-right:2px solid #c13232; padding: 5px; ">1
+                                <td style="border-right:2px solid #203a5d; padding: 15px; ">1
                                 </td>
                             </tr>
 
                             <tr>
-                                <td style="border-right:2px solid #c13232; padding: 5px; ">
+                                <td style="border-right:2px solid #203a5d; padding: 15px; ">
                                     TII-002966</td>
                                 <td
-                                    style="border-right:2px solid #c13232;  padding: 5px; text-align: center !important">
+                                    style="border-right:2px solid #203a5d;  padding: 15px; text-align: center !important">
                                     Medium Vehicle Honda H481365 </td>
-                                <td style="border-right:2px solid #c13232; padding: 5px; ">1
+                                <td style="border-right:2px solid #203a5d; padding: 15px; ">1
                                 </td>
                             </tr>
 
                             <tr>
-                                <td style="border-right:2px solid #c13232; padding: 5px; ">
+                                <td style="border-right:2px solid #203a5d; padding: 15px; ">
                                     TII-002929</td>
                                 <td
-                                    style="border-right:2px solid #c13232;  padding: 5px; text-align: center !important">
+                                    style="border-right:2px solid #203a5d;  padding: 15px; text-align: center !important">
                                     large Vehicle Toyota H Lander </td>
-                                <td style="border-right:2px solid #c13232;  padding: 5px; ">1
+                                <td style="border-right:2px solid #203a5d;  padding: 15px; ">1
                                 </td>
                             </tr>
                         </tbody>

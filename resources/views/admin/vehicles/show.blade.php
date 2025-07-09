@@ -4,37 +4,37 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="head">Vehicle ID - {{ $vehicle->unique_id ?? '--'}}</p>
+        <p class="head">Vehicle ID - {{ $vehicle->unique_id ?? '--' }}</p>
     </x-slot>
 
     @php
         $result = checkVehicleExpiryStatus(
             $vehicle->licence_plate_exp_date,
             $vehicle->vehicle_registration_exp_date,
-            $vehicle->vehicle_insurance_exp_date
+            $vehicle->vehicle_insurance_exp_date,
         );
     @endphp
 
-    <div class="card">
-        @if(!empty($result))
-            @foreach($result as $item)
+    <div class="card p-0">
+        @if (!empty($result))
+            @foreach ($result as $item)
                 <div class="alert alert-danger alert-dismissible fade show {{ $item['bg_class'] ?? '' }} {{ $item['text_class'] ?? '' }}"
                     role="alert">
                     <strong>{{ $item['label'] }}:</strong> {{ $item['message'] }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             @endforeach
         @endif
 
 
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Warehouse Name</label>
-                        <p>{{ $vehicle->warehouse->warehouse_name ?? '--'}}</p>
+                        <p>{{ $vehicle->warehouse->warehouse_name ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle Type</label>
-                        <p>{{ $vehicle->vehicle_type ?? '--'}}</p>
+                        <p>{{ $vehicle->vehicle_type ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle Model</label>
-                        <p>{{ $vehicle->vehicle_model ?? '--'}}</p>
+                        <p>{{ $vehicle->vehicle_model ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_type">Vehicle Model</label>
-                        <p>{{ $vehicle->vehicle_model ?? '--'}}</p>
+                        <p>{{ $vehicle->vehicle_model ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_number">Vehicle Manufactured year</label>
-                        <p>{{ $vehicle->vehicle_year ?? '--'}}</p>
+                        <p>{{ $vehicle->vehicle_year ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_model">Vehicle Number (Plate No.)</label>
-                        <p>{{ $vehicle->vehicle_number ?? '--'}}</p>
+                        <p>{{ $vehicle->vehicle_number ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_year">Licence Plate Number</label>
-                        <p>{{ $vehicle->licence_plate_number ?? '--'}}</p>
+                        <p>{{ $vehicle->licence_plate_number ?? '--' }}</p>
                     </div>
                 </div>
 
@@ -158,9 +158,9 @@
                         <label for="warehouse_id">Warehouse Location</label>
                         <p>{{ $vehicle->warehouse ? $vehicle->warehouse->warehouse_name : 'N/A' }}</p>
                         <!-- Display additional Warehouse info -->
-                        @if($vehicle->warehouse)
-                            <p><strong>Address:</strong> {{ $vehicle->warehouse->address ?? '--'}}</p>
-                            <p><strong>Contact:</strong> {{ $vehicle->warehouse->phone ?? '--'}}</p>
+                        @if ($vehicle->warehouse)
+                            <p><strong>Address:</strong> {{ $vehicle->warehouse->address ?? '--' }}</p>
+                            <p><strong>Contact:</strong> {{ $vehicle->warehouse->phone ?? '--' }}</p>
                         @endif
                     </div>
                 </div>
@@ -169,10 +169,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="driver_id">Driver Information</label>
-                        @if($vehicle->driver)
-                            <p><strong>Name:</strong> {{ $vehicle->driver->name ?? '--'}}</p>
-                            <p><strong>Email:</strong> {{ $vehicle->driver->email ?? '--'}}</p>
-                            <p><strong>Phone:</strong> {{ $vehicle->driver->phone ?? '--'}}</p>
+                        @if ($vehicle->driver)
+                            <p><strong>Name:</strong> {{ $vehicle->driver->name ?? '--' }}</p>
+                            <p><strong>Email:</strong> {{ $vehicle->driver->email ?? '--' }}</p>
+                            <p><strong>Phone:</strong> {{ $vehicle->driver->phone ?? '--' }}</p>
                         @else
                             <p>No driver assigned.</p>
                         @endif
@@ -193,7 +193,7 @@
                     <div class="input-block mb-3">
                         <p for="status">Status</p>
                         <div
-                            class="mt-2 badge  {{$vehicle->status == 'Active' ? 'bg-success-light' : 'bg-danger-light'}}">
+                            class="mt-2 badge  {{ $vehicle->status == 'Active' ? 'bg-success-light' : 'bg-danger-light' }}">
                             <p>{{ $vehicle->status }}</p>
                         </div>
                     </div>

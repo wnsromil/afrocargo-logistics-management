@@ -15,7 +15,7 @@ class MenuSeeder extends Seeder
         if (Schema::hasTable('menus')) {
             DB::statement('TRUNCATE TABLE menus');
         }
-         $menus = [
+        $menus = [
             [
                 'title' => 'Dashboard',
                 'icon' => '<i class="menuIcon ti ti-layout-dashboard"></i>',
@@ -122,15 +122,16 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill of Lading',
                 'icon' => '<i class="menuIcon ti ti-truck"></i>',
                 'route' => 'admin.BillofLading.index',
-                // 'route' => '#',
+                //  'route' => '#',
                 'active' => 'bill_of_lading*,lading_details*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
-                'title' => 'Custom Reports',
-                'icon' => '<i class="ti ti-chart-sankey"></i>',
-                'route' => '#',
-                'active' => 'custom-reports*,verify-license*',
+                'title' => 'Ro Ro Shipping',
+                'icon' => '<i class="menuIcon ti ti-ship"></i>',
+                'route' => 'admin.ro-ro-shipping.index',
+                //  'route' => '#',
+                'active' => 'ro-ro-shipping*,vehicle_inspection*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -211,7 +212,7 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ]);
         }
-        
+
         // Add submenus
         $warehouse = Menu::where('title', 'Warehouses')->first();
         if ($warehouse) {
@@ -268,6 +269,27 @@ class MenuSeeder extends Seeder
         }
 
         // Add submenus
+        $vehicle = Menu::where('title', 'Vehicle Management')->first();
+        if ($vehicle) {
+
+            Menu::create([
+                'title' => 'Vehicle List',
+                'route' => 'admin.vehicle.index',
+                'active' => 'vehicle*',
+                'parent_id' => $vehicle->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+            Menu::create([
+                'icon' => 'assets/images/container_icon.svg',
+                'title' => 'Container List',
+                'route' => 'admin.container.index',
+                'active' => 'container*',
+                'parent_id' => $vehicle->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus
         $template = Menu::where('title', 'Template Management')->first();
         if ($template) {
             Menu::create([
@@ -304,6 +326,24 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill Of Lading Details',
                 'route' => 'admin.lading_details.index',
                 'active' => 'lading_details*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+        $template = Menu::where('title', 'Ro Ro Shipping')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'Request a Shipment',
+                'route' => 'admin.ro-ro-shipping.index',
+                'active' => 'ro-ro-shipping',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Vehicle Inspection',
+                'route' => 'admin.vehicle_inspection.index',
+                'active' => 'vehicle_inspection*',
                 'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);

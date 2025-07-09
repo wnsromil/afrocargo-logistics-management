@@ -69,7 +69,7 @@
                 <div class="card-body">
                     <div class="table-responsive mt-3">
 
-                        <table class="table table-stripped table-hover datatable">
+                        <table class="table table-stripped table-hover datatable driverTable">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Driver ID</th>
