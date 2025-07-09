@@ -95,6 +95,7 @@
                                 <th>Item No</th>
                                 <th>ItemId</th>
                                 <th>Image</th>
+                                <th>Warehouse</th>
                                 <th>description</th>
                                 {{-- <th>Shipping Price</th> --}}
                                 <th>Retail Price</th>
@@ -110,11 +111,11 @@
                         <tbody>
                             @forelse ($inventories as $inventory)
                                 <tr class="background-instock text-center" style="
-                                                                        @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                                                        @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                                                            @else background-color: #FFD6A5;
-                                                                        @endif
-                                                                    ">
+                                                                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                                                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                                                                    @else background-color: #FFD6A5;
+                                                                                @endif
+                                                                            ">
                                     <td>
                                         {{ $inventory->unique_id }}
                                     </td>
@@ -127,6 +128,8 @@
                                         @else
                                             <span>-</span>
                                         @endif
+                                    </td>
+                                    <td class="text-dark"><span>{{ $inventory->warehouse->warehouse_name ?? '-' }}</span>
                                     </td>
                                     <td class="text-dark">
                                         <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -212,7 +215,8 @@
     </div>
 
     @section('script')
-        {{-- <script>
+        {{--
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll("#setBackground tbody tr").forEach(row => {
                     let back = row.cells[12].querySelector('span').innerText.trim();
