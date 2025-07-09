@@ -146,20 +146,11 @@
                     <div class="widthmannual">
                          <select id="country" name="country" class="js-example-basic-single select2">
                                 <option value="" disabled hidden {{ old('country', $vehicle->ship_to_country) ? '' : 'selected' }}>Select Country</option>
-                                <option value="Bangladesh" {{ old('country', $vehicle->ship_to_country) == 'Bangladesh' ? 'selected' : '' }}>Bangladesh</option>
-                                <option value="Belgium" {{ old('country', $vehicle->ship_to_country) == 'Belgium' ? 'selected' : '' }}>Belgium</option>
-                                <option value="Kuwait" {{ old('country', $vehicle->ship_to_country) == 'Kuwait' ? 'selected' : '' }}>Kuwait</option>
-                                <option value="Dominica" {{ old('country', $vehicle->ship_to_country) == 'Dominica' ? 'selected' : '' }}>Dominica</option>
-                                <option value="India" {{ old('country', $vehicle->ship_to_country) == 'India' ? 'selected' : '' }}>India</option>
-                                <option value="Dominican Republic" {{ old('country', $vehicle->ship_to_country) == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
-                                <option value="Andorra" {{ old('country', $vehicle->ship_to_country) == 'Andorra' ? 'selected' : '' }}>Andorra</option>
-                                <option value="Chile" {{ old('country', $vehicle->ship_to_country) == 'Chile' ? 'selected' : '' }}>Chile</option>
-                                <option value="United States" {{ old('country', $vehicle->ship_to_country) == 'United States' ? 'selected' : '' }}>United States</option>
-                                <option value="Greenland" {{ old('country', $vehicle->ship_to_country) == 'Greenland' ? 'selected' : '' }}>Greenland</option>
-                                <option value="Cabo Verde" {{ old('country', $vehicle->ship_to_country) == 'Cabo Verde' ? 'selected' : '' }}>Cabo Verde</option>
-                                <option value="Côte d'Ivoire" {{ old('country', $vehicle->ship_to_country) == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
-                                <option value="Mali" {{ old('country', $vehicle->ship_to_country) == 'Mali' ? 'selected' : '' }}>Mali</option>
-                                <option value="European Union" {{ old('country', $vehicle->ship_to_country) == 'European Union' ? 'selected' : '' }}>European Union</option>
+                                     @foreach (setting()->warehouseContries() as $country)
+                                        <option value="{{ $country['name'] }}" {{ old('country', $vehicle->ship_to_country) == $country['name'] ? 'selected' : '' }}>
+                                            {{ $country['name'] }}
+                                        </option>
+                                @endforeach
                             </select>
                     </div>
                     @error('ship_to_country')

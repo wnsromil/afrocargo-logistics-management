@@ -91,14 +91,14 @@
                     <table class="table table-stripped table-hover datatable inheritbg" id="setBackground">
                         <thead class="thead-light">
                             <tr>
-                                <tr>
+                            <tr>
                                 <th>Item No</th>
                                 <th>ItemId</th>
                                 <th>Image</th>
+                                <th>Warehouse</th>
                                 <th>description</th>
                                 {{-- <th>Shipping Price</th> --}}
                                 <th>Retail Price</th>
-                                <th>Cost</th>
                                 <th>Type</th>
                                 <th>Package Type</th>
                                 <th>Action</th>
@@ -111,11 +111,11 @@
                         <tbody>
                             @forelse ($inventories as $inventory)
                                 <tr class="background-instock text-center" style="
-                                                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                                                    @else background-color: #FFD6A5;
-                                                                @endif
-                                                            ">
+                                                                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                                                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                                                                    @else background-color: #FFD6A5;
+                                                                                @endif
+                                                                            ">
                                     <td>
                                         {{ $inventory->unique_id }}
                                     </td>
@@ -129,6 +129,8 @@
                                             <span>-</span>
                                         @endif
                                     </td>
+                                    <td class="text-dark"><span>{{ $inventory->warehouse->warehouse_name ?? '-' }}</span>
+                                    </td>
                                     <td class="text-dark">
                                         <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="{{ $inventory->description ?? '-' }}">
@@ -140,9 +142,6 @@
                                     </td> --}}
                                     <td class="text-dark">
                                         <span>${{ number_format($inventory->retail_vaule_price ?? 0, 2) }}</span>
-                                    </td>
-                                    <td class="text-dark">
-                                        <span>${{ number_format($inventory->price ?? 0, 2) }}</span>
                                     </td>
                                     <td class="text-dark"><span>{{ $inventory->inventary_sub_type ?? '-' }}</span></td>
                                     <td class="text-dark"><span>{{ $inventory->package_type ?? '-' }}</span></td>
@@ -208,7 +207,7 @@
             <div class="col-md-6">
                 <div class="float-end">
                     <div class="bottom-user-page mt-3">
-                        {!! $inventories->appends(['per_page' =>request('per_page')])->links('pagination::bootstrap-5') !!}
+                        {!! $inventories->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
             </div>
@@ -216,6 +215,7 @@
     </div>
 
     @section('script')
+        {{--
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll("#setBackground tbody tr").forEach(row => {
@@ -234,7 +234,7 @@
                 });
             });
 
-        </script>
+        </script> --}}
         <script>
             // Function to reset the form fields
             function resetForm() {

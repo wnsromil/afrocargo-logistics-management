@@ -6,7 +6,7 @@
                 <thead class="thead-light">
 
                     <tr>
-                        <th>Customer fghfgh ID</th>
+                        <th>Customer ID</th>
                         <th>Photo</th>
                         <th>Name</th>
                         <th>Username</th>

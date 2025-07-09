@@ -120,7 +120,7 @@ class ShiptoController extends Controller
                 'company_name' => 'nullable|string|max:255',
                 'first_name' => 'required|string|max:255',
                 'mobile_number_code_id' => 'required',
-                'mobile_number' => 'required|digits:8|max:15|unique:users,phone',
+                'mobile_number' => 'required|unique:users,phone',
                 'alternative_mobile_number_code_id' => 'nullable',
                 'alternative_mobile_number' => 'nullable|max:15',
                 'email' => [
@@ -176,7 +176,8 @@ class ShiptoController extends Controller
                 'signup_type'  => 'for_customer',
                 'role'         => 'ship_to_customer',
                 'role_id'      => 5,
-
+                'invoice_custmore_type'      => 'ship_to',
+                'invoice_custmore_id'      => $user->id ?? null,
                 // Optional fields
                 'license_number' => $request->license ?? null,
                 'apartment' => $request->apartment ?? null,
@@ -230,6 +231,7 @@ class ShiptoController extends Controller
         $users = User::where('role_id', 5)->with('addresses')
             ->where('status', 'Active')
             ->where('parent_customer_id', $user->id)
+            ->orWhere('invoice_custmore_id', $user->id)
             ->where('country_id', $request->country)
             ->orderBy('id', 'desc')
             ->get();

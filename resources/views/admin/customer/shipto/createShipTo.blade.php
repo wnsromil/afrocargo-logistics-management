@@ -5,10 +5,11 @@
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
-         <div class="d-flex innertopnav w-100 justify-content-between">
+        <div class="d-flex innertopnav w-100 justify-content-between">
             <p class="subhead pheads">Add Ship to Address</p>
             <div class="btnwrapper">
-                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
+                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1">
+                    Pickup </a>
                 <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>
@@ -19,34 +20,17 @@
             <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
-
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                             <div class="widthmannual">
                                 <select id="country" name="country" class="js-example-basic-single select2">
                                     <option value="" disabled hidden {{ old('country') ? '' : 'selected' }}>Select
                                         Country</option>
-                                    <option value="Bangladesh" {{ old('country') == 'Bangladesh' ? 'selected' : '' }}>
-                                        Bangladesh</option>
-                                    <option value="Belgium" {{ old('country') == 'Belgium' ? 'selected' : '' }}>Belgium
-                                    </option>
-                                    <option value="Kuwait" {{ old('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait
-                                    </option>
-                                    <option value="Dominica" {{ old('country') == 'Dominica' ? 'selected' : '' }}>Dominica
-                                    </option>
-                                    <option value="India" {{ old('country') == 'India' ? 'selected' : '' }}>India</option>
-                                    <option value="Dominican Republic" {{ old('country') == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
-                                    <option value="Andorra" {{ old('country') == 'Andorra' ? 'selected' : '' }}>Andorra
-                                    </option>
-                                    <option value="Chile" {{ old('country') == 'Chile' ? 'selected' : '' }}>Chile</option>
-                                    <option value="United States" {{ old('country') == 'United States' ? 'selected' : '' }}>United States</option>
-                                    <option value="Greenland" {{ old('country') == 'Greenland' ? 'selected' : '' }}>
-                                        Greenland</option>
-                                    <option value="Cabo Verde" {{ old('country') == 'Cabo Verde' ? 'selected' : '' }}>Cabo
-                                        Verde</option>
-                                    <option value="Côte d'Ivoire" {{ old('country') == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
-                                    <option value="Mali" {{ old('country') == 'Mali' ? 'selected' : '' }}>Mali</option>
-                                    <option value="European Union" {{ old('country') == 'European Union' ? 'selected' : '' }}>European Union</option>
+                                    @foreach (setting()->warehouseContries() as $country)
+                                        <option value="{{ $country['name'] }}" {{ old('country') == $country['name'] ? 'selected' : '' }}>
+                                            {{ $country['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 <button class="btn btn-primary">Location</button>
                             </div>
@@ -70,7 +54,7 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                          <div class="col-md-12 mb-2">
+                        <div class="col-md-12 mb-2">
                             <label class="foncolor" for="last_name">Last Name <i class="text-danger">*</i></label>
                             <input type="text" name="last_name" class="form-control inp" placeholder="Enter Last Name"
                                 value="{{ old('last_name') }}">
@@ -96,7 +80,7 @@
                                     oninput="this.value = this.value.slice(0, 10)">
                             </div>
                             @error('mobile_number')
-                                  <small class="text-danger">The Cellphone field is required.</small>
+                                <small class="text-danger">The Cellphone field is required.</small>
                             @enderror
                         </div>
                         <div class="col-md-12 mb-2 alternate_mobile_no">
@@ -137,7 +121,7 @@
                                 placeholder="Enter Apartment">
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="col-md-6 mb-2 align-items-stretch">

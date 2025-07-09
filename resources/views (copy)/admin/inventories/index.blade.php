@@ -210,7 +210,7 @@
     </div>
 
     @section('script') 
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll("#setBackground tbody tr").forEach(row => {
                 let back = row.cells[12].querySelector('span').innerText.trim();
@@ -228,7 +228,7 @@
             });
         });
 
-    </script>
+    </script> --}}
     <script>
         // Function to reset the form fields
         function resetForm() {

@@ -27,13 +27,7 @@
                     <h6>Inventory Type</h6>
                     <p>{{$inventories->inventary_sub_type ?? "-"}}</p>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="basic-info-detail">
-                    <h6>Barcode Code</h6>
-                    <p>{{$inventories->barcode_have ?? "-"}}</p>
-                </div>
-            </div>
+            </div>      
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
                     <h6>Warehouse Name</h6>
@@ -99,13 +93,7 @@
                     <h6>Description</h6>
                     <p class="pe-5">{{$inventories->description ?? "-"}}</p>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="basic-info-detail">
-                    <h6>Default Driver App</h6>
-                    <p>{{$inventories->driver_app_access ?? "-"}}</p>
-                </div>
-            </div>
+            </div>  
         </div>
         <hr>
         @if ($inventories->inventary_sub_type == 'Ocean Cargo' || $inventories->inventary_sub_type == 'Air Cargo')
@@ -129,12 +117,6 @@
                     <div class="basic-info-detail">
                         <h6>City</h6>
                         <p>{{$inventories->city ?? "-"}}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="basic-info-detail">
-                        <h6>State/Zone</h6>
-                        <p>{{$inventories->state_zone ?? "-"}}</p>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6 mb-4">

@@ -23,36 +23,45 @@ class SupplyOrdersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+
+     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10); // Default is 10
+        $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
+        $driver_id = $request->input('driver_id');
+        $status_search = $request->input('status_search');
+        $warehouse_id = $request->input('warehouse_id');
 
-        $parcels = Parcel::where('parcel_type', 'Supply')->when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })
+        $query = Parcel::where('parcel_type', 'Supply')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($warehouse_id, fn($q) => $q->where('warehouse_id', $warehouse_id)) // ✅ New condition
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
-                    // Search by tracking_number, status, estimate_cost, and total_amount
                     $query->where('tracking_number', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%")
                         ->orWhere('estimate_cost', 'LIKE', "%$search%")
                         ->orWhere('total_amount', 'LIKE', "%$search%");
 
-                    // Check if the search string is a valid date in the format "d-m-Y"
                     if (\DateTime::createFromFormat('d-m-Y', $search) !== false) {
-                        // Convert the search string to the database-compatible format "Y-m-d"
                         $formattedDate = \DateTime::createFromFormat('d-m-Y', $search)->format('Y-m-d');
-
-                        // Search for records where the created_at date matches the formatted date
-                        $query->orWhereDate('created_at', '=', $formattedDate);
+                        $query->orWhereDate('pickup_date', '=', $formattedDate);
                     }
                 });
             })
-            ->latest('id')
-            ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage]);
+            ->when($driver_id, fn($q) => $q->where('driver_id', $driver_id))
+            ->when($status_search, fn($q) => $q->where('status', $status_search))
+            ->latest('id');
+
+
+        $parcels = $query->paginate($perPage)->appends([
+            'search' => $search,
+            'per_page' => $perPage,
+            'driver_id' => $driver_id,
+            'status_search' => $status_search,
+        ]);
 
         $serialStart = ($currentPage - 1) * $perPage;
 
@@ -64,13 +73,25 @@ class SupplyOrdersController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        $drivers = $user->where('role_id', 4)->values();
+        $drivers = User::where('role_id', 4)
+            ->where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
 
         if ($request->ajax()) {
-            return view('admin.supply_orders.table', compact('parcels', 'serialStart'))->render();
+            return view('admin.supply_orders.table', compact('parcels', 'serialStart', 'drivers'))->render();
         }
 
-        return view('admin.supply_orders.index', compact('parcels', 'drivers', 'warehouses', 'search', 'perPage', 'serialStart'));
+        return view('admin.supply_orders.index', compact(
+            'parcels',
+            'drivers',
+            'warehouses',
+            'search',
+            'perPage',
+            'serialStart',
+        ));
     }
 
     /**
