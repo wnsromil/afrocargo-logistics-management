@@ -47,11 +47,11 @@
                         <div class="middleDiv">
                             <select class="form-control select2" name="sip_country" id="sip_country">
                                 <option value="">Select Country</option>
-                                    @foreach (setting()->warehouseContries() as $key => $item)
+                                @foreach (setting()->warehouseContries() as $key => $item)
                                     <option value="{{ $item->iso2 ?? 'AF' }}">
                                         {{ $item->name ?? '' }}</option>
-                                    @endforeach
-                                </select>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -61,12 +61,12 @@
                             <label for="customer_id">Country<i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <select class="form-control select2" >
-                                    @foreach (setting()->warehouseContries() as $key => $item)
+                            <select class="form-control select2">
+                                @foreach (setting()->warehouseContries() as $key => $item)
                                     <option value="{{ $item->iso2 ?? 'AF' }}">
                                         {{ $item->name ?? '' }}</option>
-                                    @endforeach
-                                </select>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
-                                {{-- @foreach($customers as $customer)
+                                {{-- @foreach ($customers as $customer)
                                                             <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach --}}
@@ -117,7 +117,7 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="ship_customer">
                                 <option value="">Search Customer</option>
-                                {{-- @foreach($customers as $customer)
+                                {{-- @foreach ($customers as $customer)
                                                             <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach --}}
@@ -158,15 +158,16 @@
                         </div>
                         <div class="middleDiv">
                             <select class="form-control select2" id="countryForLocation">
-                                    @foreach (setting()->warehouseContries() as $key => $item)
+                                @foreach (setting()->warehouseContries() as $key => $item)
                                     <option value="{{ $item->iso2 ?? 'AF' }}">
                                         {{ $item->name ?? '' }}</option>
-                                    @endforeach
-                                </select>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="last">
                             <div>
-                                <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#locationModal" id="locationModalShow">
+                                <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal"
+                                    data-bs-target="#locationModal" id="locationModalShow">
                                     location
                                 </button>
                             </div>
@@ -177,7 +178,8 @@
                                             <h5 class="modal-title">Select Location</h5>
                                         </div>
                                         <div class="modal-body">
-                                            <input type="text" class="form-control" id="locationSearchBox" placeholder="Enter location..." />
+                                            <input type="text" class="form-control" id="locationSearchBox"
+                                                placeholder="Enter location..." />
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary confirm-supply"
@@ -196,8 +198,10 @@
             <div class="row mt-5 g-3">
 
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
-                        <div class="borderset position-relative newCustomerAdd {{--disablesectionnew--}}" id="delivery_to_address">
+                    <form action="{{ route('admin.saveInvoceCustomer') }}" method="post"
+                        id="delivery_customer_inf_form">
+                        <div class="borderset position-relative newCustomerAdd {{-- disablesectionnew --}}"
+                            id="delivery_to_address">
                             <div class="row gx-3 gy-2">
 
                                 @csrf
@@ -226,8 +230,10 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                    <option value="{{ $item->id }}"
+                                                        data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}"
+                                                        data-code="{{ $item->phonecode }}">
                                                         {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
@@ -244,8 +250,10 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="alternative_mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                    <option value="{{ $item->id }}"
+                                                        data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}"
+                                                        data-code="{{ $item->phonecode }}">
                                                         {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
@@ -269,8 +277,10 @@
                                         placeholder="Enter Address 2">
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country">
+                                    <label class="foncolor" for="country">Country <i
+                                            class="text-danger">*</i></label>
+                                    <input type="text" name="country"
+                                        id="country"class="form-control inp address" placeholder="Country">
                                     {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
@@ -288,7 +298,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state">
+                                    <input type="text" name="state"
+                                        id="state"class="form-control inp address" placeholder="state">
                                     {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
@@ -302,7 +313,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
+                                    <input type="text" name="city" id="city"
+                                        class="form-control inp address" placeholder="city">
                                     {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
@@ -314,9 +326,11 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="Zip_code">Zip code <i
+                                            class="text-danger">*</i></label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
+                                    <input type="text" name="zip_code" class="form-control inp"
+                                        placeholder="Enter Zip">
                                 </div>
                             </div>
                         </div>
@@ -324,8 +338,9 @@
                 </div>
 
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="pick_up_customer_inf_form">
-                        <div class="borderset position-relative newShipmentAddress {{--disablesectionnew--}}"
+                    <form action="{{ route('admin.saveInvoceCustomer') }}" method="post"
+                        id="pick_up_customer_inf_form">
+                        <div class="borderset position-relative newShipmentAddress {{-- disablesectionnew --}}"
                             id="ship_to_address">
                             <div class="row gx-3 gy-2">
 
@@ -356,8 +371,10 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                    <option value="{{ $item->id }}"
+                                                        data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}"
+                                                        data-code="{{ $item->phonecode }}">
                                                         {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
@@ -374,8 +391,10 @@
                                         <div class="customflagselect">
                                             <select class="flag-select" name="alternative_mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
-                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                    <option value="{{ $item->id }}"
+                                                        data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}"
+                                                        data-code="{{ $item->phonecode }}">
                                                         {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
@@ -398,8 +417,10 @@
                                         placeholder="Enter Address 2">
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
-                                    <input type="text" name="country" id="country"class="form-control inp address" placeholder="Country" readonly>
+                                    <label class="foncolor" for="country">Country <i
+                                            class="text-danger">*</i></label>
+                                    <input type="text" name="country"
+                                        id="country"class="form-control inp address" placeholder="Country" readonly>
                                     {{-- <select name="country_id" id="country"
                                         class="form-control  form-cs js-example-basic-single select2 ">
                                         <option value="">Select Country</option>
@@ -417,7 +438,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
-                                    <input type="text" name="state" id="state"class="form-control inp address" placeholder="state" readonly>
+                                    <input type="text" name="state"
+                                        id="state"class="form-control inp address" placeholder="state" readonly>
                                     {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
                                         @if (old('state_id'))
@@ -425,13 +447,14 @@
                                         @endif
                                     </select> --}}
                                     @error('state_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
-                                    <input type="text" name="city" id="city" class="form-control inp address" placeholder="city" readonly>
+                                    <input type="text" name="city" id="city"
+                                        class="form-control inp address" placeholder="city" readonly>
                                     {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
                                         @if (old('city_id'))
@@ -443,11 +466,13 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="Zip_code">Zip code <i
+                                            class="text-danger">*</i></label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
+                                    <input type="text" name="zip_code" class="form-control inp"
+                                        placeholder="Enter Zip" readonly>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </form>
@@ -455,7 +480,8 @@
             </div>
         </div>
 
-        <form action="{{ route('admin.invoices.store') }}" id="services" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.invoices.store') }}" id="services" method="POST"
+            enctype="multipart/form-data">
             @csrf
             <div class="form-group-customer customer-additional-form">
                 <!-- both form ended Ship to Address -->
@@ -471,11 +497,13 @@
                                     <div class="d-fex justify-content-between flex-wrap row mt-2">
                                         <div class="input-block mb-3 col-lg-2 col-md-2">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
-                                            <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
+                                            <input class="form-check-input mt-0" type="radio" value="Ocean Cargo"
+                                                name="transport_type">
                                         </div>
                                         <div class="input-block mb-3 col-lg-2 col-md-2">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
-                                            <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
+                                            <input class="form-check-input mt-0" type="radio" value="Air Cargo"
+                                                name="transport_type">
                                         </div>
                                         <div class="col-8"></div>
                                     </div>
@@ -488,19 +516,23 @@
                         <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters datetimepickerDefault form-control form-cs inp "
-                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ carbon()->now()->addDays(15)->format('Y/m/d') }}" />
-                                <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
-                                    readonly value="08:30 AM" name="currentTime">
+                                <input type="text"
+                                    class="btn-filters datetimepickerDefault form-control form-cs inp "
+                                    name="currentdate" placeholder="mm-dd-yyyy"
+                                    value="{{ carbon()->now()->addDays(15)->format('Y/m/d') }}" />
+                                <input type="text"
+                                    class="form-control inp inputs text-center timeOnlyInput smallinput" readonly
+                                    value="08:30 AM" name="currentTime">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <label>Invoice# <i class="text-danger">*</i></label>
                             <div class="input-container invoiceNoInput position-relative">
-                                <input type="text" name="nextInvoiceNo" value="{{$nextInvoiceNo}}"
+                                <input type="text" name="nextInvoiceNo" value="{{ $nextInvoiceNo }}"
                                     style="display: none">
-                                <button type="button" id="auto_invoice_gen" class="btn-primary square sm">Auto</button>
+                                <button type="button" id="auto_invoice_gen"
+                                    class="btn-primary square sm">Auto</button>
                                 <input type="text" name="invoice_no" class="form-control form-cs inp"
                                     placeholder="INV 00021">
                             </div>
@@ -510,9 +542,9 @@
                             <label>Driver<i class="text-danger">*</i></label>
                             <select name="driver_id" class="form-control select2">
                                 <option value="">Select Driver</option>
-                                @foreach($drivers as $driver)
-                                    <option {{ old('driver_id') == $driver->id ? 'selected' : '' }} value="{{ $driver->id
-                                        }}">{{ $driver->name }}</option>
+                                @foreach ($drivers as $driver)
+                                    <option {{ old('driver_id') == $driver->id ? 'selected' : '' }}
+                                        value="{{ $driver->id }}">{{ $driver->name }}</option>
                                 @endforeach
                             </select>
                             @error('driver_id')
@@ -524,9 +556,9 @@
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00"
-                                    style="padding-left: 35px; padding-top: 8px !important;" id="grand_total"
-                                    name="grand_total">
+                                <input type="text" class="form-control form-cs inp readonly" readonly
+                                    placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;"
+                                    id="grand_total" name="grand_total">
                             </div>
                         </div>
 
@@ -542,24 +574,26 @@
                             <label>Payment</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00"
-                                    style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly
+                                    placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
                         <div class="col-md-3 ">
                             <label>User</label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="John Duo"
-                                value="{{auth()->user()->name ?? ''}} {{auth()->user()->last_name ?? ''}}">
+                                value="{{ auth()->user()->name ?? '' }} {{ auth()->user()->last_name ?? '' }}">
                         </div>
 
                         <div class="col-md-3">
                             <label>Container</label>
                             <select name="container_id" class="form-control select2">
                                 <option value="">Select Container</option>
-                                @foreach($containers as $container)
-                                                            <option {{ old('container_id') == $container->id ? 'selected' : '' }} value="{{
-                                    $container->id }}">{{ $container->unique_id }}{{ $container->ship_to_country ?  ', '.$container->ship_to_country:''}}</option>
+                                @foreach ($containers as $container)
+                                    <option {{ old('container_id') == $container->id ? 'selected' : '' }}
+                                        value="{{ $container->id }}">
+                                        {{ $container->unique_id }}{{ $container->ship_to_country ? ', ' . $container->ship_to_country : '' }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('container_id')
@@ -577,8 +611,9 @@
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" name="balance" class="form-control form-cs inp readonly" readonly
-                                    placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" name="balance" class="form-control form-cs inp readonly"
+                                    readonly placeholder="0.00"
+                                    style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
@@ -593,9 +628,10 @@
                             <select name="warehouse_id" class="js-example-basic-single select2"
                                 style="font-weight:400px !important">
                                 <option value="">Select Warehouse </option>
-                                @foreach($warehouses as $warehouse)
-                                                            <option {{ old('warehouse_id',auth()->user()->role_id !=1 ? auth()->user()->warehouse_id :'' ) == $warehouse->id ? 'selected' : '' }} value="{{
-                                    $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
+                                @foreach ($warehouses as $warehouse)
+                                    <option
+                                        {{ old('warehouse_id', auth()->user()->role_id != 1 ? auth()->user()->warehouse_id : '') == $warehouse->id ? 'selected' : '' }}
+                                        value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name }}</option>
                                 @endforeach
                             </select>
 
@@ -640,8 +676,8 @@
                                         <div class="d-flex align-items-center">
                                             <input type="text" name="supply_name"
                                                 class="selected-supply-name form-control tdbor inputcolor">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
-                                                class="btn iconbtn p-0">
+                                            <button type="button" data-bs-toggle="modal"
+                                                data-bs-target="#supplyModal" class="btn iconbtn p-0">
                                                 <i class="ti ti-chevron-down"></i>
                                             </button>
                                         </div>
@@ -708,11 +744,11 @@
                     </div>
                     <div><label>Ins</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
-                            value="{{$invoice->ins ?? 0}}">
+                            value="{{ $invoice->ins ?? 0 }}">
                     </div>
                     <div><label>Payment</label>
                         <input type="text" class="form-control" placeholder="0" name="payment"
-                            value="{{$invoice->payment ?? 0}}">
+                            value="{{ $invoice->payment ?? 0 }}">
                     </div>
                     <div><label>Service Fee</label>
                         <input type="text" class="form-control" placeholder="0" name="service_fee">
@@ -740,9 +776,11 @@
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                @if($inventories && $inventories->get('Supply'))
+                                @if ($inventories && $inventories->get('Supply'))
                                     @foreach ($inventories->get('Supply') as $supply)
-                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}' data-supply='@json($supply)'>{{ $supply->name }}</option>
+                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}'
+                                            data-supply='@json($supply)'>{{ $supply->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -793,12 +831,12 @@
         <!-- Flatpickr JS -->
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        <script src="{{asset('js/invoice.js')}}"></script>
+        <script src="{{ asset('js/invoice.js') }}"></script>
         <script>
             var supplyItems = @json($inventories->get('Supply'));
             var currentRow = null;
 
-            window.onload = function () {
+            window.onload = function() {
                 // const urlParams = new URLSearchParams(window.location.search);
                 // const formType = urlParams.get('id') || 'services';
                 // toggleLoginForm(formType);
@@ -808,7 +846,8 @@
                     if ($('input[name="transport_type"]').val() != "Air Cargo") {
                         $('select[name="container_id"]')
                             .prop("disabled", true) // this is essential
-                            .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+                            .css("pointer-events",
+                                "auto") // optional: restores interaction if previously styled with pointer-events
                             .css("opacity", "1"); // optional: restores visual state
                     } else {
                         $('select[name="container_id"]').prop("disabled", false);

@@ -2070,6 +2070,18 @@ button.btn.customer-btn-save.btn-primary:hover {
         background: #203a5f;
         color: #fff;
     }
+    button.select2-selection__clear {
+        background: #e7e7e7;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        z-index: 9;
+        padding: 0px !important;
+        height: 25px;
+        width: 25px;
+        font-size: 17px;
+        font-weight: 500 !important;
+        margin: 7px;
+    }
 }
 
 .invoice .dposition {
@@ -3568,6 +3580,11 @@ img.uploadedimg {
     border-radius: 5px;
     background: #ffffff;
     padding: 2px;
+}
+li.select2-results__option {
+    font-size: 14px;
+    color: #8a8e9c;
+    font-weight: 400;
 }
 
 /* WNSshubham */

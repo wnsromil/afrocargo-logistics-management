@@ -21,18 +21,18 @@
 
     <form action="{{ route('admin.inventories.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-
-        <div class="form-group-customer customer-additional-form InventoryFrom">
+        <input type="hidden" name="price" id="">
+        <div class="form-group-customer customer-additional-form">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-12">
                     <div class="row">
-                        <div class="w-max-content">
+                        <div class="col-md-1">
                             <div class="input-block">
                                 <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                             </div>
                         </div>
 
-                        <div class="w-max-content">
+                        <div class="col-md-2">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean cargo</label>
                                 <input class="form-check-input mt-0" type="radio" value="Ocean Cargo"
@@ -41,7 +41,7 @@
                             </div>
                         </div>
 
-                        <div class="w-max-content">
+                        <div class="col-md-2">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Air cargo</label>
                                 <input class="form-check-input mt-0" type="radio" value="Air Cargo"
@@ -50,35 +50,12 @@
                             </div>
                         </div>
 
-                        <div class="w-max-content">
+                        <div class="col-md-3 d-none">
                             <div class="input-block mb-3 d-flex align-items-center">
                                 <label class="foncolor mb-0 pt-0 me-2 col3A">Supply</label>
                                 <input class="form-check-input mt-0" type="radio" value="Supply"
                                     name="inventary_sub_type"
                                     {{ old('inventary_sub_type') === 'Supply' ? 'checked' : '' }}>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 col-sm-12">
-                    <div class="row justify-content-end">
-                        <div class="col-md-3">
-                            <div class="input-block">
-                                <label class="foncolor m-0 p-0">Barcode<i class="text-danger">*</i></label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label> <input
-                                    class="form-check-input mt-0" type="radio"
-                                    {{ old('barcode') === 'Yes' ? 'checked' : '' }} value="Yes" name="barcode">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">No</label> <input
-                                    class="form-check-input mt-0" {{ old('barcode', 'No') === 'No' ? 'checked' : '' }}
-                                    type="radio" value="No" name="barcode">
                             </div>
                         </div>
                     </div>
@@ -258,32 +235,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-block">
-                                <label class="foncolor fw_500 m-0 p-0">Default Driver App <i
-                                        class="text-danger">*</i></label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label> <input
-                                    class="form-check-input mt-0" type="radio" value="Yes"
-                                    name="driver_app_access"
-                                    {{ old('driver_app_access') === 'Yes' ? 'checked' : '' }}>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-block mb-3 d-flex align-items-center">
-                                <label class="foncolor mb-0 pt-0 me-2 col3A">No</label> <input
-                                    class="form-check-input mt-0"
-                                    {{ old('driver_app_access', 'No') === 'No' ? 'checked' : '' }} type="radio"
-                                    value="No" name="driver_app_access">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             <div class="col-12 pt-3 mt-3 border-top">
@@ -300,10 +252,17 @@
                         <div class="input-block border-0 mb-3">
                             <label for="country" class="table-content col737 fw-medium">Country<i
                                     class="text-danger">*</i></label>
-                            <select class="form-control " id="country" name="country">
-                                <option value="" disabled selected>Select Country</option>
-                            </select>
+                            <select class="form-control" id="country_inventory" name="country">
+                                <option value="" disabled {{ old('country') ? '' : 'selected' }}>Select Country
+                                </option>
 
+                                @foreach (setting()->warehouseContries() as $country)
+                                    <option value="{{ $country->name }}" data-id="{{ $country->id }}"
+                                        {{ old('country') == $country->name ? 'selected' : '' }}>
+                                        {{ $country->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                             @error('country')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -313,7 +272,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block border-0 mb-3">
                             <label for="state" class="table-content col737 fw-medium">State</label>
-                            <select class="form-control select2" name="state" id="state">
+                            <select class="form-control select2" name="state" id="state_inventory">
                                 <option value="" disabled selected>Select State</option>
                             </select>
                         </div>
@@ -322,7 +281,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block border-0 mb-3">
                             <label for="city" class="table-content col737 fw-medium">City</label>
-                            <select class="form-control select2" name="city" id="city">
+                            <select class="form-control select2" name="city" id="city_inventory">
                                 <option value="" disabled selected>Select City</option>
                             </select>
                         </div>
@@ -739,5 +698,4 @@
             var countryOptionsData = @json(setting()->warehouseContries());
         </script>
     @endsection
-
 </x-app-layout>

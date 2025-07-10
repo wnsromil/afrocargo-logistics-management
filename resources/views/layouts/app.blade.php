@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="light"
+    data-sidebar-size="lg" data-sidebar-image="none">
 
 <head>
     <meta charset="utf-8">
@@ -16,7 +17,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
     <!-- Font family -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
 
@@ -34,10 +36,11 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/scss/layout/select.scss') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/scss/layout/select.scss') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
     <!-- Main CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
@@ -55,7 +58,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
     <!-- Red Rose Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,9 +72,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     @yield('style')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css"
+        integrity="sha512-UuL1Le1IzormILxFr3ki91VGuPYjsKQkRFUvSrEuwdVCvYt6a1X73cJ8sWb/1E726+rfDRexUn528XRdqrSAOw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @stack('head')
 </head>
@@ -97,18 +106,18 @@
                         <div class="page-header">
                             <div class="content-page-header">
                                 @isset($cardTitle)
-                                {{$cardTitle}}
+                                    {{ $cardTitle }}
                                 @endisset
                             </div>
                             @isset($cardHeader)
-                            {{$cardHeader}}
+                                {{ $cardHeader }}
                             @endisset
                         </div>
                         <!-- /Page Header -->
                         <div class="row">
                             <div class="col-md-12">
                                 @isset($slot)
-                                {{ $slot }}
+                                    {{ $slot }}
                                 @endisset
                             </div>
                         </div>
@@ -136,7 +145,9 @@
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
-    <script src="{{asset('js/pagination.js')}}"></script>
+    <script src="{{ asset('js/pagination.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Feather Icon JS -->
     <script src="{{ asset('assets/js/feather.min.js') }}"></script>
@@ -148,7 +159,8 @@
     <script src="{{ asset('assets/plugins/apexchart/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/apexchart/chart-data.js') }}"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places" async
+        defer></script>
     <!-- Sweetalert 2 -->
     <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sweetalert/sweetalerts.min.js') }}"></script>
@@ -161,8 +173,8 @@
     <!-- Theme Settings JS -->
     <script src="{{ asset('assets/js/theme-settings.js') }}"></script>
     <script src="{{ asset('assets/js/greedynav.js') }}"></script>
-    <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script>
-    <script src="{{ asset('js/admin/select2.js') }}"></script>
+    {{-- <script src="{{ asset('select2-4.1/dist/js/select2.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/admin/select2.js') }}"></script> --}}
     <script src="{{ asset('js/validate.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script> --}}
 
@@ -174,33 +186,59 @@
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/status_manage.js') }}"></script>
 
+
+    <script>
+        function initSelect2Globally(context = document) {
+            $(context).find('select.select2').each(function() {
+                const $select = $(this);
+
+                if (!$select.hasClass('select2-hidden-accessible')) {
+                    const $modal = $select.closest('.modal');
+                    $select.select2({
+                        dropdownParent: $modal.length ? $modal : $(document.body),
+                        width: '100%'
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            initSelect2Globally();
+        });
+
+        $(document).on('shown.bs.modal', function(e) {
+            initSelect2Globally(e.target);
+        });
+    </script>
+
+
     @yield('script')
 
 
     <script>
         @session('success')
         Swal.fire({
-            title: "Good job!"
-            , text: "{{ $value }}"
-            , icon: "success"
+            title: "Good job!",
+            text: "{{ $value }}",
+            icon: "success"
         });
         @endsession
         @session('error')
         Swal.fire({
-            title: "Oops..."
-            , text: "{{ $value }}"
-            , icon: "error"
+            title: "Oops...",
+            text: "{{ $value }}",
+            icon: "error"
         });
         @endsession
 
         function deleteData(self, msg) {
             Swal.fire({
-                title: msg
-                , icon: "question"
-                , showCancelButton: true
-                , showCloseButton: true
-                , confirmButtonText: "Delete"
-                , cancelButtonText: "Cancel"
+                title: msg,
+                icon: "question",
+                showCancelButton: true,
+                showCloseButton: true,
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel"
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Assuming the button that calls deleteData is inside a form
@@ -211,35 +249,35 @@
 
         function alertMsg(msg = '', icon = '') {
             Swal.fire({
-            text: msg,
-            icon: icon,
-            confirmButtonText: 'OK'
+                text: msg,
+                icon: icon,
+                confirmButtonText: 'OK'
             });
         }
 
-        function deleteRaw(url,msg="You won't be able to revert this!"){
+        function deleteRaw(url, msg = "You won't be able to revert this!") {
             Swal.fire({
                 title: 'Are you sure?',
                 text: msg,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545', // Bootstrap btn-danger
-                cancelButtonColor: '#6c757d',  // Bootstrap btn-secondary
+                cancelButtonColor: '#6c757d', // Bootstrap btn-secondary
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Submit a form or send AJAX request to delete
                     fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => {
-                        location.reload();
-                    });
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            location.reload();
+                        });
                 }
             });
         }
@@ -322,9 +360,9 @@
             }
 
             $('.flag-select').select2({
-                templateResult: formatOption
-                , templateSelection: formatSelected
-                , width: 'style'
+                templateResult: formatOption,
+                templateSelection: formatSelected,
+                width: 'style'
             }).on('select2:open', function() {
                 $('.select2-results__options').addClass('my-custom-option-class');
             });
@@ -334,7 +372,6 @@
                 parentContainer.addClass('my-custom-container-class');
             });
         });
-
     </script>
 
 </body>

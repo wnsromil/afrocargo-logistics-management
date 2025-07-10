@@ -30,12 +30,6 @@
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
-                    <h6>Barcode Code</h6>
-                    <p>{{$inventories->barcode_have ?? "-"}}</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="basic-info-detail">
                     <h6>Warehouse Name</h6>
                     <p>{{$inventories->warehouse->warehouse_name ?? "-"}}</p>
                 </div>
@@ -102,12 +96,6 @@
             </div>
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="basic-info-detail">
-                    <h6>Default Driver App</h6>
-                    <p>{{$inventories->driver_app_access ?? "-"}}</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="basic-info-detail">
                     <h6>Created At </h6>
                     <p>
                         {{ $inventories->created_at ? $inventories->created_at->format('m/d/Y') : "-"}}
@@ -137,12 +125,6 @@
                     <div class="basic-info-detail">
                         <h6>City</h6>
                         <p>{{$inventories->city ?? "-"}}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="basic-info-detail">
-                        <h6>State/Zone</h6>
-                        <p>{{$inventories->state_zone ?? "-"}}</p>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6 mb-4">

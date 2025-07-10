@@ -260,7 +260,7 @@
                         <div class="input-block border-0 mb-3">
                             <label for="country" class="table-content col737 fw-medium">Country<i
                                     class="text-danger">*</i></label>
-                            <select class="form-control " id="country" name="country">
+                            <select class="form-control " id="country_inventory" name="country">
                                 <option value="" disabled selected>Select Country</option>
                                 <option value="" {{ old('country', $editData->name ?? '') == '' ? 'selected' : '' }}>
                                     Select Country</option>
@@ -280,7 +280,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block border-0 mb-3">
                             <label for="state" class="table-content col737 fw-medium">State</label>
-                            <select class="form-control select2" name="state" id="state">
+                            <select class="form-control select2" name="state" id="state_inventory">
                                 <option value="" disabled selected>Select State</option>
                             </select>
                         </div>
@@ -289,7 +289,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block border-0 mb-3">
                             <label for="city" class="table-content col737 fw-medium">City</label>
-                            <select class="form-control select2" name="city" id="city">
+                            <select class="form-control select2" name="city" id="city_inventory">
                                 <option value="" disabled selected>Select City</option>
                             </select>
                         </div>
@@ -374,6 +374,71 @@
                         </div>
                     </div>
 
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="height" class="table-content col737 fw-medium">Volume Price(1*1*1)</label>
+                            <input class="form-control input-padding" name="volume_price" id="volume_price"
+                                type="number" step="any" value="{{ old('volume_price', $editData->volume_price) }}"
+                                placeholder="Enter Volume Price" aria-label="default input example">
+
+                            @error('volume_price')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="height" class="table-content col737 fw-medium">Factor</label>
+                            <input class="form-control input-padding" name="factor" type="number"
+                                value="{{ old('factor', 5000) }}" placeholder="Factor"
+                                aria-label="default input example">
+                        </div>
+                    </div>
+
+                    @php
+                        $insuranceValue = old('insurance_have', $editData->insurance_have ?? 'No');
+                    @endphp
+
+                    <div class="col-md-4 col-sm-12 align-content-center">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-block">
+                                    <label class="foncolor fw_500 m-0 p-0">Insurance</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="input-block mb-3 d-flex align-items-center">
+                                    <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label>
+                                    <input class="form-check-input mt-0" type="radio" name="insurance_have" value="Yes"
+                                        {{ $insuranceValue == 'Yes' ? 'checked' : '' }}>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="input-block mb-3 d-flex align-items-center">
+                                    <label class="foncolor mb-0 pt-0 me-2 col3A">No</label>
+                                    <input class="form-check-input mt-0" type="radio" name="insurance_have" value="No"
+                                        {{ $insuranceValue == 'No' ? 'checked' : '' }}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
+                            <label for="height" class="table-content col737 fw-medium">Insurance</label>
+                            <input class="form-control input-padding" readonly name="insurance" id="insurance"
+                                type="text" placeholder="Enter Insurance"
+                                value="{{ old('insurance', $editData->insurance) }}" aria-label="default input example"
+                                style="background: #ececec;">
+                            @error('insurance')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="col-lg-4 col-md-6 col-sm-12" id="capacityDiv" style="display:none;">
                         <div class="input-block mb-3">
                             <label for="capacity" class="table-content col737 fw-medium">Capacity<i
@@ -408,40 +473,6 @@
                                 <input class="form-control input-padding" name="factor" type="number"
                                     value="{{ old('factor', 5000) }}" placeholder="Factor"
                                     aria-label="default input example">
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12 align-content-center">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-block">
-                                        <label class="foncolor fw_500 m-0 p-0">Insurance</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label> <input
-                                            class="form-check-input mt-0" {{ old('insurance_have', $editData->insurance_have ?? 'Yes') === 'Yes' ? 'checked' : '' }} type="radio"
-                                            value="Yes" name="insurance_have">
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="input-block mb-3 d-flex align-items-center">
-                                        <label class="foncolor mb-0 pt-0 me-2 col3A">No</label> <input
-                                            class="form-check-input mt-0" {{ old('insurance_have', $editData->insurance_have ?? 'No') === 'No' ? 'checked' : '' }} type="radio"
-                                            value="No" name="insurance_have">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="input-block mb-3">
-                                <label for="height" class="table-content col737 fw-medium">Insurance</label>
-                                <input class="form-control input-padding" readonly name="insurance" id="insurance"
-                                    type="text" placeholder="Enter Insurance" value="{{ old('insurance') }}"
-                                    aria-label="default input example" style="background: #ececec;">
-                                @error('insurance')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                     </div>
@@ -522,7 +553,8 @@
 
                                     @foreach ($colors as $color)
                                         <option value="{{ $color }}" {{ $selectedColor == $color ? 'selected' : '' }}>
-                                            {{ $color }}</option>
+                                            {{ $color }}
+                                        </option>
                                     @endforeach
                                 </select>
 
@@ -736,7 +768,7 @@
         </script>
 
         <script>
-            const originalCountryOptions = $('#country option').clone();
+            const originalCountryOptions = $('#country_inventory option').clone();
             const inventoryImageInput = document.getElementById('inventory_image');
             const preview = document.getElementById('preview');
             const uploadedImg = document.querySelector('#upload_inventory_image img');
@@ -801,9 +833,9 @@
 
         <script>
             $(document).ready(function () {
-                const countrySelectors = ['#country'];
-                const stateSelectors = ['#state'];
-                const citySelectors = ['#city'];
+                const countrySelectors = ['#country_inventory'];
+                const stateSelectors = ['#state_inventory'];
+                const citySelectors = ['#city_inventory'];
 
                 const hiddenCountry = $('input[name="country_hidden"]').val();
                 const hiddenState = $('input[name="state_hidden"]').val();
@@ -845,14 +877,14 @@
 
                 // Identify which city selector to use based on state selector
                 function getCitySelector(stateSelector) {
-                    return stateSelector.includes('_supply') ? '' : '#city';
+                    return stateSelector.includes('_supply') ? '' : '#city_inventory';
                 }
 
                 // Handle country change
-                $('#country').change(function () {
+                $('#country_inventory').change(function () {
                     const selectedOption = $(this).find('option:selected');
                     const countryId = selectedOption.data('id');
-                    const stateSelector = $(this).attr('id') === 'country' ? '#state' : '';
+                    const stateSelector = $(this).attr('id') === 'country' ? '#state_inventory' : '';
                     const citySelector = getCitySelector(stateSelector);
 
                     // Reset state & city
@@ -863,7 +895,7 @@
                 });
 
                 // Handle state change
-                $('#state').change(function () {
+                $('#state_inventory').change(function () {
                     const selectedOption = $(this).find('option:selected');
                     const stateId = selectedOption.data('id');
                     const citySelector = getCitySelector($(this).attr('id'));
@@ -875,7 +907,7 @@
                     const countryOption = $(`${selector} option[value="${hiddenCountry}"]`);
                     if (countryOption.length) {
                         countryOption.prop('selected', true);
-                        const stateSelector = selector.includes('_supply') ? '' : '#state';
+                        const stateSelector = selector.includes('_supply') ? '' : '#state_inventory';
                         const countryId = countryOption.data('id');
                         loadStates(countryId, stateSelector, hiddenState);
                     }

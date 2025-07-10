@@ -2,20 +2,23 @@
     <x-slot name="header">
         {{ __('Vehicle List') }}
     </x-slot>
+    <x-slot name="cardTitle">
+        <p class="head">All Vehicle</p>
 
-
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{ route('admin.vehicle.create') }}" class="btn btn-primary buttons">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <i class="ti ti-circle-plus me-2 text-white"></i>
-                        Add Vehicle
-                    </div>
-                </a>
+        <div class="d-flex align-items-center justify-content-end mb-1 mtop-20">
+            <div class="usersearch d-flex">
+                <div class="mt-2">
+                    <a href="{{ route('admin.vehicle.create') }}" class="btn btn-primary buttons">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="ti ti-circle-plus me-2 text-white"></i>
+                            Add Vehicle
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </x-slot>
+
     @php
         $warehouseIdFromUrl = request()->query('warehouse_id');
         $authUser = auth()->user();
@@ -38,7 +41,8 @@
                     <select class="js-example-basic-single select2 form-control" name="warehouse_id">
                         <option value="">Select Warehouse</option>
                         @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                            <option value="{{ $warehouse->id }}"
+                                {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
                                 {{ $warehouse->warehouse_name ?? '' }}
                             </option>
                         @endforeach
@@ -91,11 +95,11 @@
                                     $result = checkVehicleExpiryStatus(
                                         $vehicle->licence_plate_exp_date,
                                         $vehicle->vehicle_registration_exp_date,
-                                        $vehicle->vehicle_insurance_exp_date
+                                        $vehicle->vehicle_insurance_exp_date,
                                     );
                                 @endphp
 
-                                <tr class="{{ collect($result)->firstWhere('bg_class')["bg_class"] ?? '' }}">
+                                <tr class="{{ collect($result)->firstWhere('bg_class')['bg_class'] ?? '' }}">
                                     <td>
                                         {{ $vehicle->unique_id ?? '-' }}
                                         {{-- {{ $vehicle->id ?? '-' }} --}}
@@ -117,8 +121,9 @@
                                     <td class="text-center">
 
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon profileBg" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <a href="#" class=" btn-action-icon profileBg"
+                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                    class="fas fa-ellipsis-v"></i></a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <ul>
                                                     <li>
@@ -131,10 +136,11 @@
                                                             href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
                                                                 class="far fa-eye me-2"></i>View</a>
                                                     </li>
-                                                    @if($vehicle->status == 'Active')
+                                                    @if ($vehicle->status == 'Active')
                                                         <li>
-                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                data-id="{{ $vehicle->id }}" data-status="Inactive">
+                                                            <a class="dropdown-item deactivate"
+                                                                href="javascript:void(0)" data-id="{{ $vehicle->id }}"
+                                                                data-status="Inactive">
                                                                 <i class="far fa-bell-slash me-2"></i>Deactivate
                                                             </a>
                                                         </li>
@@ -581,40 +587,40 @@
 
     {{-- jqury cdn --}}
     @section('script')
-    <script>
-        $(document).ready(function () {
-            // Delegate click on dynamically updated table
-            $('#ajexTable').on('click', '.activate, .deactivate', function () {
-                let id = $(this).data('id');
-                let status = $(this).data('status');
+        <script>
+            $(document).ready(function() {
+                // Delegate click on dynamically updated table
+                $('#ajexTable').on('click', '.activate, .deactivate', function() {
+                    let id = $(this).data('id');
+                    let status = $(this).data('status');
 
-                $.ajax({
-                    url: "{{ route('admin.vehicle.status', '') }}/" + id,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        status: status
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Status Updated',
-                                text: response.success
-                            });
+                    $.ajax({
+                        url: "{{ route('admin.vehicle.status', '') }}/" + id,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            status: status
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Status Updated',
+                                    text: response.success
+                                });
 
-                            location.reload();
+                                location.reload();
+                            }
                         }
-                    }
+                    });
                 });
             });
-        });
-    </script>
-    <script>
-        function resetForm() {
-            window.location.href = "{{ route('admin.vehicle.index') }}";
-        }
-    </script>
+        </script>
+        <script>
+            function resetForm() {
+                window.location.href = "{{ route('admin.vehicle.index') }}";
+            }
+        </script>
     @endsection
 
 </x-app-layout>
