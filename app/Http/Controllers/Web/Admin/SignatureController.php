@@ -29,10 +29,21 @@ class SignatureController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
+        $warehouse_id = $request->input('warehouse_id');
+
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
 
         $signatures = Signature::where('is_deleted', 'No')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
             })
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
@@ -46,10 +57,10 @@ class SignatureController extends Controller
             ->paginate($perPage, ['*'], 'page', $currentPage);
 
         if ($request->ajax()) {
-            return view('admin.signature.table', compact('signatures'))->render();
+            return view('admin.signature.table', compact('signatures', 'warehouses'))->render();
         }
 
-        return view('admin.signature.index', compact('signatures'));
+        return view('admin.signature.index', compact('signatures', 'warehouses'));
     }
 
     /**
@@ -107,7 +118,7 @@ class SignatureController extends Controller
             $request->validate([
                 'signature_drawn' => 'required|string',
             ]);
-          
+
             $drawnData = $request->signature_drawn;
             $imageName = 'uploads/signature/drawn_' . uniqid() . '.png';
             $drawnData = str_replace('data:image/png;base64,', '', $drawnData);

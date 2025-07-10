@@ -177,6 +177,18 @@
                     </div>
                 </div>
 
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="gate_in_driver_id" class="foncolor">Assgin driver</label>
+                        <select name="gate_in_driver_id" id="gateInDriver" class="js-example-basic-single select2">
+                            <option value="">Select Driver </option>
+                        </select>
+                        @error('gate_in_driver_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
                 <!-- Status -->
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">

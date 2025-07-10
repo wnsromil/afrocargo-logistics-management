@@ -56,19 +56,18 @@ class Expense extends Model
 
     public static function generateUniqueId()
     {
-        // Get the last expense record, ordered by unique_id
-        $lastExpense = Expense::orderByDesc('unique_id')->first();
+        // Get the last expense record, ordered by numeric part of unique_id
+        $lastExpense = Expense::selectRaw("CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED) as number_part")
+            ->orderByDesc('number_part')
+            ->first();
 
-        // Get the last number from unique_id (assuming it follows the format "TEX-XXXXXX")
-        $lastNumber = 0;
-        if ($lastExpense && preg_match('/(\d+)$/', $lastExpense->unique_id, $matches)) {
-            $lastNumber = (int)$matches[0];
-        }
+        // Get the last number (default 0 if none)
+        $lastNumber = $lastExpense ? (int)$lastExpense->number_part : 0;
 
-        // Increment the number for the new unique_id
-        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+        // No zero-padding here
+        $newNumber = (string)($lastNumber + 1);
 
-        // Return the generated unique_id with TEX- prefix
+        // Return the generated unique_id
         return 'TEX-' . $newNumber;
     }
 }

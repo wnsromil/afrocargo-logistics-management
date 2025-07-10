@@ -3,19 +3,22 @@
         {{ __('Vehicle List') }}
     </x-slot>
 
-
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{ route('admin.vehicle.create') }}" class="btn btn-primary buttons">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <i class="ti ti-circle-plus me-2 text-white"></i>
-                        Add Vehicle
-                    </div>
-                </a>
+    <x-slot name="cardTitle">
+        <p class="head">All Vehicles</p>
+        <div class="d-flex align-items-center justify-content-end mb-0">
+            <div class="usersearch d-flex">
+                <div class="">
+                    <a href="{{ route('admin.vehicle.create') }}" class="btn btn-primary buttons">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="ti ti-circle-plus me-2 text-white"></i>
+                            Add Vehicle
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </x-slot>
+
     @php
         $warehouseIdFromUrl = request()->query('warehouse_id');
         $authUser = auth()->user();
@@ -581,40 +584,40 @@
 
     {{-- jqury cdn --}}
     @section('script')
-    <script>
-        $(document).ready(function () {
-            // Delegate click on dynamically updated table
-            $('#ajexTable').on('click', '.activate, .deactivate', function () {
-                let id = $(this).data('id');
-                let status = $(this).data('status');
+        <script>
+            $(document).ready(function () {
+                // Delegate click on dynamically updated table
+                $('#ajexTable').on('click', '.activate, .deactivate', function () {
+                    let id = $(this).data('id');
+                    let status = $(this).data('status');
 
-                $.ajax({
-                    url: "{{ route('admin.vehicle.status', '') }}/" + id,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        status: status
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Status Updated',
-                                text: response.success
-                            });
+                    $.ajax({
+                        url: "{{ route('admin.vehicle.status', '') }}/" + id,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            status: status
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Status Updated',
+                                    text: response.success
+                                });
 
-                            location.reload();
+                                location.reload();
+                            }
                         }
-                    }
+                    });
                 });
             });
-        });
-    </script>
-    <script>
-        function resetForm() {
-            window.location.href = "{{ route('admin.vehicle.index') }}";
-        }
-    </script>
+        </script>
+        <script>
+            function resetForm() {
+                window.location.href = "{{ route('admin.vehicle.index') }}";
+            }
+        </script>
     @endsection
 
 </x-app-layout>
