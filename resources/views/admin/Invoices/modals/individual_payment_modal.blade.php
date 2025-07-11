@@ -168,9 +168,10 @@
                                             <th>User</th>
                                             <th>Payment Type</th>
                                             <th>Payment Date</th>
-                                            <th>Amt. In Dollar</th>
                                             <th>Local Currency</th>
+                                            <th>Local Amount</th>
                                             <th>Currency</th>
+                                            <th>Amt. In Dollar</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -191,9 +192,12 @@
                                             <td>{{ $payment->payment_date ?
                                                 \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y, h:i a') :
                                                 '-' }}</td>
-                                            <td>{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
                                             <td>{{ $payment->local_currency ?? '-' }}</td>
+                                            <td>{{ number_format($payment->applied_payments ?? 0, 2) }}</td>
                                             <td>{{ $payment->currency ?? '-' }}</td>
+                                            <td>{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
+            
+                                            
                                             <td class="d-flex align-items-center">
                                                 <div class="dropdown dropdown-action">
                                                     <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"

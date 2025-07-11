@@ -42,36 +42,52 @@
                 <div class="col-md-6">
                     <div class="d-sm-flex align-items-center">
                         <div class="first">
-                            <label for="customer_id">Country<i class="text-danger">*</i></label>
+                            <label for="customer_id">Warehouse List<i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <select class="form-control select2" name="sip_country" id="sip_country">
-                                <option value="">Select Country</option>
-                                    @foreach (setting()->warehouseContries() as $key => $item)
-                                    <option value="{{ $item->iso2 ?? 'AF' }}">
-                                        {{ $item->name ?? '' }}</option>
-                                    @endforeach
-                                </select>
+                            <select class="form-control select2" name="ship_country" id="ship_country">
+                                {{-- <option value="">Select Country</option>
+                                @foreach (setting()->warehouseContries() as $key => $item)
+                                <option value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
+                                    {{ $item->name ?? '' }}</option>
+                                @endforeach --}}
+                                @if(auth()->user()->role_id == 1)
+                                 <option value="">Select Warehouse Country</option>
+                                @endif
+                                @foreach (setting()->ActiveWarehouseContries() as $key => $item)
+                                <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
+                                    {{ $item->warehouse_code ?? '' }}, {{ $item->warehouse_name ?? '' }}, {{ $item->name ?? '' }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="d-sm-flex align-items-center">
                         <div class="first">
-                            <label for="customer_id">Country<i class="text-danger">*</i></label>
+                            <label for="deleveryCountry">Warehouse List<i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <select class="form-control select2" >
-                                    @foreach (setting()->warehouseContries() as $key => $item)
-                                    <option value="{{ $item->iso2 ?? 'AF' }}">
-                                        {{ $item->name ?? '' }}</option>
-                                    @endforeach
-                                </select>
+                            <select class="form-control select2" name="deleveryCountry" id="deleveryCountry">
+                                {{-- <option value="">Select Country</option>
+                                @foreach (setting()->warehouseContries() as $key => $item)
+                                <option value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
+                                    {{ $item->name ?? '' }}</option>
+                                @endforeach --}}
+                                @if(auth()->user()->role_id == 1)
+                                 <option value="">Select Warehouse Country</option>
+                                @endif
+                                @foreach (setting()->ActiveWarehouseContries() as $key => $item)
+                                <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
+                                    {{ $item->warehouse_code ?? '' }}, {{ $item->warehouse_name ?? '' }}, {{ $item->name ?? '' }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
+                {{-- order list section --}}
                 <div class="col-md-6">
                     <div class="d-sm-flex align-items-center">
                         <div class="first">
@@ -102,6 +118,22 @@
                                 <button type="button" class="btn btn-outline-secondary" id="add_delevery_cancel">
                                     Cancel
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="d-none" id="order_list_div">
+                        <div class="d-sm-flex align-items-center mt-3">
+                            <div class="first">
+                                <label for="order_list">Order list</label>
+                            </div>
+                            <div class="middleDiv">
+                                <select name="order_list" class="form-control select2"
+                                    id="order_list">
+                                    <option value="">Search Order</option>
+                                </select>
+                                @error('order_list')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -164,7 +196,7 @@
                                     @endforeach
                                 </select>
                         </div>
-                        <div class="last">
+                        {{-- <div class="last">
                             <div>
                                 <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal" data-bs-target="#locationModal" id="locationModalShow">
                                     location
@@ -186,7 +218,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -201,7 +233,7 @@
                             <div class="row gx-3 gy-2">
 
                                 @csrf
-                                <input type="hidden" name="address_type" value="delivery">
+                                <input type="hidden" name="address_type" value="pickup">
 
                                 <input type="hidden" name="address_id">
 
@@ -330,7 +362,7 @@
                             <div class="row gx-3 gy-2">
 
                                 @csrf
-                                <input type="hidden" name="address_type" value="pickup">
+                                <input type="hidden" name="address_type" value="delivery">
                                 <input type="hidden" name="address_id">
                                 <input type="hidden" name="invoice_custmore_type" value="ship_to">
                                 <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
@@ -388,8 +420,8 @@
                                     <label class="foncolor" for="Address.1">Address 1 <i
                                             class="text-danger">*</i></label>
                                     <!-- Address 1 -->
-                                    <input type="text" name="address" class="form-control inp address"
-                                        placeholder="Enter Address 1" readonly>
+                                    <input type="text" id="locationSearchBox" name="address" class="form-control inp address"
+                                        placeholder="Enter Address 1">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Address.2 address">Address 2 </label>
@@ -462,9 +494,19 @@
                 <!-- inventory suplay and service add start -->
                 <div>
                     <div class="row mt-4 pt-3 g-3" id="ship_to_address">
-                        <div class="col-md-12 d-none" id="service_type">
+                        <div class="col-md-12">
                             <div class="row">
-                                <div class="col-lg-12 col-md-12">
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <label for="payment_type">Payment Type<i class="text-danger">*</i></label>
+                                    <select class="form-control select2  form-cs" name="payment_type">
+                                        <option selected="selected" disabled hidden>Select Type</option>
+                                        <option value="Boxcredit">Box Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Cheque">Cheque</option>
+                                        <option value="CreditCard">Credit Card</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-9 col-md-9 d-none" id="service_type">
                                     <div class="input-block">
                                         <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                                     </div>
@@ -730,6 +772,7 @@
             <input type="hidden" name="total_amount">
             <input type="hidden" name="pickup_address_id">
             <input type="hidden" name="delivery_address_id">
+            <input type="hidden" name="arrived_warehouse_id">
             <input type="hidden" name="parcel_id">
 
             <div class="modal custom-modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">

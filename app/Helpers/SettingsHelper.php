@@ -52,16 +52,43 @@ class SettingsHelper
 
     public static function warehouseContries()
     {
-        // Get unique country names from warehouses and convert to lowercase
-        $countryNames = Warehouse::selectRaw('LOWER(country_id) as country_name')
-            ->distinct()
-            ->pluck('country_name');
+        // Get unique country names from warehouses and convert to lowercase, with warehouse ids
+        $warehouses = Warehouse::select('id', 'country_id')
+        ->where('status', 'Active')
+            ->get()
+            ->groupBy(function ($item) {
+                return strtolower($item->country_id);
+            });
+
+        $countryNames = $warehouses->keys();
 
         // Get countries where LOWER(name) matches any lowercase country_id
-        return Country::whereRaw('LOWER(name) IN ("' . $countryNames->implode('","') . '")')
+        $countries = Country::whereRaw('LOWER(name) IN ("' . $countryNames->implode('","') . '")')
             ->select('id', 'name', 'iso2', 'iso3', 'phonecode', 'currency', 'currency_symbol')
             ->get();
+
+        // Attach warehouse ids to each country
+        foreach ($countries as $country) {
+            $key = strtolower($country->name);
+            $country->warehouse_ids = $warehouses->has($key)
+                ? $warehouses[$key]->pluck('id')->values()
+                : collect();
+        }
+
+        return $countries;
     }
+
+    public static function ActiveWarehouseContries()
+    {
+
+
+        // Get countries where LOWER(name) matches any lowercase country_id
+        return Warehouse::leftJoin('countries', 'warehouses.country_id', '=', 'countries.name')
+            ->where('warehouses.status', 'Active')
+            ->select('warehouses.*', 'countries.id as countryId','countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
+            ->get();
+    }
+    
 
     public static function getNearbyWarehouseDriverIds($lat, $lng, $radius = 50)
     {

@@ -61,28 +61,13 @@
             </div>
 
             <div class="col-md-3">
-                <label>By Warehouse</label>
-                @if ($authUser->role_id == 1)
-                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
-                        <option value="">Select Warehouse</option>
-                        @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
-                                {{ $warehouse->warehouse_name ?? '' }}
-                            </option>
-                        @endforeach
-                    </select>
-                @else
-                    @php
-                        $singleWarehouse = $warehouses->first();
-                    @endphp
-
-                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
-                        style="background-color: #e9ecef; color: #6c757d;">
-                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
-                @endif
-                @error('warehouse_id')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
+                <label for="warehouse_id">By Warehouse</label>
+                <select id="warehouse_id" name="warehouse_id" class="js-example-basic-single select2 form-cs">
+                    <option value="">Select Warehouse</option>
+                    @foreach ($warehouses as $warehouse)
+                    <option value="{{$warehouse->id}}" {{ request('warehouse_id') == $warehouse->id ? 'selected' : '' }}>{{$warehouse->warehouse_name ?? ''}}, {{$warehouse->address ?? ''}}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="col-md-3">

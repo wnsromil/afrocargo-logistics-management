@@ -240,9 +240,9 @@ class InvoiceController extends Controller
 
 
         // Set paper options
-        // $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'portrait');
 
-        $pdf->setPaper('A4', 'landscape');
+        // $pdf->setPaper('A4', 'landscape');
 
         // First return the PDF as a response to load it
         // Then you can call download() on the client side if needed
@@ -329,7 +329,7 @@ class InvoiceController extends Controller
             'invoce_type' => 'required|in:services,supplies',
             'customer_id' => 'required|exists:users,id',
             'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:users,id',
-            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'container_id' => 'nullable|numeric',
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
@@ -359,12 +359,61 @@ class InvoiceController extends Controller
         if(empty($invoice)){
             $invoice = new Invoice();
         }
+        if(!empty($request->parcel_id)){
+            $invoice->invoice_no = $request->parcel_id;
+        }
+        $delivery_address = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first();
+
+        if(empty($delivery_address->id)){
+            $delivery_user = User::find($request->ship_customer_id);
+            $delivery_address = Address::create([
+                'user_id' =>  $delivery_user->id,
+                'address' =>  $delivery_user->address,
+                'name' =>  $delivery_user->name,
+                'last_name' =>  $delivery_user->name.' '.$delivery_user->last_name,
+                'full_name' =>  $delivery_user->last_name,
+                'city_id' =>  $delivery_user->city_id ?? null,
+                'state_id' =>  $delivery_user->state_id ?? null,
+                'country_id' =>  $delivery_user->country_id,
+                'pincode' =>  $delivery_user->pincode ?? null,
+                'mobile_number'=>  $delivery_user->phone ?? null,
+                'mobile_number_code_id'=>  $delivery_user->phone_code_id ?? null,
+                'alternative_mobile_number_code_id'=>  $delivery_user->phone_2_code_id_id ?? null,
+                'alternative_mobile_number'=>  $delivery_user->phone_2 ?? null,
+                'address_2' =>  $delivery_user->address_2,
+                'default_address' => 'Yes',
+            ]);
+        }
+
+        $pickup_address = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first(); 
+
+        if(empty($pickup_address->id)){
+            $delivery_user = User::find($request->customer_id);
+            $pickup_address = Address::create([
+                'user_id' =>  $pickup_user->id,
+                'address' =>  $pickup_user->address,
+                'name' =>  $pickup_user->name,
+                'last_name' =>  $pickup_user->name.' '.$pickup_user->last_name,
+                'full_name' =>  $pickup_user->last_name,
+                'city_id' =>  $pickup_user->city_id ?? null,
+                'state_id' =>  $pickup_user->state_id ?? null,
+                'country_id' =>  $pickup_user->country_id ?? null,
+                'pincode' =>  $pickup_user->pincode ?? null,
+                'mobile_number'=>  $delivery_user->phone ?? null,
+                'mobile_number_code_id'=>  $delivery_user->phone_code_id ?? null,
+                'alternative_mobile_number_code_id'=>  $delivery_user->phone_2_code_id_id ?? null,
+                'alternative_mobile_number'=>  $delivery_user->phone_2 ?? null,
+                'address_2' =>  $delivery_user->address_2,
+                'default_address' => 'Yes',
+            ]);
+        }
+        
         
         $invoice->generated_by = \Auth::user()->role ?? 'admin';
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
-        $invoice->delivery_address_id = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first()->id ?? null;
-        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null; 
+        $invoice->delivery_address_id = $delivery_user->id ?? null; 
+        $invoice->pickup_address_id = $pickup_address->id ?? null; 
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
@@ -569,13 +618,17 @@ class InvoiceController extends Controller
             'destination_address' => optional($invoice->deliveryAddress)->address,
             'destination_user_name' => optional($invoice->deliveryAddress)->full_name,
             'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
-            'pickup_address_id' => optional($invoice->pickupAddress)->id,
-            'delivery_address_id' => optional($invoice->deliveryAddress)->id,
+            'pickup_address_id' => optional($invoice->deliveryAddress)->id,
+            'delivery_address_id' => optional($invoice->pickupAddress)->id, 
             'pickup_time' => $invoice->duedaterange ?? null,
             'pickup_date' => $invoice->currentdate ?? now()->format('Y-m-d'),
             'customer_id' => $invoice->customer_id ?? auth()->id(),
-            'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid'
+            'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid',
+            'invoice_id'=>$invoice_id,
+            'transport_type' => $invoice->transport_type ?? 'null',
         ];
+
+        
 
         if (empty($invoice->parcel_id)) {
     
@@ -595,13 +648,23 @@ class InvoiceController extends Controller
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
             if(!empty($item['supply_id'])){
-                $supply =  ParcelInventorie::updateOrCreate(
-                            [
+                if(!empty($item['inventory_id'])){
+                    $cp = [
+                                'parcel_id' => $invoice->parcel_id,
+                                'id' => $item['inventory_id'],
+                                'invoice_id' => $invoice->id,
+                            ];
+                }else{
+                    $cp = [
                                 'parcel_id' => $invoice->parcel_id,
                                 'invoice_id' => $invoice->id,
                                 'inventorie_id' => $item['supply_id'],
-                            ],
+                            ];
+                }
+                $supply =  ParcelInventorie::updateOrCreate(
+                            $cp,
                             [
+                                'invoice_id' => $invoice->id,
                                 'inventorie_item_quantity' => $item['qty'],
                                 'inventory_name' => $item['supply_name'],
                                 'label_qty' => $item['label_qty'],
