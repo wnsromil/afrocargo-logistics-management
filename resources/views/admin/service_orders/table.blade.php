@@ -55,7 +55,7 @@
                                     </div>';
                                 @endphp
 
-                                <div class="pickup-tooltip" data-tooltip-html="{{ $pickupTooltip }}">
+                                <div class="pickup-tooltip" data-bs-toggle="tooltip" data-tooltip-html="{{ $pickupTooltip }}">
                                     <i class="me-2 ti ti-user"></i>{{ $pickup->full_name ?? "--" }}
                                 </div>
                             </td>
@@ -79,7 +79,7 @@
                                                                                 </div>';
                                 @endphp
 
-                                <div class="pickup-tooltip" data-tooltip-html="{{ $deliveryTooltip }}">
+                                <div class="pickup-tooltip" data-bs-toggle="tooltip" data-tooltip-html="{{ $deliveryTooltip }}">
                                     <i class="me-2 ti ti-user"></i>{{ $delivery->full_name ?? "--" }}
                                 </div>
                             </td>
