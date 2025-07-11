@@ -734,8 +734,13 @@ class OrderShipmentController extends Controller
 
             // Store Parcel Inventories
             foreach ($request->inventorie_data as $item) {
+                $supply = Inventory::where('id', $item['inventorie_id'])->first();
+                 
                 ParcelInventorie::create([
                     'parcel_id' => $parcel->id,
+                    'inventory_name'=> $supply->name ?? null,
+                    'price' => $supply->price, 
+                    'total' => $item['inventorie_item_quantity'] * ($supply->price ?? 0),
                     'inventorie_id' => $item['inventorie_id'],
                     'inventorie_item_quantity' => $item['inventorie_item_quantity'],
                 ]);

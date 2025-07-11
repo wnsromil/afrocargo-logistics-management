@@ -219,6 +219,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
+        Route::get('getOrderList', [InvoiceController::class, 'getOrderList'])->name('getOrderList');
         Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
         Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
         Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('invoice.updateNote');

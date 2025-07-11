@@ -56,12 +56,13 @@ class AddressController extends Controller
             'city_id' => 'required|string',
             'country_id' => 'required|string',
             'full_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
             'mobile_number' => 'required|string|max:15',
             'pincode' => 'required|string|max:10',
             'state_id' => 'required|string',
             'warehouse_id' => 'nullable|integer|exists:warehouses,id',
-            'lat' => 'required',
-            'long' => 'required',
+            'lat' => 'nullable',
+            'long' => 'nullable',
         ]);
 
         // ✅ Step 2: Get Authenticated User
@@ -72,6 +73,10 @@ class AddressController extends Controller
 
         // ✅ Step 3: Add User ID to Data
         $validatedData['user_id'] = $user->id;
+
+        $validatedData['name'] = trim($validatedData['full_name'] ?? '');
+        $validatedData['last_name'] = trim($validatedData['last_name'] ?? '');
+        $validatedData['full_name'] = $validatedData['full_name'] . ' ' . ($validatedData['last_name'] ?? '');
 
         // ✅ Step 4: Insert Data
         $address = Address::create($validatedData);
@@ -128,6 +133,7 @@ class AddressController extends Controller
             'city_id' => 'required|string',
             'country_id' => 'required|string',
             'full_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
             'mobile_number' => 'required|string|max:15',
             'pincode' => 'required|string|max:10',
             'state_id' => 'required|string',
@@ -135,6 +141,10 @@ class AddressController extends Controller
             'lat' => 'required',
             'long' => 'required',
         ]);
+
+        $validatedData['name'] = trim($validatedData['full_name'] ?? '');
+        $validatedData['last_name'] = trim($validatedData['last_name'] ?? '');
+        $validatedData['full_name'] = $validatedData['full_name'] . ' ' . ($validatedData['last_name'] ?? '');
 
         // ✅ Step 4: Update Address
         $address->update($validatedData);

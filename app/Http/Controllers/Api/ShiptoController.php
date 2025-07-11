@@ -119,6 +119,7 @@ class ShiptoController extends Controller
                 'country' => 'required|string',
                 'company_name' => 'nullable|string|max:255',
                 'first_name' => 'required|string|max:255',
+                'last_name' => 'nullable|string|max:255',
                 'mobile_number_code_id' => 'required',
                 'mobile_number' => 'required|digits:8|max:15|unique:users,phone',
                 'alternative_mobile_number_code_id' => 'nullable',
@@ -160,6 +161,7 @@ class ShiptoController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name'       => $validated['last_name'],
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'],
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -196,7 +198,9 @@ class ShiptoController extends Controller
                 'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
                 'city_id' =>  $validated['city'] ?? null,
                 'country_id' =>  $validated['country'] ?? null,
-                'full_name' => $validated['first_name'],
+                'name'       => $validated['first_name'],
+                'last_name'       => $validated['last_name'],
+                'full_name' => $validated['first_name'] . ' ' . ($validated['last_name'] ?? ''),
                 'pincode' => $validated['Zip_code'] ?? null,
                 'state_id' =>  $validated['state'] ?? null,
                 'warehouse_id' => (int) $request->warehouse_id ?? null,

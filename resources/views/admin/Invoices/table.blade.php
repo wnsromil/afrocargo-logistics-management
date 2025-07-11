@@ -25,9 +25,14 @@
                     <tr>
                         <td>{{ ++$index }}</td>
                         <td>{{ $invoice->created_at->format('d/m/Y H:i') ?? '-' }}</td>
-                        <td>{{ $invoice->transport_type ?? '' }}</td>
+                        <td>{{ $invoice->transport_type ?? 'Supply' }}</td>
                         <td><a href="{{route('admin.invoices.edit',$invoice->id)}}" class="text-danger">
-                                {{ $invoice->deliveryAddress->full_name ?? '-' }}</a>
+                                @if($invoice->deliveryAddress)
+                                    {{ $invoice->deliveryAddress->full_name ?? '-' }}
+                                @else
+                                    {{ $invoice->pickupAddress ? $invoice->pickupAddress->full_name : '-' }}
+                                @endif
+                            </a>
                         </td>
                         <td>{{ $invoice->warehouse->address ?? '-' }}</td>
                         <td>{{ $invoice->pickupAddress ? $invoice->pickupAddress->full_name : '-' }}</td>
@@ -42,7 +47,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="invoiceModal{{ $invoice->id }}" tabindex="-1"
                             aria-labelledby="invoiceModalLabel{{ $invoice->id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="invoiceModalLabel{{ $invoice->id }}">Invoice Detail
@@ -76,73 +81,77 @@
 
                                         <hr>
                                         @if (!empty($invoice->invoce_item))
-                                        @foreach ($invoice->invoce_item as $item)
-                                        <div>
-                                            <strong>Item:</strong> {{ $item['supply_name'] ?? '-' }}
-                                            <strong>Qty:</strong> {{ $item['qty'] ?? '-' }}
-                                            <strong>Price:</strong> {{ $item['price'] ?? '-' }}
-                                            <strong>Total:</strong> {{ ($item['qty'] ?? 0) * ($item['price'] ?? 0) }}
-                                        </div>
-                                        @endforeach
+                                            @foreach ($invoice->invoce_item as $item)
+                                            <div>
+                                                <strong>Item:</strong> {{ $item['supply_name'] ?? '-' }}
+                                                <strong>Qty:</strong> {{ $item['qty'] ?? '-' }}
+                                                <strong>Price:</strong> {{ $item['price'] ?? '-' }}
+                                                <strong>Total:</strong> {{ ($item['qty'] ?? 0) * ($item['price'] ?? 0) }}
+                                            </div>
+                                            @endforeach
                                         @else
-                                        <div>No Items</div>
+                                            <div>No Items</div>
                                         @endif
                                         @if($invoice->individualPayment)
                                         <hr>
-                                        <div class="row mt-3">
-                                            <div class="col-12">
-                                                <p class="subhead fw-bold">Payment Receipts</p>
-                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12">
+                                                    <p class="subhead fw-bold">Payment Receipts</p>
+                                                </div>
 
-                                            <div class="col-12">
-                                                <div class="border p-2 rounded">
-                                                    <div class="d-none d-md-flex fw-bold border-bottom py-2">
-                                                        <div class="col-md-2">Invoice ID</div>
-                                                        <div class="col-md-2">User</div>
-                                                        <div class="col-md-2">Payment Type</div>
-                                                        <div class="col-md-2">Payment Date</div>
-                                                        <div class="col-md-1">Amt. $</div>
-                                                        <div class="col-md-1">Local</div>
-                                                        <div class="col-md-2">Currency</div>
-                                                    </div>
-
-                                                    @forelse($invoice->individualPayment as $payment)
-                                                    <div class="row py-2 border-bottom align-items-center">
-                                                        <div class="col-md-2"><small class="d-md-none fw-bold">Invoice
-                                                                ID:</small> {{ $invoice->invoice_no ?? '' }}</div>
-                                                        <div class="col-md-2">
-                                                            <small class="d-md-none fw-bold">User:</small>
-                                                            <span data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="{{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}">
-                                                                {{ $payment->createdByUser->name ?? '' }} {{
-                                                                $payment->createdByUser->last_name ?? '' }}
-                                                            </span>
+                                                <div class="col-12">
+                                                    <div class="border p-2 rounded">
+                                                        <div class="d-none d-md-flex fw-bold border-bottom py-2">
+                                                            <div class="col-md-2">Invoice ID</div>
+                                                            <div class="col-md-2">User</div>
+                                                            <div class="col-md-2">Payment Type</div>
+                                                            <div class="col-md-2">Payment Date</div>
+                                                            <div class="col-md-1">Local</div>
+                                                            <div class="col-md-1">Local Amount</div>
+                                                            <div class="col-md-1">Currency</div>
+                                                            <div class="col-md-1">Amt. $</div>
                                                         </div>
-                                                        <div class="col-md-2"><small
-                                                                class="d-md-none fw-bold">Type:</small> {{
-                                                            ucfirst($payment->payment_type ?? '-') }}</div>
-                                                        <div class="col-md-2"><small
-                                                                class="d-md-none fw-bold">Date:</small> {{
-                                                            $payment->payment_date ?
-                                                            \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y,
-                                                            h:i a') : '-' }}</div>
-                                                        <div class="col-md-1"><small class="d-md-none fw-bold">Amt.
-                                                                $:</small> {{ number_format($payment->payment_amount ??
-                                                            0, 2) }}</div>
-                                                        <div class="col-md-1"><small
-                                                                class="d-md-none fw-bold">Local:</small> {{
-                                                            $payment->local_currency ?? '-' }}</div>
-                                                        <div class="col-md-2"><small
-                                                                class="d-md-none fw-bold">Currency:</small> {{
-                                                            $payment->currency ?? '-' }}</div>
 
+                                                        @forelse($invoice->individualPayment as $payment)
+                                                        <div class="row py-2 border-bottom align-items-center">
+                                                            <div class="col-md-2"><small class="d-md-none fw-bold">Invoice
+                                                                    ID:</small> {{ $invoice->invoice_no ?? '' }}</div>
+                                                            <div class="col-md-2">
+                                                                <small class="d-md-none fw-bold">User:</small>
+                                                                <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="{{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}">
+                                                                    {{ $payment->createdByUser->name ?? '' }} {{
+                                                                    $payment->createdByUser->last_name ?? '' }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-md-2"><small
+                                                                    class="d-md-none fw-bold">Type:</small> {{
+                                                                ucfirst($payment->payment_type ?? '-') }}</div>
+                                                            <div class="col-md-2"><small
+                                                                    class="d-md-none fw-bold">Date:</small> {{
+                                                                $payment->payment_date ?
+                                                                \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y,
+                                                                h:i a') : '-' }}</div>
+                                                            <div class="col-md-1"><small
+                                                                    class="d-md-none fw-bold">Local:</small> {{
+                                                                $payment->local_currency ?? '-' }}</div>
+
+                                                            <div class="col-md-1">
+                                                                <small class="d-md-none fw-bold">Local Amount:</small>{{ number_format($payment->applied_payments ?? 0, 2) }}
+                                                            </div>
+                                                            <div class="col-md-1"><small
+                                                                    class="d-md-none fw-bold">Currency:</small> {{
+                                                                $payment->currency ?? '-' }}</div>
+                                                            <div class="col-md-1"><small class="d-md-none fw-bold">Amt.
+                                                                    $:</small> {{ number_format($payment->payment_amount ??
+                                                                0, 2) }}</div>
+                                                        </div>
+                                                        @empty
+                                                        <div class="text-center py-3 text-muted">No Payments Found</div>
+                                                        @endforelse
                                                     </div>
-                                                    @empty
-                                                    <div class="text-center py-3 text-muted">No Payments Found</div>
-                                                    @endforelse
                                                 </div>
                                             </div>
-                                        </div>
                                         @endif
                                         <hr>
                                         <div style="color: gray; font-weight: bold;">Invoice Amount: ${{
@@ -161,19 +170,9 @@
                                             <div>$ {{ number_format($invoice->balence, 2) }}</div>
                                         </td>
                                         <td>{{ $invoice->container->unique_id ?? '-' }}</td>
-                                        <td>{{ $invoice->createdByUser->fullName ?? '-' }}</td>
-                                        <td>{{ $invoice->warehouse->unique_id ?? '-' }}</td>
-                                        {{-- <td>
-                                            <div>
-                                                @if (empty($invoice->invoce_item))
-                                                <span class="text-danger">No Items</span>
-                                                @else
-                                                @foreach($invoice->invoce_item as $item)
-                                                {{ $item['supply_name'] ?? '-' }} ({{ $item['qty'] ?? '-' }}),
-                                                @endforeach
-                                                @endif
-                                            </div>
-                                        </td> --}}
+                                        <td>{{ $invoice->user->fullName ?? '-' }}</td>
+                                        <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
+                                        
                                         <td>
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"

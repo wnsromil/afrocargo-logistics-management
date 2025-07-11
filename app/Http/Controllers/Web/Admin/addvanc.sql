@@ -101,3 +101,8 @@ FROM
 
     -- 07/05/25
     ALTER TABLE `parcel_inventories` ADD `volume` DECIMAL(10,2) NULL AFTER `inventorie_item_quantity`;
+    -- 10/0725
+
+    ALTER TABLE `addresses` ADD `name` VARCHAR(255) NULL AFTER `default_address`, ADD `last_name` VARCHAR(255) NULL AFTER `name`;
+
+    ALTER TABLE `invoices` ADD `payment_type` VARCHAR(255) NULL DEFAULT 'Cash' AFTER `invoce_type`;

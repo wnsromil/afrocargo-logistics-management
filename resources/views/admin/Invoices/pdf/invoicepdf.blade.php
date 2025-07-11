@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargo Invoice</title>
+    <title>{{ $invoice->transport_type ?? 'Supply'}} Invoice</title>
 </head>
 
 <body style="font-family: Arial, sans-serif;">
@@ -14,10 +14,10 @@
         <tr>
             <td>
                 <img style="width: 75px; margin-right: 5px;"
-                    src="{{public_path('assets/images/AfroCargoLogo.png')}}">
+                    src="{{public_path('assets/images/logo_image.png')}}">
             </td>
             <td style="text-align: center; padding: 10px;">
-                <h2 style="margin: 0;">CARGO INVOICE</h2>
+                <h2 style="margin: 0;">{{ $invoice->transport_type ?? 'Supply'}} INVOICE</h2>
             </td>
         </tr>
     </table>
@@ -86,17 +86,25 @@
     </table>
 
     <!-- Table Section -->
-    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 0px;">
         <thead>
             <tr style="background-color: #f2f2f2; border: 1px solid black;">
-                <th style="border: 1px solid black; padding: 5px;">P.: {{ $invoice->pickupAddress->city_id ?? 'N/A' }}
+                <th style="border: 1px solid black; padding: 5px;">
+                    Tracking# : <b>{{$invoice->invoiceParcelData && !empty($invoice->invoiceParcelData->tracking_number) ? $invoice->invoiceParcelData->tracking_number:''}}</b>
                 </th>
-                <th style="border: 1px solid black; padding: 5px;">M.: {{ $invoice->deliveryAddress->city_id ?? 'N/A' }}
+                <th style="border: 1px solid black; padding: 5px;">
+                    ivnoce# : <b>{{$invoice->invoice_no ?? ''}}</b>
                 </th>
-                <th style="border: 1px solid black; padding: 5px;">S.: {{ $invoice->deliveryAddress->city_id ?? 'N/A' }}
+                <th style="border: 1px solid black; padding: 5px;">
+                    container# : <b>{{$invoice->container && $invoice->container->unique_id ? $invoice->container->unique_id:'' }}</b>
+                </th>
+                <th style="border: 1px solid black; padding: 5px;">
+                    country#: <b>{{ $invoice->deliveryAddress && $invoice->deliveryAddress->country_id ? $invoice->deliveryAddress->country_id : '' }}</b>
                 </th>
             </tr>
         </thead>
+    </table>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
         <tbody>
             <tr style="background-color: #f2f2f2; border: 1px solid black;">
                 <td style="border: 1px solid black; padding: 5px;">Invoice Date: {{ date('m/d/Y',

@@ -70,7 +70,7 @@
                 <select id="warehouse_id" name="warehouse_id" class="js-example-basic-single select2 form-cs">
                     <option value="">Select Warehouse</option>
                     @foreach ($warehouses as $warehouse)
-                    <option value="{{$warehouse->id}}" {{ request('warehouse_id') == $warehouse->id ? 'selected' : '' }}>{{$warehouse->name ?? ''}}</option>
+                    <option value="{{$warehouse->id}}" {{ request('warehouse_id') == $warehouse->id ? 'selected' : '' }}>{{$warehouse->warehouse_name ?? ''}}, {{$warehouse->address ?? ''}}</option>
                     @endforeach
                 </select>
             </div>

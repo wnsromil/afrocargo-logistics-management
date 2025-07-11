@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="col-md-5 col-sm-12">
-                    <div class="row justify-content-end">
+                    <div class="row justify-content-end d-none">
                         <div class="col-md-3">
                             <div class="input-block">
                                 <label class="foncolor m-0 p-0">Barcode<i class="text-danger">*</i></label>
@@ -249,7 +249,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-4 col-sm-12 d-none">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-block">

@@ -29,7 +29,7 @@ class CustomerController extends Controller
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query(key: 'invoice_custmore_id');
 
-        $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
+        $query = User::whereIn('role_id', [3,5])->orderBy('id', 'desc');
         $query->where('invoice_custmore_id', $invoiceCustomerId);
 
         if ($request->has('search') && !empty($request->query('search'))) {
@@ -148,7 +148,7 @@ class CustomerController extends Controller
         }
 
         // Step 1: Main customer record by ID
-        $customer = User::where('role_id', 3)
+        $customer = User::whereIn('role_id', [5,3])
             ->where('id', $id)
             ->with('vehicle', 'invoiceCustmore')
             ->first();
