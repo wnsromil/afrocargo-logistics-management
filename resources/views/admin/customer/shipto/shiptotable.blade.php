@@ -9,6 +9,7 @@
                         <th>Ship To ID</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Warehouse</th>
                         <th>License ID</th>
                         <th>Phone</th>
                         <th>Address</th>
@@ -23,8 +24,9 @@
                     @forelse ($customers as $index => $customer)
                         <tr>
                             <td> {{ $customer->unique_id ?? "--" }}</td>
-                            <td>{{ ucfirst($customer->name ?? '') }}</td>
-                            <td>{{ $customer->email ?? '-' }}</td>
+                            <td>{{ ucfirst($customer->name ?? '') }} {{ ($customer->last_name ?? '') }}</td>
+                            <td>{{ $customer->email ?? '-' }}</td>\
+                            <td>{{ $customer->warehouse->warehouse_name ?? '-' }}</td>
                             <td>{{ $customer->license_number ?? '-' }}</td>
                             <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
                                 +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 ?? '-' }}

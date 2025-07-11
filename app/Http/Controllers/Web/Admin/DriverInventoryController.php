@@ -32,6 +32,10 @@ class DriverInventoryController extends Controller
         $end_date = null;
         $dateRange = $request->input('daterangepicker');
 
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
         if ($dateRange) {
             try {
                 [$start_date, $end_date] = explode(' - ', $dateRange);
@@ -99,7 +103,8 @@ class DriverInventoryController extends Controller
                 'dateRange',
                 'perPage',
                 'serialStartItems',
-                'serialStartSold'
+                'serialStartSold',
+                'warehouses'
             ))->render();
         }
 
@@ -111,11 +116,10 @@ class DriverInventoryController extends Controller
             'dateRange',
             'perPage',
             'serialStartItems',
-            'serialStartSold'
+            'serialStartSold',
+            'warehouses'
         ));
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -169,12 +173,12 @@ class DriverInventoryController extends Controller
             $quantity   = $request->in_stock_quantity[$index];
 
             // Total Out - Total In = Available
-            $totalOut = \App\Models\DriverInventory::where('driver_id', $driverId)
+            $totalOut = DriverInventory::where('driver_id', $driverId)
                 ->where('items_id', $itemId)
                 ->where('in_out', 'Out')
                 ->sum('quantity');
 
-            $totalIn = \App\Models\DriverInventory::where('driver_id', $driverId)
+            $totalIn = DriverInventory::where('driver_id', $driverId)
                 ->where('items_id', $itemId)
                 ->where('in_out', 'In')
                 ->sum('quantity');
@@ -194,11 +198,13 @@ class DriverInventoryController extends Controller
             }
         }
 
+        $driver = User::where('id', $request->driver_id)->first();
+
         // ✅ Save All Items
         foreach ($request->item_id as $index => $itemId) {
-            \App\Models\DriverInventory::create([
+            DriverInventory::create([
                 'date'         => $formattedDate,
-                'warehouse_id' => $request->warehouse_id,
+                'warehouse_id' => $driver->warehouse_id ?? null,
                 'time'         => $request->currentTIme,
                 'driver_id'    => $request->driver_id,
                 'in_out'       => $request->InOutType,

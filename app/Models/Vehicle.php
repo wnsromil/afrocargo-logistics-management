@@ -155,7 +155,7 @@ class Vehicle extends Model
                 }
             }
 
-            $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+            $newNumber = (string) ($lastNumber + 1); // Zeros removed
             // Final unique ID
             if ($vehicle->vehicle_type == 'Container') {
                 $yearSuffix = date('y'); // last 2 digits of year

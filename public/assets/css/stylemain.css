@@ -2621,6 +2621,7 @@ input.btn-filters.datetimepicker {
 input[readonly] {
     background: #ececec;
     cursor: not-allowed;
+    min-height: 41px !important
 }
 
 .inp.timeOnlyInput.absolute[readonly] {

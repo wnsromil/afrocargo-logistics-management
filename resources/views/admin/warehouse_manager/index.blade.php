@@ -3,49 +3,71 @@
         {{ __('Warehouse Managers') }}
     </x-slot>
 
-
-
-
-
-
-
-
     <x-slot name="cardTitle">
-        <div class="d-flex topnavs">
-            <p class="head">All Warehouse Managers</p>
-            <div class="usersearch d-flex usersserach">
-                <div class="top-nav-search">
-                    <form>
-                        <input id="searchInput" type="text" class="form-control forms" placeholder="Search" name="search" value="{{ request()->search }}">
-                    </form>
-                </div>
-
-                <div class="mt-2">
-                    <button type="button"
-                        class="btn btn-primary refeshuser d-flex justify-content-center align-items-center">
-                        <a class="btn-filters d-flex justify-content-center align-items-center"
-                            href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Refresh">
-                            <span><i class="fe fe-refresh-ccw"></i></span>
-                        </a>
-                    </button>
+        <p class="head">All Warehouse Managers</p>
+        <div class="d-flex align-items-center justify-content-end mb-0">
+            <div class="usersearch d-flex">
+                <div class="">
+                    <a href="{{ route('admin.warehouse_manager.create') }}" class="btn btn-primary buttons">
+                        <i class="ti ti-circle-plus me-2 text-white"></i>
+                        Add Manager
+                    </a>
                 </div>
             </div>
         </div>
     </x-slot>
 
-    <div class="d-flex align-items-center justify-content-end mb-1">
-        <div class="usersearch d-flex">
-            <div class="mt-2">
-                <a href="{{ route('admin.warehouse_manager.create') }}" class="btn btn-primary buttons">
-                   <i class="ti ti-circle-plus me-2 text-white"></i>
-                    Add Manager
-                </a>
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
+
+    <form id="expenseFilterForm" action="{{ route('admin.warehouse_manager.index') }}" method="GET">
+        <div class="row gx-3 inputheight40">
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Search</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                        placeholder="Search" name="search" value="{{ request('search') }}">
+                </div>
+            </div>
+            {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses_name as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses_name->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div id='ajexTable'>
+    </form>
 
+    <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive mt-3">
@@ -72,10 +94,15 @@
                                     <td><span>{{$warehouse->name ?? '-'}}</span></td>
                                     <td>{{ ucfirst($warehouse->warehouse->warehouse_name ?? '')}}</td>
                                     <td>{{$warehouse->email ?? '-'}}</td>
-                                    <td><p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$warehouse->address ?? '-'}}">{{$warehouse->address ?? '-'}}</p></td>
+                                    <td>
+                                        <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{$warehouse->address ?? '-'}}">{{$warehouse->address ?? '-'}}</p>
+                                    </td>
                                     <td>{{ $warehouse->country_code ?? '' }} {{$warehouse->phone ?? '-'}}</td>
                                     <td>
-                                        <label class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}" for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
+                                        <label
+                                            class="labelstatus {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}"
+                                            for="{{ $warehouse->status == 'Active' ? 'paid_status' : 'unpaid_status' }}">
                                             {{ $warehouse->status == 'Active' ? 'Active' : 'Inactive' }}
                                         </label>
                                     </td>
@@ -185,6 +212,11 @@
                 });
             });
         });
+    </script>
+    <script>
+        function resetForm() {
+            window.location.href = "{{ route('admin.warehouse_manager.index') }}";
+        }
     </script>
 
 </x-app-layout>

@@ -18,6 +18,7 @@
     <x-slot name="header">
         {{ __('Customer List') }}
     </x-slot>
+    
     <x-slot name="cardTitle">
         <div class="d-flex topnavs justify-content-between">
             <p class="head">All Customers</p>
@@ -28,13 +29,18 @@
         </div>
     </x-slot>
 
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
+
     <div>
         <div class="row">
             <div class="col-md-6">
                 <form action="{{ route('admin.customer.index') }}" method="GET">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center mb-3">
                         <label class="foncolor m-0 p-0">Customer</label>
-                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
+                        <div class="inputGroup w-50 position-relative customInputSearch mx-4">
                             <i class="ti ti-search"></i>
                             <input type="text" class="form-control form-cs" placeholder="Search" name="search"
                                 value="{{ request('type') === 'customer' ? request('search') : '' }}"
@@ -46,11 +52,38 @@
                             data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
                                 class="fe fe-refresh-ccw"></i> </button>
                     </div>
+                    <div class="d-flex align-items-center">
+                        <label class="foncolor m-0 p-0">Warehouse</label>
+                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
+                            @if ($authUser->role_id == 1)
+                                <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                                    <option value="">Select Warehouse</option>
+                                    @foreach ($warehouses as $warehouse)
+                                        <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                            {{ $warehouse->warehouse_name ?? '' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @else
+                                @php
+                                    $singleWarehouse = $warehouses->first();
+                                @endphp
+
+                                <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}"
+                                    readonly style="background-color: #e9ecef; color: #6c757d;">
+                                <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                            @endif
+                        </div>
+                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
+                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
+                                class="fe fe-refresh-ccw"></i> </button>
+                    </div>
                 </form>
             </div>
             <div class="col-md-6">
                 <form action="{{ route('admin.customer.index') }}" method="GET" id="shipToformSearch">
-                    <div class="d-flex align-items-center justify-content-sm-end">
+                    <div class="d-flex align-items-center mb-3 justify-content-sm-end">
                         <label class="foncolor m-0 p-0">ShipTo</label>
                         <div class="inputGroup w-50 position-relative customInputSearch mx-3">
                             <i class="ti ti-search"></i>
@@ -63,18 +96,44 @@
                             data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
                                 class="fe fe-refresh-ccw"></i> </button>
                     </div>
+                    <div class="d-flex align-items-center justify-content-sm-end">
+                        <label class="foncolor m-0 p-0">Warehouse</label>
+                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
+                            @if ($authUser->role_id == 1)
+                                <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                                    <option value="">Select Warehouse</option>
+                                    @foreach ($warehouses as $warehouse)
+                                        <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                            {{ $warehouse->warehouse_name ?? '' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @else
+                                @php
+                                    $singleWarehouse = $warehouses->first();
+                                @endphp
+
+                                <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}"
+                                    readonly style="background-color: #e9ecef; color: #6c757d;">
+                                <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                            @endif
+                        </div>
+                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
+                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
+                                class="fe fe-refresh-ccw"></i> </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+
     <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive mt-3">
-
                     <table class="table tables table-stripped table-hover datatable ">
                         <thead class="thead-light">
-
                             <tr>
                                 <th class="no-sort">Customer ID</th>
                                 <th>Photo</th>

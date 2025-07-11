@@ -17,6 +17,7 @@ class DriverInventory extends Model
         'quantity',
         'time',
         'creator_id',
+        'warehouse_id'
     ];
 
     public function items()

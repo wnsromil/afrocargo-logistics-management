@@ -254,12 +254,13 @@ class User extends Authenticatable
             ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
             ->value('max_number') ?? 0;
 
-        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+        $newNumber = (string) ($lastNumber + 1); // ✅ zero-free number
 
         return $fullPrefix . $newNumber;
     }
 
-    public function shipToAddress(){
+    public function shipToAddress()
+    {
         return $this->hasMany(User::class, 'invoice_custmore_id')->with('defaultAddress');
     }
 
