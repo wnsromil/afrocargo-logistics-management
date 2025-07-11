@@ -161,7 +161,7 @@ Route::get('/VerifyLicense', function () {
 });
 
 
-
+Route::get('/state-city-insert', [AutoCallBatchController::class, 'insertStatesAndCities'])->name('admin.insertStatesAndCities');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -209,7 +209,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('custom-reports', CustomReportController::class);
         Route::post('updateCustomReportContainer', [CustomReportController::class, 'updateCustomReportContainer'])->name('custom-reports.updateCustomReportContainer');
         Route::resource('verify-license', VerifyLicenseController::class);
-       
+
         Route::resource('template_category', TemplateCategoryController::class);
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
@@ -274,9 +274,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         //Expenses
         Route::post('expenses/status/{id}', [ExpensesController::class, 'changeStatus'])->name('expenses.status');
 
-        Route::get('user_role', [RoleManagementController::class,'index'])->name('user_role.index');
-        Route::get('user_role/create', [RoleManagementController::class,'create'])->name('user_role.create');
-        Route::post('user_role/store', [RoleManagementController::class,'store'])->name('user_role.store');
+        Route::get('user_role', [RoleManagementController::class, 'index'])->name('user_role.index');
+        Route::get('user_role/create', [RoleManagementController::class, 'create'])->name('user_role.create');
+        Route::post('user_role/store', [RoleManagementController::class, 'store'])->name('user_role.store');
         //CBM Calculatoar
         Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
         Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
@@ -296,7 +296,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
             return view('admin.serviceorderdetails.orderdetails');
         })->name('serviceorderdetails.orderdetails');
 
-        
+
 
         Route::get('/add-role', function () {
             return view('admin.user_role.create');

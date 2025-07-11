@@ -1,10 +1,10 @@
 <x-app-layout>
     @section('style')
-    <style>
-        .content-page-header {
-            margin-top: -10px;
-        }
-    </style>
+        <style>
+            .content-page-header {
+                margin-top: -10px;
+            }
+        </style>
     @endsection
 
     <x-slot name="header">
@@ -24,45 +24,40 @@
             </div>
         </div>
     </x-slot>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-
-
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
 
     <form class="invoice" method="GET" action="{{ route('admin.invoices.index') }}">
         <div class="row g-3">
             <div class="col-md-3 dposition">
                 <label for="searchInput">Search</label>
                 <i class="ti ti-search"></i>
-                <input type="text" id="searchInput" name="search" class="form-control form-cs" placeholder="Search" value="{{ request('search') }}">
+                <input type="text" id="searchInput" name="search" class="form-control form-cs" placeholder="Search"
+                    value="{{ request('search') }}">
             </div>
 
             <div class="col-md-3 dposition">
                 <label for="invoice_id">By Invoice #ID</label>
                 <i class="ti ti-search"></i>
-                <input type="text" id="invoice_id" name="invoice_id" class="form-control form-cs" placeholder="Enter Invoice #ID" value="{{ request('invoice_id') }}">
+                <input type="text" id="invoice_id" name="invoice_id" class="form-control form-cs"
+                    placeholder="Enter Invoice #ID" value="{{ request('invoice_id') }}">
             </div>
             <div class="col-md-3 dposition">
                 <label for="datetrange">Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                    <input type="text" id="datetrange" class="btn-filters form-control bookingrange form-cs info" name="datetrange"
-                        placeholder="From Date - To Date" value="{{ request('datetrange') ?? '' }}" autocomplete="off" />
+                    <input type="text" id="datetrange" class="btn-filters form-control bookingrange form-cs info"
+                        name="datetrange" placeholder="From Date - To Date" value="{{ request('datetrange') ?? '' }}"
+                        autocomplete="off" />
                 </div>
             </div>
 
             <div class="col-md-3 dposition">
                 <label for="container_seal">By Container</label>
                 <i class="ti ti-search"></i>
-                <input type="text" id="container_seal" name="container_seal" class="form-control form-cs" placeholder="Enter Container Seal No." value="{{ request('container_seal') }}">
+                <input type="text" id="container_seal" name="container_seal" class="form-control form-cs"
+                    placeholder="Enter Container Seal No." value="{{ request('container_seal') }}">
             </div>
 
             <div class="col-md-3">
@@ -80,7 +75,9 @@
                 <select id="driver_id" name="driver_id" class="js-example-basic-single select2 form-cs">
                     <option value="">Select Driver</option>
                     @foreach ($drivers as $driver)
-                    <option value="{{$driver->id}}" {{ request('driver_id') == $driver->id ? 'selected' : '' }}>{{$driver->name ?? ''}} {{$driver->last_name ?? ''}}</option>
+                        <option value="{{$driver->id}}" {{ request('driver_id') == $driver->id ? 'selected' : '' }}>
+                            {{$driver->name ?? ''}} {{$driver->last_name ?? ''}}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -88,7 +85,8 @@
             <div class="col-md-3 dposition">
                 <label for="invoice_item">By Invoice Item</label>
                 <i class="ti ti-search"></i>
-                <input type="text" id="invoice_item" name="invoice_item" class="form-control form-cs" placeholder="Enter Invoice Item" value="{{ request('invoice_item') }}">
+                <input type="text" id="invoice_item" name="invoice_item" class="form-control form-cs"
+                    placeholder="Enter Invoice Item" value="{{ request('invoice_item') }}">
             </div>
 
             <div class="col-md-3 dposition">
@@ -96,10 +94,12 @@
                 <select id="transport_type" name="transport_type" class="js-example-basic-single select2 form-cs">
                     <option value="">Select Invoice Type</option>
                     <option value="Supply" {{ request('transport_type') == 'Supply' ? 'selected' : '' }}>Supply</option>
-                    <option value="Air Cargo" {{ request('transport_type') == 'Air Cargo' ? 'selected' : '' }}>Air Cargo</option>
-                    <option value="Ocean Cargo" {{ request('transport_type') == 'Ocean Cargo' ? 'selected' : '' }}>Ocean Cargo</option>
+                    <option value="Air Cargo" {{ request('transport_type') == 'Air Cargo' ? 'selected' : '' }}>Air Cargo
+                    </option>
+                    <option value="Ocean Cargo" {{ request('transport_type') == 'Ocean Cargo' ? 'selected' : '' }}>Ocean
+                        Cargo</option>
                 </select>
-            </div>  
+            </div>
 
             <div class="col-md-3 {{--text-end align-content-end--}}">
                 <button type="submit" class="btn px-4 btn-primary me-2">Filter</button>
@@ -134,16 +134,16 @@
             }
 
             // Initialize popovers on page load
-            $(document).ready(function() {
+            $(document).ready(function () {
                 // Initialize the date range picker
                 setTimeout(() => {
                     // console.log("Initializing popovers after 2 seconds delay");
-                     initInvoicePopovers();
+                    initInvoicePopovers();
                 }, 3000);
 
                 // If you use a custom AJAX call for pagination, call initInvoicePopovers() after updating the table
                 // Example:
-                $('#ajexTable').on('click', function() {
+                $('#ajexTable').on('click', function () {
                     initInvoicePopovers();
                 });
             });

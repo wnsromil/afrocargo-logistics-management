@@ -28,6 +28,14 @@ class CustomerController extends Controller
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
         $type = $request->input('type');
+        $warehouse_id = $request->input('warehouse_id');
+
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
 
         // Determine role_id based on type
         $roleId = 3; // default: customer
@@ -45,12 +53,16 @@ class CustomerController extends Controller
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%$search%")
                         ->orWhere('unique_id', 'LIKE', "%$search%")
+                        ->orWhere('username', 'LIKE', "%$search%")
                         ->orWhere('email', 'LIKE', "%$search%")
                         ->orWhere('phone', 'LIKE', "%$search%")
                         ->orWhere('address', 'LIKE', "%$search%")
                         ->orWhere('status', 'LIKE', "%$search%")
                         ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
                 });
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
             })
             ->latest('id')
             ->paginate($perPage)
@@ -60,17 +72,17 @@ class CustomerController extends Controller
 
         if ($type == 'ShipTo') {
             if ($request->ajax() && $type == 'ShipTo') {
-                return view('admin.customer.shipto.shiptotable', compact('customers', 'serialStart'))->render();
+                return view('admin.customer.shipto.shiptotable', compact('customers', 'serialStart', 'warehouses'))->render();
             } else {
                 // dd($customers);
-                return view('admin.customer.shipto.shiptoindextable', compact('customers', 'search', 'perPage', 'serialStart'));
+                return view('admin.customer.shipto.shiptoindextable', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
             }
         }
         if ($request->ajax()) {
-            return view('admin.customer.table', compact('customers', 'serialStart'))->render();
+            return view('admin.customer.table', compact('customers', 'serialStart', 'warehouses'))->render();
         }
 
-        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
+        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
     }
 
     /**

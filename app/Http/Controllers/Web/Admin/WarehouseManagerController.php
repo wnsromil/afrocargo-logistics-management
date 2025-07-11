@@ -25,11 +25,22 @@ class WarehouseManagerController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default is 10
         $currentPage = $request->input('page', 1);
+        $warehouse_id = $request->input('warehouse_id');
+        $warehouses_name = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
         $warehouses = User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })
             ->with('warehouse')
             ->where('role_id', 2)
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
@@ -47,10 +58,10 @@ class WarehouseManagerController extends Controller
             ->appends(['search' => $search, 'per_page' => $perPage]);
         $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.warehouse_manager.table', compact('warehouses', 'serialStart'));
+            return view('admin.warehouse_manager.table', compact('warehouses_name', 'warehouses', 'serialStart'));
         }
 
-        return view('admin.warehouse_manager.index', compact('warehouses', 'serialStart', 'search', 'perPage'));
+        return view('admin.warehouse_manager.index', compact('warehouses_name', 'warehouses', 'serialStart', 'search', 'perPage'));
     }
 
     /**
@@ -203,7 +214,7 @@ class WarehouseManagerController extends Controller
             'name' => $request->manager_name,
             'address' => $request->address_1,
             'email' => $request->email,
-             'phone' => $request->mobile_number,
+            'phone' => $request->mobile_number,
             'phone_code_id'  => $request->mobile_number_code_id,
             'country_code' => +0,
             'status' => $request->status ?? 'Active', // Status ko handle karna

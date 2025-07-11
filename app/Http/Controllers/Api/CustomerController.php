@@ -31,7 +31,7 @@ class CustomerController extends Controller
 
         $query = User::whereIn('role_id', [3,5])->orderBy('id', 'desc');
         $query->where('invoice_custmore_id', $invoiceCustomerId);
-
+        $query->orWhere('parent_customer_id', $invoiceCustomerId);
         if ($request->has('search') && !empty($request->query('search'))) {
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
@@ -210,6 +210,15 @@ class CustomerController extends Controller
             $randomPassword = Str::random(8); // Random password of 8 characters
             $hashedPassword = Hash::make($randomPassword); // Hashing password
 
+            $role = 'customer';
+            $role_id = 3;
+
+            if ($validated['invoice_custmore_type'] === 'ship_to') {
+                $role = 'ship_to_customer';
+                $role_id = 5;
+            }
+
+
             $userData = [
                 'name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
@@ -220,7 +229,8 @@ class CustomerController extends Controller
                 'address_2' => $request->address_2,
                 'country_id' => $validated['country'],
                 'state_id' => $validated['state'],
-                'role' => 'customer',
+                'role' => $role,                      // ✅ Dynamic role
+                'role_id' => $role_id,                // ✅ Dynamic role_id
                 'created_by_id' => $user->id,
                 'city_id' => $validated['city'],
                 'pincode' => $validated['Zip_code'],

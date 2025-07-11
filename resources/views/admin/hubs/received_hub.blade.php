@@ -7,13 +7,89 @@
         <p class="head">Received by Warehouse</p>
     </x-slot>
 
-    <div class="tabs mw-100">
+    {{-- <div class="tabs mw-100">
         <input type="radio" id="tab1" name="tab" checked>
         <input type="radio" id="tab2" name="tab">
         <div class="tab-titles mt-1">
             <label for="tab1" class="tab-title">in transit</label>
             <label for="tab2" class="tab-title">History</label>
-        </div>
+        </div> --}}
+
+            @php
+            $warehouseIdFromUrl = request()->query('warehouse_id');
+            $fromWarehouseIdFromUrl = request()->query('from_warehouse_id');
+            $authUser = auth()->user();
+        @endphp
+
+        <form id="expenseFilterForm" action="{{ route('admin.received.hub.list') }}" method="GET">
+            <div class="row gx-3 mb-3 inputheight40">
+                <div class="col-md-3 mb-3">
+                    <label for="searchInput">Search</label>
+                    <div class="inputGroup height40 position-relative">
+                        <i class="ti ti-search"></i>
+                        <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                            placeholder="Search" name="search" value="{{ request('search') }}">
+                    </div>
+                </div>
+                {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+                <div class="col-md-3 mb-3">
+                    <label>To Warehouse</label>
+                    @if ($authUser->role_id == 1)
+                        <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                            <option value="">Select Warehouse</option>
+                            @foreach ($warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                    {{ $warehouse->warehouse_name ?? '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @else
+                        @php
+                            $singleWarehouse = $warehouses->first();
+                        @endphp
+
+                        <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                            style="background-color: #e9ecef; color: #6c757d;">
+                        <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                    @endif
+                    @error('warehouse_id')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>From Warehouse</label>
+                    @if ($authUser->role_id == 1)
+                        <select class="js-example-basic-single select2 form-control" name="from_warehouse_id">
+                            <option value="">Select Warehouse</option>
+                            @foreach ($warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}" {{ $fromWarehouseIdFromUrl == $warehouse->id || old('from_warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                    {{ $warehouse->warehouse_name ?? '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @else
+                        @php
+                            $singleWarehouse = $warehouses->first();
+                        @endphp
+
+                        <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                            style="background-color: #e9ecef; color: #6c757d;">
+                        <input type="hidden" name="from_warehouse_id" value="{{ $singleWarehouse->id }}">
+                    @endif
+                    @error('from_warehouse_id')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="col-12">
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                        <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
 
         <div>
@@ -376,6 +452,11 @@
                 });
             }
         </script>
+         <script>
+                function resetForm() {
+                    window.location.href = "{{ route('admin.received.hub.list') }}";
+                }
+            </script>
 
 
 </x-app-layout>

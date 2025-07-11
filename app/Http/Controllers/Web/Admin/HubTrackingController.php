@@ -23,45 +23,119 @@ class HubTrackingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function transfer_hub()
+    public function transfer_hub(Request $request)
     {
         $user = auth()->user(); // ya $this->user depending on your context
         $warehouseId = $user->role_id != 1 ? $user->warehouse_id : null;
-        // Vehicle data
+        $warehouse_id = $request->input('warehouse_id');
+        $fromWarehouse_id = $request->input('from_warehouse_id');
+        $query = $request->search;
+
+        // Search matching Vehicle IDs where vehicle_type = 1
+        $matchedVehicleIds = collect();
+        if (!empty($query)) {
+            $matchedVehicleIds = Vehicle::where('vehicle_type', 1)
+                ->where(function ($q) use ($query) {
+                    $q->where('unique_id', 'LIKE', "%{$query}%");
+                    //->orWhere('vehicle_name', 'LIKE', "%{$query}%");
+                })
+                ->pluck('id');
+        }
+
+        // Get list of warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
+        // Vehicle data from ContainerHistory
         $vehicles = ContainerHistory::where('arrived_container', 'No')
             ->when($warehouseId, function ($query, $warehouseId) {
                 return $query->where('warehouse_id', $warehouseId);
             })
             ->whereIn('type', ['Transfer', 'Active'])
-            ->with(['container', 'driver'])
-            ->orderBy('id', 'desc')
-            ->get();
-
-        // ContainerHistory data
-        $historyVehicles = ContainerHistory::where('arrived_container', 'Yes')->where('type', 'Transfer')
-            ->when($warehouseId, function ($query, $warehouseId) {
-                return $query->where('warehouse_id', $warehouseId);
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            ->when($fromWarehouse_id, function ($q) use ($fromWarehouse_id) {
+                return $q->where('arrived_warehouse_id', $fromWarehouse_id);
+            })
+            ->when($query, function ($q) use ($matchedVehicleIds) {
+                return $q->whereIn('container_id', $matchedVehicleIds);
             })
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
 
+        // History Vehicles from ContainerHistory
+        $historyVehicles = ContainerHistory::where('arrived_container', 'Yes')
+            ->where('type', 'Transfer')
+            ->when($warehouseId, function ($query, $warehouseId) {
+                return $query->where('warehouse_id', $warehouseId);
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            ->when($fromWarehouse_id, function ($q) use ($fromWarehouse_id) {
+                return $q->where('arrived_warehouse_id', $fromWarehouse_id);
+            })
+            ->when($query, function ($q) use ($matchedVehicleIds) {
+                return $q->whereIn('container_id', $matchedVehicleIds);
+            })
+            ->with(['container', 'driver'])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Get all warehouses again for dropdown
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        return view('admin.hubs.transfer_hub', compact('vehicles',  'historyVehicles'));
+        return view('admin.hubs.transfer_hub', compact('vehicles', 'historyVehicles', 'warehouses'));
     }
 
-    public function received_hub()
+    public function received_hub(Request $request)
     {
         $user = auth()->user(); // ya $this->user depending on your context
         $warehouseId = $user->role_id != 1 ? $user->warehouse_id : null;
+        $warehouse_id = $request->input('warehouse_id');
+        $fromWarehouse_id = $request->input('from_warehouse_id');
+        $query = $request->search;
+
+        // Search matching Vehicle IDs where vehicle_type = 1
+        $matchedVehicleIds = collect();
+        if (!empty($query)) {
+            $matchedVehicleIds = Vehicle::where('vehicle_type', 1)
+                ->where(function ($q) use ($query) {
+                    $q->where('unique_id', 'LIKE', "%{$query}%");
+                    //->orWhere('vehicle_name', 'LIKE', "%{$query}%");
+                })
+                ->pluck('id');
+        }
+
+        // Get list of warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
 
         // 1. Incoming containers (status = 5 or 7 for 'Arrived')
         $incoming_containers = ContainerHistory::whereIn('arrived_container', ['No', 'Yes'])
             ->when($warehouseId, function ($query, $warehouseId) {
                 return $query->where('arrived_warehouse_id', $warehouseId);
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            ->when($fromWarehouse_id, function ($q) use ($fromWarehouse_id) {
+                return $q->where('arrived_warehouse_id', $fromWarehouse_id);
+            })
+            ->when($query, function ($q) use ($matchedVehicleIds) {
+                return $q->whereIn('container_id', $matchedVehicleIds);
             })
             ->where('type', 'Arrived')
             ->where('full_discharge', 'No')
@@ -76,12 +150,21 @@ class HubTrackingController extends Controller
             ->when($warehouseId, function ($query, $warehouseId) {
                 return $query->where('arrived_warehouse_id', $warehouseId);
             })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            ->when($fromWarehouse_id, function ($q) use ($fromWarehouse_id) {
+                return $q->where('arrived_warehouse_id', $fromWarehouse_id);
+            })
+            ->when($query, function ($q) use ($matchedVehicleIds) {
+                return $q->whereIn('container_id', $matchedVehicleIds);
+            })
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
             ->get();
 
 
-        return view('admin.hubs.received_hub', compact('incoming_containers', 'container_historys'));
+        return view('admin.hubs.received_hub', compact('incoming_containers', 'warehouses', 'container_historys'));
     }
 
     public function received_orders(Request $request)
@@ -179,8 +262,9 @@ class HubTrackingController extends Controller
         ));
     }
 
-    public function received_orders_show(Request $request, $id){
-    
+    public function received_orders_show(Request $request, $id)
+    {
+
         //
         $ParcelHistories = ParcelHistory::where('parcel_id', $id)
             ->with(['warehouse', 'customer', 'createdByUser'])->get();

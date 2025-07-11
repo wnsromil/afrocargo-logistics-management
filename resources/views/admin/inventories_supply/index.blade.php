@@ -3,24 +3,11 @@
         {{ __('Inventory Management') }}
     </x-slot>
 
-
-    <!-- <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    <a href="#" class="btn btn-primary buttons">
-                    <i class="ti ti-circle-plus me-2 text-white"></i>
-                    Add Inventory
-                    </a>
-                </div>
-            </div>
-        </div>
-     -->
     <x-slot name="cardTitle">
-        <p class="head">Supply Inventory</p>
-
-        <div class="d-flex align-items-center justify-content-end mb-1">
+        <p class="head">Supply Inventorys</p>
+        <div class="d-flex align-items-center justify-content-end mb-0">
             <div class="usersearch d-flex">
-                <div class="mt-2">
+                <div class="">
                     <a href="{{ route('admin.supply_inventories.create') }}" class="btn btn-primary buttons"
                         style="background:#203A5F">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
@@ -33,6 +20,7 @@
 
     @php
         $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
     @endphp
     {{-- ✅ Select Dropdown for Multiple Warehouses --}}
     <form id="expenseFilterForm" action="{{ route('admin.supply_inventories.index') }}" method="GET">
@@ -48,32 +36,30 @@
             {{-- ✅ Select Dropdown for Multiple Warehouses --}}
             <div class="col-md-3 mb-3">
                 <label>By Warehouse</label>
-                <select class="js-example-basic-single select2 form-control" name="warehouse_id">
-                    <option value="">Select Warehouse</option>
-                    @foreach ($warehouses as $warehouse)
-                        <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
-                            {{ $warehouse->warehouse_name }}
-                        </option>
-                    @endforeach
-                </select>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
                 @error('warehouse_id')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
-            {{-- <div class="col-md-3 mb-3">
-                <label>Main Type</label>
-                <select class="js-example-basic-single select2" name="main_type">
-                    <option value="">Select Main Type</option>
-                    <option value="Service" {{ request()->query('main_type') == "Service" ? 'selected' : '' }}>Service
-                    </option>
-                    <option value="Supply" {{ request()->query('main_type') == "Supply" ? 'selected' : '' }}>Supplies
-                    </option>
-                </select>
-            </div> --}}
-
             <div class="col-12">
-
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>
                     <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
@@ -91,14 +77,14 @@
                     <table class="table table-stripped table-hover datatable inheritbg" id="setBackground">
                         <thead class="thead-light">
                             <tr>
-                                <tr>
+                            <tr>
                                 <th>Item No</th>
                                 <th>ItemId</th>
                                 <th>Image</th>
+                                <th>Warehouse</th>
                                 <th>description</th>
                                 {{-- <th>Shipping Price</th> --}}
                                 <th>Retail Price</th>
-                                <th>Cost</th>
                                 <th>Type</th>
                                 <th>Package Type</th>
                                 <th>Action</th>
@@ -111,11 +97,11 @@
                         <tbody>
                             @forelse ($inventories as $inventory)
                                 <tr class="background-instock text-center" style="
-                                                                @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                                                @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                                                    @else background-color: #FFD6A5;
-                                                                @endif
-                                                            ">
+                                                                                                        @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                                                                                        @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                                                                                            @else background-color: #FFD6A5;
+                                                                                                        @endif
+                                                                                                    ">
                                     <td>
                                         {{ $inventory->unique_id }}
                                     </td>
@@ -129,6 +115,8 @@
                                             <span>-</span>
                                         @endif
                                     </td>
+                                    <td class="text-dark"><span>{{ $inventory->warehouse->warehouse_name ?? '-' }}</span>
+                                    </td>
                                     <td class="text-dark">
                                         <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="{{ $inventory->description ?? '-' }}">
@@ -140,9 +128,6 @@
                                     </td> --}}
                                     <td class="text-dark">
                                         <span>${{ number_format($inventory->retail_vaule_price ?? 0, 2) }}</span>
-                                    </td>
-                                    <td class="text-dark">
-                                        <span>${{ number_format($inventory->price ?? 0, 2) }}</span>
                                     </td>
                                     <td class="text-dark"><span>{{ $inventory->inventary_sub_type ?? '-' }}</span></td>
                                     <td class="text-dark"><span>{{ $inventory->package_type ?? '-' }}</span></td>
@@ -208,7 +193,7 @@
             <div class="col-md-6">
                 <div class="float-end">
                     <div class="bottom-user-page mt-3">
-                        {!! $inventories->appends(['per_page' =>request('per_page')])->links('pagination::bootstrap-5') !!}
+                        {!! $inventories->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
             </div>
@@ -216,6 +201,7 @@
     </div>
 
     @section('script')
+        {{--
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll("#setBackground tbody tr").forEach(row => {
@@ -234,7 +220,7 @@
                 });
             });
 
-        </script>
+        </script> --}}
         <script>
             // Function to reset the form fields
             function resetForm() {

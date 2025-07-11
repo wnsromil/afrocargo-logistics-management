@@ -4,21 +4,88 @@
     </x-slot>
     <x-slot name="cardTitle">
         <p class="head">Supply Order Management</p>
-        <div class="usersearch d-flex usersserach">
-            <div class="top-nav-search">
-                <form>
-                    <input type="text" id="searchInput" class="form-control forms" placeholder="Search" name="search"
-                        value="{{ request()->search }}">
+    </x-slot>
 
-                </form>
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
+
+    <form id="expenseFilterForm" action="{{ route('admin.supply_orders.index') }}" method="GET">
+        <div class="row gx-3 inputheight40">
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
-            <div class="mt-2">
-                <button type="button" class="btn btn-primary refeshuser "><a class="btn-filters"
-                        href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a></button>
+
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Search</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                        placeholder="Search" name="search" value="{{ request('search') }}">
+                </div>
+            </div>
+            {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+            <div class="col-md-3 mb-3">
+                <label>Driver</label>
+                <select class="js-example-basic-single select2 form-control" name="driver_id" id="driver_id_sreach">
+                    <option value="">Select Driver</option>
+                    @foreach ($drivers as $driver)
+                        <option value="{{ $driver->id }}" {{ request()->input('driver_id') == $driver->id ? 'selected' : '' }}>
+                            {{ $driver->name }}
+                        </option>
+
+                    @endforeach
+                </select>
+                @error('driver_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>Status</label>
+                <select class="js-example-basic-single select2" name="status_search" id="status_search">
+                    <option value="">Select Status</option>
+                    @foreach ($viewSupplyParcelStatus as $ParcelStatus)
+                        <option value="{{ $ParcelStatus->id }}" {{ request()->input('status_search') == $ParcelStatus->id ? 'selected' : '' }}>
+                            {{ $ParcelStatus->status }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+
+
+            <div class="col-12 mb-3">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
+                </div>
             </div>
         </div>
-    </x-slot>
+    </form>
+
     <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
@@ -95,6 +162,7 @@
                                             'Unpaid' => 'unpaid_status',
                                             'Paid' => 'status',
                                             'Completed' => 'partial_status',
+                                            default => 'unpaid_status',
                                         };
                                     @endphp
                                     <td>
@@ -144,7 +212,7 @@
 
                                                 <span class="user-content"
                                                     style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                               height: 26px;align-content: center;">
+                                                                                                                                                                       height: 26px;align-content: center;">
                                                     <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                 </span>
                                             </a>
@@ -255,7 +323,7 @@
                                         name="driver_id">
                                         <option selected="selected" value="">Select delivery Man</option>
                                     </select>
-                                     <div id="deliverydriverError" class="text-danger small mt-1"></div>
+                                    <div id="deliverydriverError" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
@@ -279,6 +347,9 @@
 
     @section('script')
         <script>
+            function resetForm() {
+                window.location.href = "{{ route('admin.supply_orders.index') }}";
+            }
             function fetchDeliveryDriversBywarehouse(warehouseId) {
                 if (!warehouseId) {
                     // If nothing selected, clear dropdown

@@ -21,7 +21,7 @@ class Notification extends Model
         'img',
     ];
 
-     protected static function booted()
+    protected static function booted()
     {
         parent::boot();
 
@@ -33,19 +33,16 @@ class Notification extends Model
 
     public static function generateUniqueId()
     {
-        // Get the last notification record with status 'Active', ordered by unique_id
+        // Get the last notification with numeric sorting of unique_id
         $lastNotification = Notification::where('status', 'Active')
-            ->orderByDesc('unique_id')
+            ->selectRaw("CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED) as number_part")
+            ->orderByDesc('number_part')
             ->first();
 
-        // Get the last number from unique_id (assuming it follows the format "TNT-XXXXXX")
-        $lastNumber = 0;
-        if ($lastNotification && preg_match('/(\d+)$/', $lastNotification->unique_id, $matches)) {
-            $lastNumber = (int)$matches[0];
-        }
+        $lastNumber = $lastNotification ? (int) $lastNotification->number_part : 0;
 
-        // Increment the number for the new unique_id
-        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+        // No zero-padding
+        $newNumber = (string) ($lastNumber + 1);
 
         // Return the generated unique_id with TNT- prefix
         return 'TNT-' . $newNumber;

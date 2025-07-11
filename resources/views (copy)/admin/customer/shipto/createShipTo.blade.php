@@ -25,27 +25,11 @@
                                 <select id="country" name="country" class="js-example-basic-single select2">
                                     <option value="" disabled hidden {{ old('country') ? '' : 'selected' }}>Select
                                         Country</option>
-                                    <option value="Bangladesh" {{ old('country') == 'Bangladesh' ? 'selected' : '' }}>
-                                        Bangladesh</option>
-                                    <option value="Belgium" {{ old('country') == 'Belgium' ? 'selected' : '' }}>Belgium
-                                    </option>
-                                    <option value="Kuwait" {{ old('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait
-                                    </option>
-                                    <option value="Dominica" {{ old('country') == 'Dominica' ? 'selected' : '' }}>Dominica
-                                    </option>
-                                    <option value="India" {{ old('country') == 'India' ? 'selected' : '' }}>India</option>
-                                    <option value="Dominican Republic" {{ old('country') == 'Dominican Republic' ? 'selected' : '' }}>Dominican Republic</option>
-                                    <option value="Andorra" {{ old('country') == 'Andorra' ? 'selected' : '' }}>Andorra
-                                    </option>
-                                    <option value="Chile" {{ old('country') == 'Chile' ? 'selected' : '' }}>Chile</option>
-                                    <option value="United States" {{ old('country') == 'United States' ? 'selected' : '' }}>United States</option>
-                                    <option value="Greenland" {{ old('country') == 'Greenland' ? 'selected' : '' }}>
-                                        Greenland</option>
-                                    <option value="Cabo Verde" {{ old('country') == 'Cabo Verde' ? 'selected' : '' }}>Cabo
-                                        Verde</option>
-                                    <option value="Côte d'Ivoire" {{ old('country') == "Côte d'Ivoire" ? 'selected' : '' }}>Côte d'Ivoire</option>
-                                    <option value="Mali" {{ old('country') == 'Mali' ? 'selected' : '' }}>Mali</option>
-                                    <option value="European Union" {{ old('country') == 'European Union' ? 'selected' : '' }}>European Union</option>
+                                    @foreach (setting()->warehouseContries() as $country)
+                                        <option value="{{ $country['name'] }}" {{ old('country') == $country['name'] ? 'selected' : '' }}>
+                                            {{ $country['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 <button class="btn btn-primary">Location</button>
                             </div>
