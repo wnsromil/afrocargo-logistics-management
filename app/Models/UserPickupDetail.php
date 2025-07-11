@@ -39,11 +39,11 @@ class UserPickupDetail extends Model
     }
     public function pickupAddress()
     {
-        return $this->belongsTo(User::class, 'pickup_address_id');
+        return $this->belongsTo( Address::class, 'pickup_address_id');
     }
     public function shiptoAddress()
     {
-        return $this->belongsTo(User::class, 'shipto_address_id');
+        return $this->belongsTo(Address::class, 'shipto_address_id');
     }
 
     //

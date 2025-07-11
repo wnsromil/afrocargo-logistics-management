@@ -152,7 +152,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="row align-items-center my-4">
+                    {{-- <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
                             <label for="masterPickUpAddressId" class="col-form-label font-size-label text-dark">Address
                                 2</label>
@@ -161,7 +161,7 @@
                             <input type="text" name="pickup_address_2" id="address_2"
                                 class="form-control form-control-sm text-truncate" placeholder="Enter Address 2">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row align-items-center my-4">
                         <div class="col-4 text-end px-0">
                             <label for="masterPickUpAddressId"
@@ -817,7 +817,7 @@
                                             name="Model_Pickup_address_1" placeholder="Enter Address 1" value="">
                                     </div>
                                 </div>
-                                <div class="row align-items-center margin-top-top">
+                                {{-- <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label for="masterPickUpAddressId" class="col-form-label text-dark">Address
                                             2</label>
@@ -827,7 +827,7 @@
                                             class="form-control form-control-sm text-truncate" name="address_2"
                                             placeholder="Enter Address 2">
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label for="masterPickUpAddressId"
@@ -1395,7 +1395,7 @@
 
                             response.data.forEach(function (user, index) {
                                 $('#pickupUserSelect').append(
-                                    `<option value="${user.id}" ${index === 0 ? 'selected' : ''}>${user.name}</option>`
+                                    `<option value="${user.id}" ${index === 0 ? 'selected' : ''}>${user.name} ${user.last_name}</option>`
                                 );
                             });
 
@@ -1425,19 +1425,19 @@
                     document.getElementById('unique_id').value = user.unique_id || '';
                     document.getElementById('pickup_name').value = user.name || '';
                     document.getElementById('pickup_last_name').value = user.last_name || '';
-                    document.getElementById('latitude').value = user.latitude || '';
-                    document.getElementById('longitude').value = user.longitude || '';
+                    document.getElementById('latitude').value = user.lat || '';
+                    document.getElementById('longitude').value = user.long || '';
                     document.getElementById('address').value = user.address || '';
-                    document.getElementById('address_2').value = user.address_2 || '';
+                    // document.getElementById('address_2').value = user.address_2 || '';
                     document.getElementById('apartment').value = user.apartment || '';
                     document.getElementById('state').value = user.state_id || '';
                     document.getElementById('city').value = user.city_id || '';
                     document.getElementById('zipcode').value = user.pincode || '';
-                    document.getElementById('Pickup_cell_phone').value = user.phone || '';
-                    document.getElementById('Pickup_telePhone').value = user.phone_2 || '';
+                    document.getElementById('Pickup_cell_phone').value = user.mobile_number || '';
+                    document.getElementById('Pickup_telePhone').value = user.alternative_mobile_number || '';
 
-                    $('#Pickup_cell_phone_id').val(user.phone_code_id || '').trigger('change');
-                    $('#Pickup_telePhone_id').val(user.phone_2_code_id_id || '').trigger('change');
+                    $('#Pickup_cell_phone_id').val(user.mobile_number_code_id || '').trigger('change');
+                    $('#Pickup_telePhone_id').val(user.alternative_mobile_number_code_id || '').trigger('change');
                 }
 
 
