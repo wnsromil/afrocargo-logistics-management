@@ -157,7 +157,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function invoicesGet($type)
+    public function invoicesGet(Request $request,$type)
     {
 
         $query = Invoice::
@@ -173,13 +173,9 @@ class InvoiceController extends Controller
             });
         }
 
-        $invoices = $query->get();
+        $invoices = $query->paginate(5);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Invoices fetched successfully',
-            'data' => $invoices
-        ]);
+        return response()->json($invoices);
     }
 
     public function invoices_download(Request $request, $b64id)
@@ -364,9 +360,10 @@ class InvoiceController extends Controller
         }
         $delivery_address = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first();
 
-        if(empty($delivery_address->id)){
-            $delivery_user = User::find($request->ship_customer_id);
-            $delivery_address = Address::create([
+        if(empty($delivery_address)){
+            $delivery_user = User::where('id',$request->ship_customer_id)->first();
+            if(!empty($delivery_user)){
+                $delivery_address = Address::create([
                 'user_id' =>  $delivery_user->id,
                 'address' =>  $delivery_user->address,
                 'name' =>  $delivery_user->name,
@@ -383,37 +380,41 @@ class InvoiceController extends Controller
                 'address_2' =>  $delivery_user->address_2,
                 'default_address' => 'Yes',
             ]);
+            }
+            
         }
 
         $pickup_address = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first(); 
 
-        if(empty($pickup_address->id)){
-            $delivery_user = User::find($request->customer_id);
-            $pickup_address = Address::create([
-                'user_id' =>  $pickup_user->id,
-                'address' =>  $pickup_user->address,
-                'name' =>  $pickup_user->name,
-                'last_name' =>  $pickup_user->name.' '.$pickup_user->last_name,
-                'full_name' =>  $pickup_user->last_name,
-                'city_id' =>  $pickup_user->city_id ?? null,
-                'state_id' =>  $pickup_user->state_id ?? null,
-                'country_id' =>  $pickup_user->country_id ?? null,
-                'pincode' =>  $pickup_user->pincode ?? null,
-                'mobile_number'=>  $delivery_user->phone ?? null,
-                'mobile_number_code_id'=>  $delivery_user->phone_code_id ?? null,
-                'alternative_mobile_number_code_id'=>  $delivery_user->phone_2_code_id_id ?? null,
-                'alternative_mobile_number'=>  $delivery_user->phone_2 ?? null,
-                'address_2' =>  $delivery_user->address_2,
-                'default_address' => 'Yes',
-            ]);
+        if(empty($pickup_address)){
+            $pickup_user = User::where('id',$request->customer_id)->first();
+            if(!empty($pickup_user)){
+                $pickup_address = Address::create([
+                    'user_id' =>  $pickup_user->id,
+                    'address' =>  $pickup_user->address,
+                    'name' =>  $pickup_user->name,
+                    'last_name' =>  $pickup_user->name.' '.$pickup_user->last_name,
+                    'full_name' =>  $pickup_user->last_name,
+                    'city_id' =>  $pickup_user->city_id ?? null,
+                    'state_id' =>  $pickup_user->state_id ?? null,
+                    'country_id' =>  $pickup_user->country_id ?? null,
+                    'pincode' =>  $pickup_user->pincode ?? null,
+                    'mobile_number'=>  $delivery_user->phone ?? null,
+                    'mobile_number_code_id'=>  $delivery_user->phone_code_id ?? null,
+                    'alternative_mobile_number_code_id'=>  $delivery_user->phone_2_code_id_id ?? null,
+                    'alternative_mobile_number'=>  $delivery_user->phone_2 ?? null,
+                    'address_2' =>  $delivery_user->address_2,
+                    'default_address' => 'Yes',
+                ]);
+            }
         }
         
         
         $invoice->generated_by = \Auth::user()->role ?? 'admin';
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
-        $invoice->delivery_address_id = $delivery_user->id ?? null; 
-        $invoice->pickup_address_id = $pickup_address->id ?? null; 
+        $invoice->delivery_address_id = $delivery_address ? $delivery_address->id : null; 
+        $invoice->pickup_address_id = $pickup_address ? $pickup_address->id : null; 
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
@@ -488,7 +489,7 @@ class InvoiceController extends Controller
             'invoce_type' => 'required|in:services,supplies',
             'customer_id' => 'required|exists:users,id',
             'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:users,id',
-            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'container_id' => 'nullable|numeric',
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
@@ -595,7 +596,7 @@ class InvoiceController extends Controller
 
     protected function saveInvoiceHistory($invoice_id, $status, $orderData = [])
     {
-        $invoice = Invoice::with(['deliveryAddress', 'pickupAddress'])->findOrFail($invoice_id);
+        $invoice = Invoice::with(['barcodes','deliveryAddress', 'pickupAddress'])->findOrFail($invoice_id);
 
         // Create invoice history
         InvoiceHistory::create([
