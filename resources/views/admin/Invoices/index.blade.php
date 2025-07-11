@@ -44,12 +44,20 @@
                 <input type="text" id="invoice_id" name="invoice_id" class="form-control form-cs"
                     placeholder="Enter Invoice #ID" value="{{ request('invoice_id') }}">
             </div>
-            <div class="col-md-3 dposition">
+            {{-- <div class="col-md-3 dposition">
                 <label for="datetrange">Invoice Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info">
                     <input type="text" id="datetrange" class="btn-filters form-control bookingrange form-cs info"
                         name="datetrange" placeholder="From Date - To Date" value="{{ request('datetrange') ?? '' }}"
                         autocomplete="off" />
+                </div>
+            </div> --}}
+
+            <div class="col-md-3 dposition">
+                <label>Date</label>
+                <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
+                    <input type="text" name="datetrange" class="btn-filters form-cs inp Expensefillterdate"
+                        value="{{ old('datetrange', request()->query('datetrange')) }}" />
                 </div>
             </div>
 
