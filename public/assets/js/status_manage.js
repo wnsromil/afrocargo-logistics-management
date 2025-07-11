@@ -146,11 +146,16 @@
                     delivery_man: delivery_man || null,
                     note: note || null,
                     vehicle_id_hidden: vehicle_id_hidden || null,
-                    partial_payment_sum_input_hidden: partial_payment_sum_input_hidden || null,
-                    remaining_payment_sum_input_hidden: remaining_payment_sum_input_hidden || null,
-                    total_amount_sum_input_hidden: total_amount_sum_input_hidden || null,
-                    no_of_orders_input_hidden: no_of_orders_input_hidden || null,
-                    containerHistoryId: container_history_id_input_hidden || null,
+                    partial_payment_sum_input_hidden:
+                        partial_payment_sum_input_hidden || null,
+                    remaining_payment_sum_input_hidden:
+                        remaining_payment_sum_input_hidden || null,
+                    total_amount_sum_input_hidden:
+                        total_amount_sum_input_hidden || null,
+                    no_of_orders_input_hidden:
+                        no_of_orders_input_hidden || null,
+                    containerHistoryId:
+                        container_history_id_input_hidden || null,
                 },
                 headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
@@ -182,7 +187,7 @@
                     if (errorMessages.length > 0) {
                         Swal.fire({
                             title: "Validation Error",
-                            text: errorMessages.join('\n'),
+                            text: errorMessages.join("\n"),
                             icon: "error",
                         });
                     }
@@ -597,5 +602,24 @@
                     }
                 });
             });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOMContentLoaded fired");
+        setTimeout(() => {
+            document.querySelectorAll(".pickup-tooltip").forEach(function (el) {
+                const tooltipHTML = el.getAttribute("data-tooltip-html");
+                if (tooltipHTML) {
+                    tippy(el, {
+                        content: tooltipHTML,
+                        allowHTML: true,
+                        theme: "light-border",
+                        placement: "top",
+                        animation: "shift-away-subtle",
+                        delay: [0, 0], // ⏱ instantly open and close
+                    });
+                }
+            });
+        }, 1000); // 1 second delay for DOM stability
     });
 })(jQuery);
