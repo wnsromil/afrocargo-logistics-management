@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
 
         $Containercompanys = ContainerCompany::where('status', 'Active')->get();
 
-        $ParcelStatus = ParcelStatus::whereIn('type', values: ['Order', 'Comman'])->get();
+        $ParcelStatus = ParcelStatus::get();
         $SupplyParcelStatus = ParcelStatus::where('parcel_type', 'Comman')->get();
 
 
