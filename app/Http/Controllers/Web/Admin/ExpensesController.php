@@ -53,7 +53,7 @@ class ExpensesController extends Controller
         }
 
         // Start building the query
-        $query = Expense::with(['creatorUser', 'warehouse'])
+        $query = Expense::with(['creatorUser', 'warehouse'])->where('status', 'Active')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             });
@@ -247,7 +247,7 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       // dd($request->all());
+        // dd($request->all());
         $request->validate([
             'edit_expense_date' => 'required|date',
             'warehouse' => 'required|exists:warehouses,id',
@@ -281,8 +281,8 @@ class ExpensesController extends Controller
             $filePath = $file->storeAs('uploads/expenses', $filename, 'public'); // Store in 's
             $expense->img = 'storage/' . $filePath;
         }
-        if($request->delete_img == "Yes"){
-           $expense->img = null;
+        if ($request->delete_img == "Yes") {
+            $expense->img = null;
         }
 
         $expense->save();
@@ -296,21 +296,15 @@ class ExpensesController extends Controller
      */
     public function destroy(string $id)
     {
-        $parcel = Parcel::find($id);
+        $signature = Expense::find($id);
 
-        ParcelHistory::create([
-            'parcel_id' => $parcel->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $parcel['customer_id'],
-            'warehouse_id' => $parcel['warehouse_id'],
-            'status' => 'Deleted',
-            'parcel_status' => 'Deleted',
-            'description' => collect($parcel)
-        ]);
+        if ($signature) {
+            $signature->status = 'Inactive'; // ya 0, agar status boolean/int ho
+            $signature->save();
+        }
 
-        $parcel->delete();
         return redirect()->route('admin.expenses.index')
-            ->with('success', 'Order deleted successfully');
+            ->with('success', 'Expense deleted successfully');
     }
 
     public function changeStatus(Request $request, $id)

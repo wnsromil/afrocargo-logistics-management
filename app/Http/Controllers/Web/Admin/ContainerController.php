@@ -28,7 +28,7 @@ class ContainerController extends Controller
         $query = $request->search;
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
-
+        $status_search = $request->input('status_search');
         $openDateRange = $request->input('open_date');
         $closeDateRange = $request->input('close_date');
         $warehouseId = $request->input('warehouse_id');
@@ -41,6 +41,7 @@ class ContainerController extends Controller
             ->when($warehouseId, function ($q) use ($warehouseId) {
                 return $q->where('warehouse_id', $warehouseId);
             })
+            ->when($status_search, fn($q) => $q->where('container_status', $status_search))
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('container_no_1', 'like', '%' . $query . '%')
