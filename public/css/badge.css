@@ -15,7 +15,8 @@
     font-size: 0.875rem;
 }
 
-.badge-pickup_reschedule,.badge-pickup_re-schedule {
+.badge-pickup_reschedule,
+.badge-pickup_re-schedule {
     background-color: #d9534f; /* Red */
     color: #fff;
     padding: 0.25em 0.5em;
@@ -263,6 +264,7 @@
     border-radius: 0.25rem;
     font-size: 0.875rem;
 }
+
 .badge-ready_to_transfer {
     background-color: #337ab7; /* Dark Blue */
     color: #fff;
@@ -270,6 +272,7 @@
     border-radius: 0.25rem;
     font-size: 0.875rem;
 }
+
 .badge-transfer_to_hub {
     background-color: #e7924c; /* Green */
     color: #fff;
@@ -277,10 +280,142 @@
     border-radius: 0.25rem;
     font-size: 0.875rem;
 }
+
 .badge-received_by_warehouse {
     background-color: #dd42dd; /* Dark Blue */
     color: #fff;
     padding: 0.25em 0.5em;
     border-radius: 0.25rem;
     font-size: 0.875rem;
+}
+
+/* New Badge CSS */
+.new-comman-css {
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+.new-badge-pending {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+.new-badge-pickup {
+    background-color: #ffc107;
+    color: #fff;
+}
+.new-badge-picked-up {
+    background-color: #17a2b8;
+    color: #fff;
+}
+.new-badge-arrived {
+    background-color: #20c997;
+    color: #fff;
+}
+.new-badge-in-transit {
+    background-color: #6f42c1;
+    color: #fff;
+}
+.new-badge-warehouse-load {
+    background-color: #007bff;
+    color: #fff;
+}
+.new-badge-discharge {
+    background-color: #795548;
+    color: #fff;
+}
+.new-badge-arrived-final {
+    background-color: #5bc0de;
+    color: #fff;
+}
+.new-badge-ready-pickup {
+    background-color: #28a745;
+    color: #fff;
+}
+.new-badge-out-delivery {
+    background-color: #17a2b8;
+    color: #fff;
+}
+.new-badge-delivered {
+    background-color: #28a745;
+    color: #fff;
+}
+.new-badge-redelivery {
+    background-color: #ffc107;
+    color: #fff;
+}
+.new-badge-on-hold {
+    background-color: #fd7e14;
+    color: #fff;
+}
+.new-badge-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+}
+.new-badge-abandoned {
+    background-color: #343a40;
+    color: #fff;
+}
+.new-badge-ready-transfer {
+    background-color: #0dcaf0;
+    color: #fff;
+}
+.new-badge-transfer-hub {
+    background-color: #6c757d;
+    color: #fff;
+}
+.new-badge-received {
+    background-color: #198754;
+    color: #fff;
+}
+.new-badge-hub-arrived {
+    background-color: #0d6efd;
+    color: #fff;
+}
+.new-badge-loading {
+    background-color: #6610f2;
+    color: #fff;
+}
+.new-badge-self-pickup {
+    background-color: #20c997;
+    color: #fff;
+}
+.new-badge-assign-driver {
+    background-color: #ff851b;
+    color: #fff;
+}
+.new-badge-reschedule {
+    background-color: #17a2b8;
+    color: #fff;
+}
+.new-badge-hold {
+    background-color: #dc3545;
+    color: #fff;
+}
+.new-badge-gate-in {
+    background-color: #6610f2;
+    color: #fff;
+}
+.new-badge-in-custom-hold {
+    background-color: #ffc107;
+    color: #fff;
+}
+.new-badge-load-vessel {
+    background-color: #0dcaf0;
+    color: #fff;
+}
+.new-badge-departure {
+    background-color: #6f42c1;
+    color: #fff;
+}
+.new-badge-arrived-vessel {
+    background-color: #28a745;
+    color: #fff;
+}
+.new-badge-discharge-vessel {
+    background-color: #fd7e14;
+    color: #fff;
+}
+.new-badge-new {
+    background-color: #adb5bd;
+    color: #fff;
 }

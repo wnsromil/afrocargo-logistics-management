@@ -61,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
 
         $ParcelStatus = ParcelStatus::get();
         $SupplyParcelStatus = ParcelStatus::where('parcel_type', 'Comman')->get();
+        $ContainerParcelStatus = ParcelStatus::whereIn('type', ['Container', 'Comman'])->get();
 
 
         // Share with view
@@ -71,5 +72,6 @@ class AppServiceProvider extends ServiceProvider
         View::share('viewVContainercompanys', $Containercompanys);
         View::share('viewParcelStatus', $ParcelStatus);
         View::share('viewSupplyParcelStatus', $SupplyParcelStatus);
+        View::share('containerParcelStatus', $ContainerParcelStatus);
     }
 }

@@ -106,3 +106,6 @@ FROM
     ALTER TABLE `addresses` ADD `name` VARCHAR(255) NULL AFTER `default_address`, ADD `last_name` VARCHAR(255) NULL AFTER `name`;
 
     ALTER TABLE `invoices` ADD `payment_type` VARCHAR(255) NULL DEFAULT 'Cash' AFTER `invoce_type`;
+
+    -- 11/07/25
+    ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;

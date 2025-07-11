@@ -115,7 +115,7 @@
                                 <th>Amount</th>
                                 <th>Image</th>
                                 <th>Description</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -143,11 +143,11 @@
                                             {{  $expense->description ?? '--' }}</p>
 
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="statusFor {{ $expense->status == 'Active' ? 'active' : 'inactive' }}">
                                             <p>{{ $expense->status }}</p>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown"
@@ -168,7 +168,7 @@
                                                             <i class="far fa-eye me-2"></i>View
                                                         </a>
                                                     </li> --}}
-                                                    @if($expense->status == 'Active')
+                                                    {{-- @if($expense->status == 'Active')
                                                         <li>
                                                             <a class="dropdown-item deactivate" href="javascript:void(0)"
                                                                 data-id="{{ $expense->id }}" data-status="Inactive">
@@ -182,7 +182,16 @@
                                                                 <i class="fa-solid fa-power-off me-2"></i>Activate
                                                             </a>
                                                         </li>
-                                                    @endif
+                                                    @endif --}}
+                                                        <form
+                                                            action="{{ route('admin.expenses.destroy', $expense->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="dropdown-item"
+                                                                onclick="deleteData(this,'Wait! Are you sure you want to remove this expense?')"><i
+                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
+                                                        </form>
                                                 </ul>
                                             </div>
                                         </div>

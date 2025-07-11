@@ -38,4 +38,42 @@ class Address extends Model
     {
         return $this->belongsTo(Country::class, 'alternative_mobile_number_code_id');
     }
+
+    protected static function booted()
+    {
+        static::creating(function ($address) {
+            // Set prefix based on address_type
+            $rolePrefix = null;
+
+            if ($address->address_type === 'pickup') {
+                $rolePrefix = 'P';
+            } elseif ($address->address_type === 'delivery') {
+                $rolePrefix = 'S';
+            }
+
+            // If address_type is neither pickup nor delivery, don't set unique_id
+            if (!$rolePrefix) {
+                $address->unique_id = null;
+                return;
+            }
+
+            // Default country ISO
+            $countryIso = 'XX';
+            $country = \App\Models\Country::where('name', $address->country_id)->first();
+            if ($country && !empty($country->iso2)) {
+                $countryIso = strtoupper($country->iso2);
+            }
+
+            $fullPrefix = $rolePrefix . $countryIso . '-';
+
+            // 👉 Only filter by rolePrefix (P or S), ignore country for counting
+            $lastId = self::where('unique_id', 'like', $rolePrefix . '%')
+                ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
+                ->value('max_number') ?? 0;
+
+            $newNumber = (string) ($lastId + 1);
+
+            $address->unique_id = $fullPrefix . $newNumber;
+        });
+    }
 }

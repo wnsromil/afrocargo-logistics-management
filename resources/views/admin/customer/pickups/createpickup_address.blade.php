@@ -25,11 +25,11 @@
             <div class="col-md-6 mb-2 align-items-stretch">
                 <div class="borderset">
                     <div class="row">
-                        <div class="col-md-12 mb-2">
+                        {{-- <div class="col-md-12 mb-2">
                             <label class="foncolor" for="company_name"> Company </label>
                             <input type="text" name="company_name" class="form-control inp"
                                 placeholder="Enter Company Name" value="{{ old('company_name') }}">
-                        </div>
+                        </div> --}}
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="fullName">First Name <i class="text-danger">*</i></label>
                             <input type="text" name="first_name" class="form-control inp" placeholder="Enter Frist Name"
@@ -94,11 +94,11 @@
                                 <small class="text-danger">The address field is required.</small>
                             @enderror
                         </div>
-                        <div class="col-md-12 mb-2">
+                        {{-- <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Address_2">Address 2 </label>
                             <input type="text" name="address_2" value="{{ old('address_2') }}" class="form-control inp"
                                 placeholder="Enter Address 2">
-                        </div>
+                        </div> --}}
                         <div class="col-md-12 mb-2">
                             <label class="foncolor" for="Apartment">Apartment </label>
                             <input type="text" name="apartment" value="{{ old('apartment') }}" class="form-control inp"

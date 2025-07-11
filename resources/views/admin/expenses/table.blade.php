@@ -12,7 +12,7 @@
                         <th>Amount</th>
                         <th>Image</th>
                         <th>Description</th>
-                        <th>Status</th>
+                        {{-- <th>Status</th> --}}
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,8 +30,7 @@
                                 @if ($expense->img)
                                     <img src="{{ asset($expense->img) }}" alt="Expense Image" style="max-width: 50px;">
                                 @else
-                                    <img src="{{ asset('assets/img.png') }}" alt="Default Image"
-                                        style="max-width: 50px;">
+                                    <img src="{{ asset('assets/img.png') }}" alt="Default Image" style="max-width: 50px;">
                                 @endif
                             </td>
                             <td>
@@ -40,11 +39,11 @@
                                     {{  $expense->description ?? '--' }}
                                 </p>
                             </td>
-                            <td>
+                            {{-- <td>
                                 <div class="statusFor {{ $expense->status == 'Active' ? 'active' : 'inactive' }}">
                                     <p>{{ $expense->status }}</p>
                                 </div>
-                            </td>
+                            </td> --}}
                             <td>
                                 <div class="dropdown dropdown-action">
                                     <a href="#" class="btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false">
@@ -64,21 +63,29 @@
                                                     <i class="far fa-eye me-2"></i>View
                                                 </a>
                                             </li> --}}
-                                            @if($expense->status == 'Active')
-                                                <li>
-                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                        data-id="{{ $expense->id }}" data-status="Inactive">
-                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                    </a>
-                                                </li>
+                                            {{-- @if($expense->status == 'Active')
+                                            <li>
+                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                    data-id="{{ $expense->id }}" data-status="Inactive">
+                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                </a>
+                                            </li>
                                             @elseif($expense->status == 'Inactive')
-                                                <li>
-                                                    <a class="dropdown-item activate" href="javascript:void(0)"
-                                                        data-id="{{ $expense->id }}" data-status="Active">
-                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                    </a>
-                                                </li>
-                                            @endif
+                                            <li>
+                                                <a class="dropdown-item activate" href="javascript:void(0)"
+                                                    data-id="{{ $expense->id }}" data-status="Active">
+                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                </a>
+                                            </li>
+                                            @endif --}}
+                                            <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="dropdown-item"
+                                                    onclick="deleteData(this,'Wait! Are you sure you want to remove this expense?')"><i
+                                                        class="far fa-trash-alt me-2"></i>Delete</button>
+                                            </form>
                                         </ul>
                                     </div>
                                 </div>
@@ -98,7 +105,8 @@
 <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
     <div class="col-md-6 d-flex p-2 align-items-center">
         <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+            id="pageSizeSelect">
             <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
             <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
             <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -112,5 +120,5 @@
                 {!! $expenses->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
             </div>
         </div>
-    </div>    
+    </div>
 </div>

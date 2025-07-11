@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail};
+use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail, Address};
 use Spatie\Permission\Models\Role;
 use DB;
 use Illuminate\Support\Arr;
@@ -330,6 +330,23 @@ class CustomerController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
 
+        $PickupAddress = Address::where('user_id', $id)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
+                        ->orWhere('mobile_number', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+                });
+            })
+            ->where('address_type', 'pickup')
+            ->where('is_deleted', 'No')
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+
 
         $Pickups = UserPickupDetail::where('parent_customer_id', $id)
             ->when($search, function ($q) use ($search) {
@@ -350,13 +367,13 @@ class CustomerController extends Controller
 
 
         if ($request->ajax() && $type == "ShipTo") {
-            return view('admin.customer.shipto.shiptotable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+            return view('admin.customer.shipto.shiptotable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
 
         if ($request->ajax() && $type == "PickupAddresss") {
-            return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+            return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
-        return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
+        return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -782,8 +799,9 @@ class CustomerController extends Controller
     public function createPickupAddress(Request $request)
     {
         $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
             'mobile_number' => 'required|digits:10|unique:users,phone',
             'alternative_mobile_number_code_id' => 'required',
@@ -800,35 +818,60 @@ class CustomerController extends Controller
             $randomPassword = Str::random(8); // Random password of 8 characters
             $hashedPassword = Hash::make($randomPassword); // Hashing password
 
-            $userData = [
-                'name'       => $validated['first_name'],
-                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
-                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
-                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
-                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
-                'address'    => $validated['address_1'],
-                'address_2'    => $request->address_2,
-                'latitude'   => $validated['latitude'],
-                'longitude'  => $validated['longitude'],
-                'company_name' => $validated['company_name'],
-                'country_id'   => $validated['country'],
-                'state_id'   => $validated['city'],
-                'city_id'   => $validated['state'],
-                'pincode'   => $validated['Zip_code'],
-                'password'     => $hashedPassword,
-                'signup_type'  => 'for_admin',
-                'role'  => 'pickup_to_customer',
-                'role_id'  => 6,
-                'apartment' => $request->apartment ?? null,
-                'parent_customer_id' => $request->parent_customer_id ?? null,
+            // $userData = [
+            //     'name'       => $validated['first_name'],
+            //     'last_name'        => $validated['last_name'],
+            //     'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+            //     'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+            //     'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+            //     'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+            //     'address'    => $validated['address_1'],
+            //     'address_2'    => $request->address_2,
+            //     'latitude'   => $validated['latitude'],
+            //     'longitude'  => $validated['longitude'],
+            //     'company_name' => $validated['company_name'],
+            //     'country_id'   => $validated['country'],
+            //     'state_id'   => $validated['city'],
+            //     'city_id'   => $validated['state'],
+            //     'pincode'   => $validated['Zip_code'],
+            //     'password'     => $hashedPassword,
+            //     'signup_type'  => 'for_admin',
+            //     'role'  => 'pickup_to_customer',
+            //     'role_id'  => 6,
+            //     'apartment' => $request->apartment ?? null,
+            //     'parent_customer_id' => $request->parent_customer_id ?? null,
 
+            // ];
+
+            $userAddressData = [
+                'address'        => $validated['address_1'],
+                'address_type' => 'pickup',
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'city_id' => $validated['city'],
+                'country_id' => $validated['country'],
+                'mobile_number' => $validated['mobile_number'],
+                'pincode' => $validated['Zip_code'],
+                'state_id' => $validated['state'],
+                'lat' => $validated['latitude'],
+                'long' => $validated['longitude'],
+                'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id'   => (int) $validated['alternative_mobile_number_code_id'],
+                'apartment' => $request->apartment ?? null,
             ];
 
+            $userAddressData['user_id'] = $request->parent_customer_id;
+
+            $userAddressData['name'] = trim($validated['first_name'] ?? '');
+            $userAddressData['last_name'] = trim($validated['last_name'] ?? '');
+            $userAddressData['full_name'] = $validated['first_name'] . ' ' . ($validated['last_name'] ?? '');
+
             // 📌 Create User
-            $user = User::create($userData);
+            // $user = User::create($userData);
+            $address = Address::create($userAddressData);
+
             return redirect()
                 ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=PickupAddresss')
-                ->with('success', 'Ship to user created successfully.');
+                ->with('success', 'Pickup to user created successfully.');
         } catch (\Throwable $th) {
             dd($th);
             return back()->withErrors(['error' => $th->getMessage()]);
@@ -837,23 +880,23 @@ class CustomerController extends Controller
 
     public function updatePickupAddress($id)
     {
-        $user = User::find($id);
+        $user = Address::find($id);
         return view('admin.customer.pickups.updatepickup_address', compact('user', 'id'));
     }
 
     public function destroyPickupAddress($id)
     {
 
-        $user = User::find($id);
+        $user = Address::find($id);
 
         if ($user) {
             $user->update(['is_deleted' => "Yes"]); // is_deleted ko 1 set kar rahe hain
             return redirect()
-                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=PickupAddresss')
+                ->to(route('admin.customer.edit', $user->user_id) . '?type=PickupAddresss')
                 ->with('success', 'Pickup address delete successfully.');
         }
         return redirect()
-            ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=PickupAddresss')
+            ->to(route('admin.customer.edit', $user->user_id) . '?type=PickupAddresss')
             ->with('error', 'Pickup address not found');
     }
 
@@ -861,8 +904,9 @@ class CustomerController extends Controller
     {
         // Validation
         $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
             'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
@@ -877,33 +921,54 @@ class CustomerController extends Controller
         ]);
 
         try {
-            $user = User::findOrFail($id);
+            //$user = User::findOrFail($id);
+            $address = Address::findOrFail($id);
 
-            $userData = [
-                'name'       => $validated['first_name'],
-                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
-                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
-                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
-                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
-                'address'    => $validated['address_1'],
-                'address_2'    => $request->address_2,
-                'latitude'   => $validated['latitude'],
-                'longitude'  => $validated['longitude'],
-                'company_name' => $validated['company_name'],
-                'country_id'   => $validated['country'],
-                'state_id'   => $validated['city'],
-                'city_id'   => $validated['state'],
-                'pincode'   => $validated['Zip_code'],
-                'signup_type'  => 'for_admin',
+            // $userData = [
+            //     'name'       => $validated['first_name'],
+            //     'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+            //     'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+            //     'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+            //     'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+            //     'address'    => $validated['address_1'],
+            //     'address_2'    => $request->address_2,
+            //     'latitude'   => $validated['latitude'],
+            //     'longitude'  => $validated['longitude'],
+            //     'company_name' => $validated['company_name'],
+            //     'country_id'   => $validated['country'],
+            //     'state_id'   => $validated['city'],
+            //     'city_id'   => $validated['state'],
+            //     'pincode'   => $validated['Zip_code'],
+            //     'signup_type'  => 'for_admin',
+            //     'apartment' => $request->apartment ?? null,
+            //     'parent_customer_id' => $request->parent_customer_id ?? null,
+
+            // ];
+
+            $userAddressData = [
+                'address'        => $validated['address_1'],
+                'address_type' => 'pickup',
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'city_id' => $validated['city'],
+                'country_id' => $validated['country'],
+                'mobile_number' => $validated['mobile_number'],
+                'pincode' => $validated['Zip_code'],
+                'state_id' => $validated['state'],
+                'lat' => $validated['latitude'],
+                'long' => $validated['longitude'],
+                'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id'   => (int) $validated['alternative_mobile_number_code_id'],
                 'apartment' => $request->apartment ?? null,
-                'parent_customer_id' => $request->parent_customer_id ?? null,
-
             ];
 
-            $user->update($userData);
+            $userAddressData['name'] = trim($validated['first_name'] ?? '');
+            $userAddressData['last_name'] = trim($validated['last_name'] ?? '');
+            $userAddressData['full_name'] = $validated['first_name'] . ' ' . ($validated['last_name'] ?? '');
+
+            $address->update($userAddressData);
 
             return redirect()
-                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=PickupAddresss')
+                ->to(route('admin.customer.edit', $address->user_id) . '?type=PickupAddresss')
                 ->with('success', 'Pickup address updated successfully.');
         } catch (\Throwable $th) {
             dd($th);
@@ -957,23 +1022,23 @@ class CustomerController extends Controller
 
 
         // 1. Pickup Address Update (users table)
-        $pickupUser = User::find($request->pickup_address_id);
+        $pickupUser = Address::find($request->pickup_address_id);
         if ($pickupUser) {
             $pickupUser->update([
-                'unique_id' => $request->unique_id,
                 'name' => $request->pickup_name,
-                'longitude' => $request->Pickup_longitude,
+                'last_name' => $request->pickup_last_name,
+                'full_name' => $request->pickup_name . ' ' . $request->pickup_last_name,
+                'lat' => $request->Pickup_latitude,
+                'long' => $request->Pickup_longitude,
                 'address' => $request->address_1,
-                'address_2' => $request->pickup_address_2,
                 'apartment' => $request->pickup_apartment,
                 'city_id' => $request->city,
                 'state_id' => $request->state,
                 'pincode' => $request->zipcode,
-                'phone_code_id' => $request->phone_code_id,
-                'phone' => $request->Pickup_cell_phone,
-                'phone_2_code_id_id' => $request->phone_2_code_id_id,
-                'phone_2' => $request->Pickup_telePhone,
-                'latitude' => $request->Pickup_latitude,
+                'mobile_number_code_id' => $request->phone_code_id,
+                'mobile_number' => $request->Pickup_cell_phone,
+                'alternative_mobile_number_code_id' => $request->phone_2_code_id_id,
+                'alternative_mobile_number' => $request->Pickup_telePhone,
             ]);
         }
 
