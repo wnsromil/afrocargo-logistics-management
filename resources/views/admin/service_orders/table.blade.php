@@ -36,60 +36,54 @@
                         <tr>
                             <td> {{ $serialStart + $index + 1 }}</td>
                             <td>{{ $parcel->tracking_number ?? "-"}}</td>
+                            <!-- Pickup Address -->
                             <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i
-                                                    class="me-2 ti ti-user"></i>{{$parcel->pickupaddress->full_name ?? "--"}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i
-                                                    class="me-2 ti ti-phone"></i>{{$parcel->pickupaddress->mobile_number ?? "--"}}
-                                                <br> {{$parcel->pickupaddress->alternative_mobile_number ?? "--"}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>{{$parcel->pickupaddress->address ?? "--"}}<br>
-                                                    {{$parcel->pickupaddress->pincode ?? "--"}} <br>
-                                                    {{$parcel->pickupaddress->city->name ?? "--"}}
-                                                    {{$parcel->pickupaddress->state->name ?? "--"}}
-                                                    {{$parcel->pickupaddress->country->name ?? "--"}}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                @php
+                                    $pickup = $parcel->pickupaddress;
+
+                                    $phoneText = '+' . ($pickup->mobile_number_code->phonecode ?? "") . ' ' . ($pickup->mobile_number ?? "");
+
+                                    if (!empty($pickup->alternative_mobile_number)) {
+                                        $phoneText .= ' / +' . ($pickup->alternative_mobile_number_code->phonecode ?? "") . ' ' . $pickup->alternative_mobile_number;
+                                    }
+
+                                    $pickupTooltip = '
+                                    <div style="font-size: 14px; line-height: 1.5;">
+                                        <div><i class="ti ti-phone me-1"></i> <strong>Phone:</strong> ' . $phoneText . '</div>
+                                        <div><i class="ti ti-map-pin me-1"></i> <strong>Address:</strong> ' . ($pickup->address ?? "--") . '</div>
+                                        <div>' . ($pickup->pincode ?? "") . ' ' . ($pickup->city->name ?? "") . ' ' . ($pickup->state->name ?? "") . ' ' . ($pickup->country->name ?? "") . '</div>
+                                    </div>';
+                                @endphp
+
+                                <div class="pickup-tooltip" data-tooltip-html="{{ $pickupTooltip }}">
+                                    <i class="me-2 ti ti-user"></i>{{ $pickup->full_name ?? "--" }}
                                 </div>
                             </td>
+
+                            <!-- Delivery Address -->
                             <td>
-                                <div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="td"><i
-                                                    class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i
-                                                    class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
-                                                <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
-                                                    {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
-                                                    {{$parcel->deliveryaddress->city->name ?? "--"}}
-                                                    {{$parcel->deliveryaddress->state->name ?? "--"}}
-                                                    {{$parcel->deliveryaddress->country->name ?? "--"}}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                @php
+                                    $delivery = $parcel->deliveryaddress;
+
+                                    $deliveryPhoneText = '+' . ($delivery->mobile_number_code->phonecode ?? "") . ' ' . ($delivery->mobile_number ?? "");
+
+                                    if (!empty($delivery->alternative_mobile_number)) {
+                                        $deliveryPhoneText .= ' / +' . ($delivery->alternative_mobile_number_code->phonecode ?? "") . ' ' . $delivery->alternative_mobile_number;
+                                    }
+
+                                    $deliveryTooltip = '
+                                                                                <div style="font-size: 14px; line-height: 1.5;">
+                                                                                    <div><i class="ti ti-phone me-1"></i> <strong>Phone:</strong> ' . $deliveryPhoneText . '</div>
+                                                                                    <div><i class="ti ti-map-pin me-1"></i> <strong>Address:</strong> ' . ($delivery->address ?? "--") . '</div>
+                                                                                    <div>' . ($delivery->pincode ?? "") . ' ' . ($delivery->city->name ?? "") . ' ' . ($delivery->state->name ?? "") . ' ' . ($delivery->country->name ?? "") . '</div>
+                                                                                </div>';
+                                @endphp
+
+                                <div class="pickup-tooltip" data-tooltip-html="{{ $deliveryTooltip }}">
+                                    <i class="me-2 ti ti-user"></i>{{ $delivery->full_name ?? "--" }}
                                 </div>
                             </td>
+
                             <td>
                                 <div>{{ ucfirst($parcel->transport_type) ?? '-' }}</div>
                             </td>
