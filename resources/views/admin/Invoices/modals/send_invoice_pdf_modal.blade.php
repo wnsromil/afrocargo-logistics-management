@@ -44,7 +44,7 @@
                                 <div class="input-block mb-3">
                                     <label class="foncolor" for="email">Email Id<i class="text-danger">*</i></label>
                                     <input type="text" name="email" class="form-control inp"
-                                        placeholder="Enter Email ID">
+                                        placeholder="Enter Email ID" value="{{ $invoice->pickupAddress->user ? $invoice->pickupAddress->user->email : '' }}">
                                 </div>
                             </div>
 
@@ -52,14 +52,14 @@
                                 <div class="input-block mb-3">
                                     <label class="foncolor" for="alternate_mobile_no">Alternate Mobile No.</label>
                                     <input type="tel" id="alternate_mobile_no" name="alternate_mobile_no"
-                                        class="form-control inp" placeholder="Enter Alternate Mobile No.">
+                                        class="form-control inp" placeholder="Enter Alternate Mobile No." value="{{ $invoice->pickupAddress->user ? $invoice->pickupAddress->mobile_number: '' }}">
                                 </div>
                             </div>
                             <div id="whatsappDiv" style="display:none;">
                                 <div class="input-block mb-3">
                                     <label class="foncolor" for="whatsapp_no">Whatsapp No.</label>
                                     <input type="tel" id="whatsapp_no" name="whatsapp_no"
-                                        class="form-control inp" placeholder="Enter Whatsapp Mobile No.">
+                                        class="form-control inp" placeholder="Enter Whatsapp Mobile No." value="{{ $invoice->pickupAddress->user ? $invoice->pickupAddress->mobile_number: '' }}">
                                 </div>
                             </div>
                         </div>

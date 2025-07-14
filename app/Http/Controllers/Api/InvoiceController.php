@@ -159,7 +159,7 @@ class InvoiceController extends Controller
 
     public function invoicesGet(Request $request,$type)
     {
-
+        $search = $request->input('search');
         $query = Invoice::
         when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -172,6 +172,41 @@ class InvoiceController extends Controller
                 $q->where('invoce_type', $type);
             });
         }
+        $query->when($request->input('customer_id'), function ($q) use ($request) {
+            
+            return $q->whereHas('pickupAddress', function ($q) use ($request) {
+                        $q->where('user_id', $request->input('customer_id'));
+                    })
+            ->orWhereHas('deliveryAddress', function ($q) use ($request) {
+                        $q->where('user_id', $request->input('customer_id'));
+                    });
+            
+
+        })->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('invoice_no', 'like', "%$search%")
+                    ->orWhere('total_amount', 'like', "%$search%")
+                    ->orWhere('invoce_type', 'like', "%$search%")
+                    ->orWhere('status', 'like', "%$search%")
+                    // 🔹 Search in related tables
+                    ->orWhereHas('pickupAddress', function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%")
+                        ->orWhere('mobile_number', 'like', "%$search%");
+                    })
+                    ->orWhereHas('deliveryAddress', function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%")
+                        ->orWhere('mobile_number', 'like', "%$search%");
+                    })
+                    // ->orWhereHas('driver', function ($q) use ($search) {
+                    //     $q->where('name', 'like', "%$search%");
+                    // })
+                    ->orWhereHas('warehouse', function ($q) use ($search) {
+                        $q->where('warehouse_name', 'like', "%$search%");
+                    });
+                });
+            });
 
         $invoices = $query->paginate(5);
 
@@ -676,8 +711,8 @@ class InvoiceController extends Controller
                                 'total' => $item['total'],
                             ]
                         );
-                if($status != 'updated'){
-                    for ($i=0; $i < $item['label_qty']; $i++) { 
+                if(!empty($invoice->barcodes)){
+                    for ($i=0; $i < $item['qty']; $i++) { 
                         store_barcode([
                             'parcel_id' => $invoice->parcel_id,
                             'invoice_id' => $invoice->id,

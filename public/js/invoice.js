@@ -988,8 +988,29 @@ $(document).ready(function () {
         hendelAjex("/saveInvoceCustomer", formData);
     });
 
+    $("#add_ship_modal_save").on("click", function (e) {
+        e.preventDefault();
+
+        const requiredFields = [
+            "first_name",
+            "last_name",
+            "mobile_number",
+            "address",
+            "country",
+        ];
+
+        if (!jsValidator(requiredFields,$("#model_shipto_Form"))) {
+            return;
+        }
+
+        let formData = $("#model_shipto_Form").serialize();
+        // Submit via AJAX
+        hendelAjex("/saveInvoceCustomer", formData);
+    });
+
     if (pickupAddress) {
         setPickupDeleveryFormValue(pickupAddress);
+        setPickupDeleveryFormValue(pickupAddress,$("#model_shipto_Form"));
     }
     if (deliveryAddress) {
         setPickupDeleveryFormValue(deliveryAddress);
@@ -1008,6 +1029,7 @@ function hendelAjex(url, formData) {
             setPickupDeleveryFormValue(response.data);
             $("#add_ship_cancel").click();
             $("#add_delevery_cancel").click();
+            $("#add_ship_modal_cancel").click();
             
             if (response.success) {
                 // alert(response.message);

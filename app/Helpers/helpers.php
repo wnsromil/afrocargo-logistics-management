@@ -81,3 +81,26 @@ function sum(...$numbers) {
     return array_sum($numbers);
 }
 
+function removePart(string $subject,
+                    string $needle,
+                    bool   $caseInsensitive = false,
+                    bool   $firstOnly       = false): string
+{
+    if ($needle === '') {
+        // Nothing to remove; avoid an infinite loop.
+        return $subject;
+    }
+
+    if ($firstOnly) {
+        // Build a regex that escapes special chars in $needle.
+        $pattern = '/' . preg_quote($needle, '/') . '/' . ($caseInsensitive ? 'i' : '');
+        // Replace only the first hit.
+        return preg_replace($pattern, '', $subject, 1);
+    }
+
+    // Remove ALL occurrences with the appropriate replace.
+    return $caseInsensitive
+        ? str_ireplace($needle, '', $subject)
+        : str_replace($needle, '', $subject);
+}
+

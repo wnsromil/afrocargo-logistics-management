@@ -160,9 +160,16 @@
                         </div>
                         <div class="last">
 
-                            <a id="addShiptoAddress" class="btn btn-primary buttons">
+                            {{-- <a id="addShiptoAddress" class="btn btn-primary buttons">
                                 Add Ship to Address
-                            </a>
+                            </a> --}}
+
+                            <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal"
+                            data-bs-target="#shiptoAddressModal">
+                                Add Shipto Address
+                            </button>
+
+                            @include('admin.Invoices.modals.shipToCreate')
 
                             <div id="add_ship_save_body" class="d-none">
                                 <button type="button" class="btn btn-primary buttons" id="add_ship_save">
@@ -779,15 +786,12 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Select Supply</h5>
+                            <h5 class="modal-title">Select <span id="supplyModalTitle">Service</span></h5>
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                @if($inventories && $inventories->get('Supply'))
-                                    @foreach ($inventories->get('Supply') as $supply)
-                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}' data-supply='@json($supply)'>{{ $supply->name }}</option>
-                                    @endforeach
-                                @endif
+                                
+
                             </select>
                             <div class="row mt-3">
                                 <div class="col-md-4">
@@ -839,6 +843,7 @@
         <script src="{{asset('js/invoice.js')}}"></script>
         <script>
             var supplyItems = @json($inventories->get('Supply'));
+            var serviceItems = @json($inventories->get('Service'));
             var currentRow = null;
 
             window.onload = function () {
@@ -863,6 +868,45 @@
                 // it's deliver address code
                 document.querySelector(".newCustomerAdd").classList.toggle("none");
             };
+            function toggleInventoryList(){
+                let SupplyOptions = '';
+                let ServiceOptions = '';
+                console.log("invoce_type", invoce_type);
+
+                if (supplyItems && supplyItems.length > 0) {
+                    supplyItems.forEach(function (supply) {
+                        SupplyOptions += `<option value="${supply.id}" data-selected='${supply.name}' data-supply='${supply}'>${supply.name}</option>`;
+                    });
+                }
+                if (serviceItems && serviceItems.length > 0) {
+                    serviceItems.forEach(function (Service) {
+                        ServiceOptions += `<option value="${Service.id}" data-selected='${Service.name}' data-supply='${Service}'>${Service.name}</option>`;
+                    });
+                }
+                $('#supplySelector').empty();
+                if(invoce_type == 'services') {
+
+                    
+                    $('#supplySelector').append(ServiceOptions);
+                    $('#supplySelector').val(null).trigger('change');
+                    $('#supplyModalTitle').text('Service');
+                
+                    invoce_type = 'services';
+                } else {
+                    $('#supplyModalTitle').text('Supply');
+                    $('#supplySelector').append(SupplyOptions);
+                    $('#supplySelector').val(null).trigger('change');
+                    
+                    invoce_type = 'supplies';
+
+                }
+            }
+
+            toggleInventoryList();
+
+            $('.authTabDiv').on('click',function () {
+                toggleInventoryList();
+            });
         </script>
     @endsection
 

@@ -19,9 +19,13 @@
         <i class="ti ti-report-money"></i>
     </a>
 
-    <a class="circleIconBtn" data-bs-placement="bottom" title="Print" data-bs-toggle="modal"
+    {{-- <a class="circleIconBtn" data-bs-placement="bottom" title="Print" data-bs-toggle="modal"
         data-bs-target="#printInvoice1{{$invoice->id ?? ''}}">
         <i class="ti ti-printer"></i>
+    </a> --}}
+
+    <a class="circleIconBtn" data-bs-placement="bottom" title="Print" target="_blank" href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
+      <i class="ti ti-printer"></i>
     </a>
 
     <a class="circleIconBtn" data-bs-placement="bottom" title="Invoice B" data-bs-toggle="modal"
@@ -44,10 +48,26 @@
         <label class="fs_20 fw-bold">C</label>
     </a>
 
-    <a class="circleIconBtn" data-bs-placement="bottom" title="Labels" data-bs-toggle="modal"
+    {{-- <a class="circleIconBtn" data-bs-placement="bottom" title="Labels" data-bs-toggle="modal"
         data-bs-target="#InvoiceLabel{{$invoice->id ?? ''}}">
         <i class="ti ti-tag-starred"></i>
-    </a>
+    </a> --}}
+
+    @if (!empty($invoice->barcodes) && count($invoice->barcodes) > 0)
+        <a class="circleIconBtn" data-bs-placement="bottom" title="Labels"
+            href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
+            target="_blank">
+            <i class="ti ti-tag-starred"></i>
+        </a>
+    @else
+        <a class="circleIconBtn" data-bs-placement="bottom" title="Labels"
+            href="javascript:void(0)"
+            onclick="alertMsg('Please generated labels, No labels have been generated for this invoice yet.','error')"
+            data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
+            data-bs-target="#createLabel{{$invoice->id ?? ''}}">
+            <i class="ti ti-tag-starred"></i>
+        </a>
+    @endif
 
     <a class="circleIconBtn" data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
         data-bs-target="#createLabel{{$invoice->id ?? ''}}">

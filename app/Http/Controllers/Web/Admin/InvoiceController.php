@@ -159,10 +159,13 @@ class InvoiceController extends Controller
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 
-        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service"])
+        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service",'Ocean Cargo','Air Cargo'])
         ->where('status', 'Active')
         ->get()
         ->groupBy(function ($item) {
+            if($item->inventary_sub_type!="Supply"){
+                return "Service";
+            }
             return ucfirst($item->inventary_sub_type);
         });
     
@@ -279,8 +282,9 @@ class InvoiceController extends Controller
         }
         if($request->transport_type && $request->invoce_type=='services'){
             $invoice->transport_type = $request->transport_type;
-        }else{
-            $invoice->transport_type = 'Supply';
+        }
+        if($request->payment_type){
+            $invoice->payment_type = $request->payment_type;
         }
     
         $invoice->save();
@@ -290,7 +294,7 @@ class InvoiceController extends Controller
             'created_by' => auth()->id(),
             'personal' => 'Yes',
             'currency' => 'USD',
-            'payment_type' => 'Cash',
+            'payment_type' => $request->payment_type ?? 'Cash',
             'payment_amount' => $invoice->payment,
             'reference' => 'NA',
             'comment' => 'NA',
@@ -362,10 +366,14 @@ class InvoiceController extends Controller
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 
-        $inventories = Inventory::whereIn('inventory_type', ["Supply", "Service"])
+        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service",'Ocean Cargo','Air Cargo'])
+        ->where('status', 'Active')
         ->get()
         ->groupBy(function ($item) {
-            return ucfirst($item->inventory_type);
+            if($item->inventary_sub_type!="Supply"){
+                return "Service";
+            }
+            return ucfirst($item->inventary_sub_type);
         });
 
         return view('admin.Invoices.edit', compact(
@@ -478,8 +486,9 @@ class InvoiceController extends Controller
         }
         if($request->transport_type && $request->invoce_type=='services'){
             $invoice->transport_type = $request->transport_type;
-        }else{
-            $invoice->transport_type = 'Supply';
+        }
+        if($request->payment_type){
+            $invoice->payment_type = $request->payment_type;
         }
 
         $invoice->save();
