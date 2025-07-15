@@ -27,7 +27,7 @@ class ServiceOrderStatusManage extends Controller
         $status = $request->status;
         $search = $request->search;
 
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse','container']);
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse', 'container']);
 
         // Filter by driver type
         if ($percelType === 'Service') {
@@ -175,11 +175,11 @@ class ServiceOrderStatusManage extends Controller
                 ->first();
 
             if ($containerHistory) {
-                // $containerHistory->increment('no_of_orders', 1);
-                // $containerHistory->total_amount += $request->estimate_cost;
-                // $containerHistory->partial_payment += $request->partial_payment;
-                // $containerHistory->remaining_payment += $request->remaining_payment;
-                // $containerHistory->save();
+                $containerHistory->increment('no_of_orders', 1);
+                $containerHistory->total_amount += $request->estimate_cost;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
+                $containerHistory->save();
             }
         }
 

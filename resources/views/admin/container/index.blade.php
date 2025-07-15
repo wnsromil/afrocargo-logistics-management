@@ -171,6 +171,7 @@
                                             '28' => 'new-badge-departure',
                                             '29' => 'new-badge-arrived-vessel',
                                             '30' => 'new-badge-discharge-vessel',
+                                            '33' => 'new-badge-hold-cleared',
                                         ];
                                         if (!array_key_exists($statusId, $statusClassMap)) {
                                             $statusClassMap[$statusId] = 'badge-pending';

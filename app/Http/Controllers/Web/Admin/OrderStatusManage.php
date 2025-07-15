@@ -193,7 +193,6 @@ class OrderStatusManage extends Controller
 
         $vehicleData = $vehicle->toJson(); // store full parcel data in description
 
-
         // 2. Transfer record
         $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
 
@@ -240,7 +239,7 @@ class OrderStatusManage extends Controller
         ]);
 
         // Step 4: Find all parcels related to this container and update their status to 5
-        $parcels = Parcel::where('container_id', $vehicle->id)->where('status', 4)->get();
+        $parcels = Parcel::where('container_id', $vehicle->id)->where('status', 16)->get();
 
         foreach ($parcels as $parcel) {
             ParcelPickupDriver::where('parcel_id', $parcel->id)
@@ -307,7 +306,7 @@ class OrderStatusManage extends Controller
         // Step 6a: Update only latest Transfer record
         $latestTransfer = ContainerHistory::where('container_id', $vehicle->id)
             ->where('type', 'Transfer')
-            ->where('status', 17)
+            ->where('status', [17, 24, 33])
             ->latest('id')  // or 'created_at' if you prefer
             ->first();
 
@@ -322,7 +321,7 @@ class OrderStatusManage extends Controller
         // Step 6b: Update only latest Arrived record
         $latestArrived = ContainerHistory::where('container_id', $vehicle->id)
             ->where('type', 'Arrived')
-            ->where('status', 5)
+            ->whereIn('status', [5, 24, 33])
             ->latest('id')
             ->first();
 
@@ -361,6 +360,8 @@ class OrderStatusManage extends Controller
             $TransfercontainerHistory->update([
                 'close_date'         => now()->format('Y-m-d'),
             ]);
+            Parcel::where('container_history_id', $TransfercontainerHistory->id)
+                ->update(['status' => 16]);
         }
 
         // Return success response
@@ -369,6 +370,103 @@ class OrderStatusManage extends Controller
             'parcel' => $Vehicle,
         ]);
     }
+
+    public function statusUpdate_customhold(Request $request)
+    {
+        $request->validate([
+            'vehicleId' => 'required|exists:vehicles,id',
+            'containerHistoryId' => 'required',
+        ]);
+
+        $Vehicle = Vehicle::findOrFail($request->vehicleId);
+        $Vehicle->update([
+            'container_status' => 24,
+        ]);
+
+        $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
+
+        if ($TransfercontainerHistory) {
+            // Update current container history
+            $TransfercontainerHistory->update([
+                'container_status' => 24,
+            ]);
+
+            // Update parcels for this history
+            Parcel::where('container_history_id', $TransfercontainerHistory->id)
+                ->update(['status' => 24]);
+
+            // Get related IDs from this history
+            $containerId = $TransfercontainerHistory->container_id;
+            $warehouseId = $TransfercontainerHistory->warehouse_id;
+            $arrivedWarehouseId = $TransfercontainerHistory->arrived_warehouse_id;
+
+            // Find and update other Arrived-type container histories
+            $relatedHistories = ContainerHistory::where('container_id', $containerId)
+                ->where('warehouse_id', $warehouseId)
+                ->where('arrived_warehouse_id', $arrivedWarehouseId)
+                ->where('type', 'Arrived')
+                ->get();
+
+            foreach ($relatedHistories as $history) {
+                $history->update(['status' => 24]);
+
+                Parcel::where('container_history_id', $history->id)
+                    ->update(['status' => 24]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Container and related data marked as Custom Hold successfully.',
+            'parcel' => $Vehicle,
+        ]);
+    }
+
+
+    public function statusUpdate_customcleared(Request $request)
+    {
+        $request->validate([
+            'vehicleId' => 'required|exists:vehicles,id',
+            'containerHistoryId' => 'required',
+        ]);
+
+        $Vehicle = Vehicle::findOrFail($request->vehicleId);
+        $Vehicle->update([
+            'container_status' => 33,
+        ]);
+
+        $TransfercontainerHistory = ContainerHistory::find($request->containerHistoryId);
+
+        if ($TransfercontainerHistory) {
+            // Update parcel status for this history
+            Parcel::where('container_history_id', $TransfercontainerHistory->id)
+                ->update(['status' => 33]);
+
+            // Get related IDs from this history
+            $containerId = $TransfercontainerHistory->container_id;
+            $warehouseId = $TransfercontainerHistory->warehouse_id;
+            $arrivedWarehouseId = $TransfercontainerHistory->arrived_warehouse_id;
+
+            // Find and update other Arrived-type container histories
+            $relatedHistories = ContainerHistory::where('container_id', $containerId)
+                ->where('warehouse_id', $warehouseId)
+                ->where('arrived_warehouse_id', $arrivedWarehouseId)
+                ->where('type', 'Arrived')
+                ->get();
+
+            foreach ($relatedHistories as $history) {
+                $history->update(['status' => 33]);
+
+                Parcel::where('container_history_id', $history->id)
+                    ->update(['status' => 33]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Container and related data marked as Customs Cleared successfully.',
+            'parcel' => $Vehicle,
+        ]);
+    }
+
 
     public function statusUpdate_fullydischargecontainer(Request $request)
     {

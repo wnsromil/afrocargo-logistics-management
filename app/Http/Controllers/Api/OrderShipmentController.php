@@ -88,47 +88,48 @@ class OrderShipmentController extends Controller
                 'customer_subcategories_data' => 'nullable', // JSON format required
                 'driver_subcategories_data' => 'nullable',   // JSON format required
                 'pickup_address_id' => 'required|numeric',
-                'delivery_address_id' => 'required|numeric',
-                'pickup_time' => 'required|string',
+                'delivery_address_id' => 'nullable|numeric',
+                'pickup_time' => 'nullable|string',
                 'delivery_type' => 'nullable|string',
                 'pickup_type' => 'nullable|string',
-                'pickup_date' => 'required|date',
+                'pickup_date' => 'nullable|date',
                 'transport_type' => 'required|string',
                 'source_address' => 'required',
             ]);
- 
+
             // Remaining Payment Check
             if ($request->remaining_payment > 0) {
                 $validatedData['payment_status'] = 'Partial';
             }
- 
+
             // Assign customer ID
             $validatedData['customer_id'] = $this->user->id;
- 
+
             // **JSON Encode Arrays Properly**
             if (!empty($request->customer_subcategories_data)) {
                 // Ensure it's an array before encoding
                 $customerData = is_string($request->customer_subcategories_data) ? json_decode($request->customer_subcategories_data, true) : $request->customer_subcategories_data;
                 $validatedData['customer_subcategories_data'] = json_encode($customerData, JSON_UNESCAPED_UNICODE);
             }
- 
+
             if (!empty($request->driver_subcategories_data)) {
                 // Ensure it's an array before encoding
                 $driverData = is_string($request->driver_subcategories_data) ? json_decode($request->driver_subcategories_data, true) : $request->driver_subcategories_data;
                 $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
             }
- 
+
+
             $pickupAddress = Address::find($request->pickup_address_id);
             if (!$pickupAddress) {
                 return response()->json(['error' => 'Pickup address not found'], 404);
             }
             $lat = $pickupAddress->lat ?? null;
             $lng = $pickupAddress->long ?? null;
-            $setting =setting();
+            $setting = setting();
 
-            if(empty($lat) || empty($long)){
-                $getLatLng = $setting->getLatLngFromLocation($pickupAddress->country_id,$pickupAddress->state_id,$pickupAddress->city_id);
-                if(!empty($getLatLng)){
+            if (empty($lat) || empty($long)) {
+                $getLatLng = $setting->getLatLngFromLocation($pickupAddress->country_id, $pickupAddress->state_id, $pickupAddress->city_id);
+                if (!empty($getLatLng)) {
                     $lat = $getLatLng['lat'];
                     $lng = $getLatLng['lng'];
                 }
@@ -137,37 +138,37 @@ class OrderShipmentController extends Controller
             // pickup driver auto assiagn logic 
 
             $userIds = $setting->getNearbyWarehouseDriverIds($lat, $lng);
-            // $setting->getDriverTimeSlot($userIds);
 
-            // Use filter to find the key where the value exists
-            // $allTimeSlots = collect($setting->getDriverTimeSlot($userIds))->collapse()
-            // ->unique()->values();
-
-            $bookedDriver = Parcel::
-            whereIn('driver_id',$userIds)
-            ->where('pickup_date',$request->pickup_date)
-            ->whereIn('pickup_time',[$request->pickup_time])->
-            get()->pluck('driver_id')->filter(fn($i)=>!empty($i))->values()->toArray();
-
-            $driverId = collect($userIds)->filter(function($driver_id)use($bookedDriver){
-                return !in_array($driver_id,$bookedDriver);
-            })->values();
 
             $nearestWarehouseId = null;
             $driverData = null;
 
-            // Try to assign a driver and get their warehouse
-            if (!empty($driverId)) {
-                $driverData = User::whereIn('id', $driverId)
-                    ->whereNotNull('warehouse_id')
-                    ->latest()
-                    ->first();
+            if ($request->pickup_type == "driver") {
+                $bookedDriver = Parcel::whereIn('driver_id', $userIds)
+                    ->where('pickup_date', $request->pickup_date)
+                    ->whereIn('pickup_time', [$request->pickup_time])->get()->pluck('driver_id')->filter(fn($i) => !empty($i))->values()->toArray();
 
-                if ($driverData) {
-                    $validatedData['driver_id'] = $driverData->id;
-                    $nearestWarehouseId = $driverData->warehouse_id;
+                $driverId = collect($userIds)->filter(function ($driver_id) use ($bookedDriver) {
+                    return !in_array($driver_id, $bookedDriver);
+                })->values();
+
+
+
+                // Try to assign a driver and get their warehouse
+                if (!empty($driverId)) {
+                    $driverData = User::whereIn('id', $driverId)
+                        ->whereNotNull('warehouse_id')
+                        ->latest()
+                        ->first();
+
+                    if ($driverData) {
+                        $validatedData['driver_id'] = $driverData->id;
+                        $nearestWarehouseId = $driverData->warehouse_id;
+                        $validatedData['status'] = 2;
+                    }
                 }
             }
+
 
             // If no warehouse found from driver, find the nearest warehouse by location
             if (empty($nearestWarehouseId)) {
@@ -179,45 +180,40 @@ class OrderShipmentController extends Controller
             if (empty($nearestWarehouseId)) {
                 return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
             }
-        
-            
- 
+
             // Step 5: Get vehicles from this warehouse with vehicle_type = 1
             $vehicles = Vehicle::where('warehouse_id', $nearestWarehouseId)
                 ->where('vehicle_type', 1)
                 ->get();
- 
+
             // Step 6: Check if any vehicle has status = 'Active'
             $activeVehicle = $vehicles->firstWhere('status', 'Active');
- 
+
             if (!$activeVehicle) {
                 return response()->json(['message' => 'Container is not open'], 200);
             }
- 
+
             // Store container_id
             $validatedData['container_id'] = $activeVehicle->id;
             $validatedData['warehouse_id'] = $nearestWarehouseId;
- 
+
             $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
                 ->where('type', 'Active')
                 ->latest() // optional: if multiple transfer records exist, get the latest
                 ->first();
- 
+
             if ($containerHistory) {
-                $containerHistory->increment('no_of_orders', 1);
- 
-                $containerHistory->total_amount += $request->total_amount;
-                $containerHistory->partial_payment += $request->partial_payment;
-                $containerHistory->remaining_payment += $request->remaining_payment;
- 
-                $containerHistory->save();
+                // $containerHistory->increment('no_of_orders', 1);
+
+                // $containerHistory->total_amount += $request->total_amount;
+                // $containerHistory->partial_payment += $request->partial_payment;
+                // $containerHistory->remaining_payment += $request->remaining_payment;
+
+                // $containerHistory->save();
                 $validatedData['container_history_id'] = $containerHistory->id;
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
             }
-             // Create Parcel
-             $Parcel = Parcel::create($validatedData);
-
             // Create Parcel
             $Parcel = Parcel::create($validatedData);
 
@@ -232,7 +228,7 @@ class OrderShipmentController extends Controller
                 'description' => json_encode($validatedData, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
 
-            if(empty($driverData)){
+            if (empty($driverData)) {
                 ParcelHistory::create([
                     'parcel_id' => $Parcel->id,
                     'created_user_id' => $this->user->id,
@@ -242,14 +238,13 @@ class OrderShipmentController extends Controller
                     'parcel_status' => 2,
                     'description' => json_encode($Parcel, JSON_UNESCAPED_UNICODE), // Store full request details
                 ]);
-
             }
- 
+
             return $this->sendResponse($Parcel, 'Order added successfully.');
         } catch (Exception $e) {
             // Log the error
             Log::error('Parcel Store Error: ' . $e->getMessage());
- 
+
             // Return error response
             return response()->json([
                 'success' => false,
@@ -727,7 +722,7 @@ class OrderShipmentController extends Controller
                 $validatedData['warehouse_id'] = Inventory::where('id', $request->inventorie_data[0]['inventorie_id'])->first()->warehouse_id ?? null;
             }
 
-            
+
 
             // Create Parcel
             $parcel = Parcel::create($validatedData);
@@ -735,11 +730,11 @@ class OrderShipmentController extends Controller
             // Store Parcel Inventories
             foreach ($request->inventorie_data as $item) {
                 $supply = Inventory::where('id', $item['inventorie_id'])->first();
-                 
+
                 ParcelInventorie::create([
                     'parcel_id' => $parcel->id,
-                    'inventory_name'=> $supply->name ?? null,
-                    'price' => $supply->price, 
+                    'inventory_name' => $supply->name ?? null,
+                    'price' => $supply->price,
                     'total' => $item['inventorie_item_quantity'] * ($supply->price ?? 0),
                     'inventorie_id' => $item['inventorie_id'],
                     'inventorie_item_quantity' => $item['inventorie_item_quantity'],
@@ -869,21 +864,21 @@ class OrderShipmentController extends Controller
         $parcel = ParcelPickupDriver::create($data);
 
         $supply =  ParcelInventorie::create(
-                    [
-                        'invoice_id' => $invoice->id ?? null,
-                        'inventorie_id' => $request->supply_id ?? null,
-                        'parcel_id' => $request->parcel_id,
-                        'inventorie_item_quantity' => $request->quantity,
-                        'inventory_name' => $request->name,
-                        'label_qty' => $request->label_qty ?? $request->name,
-                        'price' => $request->price ?? 0,
-                        'volume' => $request->volume ?? 0,
-                        'ins' => $request->ins ?? 0,
-                        'tax' => $request->tax ?? 0,
-                        'discount' => $request->discount ?? 0,
-                        'total' => $request->total ?? 0,
-                    ]
-                );
+            [
+                'invoice_id' => $invoice->id ?? null,
+                'inventorie_id' => $request->supply_id ?? null,
+                'parcel_id' => $request->parcel_id,
+                'inventorie_item_quantity' => $request->quantity,
+                'inventory_name' => $request->name,
+                'label_qty' => $request->label_qty ?? $request->name,
+                'price' => $request->price ?? 0,
+                'volume' => $request->volume ?? 0,
+                'ins' => $request->ins ?? 0,
+                'tax' => $request->tax ?? 0,
+                'discount' => $request->discount ?? 0,
+                'total' => $request->total ?? 0,
+            ]
+        );
 
         return response()->json([
             'success' => true,

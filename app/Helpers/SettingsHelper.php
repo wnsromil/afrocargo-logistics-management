@@ -218,7 +218,6 @@ class SettingsHelper
     }
 
     
-
     private static function formatValue($type, $value)
     {
         switch ($type) {

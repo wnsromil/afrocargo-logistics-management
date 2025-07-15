@@ -148,20 +148,47 @@
                                             $container_status_name = $vehicle->container->containerStatus->status ?? null;
 
                                             $classValue = match ($status_class) {
-                                                '16' => 'badge-ready_to_transfer',
-                                                '17' => 'badge-transfer_to_hub',
-                                                '5' => 'badge-in-transit',
-                                                '20' => 'badge-re-delivery',
+                                                1 => 'new-badge-pending',
+                                                2 => 'new-badge-pickup',
+                                                3 => 'new-badge-picked-up',
+                                                4 => 'new-badge-arrived',
+                                                5 => 'new-badge-in-transit',
+                                                6 => 'new-badge-warehouse-load',
+                                                7 => 'new-badge-discharge',
+                                                8 => 'new-badge-arrived-final',
+                                                9 => 'new-badge-ready-pickup',
+                                                10 => 'new-badge-out-delivery',
+                                                11 => 'new-badge-delivered',
+                                                12 => 'new-badge-redelivery',
+                                                13 => 'new-badge-on-hold',
+                                                14 => 'new-badge-cancelled',
+                                                15 => 'new-badge-abandoned',
+                                                16 => 'new-badge-ready-transfer',
+                                                17 => 'new-badge-transfer-hub',
+                                                18 => 'new-badge-received',
+                                                19 => 'new-badge-hub-arrived',
+                                                20 => 'new-badge-loading',
+                                                21 => 'new-badge-self-pickup',
+                                                22 => 'new-badge-assign-driver',
+                                                23 => 'new-badge-reschedule',
+                                                24 => 'new-badge-hold',
+                                                25 => 'new-badge-gate-in',
+                                                26 => 'new-badge-in-custom-hold',
+                                                27 => 'new-badge-load-vessel',
+                                                28 => 'new-badge-departure',
+                                                29 => 'new-badge-arrived-vessel',
+                                                30 => 'new-badge-discharge-vessel',
+                                                33 => 'new-badge-hold-cleared',
                                                 default => 'badge-pending',
                                             };
                                           @endphp
 
                                         <td>
-                                            <label class="{{ $classValue }}" for="status">
+                                            <label class="{{ $classValue }} new-comman-css" for="status">
                                                 {{ $container_status_name ?? '-' }}
                                             </label>
                                             <br>
-                                            @if($vehicle->container->container_status == 17)
+                                            @if($vehicle->container->container_status == 17 || $vehicle->container->container_status == 24 || $vehicle->container->container_status == 33)
                                                 <label class="badge-delivered" for="status">
                                                     {{ $vehicle->warehouse->warehouse_name . ' To ' . $vehicle->arrived_warehouse->warehouse_name}}
                                                 </label>
@@ -174,54 +201,90 @@
 
                                                     <span class="user-content"
                                                         style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       height: 26px;align-content: center;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               height: 26px;align-content: center;">
                                                         <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                     </span>
                                                 </a>
-                                                @if($vehicle->container->container_status == 20 || $vehicle->container->container_status == 16)
-                                                    <div class="dropdown-menu menu-drop-user">
-                                                        <div class="profilemenu">
-                                                            <div class="subscription-menu">
-                                                                <ul>
-                                                                    <li>
-                                                                        @if($vehicle->container->container_status == 20)
-                                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#fullyloadedcontainer"
-                                                                                vehicle-id="{{ $vehicle->container->id }}"
-                                                                                container-history-id="{{ $vehicle->id }}">
-                                                                                Container Full load at warehouse
-                                                                            </a>
-                                                                        @else
-                                                                            <a class="dropdown-item text-muted disabled"
-                                                                                href="javascript:void(0);">
-                                                                                Container Full load at warehouse
-                                                                            </a>
-                                                                        @endif
-                                                                    </li>
+                                                {{-- @if($vehicle->container->container_status == 20 ||
+                                                $vehicle->container->container_status == 16) --}}
+                                                <div class="dropdown-menu menu-drop-user">
+                                                    <div class="profilemenu">
+                                                        <div class="subscription-menu">
+                                                            <ul>
+                                                                <li>
+                                                                    @if($vehicle->container->container_status == 20)
+                                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#fullyloadedcontainer"
+                                                                            vehicle-id="{{ $vehicle->container->id }}"
+                                                                            container-history-id="{{ $vehicle->id }}">
+                                                                            Container Full load at warehouse
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item text-muted disabled"
+                                                                            href="javascript:void(0);">
+                                                                            Container Full load at warehouse
+                                                                        </a>
+                                                                    @endif
+                                                                </li>
 
-                                                                    <li>
-                                                                        @if($vehicle->container->container_status == 16)
-                                                                            <a onclick="openTransferModal({{ $vehicle->container->id }}, {{ $vehicle->id }})"
-                                                                                class="dropdown-item" href="javascript:void(0);"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#transfer_to_hub"
-                                                                                vehicle-id="{{ $vehicle->container->id }}"
-                                                                                container-history-id="{{ $vehicle->id }}">
-                                                                                Transfer to Hub
-                                                                            </a>
-                                                                        @else
-                                                                            <a class="dropdown-item text-muted disabled"
-                                                                                href="javascript:void(0);">
-                                                                                Transfer to Hub
-                                                                            </a>
-                                                                        @endif
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                                <li>
+                                                                    @if($vehicle->container->container_status == 16)
+                                                                        <a onclick="openTransferModal({{ $vehicle->container->id }}, {{ $vehicle->id }})"
+                                                                            class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#transfer_to_hub"
+                                                                            vehicle-id="{{ $vehicle->container->id }}"
+                                                                            container-history-id="{{ $vehicle->id }}">
+                                                                            Transfer to Hub
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item text-muted disabled"
+                                                                            href="javascript:void(0);">
+                                                                            Transfer to Hub
+                                                                        </a>
+                                                                    @endif
+                                                                </li>
+
+                                                                <li>
+                                                                    @if($vehicle->container->container_status == 17)
+                                                                        <a onclick="openTransferModal({{ $vehicle->container->id }}, {{ $vehicle->id }})"
+                                                                            class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal" data-bs-target="#Custom_Hold"
+                                                                            vehicle-id="{{ $vehicle->container->id }}"
+                                                                            container-history-id="{{ $vehicle->id }}">
+                                                                            Custom hold
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item text-muted disabled"
+                                                                            href="javascript:void(0);">
+                                                                            Custom hold
+                                                                        </a>
+                                                                    @endif
+                                                                </li>
+
+                                                                <li>
+                                                                    @if($vehicle->container->container_status == 24)
+                                                                        <a onclick="openTransferModal({{ $vehicle->container->id }}, {{ $vehicle->id }})"
+                                                                            class="dropdown-item" href="javascript:void(0);"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#Custom_Cleared"
+                                                                            vehicle-id="{{ $vehicle->container->id }}"
+                                                                            container-history-id="{{ $vehicle->id }}">
+                                                                            Custom cleared
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item text-muted disabled"
+                                                                            href="javascript:void(0);">
+                                                                            Custom cleared
+                                                                        </a>
+                                                                    @endif
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
-                                                @endif
+                                                </div>
+                                                {{-- @endif --}}
 
                                             </li>
                                         </td>
@@ -452,6 +515,60 @@
             </div>
         </div>
 
+        <div class="modal custom-modal signature-add-modal fade" id="Custom_Hold" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body confirmationpopup">
+                        <div class="form-header">
+
+                            <p class="popupc"> Is The Cargo Currently Under Customs Hold?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button data-bs-dismiss="modal" type="button" onclick="updatestatusCustom_Hold()"
+                                        class="w-100 btn btn-primary paid-continue-btn customerpopup">
+                                        Yes
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" data-bs-dismiss="modal"
+                                        class=" w-100 btn btn-outline-primary custom-btn">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal custom-modal signature-add-modal fade" id="Custom_Cleared" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body confirmationpopup">
+                        <div class="form-header">
+
+                            <p class="popupc"> Customs Clearance Completed?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button data-bs-dismiss="modal" type="button" onclick="updatestatusCustom_Cleared()"
+                                        class="w-100 btn btn-primary paid-continue-btn customerpopup">
+                                        Yes
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" data-bs-dismiss="modal"
+                                        class=" w-100 btn btn-outline-primary custom-btn">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @section("script")
             <script>
                 function openTransferModal(vehicleId, containerHistoryId) {
@@ -525,6 +642,102 @@
                         success: function (response) {
                             document
                                 .querySelector("#fullyloadedcontainer .custom-btn")
+                                .click();
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "Status changed successfully!",
+                                icon: "success",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle Server-Side Validation Errors
+                            let errors = xhr.responseJSON?.errors || {};
+                        },
+                        complete: function () {
+                            // Re-enable Save Button
+                            $(".btn-primary").html("Save").prop("disabled", false);
+                        },
+                    });
+                }
+            </script>
+            <script>
+                function updatestatusCustom_Hold() {
+                    let vehicleId = $("#vehicle_id_input_hidden").val();
+                    let containerhistoryid = $("#container_history_id_input_hidden").val();
+
+                    if (!vehicleId) {
+                        alert("Parcel ID is required.");
+                        return;
+                    }
+                    // Show Loading Indicator
+                    $(".btn-primary").html("Processing...").prop("disabled", true);
+
+                    // Make AJAX POST Request
+                    $.ajax({
+                        url: "/api/update-status-custom-hold", // API endpoint
+                        type: "POST",
+                        data: {
+                            vehicleId: vehicleId,
+                            containerHistoryId: containerhistoryid
+                        },
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                        },
+                        success: function (response) {
+                            document
+                                .querySelector("#Custom_Hold .custom-btn")
+                                .click();
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "Status changed successfully!",
+                                icon: "success",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle Server-Side Validation Errors
+                            let errors = xhr.responseJSON?.errors || {};
+                        },
+                        complete: function () {
+                            // Re-enable Save Button
+                            $(".btn-primary").html("Save").prop("disabled", false);
+                        },
+                    });
+                }
+            </script>
+            <script>
+                function updatestatusCustom_Cleared() {
+                    let vehicleId = $("#vehicle_id_input_hidden").val();
+                    let containerhistoryid = $("#container_history_id_input_hidden").val();
+
+                    if (!vehicleId) {
+                        alert("Parcel ID is required.");
+                        return;
+                    }
+                    // Show Loading Indicator
+                    $(".btn-primary").html("Processing...").prop("disabled", true);
+
+                    // Make AJAX POST Request
+                    $.ajax({
+                        url: "/api/update-status-custom-cleared", // API endpoint
+                        type: "POST",
+                        data: {
+                            vehicleId: vehicleId,
+                            containerHistoryId: containerhistoryid
+                        },
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
+                        },
+                        success: function (response) {
+                            document
+                                .querySelector("#Custom_Cleared .custom-btn")
                                 .click();
                             Swal.fire({
                                 title: "Good job!",
