@@ -27,7 +27,7 @@ class ExpensesController extends Controller
         $userId = auth()->id();
 
         // Query start karo user ID ke saath
-        $query = Expense::where('creator_id', $userId);
+        $query = Expense::where('creator_id', $userId)->where('status', 'Active');
 
         // Agar request me date di gayi ho to usi date ke expenses filter karo
         if ($request->has('date')) {

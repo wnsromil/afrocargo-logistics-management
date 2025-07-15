@@ -913,7 +913,7 @@
                                             <tr>
                                                 <td class="text-start">{{ucfirst($child->pickupAddress->name ?? "")}} {{$child->pickupAddress->last_name ?? ""}}</td>
                                                 <td>{{$child->pickupAddress->address ?? "-"}}</td>
-                                                <td>{{$child->pickupAddress->city ?? "-"}}</td>
+                                                <td>{{$child->pickupAddress->city_id ?? "-"}}</td>
                                                 <td>
                                                     @if($child->pickupAddress && $child->pickupAddress->phone)
                                                         +{{ $child->pickupAddress->phone_code->phonecode ?? '' }} {{ $child->pickupAddress->phone }}
@@ -1008,21 +1008,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($PickupCustomer as $child)
+                                            @foreach($PickupAddress as $child)
                                                 <tr>
                                                     <td>{{ $child->unique_id ?? '-' }}</td>
                                                     <td>{{ ucfirst($child->name ?? '')}} {{ $child->last_name ?? ''}}</td>
                                                     <td>{{ $child->address ?? '-' }}</td>
                                                     <td>
-                                                    @if($child->phone)
-                                                        +{{ $child->phone_code->phonecode ?? '' }} {{ $child->phone }}
+                                                    @if($child->mobile_number)
+                                                        +{{ $child->mobile_number_code->phonecode ?? '' }} {{ $child->mobile_number }}
                                                     @else
                                                         -
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($child->phone_2)
-                                                        +{{ $child->phone_2_code->phonecode ?? '' }} {{ $child->phone_2 }}
+                                                    @if($child->alternative_mobile_number)
+                                                        +{{ $child->alternative_mobile_number_code->phonecode ?? '' }} {{ $child->alternative_mobile_number }}
                                                     @else
                                                         -
                                                     @endif
