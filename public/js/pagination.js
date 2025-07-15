@@ -84,8 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 if (htmlContent) {
                                     console.log("Initializing tooltips attr",htmlContent);
                                     $el.attr({
-                                        'data-bs-title': htmlContent, // Bootstrap 5 looks here for title
-                                        'data-bs-html' : 'true'       // element‑level HTML flag
+                                        'data-bs-title': htmlContent, // Bootstrap 5 looks here for title                                         // element‑level HTML flag
                                     });
                                 }
                             }).tooltip({

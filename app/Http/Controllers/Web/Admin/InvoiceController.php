@@ -159,10 +159,13 @@ class InvoiceController extends Controller
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 
-        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service"])
+        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service",'Ocean Cargo','Air Cargo'])
         ->where('status', 'Active')
         ->get()
         ->groupBy(function ($item) {
+            if($item->inventary_sub_type!="Supply"){
+                return "Service";
+            }
             return ucfirst($item->inventary_sub_type);
         });
     
@@ -181,7 +184,7 @@ class InvoiceController extends Controller
         
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
-            'arrived_warehouse_id' => 'nullable|required_if:invoce_type,services|numeric',
+            'arrived_warehouse_id' => 'nullable|numeric',
             'transport_type'=>'nullable|required_if:invoce_type,services|in:Air Cargo,Ocean Cargo',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
@@ -279,8 +282,9 @@ class InvoiceController extends Controller
         }
         if($request->transport_type && $request->invoce_type=='services'){
             $invoice->transport_type = $request->transport_type;
-        }else{
-            $invoice->transport_type = 'Supply';
+        }
+        if($request->payment_type){
+            $invoice->payment_type = $request->payment_type;
         }
     
         $invoice->save();
@@ -290,7 +294,7 @@ class InvoiceController extends Controller
             'created_by' => auth()->id(),
             'personal' => 'Yes',
             'currency' => 'USD',
-            'payment_type' => 'Cash',
+            'payment_type' => $request->payment_type ?? 'Cash',
             'payment_amount' => $invoice->payment,
             'reference' => 'NA',
             'comment' => 'NA',
@@ -334,7 +338,7 @@ class InvoiceController extends Controller
     public function edit(string $id)
     {
         //
-        $invoice = Invoice::with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->findOrFail($id);
+        $invoice = Invoice::with(['ParcelInventory','invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->findOrFail($id);
 
         $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id',$id)->latest()->first();
 
@@ -362,10 +366,14 @@ class InvoiceController extends Controller
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 
-        $inventories = Inventory::whereIn('inventory_type', ["Supply", "Service"])
+        $inventories = Inventory::whereIn('inventary_sub_type', ["Supply", "Service",'Ocean Cargo','Air Cargo'])
+        ->where('status', 'Active')
         ->get()
         ->groupBy(function ($item) {
-            return ucfirst($item->inventory_type);
+            if($item->inventary_sub_type!="Supply"){
+                return "Service";
+            }
+            return ucfirst($item->inventary_sub_type);
         });
 
         return view('admin.Invoices.edit', compact(
@@ -384,26 +392,12 @@ class InvoiceController extends Controller
         // return $request->all();
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
-            'arrived_warehouse_id' => 'nullable|required_if:invoce_type,services|numeric',
+            'arrived_warehouse_id' => 'nullable|numeric',
             'transport_type'=>'nullable|required_if:invoce_type,services|in:Air Cargo,Ocean Cargo',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
             // 'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
             'container_id' => 'nullable|numeric',
-            // 'driver_id' => [
-            //     'nullable',
-            //     'numeric',
-            //     function ($attribute, $value, $fail) use ($request) {
-            //         if (
-            //             isset($request->container_id) &&
-            //             is_numeric($request->container_id) &&
-            //             $request->container_id > 0 &&
-            //             empty($value)
-            //         ) {
-            //             $fail('The driver field is required when container is selected.');
-            //         }
-            //     },
-            // ],
             'driver_id' => 'nullable|numeric',
             'warehouse_id' => 'required|numeric',
             'ins' => 'nullable|numeric',
@@ -478,8 +472,9 @@ class InvoiceController extends Controller
         }
         if($request->transport_type && $request->invoce_type=='services'){
             $invoice->transport_type = $request->transport_type;
-        }else{
-            $invoice->transport_type = 'Supply';
+        }
+        if($request->payment_type){
+            $invoice->payment_type = $request->payment_type;
         }
 
         $invoice->save();
@@ -813,7 +808,12 @@ class InvoiceController extends Controller
             'address_type' => 'required|in:pickup,delivery',
             'user_id' => 'nullable|integer',
         ]);
-        $useCheck =['phone' => $validatedData['mobile_number']];
+
+        if($request->email){
+            $useCheck['email'] = $request->email;
+        }else{
+            $useCheck =['phone' => $validatedData['mobile_number']];
+        }
 
         $saveAd =[
             'full_name' => $validatedData['first_name'] . " " . $validatedData['last_name'],
@@ -825,7 +825,9 @@ class InvoiceController extends Controller
             'state_id' => $validatedData['state'],
             'city_id' => $validatedData['city'] ?? null,
             'pincode' => $validatedData['zip_code'] ?? null,
+            'neighborhood' => $validatedData['neighborhood'] ?? null,
         ];
+        
         
         if(!empty($request->address_id) && !empty($request->user_id)){
            $check['id'] =  $request->address_id;
@@ -846,6 +848,8 @@ class InvoiceController extends Controller
             [
                 'name' => $validatedData['first_name'],
                 'last_name' => $validatedData['last_name'],
+                'phone' => $validatedData['mobile_number'],
+                'phone_code_id' => $validatedData['mobile_number_code_id'],
                 'phone_2' => $validatedData['alternative_mobile_number'] ?? null,
                 'phone_2_code_id_id' => $validatedData['alternative_mobile_number_code_id'] ?? null,
                 'phone_code_id' => $validatedData['mobile_number_code_id'] ?? null,
@@ -854,14 +858,45 @@ class InvoiceController extends Controller
                 'country_id' => $validatedData['country'],
                 'state_id' => $validatedData['state'],
                 'city_id' => $validatedData['city'] ?? null,
+                'neighborhood' => $validatedData['neighborhood'] ?? null,
                 'pincode' => $validatedData['zip_code'] ?? null,
-                'email' => 'user' . time() . '@example.com', // Dummy email if required
+                'email' => $request->email ?? 'user' . time() . '@example.com', // Dummy email if required
                 'password' => bcrypt('password'), // Set a default password
                 'invoice_custmore_type'=>$request->invoice_custmore_type ?? 'from_to',
                 'invoice_custmore_id'=>$request->invoice_custmore_id ?? null,
                 'role_id' => 3, // Assuming role_id 3 is for customers
             ]
         );
+
+        if($request->Pickup_latitude && $request->Pickup_longitude){
+            $user->latitude = $request->Pickup_latitude;
+            $user->longitude = $request->Pickup_longitude;
+            $user->save();
+        }
+
+        if($request->license_number){
+            foreach (['license_picture'] as $imageType) {
+                if ($request->hasFile($imageType)) {
+                    // Purani image delete karo agar hai
+                    if ($user->{$imageType} && \Storage::exists('public/' . $user->{$imageType})) {
+                        \Storage::delete('public/' . $user->{$imageType});
+                    }
+
+                    // Nई image upload karo
+                    $file = $request->file($imageType);
+                    $fileName = time() . '_' . $imageType . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('uploads/customer', $fileName, 'public');
+                    $imagePaths[$imageType] = 'storage/uploads/customer/' . $fileName;
+
+                    if (isset($imagePaths['license_picture'])) {
+                        $user->license_document = $imagePaths['license_picture'];
+                    }
+                }
+            }
+            
+            $user->license_number = $request->license_number;
+            $user->save();
+        }
 
         $check['user_id'] =  $user->id;
         
@@ -895,7 +930,13 @@ class InvoiceController extends Controller
                 'country_id' => $address->country_id,
                 'state_id' => $address->state_id,
                 'city_id' => $address->city_id,
+                'country_id' => $address->country,
+                'state_id' => $address->state,
+                'city_id' => $address->city,
+                'neighborhood' => $address->neighborhood,
                 'address_type' => $address->address_type,
+                'license_number' => $user->license_number ?? null,
+                'license_document' => $user->license_document ?? null,
                 'lat' => $user->lat,
                 'long' => $user->long
             ]
@@ -1073,24 +1114,35 @@ class InvoiceController extends Controller
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
             if(!empty($item['supply_id'])){
-                $supply =  ParcelInventorie::updateOrCreate(
-                            [
+                if(!empty($item['inventory_id'])){
+                    $cp = [
+                                'parcel_id' => $invoice->parcel_id,
+                                'id' => $item['inventory_id'],
+                            ];
+                }else{
+                    $cp = [
                                 'parcel_id' => $invoice->parcel_id,
                                 'invoice_id' => $invoice->id,
                                 'inventorie_id' => $item['supply_id'],
-                            ],
+                            ];
+                }
+                $supply =  ParcelInventorie::updateOrCreate(
+                            $cp,
                             [
+                                'invoice_id' => $invoice->id,
                                 'inventorie_item_quantity' => $item['qty'],
                                 'inventory_name' => $item['supply_name'],
                                 'label_qty' => $item['label_qty'],
-                                'price' => $item['price'],
-                                'ins' => $item['ins'],
-                                'tax' => $item['tax'],
+                                'price' => $item['price'] ?? 0,
+                                'volume' => $item['volume'] ?? 0,
+                                'value' => $item['value'] ?? 0,
+                                'ins' => $item['ins'] ?? 0,
+                                'tax' => $item['tax'] ?? 0,
                                 'discount' => $item['discount'] ?? 0,
                                 'total' => $item['total'],
                             ]
                         );
-                if($status != 'updated'){
+                if(!empty($invoice->barcodes)){
                     for ($i=0; $i < $item['qty']; $i++) { 
                         store_barcode([
                             'parcel_id' => $invoice->parcel_id,
@@ -1148,6 +1200,8 @@ class InvoiceController extends Controller
                 'city' => $address->city_id,
                 // 'address_type' => request()->address_type ?? $type ?? $address->address_type,
                 'address_type' => $type ?? $address->address_type,
+                'license_number' => $address->user->license_number ?? null,
+                'license_document' => $address->user->license_document ?? null,
             ];
         }
 
@@ -1175,6 +1229,8 @@ class InvoiceController extends Controller
                 'city' => $address->city_id,
                 'address_type' => $type,
                 'address_type_t' => $type ?? $address->address_type,
+                'license_number' => $address->license_number ?? null,
+                'license_document' => $address->license_document ?? null,
             ];
         
     }

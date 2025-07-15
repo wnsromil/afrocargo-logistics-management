@@ -45,7 +45,7 @@
                             <label for="customer_id">Warehouse List<i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
-                            <select class="form-control select2" name="ship_country" id="ship_country">
+                            <select class="form-control select2" name="ship_country" id="ship_country" {{auth()->user()->role_id != 1 ? 'disabled':''}}>
                                 {{-- <option value="">Select Country</option>
                                 @foreach (setting()->warehouseContries() as $key => $item)
                                 <option value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
@@ -56,7 +56,7 @@
                                 @endif
                                 @foreach (setting()->ActiveWarehouseContries() as $key => $item)
                                 <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
-                                    {{ $item->warehouse_code ?? '' }}, {{ $item->warehouse_name ?? '' }}, {{ $item->name ?? '' }}</option>
+                                    {{ $item->warehouse_code ?? '' }}, {{ $item->name ?? '' }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -79,7 +79,7 @@
                                 @endif
                                 @foreach (setting()->ActiveWarehouseContries() as $key => $item)
                                 <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
-                                    {{ $item->warehouse_code ?? '' }}, {{ $item->warehouse_name ?? '' }}, {{ $item->name ?? '' }}</option>
+                                    {{ $item->warehouse_code ?? '' }}, {{ $item->name ?? '' }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -108,17 +108,20 @@
                             @enderror
                         </div>
                         <div class="last">
-                            <a id="addCustomer" class="btn btn-primary buttons">
+                            <a {{--id="addCustomer"--}} class="btn btn-primary buttons" data-bs-toggle="modal"
+                            data-bs-target="#addCustomerCreateModal">
                                 Add New Customer
                             </a>
-                            <div id="add_delevery_save_body" class="d-none">
+                            @include('admin.Invoices.modals.addCustomerCreate')
+
+                            {{-- <div id="add_delevery_save_body" class="d-none">
                                 <button type="button" class="btn btn-primary buttons" id="add_delevery_save">
                                     Save
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary" id="add_delevery_cancel">
                                     Cancel
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                      <div class="d-none" id="order_list_div">
@@ -160,18 +163,25 @@
                         </div>
                         <div class="last">
 
-                            <a id="addShiptoAddress" class="btn btn-primary buttons">
+                            {{-- <a id="addShiptoAddress" class="btn btn-primary buttons">
                                 Add Ship to Address
-                            </a>
+                            </a> --}}
 
-                            <div id="add_ship_save_body" class="d-none">
+                            <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal"
+                            data-bs-target="#shiptoAddressModal">
+                                Add Shipto Address
+                            </button>
+
+                            @include('admin.Invoices.modals.shipToCreate')
+
+                            {{-- <div id="add_ship_save_body" class="d-none">
                                 <button type="button" class="btn btn-primary buttons" id="add_ship_save">
                                     Save
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary" id="add_ship_cancel">
                                     Cancel
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
@@ -319,7 +329,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="State">State</label>
                                     <input type="text" name="state" id="state"class="form-control inp address" placeholder="state">
                                     {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
@@ -333,7 +343,7 @@
 
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="city">City</label>
                                     <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
                                     {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
@@ -346,7 +356,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="Zip_code">Zip code</label>
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
                                 </div>
@@ -420,7 +430,7 @@
                                     <label class="foncolor" for="Address.1">Address 1 <i
                                             class="text-danger">*</i></label>
                                     <!-- Address 1 -->
-                                    <input type="text" id="locationSearchBox" name="address" class="form-control inp address"
+                                    <input type="text" name="address" class="form-control inp address"
                                         placeholder="Enter Address 1">
                                 </div>
                                 <div class="col-md-6">
@@ -448,7 +458,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="State">State</label>
                                     <input type="text" name="state" id="state"class="form-control inp address" placeholder="state" readonly>
                                     {{-- <select name="state_id" id="state" class="form-control inp select2">
                                         <option value="">Select State</option>
@@ -462,7 +472,7 @@
 
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="city">City</label>
                                     <input type="text" name="city" id="city" class="form-control inp address" placeholder="city" readonly>
                                     {{-- <select name="city_id" id="city" class="form-control inp select2">
                                         <option value="">Select City</option>
@@ -475,7 +485,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="Zip_code">Zip code</label>
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
@@ -779,15 +789,12 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Select Supply</h5>
+                            <h5 class="modal-title">Select <span id="supplyModalTitle">Service</span></h5>
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                @if($inventories && $inventories->get('Supply'))
-                                    @foreach ($inventories->get('Supply') as $supply)
-                                        <option value="{{ $supply->id }}" data-selected='{{ $supply->name }}' data-supply='@json($supply)'>{{ $supply->name }}</option>
-                                    @endforeach
-                                @endif
+                                
+
                             </select>
                             <div class="row mt-3">
                                 <div class="col-md-4">
@@ -839,6 +846,7 @@
         <script src="{{asset('js/invoice.js')}}"></script>
         <script>
             var supplyItems = @json($inventories->get('Supply'));
+            var serviceItems = @json($inventories->get('Service'));
             var currentRow = null;
 
             window.onload = function () {
@@ -863,6 +871,45 @@
                 // it's deliver address code
                 document.querySelector(".newCustomerAdd").classList.toggle("none");
             };
+            function toggleInventoryList(){
+                let SupplyOptions = '';
+                let ServiceOptions = '';
+                console.log("invoce_type", invoce_type);
+
+                if (supplyItems && supplyItems.length > 0) {
+                    supplyItems.forEach(function (supply) {
+                        SupplyOptions += `<option value="${supply.id}" data-selected='${supply.name}' data-supply='${supply}'>${supply.name}</option>`;
+                    });
+                }
+                if (serviceItems && serviceItems.length > 0) {
+                    serviceItems.forEach(function (Service) {
+                        ServiceOptions += `<option value="${Service.id}" data-selected='${Service.name}' data-supply='${Service}'>${Service.name}</option>`;
+                    });
+                }
+                $('#supplySelector').empty();
+                if(invoce_type == 'services') {
+
+                    
+                    $('#supplySelector').append(ServiceOptions);
+                    $('#supplySelector').val(null).trigger('change');
+                    $('#supplyModalTitle').text('Service');
+                
+                    invoce_type = 'services';
+                } else {
+                    $('#supplyModalTitle').text('Supply');
+                    $('#supplySelector').append(SupplyOptions);
+                    $('#supplySelector').val(null).trigger('change');
+                    
+                    invoce_type = 'supplies';
+
+                }
+            }
+
+            toggleInventoryList();
+
+            $('.authTabDiv').on('click',function () {
+                toggleInventoryList();
+            });
         </script>
     @endsection
 

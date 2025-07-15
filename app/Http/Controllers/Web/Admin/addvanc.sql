@@ -107,5 +107,8 @@ FROM
 
     ALTER TABLE `invoices` ADD `payment_type` VARCHAR(255) NULL DEFAULT 'Cash' AFTER `invoce_type`;
 
+    -- 14 july 2025
+    ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+    ALTER TABLE `addresses` CHANGE `city_id` `city_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
     -- 11/07/25
     ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;

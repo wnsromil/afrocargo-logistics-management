@@ -17,7 +17,7 @@
                     src="{{public_path('assets/images/logo_image.png')}}">
             </td>
             <td style="text-align: center; padding: 10px;">
-                <h2 style="margin: 0;">{{ $invoice->transport_type ?? 'Supply'}} INVOICE</h2>
+                <h2 style="margin: 0;">{{ $invoice->transport_type ?? 'Supply'}} Invoice</h2>
             </td>
         </tr>
     </table>
@@ -61,6 +61,7 @@
                 Tel.: {{ $invoice->pickupAddress->alternative_mobile_number ?? 'N/A' }}
             </td>
             <td style="width: 50%; padding: 5px; text-align: right;">
+                @if($invoice->deliveryAddress)
                 <p style="text-align: -webkit-left;">
                     <strong>Ship To:</strong><br>
                     {{ $invoice->deliveryAddress->full_name ?? 'N/A' }}<br>
@@ -68,6 +69,7 @@
                     Cel.: {{ $invoice->deliveryAddress->mobile_number ?? 'N/A' }}<br>
                     Tel.: {{ $invoice->deliveryAddress->alternative_mobile_number ?? 'N/A' }}
                 </p>
+                @endif
             </td>
         </tr>
     </table>
@@ -93,7 +95,7 @@
                     Tracking# : <b>{{$invoice->invoiceParcelData && !empty($invoice->invoiceParcelData->tracking_number) ? $invoice->invoiceParcelData->tracking_number:''}}</b>
                 </th>
                 <th style="border: 1px solid black; padding: 5px;">
-                    ivnoce# : <b>{{$invoice->invoice_no ?? ''}}</b>
+                    Invoice# : <b>{{$invoice->invoice_no ?? ''}}</b>
                 </th>
                 <th style="border: 1px solid black; padding: 5px;">
                     container# : <b>{{$invoice->container && $invoice->container->unique_id ? $invoice->container->unique_id:'' }}</b>
@@ -261,7 +263,7 @@
                                 Condition.</span><br>
                             <span style="font-size: 18px; font-weight: 600; line-height: 40px;">Authorized
                                 Sign</span><br>
-                            <img src="{{$invoice->signature && $invoice->signature->signatureFileRaw ? public_path($invoice->signature->signatureFileRaw):'uploads/signature/download%20(2).png'}}" alt="Signature"
+                            <img src="{{$invoice->warehouse && $invoice->warehouse->signature ? public_path(removePart($invoice->warehouse->signature->signature_file, url('/'), true, 1)):'public/uploads/signature/download%20(2).png'}}" alt="Signature"
                                 style="max-width: 100px;">
                         </td>
                         <td style="width: 40%; "> </td>
