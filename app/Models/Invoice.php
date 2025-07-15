@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
+    use SoftDeletes;
     protected $guarded = [];
 
     protected $casts = [
@@ -74,6 +76,28 @@ class Invoice extends Model
             }]);
     }
 
+    public function ParcelInventory()
+    {
+        return $this->hasMany(ParcelInventorie::class, 'invoice_id', 'id')->select(
+            'id',
+            'inventorie_id as supply_id',
+            'inventory_name as supply_name',
+            'parcel_id',
+            'invoice_id',
+            'inventorie_id',
+            'inventorie_item_quantity as qty',
+            'label_qty',
+            'volume',
+            'value',
+            'price',
+            'ins',
+            'tax',
+            'discount',
+            'total',
+            'created_at',
+            'updated_at'
+        );
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

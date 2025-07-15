@@ -1,21 +1,21 @@
 <!-- ------------------- 2nd modal ---------------------------- -->
 
-    <div class="modal custom-modal fade" id="shiptoAddressModal" aria-labelledby="shiptoAddressModalLabel"
+    <div class="modal custom-modal fade" id="addCustomerCreateModal" aria-labelledby="addCustomerCreateModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-size modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark-shade" id="shiptoAddressModalLabel">Add ShipTo Address</h5>
+                    <h5 class="modal-title text-dark-shade" id="addCustomerCreateModalLabel">Add Customer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <form enctype="multipart/form-data" action="{{route('admin.saveInvoceCustomer')}}" id="model_shipto_Form" method="POST">
+                    <form enctype="multipart/form-data" action="{{route('admin.saveInvoceCustomer')}}" id="CustomerCreate_Form" method="POST">
                         @csrf
-                        <input type="hidden" name="address_type" value="delivery">
+                        <input type="hidden" name="address_type" value="pickup">
                         <input type="hidden" name="address_id">
                         <input type="hidden" name="user_id">
-                        <input type="hidden" name="invoice_custmore_type" value="ship_to">
+                        <input type="hidden" name="invoice_custmore_type" value="from_to">
                         <input type="hidden" name="invoice_custmore_id">
 
                         <div class="row px-3">
@@ -185,6 +185,7 @@
                                             style="background: #ececec;">
                                     </div>
                                 </div>
+
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label for="neighborhood" class="col-form-label text-dark">Neighborhood</label>
@@ -197,7 +198,7 @@
 
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
-                                        <label for="masterPickUpAddressId" class="col-form-label text-dark">Email Id<i
+                                        <label for="email" class="col-form-label text-dark">Email Id<i
                                                 class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-9 justify-content-end">
@@ -250,10 +251,10 @@
                             <div class="text-end mt-3">
 
                                     <div id="add_ship_save_body">
-                                        <button type="button" class="btn btn-primary buttons" id="add_ship_modal_save">
+                                        <button type="button" class="btn btn-primary buttons" id="add_customer_modal_save">
                                             Save
                                         </button>
-                                        <button type="button" class="btn btn-outline-secondary" id="add_ship_modal_cancel" data-bs-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="btn btn-outline-secondary" id="add_cutomer_modal_cancel" data-bs-dismiss="modal" aria-label="Close">
                                             Cancel
                                         </button>
                                         

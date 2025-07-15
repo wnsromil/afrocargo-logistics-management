@@ -162,16 +162,18 @@
                         </div>
                         <div class="last">
 
-                            <a id="addShiptoAddress" class="btn btn-primary buttons">
+                            {{-- <a id="addShiptoAddress" class="btn btn-primary buttons">
                                 Add Ship to Address
-                            </a>
+                            </a> --}}
 
-                            {{-- <button type="button" class="btn btn-primary pickup-button-size" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal"
                             data-bs-target="#shiptoAddressModal">
                                 Add Shipto Address
-                            </button> --}}
+                            </button>
 
-                            <div id="add_ship_save_body" class="d-none">
+                            @include('admin.Invoices.modals.shipToCreate')
+
+                            {{-- <div id="add_ship_save_body" class="d-none">
                                 <button type="button" class="btn btn-primary buttons" id="add_ship_save">
                                     Save
                                 </button>
@@ -179,7 +181,7 @@
                                     Cancel
                                 </button>
                                 
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
@@ -189,7 +191,7 @@
 
 
             <!-- country wis address search -->
-            <div class="row mt-5 g-3 d-none" id="add_location">
+            {{-- <div class="row mt-5 g-3 d-none" id="add_location">
                 <div class="col-md-6">
                 </div>
                 <div class="col-md-6">
@@ -232,7 +234,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- first row end pick up  -->
             <div class="row mt-5 g-3">
                 <div class="col-md-6">
@@ -319,7 +321,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="State">State</label>
                                     <input type="text" name="state" id="state" class="form-control inp address"
                                         placeholder="state">
                                     @error('state_id')
@@ -328,7 +330,7 @@
 
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="city">City</label>
                                     <input type="text" name="city" id="city" class="form-control inp address"
                                         placeholder="city">
                                     @error('city_id')
@@ -336,7 +338,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="Zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="Zip_code">Zip code</label>
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
                                 </div>
@@ -430,7 +432,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="State">State <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="State">State</label>
                                     <input type="text" name="state" id="state" class="form-control inp address"
                                         placeholder="state" readonly>
                                     @error('state_id')
@@ -439,7 +441,7 @@
 
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="city">City <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="city">City</label>
                                     <input type="text" name="city" id="city" class="form-control inp address"
                                         placeholder="city" readonly>
                                     @error('city_id')
@@ -447,7 +449,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="foncolor" for="zip_code">Zip code <i class="text-danger">*</i></label>
+                                    <label class="foncolor" for="zip_code">Zip code</label>
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
@@ -653,8 +655,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (isset($invoice->invoce_item) && count($invoice->invoce_item) > 0)
-                                @foreach ($invoice->invoce_item as $key=>$item)
+                                @if (isset($invoice->ParcelInventory) && count($invoice->ParcelInventory) > 0)
+                                @foreach ($invoice->ParcelInventory as $key=>$item)
                                 <tr>
                                     <td class="mwidth open-supply-modal">
                                         <div class="d-flex align-items-center">
@@ -667,6 +669,7 @@
                                             </button>
                                         </div>
                                         <input type="hidden" name="supply_id" value="{{ $item['supply_id'] ?? '' }}">
+                                        <input type="hidden" name="inventory_id" value="{{ $item['id'] ?? '' }}">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control tdbor inputcolor" placeholder=""
@@ -880,8 +883,6 @@
             </div>
 
         </form>
-
-        {{-- @include('admin.Invoices.modals.shipToCreate') --}}
 
         <!-- ---------------------------- Supplies form ------------------------- -->
 

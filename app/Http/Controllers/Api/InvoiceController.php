@@ -688,7 +688,6 @@ class InvoiceController extends Controller
                     $cp = [
                                 'parcel_id' => $invoice->parcel_id,
                                 'id' => $item['inventory_id'],
-                                'invoice_id' => $invoice->id,
                             ];
                 }else{
                     $cp = [
@@ -704,9 +703,11 @@ class InvoiceController extends Controller
                                 'inventorie_item_quantity' => $item['qty'],
                                 'inventory_name' => $item['supply_name'],
                                 'label_qty' => $item['label_qty'],
-                                'price' => $item['price'],
-                                'ins' => $item['ins'],
-                                'tax' => $item['tax'],
+                                'price' => $item['price'] ?? 0,
+                                'volume' => $item['volume'] ?? 0,
+                                'value' => $item['value'] ?? 0,
+                                'ins' => $item['ins'] ?? 0,
+                                'tax' => $item['tax'] ?? 0,
                                 'discount' => $item['discount'] ?? 0,
                                 'total' => $item['total'],
                             ]

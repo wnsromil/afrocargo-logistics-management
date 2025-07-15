@@ -297,16 +297,16 @@ $(document).ready(function () {
             $('select[name="warehouse_id"]').val(shipCountry.id ?? null).trigger('change');
         }
 
-        setPickupDeleveryFormValue({
-            alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
-            mobile_number_code_id:shipCountry.countryId ?? 1,
-            country:shipCountry.country_id ?? "",
-            state:shipCountry.state_id ?? "",
-            city:shipCountry.city_id ?? "",
-            pincode:shipCountry.zip_code ?? "",
-            address1:shipCountry.address ?? "",
-            address2:shipCountry.address ?? "",
-        },"#delivery_to_address")
+        // setPickupDeleveryFormValue({
+        //     alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
+        //     mobile_number_code_id:shipCountry.countryId ?? 1,
+        //     country:shipCountry.country_id ?? "",
+        //     state:shipCountry.state_id ?? "",
+        //     city:shipCountry.city_id ?? "",
+        //     pincode:shipCountry.zip_code ?? "",
+        //     address1:shipCountry.address ?? "",
+        //     address2:shipCountry.address ?? "",
+        // },"#delivery_to_address")
     });
 
     $('#deleveryCountry').on("select2:select", function (e) {
@@ -329,6 +329,17 @@ $(document).ready(function () {
             address1:deleveryCountry.address ?? "",
             address2:deleveryCountry.address ?? "",
         },"#ship_to_address")
+
+        setPickupDeleveryFormValue({
+            alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
+            mobile_number_code_id:deleveryCountry.countryId ?? 1,
+            country:deleveryCountry.country_id ?? "",
+            state:deleveryCountry.state_id ?? "",
+            city:deleveryCountry.city_id ?? "",
+            pincode:deleveryCountry.zip_code ?? "",
+            address1:deleveryCountry.address ?? "",
+            address2:deleveryCountry.address ?? "",
+        },"#model_shipto_Form")
     });
 
     $('#delevery_customer_id').on("select2:select", function (e) {
@@ -428,6 +439,8 @@ $(document).ready(function () {
 
         setPickupDeleveryFormValue(customer);
 
+        setPickupDeleveryFormValue(customer,"#model_shipto_Form")
+
 
         if(customer){
             $.ajax({
@@ -487,7 +500,7 @@ $(document).ready(function () {
         }, 100); // Adjust the timeout as needed
 
         $('input[name="descriptions"]').val(selectedObject.descriptions);
-        $('input[name="weight"]').val(selectedObject.weight);
+        $('input[name="weight"]').val(selectedObject.weight ?? null);
         $('input[name="parcel_id"]').val(selectedObject.parcel_id ?? null);
         // Set the value and trigger change for Select2 to show the selected option
         $('select[name="container_id"]').val(selectedObject.container_id ?? null).trigger('change');
@@ -977,6 +990,7 @@ $(document).ready(function () {
             "mobile_number",
             "address",
             "country",
+            "country",
         ];
 
         if (!jsValidator(requiredFields,$("#pick_up_customer_inf_form"))) {
@@ -1008,12 +1022,34 @@ $(document).ready(function () {
         hendelAjex("/saveInvoceCustomer", formData);
     });
 
+    $("#add_customer_modal_save").on("click", function (e) {
+        e.preventDefault();
+
+        const requiredFields = [
+            "first_name",
+            "last_name",
+            "mobile_number",
+            "address",
+            "country",
+            "email"
+        ];
+
+        if (!jsValidator(requiredFields,$("#CustomerCreate_Form"))) {
+            return;
+        }
+
+        let formData = $("#CustomerCreate_Form").serialize();
+        // Submit via AJAX
+        hendelAjex("/saveInvoceCustomer", formData);
+    });
+
     if (pickupAddress) {
         setPickupDeleveryFormValue(pickupAddress);
         setPickupDeleveryFormValue(pickupAddress,$("#model_shipto_Form"));
     }
     if (deliveryAddress) {
         setPickupDeleveryFormValue(deliveryAddress);
+        setPickupDeleveryFormValue(deliveryAddress,$("#CustomerCreate_Form"));
     }
 
     $("#dynamicTable tbody tr:last").find(".addBtn").show();
@@ -1030,6 +1066,7 @@ function hendelAjex(url, formData) {
             $("#add_ship_cancel").click();
             $("#add_delevery_cancel").click();
             $("#add_ship_modal_cancel").click();
+            $("#add_cutomer_modal_cancel").click();
             
             if (response.success) {
                 // alert(response.message);
@@ -1074,6 +1111,7 @@ function getInvoiceItemsJSON() {
         const item = {
             supply_name: $(this).find('[name="supply_name"]').val(),
             supply_id: $(this).find('[name="supply_id"]').val(),
+            inventory_id: $(this).find('[name="inventory_id"]').val() ?? null, 
             qty: parseFloat($(this).find('[name="qty"]').val()) || 0,
             label_qty:$(this).find('[name="label_qty"]').val() || '-',
             volume: parseFloat($(this).find('[name="volume"]').val()) || 0,
@@ -1099,12 +1137,12 @@ $("#services").on("submit", function (e) {
         // pickup_address_id: "required_if:invoce_type,services",
         // container_id:
         //     "required_if:invoce_type,services|required_if:transport_type,cargo|numeric",
-        driver_id: "numeric",
+        // driver_id: "nullable|numeric",
         warehouse_id: "required|numeric",
-        ins: "numeric",
-        discount: "numeric",
+        ins: "nullable|numeric",
+        discount: "nullable|numeric",
         tax: "numeric",
-        weight: "numeric",
+        weight: "nullable",
         balance: "numeric",
         total_price: "required|numeric",
         total_qty: "required|numeric",
@@ -1231,7 +1269,7 @@ function calculateExchangeFields(form) {
     // $('input[name="exchange_rate"]').val(rate);
 
     // Calculate payment in USD (or base currency)
-    const paymentInBase = payment * rate;
+    const paymentInBase = payment/rate;
     maxPaymentAmountValue = totalBalance * rate;
     form.find('input[name="exchange_rate_balance"]').val(
         maxPaymentAmountValue.toFixed(2)
@@ -1283,76 +1321,6 @@ $(document).on("change", 'select[name="local_currency"]', function () {
     calculateExchangeFields(form);
 });
 
-// Update calculateExchangeFields to accept a form parameter
-// function calculateExchangeFields(form) {
-//     // Use the provided form or default to the whole document
-//     form = form || $(document);
-
-//     // Get values from the closest form
-//     const payment = parseFloat(form.find('input[name="payment_amount"]').val()) || 0;
-//     const totalBalance = parseFloat(form.find('input[name="total_balance"]').val()) || 0;
-//     let rate = form.find('input[name="exchange_rate"]').val() || 1;
-//     const currency = form.find('select[name="local_currency"]').val();
-
-//     form.find('input[name="exchange_rate"]').prop("readonly", false);
-
-//     if (currency === "USD") {
-//         rate = 1;
-//         form.find('input[name="exchange_rate"]').prop("readonly", true);
-//     }
-
-//     // Calculate payment in USD (or base currency)
-//     const paymentInBase = payment * rate;
-//     maxPaymentAmountValue = totalBalance * rate;
-//     form.find('input[name="exchange_rate_balance"]').val(
-//         maxPaymentAmountValue.toFixed(2)
-//     );
-
-//     // Applied payments (for now, just current payment)
-//     form.find('input[name="applied_payments"]').val(payment.toFixed(2));
-//     form.find('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
-
-//     // Balance after payment (in original currency)
-//     const balanceAfterPayment = totalBalance - payment / rate;
-//     form.find('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
-
-//     // Balance after payment, converted to base currency
-//     const balanceAfterExchange = balanceAfterPayment * rate;
-//     form.find('input[name="balance_after_exchange_rate"]').val(
-//         balanceAfterExchange.toFixed(2)
-//     );
-// }
-
-// // Fetch and set exchange rates on page load and when currency changes
-// function fetchAndSetExchangeRates() {
-//     $.get(`/api/getCurrencyExchangeRate`, function (res) {
-//         if (res) {
-//             exchangeRates = res;
-//             // Set select options if input[name="currency"] exists
-//             const $currencyInput = $('select[name="local_currency"]');
-//             if ($currencyInput.length) {
-//                 let options = "";
-//                 res.forEach(function (cur) {
-//                     options += `<option value="${cur.currency_code}">${cur.currency_name}-${cur.currency_code}</option>`;
-//                 });
-//                 // If input is actually a select, set options
-//                 if ($currencyInput.is("select")) {
-//                     $currencyInput.html(options);
-//                 }
-//             }
-//         }
-//     });
-// }
-
-// // Call on page load
-// $(document).ready(function () {
-//     fetchAndSetExchangeRates();
-// });
-
-// // Also call when currency changes (if needed)
-// $('input[name="local_currency"]').on("change", fetchAndSetExchangeRates);
-
-// Handles sending invoice email or SMS using the form and invoice ID
 // Listen for form submission
 $(document)
     .off("submit", "#sendInvoiceForm")
@@ -1522,4 +1490,29 @@ $(document)
                 previous: "fas fa-angle-left",
             },
         });
+    }
+
+    // 🖼 Image Preview Function
+    function previewImage(input, imageType) {
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
+
+            // ✅ Sirf PNG ya JPG Allow Hai
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview_' + imageType).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only PNG & JPG images are allowed!");
+                input.value = ""; // Invalid file ko remove karna
+            }
+        }
+    }
+
+    // ❌ Remove Image Function
+    function removeImage(imageType) {
+        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+        document.getElementById('file_' + imageType).value = "";
     }

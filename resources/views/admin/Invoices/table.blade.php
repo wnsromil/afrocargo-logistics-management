@@ -174,6 +174,7 @@
                                         <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
                                         
                                         <td>
+                                            
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
                                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -199,7 +200,7 @@
                                                                 title="Send Invoice pdf" data-bs-toggle="modal"
                                                                 data-bs-target="#sendinvoicepdf{{$invoice->id ?? ''}}">
                                                                 <i class="ti ti-mail me-2"></i>Send Email</a>
-                                                            @include('admin.Invoices.modals.send_invoice_pdf_modal')
+                                                            
                                                         </li>
                                                         <li>
                                                             {{-- <a class="dropdown-item" data-bs-placement="bottom"
@@ -262,6 +263,7 @@
 
             </table>
             @foreach ($invoices as $invoice)
+                @include('admin.Invoices.modals.send_invoice_pdf_modal')
                 @include('admin.Invoices.modals.AddnewLable')
                 @include('admin.Invoices.modals.individual_payment_modal')
             @endforeach
