@@ -12,6 +12,7 @@ use App\Models\{
     Country,
     Vehicle,
     Parcel,
+    Expense,
     ContainerHistory
 };
 
@@ -62,6 +63,10 @@ class DashboardController extends Controller
         $totalEarnings = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })->sum('total_amount');
+
+        $totalExpenses = Expense::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })->sum('amount');
 
         $todayEarnings = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
@@ -147,6 +152,7 @@ class DashboardController extends Controller
             'total_Cargo' => $totalCargo,
             'total_Air' => $totalAir,
             'upcomingContainers' => $upcomingContainers,
+            'totalExpenses' => $totalExpenses
         ]);
     }
 }

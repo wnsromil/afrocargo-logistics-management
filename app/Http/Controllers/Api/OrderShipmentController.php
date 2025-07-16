@@ -869,14 +869,19 @@ class OrderShipmentController extends Controller
                 'inventorie_id' => $request->supply_id ?? null,
                 'parcel_id' => $request->parcel_id,
                 'inventorie_item_quantity' => $request->quantity,
-                'inventory_name' => $request->name,
-                'label_qty' => $request->label_qty ?? $request->name,
+                'inventory_name' => $request->item_name,
+                'label_qty' => $request->label_qty ?? $request->item_name,
                 'price' => $request->price ?? 0,
                 'volume' => $request->volume ?? 0,
                 'ins' => $request->ins ?? 0,
                 'tax' => $request->tax ?? 0,
                 'discount' => $request->discount ?? 0,
                 'total' => $request->total ?? 0,
+                'container_id' => $parcel->container_id ?? null,
+                'img' =>  $data['img'] ?? null,
+                'driver_id'  => $user->id,
+                'status'  => 3,
+                'quantity_type' => $request->quantity_type ?? null,
             ]
         );
 

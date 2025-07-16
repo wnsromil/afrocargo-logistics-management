@@ -146,12 +146,20 @@
                             </td>
                             <td>
                                 <div>
-                                    {{ !empty($parcel->pickup_date) ? \Carbon\Carbon::parse($parcel->pickup_date)->format('m-d-Y') : '-' }}
+                                    @if(isset($parcel) && $parcel->pickup_date)
+                                        {{ \Carbon\Carbon::parse($parcel->pickup_date)->format('m-d-Y') }}
+                                    @else
+                                        -
+                                    @endif
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    {{ !empty($parcel->delivery_date) ? \Carbon\Carbon::parse($parcel->delivery_date)->format('m-d-Y') : '-' }}
+                                    @if(isset($parcel) && $parcel->delivery_date)
+                                        {{ \Carbon\Carbon::parse($parcel->delivery_date)->format('m-d-Y') }}
+                                    @else
+                                        -
+                                    @endif
                                 </div>
                             </td>
                             <td>
@@ -173,8 +181,8 @@
                                 <div>
                                     <div class="row">
                                         <div class="col-6">
-                                            <div class="row">Customer: </div>
-                                            <div class="row">Driver: </div>
+                                            <div class="row">Customer:</div>
+                                            <div class="row">Driver:</div>
                                         </div>
                                         <div class="col-6">
                                             <div class="row">
@@ -192,11 +200,12 @@
                                 <div>{{ $parcel->driver_vehicle->vehicle_type ?? "-"}}</div>
                             </td>
                             @php
-                                $forValue = match ($parcel->payment_status ?? null) {
+                                $forValue = match ($parcel->payment_status) {
                                     'Unpaid' => 'unpaid_status',
                                     'Paid' => 'status',
-                                    'Completed', 'Partial' => 'partial_status',
-                                    default => 'unpaid_status',
+                                    'Completed' => 'partial_status',
+                                    'Partial' => 'partial_status',
+                                    default => 'partial_status',
                                 };
                             @endphp
                             <td>
@@ -219,8 +228,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div>
-                                    {{ !empty($parcel->payment_type) && $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
+                                <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
                                 </div>
                             </td>
                             @php
@@ -254,12 +262,12 @@
                             </td>
                             <td>
                                 <div>
-                                    {{ !empty($parcel->pickup_type) && $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
+                                    {{ $parcel->pickup_type === 'self' ? 'In Person' : ($parcel->pickup_type === 'driver' ? 'Driver' : '-') }}
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    {{ !empty($parcel->delivery_type) && $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
+                                    {{ $parcel->delivery_type === 'self' ? 'In Person' : ($parcel->delivery_type === 'driver' ? 'Driver' : '-') }}
                                 </div>
                             </td>
                         </tr>
@@ -268,16 +276,25 @@
             </div>
             <div class="row mt-4 ">
                 <div class="col-md-12">
-                    <p class="heading mb-3">Item List</p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="heading mb-0">Item List</p>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-primary btnf me-2">Signature</button>
+                            <button type="submit" class="btn btn-primary btnf me-2">Invoice</button>
+                            <button type="submit" class="btn btn-primary btnf">Complete</button>
+                        </div>
+                    </div>
+
                     <div class="table-responsive notMinheight smallTDs">
                         <table class="table table-stripped table-hover datatable notposition border1">
                             <thead class="thead-light">
                                 <tr>
-                                    <th> <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></th>
+                                    <th> <input type="checkbox" id="selectAll"></th>
                                     <th>S.No</th>
                                     <th>Container ID</th>
                                     <th>Item Image</th>
                                     <th>Item Name</th>
+                                    <th>Item Price</th>
                                     <th>Quantity</th>
                                     <th>Type</th>
                                     <th>Status</th>
@@ -286,7 +303,14 @@
                             <tbody>
                                 @forelse ($parcelItems as $index => $parcelItem)
                                     <tr>
-                                        <td> <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></td>
+                                      <td>
+                                        <input
+                                                type="checkbox"
+                                                class="itemCheckbox"
+                                                value="{{ $parcelItem->id }}"
+                                                {{ $parcelItem->invoice_id ? 'checked disabled' : '' }}
+                                            >
+                                        </td>
                                         <td>{{$index + 1}}</td>
                                         <td>{{$parcelItem->container->unique_id ?? "-"}}</td>
                                         <td class="product_img justify-items-center popup" style="justify-items: center;">
@@ -297,8 +321,9 @@
                                                 <span>-</span>
                                             @endif
                                         </td>
-                                        <td>{{ucfirst($parcelItem->item_name ?? '')}}</td>
-                                        <td>{{$parcelItem->quantity ?? "0"}}</td>
+                                        <td>{{ucfirst($parcelItem->inventory_name ?? '')}}</td>
+                                        <td>{{$parcelItem->inventorie_item_quantity ?? "0"}}</td>
+                                        <td>${{ number_format($parcelItem->price ?? 0, 2)}}</td>
                                         <td>{{ucfirst(string: $parcelItem->quantity_type ?? "-")}}</td>
                                         @php
                                             $classValue = match ((string) $parcelItem->status) {
@@ -439,6 +464,29 @@
 
             });
         </script>
+      <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const selectAll = document.getElementById('selectAll');
+                    const checkboxes = document.querySelectorAll('.itemCheckbox');
+
+                    selectAll.addEventListener('change', function () {
+                        checkboxes.forEach(cb => {
+                            if (!cb.disabled) { // ✅ Skip disabled checkboxes
+                                cb.checked = selectAll.checked;
+                            }
+                        });
+                    });
+
+                    // Optional: Update header checkbox based on enabled checkboxes
+                    checkboxes.forEach(cb => {
+                        cb.addEventListener('change', function () {
+                            const enabledCheckboxes = Array.from(checkboxes).filter(c => !c.disabled);
+                            const allChecked = enabledCheckboxes.every(c => c.checked);
+                            selectAll.checked = allChecked;
+                        });
+                    });
+                });
+            </script>
     @endsection
 
 </x-app-layout>

@@ -19,6 +19,15 @@ class ParcelInventorie extends Model
         'ins',
         'tax',
         'total',
+        'container_id',
+        'container_move_id',
+        'move',
+        'img',
+        'is_deleted',
+        'driver_id',
+        'status',
+        'delivered',
+        'quantity_type',
     ];
 
     // Define relationships
@@ -32,7 +41,23 @@ class ParcelInventorie extends Model
         return $this->belongsTo(Inventory::class, 'inventorie_id');
     }
 
-    public function barcode(){
+    public function barcode()
+    {
         return $this->belongsTo(Barcode::class, 'supply_id', 'id');
+    }
+
+    public function parcelStatus()
+    {
+        return $this->belongsTo(ParcelStatus::class, 'status');
+    }
+
+    public function container()
+    {
+        return $this->hasOne(Vehicle::class, 'id', 'container_id'); // ya hasMany agar ek se zyada ho
+    }
+
+    public function moveContainer()
+    {
+        return $this->hasOne(Vehicle::class, 'container_move_id'); // ya hasMany agar ek se zyada ho
     }
 }

@@ -190,7 +190,7 @@
                                             <br>
                                             @if($vehicle->container->container_status == 17 || $vehicle->container->container_status == 24 || $vehicle->container->container_status == 33)
                                                 <label class="badge-delivered" for="status">
-                                                    {{ $vehicle->warehouse->warehouse_name . ' To ' . $vehicle->arrived_warehouse->warehouse_name}}
+                                                    {{ ($vehicle->warehouse->warehouse_name ?? '') . ' To ' . ($vehicle->arrived_warehouse->warehouse_name ?? '') }}
                                                 </label>
                                             @endif
                                         </td>
@@ -201,7 +201,7 @@
 
                                                     <span class="user-content"
                                                         style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               height: 26px;align-content: center;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   height: 26px;align-content: center;">
                                                         <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                     </span>
                                                 </a>
@@ -372,7 +372,7 @@
                                             </label>
                                             <br>
                                             <label class="badge-delivered" for="status">
-                                                {{ $historyVehicle->warehouse->warehouse_name . ' To ' . $historyVehicle->arrived_warehouse->warehouse_name}}
+                                                {{ ($historyVehicle->warehouse->warehouse_name ?? '') . ' To ' . ($historyVehicle->arrived_warehouse->warehouse_name ?? '') }}
                                             </label>
                                         </td>
 

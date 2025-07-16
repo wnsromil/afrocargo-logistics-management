@@ -141,6 +141,7 @@
                                                 'Paid' => 'status',
                                                 'Completed' => 'partial_status',
                                                 'Partial' => 'partial_status',
+                                                default => 'partial_status',
                                             };
                                         @endphp
                                         <td>

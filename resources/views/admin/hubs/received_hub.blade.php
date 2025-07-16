@@ -169,7 +169,7 @@
                                             <br>
 
                                             <label class="badge-delivered" for="status">
-                                                {{ $incoming_container->warehouse->warehouse_name . ' To ' . $incoming_container->arrived_warehouse->warehouse_name}}
+                                               {{ ($incoming_container->warehouse->warehouse_name ?? '') . ' To ' . ($incoming_container->arrived_warehouse->warehouse_name ?? '') }}
                                             </label>
 
                                         </td>
@@ -317,7 +317,7 @@
                                             </label>
                                             <br>
                                             <label class="badge-delivered" for="status">
-                                                {{ $container_history->warehouse->warehouse_name . ' To ' . $container_history->arrived_warehouse->warehouse_name }}
+                                               {{ ($container_history->warehouse->warehouse_name ?? '') . ' To ' . ($container_history->arrived_warehouse->warehouse_name ?? '') }}
                                             </label>
                                         </td>
 

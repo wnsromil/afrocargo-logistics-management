@@ -14,7 +14,9 @@ use App\Models\{
     ParcelHistory,
     HubTracking,
     Vehicle,
-    ContainerHistory
+    ContainerHistory,
+    ParcelPickupDriver,
+    ParcelInventorie
 };
 use Carbon\Carbon;
 
@@ -357,20 +359,16 @@ class HubTrackingController extends Controller
     public function show(string $id)
     {
         //
+        $ParcelHistories = ParcelHistory::where('parcel_id', $id)
+            ->with(['warehouse', 'customer', 'createdByUser'])->get();
 
-        $parcels = Parcel::where('hub_tracking_id', $id)->when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest()->paginate(10);
-        $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->get());
+        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
-        })->get();
+        $parcel = Parcel::where('id', $id)->first();
 
-        $drivers = $user->where('role_id', 4)->values();
-        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses'));
+        $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
+
+        return view('admin.hubs.orderdetails', compact('parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel'));
     }
 
     /**

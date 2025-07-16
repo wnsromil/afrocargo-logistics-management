@@ -233,6 +233,10 @@ class ServiceOrderStatusManage extends Controller
             ->where('container_id', $parcel->container_id)
             ->update(['status' => 10]);
 
+        ParcelInventorie::where('parcel_id', $parcel->id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 10]);
+
         // Create a new entry in ParcelHistory
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
@@ -287,6 +291,10 @@ class ServiceOrderStatusManage extends Controller
 
         // ✅ Update ParcelPickupDriver
         ParcelPickupDriver::where('parcel_id', $parcel->id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 11]);
+
+        ParcelInventorie::where('parcel_id', $parcel->id)
             ->where('container_id', $parcel->container_id)
             ->update(['status' => 11]);
 
