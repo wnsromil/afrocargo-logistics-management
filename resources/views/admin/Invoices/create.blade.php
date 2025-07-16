@@ -396,7 +396,7 @@
                                     <!-- Contact No. 1 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="mobile_number_code_id" readonly>
+                                            <select class="flag-select" name="mobile_number_code_id" disabled>
                                                 @foreach ($coutry as $key => $item)
                                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -414,7 +414,7 @@
                                     <!-- Contact No. 2 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="alternative_mobile_number_code_id" readonly>
+                                            <select class="flag-select" name="alternative_mobile_number_code_id" disabled>
                                                 @foreach ($coutry as $key => $item)
                                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">

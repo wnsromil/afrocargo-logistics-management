@@ -970,6 +970,8 @@ class InvoiceController extends Controller
             'currentTime' => 'nullable',
         ]);
 
+        return $request->all();
+
         $data = $this->individualPayment($validated);
         return redirect()->back()->with('success', 'Payment saved successfully!');
     }
@@ -1103,13 +1105,22 @@ class InvoiceController extends Controller
 
             $validatedData['weight'] = $orderData['weight'] ?? 0;
             $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
-            $validatedData['source_address'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
+            $validatedData['arrived_warehouse_id'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
 
+            if($invoice->arrived_warehouse_id){
+                $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
+            }
             $parcel = Parcel::create($validatedData);
 
             $invoice->update(['parcel_id' => $parcel->id]);
         } else {
             $parcel = Parcel::find($invoice->parcel_id);
+
+            if($parcel->arrived_warehouse_id){
+                $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
+                $invoice->save();
+            }
+
             $parcel->update($validatedData);
         }
 
@@ -1157,6 +1168,30 @@ class InvoiceController extends Controller
 
             }
         }
+
+        if($invoice->payment > 0 && $invoice->status != 'paid' && $status == 'created'){
+            IndividualPayment::create([
+                "payment_date" => $invoice->currentdate,
+                "currentTime" => $invoice->currentTime,
+                "created_by" => auth()->id(),
+                "invoice_id" => $invoice->id,
+                "local_currency" => "United State",
+                "exchange_rate" => null,
+                "payment_type" => "cash",
+                "payment_amount" => $invoice->payment,
+                "reference" => null,
+                "comment" => null,
+                "invoice_amount" => $invoice->grand_total,
+                "total_balance" => $invoice->balance,
+                "exchange_rate_balance" => $invoice->balance,
+                "applied_payments" => $invoice->payment,
+                "balance_after_exchange_rate" => $invoice->balance,
+                "applied_total_usd" => $invoice->payment,
+                "current_balance" => $invoice->balance
+            ]);
+        }
+
+
 
         // Create parcel history (if parcel was created or exists)
         if ($parcel) {

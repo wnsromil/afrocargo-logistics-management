@@ -659,27 +659,36 @@ class InvoiceController extends Controller
             'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
             'pickup_address_id' => optional($invoice->deliveryAddress)->id,
             'delivery_address_id' => optional($invoice->pickupAddress)->id,
-            'pickup_time' => $invoice->duedaterange ?? null,
-            'pickup_date' => $invoice->currentdate ?? now()->format('Y-m-d'),
+            'pickup_time' => now(),
+            'pickup_date' => now(),
             'customer_id' => $invoice->customer_id ?? auth()->id(),
             'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid',
-            'invoice_id'=>$invoice_id,
-            'transport_type' => $invoice->transport_type ?? 'null',
+            'invoice_id'=>$invoice_id
         ];
-
-
+        if($invoice->transport_type){
+            $validatedData['transport_type'] = $invoice->transport_type;
+        }
 
         if (empty($invoice->parcel_id)) {
 
             $validatedData['weight'] = $orderData['weight'] ?? 0;
             $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
-            $validatedData['source_address'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
+            $validatedData['arrived_warehouse_id'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
 
+            if($invoice->arrived_warehouse_id){
+                $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
+            }
             $parcel = Parcel::create($validatedData);
 
             $invoice->update(['parcel_id' => $parcel->id]);
         } else {
             $parcel = Parcel::find($invoice->parcel_id);
+
+            if($parcel->arrived_warehouse_id){
+                $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
+                $invoice->save();
+            }
+
             $parcel->update($validatedData);
         }
 

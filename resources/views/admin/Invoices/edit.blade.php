@@ -116,27 +116,27 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
-                                @foreach($customers as $customer)
-                                <option {{ old('customer_id')==$customer->id ? 'selected' : '' }} value="{{
-                                    $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
+
                             </select>
                             @error('customer_id')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="last">
-                            <a id="addCustomer" class="btn btn-primary buttons">
+                            <a {{--id="addCustomer"--}} class="btn btn-primary buttons" data-bs-toggle="modal"
+                            data-bs-target="#addCustomerCreateModal">
                                 Add New Customer
                             </a>
-                            <div id="add_delevery_save_body" class="d-none">
+                            @include('admin.Invoices.modals.addCustomerCreate')
+
+                            {{-- <div id="add_delevery_save_body" class="d-none">
                                 <button type="button" class="btn btn-primary buttons" id="add_delevery_save">
                                     Save
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary" id="add_delevery_cancel">
                                     Cancel
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -151,10 +151,7 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="ship_customer">
                                 <option value="">Search Customer</option>
-                                @foreach($customers as $customer)
-                                <option {{ old('customer_id')==$customer->id ? 'selected' : '' }} value="{{
-                                    $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
+
                             </select>
                             @error('customer_id')
                             <span class="text-danger">{{ $message }}</span>
@@ -379,7 +376,7 @@
                                     <!-- Contact No. 1 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="mobile_number_code_id" readonly>
+                                            <select class="flag-select" name="mobile_number_code_id" disabled>
                                                 @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -397,7 +394,7 @@
                                     <!-- Contact No. 2 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="alternative_mobile_number_code_id" readonly>
+                                            <select class="flag-select" name="alternative_mobile_number_code_id" disabled>
                                                 @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -928,6 +925,7 @@
             // toggleLoginForm(formType);
             setTimeout(() => {
                 console.log("invoce_typ", invoce_type);
+                toggleInventoryList();
                 toggleLoginForm(invoce_type);
                 if ($('input[name="transport_type"]').val() != "Air Cargo") {
                     $('select[name="container_id"]')
@@ -940,10 +938,10 @@
             }, 600);
         };
 
-        document.getElementById("addCustomer").onclick = () => {
-            // it's deliver address code
-            document.querySelector(".newCustomerAdd").classList.toggle("none");
-        };
+        // document.getElementById("addCustomer").onclick = () => {
+        //     // it's deliver address code
+        //     document.querySelector(".newCustomerAdd").classList.toggle("none");
+        // };
 
         // 🖼 Image Preview Function
         function previewImage(input, imageType) {
@@ -1003,8 +1001,6 @@
 
                 }
             }
-
-            toggleInventoryList();
 
             $('.authTabDiv').on('click',function () {
                 toggleInventoryList();

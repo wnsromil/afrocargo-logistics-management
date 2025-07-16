@@ -41,7 +41,7 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    {{-- <img style="width: 75px; margin-right: 5px;" src="{{public_path('assets/images/logo_image.png')}}"> --}}
+                                                    <img style="width: 75px; margin-right: 5px;" src="{{public_path('assets/images/logo_image.png')}}">
                                                 </td>
                                                 <td>
                                                     @if($invoice->warehouse)
@@ -62,8 +62,8 @@
                         <td style="width: 25%; text-align: center;">
                             <span
                                 style="background-color: white; padding: 10px 20px; border-radius: 8px; font-size: 18px; font-weight: 600;
-                                border: 1px solid @if($invoice->balance >= 0) #203A5F; color: black; @else red; color: red;@endif">
-                                {{ $invoice->balance >= 0 ? 'Paid':'Due Balance'}}
+                                border: 1px solid @if($invoice->balance <= 0) #203A5F; color: black; @else red; color: red;@endif">
+                                {{ $invoice->balance <= 0 ? 'Paid':'Due Balance'}}
                             </span>
                         </td>
                         <td style="width: 35%;">
@@ -328,8 +328,8 @@
                                 Condition.</span><br>
                             <span style="font-size: 18px; font-weight: 600; line-height: 40px;">Authorized
                                 Sign</span><br>
-                            {{-- <img src="{{$invoice->warehouse && $invoice->warehouse->signature ? public_path(removePart($invoice->warehouse->signature->signature_file, url('/'), true, 1)):'public/uploads/signature/download%20(2).png'}}" alt="Signature"
-                                style="max-width: 100px;"> --}}
+                            <img src="{{$invoice->warehouse && $invoice->warehouse->signature ? public_path(removePart($invoice->warehouse->signature->signature_file, url('/'), true, 1)):'public/uploads/signature/download%20(2).png'}}" alt="Signature"
+                                style="max-width: 100px;">
                         </td>
                         <td style="width: 40%; "> </td>
                         <td
