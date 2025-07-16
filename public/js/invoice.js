@@ -319,16 +319,29 @@ $(document).ready(function () {
             $('input[name="arrived_warehouse_id"]').val(deleveryCountry.id ?? null);
             $('#countryForLocation').val(deleveryCountry.iso2 ?? null).trigger('change');
         }
-        setPickupDeleveryFormValue({
-            alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
-            mobile_number_code_id:deleveryCountry.countryId ?? 1,
-            country:deleveryCountry.country_id ?? "",
-            state:deleveryCountry.state_id ?? "",
-            city:deleveryCountry.city_id ?? "",
-            pincode:deleveryCountry.zip_code ?? "",
-            address1:deleveryCountry.address ?? "",
-            address2:deleveryCountry.address ?? "",
-        },"#ship_to_address")
+
+
+        $("#ship_to_address")
+            .find('select[name="alternative_mobile_number_code_id"]')
+            .val(deleveryCountry.alternative_mobile_number_code_id ?? 1)
+            .trigger("change");
+        $("#ship_to_address")
+            .find('select[name="mobile_number_code_id"]')
+            .val(deleveryCountry.mobile_number_code_id ?? 1)
+            .trigger("change");
+
+        $("#ship_to_address")
+            .find('input[name="mobile_number"]')
+            .val(deleveryCountry.mobile_number ?? "");
+        $("#ship_to_address")
+            .find('input[name="alternative_mobile_number"]');
+        $("#ship_to_address").find('input[name="zip_code"]').val(deleveryCountry.pincode ?? "");
+        $("#ship_to_address").find('input[name="address"]').val(deleveryCountry.address1 ?? "");
+        $("#ship_to_address").find('input[name="country"]').val(deleveryCountry.country ?? "");
+        $("#ship_to_address").find('input[name="state"]').val(deleveryCountry.state ?? "");
+        $("#ship_to_address").find('input[name="city"]').val(deleveryCountry.city ?? "");
+
+
 
         setPickupDeleveryFormValue({
             alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
@@ -724,11 +737,12 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
         userAddress
             .find('input[name="alternative_mobile_number"]')
             .val(customer.alternative_mobile_number);
-        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
-        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
+
         userAddress.find('input[name="address_2"]').val(customer.address2 ?? "");
         userAddress.find('input[name="address_id"]').val(customer.id ?? "");
 
+        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
+        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
         userAddress.find('input[name="country"]').val(customer.country ?? "");
         userAddress.find('input[name="state"]').val(customer.state ?? "");
         userAddress.find('input[name="city"]').val(customer.city ?? "");
