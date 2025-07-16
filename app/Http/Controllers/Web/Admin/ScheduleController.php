@@ -69,10 +69,10 @@ class ScheduleController extends Controller
         $availabilityData['creates_by'] = auth()->id();
         $availabilityData['user_id'] = $request->user_id;
         $availabilityData['is_active'] = 1;
-        if(!$request->is_for_all_location){
+        if (!$request->is_for_all_location) {
             $availabilityData['location_id'] = $existingLocationId;
         }
-       
+
 
         // Time slot availability processing
         $availabilityData['morning'] = $request->input('morning') === 'Inactive' ? 0 : 1;
@@ -149,33 +149,36 @@ class ScheduleController extends Controller
 
     public function locationStore(Request $request)
     {
-        if($request->id && $request->type == 'delete'){
-            LocationSchedule::where('id',$request->id)->delete();
+        if ($request->id && $request->type == 'delete') {
+            LocationSchedule::where('id', $request->id)->delete();
             return redirect()
-            ->route('admin.drivers.schedule', ['id' => $request->user_id, 'tab' => 'location'])
-            ->with('success', 'Location deleted successfully.');
+                ->route('admin.drivers.schedule', ['id' => $request->user_id, 'tab' => 'location'])
+                ->with('success', 'Location deleted successfully.');
         }
 
+        // Validation: address_1 aa rahi hai form se
         $rules = [
-            'address' => 'required|string',
+            'schedule_location' => 'required|string',
         ];
 
+        $validated = $request->validate($rules);
 
-        $availabilityData = $request->validate($rules);
+        // Prepare data
+        $availabilityData = [
+            'address'    => $validated['schedule_location'], // map schedule_location => address
+            'creates_by' => auth()->id(),
+            'user_id'    => $request->user_id,
+            'lat'        => $request->latitude,
+            'lng'        => $request->longitude,
+            'is_active'  => 1,
+        ];
 
-        // Common data
-        $availabilityData['creates_by'] = auth()->id();
-        $availabilityDataIfUpdate['user_id'] = $request->user_id;
-        $availabilityDataIfUpdate['lat'] = $request->latitude;
-        $availabilityDataIfUpdate['lng'] = $request->longitude;
-        $availabilityData['is_active'] = 1;
+        // Update or create
+        LocationSchedule::updateOrCreate(
+            ['user_id' => $request->user_id],
+            $availabilityData
+        );
 
-        // Check if record exists for the user_id
-        $existing = LocationSchedule::where('user_id', $request->user_id)->first();
-
-
-        // Create new record
-        LocationSchedule::updateOrCreate($availabilityDataIfUpdate,$availabilityData);
         return redirect()->route('admin.drivers.schedule', [
             'id' => $request->user_id,
         ])->with('success', 'Location saved successfully.')

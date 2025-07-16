@@ -279,14 +279,31 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <p class="heading mb-0">Item List</p>
                         <div class="d-flex">
-                            <button type="submit" class="btn btn-primary btnf me-2">Signature</button>
-                            <button type="submit" class="btn btn-primary btnf me-2">Invoice</button>
-                            <button type="submit" class="btn btn-primary btnf">Complete</button>
+                            <button type="button"
+                                    class="btn btn-primary btnf me-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="">
+                                <i class="ti ti-signature me-1"></i>Signature
+                            </button>                    
+                            <button type="button"
+                                    class="btn btn-primary btnf me-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#individualPayment{{ $parcel->invoice_id ?? '' }}">
+                                <i class="ti ti-credit-card me-1"></i>Payment
+                            </button>                                
+                            @if($parcel->invoice_id)
+                             <a href="{{ route('invoices.invoicesdownload', encrypt($parcel->invoice_id)) }}"
+                            class="btn btn-primary btnf me-2"
+                            target="_blank"
+                            title="Invoice PDF">
+                            <i class="ti ti-file-invoice"></i> Invoice PDF
+                            </a>
+                            @endif
                         </div>
                     </div>
 
                     <div class="table-responsive notMinheight smallTDs">
-                        <table class="table table-stripped table-hover datatable notposition border1">
+                        <table class="table table-stripped table-hover datatable notposition">
                             <thead class="thead-light">
                                 <tr>
                                     <th> <input type="checkbox" id="selectAll"></th>
@@ -360,8 +377,90 @@
 
                             </tbody>
                         </table>
+                        @if ($parcel->invoice_id)
+                        @include('admin.Invoices.modals.individual_payment_modal')
+                        @endif
                     </div>
                 </div>
+            </div>
+            <div class="row mt-4 ">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <p class="heading mb-0">Payment History</p>
+                        <div class="table-responsive notMinheight smallTDs">
+                           <table class="table table-stripped table-hover datatable notposition">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Invoice ID</th>
+                                            <th>User</th>
+                                            <th>Payment Type</th>
+                                            <th>Payment Date</th>
+                                            <th>Local Currency</th>
+                                            <th>Local Amount</th>
+                                            <th>Currency</th>
+                                            <th>Amt. In Dollar</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @if($invoice)
+                                        @forelse($invoice->individualPayment as $payment)
+                                        <tr>
+                                            <td>{{ $invoice->invoice_no ?? '' }}</td>
+                                            <td>
+                                                <span data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="{{ $payment->createdByUser->name ?? '' }} {{ $payment->createdByUser->last_name ?? '' }}">
+                                                    {{ $payment->createdByUser->name ?? '' }} {{
+                                                    $payment->createdByUser->last_name ?? '' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ ucfirst($payment->payment_type ?? '-') }}</td>
+                                            <td>{{ $payment->payment_date ?
+                                                \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y, h:i a') :
+                                                '-' }}</td>
+                                            <td>{{ $payment->local_currency ?? '-' }}</td>
+                                            <td>{{ number_format($payment->applied_payments ?? 0, 2) }}</td>
+                                            <td>{{ $payment->currency ?? '-' }}</td>
+                                            <td>{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
+            
+                                            
+                                            <td class="d-flex align-items-center">
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{route('invoices.invoicesdownload',encrypt($invoice->id))}}"><i
+                                                                        class="ti ti-file-type-pdf me-2"></i>PDF</a>
+                                                            </li>
+                                                            {{-- <li>
+                                                                <a class="dropdown-item" href="#"><i
+                                                                        class="ti ti-trash me-2"></i>Delete</a>
+                                                            </li> --}}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">No Payments Found</td>
+                                        </tr>
+                                        @endforelse
+                                        @else
+                                           <tr>
+                                            <td colspan="8" class="text-center">No Payments Found</td>
+                                        </tr>
+                                         @endif
+                                    </tbody>
+                           </table>
+                        </div>
+                    </div>
+                 </div>
             </div>
         </div>
         @php
@@ -446,7 +545,7 @@
             <img src="">
         </div>
     </div>
-
+      
     @section('script')
         <script>
             $(function () {

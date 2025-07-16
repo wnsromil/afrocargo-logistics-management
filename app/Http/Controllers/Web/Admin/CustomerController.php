@@ -605,6 +605,7 @@ class CustomerController extends Controller
 
     public function createShipTo(Request $request)
     {
+
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
@@ -623,6 +624,10 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
+            'last_name' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
+            'state_id' => 'nullable|integer',
+            'city_id' => 'nullable|integer',
         ]);
         try {
 
@@ -647,6 +652,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name' => $request->last_name ?? null,
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -673,6 +679,30 @@ class CustomerController extends Controller
 
             // 📌 Create User
             $user = User::create($userData);
+
+            insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id' => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' => $request->city_id ?? null, // 🟡 city_id from request
+                'country_id' => $validated['country'] ?? null,
+                'name' => $validated['first_name'],
+                'last_name' => $request->last_name ?? null, // 🟡 last_name from request (not validated)
+                'full_name' => $validated['first_name'] . ' ' . ($request->last_name ?? ''),
+                'pincode' => $request->zip_code ?? null, // 🟡 Zip_code from request
+                'state_id' => $request->state_id ?? null, // 🟡 state from request
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null, // 🟢 matching with validated
+                'long' => $validated['longitude'] ?? null, // 🟢 matching with validated
+                'type' => 'Services',
+                'default_address' => 'Yes',
+            ]);
+
+
             return redirect()
                 ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=ShipTo')
                 ->with('success', 'Ship to user created successfully.');
@@ -733,6 +763,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name' => $request->last_name ?? null,
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'],
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -754,6 +785,28 @@ class CustomerController extends Controller
             ];
 
             $user->update($userData);
+
+            updateAddress($id, [
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id' => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' => $request->city_id ?? null, // 🟡 city_id from request
+                'country_id' => $validated['country'] ?? null,
+                'name' => $validated['first_name'],
+                'last_name' => $request->last_name ?? null, // 🟡 last_name from request (not validated)
+                'full_name' => $validated['first_name'] . ' ' . ($request->last_name ?? ''),
+                'pincode' => $request->zip_code ?? null, // 🟡 Zip_code from request
+                'state_id' => $request->state_id ?? null, // 🟡 state from request
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null, // 🟢 matching with validated
+                'long' => $validated['longitude'] ?? null, // 🟢 matching with validated
+                'type' => 'Services',
+                'default_address' => 'Yes',
+            ]);
 
             return redirect()
                 ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')

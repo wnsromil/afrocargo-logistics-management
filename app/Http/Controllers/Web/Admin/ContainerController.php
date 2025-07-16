@@ -346,7 +346,7 @@ class ContainerController extends Controller
         $vehicle->transit_country = $request->transit_country;
         $vehicle->save();
 
-        return redirect()->route('admin.container.show', ['container' => $id])->with('success', 'Container added successfully.');
+        return redirect()->route('admin.container.show', ['id' => $id])->with('success', 'Container added successfully.');
     }
 
     /**

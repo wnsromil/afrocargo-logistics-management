@@ -16,7 +16,8 @@ use App\Models\{
     Vehicle,
     ContainerHistory,
     ParcelPickupDriver,
-    ParcelInventorie
+    ParcelInventorie,
+    Invoice
 };
 use Carbon\Carbon;
 
@@ -368,7 +369,16 @@ class HubTrackingController extends Controller
 
         $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
 
-        return view('admin.hubs.orderdetails', compact('parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel'));
+        $invoice = Invoice::with(['invoiceParcelData', 'deliveryAddress', 'pickupAddress', 'createdByUser', 'container', 'driver', 'invoiceParcelData', 'comments', 'individualPayment', 'barcodes', 'warehouse', 'claims'])->where('id', $parcel->invoice_id)->first();
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $customers = $user->where('role_id', 3)->values();
+
+        $drivers = $user->where('role_id', 4)->values();
+
+        return view('admin.hubs.orderdetails', compact('user', 'customers', 'drivers', 'parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel', 'invoice'));
     }
 
     /**

@@ -15,7 +15,7 @@ use App\Models\{
     Expense,
     ContainerHistory
 };
-
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -66,7 +66,11 @@ class DashboardController extends Controller
 
         $totalExpenses = Expense::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
-        })->sum('amount');
+        })->where('category', 'Expense')->sum('amount');
+
+        $todaysExpenses = Expense::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })->where('category', 'Expense')->whereDate('date', Carbon::today())->sum('amount');
 
         $todayEarnings = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
@@ -152,7 +156,8 @@ class DashboardController extends Controller
             'total_Cargo' => $totalCargo,
             'total_Air' => $totalAir,
             'upcomingContainers' => $upcomingContainers,
-            'totalExpenses' => $totalExpenses
+            'totalExpenses' => $totalExpenses,
+            'todaysExpenses' => $todaysExpenses,
         ]);
     }
 }

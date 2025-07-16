@@ -95,7 +95,30 @@ class ShiptoController extends Controller
                 'license_document' => $imagePaths['license_picture'] ?? null,
             ];
 
+
             $user = User::create($userData);
+
+            insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['Model_ShipTo_address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id'        =>   (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' =>  $validated['city'] ?? null,
+                'country_id' =>  $validated['country'] ?? null,
+                'name'       => $validated['first_name'],
+                'last_name'       => $validated['last_name'],
+                'full_name' => $validated['first_name'] . ' ' . ($validated['last_name'] ?? ''),
+                'pincode' => $validated['Zip_code'] ?? null,
+                'state_id' =>  $validated['state'] ?? null,
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['ship_to_latitude'] ?? null,
+                'long' => $validated['ship_to_longitude'] ?? null,
+                'type' => 'Services', // Default type
+                'default_address' => 'Yes'
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -208,7 +231,7 @@ class ShiptoController extends Controller
                 'lat' => $validated['ship_to_latitude'] ?? null,
                 'long' => $validated['ship_to_longitude'] ?? null,
                 'type' => 'Services', // Default type
-                'default_address' => 'No'
+                'default_address' => 'Yes'
             ]);
 
             return response()->json([
