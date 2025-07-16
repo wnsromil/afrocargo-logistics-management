@@ -68,8 +68,7 @@
                                     <table>
                                         <tr>
                                             <td style=" vertical-align: middle;">
-                                                <img style="width: 60px; margin-right: 5px;"
-                                                    src="https://afrocargo.senomicsecurity.in/public/assets/images/logo_image.png">
+                                                <img style="width: 75px; margin-right: 5px;" src="{{public_path('assets/images/logo_image.png')}}">
                                             </td>
                                             <td>
                                                 <strong>{{$invoice->warehouse->warehouse_name ?? ''}}</strong><br>

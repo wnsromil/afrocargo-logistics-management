@@ -180,7 +180,7 @@
                                 <button type="button" class="btn btn-outline-secondary" id="add_ship_cancel">
                                     Cancel
                                 </button>
-                                
+
                             </div> --}}
                         </div>
 
@@ -364,14 +364,14 @@
                                     <label class="foncolor" for="warehouse_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
-                                        placeholder="Enter First Name">
+                                        placeholder="Enter First Name" readonly>
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="last_name">Last Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="last_name" class="form-control inp"
-                                        placeholder="Enter Last Name">
+                                        placeholder="Enter Last Name" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
@@ -379,7 +379,7 @@
                                     <!-- Contact No. 1 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="mobile_number_code_id">
+                                            <select class="flag-select" name="mobile_number_code_id" readonly>
                                                 @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -388,7 +388,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                            placeholder="Enter Contact No. 2" name="mobile_number" readonly>
                                     </div>
 
                                 </div>
@@ -397,7 +397,7 @@
                                     <!-- Contact No. 2 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id" readonly>
                                                 @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -406,7 +406,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -420,7 +420,7 @@
                                     <label class="foncolor" for="Address.2 address">Address 2 </label>
                                     <!-- Address 2 — optional, you may remove or merge -->
                                     <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
+                                        placeholder="Enter Address 2" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
@@ -988,17 +988,17 @@
                 $('#supplySelector').empty();
                 if(invoce_type == 'services') {
 
-                    
+
                     $('#supplySelector').append(ServiceOptions);
                     $('#supplySelector').val(null).trigger('change');
                     $('#supplyModalTitle').text('Service');
-                
+
                     invoce_type = 'services';
                 } else {
                     $('#supplyModalTitle').text('Supply');
                     $('#supplySelector').append(SupplyOptions);
                     $('#supplySelector').val(null).trigger('change');
-                    
+
                     invoce_type = 'supplies';
 
                 }

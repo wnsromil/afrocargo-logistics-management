@@ -381,14 +381,14 @@
                                     <label class="foncolor" for="first_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
-                                        placeholder="Enter First Name">
+                                        placeholder="Enter First Name" readonly>
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="last_name">Last Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="last_name" class="form-control inp"
-                                        placeholder="Enter Last Name">
+                                        placeholder="Enter Last Name" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
@@ -396,7 +396,7 @@
                                     <!-- Contact No. 1 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="mobile_number_code_id">
+                                            <select class="flag-select" name="mobile_number_code_id" readonly>
                                                 @foreach ($coutry as $key => $item)
                                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -405,7 +405,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                            placeholder="Enter Contact No. 2" name="mobile_number" readonly>
                                     </div>
 
                                 </div>
@@ -414,7 +414,7 @@
                                     <!-- Contact No. 2 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id" readonly>
                                                 @foreach ($coutry as $key => $item)
                                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -423,7 +423,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -431,13 +431,13 @@
                                             class="text-danger">*</i></label>
                                     <!-- Address 1 -->
                                     <input type="text" name="address" class="form-control inp address"
-                                        placeholder="Enter Address 1">
+                                        placeholder="Enter Address 1" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Address.2 address">Address 2 </label>
                                     <!-- Address 2 — optional, you may remove or merge -->
                                     <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
+                                        placeholder="Enter Address 2" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
@@ -489,7 +489,7 @@
                                     <!-- Zip Code -->
                                     <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </form>
@@ -698,6 +698,7 @@
                                             </button>
                                         </div>
                                         <input type="hidden" name="supply_id">
+                                        <input type="hidden" name="inventory_id">
                                     </td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
@@ -793,7 +794,7 @@
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
-                                
+
 
                             </select>
                             <div class="row mt-3">
@@ -855,6 +856,7 @@
                 // toggleLoginForm(formType);
                 setTimeout(() => {
                     console.log("invoce_typ", invoce_type);
+                    toggleInventoryList();
                     toggleLoginForm(invoce_type);
                     if ($('input[name="transport_type"]').val() != "Air Cargo") {
                         $('select[name="container_id"]')
@@ -867,14 +869,14 @@
                 }, 600);
             };
 
-            document.getElementById("addCustomer").onclick = () => {
-                // it's deliver address code
-                document.querySelector(".newCustomerAdd").classList.toggle("none");
-            };
+            // document.getElementById("addCustomer").onclick = () => {
+            //     // it's deliver address code
+            //     document.querySelector(".newCustomerAdd").classList.toggle("none");
+            // };
             function toggleInventoryList(){
                 let SupplyOptions = '';
                 let ServiceOptions = '';
-                console.log("invoce_type", invoce_type);
+                console.log("invoce_type ttttt", invoce_type);
 
                 if (supplyItems && supplyItems.length > 0) {
                     supplyItems.forEach(function (supply) {
@@ -889,23 +891,23 @@
                 $('#supplySelector').empty();
                 if(invoce_type == 'services') {
 
-                    
+                    $('#supplyModalTitle').text('Service');
                     $('#supplySelector').append(ServiceOptions);
                     $('#supplySelector').val(null).trigger('change');
-                    $('#supplyModalTitle').text('Service');
-                
+
+
                     invoce_type = 'services';
                 } else {
                     $('#supplyModalTitle').text('Supply');
                     $('#supplySelector').append(SupplyOptions);
                     $('#supplySelector').val(null).trigger('change');
-                    
+
                     invoce_type = 'supplies';
 
                 }
             }
 
-            toggleInventoryList();
+
 
             $('.authTabDiv').on('click',function () {
                 toggleInventoryList();
