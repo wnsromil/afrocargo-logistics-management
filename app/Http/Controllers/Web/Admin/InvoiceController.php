@@ -1179,7 +1179,7 @@ class InvoiceController extends Controller
         //     return null;
         // }
 
-        if(!empty($address->address_type) && !empty($address->full_name) && !empty($address->user)){
+        if(!empty($address->user)){
             return [
                 'id' => $address->id,
                 'user_id' => $address->user_id ?? '',
@@ -1240,14 +1240,16 @@ class InvoiceController extends Controller
 
 
     protected function shipToAddress($user, $parcel = null,$type=null) {
-        $user = User::with(['shipToAddress'])->find($user->id);
+        // $user = User::with(['shipToAddress'])->find($user->id);
 
-        if (empty($user) || empty($user->shipToAddress) || $user->shipToAddress->isEmpty()) return null;
-        $users = $user->shipToAddress;
-        if ($users->isEmpty()) return null;
+        $users = User::with('defaultAddress')->where('invoice_custmore_id',$user->id)->orWhere('parent_customer_id',$user->id)->get();
+
+        // if (empty($user) || empty($user->shipToAddress) || $user->shipToAddress->isEmpty()) return null;
+        // $users = $user->shipToAddress;
+        // if ($users->isEmpty()) return null;
         return $users->map(function ($usr) use ($type,$parcel) {
             return $this->formatAddress($usr->defaultAddress, $parcel, $type);
-        });
+        })->filter(fn($i) => $i)->values();
     }
 
 
