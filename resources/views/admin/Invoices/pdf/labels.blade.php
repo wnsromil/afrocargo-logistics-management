@@ -68,8 +68,7 @@
                                     <table>
                                         <tr>
                                             <td style=" vertical-align: middle;">
-                                                <img style="width: 60px; margin-right: 5px;"
-                                                    src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                <img style="width: 75px; margin-right: 5px;" src="{{public_path('assets/images/logo_image.png')}}">
                                             </td>
                                             <td>
                                                 <strong>{{$invoice->warehouse->warehouse_name ?? ''}}</strong><br>
@@ -81,7 +80,7 @@
                                         </tr>
                                     </table>
                                 <td style="text-align: right;">
-                                    @if($invoice->invoiceParcelData)
+                                    @if($invoice->invoiceParcelData && $invoice->invoiceParcelData->arrivedWarehouse)
                                     <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                         ?? ''}}</b><br>
                                     {{$invoice->invoiceParcelData->arrivedWarehouse->address
@@ -141,6 +140,7 @@
                         <tbody>
                             <tr></tr>
                             <tr>
+                                @if ($invoice->deliveryAddress)
                                 <td>
                                     <b style="font-size: 13px;">Ship To:</b><br>
                                     {{ $invoice->deliveryAddress->full_name ?? '' }} <br>
@@ -148,6 +148,7 @@
                                     {{ $invoice->deliveryAddress->state_id ?? '' }} {{
                                     $invoice->deliveryAddress->country_id ?? '' }} <br>
                                 </td>
+                                @endif
                                 <td style="text-align: right; font-size: 15px; font-weight: 700;">
                                     Tracking Items: {{count($invoice->barcodes??[])}}
                                 </td>
@@ -189,7 +190,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="">
+                                <td style="text-align: center;">
                                     @if ($barcode->ParcelInventory)
                                     {{ $barcode->ParcelInventory->supply_name ?? '' }}
                                     @else
@@ -199,15 +200,22 @@
                             </tr>
                             <tr>
                                 <td style="text-align: center;">
-                                    <div>
-                                        <div style="display: flex; justify-content: center; align-items: center;">
-                                            {!! $barcode->barcode ?? '' !!}
-                                        </div>
-                                        <span
-                                            style="display: block; font-weight: bold; font-size: 16px; text-align: center;">
-                                            {!! $barcode->barcode_code ?? '' !!}
-                                        </span>
-                                    </div>
+                                    <table style="width: 100%; margin: 0 auto; text-align: center;">
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <div style="display: inline-block; text-align: center;">
+                                                    <span>{!! $barcode->barcode ?? '' !!}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <div style="display: inline-block; text-align: center;">
+                                                    <span style="font-weight: bold; font-size: 16px;">{!! $barcode->barcode_code ?? '' !!}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <br>
                                     <strong>
                                         {{ $invoice->pickupAddress->address ?? '' }}

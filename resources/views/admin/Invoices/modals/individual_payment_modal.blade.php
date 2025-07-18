@@ -64,6 +64,13 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
+                                <label>Exchange Rate<i class="text-danger">*</i></label>
+                                <input type="text" name="exchange_rate" class="form-control inp inputbackground"
+                                    readonly placeholder="Exchange Rate" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="input-block flexblockInput mb-3">
                                 <label for="driver_id">Payment Type<i class="text-danger">*</i></label>
                                 <select class="js-example-basic-single select2  form-cs" name="payment_type">
                                     <option selected="selected" disabled hidden>Select Type</option>
@@ -127,6 +134,14 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
+                                <label>Current Balance After Ex.Rate<i class="text-danger">*</i></label>
+                                <input type="text" name="balance_after_exchange_rate"
+                                    class="form-control inp inputbackground" readonly
+                                    placeholder="Current Balance After Ex.Rate" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="input-block flexblockInput mb-3">
                                 <label>Applied Payment Total In USD<i class="text-danger">*</i></label>
                                 <input type="text" name="applied_total_usd" class="form-control inp inputbackground"
                                     readonly placeholder="Applied Payment Total In USD" />
@@ -137,21 +152,6 @@
                                 <label>Current Balance<i class="text-danger">*</i></label>
                                 <input type="text" name="current_balance" class="form-control inp inputbackground"
                                     readonly placeholder="Current Balance" />
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="input-block flexblockInput mb-3">
-                                <label>Exchange Rate<i class="text-danger">*</i></label>
-                                <input type="text" name="exchange_rate" class="form-control inp inputbackground"
-                                    readonly placeholder="Exchange Rate" />
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="input-block flexblockInput mb-3">
-                                <label>Current Balance After Ex.Rate<i class="text-danger">*</i></label>
-                                <input type="text" name="balance_after_exchange_rate"
-                                    class="form-control inp inputbackground" readonly
-                                    placeholder="Current Balance After Ex.Rate" />
                             </div>
                         </div>
                     </div>

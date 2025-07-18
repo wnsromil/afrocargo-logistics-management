@@ -212,7 +212,7 @@ $(document).ready(function () {
         console.log("address_type", address_type);
     });
 
-    
+
 
     $('#delevery_customer_id').select2({
         ajax: {
@@ -256,27 +256,13 @@ $(document).ready(function () {
                                     customer: customer ?? "", // Store the full customer object
                                     delivery_address:customer.delivery_address
                                 };
-                            } 
-                            // if(customer.delivery_address){
-                            //     customer.delivery_address.forEach(addr => {
-                            //         let newOption = new Option(addr.text, addr.id, true, true);
-                            //         // Add new option if not already present
-                            //         $("#ship_customer").append(newOption).trigger("change");
-                            //     });
-                            // }
-                            // else if (customer.delivery_address) {
-                            //     return {
-                            //         id: customer.delivery_address.id ?? "",
-                            //         text: customer.delivery_address.text ?? "",
-                            //         customer: customer ?? "", // Store the full customer object
-                            //     };
-                            // } 
+                            }
                             else {
                                 return false;
                             }
                         })
                         .filter((i) => i),
-                    
+
                 };
             },
             cache: true,
@@ -297,16 +283,16 @@ $(document).ready(function () {
             $('select[name="warehouse_id"]').val(shipCountry.id ?? null).trigger('change');
         }
 
-        setPickupDeleveryFormValue({
-            alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
-            mobile_number_code_id:shipCountry.countryId ?? 1,
-            country:shipCountry.country_id ?? "",
-            state:shipCountry.state_id ?? "",
-            city:shipCountry.city_id ?? "",
-            pincode:shipCountry.zip_code ?? "",
-            address1:shipCountry.address ?? "",
-            address2:shipCountry.address ?? "",
-        },"#delivery_to_address")
+        // setPickupDeleveryFormValue({
+        //     alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
+        //     mobile_number_code_id:shipCountry.countryId ?? 1,
+        //     country:shipCountry.country_id ?? "",
+        //     state:shipCountry.state_id ?? "",
+        //     city:shipCountry.city_id ?? "",
+        //     pincode:shipCountry.zip_code ?? "",
+        //     address1:shipCountry.address ?? "",
+        //     address2:shipCountry.address ?? "",
+        // },"#delivery_to_address")
     });
 
     $('#deleveryCountry').on("select2:select", function (e) {
@@ -319,6 +305,30 @@ $(document).ready(function () {
             $('input[name="arrived_warehouse_id"]').val(deleveryCountry.id ?? null);
             $('#countryForLocation').val(deleveryCountry.iso2 ?? null).trigger('change');
         }
+
+
+        $("#ship_to_address")
+            .find('select[name="alternative_mobile_number_code_id"]')
+            .val(deleveryCountry.alternative_mobile_number_code_id ?? 1)
+            .trigger("change");
+        $("#ship_to_address")
+            .find('select[name="mobile_number_code_id"]')
+            .val(deleveryCountry.mobile_number_code_id ?? 1)
+            .trigger("change");
+
+        $("#ship_to_address")
+            .find('input[name="mobile_number"]')
+            .val(deleveryCountry.mobile_number ?? "");
+        $("#ship_to_address")
+            .find('input[name="alternative_mobile_number"]');
+        $("#ship_to_address").find('input[name="zip_code"]').val(deleveryCountry.pincode ?? "");
+        $("#ship_to_address").find('input[name="address"]').val(deleveryCountry.address1 ?? "");
+        $("#ship_to_address").find('input[name="country"]').val(deleveryCountry.country ?? "");
+        $("#ship_to_address").find('input[name="state"]').val(deleveryCountry.state ?? "");
+        $("#ship_to_address").find('input[name="city"]').val(deleveryCountry.city ?? "");
+
+
+
         setPickupDeleveryFormValue({
             alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
             mobile_number_code_id:deleveryCountry.countryId ?? 1,
@@ -328,7 +338,7 @@ $(document).ready(function () {
             pincode:deleveryCountry.zip_code ?? "",
             address1:deleveryCountry.address ?? "",
             address2:deleveryCountry.address ?? "",
-        },"#ship_to_address")
+        },"#model_shipto_Form")
     });
 
     $('#delevery_customer_id').on("select2:select", function (e) {
@@ -355,7 +365,7 @@ $(document).ready(function () {
 
         // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
         $('input[name="invoce_item"]').val(customer.parcel_inventory);
-        
+
 
         let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
 
@@ -418,7 +428,7 @@ $(document).ready(function () {
 
 
 
-        
+
         $('#order_list').empty() // Clear existing options
         $('#ship_customer').empty() // Clear existing options
         sipToAddress.forEach(function(addr) {
@@ -427,6 +437,8 @@ $(document).ready(function () {
         });
 
         setPickupDeleveryFormValue(customer);
+
+        setPickupDeleveryFormValue(customer,"#model_shipto_Form")
 
 
         if(customer){
@@ -443,9 +455,9 @@ $(document).ready(function () {
                     response.data.forEach(function(addr) {
                         // Create option with text and tracking number as value
                         let option = new Option(
-                            addr.tracking_number + ',' + addr.source_address, 
+                            addr.tracking_number + ',' + addr.source_address,
                             addr.tracking_number, // Use a unique identifier as value
-                            false, 
+                            false,
                             false
                         );
                         // Store the entire object as a data attribute
@@ -475,7 +487,7 @@ $(document).ready(function () {
         var selectedObject = selectedOption.data('object');
 
         console.log("selectedObject",selectedObject);
-        
+
         let inventoryItems = selectedObject.parcel_inventory;
         dynamicInventoryTable(inventoryItems);
 
@@ -487,7 +499,7 @@ $(document).ready(function () {
         }, 100); // Adjust the timeout as needed
 
         $('input[name="descriptions"]').val(selectedObject.descriptions);
-        $('input[name="weight"]').val(selectedObject.weight);
+        $('input[name="weight"]').val(selectedObject.weight ?? null);
         $('input[name="parcel_id"]').val(selectedObject.parcel_id ?? null);
         // Set the value and trigger change for Select2 to show the selected option
         $('select[name="container_id"]').val(selectedObject.container_id ?? null).trigger('change');
@@ -511,7 +523,7 @@ $(document).ready(function () {
                 console.log('Air Cargo');
                 // Default to "Air Cargo" if not set
                 $('input[name="transport_type"]').each(function () {
-                    
+
                     if ($(this).val() === "Air Cargo") {
                         console.log('Select Air Cargo');
                         $(this).prop('checked', true);
@@ -539,6 +551,9 @@ $(document).ready(function () {
                             </button>
                         </div>
                         <input type="hidden" name="supply_id" value="${
+                            item.supply_id || ""
+                        }">
+                        <input type="hidden" name="inventory_id" value="${
                             item.id || ""
                         }">
                     </td>
@@ -549,7 +564,7 @@ $(document).ready(function () {
                         item.label_qty || 0
                     }"></td>
                     <td><input type="text" class="form-control tdbor inputcolor" placeholder="" name="volume" value="${
-                        item.volume || 0 
+                        item.volume || 0
                         }"></td>
                     <td>
                         <div class="d-flex align-items-center priceInput">
@@ -602,6 +617,7 @@ $(document).ready(function () {
                                             </button>
                                         </div>
                                         <input type="hidden" name="supply_id">
+                                        <input type="hidden" name="inventory_id">
                                     </td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
@@ -656,7 +672,7 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
             customer.address_type == "delivery"
                 ? $("#ship_to_address"):$("#delivery_to_address");
         }
-        
+
         // Split full name into first and last name
         // var names = customer.full_name.split(' ');
         // var firstName = names[0];
@@ -665,19 +681,26 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
         if(customer.text){
             newOption = new Option(customer.text, customer.id, true, true);
         }
-        
+
 
         if (customer.address_type == "delivery") {
-            $('input[name="pickup_address_id"]').val(customer.id ?? '');
+            if(!setCustomerInfo){
+                $('input[name="pickup_address_id"]').val(customer.id ?? '');
 
-            // Add new option if not already present
-            $("#ship_customer").append(newOption).trigger("change");
+                // Add new option if not already present
+                $("#ship_customer").append(newOption).trigger("change");
+            }
         } else {
-            $('input[name="delivery_address_id"]').val(customer.id ?? '');
+
             $('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
             // delevery select box
-            // Add new option if not already present
-            $("#delevery_customer_id").append(newOption).trigger("change");
+
+            if(!setCustomerInfo){
+                // Add new option if not already present
+                $('input[name="delivery_address_id"]').val(customer.id ?? '');
+                $("#delevery_customer_id").append(newOption).trigger("change");
+            }
+
         }
 
         // Fill the form fields
@@ -707,11 +730,12 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
         userAddress
             .find('input[name="alternative_mobile_number"]')
             .val(customer.alternative_mobile_number);
-        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
-        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
+
         userAddress.find('input[name="address_2"]').val(customer.address2 ?? "");
         userAddress.find('input[name="address_id"]').val(customer.id ?? "");
 
+        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
+        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
         userAddress.find('input[name="country"]').val(customer.country ?? "");
         userAddress.find('input[name="state"]').val(customer.state ?? "");
         userAddress.find('input[name="city"]').val(customer.city ?? "");
@@ -751,7 +775,12 @@ $(document).on("click", ".open-supply-modal", function () {
 
 $(document).on("click", ".confirm-supply", function () {
     const selectedId = $("#supplySelector").val();
-    const selectedItem = supplyItems.find((item) => item.id == selectedId);
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
 
     if (selectedItem && currentRow) {
         currentRow.find('input[name="supply_id"]').val(selectedItem.id);
@@ -977,6 +1006,7 @@ $(document).ready(function () {
             "mobile_number",
             "address",
             "country",
+            "country",
         ];
 
         if (!jsValidator(requiredFields,$("#pick_up_customer_inf_form"))) {
@@ -988,11 +1018,54 @@ $(document).ready(function () {
         hendelAjex("/saveInvoceCustomer", formData);
     });
 
+    $("#add_ship_modal_save").on("click", function (e) {
+        e.preventDefault();
+
+        const requiredFields = [
+            "first_name",
+            "last_name",
+            "mobile_number",
+            "address",
+            "country",
+        ];
+
+        if (!jsValidator(requiredFields,$("#model_shipto_Form"))) {
+            return;
+        }
+
+        let formData = $("#model_shipto_Form").serialize();
+        // Submit via AJAX
+        hendelAjex("/saveInvoceCustomer", formData);
+    });
+
+    $("#add_customer_modal_save").on("click", function (e) {
+        e.preventDefault();
+
+        const requiredFields = [
+            "first_name",
+            "last_name",
+            "mobile_number",
+            "address",
+            "country",
+            "email"
+        ];
+
+        if (!jsValidator(requiredFields,$("#CustomerCreate_Form"))) {
+            return;
+        }
+
+        let formData = $("#CustomerCreate_Form").serialize();
+        // Submit via AJAX
+        hendelAjex("/saveInvoceCustomer", formData);
+    });
+
     if (pickupAddress) {
         setPickupDeleveryFormValue(pickupAddress);
+        setPickupDeleveryFormValue(pickupAddress,$("#model_shipto_Form"));
     }
     if (deliveryAddress) {
         setPickupDeleveryFormValue(deliveryAddress);
+        setPickupDeleveryFormValue(deliveryAddress,$("#CustomerCreate_Form"));
     }
 
     $("#dynamicTable tbody tr:last").find(".addBtn").show();
@@ -1000,6 +1073,7 @@ $(document).ready(function () {
 
 function hendelAjex(url, formData) {
     // Submit via AJAX
+    showLoader();
     $.ajax({
         url: url,
         method: "POST",
@@ -1008,7 +1082,10 @@ function hendelAjex(url, formData) {
             setPickupDeleveryFormValue(response.data);
             $("#add_ship_cancel").click();
             $("#add_delevery_cancel").click();
-            
+            $("#add_ship_modal_cancel").click();
+            $("#add_cutomer_modal_cancel").click();
+            hideLoader();
+
             if (response.success) {
                 // alert(response.message);
 
@@ -1027,6 +1104,7 @@ function hendelAjex(url, formData) {
             }
         },
         error: function (xhr) {
+            hideLoader();
             let errors = xhr.responseJSON?.errors;
             if (errors) {
                 Object.keys(errors).forEach((key) => {
@@ -1052,6 +1130,7 @@ function getInvoiceItemsJSON() {
         const item = {
             supply_name: $(this).find('[name="supply_name"]').val(),
             supply_id: $(this).find('[name="supply_id"]').val(),
+            inventory_id: $(this).find('[name="inventory_id"]').val() ?? null,
             qty: parseFloat($(this).find('[name="qty"]').val()) || 0,
             label_qty:$(this).find('[name="label_qty"]').val() || '-',
             volume: parseFloat($(this).find('[name="volume"]').val()) || 0,
@@ -1077,12 +1156,12 @@ $("#services").on("submit", function (e) {
         // pickup_address_id: "required_if:invoce_type,services",
         // container_id:
         //     "required_if:invoce_type,services|required_if:transport_type,cargo|numeric",
-        driver_id: "numeric",
+        // driver_id: "nullable|numeric",
         warehouse_id: "required|numeric",
-        ins: "numeric",
-        discount: "numeric",
+        ins: "nullable|numeric",
+        discount: "nullable|numeric",
         tax: "numeric",
-        weight: "numeric",
+        weight: "nullable",
         balance: "numeric",
         total_price: "required|numeric",
         total_qty: "required|numeric",
@@ -1209,7 +1288,7 @@ function calculateExchangeFields(form) {
     // $('input[name="exchange_rate"]').val(rate);
 
     // Calculate payment in USD (or base currency)
-    const paymentInBase = payment * rate;
+    const paymentInBase = payment/rate;
     maxPaymentAmountValue = totalBalance * rate;
     form.find('input[name="exchange_rate_balance"]').val(
         maxPaymentAmountValue.toFixed(2)
@@ -1261,76 +1340,6 @@ $(document).on("change", 'select[name="local_currency"]', function () {
     calculateExchangeFields(form);
 });
 
-// Update calculateExchangeFields to accept a form parameter
-// function calculateExchangeFields(form) {
-//     // Use the provided form or default to the whole document
-//     form = form || $(document);
-
-//     // Get values from the closest form
-//     const payment = parseFloat(form.find('input[name="payment_amount"]').val()) || 0;
-//     const totalBalance = parseFloat(form.find('input[name="total_balance"]').val()) || 0;
-//     let rate = form.find('input[name="exchange_rate"]').val() || 1;
-//     const currency = form.find('select[name="local_currency"]').val();
-
-//     form.find('input[name="exchange_rate"]').prop("readonly", false);
-
-//     if (currency === "USD") {
-//         rate = 1;
-//         form.find('input[name="exchange_rate"]').prop("readonly", true);
-//     }
-
-//     // Calculate payment in USD (or base currency)
-//     const paymentInBase = payment * rate;
-//     maxPaymentAmountValue = totalBalance * rate;
-//     form.find('input[name="exchange_rate_balance"]').val(
-//         maxPaymentAmountValue.toFixed(2)
-//     );
-
-//     // Applied payments (for now, just current payment)
-//     form.find('input[name="applied_payments"]').val(payment.toFixed(2));
-//     form.find('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
-
-//     // Balance after payment (in original currency)
-//     const balanceAfterPayment = totalBalance - payment / rate;
-//     form.find('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
-
-//     // Balance after payment, converted to base currency
-//     const balanceAfterExchange = balanceAfterPayment * rate;
-//     form.find('input[name="balance_after_exchange_rate"]').val(
-//         balanceAfterExchange.toFixed(2)
-//     );
-// }
-
-// // Fetch and set exchange rates on page load and when currency changes
-// function fetchAndSetExchangeRates() {
-//     $.get(`/api/getCurrencyExchangeRate`, function (res) {
-//         if (res) {
-//             exchangeRates = res;
-//             // Set select options if input[name="currency"] exists
-//             const $currencyInput = $('select[name="local_currency"]');
-//             if ($currencyInput.length) {
-//                 let options = "";
-//                 res.forEach(function (cur) {
-//                     options += `<option value="${cur.currency_code}">${cur.currency_name}-${cur.currency_code}</option>`;
-//                 });
-//                 // If input is actually a select, set options
-//                 if ($currencyInput.is("select")) {
-//                     $currencyInput.html(options);
-//                 }
-//             }
-//         }
-//     });
-// }
-
-// // Call on page load
-// $(document).ready(function () {
-//     fetchAndSetExchangeRates();
-// });
-
-// // Also call when currency changes (if needed)
-// $('input[name="local_currency"]').on("change", fetchAndSetExchangeRates);
-
-// Handles sending invoice email or SMS using the form and invoice ID
 // Listen for form submission
 $(document)
     .off("submit", "#sendInvoiceForm")
@@ -1500,4 +1509,29 @@ $(document)
                 previous: "fas fa-angle-left",
             },
         });
+    }
+
+    // 🖼 Image Preview Function
+    function previewImage(input, imageType) {
+        if (input.files && input.files[0]) {
+            let file = input.files[0];
+
+            // ✅ Sirf PNG ya JPG Allow Hai
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview_' + imageType).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only PNG & JPG images are allowed!");
+                input.value = ""; // Invalid file ko remove karna
+            }
+        }
+    }
+
+    // ❌ Remove Image Function
+    function removeImage(imageType) {
+        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+        document.getElementById('file_' + imageType).value = "";
     }

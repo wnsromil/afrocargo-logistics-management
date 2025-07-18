@@ -6,7 +6,7 @@ use App\Helpers\SettingsHelper;
 
 function isActive($urls, $class = 'active',$default='')
 {
-    
+
     if (!is_array($urls)) {
         $urls = explode(',',$urls);
         if(count($urls) > 1){
@@ -79,5 +79,39 @@ function carbon() {
 
 function sum(...$numbers) {
     return array_sum($numbers);
+}
+
+function removePart(string $subject,
+                    string $needle,
+                    bool   $caseInsensitive = false,
+                    bool   $firstOnly       = false): string
+{
+    if ($needle === '') {
+        // Nothing to remove; avoid an infinite loop.
+        return $subject;
+    }
+
+    if ($firstOnly) {
+        // Build a regex that escapes special chars in $needle.
+        $pattern = '/' . preg_quote($needle, '/') . '/' . ($caseInsensitive ? 'i' : '');
+        // Replace only the first hit.
+        return preg_replace($pattern, '', $subject, 1);
+    }
+
+    // Remove ALL occurrences with the appropriate replace.
+    return $caseInsensitive
+        ? str_ireplace($needle, '', $subject)
+        : str_replace($needle, '', $subject);
+}
+
+function getStepArray($input,$steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]) {
+    $result = [];
+
+    for ($i = 0; $i < count($steps); $i++) {
+        array_push($result, $steps[$i]);
+        if ($steps[$i] >= $input) break;
+    }
+
+    return $result;
 }
 

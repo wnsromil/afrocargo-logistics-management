@@ -2008,8 +2008,8 @@ Version      : 1.0
                 setField("state", state);
                 setField("city", city);
                 // If you have latitude/longitude fields, add them here as needed
-                // setField("latitude", lat);
-                // setField("longitude", lng);
+                setField("lat", lat);
+                setField("lng", lng);
             });
         });
     }

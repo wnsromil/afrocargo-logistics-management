@@ -93,8 +93,8 @@ class AvailabilityController extends Controller
             'address' => $validatedData['address'],
             'creates_by' => auth()->id(),
             'user_id' => auth()->id(),
-            'lat' => "55",
-            'lng' => "86",
+            'lat' => $request->lat,
+            'lng' => $request->lng,
             'is_active' => 1,
         ];
 
@@ -131,7 +131,7 @@ class AvailabilityController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        
+
         $userId = auth()->id();
 
         $location = LocationSchedule::where('user_id', $userId)->where('id',$request->ids)->latest()->get();
