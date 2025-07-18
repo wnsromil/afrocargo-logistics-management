@@ -42,7 +42,7 @@
                     <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
                     <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}" readonly
                         style="background-color: #e9ecef; color: #6c757d;">
-                    <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
+                    <input type="hidden" name="warehouse" id="hiddenWarehouseId" value="{{ $warehouses[0]->id }}">
                 </div>
             @else
                 <div class="col-sm-4 mb-3">
@@ -208,13 +208,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <!-- Second Row (4 Columns) -->
-            <!-- ----------------- 5th -------------------- -->
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
@@ -345,16 +338,9 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-
-            <!-- ----------------- Row 3rd ------------------ -->
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-
 
                     <!-- ------------------------- 9th card --------------------------->
+                    @if ($role_id == 1)
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
                             <div class="d-flex flex-row justify-content-between">
@@ -383,6 +369,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <!-- -------------------------10th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
@@ -473,12 +460,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <!-- ------------------- Row 4th ------------------------ -->
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <!-- ------------------------- 13th card --------------------------->
                     <div class="col-md-3 col-sm-6">
@@ -601,11 +582,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+              
 
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
                             <div class="d-flex flex-row justify-content-between">
@@ -638,6 +616,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
                             <div class="d-flex flex-row justify-content-between">
@@ -670,6 +649,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -702,7 +682,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div style="background-size: 45px;"
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                        {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
+                                                            {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -743,7 +723,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div style="background-size: 45px;"
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                    {{ $latestContainer->status == 'Active' ? 'bg-selected1 open_container_img' : 'close_container_img' }}">
+                                        {{ $latestContainer->status == 'Active' ? 'bg-selected1 open_container_img' : 'close_container_img' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -1412,7 +1392,7 @@
 
                                                         <span class="user-content"
                                                             style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                           height: 26px;align-content: center;">
+                                                                                                                                                                                               height: 26px;align-content: center;">
                                                             <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                         </span>
                                                     </a>
@@ -2249,6 +2229,23 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+        @if ($role_id == 2 || $role_id == 4)
+            <script>
+                document.addEventListener('DOMContentLoaded', async function () {
+                    const warehouseId = document.getElementById('hiddenWarehouseId')?.value;
+                    if (warehouseId) {
+                        await fetchDashboardData(warehouseId);
+                    }
+                });
+            </script>
+        @else
+            <script>
+                document.addEventListener('DOMContentLoaded', async function () {
+                    await fetchDashboardData();
+                });
+            </script>
+        @endif
+
         <script>
             function handleContainerClick(containerId, containerNumber, warehouseId) {
                 // Step 1: First fetch current active container
@@ -2316,8 +2313,10 @@
                         }
                     });
                     const data = await response.json();
-
-                    console.log(data); // Yahan apna dashboard update kar lena
+                    const role_id = {{ $role_id }};
+                        if (role_id === 1) {
+                            document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
+                        }
                     document.getElementById('todays-orders').textContent = data.todays_orders ? data.todays_orders : 0;
                     document.getElementById('total-orders').textContent = data.total_orders ? data.total_orders : 0;
                     document.getElementById('ready-for-shipping').textContent = data.ready_for_shipping ? data.ready_for_shipping : 0;
@@ -2326,7 +2325,6 @@
                     document.getElementById('total-customers').textContent = data.total_customers ? data.total_customers : 0;
                     document.getElementById('new-customers').textContent = data.new_customers ? data.new_customers : 0;
                     document.getElementById('total-drivers').textContent = data.total_drivers ? data.total_drivers : 0;
-                    document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
                     document.getElementById('total-vehicles').textContent = data.total_vehicles ? data.total_vehicles : 0;
                     document.getElementById('total-earnings').textContent =
                         '$' + (data.total_earnings ? Number(data.total_earnings).toLocaleString() : '0');
@@ -2363,34 +2361,34 @@
                     card.className = 'col-md-5 col-xl-3 col-sm-6';
 
                     card.innerHTML = `
-                                                        <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1 open_container_img' : 'close_container_img'}">
-                                                            <div class="card2 d-flex flex-row justify-content-between">
-                                                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                                                    <p class="font13 fw-medium">
-                                                                        <span class="col737">Seal No :</span> ${container.seal_no ?? "-"}
-                                                                    </p>
-                                                                    <h5 class="text-black countFontSize fw-medium">
-                                                                        ${container.container_no_1 ?? "-"}
-                                                                    </h5>
-                                                                    <div class="cardFontSize mt-2 fw-medium">
-                                                                        <span class="fw-regular col737">Total Order :</span> ${container.parcels_count ?? 0}
+                                                            <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1 open_container_img' : 'close_container_img'}">
+                                                                <div class="card2 d-flex flex-row justify-content-between">
+                                                                    <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                                                        <p class="font13 fw-medium">
+                                                                            <span class="col737">Seal No :</span> ${container.seal_no ?? "-"}
+                                                                        </p>
+                                                                        <h5 class="text-black countFontSize fw-medium">
+                                                                            ${container.container_no_1 ?? "-"}
+                                                                        </h5>
+                                                                        <div class="cardFontSize mt-2 fw-medium">
+                                                                            <span class="fw-regular col737">Total Order :</span> ${container.parcels_count ?? 0}
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="col-3 justify-content-end mt-1">
-                                                                    <div class="status-toggle float-end me-0">
-                                                                        <input 
-                                                                            onclick="handleContainerClick('${container.id}', '${container.container_no_1}', '${container.warehouse_id}')"
-                                                                            id="rating_${index}" 
-                                                                            class="toggle-btn1 check" 
-                                                                            type="checkbox" 
-                                                                            ${isActive ? 'checked' : ''}>
-                                                                        <label for="rating_${index}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                                                    <div class="col-3 justify-content-end mt-1">
+                                                                        <div class="status-toggle float-end me-0">
+                                                                            <input 
+                                                                                onclick="handleContainerClick('${container.id}', '${container.container_no_1}', '${container.warehouse_id}')"
+                                                                                id="rating_${index}" 
+                                                                                class="toggle-btn1 check" 
+                                                                                type="checkbox" 
+                                                                                ${isActive ? 'checked' : ''}>
+                                                                            <label for="rating_${index}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    `;
+                                                        `;
 
                     containerList.appendChild(card);
                 });
@@ -2411,22 +2409,22 @@
                     const card = document.createElement('div');
                     card.className = 'col-md-5 col-xl-3 col-sm-6';
                     card.innerHTML = `
-                                                    <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1 close_container_img' : 'close_container_img'}">
-                                                        <div class="card2 d-flex flex-row justify-content-between">
-                                                            <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                                                <p class="font13 fw-medium">
-                                                                    <span class="col737">Seal No :</span> ${container.container.seal_no ?? "-"}
-                                                                </p>
-                                                                <h5 class="text-black countFontSize fw-medium">
-                                                                    ${container.container.container_no_1 ?? "-"}
-                                                                </h5>
-                                                                <div class="cardFontSize mt-2 fw-medium">
-                                                                    <span class="fw-regular col737">Total Order :</span> ${container.no_of_orders ?? 0}
+                                                        <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1 close_container_img' : 'close_container_img'}">
+                                                            <div class="card2 d-flex flex-row justify-content-between">
+                                                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                                                    <p class="font13 fw-medium">
+                                                                        <span class="col737">Seal No :</span> ${container.container.seal_no ?? "-"}
+                                                                    </p>
+                                                                    <h5 class="text-black countFontSize fw-medium">
+                                                                        ${container.container.container_no_1 ?? "-"}
+                                                                    </h5>
+                                                                    <div class="cardFontSize mt-2 fw-medium">
+                                                                        <span class="fw-regular col737">Total Order :</span> ${container.no_of_orders ?? 0}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                                                        `;
+                                                                                            `;
                     containerList.appendChild(card);
                 });
             }
@@ -2437,7 +2435,7 @@
                 const warehouseSelect = document.getElementById('warehouse');
 
                 let warehouseId = warehouseSelect && warehouseSelect.value ? warehouseSelect.value : null;
-                fetchDashboardData(warehouseId);
+                //fetchDashboardData(warehouseId);
 
                 // ✅ select2 ke liye jQuery ka change event use karo
                 $(warehouseSelect).on('change', function () {

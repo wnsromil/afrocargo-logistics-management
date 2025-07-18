@@ -28,53 +28,73 @@
         </div>
     </x-slot>
 
-    <div>
-        <div class="row">
-            <div class="col-md-6">
-                <form action="{{ route('admin.customer.index') }}" method="GET">
-                    <div class="d-flex align-items-center">
-                        <label class="foncolor m-0 p-0">Customer</label>
-                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
-                            <i class="ti ti-search"></i>
-                            <input type="text" class="form-control form-cs" placeholder="Search" name="search"
-                                value="{{ request('type') === 'customer' ? request('search') : '' }}"
-                                id="customerSearch">
-                            <input type="hidden" name="type" value="customer">
-                        </div>
-                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
-                                class="fe fe-refresh-ccw"></i> </button>
-                    </div>
-                </form>
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
+
+     <form action="{{ route('admin.customer.index') }}" method="GET" id="filterForm">
+        <div class="row gx-3 inputheight40">
+            {{-- Customer Search --}}
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Customer</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" class="form-control height40 form-cs" placeholder="Search Customer" name="search"
+                        value="{{ request('search') }}">
+                </div>
             </div>
-            <div class="col-md-6">
-                <form action="{{ route('admin.customer.index') }}" method="GET" id="shipToformSearch">
-                    <div class="d-flex align-items-center justify-content-sm-end">
-                        <label class="foncolor m-0 p-0">ShipTo</label>
-                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
-                            <i class="ti ti-search"></i>
-                            <input type="text" class="form-control form-cs" placeholder="Search" name="search"
-                                value="{{ request('type') === 'ShipTo' ? request('search') : '' }}">
-                            <input type="hidden" name="type" value="ShipTo">
-                        </div>
-                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
-                                class="fe fe-refresh-ccw"></i> </button>
-                    </div>
-                </form>
+
+            {{-- ShipTo Search --}}
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Customer</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" class="form-control height40 form-cs" placeholder="Search ShipTo Customer"
+                        name="ShipTosearch" value="{{ request('ShipTosearch') }}">
+                </div>
+            </div>
+
+            {{-- Warehouse --}}
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            {{-- Buttons --}}
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
             </div>
         </div>
-    </div>
+    </form>
+
     <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
                 <div class="table-responsive mt-3">
-
                     <table class="table tables table-stripped table-hover datatable ">
                         <thead class="thead-light">
-
                             <tr>
                                 <th>Ship To ID</th>
                                 <th>Name</th>

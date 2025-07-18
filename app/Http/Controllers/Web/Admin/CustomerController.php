@@ -25,6 +25,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $shipTosearch = $request->input('ShipTosearch');
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
         $type = $request->input('type');
@@ -37,28 +38,38 @@ class CustomerController extends Controller
             ->select('id', 'warehouse_name')
             ->get();
 
-        // Determine role_id based on type
-        $roleId = 3; // default: customer
-        if ($type === 'ShipTo') {
-            $roleId = 5;
-        }
+        // Set role_id based on ShipTosearch
+        $roleId = $shipTosearch ? 5 : 3;
 
         $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->where('is_deleted', 'No')
-            ->where('role_id', $roleId) // ✅ role_id based on type
-            ->when($search, function ($q) use ($search) {
-                return $q->where(function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%$search%")
-                        ->orWhere('unique_id', 'LIKE', "%$search%")
-                        ->orWhere('username', 'LIKE', "%$search%")
-                        ->orWhere('email', 'LIKE', "%$search%")
-                        ->orWhere('phone', 'LIKE', "%$search%")
-                        ->orWhere('address', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%")
-                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+            ->where('role_id', $roleId)
+            ->when($search || $shipTosearch, function ($q) use ($search, $shipTosearch) {
+                $q->where(function ($query) use ($search, $shipTosearch) {
+                    if ($search) {
+                        $query->where('name', 'LIKE', "%$search%")
+                            ->orWhere('unique_id', 'LIKE', "%$search%")
+                            ->orWhere('username', 'LIKE', "%$search%")
+                            ->orWhere('email', 'LIKE', "%$search%")
+                            ->orWhere('phone', 'LIKE', "%$search%")
+                            ->orWhere('address', 'LIKE', "%$search%")
+                            ->orWhere('status', 'LIKE', "%$search%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+                    }
+
+                    if ($shipTosearch) {
+                        $query->orWhere('name', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('unique_id', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('username', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('email', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('phone', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('address', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('status', 'LIKE', "%$shipTosearch%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$shipTosearch%"]);
+                    }
                 });
             })
             ->when($warehouse_id, function ($q) use ($warehouse_id) {
@@ -66,24 +77,30 @@ class CustomerController extends Controller
             })
             ->latest('id')
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage, 'type' => $type]); // Include type in pagination
+            ->appends([
+                'search' => $search,
+                'ShipTosearch' => $shipTosearch,
+                'per_page' => $perPage,
+                'type' => $type,
+            ]);
 
         $serialStart = ($currentPage - 1) * $perPage;
 
-        if ($type == 'ShipTo') {
-            if ($request->ajax() && $type == 'ShipTo') {
+        if ($shipTosearch) {
+            if ($request->ajax()) {
                 return view('admin.customer.shipto.shiptotable', compact('customers', 'serialStart', 'warehouses'))->render();
             } else {
-                // dd($customers);
                 return view('admin.customer.shipto.shiptoindextable', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
             }
         }
+
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart', 'warehouses'))->render();
         }
 
         return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
     }
+
 
     /**
      * Show the form for creating a new resource.

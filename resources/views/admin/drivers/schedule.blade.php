@@ -788,7 +788,7 @@
                                                             </li> -->
                                                         <li>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('admin.drivers.schedule.destroy', $availabilitie->id) }}">
+                                                                href="{{ route('admin.drivers.schedule.delete', $availabilitie->id) }}">
                                                                 <i class="fa fa-trash me-2"></i>Delete
                                                             </a>
                                                         </li>

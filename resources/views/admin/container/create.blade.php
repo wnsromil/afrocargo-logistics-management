@@ -177,7 +177,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="mb-3">
                             <label for="broker" class="foncolor">Broker<i class="text-danger">*</i></label>
-                            <select name="broker" class="profileUpdateFont">
+                            <select id="broker" name="broker" class="profileUpdateFont">
                                 <option value="">Select Broker</option>
                                 @foreach($viewBrokers as $viewBroker)
                                     <option {{ old('broker') == $viewBroker->name ? 'selected' : '' }}

@@ -374,7 +374,25 @@ class OrderStatusManage extends Controller
             ]);
             Parcel::where('container_history_id', $TransfercontainerHistory->id)
                 ->update(['status' => 16]);
+
+            $parcels = Parcel::where('container_history_id', $TransfercontainerHistory->id)->get();
+            $q = [];
+            foreach ($parcels as $parcel) {
+                $q[] = [
+                    'parcel_id' => $parcel->id,
+                    'created_user_id' => auth()->id(),
+                    'customer_id' => $parcel->customer_id,
+                    'status' => 'Updated',
+                    'parcel_status' => 16,
+                    'note' =>  null,
+                    'warehouse_id' => $Vehicle->warehouse_id,
+                    'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+                ];
+            }
+            ParcelHistory::insert($q);
         }
+
+
 
         // Return success response
         return response()->json([

@@ -39,17 +39,20 @@ class DashboardController extends Controller
 
         $totalCustomers = User::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
-        })->count();
+        })
+            ->where('role_id', 3)
+            ->count();
 
         $newCustomers = User::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })
+            ->where('role_id', 3)
             ->whereDate('created_at', today())
             ->count();
 
         $totalDrivers = User::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
-        })
+           })
             ->where('role_id', 4) // ✅ Only role_id = 4 (driver)
             ->count();
 

@@ -235,7 +235,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
         Route::get('drivers/schedule/{id}', action: [DriversController::class, 'schedule'])->name('drivers.schedule');
         Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
-        Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
+        Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.delete');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
         // Customer 

@@ -197,6 +197,13 @@ class OrderShipmentController extends Controller
             $validatedData['container_id'] = $activeVehicle->id;
             $validatedData['warehouse_id'] = $nearestWarehouseId;
 
+            if ($nearestWarehouseId) {
+                $this->user->update([
+                    'warehouse_id' => $nearestWarehouseId,
+                ]);
+            }
+
+
             $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
                 ->where('type', 'Active')
                 ->latest() // optional: if multiple transfer records exist, get the latest

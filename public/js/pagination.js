@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         }
 
-
-
         // Debounced updateTable
         const debouncedUpdateTable = debounce(function (url) {
             // ✅ Push new URL to browser history (without reloading)
@@ -73,26 +71,36 @@ document.addEventListener("DOMContentLoaded", function () {
                         hideLoader();
                     }
                     initializeSorting();
-                    if($('[data-bs-toggle="tooltip"]')){
+                    if ($('[data-bs-toggle="tooltip"]')) {
                         console.log("Initializing tooltips");
-                        setTimeout(() => { 
-                            $('#'+ajexTable).find('[data-bs-toggle="tooltip"]').each(function () {
-                                const $el = $(this);
-                                console.log("Initializing tooltips for", $el);
-                                // Pull HTML from the custom attribute, if present
-                                const htmlContent = $el.attr('data-tooltip-html');
-                                if (htmlContent) {
-                                    console.log("Initializing tooltips attr",htmlContent);
-                                    $el.attr({
-                                        'data-bs-title': htmlContent, // Bootstrap 5 looks here for title
-                                        'data-bs-html' : 'true'       // element‑level HTML flag
-                                    });
-                                }
-                            }).tooltip({
-                                container: 'body',
-                                html: true,
-                                trigger: 'hover focus'
-                            });
+                        setTimeout(() => {
+                            $("#" + ajexTable)
+                                .find('[data-bs-toggle="tooltip"]')
+                                .each(function () {
+                                    const $el = $(this);
+                                    console.log(
+                                        "Initializing tooltips for",
+                                        $el
+                                    );
+                                    // Pull HTML from the custom attribute, if present
+                                    const htmlContent =
+                                        $el.attr("data-tooltip-html");
+                                    if (htmlContent) {
+                                        console.log(
+                                            "Initializing tooltips attr",
+                                            htmlContent
+                                        );
+                                        $el.attr({
+                                            "data-bs-title": htmlContent, // Bootstrap 5 looks here for title
+                                            "data-bs-html": "true", // element‑level HTML flag
+                                        });
+                                    }
+                                })
+                                .tooltip({
+                                    container: "body",
+                                    html: true,
+                                    trigger: "hover focus",
+                                });
                         }, 1000);
                     }
                 })
