@@ -79,24 +79,31 @@ class CartController extends Controller
         $user = auth()->user();
 
         $deliveryAddress = Address::find($request->delivery_address_id);
-        if (!$deliveryAddress) {
-            return response()->json(['error' => 'Delivery address not found'], 404);
+       
+        // Step 4: Use given warehouse_id if provided, else find nearest warehouse
+        if ($request->filled('warehouse_id')) {
+            $warehouse = Warehouse::find($request->warehouse_id);
+
+            if (!$warehouse) {
+                return response()->json(['error' => 'Warehouse not found with given ID'], 404);
+            }
+
+            $warehouseData = collect([$warehouse]); // wrap in collection for consistency
+        } else {
+            $nearestWarehouse = $this->findNearestWarehouse($deliveryAddress->lat, $deliveryAddress->long);
+
+            if (!$nearestWarehouse) {
+                return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
+            }
+
+            $warehouseData = Warehouse::where('id', $nearestWarehouse->id)->latest()->get();
         }
 
-        // Step 4: Find nearest warehouse
-        $nearestWarehouse = $this->findNearestWarehouse($deliveryAddress->lat, $deliveryAddress->long);
-        if (!$nearestWarehouse) {
-            return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
-        }
-
-        // Step 1: Warehouse IDs based on city_id, or fallback to single warehouse_id
-        $warehouseData = Warehouse::where('id', $nearestWarehouse->id)->latest()->get();
-
-
-        if($request->inventory_type == 'Supply'){
+        // Step 1: Set warehouseIds based on inventory type
+        if ($request->inventory_type == 'Supply') {
             $warehouses = $warehouseData->first();
             $warehouseIds[] = $warehouses->id;
-        }else{
+        } else {
             $warehouses = $warehouseData;
             $warehouseIds = $warehouseData->pluck('id');
         }
@@ -105,7 +112,7 @@ class CartController extends Controller
         $inventories = Inventory::with(['cart' => function ($q) use ($user) {
             $q->where('user_id', $user->id);
         }])
-        ->where('status', '!=', 'Inactive')
+            ->where('status', '!=', 'Inactive')
             ->whereIn('warehouse_id', $warehouseIds)
             ->when($request->inventory_type, function ($q) use ($request) {
                 return $q->where('inventary_sub_type', $request->inventory_type);
@@ -114,11 +121,12 @@ class CartController extends Controller
             ->paginate(10);
 
         return response()->json([
-            'warehouses'=>$warehouses,
+            'warehouses' => $warehouses,
             'data' => $inventories,
-            "message"=>"Fetch Product list successfully."
+            "message" => "Fetch Product list successfully."
         ], 200);
     }
+
 
 
     public function show(string $id)
@@ -175,7 +183,7 @@ class CartController extends Controller
 
         return $nearestWarehouse;
     }
-    
+
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
     {
         // Haversine formula to calculate distance in kilometers

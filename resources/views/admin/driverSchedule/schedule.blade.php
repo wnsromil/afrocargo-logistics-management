@@ -32,7 +32,6 @@
                         <div id="calendar-container">
                             <div id="calendar"></div>
 
-             
                         </div>
                         <!-- ------------------------------------------------------------------- -->
 
@@ -379,7 +378,7 @@
     </script>
         
 
-        <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             var calendarEI = document.getElementById("calendar");
             var calendar = new FullCalendar.Calendar(calendarEI, {

@@ -84,6 +84,9 @@ Route::post('/update-status-delivery-with-driver', action: [OrderStatusManage::c
 Route::post('/update-status-signature-self-delivery', action: [OrderStatusManage::class, 'statusUpdate_SignatureSelfDelivery']);
 Route::post('/update-status-admin-cancel', [OrderStatusManage::class, 'statusUpdateAdmin_Cancel']);
 Route::post('/update-status-admin-reschedule', [OrderStatusManage::class, 'statusUpdateAdmin_reschedule']);
+Route::post('/update-status-custom-hold', action: [OrderStatusManage::class, 'statusUpdate_customhold']);
+Route::post('/update-status-custom-cleared', action: [OrderStatusManage::class, 'statusUpdate_customcleared']);
+
 
 // Pickup
 Route::get('/pickup-users/{id}', [PickupController::class, 'getPickupUsers']);

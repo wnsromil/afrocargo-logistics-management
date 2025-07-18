@@ -1,10 +1,8 @@
 <div class="card-table">
     <div class="card-body">
         <div class="table-responsive mt-3">
-
             <table class="table tables table-stripped table-hover datatable ">
                 <thead class="thead-light">
-
                     <tr>
                         <th>Customer ID</th>
                         <th>Photo</th>
@@ -18,8 +16,6 @@
                         <th>Address</th>
                         <th style="text-align: center;">Status</th>
                         <th>Action</th>
-
-
                     </tr>
                 </thead>
                 <tbody>
@@ -113,8 +109,6 @@
                 </tbody>
 
             </table>
-
-            
         </div>
     </div>
 </div>

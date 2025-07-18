@@ -237,11 +237,16 @@ table thead.set {
     margin-right: 10px;
     padding: 0px;
     /* background-image: url("../images/TruckCard.png"); */
-    background-image: url("../images/container_icon.svg");
     background-repeat: no-repeat;
     /* background-position: bottom 0px right 0px; */
     background-position: bottom 5px right 5px;
     background-size: 45px;
+}
+.open_container_img{
+  background-image: url("../images/open_container_icon.svg");
+}
+.close_container_img{
+  background-image: url("../images/container_icon.svg");
 }
 
 .status-toggle .check:checked+.checktoggle.tog {
@@ -4084,3 +4089,5 @@ textarea {
 .pac-container.pac-logo {
     z-index: 99999;
 }
+
+/* scroller bar css */

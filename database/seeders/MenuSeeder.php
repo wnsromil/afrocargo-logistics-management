@@ -49,7 +49,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'title' => 'Container',
-                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
+                'icon' => '<img src="https://afrocargo.senomicsecurity.in/public/assets/images/container_icon.svg" alt="Container Icon" class="menuIcon">',
                 'route' => 'admin.container.index',
                 'active' => 'container*',
                 'roles' => ['admin', 'warehouse_manager']

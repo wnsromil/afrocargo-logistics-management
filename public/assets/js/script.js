@@ -929,7 +929,7 @@ Version      : 1.0
         $('input[name="pickup_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
-          //  autoUpdateInput: true, // Auto Update Input With Default Date
+            //  autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
                 format: "MM/DD/YYYY", // Date Format
             },
@@ -2303,6 +2303,33 @@ Version      : 1.0
         }
     }
 
+    function ScheduleLocationAutocomplete() {
+        const input = document.getElementsByName("schedule_location")[0];
+        console.log("Schedule Location Input:", input);
+        if (!input) return; // Input not found, exit safely
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            // componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place || !place.geometry || !place.geometry.location) return;
+
+            const lat = place.geometry.location.lat() || "";
+            const lng = place.geometry.location.lng() || "";
+
+            const setField = (name, value) => {
+                const field = document.getElementsByName(name)[0];
+                if (field) field.value = value;
+            };
+
+            setField("latitude", lat);
+            setField("longitude", lng);
+        });
+    }
+
     window.addEventListener("load", function () {
         initAutocomplete();
         initAutocompleteByCls();
@@ -2311,5 +2338,6 @@ Version      : 1.0
         initAutocomplete_3();
         init_transit_Autocomplete();
         initLocationAutocomplete();
+        ScheduleLocationAutocomplete();
     });
 })(jQuery);

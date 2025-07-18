@@ -197,6 +197,7 @@
                                     'Paid' => 'status',
                                     'Completed' => 'partial_status',
                                     'Partial' => 'partial_status',
+                                    default => 'partial_status',
                                 };
                             @endphp
                             <td>
@@ -277,6 +278,7 @@
                                     <th>Container ID</th>
                                     <th>Item Image</th>
                                     <th>Item Name</th>
+                                    <th>Item Price</th>
                                     <th>Quantity</th>
                                     <th>Type</th>
                                     <th>Status</th>
@@ -296,8 +298,9 @@
                                                 <span>-</span>
                                             @endif
                                         </td>
-                                        <td>{{ucfirst($parcelItem->item_name ?? '')}}</td>
-                                        <td>{{$parcelItem->quantity ?? "0"}}</td>
+                                        <td>{{ucfirst($parcelItem->inventory_name ?? '')}}</td>
+                                        <td>{{$parcelItem->inventorie_item_quantity ?? "0"}}</td>
+                                        <td>${{ number_format($parcelItem->price ?? 0, 2)}}</td>
                                         <td>{{ucfirst(string: $parcelItem->quantity_type ?? "-")}}</td>
                                         @php
                                             $classValue = match ((string) $parcelItem->status) {

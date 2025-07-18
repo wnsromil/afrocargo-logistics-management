@@ -15,7 +15,7 @@
             <label for="tab2" class="tab-title">History</label>
         </div> --}}
 
-            @php
+        @php
             $warehouseIdFromUrl = request()->query('warehouse_id');
             $fromWarehouseIdFromUrl = request()->query('from_warehouse_id');
             $authUser = auth()->user();
@@ -156,18 +156,20 @@
                                                 '5' => 'badge-in-transit',
                                                 '20' => 'badge-re-delivery',
                                                 '18' => 'badge-re-delivery',
+                                                '24' => 'new-badge-hold',
+                                                '33' => 'new-badge-hold-cleared',
                                                 default => 'badge-pending',
                                             };
                                           @endphp
 
                                         <td>
-                                            <label class="{{ $classValue }}" for="status">
+                                            <label class="{{ $classValue }} new-comman-css" for="status">
                                                 {{ $container_status_name ?? '-' }}
                                             </label>
                                             <br>
 
                                             <label class="badge-delivered" for="status">
-                                                {{ $incoming_container->warehouse->warehouse_name . ' To ' . $incoming_container->arrived_warehouse->warehouse_name}}
+                                               {{ ($incoming_container->warehouse->warehouse_name ?? '') . ' To ' . ($incoming_container->arrived_warehouse->warehouse_name ?? '') }}
                                             </label>
 
                                         </td>
@@ -178,11 +180,11 @@
 
                                                     <span class="user-content"
                                                         style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   height: 26px;align-content: center;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       height: 26px;align-content: center;">
                                                         <div><img src="{{ asset('assets/img/downarrow.png') }}"></div>
                                                     </span>
                                                 </a>
-                                                @if ($incoming_container->status == 5 || $incoming_container->status == 7 || $incoming_container->status == 18)
+                                                @if ($incoming_container->status == 5 || $incoming_container->status == 7 || $incoming_container->status == 18 || $incoming_container->status == 24 || $incoming_container->status == 33 )
                                                     <div class="dropdown-menu menu-drop-user">
                                                         <div class="profilemenu">
                                                             <div class="subscription-menu">
@@ -193,7 +195,7 @@
                                                                             $parcel->parcelStatus->id ?? null;
                                                                     @endphp
                                                                     <li>
-                                                                        @if($incoming_container->status == 5)
+                                                                        @if($incoming_container->status == 5 || $incoming_container->status == 33)
                                                                             <a class="dropdown-item" href="javascript:void(0);"
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#received_to_hub"
@@ -315,7 +317,7 @@
                                             </label>
                                             <br>
                                             <label class="badge-delivered" for="status">
-                                                {{ $container_history->warehouse->warehouse_name . ' To ' . $container_history->arrived_warehouse->warehouse_name }}
+                                               {{ ($container_history->warehouse->warehouse_name ?? '') . ' To ' . ($container_history->arrived_warehouse->warehouse_name ?? '') }}
                                             </label>
                                         </td>
 
@@ -452,11 +454,11 @@
                 });
             }
         </script>
-         <script>
-                function resetForm() {
-                    window.location.href = "{{ route('admin.received.hub.list') }}";
-                }
-            </script>
+        <script>
+            function resetForm() {
+                window.location.href = "{{ route('admin.received.hub.list') }}";
+            }
+        </script>
 
 
 </x-app-layout>

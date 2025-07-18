@@ -391,6 +391,10 @@
     background-color: #dc3545;
     color: #fff;
 }
+.new-badge-hold-cleared {
+    background-color: #35a7dc;
+    color: #fff;
+}
 .new-badge-gate-in {
     background-color: #6610f2;
     color: #fff;

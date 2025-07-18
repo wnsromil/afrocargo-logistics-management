@@ -14,7 +14,10 @@ use App\Models\{
     ParcelHistory,
     HubTracking,
     Vehicle,
-    ContainerHistory
+    ContainerHistory,
+    ParcelPickupDriver,
+    ParcelInventorie,
+    Invoice
 };
 use Carbon\Carbon;
 
@@ -357,20 +360,25 @@ class HubTrackingController extends Controller
     public function show(string $id)
     {
         //
+        $ParcelHistories = ParcelHistory::where('parcel_id', $id)
+            ->with(['warehouse', 'customer', 'createdByUser'])->get();
 
-        $parcels = Parcel::where('hub_tracking_id', $id)->when($this->user->role_id != 1, function ($q) {
-            return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->latest()->paginate(10);
+        $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
+
+        $parcel = Parcel::where('id', $id)->first();
+
+        $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
+
+        $invoice = Invoice::with(['invoiceParcelData', 'deliveryAddress', 'pickupAddress', 'createdByUser', 'container', 'driver', 'invoiceParcelData', 'comments', 'individualPayment', 'barcodes', 'warehouse', 'claims'])->where('id', $parcel->invoice_id)->first();
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->get());
 
-        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
-            return $q->where('id', $this->user->warehouse_id);
-        })->get();
+        $customers = $user->where('role_id', 3)->values();
 
         $drivers = $user->where('role_id', 4)->values();
-        return view('admin.OrderShipment.index', compact('parcels', 'drivers', 'warehouses'));
+
+        return view('admin.hubs.orderdetails', compact('user', 'customers', 'drivers', 'parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel', 'invoice'));
     }
 
     /**

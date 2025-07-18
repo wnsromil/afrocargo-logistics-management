@@ -71,7 +71,7 @@ class DriversController extends Controller
 
         // Serial number base
         $serialStart = ($currentPage - 1) * $perPage;
-       // return $drivers;
+        // return $drivers;
         if ($request->ajax()) {
             return view('admin.drivers.table', compact('drivers', 'warehouses', 'serialStart'))->render();
         }
@@ -168,9 +168,9 @@ class DriversController extends Controller
             'longitude' => $request->longitude,
         ]);
 
-        // Vehicle::where('id', $request->vehicle_type)->update([
-        //     'driver_id' => $driver->id,
-        // ]);
+        Vehicle::where('id', $request->vehicle_type)->update([
+            'driver_id' => $driver->id,
+        ]);
 
         $driver_name = $request->driver_name;
         $email = $request->email;
@@ -336,6 +336,14 @@ class DriversController extends Controller
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/licenses', $filename, 'public');
             $licenseDocumentPath = 'storage/' . $filePath;
+        }
+
+        if ($request->vehicle_type) {
+            Vehicle::where('driver_id',  $id)->update(['driver_id' => null]);
+
+            Vehicle::where('id', $request->vehicle_type)->update([
+                'driver_id' => $id,
+            ]);
         }
 
         $warehouse->update([

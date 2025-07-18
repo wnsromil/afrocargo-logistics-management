@@ -327,7 +327,7 @@
                                 </li>
                             </td>
                             <td class="btntext">
-                                <a href="{{ route('admin.service_orders.show', $parcel->id) }}"> <button
+                                <a href="{{ route('admin.hubs.show', $parcel->id) }}"> <button
                                         class=orderbutton><img
                                             src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
                             </td>
