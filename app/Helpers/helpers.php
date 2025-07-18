@@ -1,15 +1,17 @@
 <?php
 include('timeSlot.php');
 include('BarcodeHelper.php');
+
 use App\Helpers\SettingsHelper;
+use App\Models\Country;
 
 
-function isActive($urls, $class = 'active',$default='')
+function isActive($urls, $class = 'active', $default = '')
 {
 
     if (!is_array($urls)) {
-        $urls = explode(',',$urls);
-        if(count($urls) > 1){
+        $urls = explode(',', $urls);
+        if (count($urls) > 1) {
             foreach ((array) $urls as $url) {
                 if (request()->is($url)) {
                     return $class;
@@ -28,11 +30,12 @@ function isActive($urls, $class = 'active',$default='')
     return $default;
 }
 
-function activeStatusKey($statusName = 'Pending') {
+function activeStatusKey($statusName = 'Pending')
+{
 
     $newStatusClass = [
         'pending'                => 'labelstatus',
-        'pickup_assign'          => 'pickup_assign',//admin
+        'pickup_assign'          => 'pickup_assign', //admin
         'pickup_reschedule'      => 'pickup_reschedule',
         'received_by_pickup_man' => 'received_by_pickup_man',
         'received_warehouse'     => 'received_warehouse',
@@ -59,33 +62,37 @@ function activeStatusKey($statusName = 'Pending') {
 
     return $newStatusClass[strtolower($statusName)] ?? '';
     // Return the key if found, or 'pending' if not.
-    return str_replace(' ','_',strtolower($statusName));
+    return str_replace(' ', '_', strtolower($statusName));
 }
 
 
-function calculatePrice($value=0,$Unit=0,$Rate=0)
+function calculatePrice($value = 0, $Unit = 0, $Rate = 0)
 {
     // value-based calculation
     return ceil($value / $Unit) * $Rate;
 }
 
-function setting(){
+function setting()
+{
     return new SettingsHelper();
 }
 
-function carbon() {
+function carbon()
+{
     return new \Carbon\Carbon();
 }
 
-function sum(...$numbers) {
+function sum(...$numbers)
+{
     return array_sum($numbers);
 }
 
-function removePart(string $subject,
-                    string $needle,
-                    bool   $caseInsensitive = false,
-                    bool   $firstOnly       = false): string
-{
+function removePart(
+    string $subject,
+    string $needle,
+    bool   $caseInsensitive = false,
+    bool   $firstOnly       = false
+): string {
     if ($needle === '') {
         // Nothing to remove; avoid an infinite loop.
         return $subject;
@@ -104,7 +111,8 @@ function removePart(string $subject,
         : str_replace($needle, '', $subject);
 }
 
-function getStepArray($input,$steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]) {
+function getStepArray($input, $steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000])
+{
     $result = [];
 
     for ($i = 0; $i < count($steps); $i++) {
@@ -115,3 +123,12 @@ function getStepArray($input,$steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 50
     return $result;
 }
 
+function getPhoneLengthById($id)
+{
+    if (!$id) {
+        return 10;
+    }
+
+    $country = Country::find($id);
+    return $country ? $country->phone_length : 10;
+}

@@ -126,6 +126,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -136,9 +139,9 @@ class CustomerController extends Controller
                 'unique:users,email'
             ],
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength",
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -402,6 +405,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -413,9 +418,9 @@ class CustomerController extends Controller
                 'unique:users,email,' . $id,
             ],
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => 'nullable|digits:' . $altPhoneLength,
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',

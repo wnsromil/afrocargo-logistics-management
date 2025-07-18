@@ -54,7 +54,7 @@ class SettingsHelper
     {
         // Get unique country names from warehouses and convert to lowercase, with warehouse ids
         $warehouses = Warehouse::select('id', 'country_id')
-        ->where('status', 'Active')
+            ->where('status', 'Active')
             ->get()
             ->groupBy(function ($item) {
                 return strtolower($item->country_id);
@@ -85,10 +85,10 @@ class SettingsHelper
         // Get countries where LOWER(name) matches any lowercase country_id
         return Warehouse::leftJoin('countries', 'warehouses.country_id', '=', 'countries.name')
             ->where('warehouses.status', 'Active')
-            ->select('warehouses.*', 'countries.id as countryId','countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
+            ->select('warehouses.*', 'countries.id as countryId', 'countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
             ->get();
     }
-    
+
 
     public static function getNearbyWarehouseDriverIds($lat, $lng, $radius = 50)
     {
@@ -130,7 +130,7 @@ class SettingsHelper
                 // Step 2: availability record nahi mila => sab periods maan lo
                 $availablePeriods = ['morning', 'afternoon', 'evening'];
             }
-        
+
             // Step 3: Weekly schedule nikaalo
             $weekly = WeeklySchedule::where('user_id', $userId)
                 ->where('day', $dayName)
@@ -176,7 +176,7 @@ class SettingsHelper
     {
         try {
             //code...
-        
+
             $apiKey = 'AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries'; // replace with your actual API key
 
             // Build the address string
@@ -193,7 +193,7 @@ class SettingsHelper
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
+
             // Get response
             $response = curl_exec($ch);
             curl_close($ch);
@@ -217,7 +217,7 @@ class SettingsHelper
         }
     }
 
-    
+
     private static function formatValue($type, $value)
     {
         switch ($type) {
@@ -231,5 +231,5 @@ class SettingsHelper
                 return $value;
         }
     }
-    
+
 }

@@ -71,6 +71,7 @@
                                 @foreach ($coutry as $key => $item)
                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        data-length="{{ $item->phone_length ?? 10 }}"
                                         {{ $item->id == old('mobile_number_code_id', $driver_data->phone_code_id) ? 'selected' : '' }}>
                                         {{ $item->name }} +{{ $item->phonecode }}
                                     </option>
@@ -80,7 +81,7 @@
                         <input type="number" class="form-control flagInput inp"
                             placeholder="Enter Contact Number" name="mobile_number"
                             value="{{ old('mobile_number', $driver_data->phone) }}"
-                            oninput="this.value = this.value.slice(0, 10)">
+                            >
                         </div>
                         @error('mobile_number')
                             <small class="text-danger">The Contact Number field is required.</small>
@@ -98,6 +99,7 @@
                                 @foreach ($coutry as $key => $item)
                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                         data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        data-length="{{ $item->phone_length ?? 10 }}"
                                         {{ $item->id == old('alternative_mobile_number_code_id', $driver_data->phone_2_code_id_id) ? 'selected' : '' }}>
                                         {{ $item->name }} +{{ $item->phonecode }}
                                     </option>
@@ -107,7 +109,7 @@
                         <input type="number" class="form-control flagInput inp"
                             placeholder="Enter Office Contact Number" name="alternative_mobile_number"
                             value="{{ old('alternative_mobile_number', $driver_data->phone_2) }}"
-                            oninput="this.value = this.value.slice(0, 10)">
+                            >
                         </div>
                         @error('alternative_mobile_number')
                             <small class="text-danger">The Office Contact Number field is required.</small>

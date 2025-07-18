@@ -107,12 +107,15 @@ class DriversController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'alternative_mobile_number' => 'required|string|max:15',
+            'alternative_mobile_number' => "required|digits:$altPhoneLength|unique:users,phone_2",
             'alternative_mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             'email' => 'required|email|unique:users,email',
@@ -283,11 +286,13 @@ class DriversController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
 
         $rules = [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             //'vehicle_type' => 'required',
@@ -295,7 +300,7 @@ class DriversController extends Controller
             'license_number' => 'required',
             'edit_license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
-            'alternative_mobile_number' => 'required|string|max:15',
+            'alternative_mobile_number' => 'required|digits:' . $altPhoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'required|exists:countries,id',
         ];
 
