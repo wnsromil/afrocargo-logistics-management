@@ -257,20 +257,6 @@ $(document).ready(function () {
                                     delivery_address:customer.delivery_address
                                 };
                             }
-                            // if(customer.delivery_address){
-                            //     customer.delivery_address.forEach(addr => {
-                            //         let newOption = new Option(addr.text, addr.id, true, true);
-                            //         // Add new option if not already present
-                            //         $("#ship_customer").append(newOption).trigger("change");
-                            //     });
-                            // }
-                            // else if (customer.delivery_address) {
-                            //     return {
-                            //         id: customer.delivery_address.id ?? "",
-                            //         text: customer.delivery_address.text ?? "",
-                            //         customer: customer ?? "", // Store the full customer object
-                            //     };
-                            // }
                             else {
                                 return false;
                             }
@@ -698,16 +684,23 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
 
 
         if (customer.address_type == "delivery") {
-            $('input[name="pickup_address_id"]').val(customer.id ?? '');
+            if(!setCustomerInfo){
+                $('input[name="pickup_address_id"]').val(customer.id ?? '');
 
-            // Add new option if not already present
-            $("#ship_customer").append(newOption).trigger("change");
+                // Add new option if not already present
+                $("#ship_customer").append(newOption).trigger("change");
+            }
         } else {
-            $('input[name="delivery_address_id"]').val(customer.id ?? '');
+
             $('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
             // delevery select box
-            // Add new option if not already present
-            $("#delevery_customer_id").append(newOption).trigger("change");
+
+            if(!setCustomerInfo){
+                // Add new option if not already present
+                $('input[name="delivery_address_id"]').val(customer.id ?? '');
+                $("#delevery_customer_id").append(newOption).trigger("change");
+            }
+
         }
 
         // Fill the form fields
@@ -1080,6 +1073,7 @@ $(document).ready(function () {
 
 function hendelAjex(url, formData) {
     // Submit via AJAX
+    showLoader();
     $.ajax({
         url: url,
         method: "POST",
@@ -1090,6 +1084,7 @@ function hendelAjex(url, formData) {
             $("#add_delevery_cancel").click();
             $("#add_ship_modal_cancel").click();
             $("#add_cutomer_modal_cancel").click();
+            hideLoader();
 
             if (response.success) {
                 // alert(response.message);
@@ -1109,6 +1104,7 @@ function hendelAjex(url, formData) {
             }
         },
         error: function (xhr) {
+            hideLoader();
             let errors = xhr.responseJSON?.errors;
             if (errors) {
                 Object.keys(errors).forEach((key) => {

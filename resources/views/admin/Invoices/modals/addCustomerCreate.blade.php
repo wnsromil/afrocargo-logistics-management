@@ -16,7 +16,6 @@
                         <input type="hidden" name="address_id">
                         <input type="hidden" name="user_id">
                         <input type="hidden" name="invoice_custmore_type" value="from_to">
-                        <input type="hidden" name="invoice_custmore_id">
 
                         <div class="row px-3">
                             <div class="col-md-6 col-sm-6 col-lg-6">
@@ -124,8 +123,8 @@
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" name="address"
-                                            value="{{ old('address') }}" class="form-control inp"
-                                            placeholder="Enter Address 1" id="locationSearchBox">
+                                            value="{{ old('address') }}" class="form-control inp address"
+                                            placeholder="Enter Address 1">
                                     </div>
                                 </div>
                                 <div class="row align-items-center margin-top-top">
@@ -155,7 +154,7 @@
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label class="foncolor" for="city">City</label>
-                                    
+
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
@@ -168,7 +167,7 @@
                                                 class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-9 justify-content-end">
-                                        <input type="text" name="ship_to_latitude" value="{{ old('ship_to_latitude') }}"
+                                        <input type="text" name="lat" value="{{ old('lat') }}"
                                             class="form-control inp inputbackground" placeholder="" readonly
                                             style="background: #ececec;">
                                     </div>
@@ -179,8 +178,8 @@
                                             class="col-form-label text-dark">Longitude</label>
                                     </div>
                                     <div class="col-9 justify-content-end">
-                                        <input type="text" name="ship_to_longitude"
-                                            value="{{ old('ship_to_longitude') }}"
+                                        <input type="text" name="lng"
+                                            value="{{ old('lng') }}"
                                             class="form-control inp inputbackground" placeholder="" readonly
                                             style="background: #ececec;">
                                     </div>
@@ -257,7 +256,7 @@
                                         <button type="button" class="btn btn-outline-secondary" id="add_cutomer_modal_cancel" data-bs-dismiss="modal" aria-label="Close">
                                             Cancel
                                         </button>
-                                        
+
                                     </div>
                             </div>
                         </div>

@@ -56,11 +56,18 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body" style="font-size: 14px;">
-                                        <div><strong>ID:</strong> {{ $invoice->invoice_no ?? 'INV-001' }}</div>
-                                        <div><strong>Invoice No:</strong> {{ $invoice->invoice_no ?? 'INV-001' }}</div>
-                                        <div><strong>Date:</strong> {{ $invoice->created_at?->format('d-m-Y') ?? '-' }}
+                                        <div>
+                                            <strong>ID:</strong> {{ $invoice->invoice_no ?? 'INV-001' }}
                                         </div>
-                                        <div><strong>Container:</strong> {{ $invoice->container_no ?? '02425' }}</div>
+                                        <div>
+                                            <strong>Invoice No:</strong> {{ $invoice->invoice_no ?? 'INV-001' }}
+                                        </div>
+                                        <div>
+                                            <strong>Date:</strong> {{ $invoice->created_at?->format('d-m-Y') ?? '-' }}
+                                        </div>
+                                        <div>
+                                            <strong>Container:</strong> {{ $invoice->container_no ?? '02425' }}
+                                        </div>
                                         <hr>
                                         <div class="row">
                                             @if(!empty($invoice->deliveryAddress))
@@ -93,7 +100,7 @@
                                             <div>No Items</div>
                                         @endif
                                         @if($invoice->individualPayment)
-                                        <hr>
+                                            <hr>
                                             <div class="row mt-3">
                                                 <div class="col-12">
                                                     <p class="subhead fw-bold">Payment Receipts</p>
@@ -154,104 +161,86 @@
                                             </div>
                                         @endif
                                         <hr>
-                                        <div style="color: gray; font-weight: bold;">Invoice Amount: ${{
-                                            number_format($invoice->grand_total, 2) }}</div>
-                                        <div style="color: orangered; font-weight: bold;">Balance: {{
-                                            number_format($invoice->balance, 2) }}</div>
+                                        <div style="color: gray; font-weight: bold;">
+                                            Invoice Amount: ${{
+                                            number_format($invoice->grand_total ?? 0, 2) }}
+                                        </div>
+                                        <div style="color: orangered; font-weight: bold;">
+                                            Balance: {{
+                                            number_format($invoice->balance ?? 0, 2) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <td>
+                            <span>${{ number_format($invoice->grand_total ?? 0, 2) }}</span>
+                        </td>
+                        <td>
+                            <div>$ {{ number_format($invoice->balence ?? 0, 2) }}</div>
+                        </td>
+                        <td>{{ $invoice->container->unique_id ?? '-' }}</td>
+                        <td>{{ $invoice->user->fullName ?? '-' }}</td>
+                        <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
+
+                        <td>
+
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
+                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <ul>
+                                        <li>
+                                            <a class="dropdown-item" data-bs-placement="bottom"
+                                                title="Individual Payment" data-bs-toggle="modal"
+                                                data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
+                                                <i class="ti ti-cash me-2"></i>Payment</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Invoice PDF" target="_blank"
+                                                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
+                                                <i class="ti ti-file-invoice"></i>Invoice PDF</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" data-bs-placement="bottom"
+                                                title="Send Invoice pdf" data-bs-toggle="modal"
+                                                data-bs-target="#sendinvoicepdf{{$invoice->id ?? ''}}">
+                                                <i class="ti ti-mail me-2"></i>Send Email</a>
+
+                                        </li>
+                                        <li>
+                                        <li>
+
+                                            <a class="dropdown-item" title="Labels"
+                                                    href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
+                                                    target="_blank">
+                                                    <i class="ti ti-tag-starred me-2"></i>Labels</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Labels"
+                                                href="javascript:void(0)"
+                                                {{--onclick="alertMsg('Please generate labels. No labels have been generated for this invoice yet.', 'error')"--}}
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#createLabel{{ $invoice->id }}">
+                                                <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
+
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Edit Invoice"
+                                                href="{{route('admin.invoices.edit',$invoice->id)}}"><i
+                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Delete Invoice"
+                                                href="javascript:void(0)"
+                                                onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
+                                                    class="ti ti-trash me-2"></i>Delete Invoice</a>
+                                        </li>
+                                    </ul>
+                                </div>
 
 
-
-                                        </td>
-
-                                        <td>
-                                            <span>${{ number_format($invoice->grand_total, 2) }}</span>
-                                        </td>
-                                        <td>
-                                            <div>$ {{ number_format($invoice->balence, 2) }}</div>
-                                        </td>
-                                        <td>{{ $invoice->container->unique_id ?? '-' }}</td>
-                                        <td>{{ $invoice->user->fullName ?? '-' }}</td>
-                                        <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
-                                        
-                                        <td>
-                                            
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
-                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-placement="bottom"
-                                                                title="Individual Payment" data-bs-toggle="modal"
-                                                                data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
-                                                                <i class="ti ti-cash me-2"></i>Payment</a>
-                                                        </li>
-                                                        <li>
-                                                            {{-- <a class="dropdown-item" data-bs-placement="bottom"
-                                                                title="Invoice B" data-bs-toggle="modal"
-                                                                data-bs-target="#printInvoice2{{$invoice->id ?? ''}}">
-                                                                <i class="ti ti-file-invoice"></i>Invoice PDF</a> --}}
-                                                            <a class="dropdown-item" title="Invoice PDF" target="_blank"
-                                                                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
-                                                                <i class="ti ti-file-invoice"></i>Invoice PDF</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-placement="bottom"
-                                                                title="Send Invoice pdf" data-bs-toggle="modal"
-                                                                data-bs-target="#sendinvoicepdf{{$invoice->id ?? ''}}">
-                                                                <i class="ti ti-mail me-2"></i>Send Email</a>
-                                                            
-                                                        </li>
-                                                        <li>
-                                                            {{-- <a class="dropdown-item" data-bs-placement="bottom"
-                                                                title="Labels" data-bs-toggle="modal"
-                                                                data-bs-target="#InvoiceLabel{{$invoice->id ?? ''}}">
-                                                                <i class="ti ti-tag-starred me-2"></i>Labels</a> --}}
-
-                                                            @if (!empty($invoice->barcodes) && count($invoice->barcodes) > 0)
-                                                            <a class="dropdown-item" title="Labels"
-                                                                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
-                                                                target="_blank">
-                                                                <i class="ti ti-tag-starred me-2"></i>Labels</a>
-                                                            @else
-                                                            <a class="dropdown-item" title="Labels"
-                                                                href="javascript:void(0)"
-                                                                onclick="alertMsg('Please generated labels, No labels have been generated for this invoice yet.','error')"
-                                                                data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
-                                                                data-bs-target="#createLabel{{$invoice->id ?? ''}}">
-                                                                <i class="ti ti-tag-starred me-2"></i>Labels</a>
-
-                                                                
-                                                            @endif
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" title="Edit Invoice"
-                                                                href="{{route('admin.invoices.edit',$invoice->id)}}"><i
-                                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" title="Delete Invoice"
-                                                                href="javascript:void(0)"
-                                                                onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
-                                                                    class="ti ti-trash me-2"></i>Delete Invoice</a>
-                                                        </li>
-                                                        {{-- <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('admin.invoices.details',$invoice->id)}}"><i
-                                                                    class="far fa-eye me-2"></i>View Invoice</a>
-                                                        </li> --}}
-                                                        {{-- <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('admin.invoices.show',$invoice->id)}}"><i
-                                                                    class="far fa-eye me-2"></i>View Delivery
-                                                                Challans</a>
-                                                        </li> --}}
-                                                    </ul>
-                                                </div>
-                                                
-
-                                        </td>
-
+                        </td>
                     </tr>
 
                     @empty
@@ -271,23 +260,5 @@
     </div>
 </div>
 
-<div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
-    <div class="col-md-6 d-flex p-2 align-items-center">
-        <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-        <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
-            id="pageSizeSelect">
-            <option value="10" {{ request('per_page', 10)==10 ? 'selected' : '' }}>10</option>
-            <option value="20" {{ request('per_page')==20 ? 'selected' : '' }}>20</option>
-            <option value="50" {{ request('per_page')==50 ? 'selected' : '' }}>50</option>
-            <option value="100" {{ request('per_page')==100 ? 'selected' : '' }}>100</option>
-        </select>
-        <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
-    </div>
-    <div class="col-md-6">
-        <div class="float-end">
-            <div class="bottom-user-page mt-3">
-                {!! $invoices->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
-            </div>
-        </div>
-    </div>
-</div>
+<x-pagination-toolbar :pagination="$invoices" defaultPerPage="10"
+            queryKey="per_page" />

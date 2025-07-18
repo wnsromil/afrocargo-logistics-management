@@ -375,7 +375,7 @@
                                 <input type="hidden" name="address_type" value="delivery">
                                 <input type="hidden" name="address_id">
                                 <input type="hidden" name="invoice_custmore_type" value="ship_to">
-                                <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
+
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="first_name">First Name <i

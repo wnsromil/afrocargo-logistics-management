@@ -6,7 +6,7 @@ use App\Helpers\SettingsHelper;
 
 function isActive($urls, $class = 'active',$default='')
 {
-    
+
     if (!is_array($urls)) {
         $urls = explode(',',$urls);
         if(count($urls) > 1){
@@ -102,5 +102,16 @@ function removePart(string $subject,
     return $caseInsensitive
         ? str_ireplace($needle, '', $subject)
         : str_replace($needle, '', $subject);
+}
+
+function getStepArray($input,$steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]) {
+    $result = [];
+
+    for ($i = 0; $i < count($steps); $i++) {
+        array_push($result, $steps[$i]);
+        if ($steps[$i] >= $input) break;
+    }
+
+    return $result;
 }
 

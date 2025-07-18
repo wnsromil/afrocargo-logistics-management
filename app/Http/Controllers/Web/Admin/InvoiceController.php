@@ -47,8 +47,9 @@ class InvoiceController extends Controller
         $drivers = $user->where('role_id', 4)->values();
 
 
-       $invoices = Invoice::with(['invoiceParcelData','user','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])
-            ->when($this->user->role_id != 1, function ($q) {
+       $invoices = Invoice::
+    //    with(['invoiceParcelData','user','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->
+       when($this->user->role_id != 1, function ($q) {
             // Uncomment if warehouse filtering is required
             // return $q->where('warehouse_id', $this->user->warehouse_id);
             })
@@ -819,6 +820,8 @@ class InvoiceController extends Controller
         }
 
         $saveAd =[
+            'name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
             'full_name' => $validatedData['first_name'] . " " . $validatedData['last_name'],
             'alternative_mobile_number_code_id' => $validatedData['alternative_mobile_number_code_id'] ?? null,
             'mobile_number_code_id' => $validatedData['mobile_number_code_id'] ?? null,
@@ -829,6 +832,9 @@ class InvoiceController extends Controller
             'city_id' => $validatedData['city'] ?? null,
             'pincode' => $validatedData['zip_code'] ?? null,
             'neighborhood' => $validatedData['neighborhood'] ?? null,
+            'lat'=> $request->lat ?? null,
+            'long'=> $request->lng ?? null,
+            'default'=>'Yes'
         ];
 
 
@@ -844,11 +850,7 @@ class InvoiceController extends Controller
                 'address' => $validatedData['address']
             ];
         }
-
-        // Find or create the user based on mobile number
-        $user = User::firstOrCreate(
-            $useCheck,
-            [
+        $storeUser = [
                 'name' => $validatedData['first_name'],
                 'last_name' => $validatedData['last_name'],
                 'phone' => $validatedData['mobile_number'],
@@ -867,13 +869,25 @@ class InvoiceController extends Controller
                 'password' => bcrypt('password'), // Set a default password
                 'invoice_custmore_type'=>$request->invoice_custmore_type ?? 'from_to',
                 'invoice_custmore_id'=>$request->invoice_custmore_id ?? null,
+                'parent_customer_id'=>$request->invoice_custmore_id ?? null,
                 'role_id' => 3, // Assuming role_id 3 is for customers
-            ]
+                'role' => 'customer', // Assuming role_id 3 is for customers
+        ];
+
+        if(!empty($request->invoice_custmore_id)){
+            $storeUser['role_id'] = 5;
+            $storeUser['role'] = 'ship_to_customer';
+        }
+
+        // Find or create the user based on mobile number
+        $user = User::firstOrCreate(
+            $useCheck,
+            $storeUser
         );
 
-        if($request->Pickup_latitude && $request->Pickup_longitude){
-            $user->latitude = $request->Pickup_latitude;
-            $user->longitude = $request->Pickup_longitude;
+        if($request->let && $request->lng){
+            $user->latitude = $request->let;
+            $user->longitude = $request->lng;
             $user->save();
         }
 
@@ -933,9 +947,9 @@ class InvoiceController extends Controller
                 'country_id' => $address->country_id,
                 'state_id' => $address->state_id,
                 'city_id' => $address->city_id,
-                'country_id' => $address->country,
-                'state_id' => $address->state,
-                'city_id' => $address->city,
+                'country' => $address->country_id,
+                'state' => $address->state_id,
+                'city' => $address->city_id,
                 'neighborhood' => $address->neighborhood,
                 'address_type' => $address->address_type,
                 'license_number' => $user->license_number ?? null,
@@ -1105,7 +1119,6 @@ class InvoiceController extends Controller
 
             $validatedData['weight'] = $orderData['weight'] ?? 0;
             $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
-            $validatedData['arrived_warehouse_id'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
 
             if($invoice->arrived_warehouse_id){
                 $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
@@ -1285,6 +1298,33 @@ class InvoiceController extends Controller
         return $users->map(function ($usr) use ($type,$parcel) {
             return $this->formatAddress($usr->defaultAddress, $parcel, $type);
         })->filter(fn($i) => $i)->values();
+    }
+
+
+    public function invoiceModal(Request $request,string $id)
+    {
+        //
+        $invoice = Invoice::with(['ParcelInventory','invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->findOrFail($id);
+
+
+
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            // return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $customers = $user->where('role_id', 3)->values();
+
+        $drivers = $user->where('role_id', 4)->values();
+
+        $view = 'admin.Invoices.modals.individual_payment_modal';
+
+        if($request->type == 'view'){
+            $view = 'admin.Invoices.modals';
+        }
+
+
+        return view($view, compact(
+            'invoice','warehouses', 'customers', 'drivers'));
     }
 
 
