@@ -116,27 +116,27 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
-                                @foreach($customers as $customer)
-                                <option {{ old('customer_id')==$customer->id ? 'selected' : '' }} value="{{
-                                    $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
+
                             </select>
                             @error('customer_id')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="last">
-                            <a id="addCustomer" class="btn btn-primary buttons">
+                            <a {{--id="addCustomer"--}} class="btn btn-primary buttons" data-bs-toggle="modal"
+                            data-bs-target="#addCustomerCreateModal">
                                 Add New Customer
                             </a>
-                            <div id="add_delevery_save_body" class="d-none">
+                            @include('admin.Invoices.modals.addCustomerCreate')
+
+                            {{-- <div id="add_delevery_save_body" class="d-none">
                                 <button type="button" class="btn btn-primary buttons" id="add_delevery_save">
                                     Save
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary" id="add_delevery_cancel">
                                     Cancel
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -151,10 +151,7 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="ship_customer">
                                 <option value="">Search Customer</option>
-                                @foreach($customers as $customer)
-                                <option {{ old('customer_id')==$customer->id ? 'selected' : '' }} value="{{
-                                    $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
+
                             </select>
                             @error('customer_id')
                             <span class="text-danger">{{ $message }}</span>
@@ -180,7 +177,7 @@
                                 <button type="button" class="btn btn-outline-secondary" id="add_ship_cancel">
                                     Cancel
                                 </button>
-                                
+
                             </div> --}}
                         </div>
 
@@ -358,20 +355,20 @@
                                 <input type="hidden" name="address_id">
                                 <input type="hidden" name="user_id">
                                 <input type="hidden" name="invoice_custmore_type" value="ship_to">
-                                <input type="hidden" name="invoice_custmore_id" id="invoice_custmore_id">
+
 
                                 <div class="col-md-6">
                                     <label class="foncolor" for="warehouse_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
-                                        placeholder="Enter First Name">
+                                        placeholder="Enter First Name" readonly>
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="last_name">Last Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="last_name" class="form-control inp"
-                                        placeholder="Enter Last Name">
+                                        placeholder="Enter Last Name" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
@@ -379,7 +376,7 @@
                                     <!-- Contact No. 1 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="mobile_number_code_id">
+                                            <select class="flag-select" name="mobile_number_code_id" disabled>
                                                 @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -388,7 +385,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                            placeholder="Enter Contact No. 2" name="mobile_number" readonly>
                                     </div>
 
                                 </div>
@@ -397,7 +394,7 @@
                                     <!-- Contact No. 2 -->
                                     <div class="flaginputwrap">
                                         <div class="customflagselect">
-                                            <select class="flag-select" name="alternative_mobile_number_code_id">
+                                            <select class="flag-select" name="alternative_mobile_number_code_id" disabled>
                                                 @foreach ($coutry as $key => $item)
                                                 <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                     data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
@@ -406,7 +403,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -420,7 +417,7 @@
                                     <label class="foncolor" for="Address.2 address">Address 2 </label>
                                     <!-- Address 2 — optional, you may remove or merge -->
                                     <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
+                                        placeholder="Enter Address 2" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
@@ -928,6 +925,7 @@
             // toggleLoginForm(formType);
             setTimeout(() => {
                 console.log("invoce_typ", invoce_type);
+                toggleInventoryList();
                 toggleLoginForm(invoce_type);
                 if ($('input[name="transport_type"]').val() != "Air Cargo") {
                     $('select[name="container_id"]')
@@ -940,10 +938,10 @@
             }, 600);
         };
 
-        document.getElementById("addCustomer").onclick = () => {
-            // it's deliver address code
-            document.querySelector(".newCustomerAdd").classList.toggle("none");
-        };
+        // document.getElementById("addCustomer").onclick = () => {
+        //     // it's deliver address code
+        //     document.querySelector(".newCustomerAdd").classList.toggle("none");
+        // };
 
         // 🖼 Image Preview Function
         function previewImage(input, imageType) {
@@ -988,23 +986,21 @@
                 $('#supplySelector').empty();
                 if(invoce_type == 'services') {
 
-                    
+
                     $('#supplySelector').append(ServiceOptions);
                     $('#supplySelector').val(null).trigger('change');
                     $('#supplyModalTitle').text('Service');
-                
+
                     invoce_type = 'services';
                 } else {
                     $('#supplyModalTitle').text('Supply');
                     $('#supplySelector').append(SupplyOptions);
                     $('#supplySelector').val(null).trigger('change');
-                    
+
                     invoce_type = 'supplies';
 
                 }
             }
-
-            toggleInventoryList();
 
             $('.authTabDiv').on('click',function () {
                 toggleInventoryList();

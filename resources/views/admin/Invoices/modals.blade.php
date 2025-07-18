@@ -19,10 +19,10 @@
         <i class="ti ti-report-money"></i>
     </a>
 
-    {{-- <a class="circleIconBtn" data-bs-placement="bottom" title="Print" data-bs-toggle="modal"
+    <a class="circleIconBtn" data-bs-placement="bottom" title="Print" data-bs-toggle="modal"
         data-bs-target="#printInvoice1{{$invoice->id ?? ''}}">
         <i class="ti ti-printer"></i>
-    </a> --}}
+    </a>
 
     <a class="circleIconBtn" data-bs-placement="bottom" title="Print" target="_blank" href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
       <i class="ti ti-printer"></i>

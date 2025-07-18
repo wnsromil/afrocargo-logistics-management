@@ -179,7 +179,7 @@ class User extends Authenticatable
 
     public function defaultAddress()
     {
-        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes');
+        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes')->with('user');
     }
 
     protected function profilePic(): Attribute

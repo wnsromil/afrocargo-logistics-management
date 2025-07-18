@@ -16,7 +16,7 @@ class PaginationToolbar extends Component
     public function __construct($pagination, $perPageOptions = [10, 20, 50, 100], $defaultPerPage = 10, $queryKey = 'per_page')
     {
         $this->pagination = $pagination;
-        $this->perPageOptions = $perPageOptions;
+        $this->perPageOptions = getStepArray($pagination->total(), $perPageOptions);
         $this->defaultPerPage = $defaultPerPage;
         $this->queryKey = $queryKey;
     }

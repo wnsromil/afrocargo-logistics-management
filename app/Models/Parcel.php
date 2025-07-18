@@ -149,7 +149,7 @@ class Parcel extends Model
     {
         return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id')->with('barcode')->select(
             'id',
-            'id as supply_id',
+            'inventorie_id as supply_id',
             'parcel_id',
             'invoice_id',
             'inventorie_id',

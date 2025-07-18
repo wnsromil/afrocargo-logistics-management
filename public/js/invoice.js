@@ -212,7 +212,7 @@ $(document).ready(function () {
         console.log("address_type", address_type);
     });
 
-    
+
 
     $('#delevery_customer_id').select2({
         ajax: {
@@ -256,27 +256,13 @@ $(document).ready(function () {
                                     customer: customer ?? "", // Store the full customer object
                                     delivery_address:customer.delivery_address
                                 };
-                            } 
-                            // if(customer.delivery_address){
-                            //     customer.delivery_address.forEach(addr => {
-                            //         let newOption = new Option(addr.text, addr.id, true, true);
-                            //         // Add new option if not already present
-                            //         $("#ship_customer").append(newOption).trigger("change");
-                            //     });
-                            // }
-                            // else if (customer.delivery_address) {
-                            //     return {
-                            //         id: customer.delivery_address.id ?? "",
-                            //         text: customer.delivery_address.text ?? "",
-                            //         customer: customer ?? "", // Store the full customer object
-                            //     };
-                            // } 
+                            }
                             else {
                                 return false;
                             }
                         })
                         .filter((i) => i),
-                    
+
                 };
             },
             cache: true,
@@ -319,16 +305,29 @@ $(document).ready(function () {
             $('input[name="arrived_warehouse_id"]').val(deleveryCountry.id ?? null);
             $('#countryForLocation').val(deleveryCountry.iso2 ?? null).trigger('change');
         }
-        setPickupDeleveryFormValue({
-            alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
-            mobile_number_code_id:deleveryCountry.countryId ?? 1,
-            country:deleveryCountry.country_id ?? "",
-            state:deleveryCountry.state_id ?? "",
-            city:deleveryCountry.city_id ?? "",
-            pincode:deleveryCountry.zip_code ?? "",
-            address1:deleveryCountry.address ?? "",
-            address2:deleveryCountry.address ?? "",
-        },"#ship_to_address")
+
+
+        $("#ship_to_address")
+            .find('select[name="alternative_mobile_number_code_id"]')
+            .val(deleveryCountry.alternative_mobile_number_code_id ?? 1)
+            .trigger("change");
+        $("#ship_to_address")
+            .find('select[name="mobile_number_code_id"]')
+            .val(deleveryCountry.mobile_number_code_id ?? 1)
+            .trigger("change");
+
+        $("#ship_to_address")
+            .find('input[name="mobile_number"]')
+            .val(deleveryCountry.mobile_number ?? "");
+        $("#ship_to_address")
+            .find('input[name="alternative_mobile_number"]');
+        $("#ship_to_address").find('input[name="zip_code"]').val(deleveryCountry.pincode ?? "");
+        $("#ship_to_address").find('input[name="address"]').val(deleveryCountry.address1 ?? "");
+        $("#ship_to_address").find('input[name="country"]').val(deleveryCountry.country ?? "");
+        $("#ship_to_address").find('input[name="state"]').val(deleveryCountry.state ?? "");
+        $("#ship_to_address").find('input[name="city"]').val(deleveryCountry.city ?? "");
+
+
 
         setPickupDeleveryFormValue({
             alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
@@ -366,7 +365,7 @@ $(document).ready(function () {
 
         // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
         $('input[name="invoce_item"]').val(customer.parcel_inventory);
-        
+
 
         let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
 
@@ -429,7 +428,7 @@ $(document).ready(function () {
 
 
 
-        
+
         $('#order_list').empty() // Clear existing options
         $('#ship_customer').empty() // Clear existing options
         sipToAddress.forEach(function(addr) {
@@ -456,9 +455,9 @@ $(document).ready(function () {
                     response.data.forEach(function(addr) {
                         // Create option with text and tracking number as value
                         let option = new Option(
-                            addr.tracking_number + ',' + addr.source_address, 
+                            addr.tracking_number + ',' + addr.source_address,
                             addr.tracking_number, // Use a unique identifier as value
-                            false, 
+                            false,
                             false
                         );
                         // Store the entire object as a data attribute
@@ -488,7 +487,7 @@ $(document).ready(function () {
         var selectedObject = selectedOption.data('object');
 
         console.log("selectedObject",selectedObject);
-        
+
         let inventoryItems = selectedObject.parcel_inventory;
         dynamicInventoryTable(inventoryItems);
 
@@ -524,7 +523,7 @@ $(document).ready(function () {
                 console.log('Air Cargo');
                 // Default to "Air Cargo" if not set
                 $('input[name="transport_type"]').each(function () {
-                    
+
                     if ($(this).val() === "Air Cargo") {
                         console.log('Select Air Cargo');
                         $(this).prop('checked', true);
@@ -552,6 +551,9 @@ $(document).ready(function () {
                             </button>
                         </div>
                         <input type="hidden" name="supply_id" value="${
+                            item.supply_id || ""
+                        }">
+                        <input type="hidden" name="inventory_id" value="${
                             item.id || ""
                         }">
                     </td>
@@ -562,7 +564,7 @@ $(document).ready(function () {
                         item.label_qty || 0
                     }"></td>
                     <td><input type="text" class="form-control tdbor inputcolor" placeholder="" name="volume" value="${
-                        item.volume || 0 
+                        item.volume || 0
                         }"></td>
                     <td>
                         <div class="d-flex align-items-center priceInput">
@@ -615,6 +617,7 @@ $(document).ready(function () {
                                             </button>
                                         </div>
                                         <input type="hidden" name="supply_id">
+                                        <input type="hidden" name="inventory_id">
                                     </td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="qty"></td>
@@ -669,7 +672,7 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
             customer.address_type == "delivery"
                 ? $("#ship_to_address"):$("#delivery_to_address");
         }
-        
+
         // Split full name into first and last name
         // var names = customer.full_name.split(' ');
         // var firstName = names[0];
@@ -678,19 +681,26 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
         if(customer.text){
             newOption = new Option(customer.text, customer.id, true, true);
         }
-        
+
 
         if (customer.address_type == "delivery") {
-            $('input[name="pickup_address_id"]').val(customer.id ?? '');
+            if(!setCustomerInfo){
+                $('input[name="pickup_address_id"]').val(customer.id ?? '');
 
-            // Add new option if not already present
-            $("#ship_customer").append(newOption).trigger("change");
+                // Add new option if not already present
+                $("#ship_customer").append(newOption).trigger("change");
+            }
         } else {
-            $('input[name="delivery_address_id"]').val(customer.id ?? '');
+
             $('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
             // delevery select box
-            // Add new option if not already present
-            $("#delevery_customer_id").append(newOption).trigger("change");
+
+            if(!setCustomerInfo){
+                // Add new option if not already present
+                $('input[name="delivery_address_id"]').val(customer.id ?? '');
+                $("#delevery_customer_id").append(newOption).trigger("change");
+            }
+
         }
 
         // Fill the form fields
@@ -720,11 +730,12 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
         userAddress
             .find('input[name="alternative_mobile_number"]')
             .val(customer.alternative_mobile_number);
-        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
-        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
+
         userAddress.find('input[name="address_2"]').val(customer.address2 ?? "");
         userAddress.find('input[name="address_id"]').val(customer.id ?? "");
 
+        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
+        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
         userAddress.find('input[name="country"]').val(customer.country ?? "");
         userAddress.find('input[name="state"]').val(customer.state ?? "");
         userAddress.find('input[name="city"]').val(customer.city ?? "");
@@ -764,7 +775,12 @@ $(document).on("click", ".open-supply-modal", function () {
 
 $(document).on("click", ".confirm-supply", function () {
     const selectedId = $("#supplySelector").val();
-    const selectedItem = supplyItems.find((item) => item.id == selectedId);
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
 
     if (selectedItem && currentRow) {
         currentRow.find('input[name="supply_id"]').val(selectedItem.id);
@@ -1057,6 +1073,7 @@ $(document).ready(function () {
 
 function hendelAjex(url, formData) {
     // Submit via AJAX
+    showLoader();
     $.ajax({
         url: url,
         method: "POST",
@@ -1067,7 +1084,8 @@ function hendelAjex(url, formData) {
             $("#add_delevery_cancel").click();
             $("#add_ship_modal_cancel").click();
             $("#add_cutomer_modal_cancel").click();
-            
+            hideLoader();
+
             if (response.success) {
                 // alert(response.message);
 
@@ -1086,6 +1104,7 @@ function hendelAjex(url, formData) {
             }
         },
         error: function (xhr) {
+            hideLoader();
             let errors = xhr.responseJSON?.errors;
             if (errors) {
                 Object.keys(errors).forEach((key) => {
@@ -1111,7 +1130,7 @@ function getInvoiceItemsJSON() {
         const item = {
             supply_name: $(this).find('[name="supply_name"]').val(),
             supply_id: $(this).find('[name="supply_id"]').val(),
-            inventory_id: $(this).find('[name="inventory_id"]').val() ?? null, 
+            inventory_id: $(this).find('[name="inventory_id"]').val() ?? null,
             qty: parseFloat($(this).find('[name="qty"]').val()) || 0,
             label_qty:$(this).find('[name="label_qty"]').val() || '-',
             volume: parseFloat($(this).find('[name="volume"]').val()) || 0,

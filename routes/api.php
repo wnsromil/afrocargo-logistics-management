@@ -94,12 +94,12 @@ Route::post('/pickup-address', [PickupController::class, 'CreatePickupAddress'])
 Route::post('/shipto-address', [ShiptoController::class, 'CreateShipTo']);
 Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 
-// Container 
+// Container
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 Route::post('/updateContainer', [ContainerController::class, 'updateContainer'])->name('updateContainer');
 
-//CBM 
+//CBM
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
 Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsByCountryName']);
 Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'getContainersByPortFreightId']);
@@ -117,6 +117,7 @@ Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDri
 //Vehicle
 Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
 
+Route::get('/get-all-items', [InventoryController::class, 'getAllItems']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
@@ -227,7 +228,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/invoice-details/{id}', 'invoiceDetails');
         Route::get('/invoice-get/{type}', 'invoicesGet');
     });
-    
+
 });
 
 Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');

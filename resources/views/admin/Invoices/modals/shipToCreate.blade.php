@@ -124,8 +124,9 @@
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" name="address"
-                                            value="{{ old('address') }}" class="form-control inp"
-                                            placeholder="Enter Address 1" id="locationSearchBox">
+                                            value="{{ old('address') }}" class="form-control inp address"
+                                            placeholder="Enter Address 1">
+
                                     </div>
                                 </div>
                                 <div class="row align-items-center margin-top-top">
@@ -155,32 +156,32 @@
                                 <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label class="foncolor" for="city">City</label>
-                                    
+
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" name="city" id="city" class="form-control inp address" placeholder="city">
                                     </div>
                                 </div>
 
-                                <div class="row align-items-center margin-top-top d-none">
+                                <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label for="masterPickUpAddressId" class="col-form-label text-dark">Latitude<i
                                                 class="text-danger">*</i></label>
                                     </div>
                                     <div class="col-9 justify-content-end">
-                                        <input type="text" name="ship_to_latitude" value="{{ old('ship_to_latitude') }}"
+                                        <input type="text" name="lat" value="{{ old('lat') }}"
                                             class="form-control inp inputbackground" placeholder="" readonly
                                             style="background: #ececec;">
                                     </div>
                                 </div>
-                                <div class="row align-items-center margin-top-top d-none">
+                                <div class="row align-items-center margin-top-top">
                                     <div class="col text-end px-0">
                                         <label for="masterPickUpAddressId"
                                             class="col-form-label text-dark">Longitude</label>
                                     </div>
                                     <div class="col-9 justify-content-end">
-                                        <input type="text" name="ship_to_longitude"
-                                            value="{{ old('ship_to_longitude') }}"
+                                        <input type="text" name="lng"
+                                            value="{{ old('lng') }}"
                                             class="form-control inp inputbackground" placeholder="" readonly
                                             style="background: #ececec;">
                                     </div>
@@ -256,7 +257,7 @@
                                         <button type="button" class="btn btn-outline-secondary" id="add_ship_modal_cancel" data-bs-dismiss="modal" aria-label="Close">
                                             Cancel
                                         </button>
-                                        
+
                                     </div>
                             </div>
                         </div>
