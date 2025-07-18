@@ -62,7 +62,8 @@
                                     @foreach ($coutry as $key => $item)
                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                 data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                            {{ $item->id == old('mobile_number_code_id', $user->mobile_number_code_id) ? 'selected' : '' }}>
+                                            data-length="{{ $item->phone_length ?? 10 }}"
+                                                {{ $item->id == old('mobile_number_code_id', $user->mobile_number_code_id) ? 'selected' : '' }}>
                                             {{ $item->name }} +{{ $item->phonecode }}
                                         </option>
                                     @endforeach
@@ -70,10 +71,10 @@
                             </div>
                             <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
                                    name="mobile_number" value="{{ old('mobile_number', $user->mobile_number) }}"
-                                   oninput="this.value = this.value.slice(0, 10)">
+                                   >
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">The Cellphone field is required.</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12 mb-2 alternate_mobile_no">
@@ -84,7 +85,8 @@
                                     @foreach ($coutry as $key => $item)
                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                 data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                            {{ $item->id == old('alternative_mobile_number_code_id', $user->alternative_mobile_number_code_id) ? 'selected' : '' }}>
+                                           data-length="{{ $item->phone_length ?? 10 }}"
+                                                {{ $item->id == old('alternative_mobile_number_code_id', $user->alternative_mobile_number_code_id) ? 'selected' : '' }}>
                                             {{ $item->name }} +{{ $item->phonecode }}
                                         </option>
                                     @endforeach
@@ -92,8 +94,11 @@
                             </div>
                             <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No. 2"
                                    name="alternative_mobile_number" value="{{ old('alternative_mobile_number', $user->alternative_mobile_number) }}"
-                                   oninput="this.value = this.value.slice(0, 10)">
+                                   >
                         </div>
+                        @error('alternative_mobile_number')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <input type="hidden" id="country_code_2" name="country_code_2">
                     <div class="col-md-12 mb-2">

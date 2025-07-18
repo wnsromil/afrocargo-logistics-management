@@ -93,7 +93,6 @@
     <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
-                <div class="table-scroll-top table-responsive"></div>
                 <div class="table-responsive mt-3">
                     <table class="table tables table-stripped table-hover datatable ">
                         <thead class="thead-light">

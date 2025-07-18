@@ -75,7 +75,7 @@
                                 >
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">The Contact Number field is required.</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                                 >
                         </div>
                         @error('alternative_mobile_number')
-                            <small class="text-danger">The Office Contact Number field is required.</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>

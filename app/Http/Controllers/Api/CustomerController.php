@@ -29,7 +29,7 @@ class CustomerController extends Controller
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query(key: 'invoice_custmore_id');
 
-        $query = User::whereIn('role_id', [3,5])->orderBy('id', 'desc');
+        $query = User::whereIn('role_id', [3, 5])->orderBy('id', 'desc');
         $query->where('invoice_custmore_id', $invoiceCustomerId);
         $query->orWhere('parent_customer_id', $invoiceCustomerId);
         if ($request->has('search') && !empty($request->query('search'))) {
@@ -148,7 +148,7 @@ class CustomerController extends Controller
         }
 
         // Step 1: Main customer record by ID
-        $customer = User::whereIn('role_id', [5,3])
+        $customer = User::whereIn('role_id', [5, 3])
             ->where('id', $id)
             ->with('vehicle', 'invoiceCustmore')
             ->first();
@@ -290,7 +290,9 @@ class CustomerController extends Controller
                 'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
                 'city_id' => $validated['city'] ?? null,
                 'country_id' => $validated['country'] ?? null,
-                'full_name' => $validated['first_name'],
+                'full_name' => $validated['first_name'] . ' ' . ($validated['last_name'] ?? ''),
+                'last_name' => $validated['last_name'] ?? null,
+                'name' => $validated['first_name'] ?? null,
                 'pincode' => $validated['Zip_code'] ?? null,
                 'state_id' => $validated['state'] ?? null,
                 'warehouse_id' => $request->warehouse_id ?? null,

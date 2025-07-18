@@ -251,7 +251,9 @@ class CustomerController extends Controller
                     : null,
                 'city_id' => $validated['city'] ?? null,
                 'country_id' => $validated['country'] ?? null,
-                'full_name' => $validated['first_name'],
+                'full_name' => $validated['first_name'] . ' ' . $validated['last_name'] ?? null,
+                'last_name' => $validated['last_name'] ?? null,
+                'name' => $validated['first_name'] ?? null,
                 'pincode' => $validated['Zip_code'] ?? null,
                 'state_id' => $validated['state'] ?? null,
                 'warehouse_id' => $request->warehouse_id ?? null,
@@ -552,7 +554,9 @@ class CustomerController extends Controller
                 : $user->phone_2_code_id_id,
             'city_id' => $validated['city'] ?? $user->city_id,
             'country_id' => $validated['country'] ?? $user->country_id,
-            'full_name' => $validated['first_name'] ?? $user->name,
+            'full_name' => $validated['first_name'] . ' ' . $validated['last_name'] ?? $user->full_name,
+            'last_name' => $validated['last_name'] ?? $user->last_name,
+            'name' => $validated['first_name'] ?? $user->name,
             'pincode' => $validated['Zip_code'] ?? $user->pincode,
             'state_id' => $validated['state'] ?? $user->state_id,
             'warehouse_id' => $request->warehouse_id ?? $user->warehouse_id,
@@ -627,15 +631,18 @@ class CustomerController extends Controller
 
     public function createShipTo(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
 
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'email' => [
                 'required',
                 'email',
@@ -646,10 +653,16 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
-            'last_name' => 'nullable|string|max:255',
             'zip_code' => 'nullable|string|max:10',
             'state_id' => 'nullable|integer',
             'city_id' => 'nullable|integer',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
         try {
 
@@ -742,15 +755,19 @@ class CustomerController extends Controller
 
     public function editeShipTo(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         // Validation
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone," . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2," . $id,
             'email' => [
                 'required',
                 'email',
@@ -761,6 +778,13 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
 
         try {
@@ -873,14 +897,17 @@ class CustomerController extends Controller
 
     public function createPickupAddress(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'address_1' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -888,6 +915,13 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
+        ],[
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
         try {
             $randomPassword = Str::random(8); // Random password of 8 characters
@@ -977,15 +1011,17 @@ class CustomerController extends Controller
 
     public function editPickupAddress(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // Validation
         $validated = $request->validate([
             'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => 'nullable|digits:' . $altPhoneLength . '|unique:users,phone,' . $id,
             'address_1' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -993,6 +1029,13 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
+        ],[
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
 
         try {
