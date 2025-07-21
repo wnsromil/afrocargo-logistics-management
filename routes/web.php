@@ -241,6 +241,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
 
+        // Customer Ship To
+        Route::get('customer-shipTo', [CustomerController::class, 'ShipTo_index'])->name('customer.shipToIndex');
+
         // Customer Ship To Address
         Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
         Route::post('/create-shipTo', [CustomerController::class, 'createShipTo'])->name('customer.createShipTo');

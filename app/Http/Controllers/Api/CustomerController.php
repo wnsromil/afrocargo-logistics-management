@@ -212,10 +212,12 @@ class CustomerController extends Controller
 
             $role = 'customer';
             $role_id = 3;
+            $parent_customer_id = null;
 
             if ($validated['invoice_custmore_type'] === 'ship_to') {
                 $role = 'ship_to_customer';
                 $role_id = 5;
+                 $parent_customer_id = $request->invoice_custmore_id ?? null;
             }
 
 
@@ -257,6 +259,7 @@ class CustomerController extends Controller
                 'country_code_2' => $request->country_code_2 ?? null,
                 'invoice_custmore_type' => $request->invoice_custmore_type,
                 'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                'parent_customer_id' => $parent_customer_id,
                 //'invoice_custmore_id' => null,
                 'vehicle_id'        => $request->container_id ?? null,
             ];

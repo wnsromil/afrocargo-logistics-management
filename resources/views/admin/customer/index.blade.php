@@ -46,16 +46,6 @@
                 </div>
             </div>
 
-            {{-- ShipTo Search --}}
-            <div class="col-md-3 mb-3">
-                <label for="searchInput">ShipTo Customer</label>
-                <div class="inputGroup height40 position-relative">
-                    <i class="ti ti-search"></i>
-                    <input type="text" class="form-control height40 form-cs" placeholder="Search ShipTo Customer"
-                        name="ShipTosearch" value="{{ request('ShipTosearch') }}">
-                </div>
-            </div>
-
             {{-- Warehouse --}}
             <div class="col-md-3 mb-3">
                 <label>By Warehouse</label>

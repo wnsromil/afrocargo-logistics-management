@@ -72,7 +72,6 @@
             <div class="card-table">
                 <div class="card-body">
                     <div class="table-responsive mt-3">
-
                         <table class="table table-stripped table-hover datatable">
                             <thead class="thead-light">
                                 <tr>
@@ -197,7 +196,6 @@
                                 @endforelse
 
                             </tbody>
-
                         </table>
                     </div>
                 </div>

@@ -177,34 +177,34 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <div class="col">
-                                                    <div class="row">
-                                                        <div class="td"><i
-                                                                class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
-                                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="td"><i
+                                                            class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="td"><i
-                                                                class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
-                                                            <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
-                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="td"><i
+                                                            class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
+                                                        <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                            <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
-                                                                {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
-                                                                {{$parcel->deliveryaddress->city->name ?? "--"}}
-                                                                {{$parcel->deliveryaddress->state->name ?? "--"}}
-                                                                {{$parcel->deliveryaddress->country->name ?? "--"}}
-                                                            </p>
-                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                        <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
+                                                            {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
+                                                            {{$parcel->deliveryaddress->city->name ?? "--"}}
+                                                            {{$parcel->deliveryaddress->state->name ?? "--"}}
+                                                            {{$parcel->deliveryaddress->country->name ?? "--"}}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div>{{ ucfirst($parcel->transport_type) ?? '-' }}</div>
                                     </td>
@@ -293,37 +293,37 @@
                                         $status_class = $parcel->status ?? null;
                                         $parcelStatus = $parcel->parcelStatus->status ?? null;
                                         $classValue = match ((string) $status_class) {
-                                              '1' => 'new-badge-pending',
-                                                '2' => 'new-badge-pickup',
-                                                '3' => 'new-badge-picked-up',
-                                                '4' => 'new-badge-arrived',
-                                                '5' => 'new-badge-in-transit',
-                                                '6' => 'new-badge-warehouse-load',
-                                                '7' => 'new-badge-discharge',
-                                                '8' => 'new-badge-arrived-final',
-                                                '9' => 'new-badge-ready-pickup',
-                                                '10' => 'new-badge-out-delivery',
-                                                '11' => 'new-badge-delivered',
-                                                '12' => 'new-badge-redelivery',
-                                                '13' => 'new-badge-on-hold',
-                                                '14' => 'new-badge-cancelled',
-                                                '15' => 'new-badge-abandoned',
-                                                '16' => 'new-badge-ready-transfer',
-                                                '17' => 'new-badge-transfer-hub',
-                                                '18' => 'new-badge-received',
-                                                '19' => 'new-badge-hub-arrived',
-                                                '20' => 'new-badge-loading',
-                                                '21' => 'new-badge-self-pickup',
-                                                '22' => 'new-badge-assign-driver',
-                                                '23' => 'new-badge-reschedule',
-                                                '24' => 'new-badge-hold',
-                                                '25' => 'new-badge-gate-in',
-                                                '26' => 'new-badge-in-custom-hold',
-                                                '27' => 'new-badge-load-vessel',
-                                                '28' => 'new-badge-departure',
-                                                '29' => 'new-badge-arrived-vessel',
-                                                '30' => 'new-badge-discharge-vessel',
-                                                '33' => 'new-badge-hold-cleared',
+                                            '1' => 'new-badge-pending',
+                                            '2' => 'new-badge-pickup',
+                                            '3' => 'new-badge-picked-up',
+                                            '4' => 'new-badge-arrived',
+                                            '5' => 'new-badge-in-transit',
+                                            '6' => 'new-badge-warehouse-load',
+                                            '7' => 'new-badge-discharge',
+                                            '8' => 'new-badge-arrived-final',
+                                            '9' => 'new-badge-ready-pickup',
+                                            '10' => 'new-badge-out-delivery',
+                                            '11' => 'new-badge-delivered',
+                                            '12' => 'new-badge-redelivery',
+                                            '13' => 'new-badge-on-hold',
+                                            '14' => 'new-badge-cancelled',
+                                            '15' => 'new-badge-abandoned',
+                                            '16' => 'new-badge-ready-transfer',
+                                            '17' => 'new-badge-transfer-hub',
+                                            '18' => 'new-badge-received',
+                                            '19' => 'new-badge-hub-arrived',
+                                            '20' => 'new-badge-loading',
+                                            '21' => 'new-badge-self-pickup',
+                                            '22' => 'new-badge-assign-driver',
+                                            '23' => 'new-badge-reschedule',
+                                            '24' => 'new-badge-hold',
+                                            '25' => 'new-badge-gate-in',
+                                            '26' => 'new-badge-in-custom-hold',
+                                            '27' => 'new-badge-load-vessel',
+                                            '28' => 'new-badge-departure',
+                                            '29' => 'new-badge-arrived-vessel',
+                                            '30' => 'new-badge-discharge-vessel',
+                                            '33' => 'new-badge-hold-cleared',
                                             default => 'new-badge-pending',
                                         };
 
@@ -1477,6 +1477,6 @@
             });
 
         </script>
-        
+
     @endsection
 </x-app-layout>
