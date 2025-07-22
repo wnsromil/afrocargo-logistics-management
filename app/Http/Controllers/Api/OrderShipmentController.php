@@ -120,6 +120,9 @@ class OrderShipmentController extends Controller
 
 
             $pickupAddress = Address::find($request->pickup_address_id);
+            $deliveryAddress = Address::find($request->delivery_address_id);
+            $validatedData['ship_customer_id'] = $deliveryAddress->user_id ?? null;
+            
             if (!$pickupAddress) {
                 return response()->json(['error' => 'Pickup address not found'], 404);
             }

@@ -23,6 +23,9 @@ use App\Models\{
 use \Carbon\Carbon;
 
 use function Laravel\Prompts\note;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image; // agar Intervention Image package use karte ho
 
 class OrderStatusManage extends Controller
 {
@@ -653,29 +656,32 @@ class OrderStatusManage extends Controller
 
     public function statusUpdate_SignatureSelfDelivery(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
             'notes' => 'nullable|string',
             'img' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'signature' => 'nullable', // base64 drawn signature
             'amount' => 'nullable|numeric',
             'currency_name' => 'nullable|string',
             'created_user_id' => 'required|exists:users,id',
-            //'warehouse_id' => 'required|exists:warehouses,id',
+            'parcel_items' => 'nullable|string', // aapko json string milega, usko decode karenge
         ]);
 
-        // Default image path
         $imgPath = null;
 
-        // Handle image upload if present
         if ($request->hasFile('img')) {
             $file = $request->file('img');
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/pickup_self', $filename, 'public');
             $imgPath = 'storage/' . $filePath;
+        } elseif ($request->hasFile('signature')) {
+            $file = $request->file('signature');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/pickup_self', $filename, 'public');
+            $imgPath = 'storage/' . $filePath;
         }
 
-        // Save data to ParcelSignaturePickup
+        // Save to ParcelSignaturePickup
         ParcelSignaturePickup::create([
             'parcel_id' => $request->parcel_id,
             'notes' => $request->notes,
@@ -685,14 +691,22 @@ class OrderStatusManage extends Controller
             'customer_id' => Parcel::findOrFail($request->parcel_id)->customer_id,
         ]);
 
+        // Parcel status update
         $parcel = Parcel::findOrFail($request->parcel_id);
+        $parcel->update(['status' => 11]);
 
-        // Update the parcel status
-        $parcel->update([
-            'status' => 11,
-        ]);
+        // Update ParcelInventorie status for each parcel_item id
+        if ($request->parcel_items) {
+            // parcel_items string aapke example me JSON string hai
+            $parcelItems = json_decode($request->parcel_items, true); // ['7','8'] etc.
 
-        // Create a new entry in ParcelHistory
+            if (is_array($parcelItems)) {
+                ParcelInventorie::whereIn('id', $parcelItems)
+                    ->update(['status' => 11]);
+            }
+        }
+
+        // Parcel history
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
             'created_user_id' => $request->created_user_id,

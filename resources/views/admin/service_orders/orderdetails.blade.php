@@ -278,8 +278,8 @@
                                     <th>Container ID</th>
                                     <th>Item Image</th>
                                     <th>Item Name</th>
-                                    <th>Item Price</th>
                                     <th>Quantity</th>
+                                    <th>Item Price</th>
                                     <th>Type</th>
                                     <th>Status</th>
                                 </tr>

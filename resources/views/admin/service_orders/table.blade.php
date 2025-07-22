@@ -267,7 +267,7 @@
                                                                 <a class="dropdown-item {{ $currentStatusId == 9 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
                                                                     href="javascript:void(0);">Ready for pick up</a>
                                                             </li>
-                                                            <li>
+                                                            {{-- <li>
                                                                 <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                                     class="dropdown-item {{ $currentStatusId == 21 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
                                                                     data-bs-toggle="modal" data-id="{{ $parcel->id }}"
@@ -275,7 +275,7 @@
                                                                     href="javascript:void(0);">
                                                                     Ready for self pick up
                                                                 </a>
-                                                            </li>
+                                                            </li> --}}
                                                             <li>
                                                                 <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                                     class="dropdown-item {{ $currentStatusId == 22 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"

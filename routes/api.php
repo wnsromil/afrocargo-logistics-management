@@ -220,6 +220,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/get-shipto-users', [ShiptoController::class, 'getCustomerShipToUsers']);
 
         Route::post('/invoiceUpdate/{id}', [InvoiceController::class, 'invoiceUpdate']);
+        Route::post('/check-invoice-item-status', [InvoiceController::class, 'checkItemInvoices']);
     });
 
     //invoice controller
@@ -231,7 +232,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/invoice-details/{id}', 'invoiceDetails');
         Route::get('/invoice-get/{type}', 'invoicesGet');
     });
-
 });
 
 Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');

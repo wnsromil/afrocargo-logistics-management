@@ -224,6 +224,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
         Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('invoice.updateNote');
         Route::post('updateClaim', [InvoiceController::class, 'updateClaim'])->name('invoice.updateClaim');
+        Route::post('/invoice-create-order-details-service', [InvoiceController::class, 'orderDetailsCreateInvoice']);
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
