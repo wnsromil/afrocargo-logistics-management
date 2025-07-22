@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 
 class Address extends Model
 {
@@ -28,7 +30,6 @@ class Address extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
     public function mobile_number_code()
     {
         return $this->belongsTo(Country::class, 'mobile_number_code_id');
@@ -75,5 +76,12 @@ class Address extends Model
 
             $address->unique_id = $fullPrefix . $newNumber;
         });
+    }
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => empty($value) ? "{$this->name} {$this->last_name}" : $value,
+        );
     }
 }

@@ -1,6 +1,6 @@
 <!-- ------------------- 2nd modal ---------------------------- -->
 
-    <div class="modal custom-modal fade" id="shiptoAddressModal" aria-labelledby="shiptoAddressModalLabel"
+    <div class="modal custom-modal fade glocation" id="shiptoAddressModal" aria-labelledby="shiptoAddressModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-size modal-dialog-centered">
             <div class="modal-content">
@@ -31,7 +31,10 @@
                                                 Select
                                                 Country</option>
                                             @foreach (setting()->warehouseContries() as $country)
-                                                <option value="{{ $country['name'] }}" {{ old('country') == $country['name'] ? 'selected' : '' }}>
+                                                <option value="{{ $country['name'] }}"
+                                                {{ old('country') == $country['name'] ? 'selected' : '' }}
+                                                data-country="{{ $country->iso2 }}"
+                                                >
                                                     {{ $country['name'] }}
                                                 </option>
                                             @endforeach
@@ -74,7 +77,8 @@
                                                     @foreach ($coutry as $key => $item)
                                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                             data-name="{{ $item->name }}"
-                                                            data-code="{{ $item->phonecode }}">
+                                                            data-code="{{ $item->phonecode }}"
+                                                            data-length="{{ $item->phone_length ?? '' }}">
                                                             {{ $item->name }} +{{ $item->phonecode }}
                                                         </option>
                                                     @endforeach
@@ -83,7 +87,7 @@
                                             <input type="number" class="form-control flagInput inp"
                                                 placeholder="Enter Mobile No" name="mobile_number"
                                                 value="{{ old('mobile_number') }}"
-                                                oninput="this.value = this.value.slice(0, 10)">
+                                                >
                                         </div>
                                         @error('alternate_mobile_no')
                                             <small class="text-danger">{{ $message }}</small>
@@ -101,7 +105,8 @@
                                                     @foreach ($coutry as $key => $item)
                                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                             data-name="{{ $item->name }}"
-                                                            data-code="{{ $item->phonecode }}">
+                                                            data-code="{{ $item->phonecode }}"
+                                                            data-length="{{ $item->phone_length ?? '' }}">
                                                             {{ $item->name }} +{{ $item->phonecode }}
                                                         </option>
                                                     @endforeach
@@ -110,7 +115,7 @@
                                             <input type="number" class="form-control flagInput inp"
                                                 placeholder="Enter TelePhone" name="alternative_mobile_number"
                                                 value="{{ old('alternative_mobile_number') }}"
-                                                oninput="this.value = this.value.slice(0, 10)">
+                                                >
                                         </div>
                                         @error('alternate_mobile_no')
                                             <small class="text-danger">{{ $message }}</small>
@@ -124,7 +129,7 @@
                                     </div>
                                     <div class="col-9 justify-content-end">
                                         <input type="text" name="address"
-                                            value="{{ old('address') }}" class="form-control inp address"
+                                            value="{{ old('address') }}" class="form-control inp"
                                             placeholder="Enter Address 1">
 
                                     </div>

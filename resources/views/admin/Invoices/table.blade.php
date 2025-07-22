@@ -27,21 +27,96 @@
                         <td>{{ $invoice->created_at->format('d/m/Y H:i') ?? '-' }}</td>
                         <td>{{ $invoice->transport_type ?? 'Supply' }}</td>
                         <td><a href="{{route('admin.invoices.edit',$invoice->id)}}" class="text-danger">
-                                @if($invoice->deliveryAddress)
-                                    {{ $invoice->deliveryAddress->full_name ?? '-' }}
+                                @if($invoice->pickupAddress)
+                                    {{ $invoice->pickupAddress->full_name ?? '-' }}
                                 @else
-                                    {{ $invoice->pickupAddress ? $invoice->pickupAddress->full_name : '-' }}
+                                    {{ $invoice->deliveryAddress ? $invoice->deliveryAddress->full_name : '-' }}
                                 @endif
                             </a>
                         </td>
-                        <td>{{ $invoice->warehouse->address ?? '-' }}</td>
-                        <td>{{ $invoice->pickupAddress ? $invoice->pickupAddress->full_name : '-' }}</td>
+                        <td>
+                            @if($invoice->pickupAddress)
+                                {{ $invoice->pickupAddress->address ?? '-' }}
+                            @else
+                                {{ $invoice->deliveryAddress ? $invoice->deliveryAddress->address : '-' }}
+                            @endif
+
+                        </td>
+                        <td>{{ $invoice->deliveryAddress ? $invoice->deliveryAddress->full_name : '-' }}</td>
                         <!-- Trigger Link -->
                         <td>
                             <a href="javascript:void(0);" class="text-danger" data-bs-toggle="modal"
                                 data-bs-target="#invoiceModal{{ $invoice->id }}">
                                 <div>#{{ $invoice->invoice_no ?? 'INV-001' }}</div>
                             </a>
+                        </td>
+                        <td>
+                            <span>${{ number_format($invoice->grand_total ?? 0, 2) }}</span>
+                        </td>
+                        <td>
+                            <div>$ {{ number_format($invoice->balance ?? 0, 2) }}</div>
+                        </td>
+                        <td>{{ $invoice->container->unique_id ?? '-' }}</td>
+                        <td>{{ $invoice->user->fullName ?? '-' }}</td>
+                        <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
+
+                        <td>
+
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
+                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <ul>
+                                        <li>
+                                            <a class="dropdown-item" data-bs-placement="bottom"
+                                                title="Individual Payment" data-bs-toggle="modal"
+                                                data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
+                                                <i class="ti ti-cash me-2"></i>Payment</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Invoice PDF" target="_blank"
+                                                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
+                                                <i class="ti ti-file-invoice"></i>Invoice PDF</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" data-bs-placement="bottom"
+                                                title="Send Invoice pdf" data-bs-toggle="modal"
+                                                data-bs-target="#sendinvoicepdf{{$invoice->id ?? ''}}">
+                                                <i class="ti ti-mail me-2"></i>Send Email</a>
+
+                                        </li>
+                                        <li>
+                                        <li>
+
+                                            <a class="dropdown-item" title="Labels"
+                                                    href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
+                                                    target="_blank">
+                                                    <i class="ti ti-tag-starred me-2"></i>Labels</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Labels"
+                                                href="javascript:void(0)"
+                                                {{--onclick="alertMsg('Please generate labels. No labels have been generated for this invoice yet.', 'error')"--}}
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#createLabel{{ $invoice->id }}">
+                                                <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
+
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Edit Invoice"
+                                                href="{{route('admin.invoices.edit',$invoice->id)}}"><i
+                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" title="Delete Invoice"
+                                                href="javascript:void(0)"
+                                                onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
+                                                    class="ti ti-trash me-2"></i>Delete Invoice</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
                         </td>
 
                         <!-- Modal -->
@@ -70,7 +145,15 @@
                                         </div>
                                         <hr>
                                         <div class="row">
-                                            @if(!empty($invoice->deliveryAddress))
+                                            @if(!empty($invoice->pickupAddress))
+                                            <div class="col-md-6">
+                                                <div><strong>Customer:</strong> {{ $invoice->pickupAddress->full_name
+                                                    ?? '-' }} {{ $invoice->pickupAddress->address ?? '-' }}</div>
+                                                <div><strong>Cell:</strong> {{ $invoice->pickupAddress->mobile_number
+                                                    ?? '-' }}</div>
+                                            </div>
+
+                                            @else
                                             <div class="col-md-6">
                                                 <div><strong>Customer:</strong> {{ $invoice->deliveryAddress->full_name
                                                     ?? '-' }} {{ $invoice->deliveryAddress->address ?? '-' }}</div>
@@ -78,12 +161,14 @@
                                                     ?? '-' }}</div>
                                             </div>
                                             @endif
+                                            @if(!empty($invoice->deliveryAddress))
                                             <div class="col-md-6">
-                                                <div><strong>ShipTo:</strong> {{ $invoice->pickupAddress->full_name ??
-                                                    '-' }} {{ $invoice->pickupAddress->address ?? '-' }}</div>
-                                                <div><strong>Tel:</strong> {{ $invoice->pickupAddress->mobile_number ??
+                                                <div><strong>ShipTo:</strong> {{ $invoice->deliveryAddress->full_name ??
+                                                    '-' }} {{ $invoice->deliveryAddress->address ?? '-' }}</div>
+                                                <div><strong>Tel:</strong> {{ $invoice->deliveryAddress->mobile_number ??
                                                     '-' }}</div>
                                             </div>
+                                            @endif
                                         </div>
 
                                         <hr>
@@ -173,74 +258,6 @@
                                 </div>
                             </div>
                         </div>
-                        <td>
-                            <span>${{ number_format($invoice->grand_total ?? 0, 2) }}</span>
-                        </td>
-                        <td>
-                            <div>$ {{ number_format($invoice->balence ?? 0, 2) }}</div>
-                        </td>
-                        <td>{{ $invoice->container->unique_id ?? '-' }}</td>
-                        <td>{{ $invoice->user->fullName ?? '-' }}</td>
-                        <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
-
-                        <td>
-
-                            <div class="dropdown dropdown-action">
-                                <a href="#" class=" btn-action-icon fas " data-bs-toggle="dropdown"
-                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul>
-                                        <li>
-                                            <a class="dropdown-item" data-bs-placement="bottom"
-                                                title="Individual Payment" data-bs-toggle="modal"
-                                                data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
-                                                <i class="ti ti-cash me-2"></i>Payment</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" title="Invoice PDF" target="_blank"
-                                                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
-                                                <i class="ti ti-file-invoice"></i>Invoice PDF</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" data-bs-placement="bottom"
-                                                title="Send Invoice pdf" data-bs-toggle="modal"
-                                                data-bs-target="#sendinvoicepdf{{$invoice->id ?? ''}}">
-                                                <i class="ti ti-mail me-2"></i>Send Email</a>
-
-                                        </li>
-                                        <li>
-                                        <li>
-
-                                            <a class="dropdown-item" title="Labels"
-                                                    href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
-                                                    target="_blank">
-                                                    <i class="ti ti-tag-starred me-2"></i>Labels</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" title="Labels"
-                                                href="javascript:void(0)"
-                                                {{--onclick="alertMsg('Please generate labels. No labels have been generated for this invoice yet.', 'error')"--}}
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#createLabel{{ $invoice->id }}">
-                                                <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
-
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" title="Edit Invoice"
-                                                href="{{route('admin.invoices.edit',$invoice->id)}}"><i
-                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" title="Delete Invoice"
-                                                href="javascript:void(0)"
-                                                onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
-                                                    class="ti ti-trash me-2"></i>Delete Invoice</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-
-                        </td>
                     </tr>
 
                     @empty

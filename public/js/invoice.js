@@ -283,17 +283,8 @@ $(document).ready(function () {
             $('select[name="warehouse_id"]').val(shipCountry.id ?? null).trigger('change');
         }
 
-        // setPickupDeleveryFormValue({
-        //     alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
-        //     mobile_number_code_id:shipCountry.countryId ?? 1,
-        //     country:shipCountry.country_id ?? "",
-        //     state:shipCountry.state_id ?? "",
-        //     city:shipCountry.city_id ?? "",
-        //     pincode:shipCountry.zip_code ?? "",
-        //     address1:shipCountry.address ?? "",
-        //     address2:shipCountry.address ?? "",
-        // },"#delivery_to_address")
     });
+
 
     $('#deleveryCountry').on("select2:select", function (e) {
         $('#order_list').empty() // Clear existing options
@@ -305,6 +296,27 @@ $(document).ready(function () {
             $('input[name="arrived_warehouse_id"]').val(deleveryCountry.id ?? null);
             $('#countryForLocation').val(deleveryCountry.iso2 ?? null).trigger('change');
         }
+
+        // --------------------------
+        $('#order_list').empty() // Clear existing options
+        $('#order_list_div').addClass('d-none');
+        // Clear existing options
+        $('#ship_customer').empty();
+        // Add new options to the select element
+        const sipToAdd = sipToAddress || [];
+        sipToAdd.filter(function(addr) {
+            return addr.country_id == deleveryCountry.name;
+        })
+        .forEach(function(addr) {
+            let option = new Option(addr.text, addr.id, false, false);
+            $('#ship_customer').append(option);
+        });
+        // Re-initialize Select2 to reflect the new options
+        $('#ship_customer').val(null).trigger('change');
+        $('#ship_customer').select2({
+            placeholder: "Search Customer"
+        });
+        // ----------------------------------------------
 
 
         $("#ship_to_address")
@@ -1061,11 +1073,11 @@ $(document).ready(function () {
 
     if (pickupAddress) {
         setPickupDeleveryFormValue(pickupAddress);
-        setPickupDeleveryFormValue(pickupAddress,$("#model_shipto_Form"));
+        setPickupDeleveryFormValue(pickupAddress,$("#CustomerCreate_Form"));
     }
     if (deliveryAddress) {
         setPickupDeleveryFormValue(deliveryAddress);
-        setPickupDeleveryFormValue(deliveryAddress,$("#CustomerCreate_Form"));
+        setPickupDeleveryFormValue(deliveryAddress,$("#model_shipto_Form"));
     }
 
     $("#dynamicTable tbody tr:last").find(".addBtn").show();
@@ -1534,4 +1546,10 @@ $(document)
     function removeImage(imageType) {
         document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
         document.getElementById('file_' + imageType).value = "";
+    }
+
+
+    function phonevalidate(self){
+        let length = $(self).select('option:selected').data('length');
+        let phoneNumber = $(self).val();
     }

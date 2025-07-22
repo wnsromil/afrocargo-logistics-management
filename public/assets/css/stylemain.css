@@ -3371,7 +3371,7 @@ table.dataTable>thead .sorting_desc_disabled:after {
 
 /* .checkboxlable.active {
     background-color: #d4edda !important;
-    
+
 } */
 .custom_check .checkmark {
     position: absolute;
@@ -3539,6 +3539,7 @@ span.select2-dropdown:has(.my-custom-option-class) {
 
     span.select2-selection.select2-selection--single {
         height: 37px !important;
+        margin-left: 1px;
     }
 
     .select2-selection__rendered {
@@ -3805,7 +3806,7 @@ span.select2-dropdown:has(.my-custom-option-class) {
 
 
 /* ============================================== */
-/* 
+/*
 .gap-header{
     margin: 0px 5px;
 } */
