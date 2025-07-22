@@ -929,7 +929,7 @@ Version      : 1.0
         $('input[name="pickup_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
-          //  autoUpdateInput: true, // Auto Update Input With Default Date
+            //  autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
                 format: "MM/DD/YYYY", // Date Format
             },
@@ -2287,7 +2287,6 @@ Version      : 1.0
             setField("lng", lng);
         });
     }
-
 
 
     window.addEventListener("load", function () {

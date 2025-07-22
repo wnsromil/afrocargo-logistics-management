@@ -25,6 +25,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $shipTosearch = $request->input('ShipTosearch');
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
         $type = $request->input('type');
@@ -37,28 +38,38 @@ class CustomerController extends Controller
             ->select('id', 'warehouse_name')
             ->get();
 
-        // Determine role_id based on type
-        $roleId = 3; // default: customer
-        if ($type === 'ShipTo') {
-            $roleId = 5;
-        }
+        // Set role_id based on ShipTosearch
+        $roleId = $shipTosearch ? 5 : 3;
 
         $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->where('is_deleted', 'No')
-            ->where('role_id', $roleId) // ✅ role_id based on type
-            ->when($search, function ($q) use ($search) {
-                return $q->where(function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%$search%")
-                        ->orWhere('unique_id', 'LIKE', "%$search%")
-                        ->orWhere('username', 'LIKE', "%$search%")
-                        ->orWhere('email', 'LIKE', "%$search%")
-                        ->orWhere('phone', 'LIKE', "%$search%")
-                        ->orWhere('address', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%")
-                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+            ->where('role_id', $roleId)
+            ->when($search || $shipTosearch, function ($q) use ($search, $shipTosearch) {
+                $q->where(function ($query) use ($search, $shipTosearch) {
+                    if ($search) {
+                        $query->where('name', 'LIKE', "%$search%")
+                            ->orWhere('unique_id', 'LIKE', "%$search%")
+                            ->orWhere('username', 'LIKE', "%$search%")
+                            ->orWhere('email', 'LIKE', "%$search%")
+                            ->orWhere('phone', 'LIKE', "%$search%")
+                            ->orWhere('address', 'LIKE', "%$search%")
+                            ->orWhere('status', 'LIKE', "%$search%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+                    }
+
+                    if ($shipTosearch) {
+                        $query->orWhere('name', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('unique_id', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('username', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('email', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('phone', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('address', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('status', 'LIKE', "%$shipTosearch%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$shipTosearch%"]);
+                    }
                 });
             })
             ->when($warehouse_id, function ($q) use ($warehouse_id) {
@@ -66,24 +77,30 @@ class CustomerController extends Controller
             })
             ->latest('id')
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage, 'type' => $type]); // Include type in pagination
+            ->appends([
+                'search' => $search,
+                'ShipTosearch' => $shipTosearch,
+                'per_page' => $perPage,
+                'type' => $type,
+            ]);
 
         $serialStart = ($currentPage - 1) * $perPage;
 
-        if ($type == 'ShipTo') {
-            if ($request->ajax() && $type == 'ShipTo') {
+        if ($shipTosearch) {
+            if ($request->ajax()) {
                 return view('admin.customer.shipto.shiptotable', compact('customers', 'serialStart', 'warehouses'))->render();
             } else {
-                // dd($customers);
                 return view('admin.customer.shipto.shiptoindextable', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
             }
         }
+
         if ($request->ajax()) {
             return view('admin.customer.table', compact('customers', 'serialStart', 'warehouses'))->render();
         }
 
         return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -605,6 +622,7 @@ class CustomerController extends Controller
 
     public function createShipTo(Request $request)
     {
+
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
@@ -623,6 +641,10 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
+            'last_name' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
+            'state_id' => 'nullable|integer',
+            'city_id' => 'nullable|integer',
         ]);
         try {
 
@@ -647,6 +669,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name' => $request->last_name ?? null,
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -673,6 +696,30 @@ class CustomerController extends Controller
 
             // 📌 Create User
             $user = User::create($userData);
+
+            insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id' => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' => $request->city_id ?? null, // 🟡 city_id from request
+                'country_id' => $validated['country'] ?? null,
+                'name' => $validated['first_name'],
+                'last_name' => $request->last_name ?? null, // 🟡 last_name from request (not validated)
+                'full_name' => $validated['first_name'] . ' ' . ($request->last_name ?? ''),
+                'pincode' => $request->zip_code ?? null, // 🟡 Zip_code from request
+                'state_id' => $request->state_id ?? null, // 🟡 state from request
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null, // 🟢 matching with validated
+                'long' => $validated['longitude'] ?? null, // 🟢 matching with validated
+                'type' => 'Services',
+                'default_address' => 'Yes',
+            ]);
+
+
             return redirect()
                 ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=ShipTo')
                 ->with('success', 'Ship to user created successfully.');
@@ -733,6 +780,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name' => $request->last_name ?? null,
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'],
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -754,6 +802,28 @@ class CustomerController extends Controller
             ];
 
             $user->update($userData);
+
+            updateAddress($id, [
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id' => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' => $request->city_id ?? null, // 🟡 city_id from request
+                'country_id' => $validated['country'] ?? null,
+                'name' => $validated['first_name'],
+                'last_name' => $request->last_name ?? null, // 🟡 last_name from request (not validated)
+                'full_name' => $validated['first_name'] . ' ' . ($request->last_name ?? ''),
+                'pincode' => $request->zip_code ?? null, // 🟡 Zip_code from request
+                'state_id' => $request->state_id ?? null, // 🟡 state from request
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null, // 🟢 matching with validated
+                'long' => $validated['longitude'] ?? null, // 🟢 matching with validated
+                'type' => 'Services',
+                'default_address' => 'Yes',
+            ]);
 
             return redirect()
                 ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')

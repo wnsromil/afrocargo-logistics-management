@@ -36,13 +36,14 @@ class OrderShipmentController extends Controller
      */
     public function index(Request $request)
     {
-        $parcels = Parcel::where('parcel_type', $request->parcel_type)->select('id', 'tracking_number', 'driver_id', 'warehouse_id', 'customer_id')->when($this->user->role_id != 1, function ($q) {
-            // return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->when($this->user->role_id == 3, function ($q) {
-            return $q->where('customer_id', $this->user->id);
-        })->when($this->user->role_id == 4, function ($q) {
-            return $q->where('driver_id', $this->user->id);
-        })
+        $parcels = Parcel::where('parcel_type', $request->parcel_type)->select('id', 'tracking_number', 'driver_id', 'warehouse_id', 'customer_id')
+            ->when($this->user->role_id != 1, function ($q) {
+                // return $q->where('warehouse_id', $this->user->warehouse_id);
+            })->when($this->user->role_id == 3, function ($q) {
+                return $q->where('customer_id', $this->user->id);
+            })->when($this->user->role_id == 4, function ($q) {
+                return $q->where('driver_id', $this->user->id);
+            })
             ->when(!empty($request->status), function ($q) use ($request) {
                 return $q->whereIn('status', explode(',', $request->status));
             })
@@ -66,6 +67,7 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($parcels, 'Parcel data fetched successfully.');
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -280,6 +282,9 @@ class OrderShipmentController extends Controller
             ], 500);
         }
     }
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
         $parcel = Parcel::where('id', $id)
@@ -760,7 +765,7 @@ class OrderShipmentController extends Controller
 
                 ParcelInventorie::create([
                     'parcel_id' => $parcel->id,
-                    'inventory_name'=> $supply->name ?? null,
+                    'inventory_name' => $supply->name ?? null,
                     'price' => $supply->price,
                     'total' => $item['inventorie_item_quantity'] * ($supply->price ?? 0),
                     'inventorie_id' => $item['inventorie_id'],
@@ -891,21 +896,26 @@ class OrderShipmentController extends Controller
         $parcel = ParcelPickupDriver::create($data);
 
         $supply =  ParcelInventorie::create(
-                    [
-                        'invoice_id' => $invoice->id ?? null,
-                        'inventorie_id' => $request->supply_id ?? null,
-                        'parcel_id' => $request->parcel_id,
-                        'inventorie_item_quantity' => $request->quantity,
-                        'inventory_name' => $request->name,
-                        'label_qty' => $request->label_qty ?? $request->name,
-                        'price' => $request->price ?? 0,
-                        'volume' => $request->volume ?? 0,
-                        'ins' => $request->ins ?? 0,
-                        'tax' => $request->tax ?? 0,
-                        'discount' => $request->discount ?? 0,
-                        'total' => $request->total ?? 0,
-                    ]
-                );
+            [
+                'invoice_id' => $invoice->id ?? null,
+                'inventorie_id' => $request->supply_id ?? null,
+                'parcel_id' => $request->parcel_id,
+                'inventorie_item_quantity' => $request->quantity,
+                'inventory_name' => $request->item_name,
+                'label_qty' => $request->label_qty ?? $request->item_name,
+                'price' => $request->price ?? 0,
+                'volume' => $request->volume ?? 0,
+                'ins' => $request->ins ?? 0,
+                'tax' => $request->tax ?? 0,
+                'discount' => $request->discount ?? 0,
+                'total' => $request->total ?? 0,
+                'container_id' => $parcel->container_id ?? null,
+                'img' =>  $data['img'] ?? null,
+                'driver_id'  => $user->id,
+                'status'  => 3,
+                'quantity_type' => $request->quantity_type ?? null,
+            ]
+        );
 
         return response()->json([
             'success' => true,

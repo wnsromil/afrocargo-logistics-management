@@ -324,7 +324,7 @@ class CustomerController extends Controller
             'customer_id' => 'required|integer|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'required|string|max:255|unique:users,phone',
             'phone_2' => 'nullable|string|max:255',
             'country_id' => 'required|string|max:15',
             // 'state_id' => 'required|string|max:255',

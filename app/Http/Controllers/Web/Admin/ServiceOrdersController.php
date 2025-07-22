@@ -15,7 +15,8 @@ use App\Models\{
     Vehicle,
     ParcelHistory,
     HubTracking,
-    ParcelPickupDriver
+    ParcelPickupDriver,
+    ParcelInventorie
 };
 
 class ServiceOrdersController extends Controller
@@ -108,8 +109,6 @@ class ServiceOrdersController extends Controller
         ));
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -191,7 +190,7 @@ class ServiceOrdersController extends Controller
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
 
-        $parcelItems = ParcelPickupDriver::where('parcel_id', $id)->get();
+        $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
 
         return view('admin.service_orders.orderdetails', compact('parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel'));
     }

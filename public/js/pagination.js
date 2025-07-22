@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         }
 
-
-
         // Debounced updateTable
         const debouncedUpdateTable = debounce(function (url) {
             // ✅ Push new URL to browser history (without reloading)
@@ -73,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         hideLoader();
                     }
                     initializeSorting();
-                    if($('[data-bs-toggle="tooltip"]')){
+                    if ($('[data-bs-toggle="tooltip"]')) {
                         console.log("Initializing tooltips");
                         setTimeout(() => { 
                             $('#'+ajexTable).find('[data-bs-toggle="tooltip"]').each(function () {
