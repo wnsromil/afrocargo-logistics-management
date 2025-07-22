@@ -269,7 +269,8 @@
                                             <select class="flag-select" name="mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
                                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                        data-length="{{ $item->phonecode_length ?? 10 }}">
                                                         {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
@@ -287,7 +288,8 @@
                                             <select class="flag-select" name="alternative_mobile_number_code_id">
                                                 @foreach ($coutry as $key => $item)
                                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                        data-length="{{ $item->phonecode_length ?? 10 }}">
                                                         {{ $item->name }} +{{ $item->phonecode }}</option>
                                                 @endforeach
                                             </select>
@@ -507,7 +509,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12">
-                                    <label for="payment_type">Payment Type<i class="text-danger">*</i></label>
+                                    <label for="payment_type">Payment Type</label>
                                     <select class="form-control select2  form-cs" name="payment_type">
                                         <option selected="selected" disabled hidden>Select Type</option>
                                         <option value="Boxcredit">Box Credit</option>

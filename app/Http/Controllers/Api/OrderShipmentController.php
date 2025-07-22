@@ -36,13 +36,14 @@ class OrderShipmentController extends Controller
      */
     public function index(Request $request)
     {
-        $parcels = Parcel::where('parcel_type', $request->parcel_type)->select('id', 'tracking_number', 'driver_id', 'warehouse_id', 'customer_id')->when($this->user->role_id != 1, function ($q) {
-            // return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->when($this->user->role_id == 3, function ($q) {
-            return $q->where('customer_id', $this->user->id);
-        })->when($this->user->role_id == 4, function ($q) {
-            return $q->where('driver_id', $this->user->id);
-        })
+        $parcels = Parcel::where('parcel_type', $request->parcel_type)->select('id', 'tracking_number', 'driver_id', 'warehouse_id', 'customer_id')
+            ->when($this->user->role_id != 1, function ($q) {
+                // return $q->where('warehouse_id', $this->user->warehouse_id);
+            })->when($this->user->role_id == 3, function ($q) {
+                return $q->where('customer_id', $this->user->id);
+            })->when($this->user->role_id == 4, function ($q) {
+                return $q->where('driver_id', $this->user->id);
+            })
             ->when(!empty($request->status), function ($q) use ($request) {
                 return $q->whereIn('status', explode(',', $request->status));
             })
@@ -66,6 +67,7 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($parcels, 'Parcel data fetched successfully.');
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -95,6 +97,8 @@ class OrderShipmentController extends Controller
                 'pickup_date' => 'nullable|date',
                 'transport_type' => 'required|string',
                 'source_address' => 'required',
+                'warehouse_id' => 'nullable|numeric',
+                'arrived_warehouse_id' => 'nullable|numeric',
             ]);
 
             // Remaining Payment Check
@@ -118,8 +122,13 @@ class OrderShipmentController extends Controller
                 $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
             }
 
+            if($request->warehouse_id){
+                $pickupAddress = Warehouse::find($request->warehouse_id);
+            }else{
+                $pickupAddress = Address::find($request->pickup_address_id);
+            }
 
-            $pickupAddress = Address::find($request->pickup_address_id);
+
             if (!$pickupAddress) {
                 return response()->json(['error' => 'Pickup address not found'], 404);
             }
@@ -135,13 +144,30 @@ class OrderShipmentController extends Controller
                 }
             }
 
-            // pickup driver auto assiagn logic 
-
-            $userIds = $setting->getNearbyWarehouseDriverIds($lat, $lng);
-
-
+            // pickup driver auto assiagn logic
             $nearestWarehouseId = null;
             $driverData = null;
+
+            // If no warehouse found from driver, find the nearest warehouse by location
+            $nearestWarehouse = $this->findNearestWarehouse($lat, $lng);
+
+            $nearestWarehouseId = $nearestWarehouse ? $nearestWarehouse->id : null;
+
+
+            // If still no warehouse found, return error
+            if (empty($nearestWarehouseId)) {
+                return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
+            }
+
+
+            $userIds = $setting->getNearbyWarehouseDriverIds($lat, $lng,$nearestWarehouseId);
+            // $setting->getDriverTimeSlot($userIds);
+
+            // Use filter to find the key where the value exists
+            // $allTimeSlots = collect($setting->getDriverTimeSlot($userIds))->collapse()
+            // ->unique()->values();
+
+
 
             if ($request->pickup_type == "driver") {
                 $bookedDriver = Parcel::whereIn('driver_id', $userIds)
@@ -157,6 +183,9 @@ class OrderShipmentController extends Controller
                 // Try to assign a driver and get their warehouse
                 if (!empty($driverId)) {
                     $driverData = User::whereIn('id', $driverId)
+                    ->when($request->warehouse_id, function ($query) use ($request) {
+                        return $query->where('warehouse_id', $request->warehouse_id);
+                    })
                         ->whereNotNull('warehouse_id')
                         ->latest()
                         ->first();
@@ -168,18 +197,8 @@ class OrderShipmentController extends Controller
                     }
                 }
             }
+            // return $nearestWarehouseId;
 
-
-            // If no warehouse found from driver, find the nearest warehouse by location
-            if (empty($nearestWarehouseId)) {
-                $nearestWarehouse = $this->findNearestWarehouse($lat, $lng);
-                $nearestWarehouseId = $nearestWarehouse ? $nearestWarehouse->id : null;
-            }
-
-            // If still no warehouse found, return error
-            if (empty($nearestWarehouseId)) {
-                return response()->json(['error' => 'No warehouse found near the pickup address'], 404);
-            }
 
             // Step 5: Get vehicles from this warehouse with vehicle_type = 1
             $vehicles = Vehicle::where('warehouse_id', $nearestWarehouseId)
@@ -197,12 +216,14 @@ class OrderShipmentController extends Controller
             $validatedData['container_id'] = $activeVehicle->id;
             $validatedData['warehouse_id'] = $nearestWarehouseId;
 
+            if ($request->arrived_warehouse_id) {
+                $validatedData['arrived_warehouse_id'] = $request->arrived_warehouse_id;
+            }
             if ($nearestWarehouseId) {
                 $this->user->update([
                     'warehouse_id' => $nearestWarehouseId,
                 ]);
             }
-
 
             $containerHistory = ContainerHistory::where('container_id', $activeVehicle->id)
                 ->where('type', 'Active')
@@ -221,6 +242,7 @@ class OrderShipmentController extends Controller
             } else {
                 $validatedData['container_history_id'] = null; // or handle as needed
             }
+
             // Create Parcel
             $Parcel = Parcel::create($validatedData);
 
@@ -260,6 +282,9 @@ class OrderShipmentController extends Controller
             ], 500);
         }
     }
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
         $parcel = Parcel::where('id', $id)

@@ -1,128 +1,107 @@
 
 <!-- Invoice History Modal -->
-<div class="modal custom-modal invoiceSModel fade" id="invoiceHistory{{$invoice->id ?? ''}}" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header border-0 border-bottom py-3">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="mb-0">Invoice History</h4>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
-                </button>
+<div class="modal fade" id="invoiceHistory{{ $invoice->id ?? '' }}" tabindex="-1" role="dialog" aria-labelledby="invoiceHistoryLabel{{ $invoice->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content" style="font-size: 14px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invoiceHistoryLabel{{ $invoice->id }}">Invoice History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body pt-3 pb-0">
-                <div class="row pb-2">
-                    <div class="col-md-6 text-end">
-                        <label class="col3A fw_500">User name: {{ $invoice->createdByUser->name ?? '' }} {{ $invoice->createdByUser->last_name ?? '' }}</label>
-                    </div>
+
+            <div class="modal-body">
+
+                {{-- Header Info --}}
+                <div>
+                    <strong>User Name:</strong> {{ $invoice->user->full_name ?? '' }} {{ $invoice->createdByUser->last_name ?? '' }}
+                </div>
+                <div>
+                    <strong>Update Date:</strong> {{ $invoice->created_at?->format('d/m/Y, H:i') ?? '-' }}
+                </div>
+
+                <hr>
+
+                {{-- Address Info --}}
+                <div class="row">
+                    @php
+                        $address = $invoice->pickupAddress ?? $invoice->deliveryAddress;
+                    @endphp
                     <div class="col-md-6">
-                        <label class="col3A fw_500">Update Date: {{ $invoice->created_at->format('d/m/Y, H:i') ?? '02/28/2025, 17:36'}}</label>
+                        <div><strong>Customer:</strong> {{ $address->full_name ?? '-' }} {{ $address->address ?? '-' }}</div>
+                        <div><strong>Cell:</strong> {{ $address->mobile_number ?? '-' }}</div>
                     </div>
+                    @if (!empty($invoice->deliveryAddress))
+                    <div class="col-md-6">
+                        <div><strong>Ship To:</strong> {{ $invoice->deliveryAddress->full_name ?? '-' }} {{ $invoice->deliveryAddress->address ?? '-' }}</div>
+                        <div><strong>Tel:</strong> {{ $invoice->deliveryAddress->mobile_number ?? '-' }}</div>
+                    </div>
+                    @endif
                 </div>
-                <div class="row border-top gx-sm-4 border-bottom py-3">
-                    <div class="col-md-3">
-                        <label class="col3A fw_500 mb-0">I/D: {{$invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->unique_id ? $invoice->deliveryAddress->user->unique_id :''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500 mb-0">Customer: {{$invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->full_name ? $invoice->deliveryAddress->full_name :''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500 mb-0">Address: {{$invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->address ? $invoice->deliveryAddress->address :''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500 mb-0">Ship To Name: {{$invoice->pickupAddress ? $invoice->pickupAddress->full_name :''}}</label>
-                    </div>
+
+                <hr>
+
+                {{-- Invoice Details --}}
+                <div class="row">
+                    <div class="col-md-3"><strong>Date:</strong> {{ $invoice->issue_date ?? '-' }}</div>
+                    <div class="col-md-3"><strong>Invoice No:</strong> {{ $invoice->invoice_no ?? '-' }}</div>
+                    <div class="col-md-3"><strong>Driver:</strong> {{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</div>
+                    <div class="col-md-3"><strong>Total:</strong> {{ $invoice->grand_total ?? '-' }}</div>
+                    <div class="col-md-3"><strong>Due Date:</strong> {{ $invoice->duedaterange ?? '-' }}</div>
+                    <div class="col-md-3"><strong>Status:</strong> {{ ucfirst($invoice->status ?? 'Pending') }}</div>
+                    <div class="col-md-3"><strong>Payments:</strong> {{ $invoice->is_paid ? 'Paid' : 'Unpaid' }}</div>
+                    <div class="col-md-3"><strong>Container:</strong> {{ $invoice->container->unique_id ?? '-' }}</div>
+                    <div class="col-md-3"><strong>Balance:</strong> {{ $invoice->balance ?? '-' }}</div>
+                    <div class="col-md-3"><strong>Total Box:</strong> {{ $invoice->total_qty ?? '-' }}</div>
                 </div>
-                <div class="row gx-sm-4 border-bottom py-2">
-                    <div class="col-md-12 text-center">
-                        <label class="col3A fs_20 mb-0">Invoice Details</label>
-                    </div>
-                </div>
-                <div class="row gx-sm-4 border-bottom py-3">
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Date: {{$invoice->issue_date ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Invoice No: {{$invoice->invoice_no ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Driver: {{$invoice->driver && $invoice->driver->name ? $invoice->driver->name.' '.$invoice->driver->last_name:'' }}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Total: {{$invoice->grand_total ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Due Date: {{$invoice->duedaterange ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Address1: {{$invoice->duedaterange ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Payments: {{$invoice->is_paid ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">User: {{ $invoice->createdByUser->name ?? '' }} {{ $invoice->createdByUser->last_name ?? '' }}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Container: {{$invoice->container && $invoice->container->unique_id ? $invoice->container->unique_id:'' }}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Status: {{$invoice->status ?? 'pending'}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Balance: {{$invoice->balance ?? ''}}</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="col3A fw_500">Total Box: {{$invoice->total_qty ?? ''}}</label>
-                    </div>
-                </div>
-                <div class="row gx-sm-4 py-3">
-                    <div class="col-12">
-                        <div class="table-responsive nopadding notMinheight nocolor">
-                            <table class="table datatable">
-                                <tbody>
-                                    <tr>
-                                        <td>Item</td>
-                                        {{-- <td>Size</td> --}}
-                                        <td>Qty</td>
-                                        <td>Description</td>
-                                        <td>Price</td>
-                                        <td>Value</td>
-                                        <td>Discount</td>
-                                        <td>Ins</td>
-                                        <td>Tax</td>
-                                        <td>Total</td>
-                                    </tr>
-                                    @if($invoice->invoce_item && count($invoice->invoce_item) > 0)
-                                    @foreach ($invoice->invoce_item as $key=>$item)
-                                    <tr>
-                                        <td>{{ $item['supply_name'] ?? '' }}</td>
-                                        {{-- <td>xl</td> --}}
-                                        <td>{{ $item['qty'] ?? 0 }}</td>
-                                        <td>{{ $item['label_qty'] ?? 0 }}</td>
-                                        <td>{{ $item['price'] ?? 0 }}</td>
-                                        <td>{{ $item['value'] ?? 0 }}</td>
-                                        <td>{{ $item['discount'] ?? 0 }}</td>
-                                        <td>{{ $item['ins'] ?? 0 }}</td>
-                                        <td>{{ $item['tax'] ?? 0 }}</td>
-                                        <td>{{ $item['total'] ?? 0 }}</td>
+
+                <hr>
+
+                {{-- Invoice Items --}}
+                <div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm table-striped">
+                            <thead class="table-light">
+                                <tr class="text-center">
+                                    <th>Item</th>
+                                    <th>Qty</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Value</th>
+                                    <th>Discount</th>
+                                    <th>Ins</th>
+                                    <th>Tax</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($invoice->invoce_item && count($invoice->invoce_item) > 0)
+                                    @foreach ($invoice->invoce_item as $item)
+                                    <tr class="text-center">
+                                        <td>{{ $item['supply_name'] ?? '-' }}</td>
+                                        <td>{{ $item['qty'] ?? '-' }}</td>
+                                        <td>{{ $item['label_qty'] ?? '-' }}</td>
+                                        <td>{{ $item['price'] ?? '-' }}</td>
+                                        <td>{{ $item['value'] ?? '-' }}</td>
+                                        <td>{{ $item['discount'] ?? '-' }}</td>
+                                        <td>{{ $item['ins'] ?? '-' }}</td>
+                                        <td>{{ $item['tax'] ?? '-' }}</td>
+                                        <td>{{ $item['total'] ?? '-' }}</td>
                                     </tr>
                                     @endforeach
-                                    @else
+                                @else
                                     <tr>
-                                        <td colspan="9" class="text-center">No Items Found</td>
+                                        <td colspan="9" class="text-center text-muted">No Items Found</td>
                                     </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 <!-- /Invoice History Modal -->
 
 <!-- Individual Payment Modal -->
@@ -190,7 +169,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        
+
                         <div class="col-12">
                             <div class="table-responsive lesspadding notMinheight border mt-3">
                                 <table class="table table-stripped table-hover datatable">
@@ -248,7 +227,7 @@
                 </button>
             </div>
             <div class="modal-body p-2" >
-                <table width="100%" cellpadding="0" cellspacing="0" 
+                <table width="100%" cellpadding="0" cellspacing="0"
                     style="border-collapse: collapse; max-width:400px; margin: 0 auto; background: #fff; border: 1px solid #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; font-size: 12px!important; color: #000!important;">
                     <tr id="printInvoice2Content">
                         <td>
@@ -278,8 +257,8 @@
                                             </table>
                                         </td>
 
-                                        <td style="text-align: right;"> 
-                                            @if($invoice->invoiceParcelData)
+                                        <td style="text-align: right;">
+                                            @if($invoice->invoiceParcelData->arrivedWarehouse)
                                             <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                                 ?? ''}}</b><br>
                                                 {{$invoice->invoiceParcelData->arrivedWarehouse->address
@@ -353,17 +332,27 @@
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <b>Customer:</b><br>
-                                            {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
-                                            {{ $invoice->deliveryAddress->address ?? '' }}<br>
-                                            {{ $invoice->deliveryAddress->state_id ?? '' }} {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
-                                            {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                            @if ($invoice->pickupAddress)
+                                                {{ $invoice->pickupAddress->full_name ?? '' }}<br>
+                                                {{ $invoice->pickupAddress->address ?? '' }}<br>
+                                                {{ $invoice->pickupAddress->state_id ?? '' }} {{ $invoice->pickupAddress->country_id ?? '' }}<br>
+                                                {{ $invoice->pickupAddress->mobile_number ?? '' }}
+                                            @else
+                                                {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                {{ $invoice->deliveryAddress->state_id ?? '' }} {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
+                                                {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                            @endif
+
                                         </td>
 
                                         <td style="text-align: right;">
-                                            <b>Ship To:</b><br>
-                                            {{ $invoice->pickupAddress->full_name ?? '' }}<br>
-                                            {{ $invoice->pickupAddress->address ?? '' }}<br>
-                                            {{ $invoice->pickupAddress->mobile_number ?? '' }}
+                                            @if ($invoice->deliveryAddress)
+                                                <b>Ship To:</b><br>
+                                                {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -422,7 +411,10 @@
                                                 <tr>
                                                     <td
                                                         style="vertical-align: baseline; height: auto!important; padding: 5px 3px;">
-                                                        I have read and accepted the terms and conditions
+                                                        I have read and accepted the terms and conditions<br>
+
+                                                        <img style="width: 80px;"
+                                                                                src="{{$invoice->warehouse && $invoice->warehouse->signature ? $invoice->warehouse->signature->signature_file:'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -595,7 +587,7 @@
                                     <td style="width: 25%; text-align: center;">
                                     </td>
                                     <td style="width: 35%; text-align: right;">
-                                        @if($invoice->invoiceParcelData)
+                                        @if($invoice->invoiceParcelData->arrivedWarehouse)
                                         <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                             ?? ''}}</b><br>
                                             {{$invoice->invoiceParcelData->arrivedWarehouse->address
@@ -679,7 +671,7 @@
                                                             <td style="width: 20; text-align: center;">
                                                             </td>
                                                             <td style="width: 40%; text-align: right;">
-                                                                @if($invoice->invoiceParcelData)
+                                                                @if($invoice->invoiceParcelData->arrivedWarehouse)
                                                                 <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                                                     ?? ''}}</b><br>
                                                                     {{$invoice->invoiceParcelData->arrivedWarehouse->address
@@ -730,22 +722,33 @@
                                                         <tr>
                                                             <td>
                                                                 <b style="font-size: 18px;">Customer</b><br>
-                                                                {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
-                                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
-                                                                {{ $invoice->deliveryAddress->state_id ?? '' }}<br>
-                                                                {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
-                                                                {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                                @if ($invoice->pickupAddress)
+                                                                    {{ $invoice->pickupAddress->full_name ?? '' }}<br>
+                                                                    {{ $invoice->pickupAddress->address ?? '' }}<br>
+                                                                    {{ $invoice->pickupAddress->state_id ?? '' }}<br>
+                                                                    {{ $invoice->pickupAddress->country_id ?? '' }}<br>
+                                                                    {{ $invoice->pickupAddress->mobile_number ?? '' }}
+                                                                @else
+                                                                    {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                                    {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                                    {{ $invoice->deliveryAddress->state_id ?? '' }}<br>
+                                                                    {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
+                                                                    {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                                @endif
+
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                                 <td style="width: 50%; padding:10px; padding-top: 5px; text-align: right;">
-                                                    <b style="font-size: 18px;">Ship To:</b><br>
-                                                    {{ $invoice->pickupAddress->full_name ?? '' }}<br>
-                                                    {{ $invoice->pickupAddress->address ?? '' }}<br>
-                                                    {{ $invoice->pickupAddress->state_id ?? '' }}<br>
-                                                    {{ $invoice->pickupAddress->country_id ?? '' }}<br>
-                                                    {{ $invoice->pickupAddress->mobile_number ?? '' }}
+                                                    @if ($invoice->deliveryAddress)
+                                                        <b style="font-size: 18px;">Ship To:</b><br>
+                                                        {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->state_id ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
@@ -804,7 +807,7 @@
                                                                     <tr>
                                                                         <td style="text-align: right; padding: 0;">
                                                                             <img style="width: 80px;"
-                                                                                src="https://www.morebusiness.com/wp-content/uploads/2020/09/handwritten-email-signature.jpg">
+                                                                                src="{{$invoice->warehouse && $invoice->warehouse->signature ? $invoice->warehouse->signature->signature_file:'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -932,7 +935,7 @@
                                             </tr>
                                         </table>
                                     </td>
-                            </tr>                                            
+                            </tr>
                             {{$invoice->warehouse->address ?? ''}}<br>
                             The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
                             {{$invoice->warehouse->country ?? ''}}<br>
@@ -1006,7 +1009,7 @@
                                                         </td>
                                                     </tr>
                                                 </table>
-                                            <td style="text-align: right;"> 
+                                            <td style="text-align: right;">
                                                 @if($invoice->invoiceParcelData)
                                                 <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                                     ?? ''}}</b><br>
@@ -1031,7 +1034,7 @@
                                             <td style="height: 5px;"></td>
                                         </tr>
                                     </tbody>
-                                </table>                                            
+                                </table>
                                 {{$invoice->warehouse->address ?? ''}}<br>
                                 The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
                                 {{$invoice->warehouse->country ?? ''}}<br>
@@ -1102,7 +1105,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            
+
                                 <table aria-describedby="table-description"
                                     style="width: 100%; border-radius: 4px; border-bottom: 1px solid #000000;">
                                     <thead>
@@ -1149,7 +1152,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                    
+
                             </td>
                         </tr>
                         @endforeach

@@ -78,7 +78,7 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+        $customers = $query->orderBy(column: 'name')->get();
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();

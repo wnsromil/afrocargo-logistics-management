@@ -88,11 +88,15 @@ class SettingsHelper
             ->select('warehouses.*', 'countries.id as countryId','countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
             ->get();
     }
-    
 
-    public static function getNearbyWarehouseDriverIds($lat, $lng, $radius = 50)
+
+    public static function getNearbyWarehouseDriverIds($lat, $lng, $nearestWarehouseId =null, $radius = 50)
     {
-        return LocationSchedule::select('user_id')
+        return LocationSchedule::join('users','users.id','=','location_schedules.user_id')
+        ->when($nearestWarehouseId,function($q)use($nearestWarehouseId){
+            return $q->where('users.warehouse_id',$nearestWarehouseId);
+        })
+        ->select('user_id')
             ->selectRaw(
                 '(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) + sin(radians(?)) * sin(radians(lat)))) AS distance',
                 [$lat, $lng, $lat]
@@ -130,7 +134,7 @@ class SettingsHelper
                 // Step 2: availability record nahi mila => sab periods maan lo
                 $availablePeriods = ['morning', 'afternoon', 'evening'];
             }
-        
+
             // Step 3: Weekly schedule nikaalo
             $weekly = WeeklySchedule::where('user_id', $userId)
                 ->where('day', $dayName)
@@ -176,7 +180,7 @@ class SettingsHelper
     {
         try {
             //code...
-        
+
             $apiKey = 'AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries'; // replace with your actual API key
 
             // Build the address string
@@ -193,7 +197,7 @@ class SettingsHelper
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
+
             // Get response
             $response = curl_exec($ch);
             curl_close($ch);
@@ -217,7 +221,8 @@ class SettingsHelper
         }
     }
 
-    
+
+
     private static function formatValue($type, $value)
     {
         switch ($type) {
@@ -231,5 +236,5 @@ class SettingsHelper
                 return $value;
         }
     }
-    
+
 }

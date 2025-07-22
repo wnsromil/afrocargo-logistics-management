@@ -17,15 +17,27 @@
             <td colspan="2" style="padding: 20px 0 0;">
                 <table width="100%">
                     <tr>
+
                         <td style="width: 100%;">
                             <table width="100%">
                                 <tr>
+                                    <td>
+                                        <img style="width: 75px; margin-right: 5px;" src="{{public_path('assets/images/logo_image.png')}}">
+                                    </td>
+                                    <td style="width: 25%; text-align: center;">
+                                        <span
+                                            style="background-color: white; padding: 10px 20px; border-radius: 8px; font-size: 18px; font-weight: 600;
+                                            border: 1px solid @if($invoice->balance <= 0) #203A5F; color: black; @else red; color: red;@endif">
+                                            {{ $invoice->balance <= 0 ? 'Paid':'Due Balance'}}
+                                        </span>
+                                    </td>
                                     <td style="text-align: center; font-size: 18px; font-weight: 600;">
                                         {{ $invoice->transport_type ?? 'Supply'}} Invoice
                                     </td>
                                 </tr>
                             </table>
                         </td>
+
                     </tr>
                 </table>
             </td>
@@ -34,45 +46,24 @@
             <td colspan="2" style="padding: 0 20px 0px 20px;">
                 <table width="100%">
                     <tr>
-                        <td style="width: 40%;">
-                            <table width="100%">
-                                <tr>
-                                    <td>
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <img style="width: 75px; margin-right: 5px;" src="{{public_path('assets/images/logo_image.png')}}">
-                                                </td>
-                                                <td>
-                                                    @if($invoice->warehouse)
-                                                    <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
-                                                    {{$invoice->warehouse->address ?? ''}}<br>
-                                                    The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
-                                                    {{$invoice->warehouse->country ?? ''}}<br>
-                                                    Tel-{{$invoice->warehouse->phone ?? ''}}<br>
-                                                    {{-- Tel 718-954-9093<br> --}}
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
+                        <td style="width: 60%;">
+                            @if($invoice->warehouse)
+                                <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+                                {{$invoice->warehouse->address ?? ''}}<br>
+                                {{-- The {{$invoice->warehouse->warehouse_code ?? ''}}<br> --}}
+                                {{$invoice->warehouse->country ?? ''}}<br>
+                                Tel-{{$invoice->warehouse->phone ?? ''}}<br>
+                                {{-- Tel 718-954-9093<br> --}}
+                            @endif
                         </td>
-                        <td style="width: 25%; text-align: center;">
-                            <span
-                                style="background-color: white; padding: 10px 20px; border-radius: 8px; font-size: 18px; font-weight: 600;
-                                border: 1px solid @if($invoice->balance <= 0) #203A5F; color: black; @else red; color: red;@endif">
-                                {{ $invoice->balance <= 0 ? 'Paid':'Due Balance'}}
-                            </span>
-                        </td>
-                        <td style="width: 35%;">
+
+                        <td style="width: 40%; text-align: end; font-size: 16px; vertical-align: top;">
                             @if($invoice->invoiceParcelData && $invoice->invoiceParcelData->arrivedWarehouse)
                             <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                 ?? ''}}</b><br>
                                 {{$invoice->invoiceParcelData->arrivedWarehouse->address
                                 ?? ''}},<br>
-                            The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br>
+                            {{-- The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br> --}}
                             Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br>
                             {{-- Tel 718-954-9093<br> --}}
                             @endif
@@ -93,14 +84,16 @@
                                         @if(isset($invoice->pickupAddress))
                                             {{$invoice->pickupAddress->full_name ?? ''}}<br>
                                             {{$invoice->pickupAddress->address ?? ''}}<br>
-                                            {{$invoice->pickupAddress->state_id ?? ''}}, {{$invoice->pickupAddress->country_id ?? ''}}<br>
+                                            {{-- {{$invoice->pickupAddress->state_id ?? ''}}, {{$invoice->pickupAddress->country_id ?? ''}}<br> --}}
                                             {{$invoice->pickupAddress->mobile_number ?? ''}}<br>
                                             {{$invoice->pickupAddress->alternative_mobile_number ?? ''}}
                                         @elseif(isset($invoice->deliveryAddress))
                                         {{$invoice->deliveryAddress->full_name ?? ''}}<br>
                                         {{$invoice->deliveryAddress->address ?? ''}}<br>
-                                        {{$invoice->deliveryAddress->state_id ?? ''}}, {{$invoice->deliveryAddress->country_id ?? ''}}<br>
+                                        {{-- {{$invoice->deliveryAddress->state_id ?? ''}}, {{$invoice->deliveryAddress->country_id ?? ''}}<br> --}}
+                                        @if($invoice->deliveryAddress->mobile_number)
                                         {{$invoice->deliveryAddress->mobile_number ?? ''}}<br>
+                                        @endif
                                         {{$invoice->deliveryAddress->alternative_mobile_number ?? ''}}
                                         @endif
                                     </td>
@@ -115,7 +108,11 @@
                                 <b style="font-size: 18px;">Ship To:</b><br>
                                 {{$invoice->deliveryAddress->full_name ?? ''}}<br>
                                 {{$invoice->deliveryAddress->address ?? ''}}<br>
-                                {{$invoice->deliveryAddress->state_id ?? ''}}, {{$invoice->deliveryAddress->country_id ?? ''}}<br>
+                                @if($invoice->deliveryAddress->neighborhood)
+                                    {{$invoice->deliveryAddress->neighborhood ?? ''}}<br>
+                                @endif
+
+                                {{-- {{$invoice->deliveryAddress->state_id ?? ''}}, {{$invoice->deliveryAddress->country_id ?? ''}}<br> --}}
                                 {{$invoice->deliveryAddress->mobile_number ?? ''}}<br>
                                 {{$invoice->deliveryAddress->alternative_mobile_number ?? ''}}
                             @endif
@@ -331,9 +328,9 @@
                             <img src="{{$invoice->warehouse && $invoice->warehouse->signature ? public_path(removePart($invoice->warehouse->signature->signature_file, url('/'), true, 1)):'public/uploads/signature/download%20(2).png'}}" alt="Signature"
                                 style="max-width: 100px;">
                         </td>
-                        <td style="width: 40%; "> </td>
+                        <td style="width: 20%; "> </td>
                         <td
-                            style="width: 20%; text-align: end; font-size: 16px; vertical-align: top; padding: 0px 20px;">
+                            style="width: 40%; text-align: end; font-size: 16px; vertical-align: top; padding: 0px 20px;">
                             <span style="color: #737B8B;">Sub-Total: <b
                                     style="color: #000;">${{$invoice->grand_total ?? 0}}</b></span><br>
                             <span style="color: #737B8B; line-height: 50px;">Paid: <b
