@@ -98,9 +98,9 @@
                                 <div class="status-toggle toggles togglep">
                                     <input
                                         onclick="handleContainerClick('{{ $vehicle->id }}', '{{ $vehicle->container_no_1 }}', '{{ $vehicle->warehouse_id }}')"
-                                        id="rating_{{$index}}" class="check" type="checkbox"
+                                        id="rating_{{$vehicle->id}}" class="check" type="checkbox"
                                         value="{{$vehicle->status}}" {{$vehicle->status == 'Active' ? 'checked' : '' }}>
-                                    <label for="rating_{{$index}}"
+                                    <label for="rating_{{$vehicle->id}}"
                                         class="checktoggle log checkbox-bg">checkbox</label>
                                 </div>
                             </td>

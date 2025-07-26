@@ -87,7 +87,9 @@
                             <select class="flag-select" name="mobile_number_code_id">
                                 @foreach ($coutry as $key => $item)
                                     <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                        data-length="{{ $item->phone_length ?? 10 }}"
+                                        {{ $item->id == old('mobile_number_code_id') ? 'selected' : '' }}>
                                         {{ $item->name }} +{{ $item->phonecode }}
                                     </option>
                                 @endforeach
@@ -95,7 +97,7 @@
                         </div>
                         <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
                             name="mobile_number" value="{{ old('mobile_number') }}"
-                            oninput="this.value = this.value.slice(0, 10)">
+                            >
                     </div>
                     @error('mobile_number')
                         <small class="text-danger">{{ $message }}</small>

@@ -45,6 +45,8 @@ class RegisterController extends Controller
                 'pincode' => 'nullable',
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
+                'firebase_token' => 'nullable|string',
+                'device_type' => 'nullable',
             ]);
 
             if ($validator->fails()) {
@@ -81,6 +83,8 @@ class RegisterController extends Controller
                     'state_id' => $request->state_id,
                     'city_id' => $request->city_id,
                     'pincode' => $request->pincode,
+                    'firebase_token' => $request->firebase_token ?? null,
+                    'device_type' => $request->device_type ?? null,
                 ]);
 
                 insertAddress([
@@ -93,7 +97,9 @@ class RegisterController extends Controller
                     'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
                     'city_id' => $request->city_id ?? null,
                     'country_id' => $request->country_id ?? null,
-                    'full_name' => $request->name ?? null,
+                    'full_name' => $request->name . ' ' . $request->last_name ?? null,
+                    'last_name' => $request->last_name ?? null,
+                    'name' => $request->name ?? null,
                     'pincode' => $request->pincode ?? null,
                     'state_id' => $request->state_id ?? null,
                     'warehouse_id' => $request->warehouse_id ?? null,
@@ -159,6 +165,8 @@ class RegisterController extends Controller
             'phone' => 'required_if:loginWith,phone|numeric|min:10',
             'password' => 'required',
             'warehouse_code' => 'nullable|string',
+            'firebase_token' => 'nullable|string',
+            'device_type' => 'nullable',
         ]);
 
         // Set authentication field dynamically
@@ -199,6 +207,12 @@ class RegisterController extends Controller
         $success['token'] = $user->createToken('MyApp')->accessToken;
 
         $success['userData'] = $user->load('userRole');
+
+        User::where('id', $user->id)->update([
+            'firebase_token' => $request->firebase_token ?? null,
+            'device_type' => $request->device_type ?? null,
+        ]);
+
 
         // Save authentication verification data
         VerifyAuthIP::updateOrCreate(

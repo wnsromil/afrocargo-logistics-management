@@ -121,7 +121,7 @@ class DashboardController extends Controller
             return $query->where('arrived_warehouse_id', $warehouseId);
         })->with(['container', 'driver'])
             ->where('type', 'Arrived')
-            ->where('status', 5)
+            ->where('arrived_container', 'No')
             ->get();
 
         $totalCargo = Parcel::when($warehouseId, function ($q) use ($warehouseId) {

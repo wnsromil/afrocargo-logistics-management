@@ -255,7 +255,7 @@ class ShiptoController extends Controller
         ]);
         $user = $this->user;
 
-        $users = User::where('role_id', 5)->with('addresses')
+        $users = User::whereIn('role_id', [5, 3])->with('addresses', 'warehouse')
             ->where('status', 'Active')
             ->where('parent_customer_id', $user->id)
             ->orWhere('invoice_custmore_id', $user->id)

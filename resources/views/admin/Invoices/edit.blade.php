@@ -470,7 +470,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12">
-                                    <label for="payment_type">Payment Type<i class="text-danger">*</i></label>
+                                    <label for="payment_type">Payment Type</label>
                                     <select class="form-control select2  form-cs" name="payment_type">
                                         <option value="" disabled >Select Type</option>
                                         <option {{ $invoice->payment_type == 'Boxcredit' ? 'selected':''}} value="Boxcredit">Box Credit</option>

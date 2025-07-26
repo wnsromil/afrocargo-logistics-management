@@ -147,7 +147,7 @@ class Parcel extends Model
 
     public function ParcelInventory()
     {
-        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id')->with('barcode')->select(
+        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id')->with('barcode','container:id,unique_id,container_no_1,ship_to_country','parcelStatus')->select(
             'id',
             'inventorie_id as supply_id',
             'parcel_id',
@@ -162,7 +162,11 @@ class Parcel extends Model
             'discount',
             'total',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'img',
+            'quantity_type',
+            'status',
+            'container_id',
         );
     }
 }

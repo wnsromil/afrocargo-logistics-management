@@ -15,7 +15,8 @@ use App\Models\{
     Invoice,
     ParcelInventorie,
     ParcelPickupDriver,
-    ContainerHistory
+    ContainerHistory,
+    NotificationParcelMessage
 };
 
 class ServiceOrderStatusManage extends Controller
@@ -195,6 +196,16 @@ class ServiceOrderStatusManage extends Controller
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
 
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationDriverPickup = NotificationParcelMessage::find(5);
+        $deviceTokenPDriverPickup = $CustomerData->firebase_token;
+        $titleDriverPickup = $notificationDriverPickup->title;
+        $bodyDriverPickup = str_replace('{driver_name}', ($this->user->name ?? '') . ' ' . ($this->user->last_name ?? ''), $notificationDriverPickup->message);
+
+        if (!empty($deviceTokenPDriverPickup)) {
+            sendFirebaseNotification($deviceTokenPDriverPickup, $titleDriverPickup, $bodyDriverPickup, $CustomerData->id, $parcel->id, 'Driver Order Picked up');
+        }
+
         return response()->json([
             'status' => true,
             'message' => 'Driver service order status updated successfully.',
@@ -248,6 +259,21 @@ class ServiceOrderStatusManage extends Controller
             'warehouse_id' => $this->user->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
         ]);
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationOutForDelivery = NotificationParcelMessage::find(12);
+        $deviceTokenOutForDelivery = $CustomerData->firebase_token;
+        $titleOutForDelivery = $notificationOutForDelivery->title;
+        $bodyOutForDelivery = str_replace(
+            '{driver_name}',
+            ($this->user->name ?? '') . ' ' . ($this->user->last_name ?? ''),
+            $notificationOutForDelivery->message
+        );
+
+        if (!empty($deviceTokenOutForDelivery)) {
+            sendFirebaseNotification($deviceTokenOutForDelivery, $titleOutForDelivery, $bodyOutForDelivery, $CustomerData->id, $parcel->id, 'Out for delivery');
+        }
+
 
         return response()->json([
             'status' => true,
@@ -309,6 +335,21 @@ class ServiceOrderStatusManage extends Controller
             'warehouse_id' => $this->user->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationDelivered = NotificationParcelMessage::find(13);
+        $deviceTokenDelivered = $CustomerData->firebase_token;
+        $titleDelivered = $notificationDelivered->title;
+        $bodyDelivered = str_replace(
+            '{driver_name}',
+            ($this->user->name ?? '') . ' ' . ($this->user->last_name ?? ''),
+            $notificationDelivered->message
+        );
+
+        if (!empty($deviceTokenDelivered)) {
+            sendFirebaseNotification($deviceTokenDelivered, $titleDelivered, $bodyDelivered, $this->user->id, $parcel->id, 'Delivered');
+        }
+
 
         return response()->json([
             'status' => true,
