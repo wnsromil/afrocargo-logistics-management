@@ -614,11 +614,13 @@ class InvoiceController extends Controller
             ->values();
 
 
+        // -----------------------------------------------
+
         $users = User::join('addresses', function ($join) {
             $join->on('addresses.user_id', '=', 'users.id');
             //  ->where('addresses.address_type', request()->address_type);
         })
-            ->where('users.role', 3)
+            ->whereIn('users.role', [3, 5])
             ->when($searchTerm, function ($query) use ($searchTerm) {
                 $query
                     ->where('users.name', 'like', $searchTerm)
@@ -874,7 +876,7 @@ class InvoiceController extends Controller
             'neighborhood' => $validatedData['neighborhood'] ?? null,
             'lat' => $request->lat ?? null,
             'long' => $request->lng ?? null,
-            'default' => 'Yes'
+            'default_address' => 'Yes'
         ];
 
 
@@ -1150,7 +1152,9 @@ class InvoiceController extends Controller
             'pickup_date' => now(),
             'customer_id' => $invoice->customer_id ?? auth()->id(),
             'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid',
-            'invoice_id' => $invoice_id
+            'invoice_id' => $invoice_id,
+            'driver_id' => $invoice->driver_id ?? null,
+            'status' => $invoice->driver_id ? 2:1,
         ];
         if ($invoice->transport_type) {
             $validatedData['transport_type'] = $invoice->transport_type;
@@ -1181,44 +1185,38 @@ class InvoiceController extends Controller
 
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
-            if (!empty($item['supply_id'])) {
-                if (!empty($item['inventory_id'])) {
-                    $cp = [
-                        'parcel_id' => $invoice->parcel_id,
-                        'id' => $item['inventory_id'],
-                    ];
-                } else {
-                    $cp = [
+            if (!empty($invoice->parcel_id)) {
+                $cp = [
+                    'parcel_id' => $invoice->parcel_id,
+                    'id' => $item['inventory_id'] ?? null,
+                ];
+            $supply =  ParcelInventorie::updateOrCreate(
+                $cp,
+                [
+                    'invoice_id' => $invoice->id,
+                    'inventorie_item_quantity' => $item['qty'],
+                    'inventory_name' => $item['supply_name'],
+                    'label_qty' => $item['label_qty'],
+                    'price' => $item['price'] ?? 0,
+                    'volume' => $item['volume'] ?? 0,
+                    'value' => $item['value'] ?? 0,
+                    'ins' => $item['ins'] ?? 0,
+                    'tax' => $item['tax'] ?? 0,
+                    'discount' => $item['discount'] ?? 0,
+                    'total' => $item['total'],
+                    'status' => $invoice->driver_id ? 2:1,
+                ]
+            );
+            if (!empty($invoice->barcodes)) {
+                for ($i = 0; $i < $item['qty']; $i++) {
+                    store_barcode([
                         'parcel_id' => $invoice->parcel_id,
                         'invoice_id' => $invoice->id,
-                        'inventorie_id' => $item['supply_id'],
-                    ];
+                        'supply_id' => $supply->id,
+                    ]);
                 }
-                $supply =  ParcelInventorie::updateOrCreate(
-                    $cp,
-                    [
-                        'invoice_id' => $invoice->id,
-                        'inventorie_item_quantity' => $item['qty'],
-                        'inventory_name' => $item['supply_name'],
-                        'label_qty' => $item['label_qty'],
-                        'price' => $item['price'] ?? 0,
-                        'volume' => $item['volume'] ?? 0,
-                        'value' => $item['value'] ?? 0,
-                        'ins' => $item['ins'] ?? 0,
-                        'tax' => $item['tax'] ?? 0,
-                        'discount' => $item['discount'] ?? 0,
-                        'total' => $item['total'],
-                    ]
-                );
-                if (!empty($invoice->barcodes)) {
-                    for ($i = 0; $i < $item['qty']; $i++) {
-                        store_barcode([
-                            'parcel_id' => $invoice->parcel_id,
-                            'invoice_id' => $invoice->id,
-                            'supply_id' => $supply->id,
-                        ]);
-                    }
-                }
+            }
+
             }
         }
 
