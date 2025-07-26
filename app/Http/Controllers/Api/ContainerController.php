@@ -70,7 +70,7 @@ class ContainerController extends Controller
                     if ($alreadyOpen) {
                         return response()->json([
                             'success' => false,
-                            'message' => "This route {$shipTo} container is already open.",
+                            'message' => $shipTo
                         ]);
                     }
                 }
@@ -137,8 +137,7 @@ class ContainerController extends Controller
 
         return response()->json($response);
     }
-
-
+    
     public function updateContainerInDateTime(Request $request)
     {
         // Validate input

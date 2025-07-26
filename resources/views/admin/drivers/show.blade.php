@@ -253,7 +253,7 @@
             <div class="col-lg-6 col-md-6 col-12 my-4">
                 <div class="customer-details">
                     <div class="d-flex align-items-center">
-                           <span class="customer-widget-img d-inline-flex">
+                        <span class="customer-widget-img d-inline-flex">
                             <div class="iconwrapper me-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
@@ -282,7 +282,7 @@
         </div>
     </section>
     @section('bottomContent')
-        {{-- <div class="card mainCardGlobal my-4">
+        <div class="card mainCardGlobal my-4">
             <div class="card-body">
                 <h5 class="textSize col3a mb-4">Activity Logs</h5>
                 <form>
@@ -290,305 +290,111 @@
                         <div class="col-md-4">
                             <label>By Date</label>
                             <div class="daterangepicker-wrap mannual cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters form-control form-cs info" name="datetimes"
-                                    placeholder="From Date - To Date" />
+                                <input type="text" name="logs_datetimes" placeholder="Select Date Range"
+                                    class="btn-filters form-control form-cs info" readonly
+                                    style="background-color:white;cursor:pointer;" />
                             </div>
                         </div>
 
                         <div class="col-md-4">
-
                             <label>Activity Type</label>
-                            <select class="js-example-basic-single select2 ">
-                                <option selected="selected " class="form-cs">Select Category</option>
-                                <option>Category 1</option>
-                                <option>Category 2</option>
+                            <select id="activityType" class="js-example-basic-single select2">
+                                <option selected="selected " value="" class="form-cs">Select Category</option>
+                                @foreach($types as $type)
+                                    <option value="{{$type}}">{{$type}}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="col-md-4">
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-primary padd me-3">Filter</button>
-                                <button class="btn btn-outline-danger padd">Reset</button>
+                                <button type="button" id="filterButton" class="btn btn-primary padd me-3">Filter</button>
+                                <button type="button" class="btn btn-outline-danger padd" id="resetButton">Reset</button>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div class="row">
                     <div class="col-md-12">
-
-                        <div class="cd-horizontal-timeline two mannuallyCSS type2">
-                            <div class="timeline w-100">
-                                <div class="events-wrapper">
-                                    <div class="events">
-                                        <ol>
-                                            <li><a href="#0" data-date="16/01/2014" class="selected">16 Jan</a>
-                                            </li>
-                                            <li><a href="#0" data-date="28/02/2014">28 Feb</a></li>
-                                            <li><a href="#0" data-date="20/04/2014">20 Mar</a></li>
-                                            <li><a href="#0" data-date="20/05/2014">20 May</a></li>
-                                        </ol>
-                                        <span class="filling-line" aria-hidden="true"></span>
+                        <div class="mt-0 py-3">
+                            <ol>
+                                <li class="selected">
+                                    <div class="row">
+                                        <div id="driver-log-container"></div>
                                     </div>
-
-                                </div>
-                                <ul class="cd-timeline-navigation">
-                                    <li><a href="#0" class="prev inactive">Prev</a></li>
-                                    <li><a href="#0" class="next">Next</a></li>
-                                </ul>
-
-                            </div>
-
-                            <div class="events-content mt-0 py-3">
-                                <ol>
-                                    <li class="selected" data-date="16/01/2014">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">08:45 AM — <label
-                                                                        class="col00 mb-0">Login</label></p>
-                                                                <p class="col737 fs_18 fw_500">Status — <label
-                                                                        class="col00 mb-0">Successful</label></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">10:15 AM — <label
-                                                                        class="col00 mb-0">Customer Added</label></p>
-                                                                <p class="col737 fs_18 fw_500">Customer Name: — <label
-                                                                        class="col00 mb-0">Acme Corp</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                            <button class="btn btn-danger smbtn">Delete</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">10:15 AM — <label
-                                                                        class="col00 mb-0">Order Pickup Scheduled</label>
-                                                                </p>
-                                                                <p class="col737 fs_18 fw_500">Tracking ID: — <label
-                                                                        class="col00 mb-0">WE97078893</label></p>
-                                                                <p class="col737 fs_18 fw_500">Pickup Date: — <label
-                                                                        class="col00 mb-0">02-15-2025</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li data-date="28/02/2014">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">02:00 PM — <label
-                                                                        class="col00 mb-0">Payment Collected</label></p>
-                                                                <p class="col737 fs_18 fw_500">Amount — <label
-                                                                        class="col00 mb-0">$500</label></p>
-                                                                <p class="col737 fs_18 fw_500">Mode — <label
-                                                                        class="col00 mb-0">Cash</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">03:45 PM — <label
-                                                                        class="col00 mb-0">Customer Deleted</label></p>
-                                                                <p class="col737 fs_18 fw_500">Customer Name: — <label
-                                                                        class="col00 mb-0">Acme Corp</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-danger smbtn me-2">Delete</button>
-                                                            <button class="btn btn-success smbtn">Restore</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">04:30 PM — <label
-                                                                        class="col00 mb-0">Invoice Deleted</label></p>
-                                                                <p class="col737 fs_18 fw_500">Invoice ID: — <label
-                                                                        class="col00 mb-0"> INV-12345</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                            <button class="btn btn-success smbtn">Restore</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li data-date="20/04/2014">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">02:00 PM — <label
-                                                                        class="col00 mb-0">Payment Collected</label></p>
-                                                                <p class="col737 fs_18 fw_500">Amount — <label
-                                                                        class="col00 mb-0">$500</label></p>
-                                                                <p class="col737 fs_18 fw_500">Mode — <label
-                                                                        class="col00 mb-0">Cash</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">03:45 PM — <label
-                                                                        class="col00 mb-0">Customer Deleted</label></p>
-                                                                <p class="col737 fs_18 fw_500">Customer Name: — <label
-                                                                        class="col00 mb-0">Acme Corp</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-danger smbtn me-2">Delete</button>
-                                                            <button class="btn btn-success smbtn">Restore</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">04:30 PM — <label
-                                                                        class="col00 mb-0">Invoice Deleted</label></p>
-                                                                <p class="col737 fs_18 fw_500">Invoice ID: — <label
-                                                                        class="col00 mb-0"> INV-12345</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                            <button class="btn btn-success smbtn">Restore</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li data-date="20/05/2014">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">08:45 AM — <label
-                                                                        class="col00 mb-0">Login</label></p>
-                                                                <p class="col737 fs_18 fw_500">Status — <label
-                                                                        class="col00 mb-0">Successful</label></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">10:15 AM — <label
-                                                                        class="col00 mb-0">Customer Added</label></p>
-                                                                <p class="col737 fs_18 fw_500">Customer Name: — <label
-                                                                        class="col00 mb-0">Acme Corp</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                            <button class="btn btn-danger smbtn">Delete</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="card activityCard">
-                                                    <div class="card-body">
-                                                        <div class="d-flex">
-                                                            <i class="ti ti-clock-filled"></i>
-                                                            <div>
-                                                                <p class="col737 fs_18 fw_500">10:15 AM — <label
-                                                                        class="col00 mb-0">Order Pickup Scheduled</label>
-                                                                </p>
-                                                                <p class="col737 fs_18 fw_500">Tracking ID: — <label
-                                                                        class="col00 mb-0">WE97078893</label></p>
-                                                                <p class="col737 fs_18 fw_500">Pickup Date: — <label
-                                                                        class="col00 mb-0">02-15-2025</label></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex mt-4">
-                                                            <button class="btn btn-primary smbtn me-2">View</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ol>
-                            </div>
-
+                                </li>
+                            </ol>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
+    @endsection
+    @section('script')
+        <script>
+            $('#resetButton').on('click', function () {
+                location.reload(); // This will refresh the entire page
+            });
+
+            $(document).ready(function () {
+                function fetchDriverLogs(userId, fromDate = null, toDate = null, type = null) {
+                    $.ajax({
+                        url: '/api/driver-logs',
+                        method: 'POST',
+                        data: {
+                            user_id: userId,
+                            from_date: fromDate,
+                            to_date: toDate,
+                            type: type,
+                        },
+                        success: function (response) {
+                            $('#driver-log-container').empty();
+
+                            if (response.status && response.data.length > 0) {
+                                response.data.forEach(log => {
+                                    if (log.metadata) {
+                                        const metadata = JSON.parse(log.metadata);
+                                        $('#driver-log-container').append(metadata.html);
+                                    }
+                                });
+                            } else {
+                                $('#driver-log-container').html('<p class="col3A fw_500 mb-4">No logs found.</p>');
+                            }
+                        },
+                        error: function (xhr) {
+                            $('#driver-log-container').html('<p class="col3A fw_500 mb-4">Error loading logs.</p>');
+                            console.error('API Error:', xhr.responseText);
+                        }
+                    });
+                }
+
+                // Extract clean user ID from URL (without query params)
+                const url = new URL(window.location.href);
+                const pathnameParts = url.pathname.split('/');
+                const userId = pathnameParts[pathnameParts.length - 1];
+
+                // Initial load
+                fetchDriverLogs(userId);
+
+                // On Filter Button Click
+                $('#filterButton').on('click', function () {
+                    const dateRange = $('input[name="logs_datetimes"]').val();
+                    const type = $('#activityType').val();
+
+                    let fromDate = null;
+                    let toDate = null;
+
+                    if (dateRange && dateRange.includes(' - ')) {
+                        const parts = dateRange.split(' - ');
+                        fromDate = parts[0];
+                        toDate = parts[1];
+                    }
+
+                    fetchDriverLogs(userId, fromDate, toDate, type);
+                });
+            });
+
+        </script>
+
     @endsection
 </x-app-layout>

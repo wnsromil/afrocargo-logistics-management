@@ -117,6 +117,7 @@ Route::post('/mark-as-read-notification', [NotificationController::class, 'markA
 
 //Driver
 Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+Route::post('/driver-logs', [DriverController::class, 'getLogsByUser']);
 
 //Manager
 Route::get('/warehouse-managers/{id}', [WarehouseManagerController::class, 'getWarehouseManagers']);
@@ -129,7 +130,7 @@ Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseV
 
 Route::get('/get-all-items', [InventoryController::class, 'getAllItems']);
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
     Route::post('verifyOtp', [RegisterController::class, 'verifyOtp']);
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);

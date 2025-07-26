@@ -11,7 +11,7 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Illuminate\Support\Facades\Log;
-
+use App\Models\DriverLog;
 
 function isActive($urls, $class = 'active', $default = '')
 {
@@ -227,5 +227,28 @@ if (!function_exists('sendFirebaseNotificationSystem')) {
             \Log::error('System Firebase Notification Error: ' . $e->getMessage());
             return false;
         }
+    }
+}
+
+
+if (! function_exists('storeDriverLog')) {
+    /**
+     * Store driver log with given HTML, user ID and type
+     *
+     * @param string $html
+     * @param int $userId
+     * @param string $type
+     * @return DriverLog
+     */
+    function storeDriverLog(string $html, int $userId, string $type): DriverLog
+    {
+        
+        $log = new DriverLog();
+        $log->user_id = $userId;
+        $log->type = $type;
+        $log->metadata = json_encode(['html' => $html]);
+        $log->save();
+
+        return $log;
     }
 }

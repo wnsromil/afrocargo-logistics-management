@@ -425,7 +425,11 @@
                                             location.reload();
                                         });
                                     } else {
-                                        Swal.fire('Error', res.data.message, 'error').then(() => {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            html: `This route <strong>${res.data.message}</strong> container is already open.`,
+                                        }).then(() => {
                                             location.reload();
                                         });
                                     }

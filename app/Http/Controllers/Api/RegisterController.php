@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\DriverLog;
 
 class RegisterController extends Controller
 {
@@ -204,6 +205,11 @@ class RegisterController extends Controller
 
         $user = Auth::user();
 
+        if (!in_array($user->role_id, [4, 3])) {
+            Auth::logout();
+            return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
+        }
+
         if (!empty($request->warehouse_code) && !in_array($user->role_id, [4])) {
             Auth::logout();
             return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
@@ -249,6 +255,26 @@ class RegisterController extends Controller
                 'verify_type' => 'auth'
             ]
         );
+
+        $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                                <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Login</label></p>
+                                <p class=\"col737 fs_18 fw_500\">Status — <label class=\"col00 mb-0\">Successful</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $user->id, 'Login');
 
         return $this->sendResponse($success, 'User loged in successfully.');
     }
