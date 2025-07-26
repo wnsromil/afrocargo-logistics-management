@@ -85,12 +85,14 @@ class WarehouseManagerController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required|exists:warehouses,id', // Ensure ID exists
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address_1' => 'required|string|max:500',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'nullable|in:Active,Inactive',
         ]);
@@ -184,14 +186,14 @@ class WarehouseManagerController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
         // Custom validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
             'address_1' => 'required|string|max:500',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone,$id",
             'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'in:Active,Inactive',
 

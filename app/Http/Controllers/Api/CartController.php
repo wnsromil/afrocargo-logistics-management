@@ -79,7 +79,7 @@ class CartController extends Controller
         $user = auth()->user();
 
         $deliveryAddress = Address::find($request->delivery_address_id);
-       
+
         // Step 4: Use given warehouse_id if provided, else find nearest warehouse
         if ($request->filled('warehouse_id')) {
             $warehouse = Warehouse::find($request->warehouse_id);

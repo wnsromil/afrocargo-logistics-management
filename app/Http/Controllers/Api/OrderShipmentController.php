@@ -21,7 +21,8 @@ use App\Models\{
     ParcelPickupDriver,
     Availability,
     WeeklySchedule,
-    LocationSchedule
+    LocationSchedule,
+    NotificationParcelMessage
 };
 use Carbon\Carbon;
 use App\Http\Controllers\Api\AddressController;
@@ -122,13 +123,16 @@ class OrderShipmentController extends Controller
                 $validatedData['driver_subcategories_data'] = json_encode($driverData, JSON_UNESCAPED_UNICODE);
             }
 
-            if($request->warehouse_id){
+            if ($request->warehouse_id) {
                 $pickupAddress = Warehouse::find($request->warehouse_id);
-            }else{
+            } else {
                 $pickupAddress = Address::find($request->pickup_address_id);
             }
 
 
+            $pickupAddress = Address::find($request->pickup_address_id);
+            $deliveryAddress = Address::find($request->delivery_address_id);
+            $validatedData['ship_customer_id'] = $deliveryAddress->user_id ?? null;
             if (!$pickupAddress) {
                 return response()->json(['error' => 'Pickup address not found'], 404);
             }
@@ -160,7 +164,7 @@ class OrderShipmentController extends Controller
             }
 
 
-            $userIds = $setting->getNearbyWarehouseDriverIds($lat, $lng,$nearestWarehouseId);
+            $userIds = $setting->getNearbyWarehouseDriverIds($lat, $lng, $nearestWarehouseId);
             // $setting->getDriverTimeSlot($userIds);
 
             // Use filter to find the key where the value exists
@@ -183,9 +187,9 @@ class OrderShipmentController extends Controller
                 // Try to assign a driver and get their warehouse
                 if (!empty($driverId)) {
                     $driverData = User::whereIn('id', $driverId)
-                    ->when($request->warehouse_id, function ($query) use ($request) {
-                        return $query->where('warehouse_id', $request->warehouse_id);
-                    })
+                        ->when($request->warehouse_id, function ($query) use ($request) {
+                            return $query->where('warehouse_id', $request->warehouse_id);
+                        })
                         ->whereNotNull('warehouse_id')
                         ->latest()
                         ->first();
@@ -202,7 +206,7 @@ class OrderShipmentController extends Controller
 
             // Step 5: Get vehicles from this warehouse with vehicle_type = 1
             $vehicles = Vehicle::where('warehouse_id', $nearestWarehouseId)
-                ->where('vehicle_type', 1)
+                ->where('vehicle_type', 1)->where('ship_to_country', $deliveryAddress->country_id)
                 ->get();
 
             // Step 6: Check if any vehicle has status = 'Active'
@@ -245,6 +249,51 @@ class OrderShipmentController extends Controller
 
             // Create Parcel
             $Parcel = Parcel::create($validatedData);
+
+            $notificationCreate = NotificationParcelMessage::find(1);
+            $deviceTokenCreate = $this->user->firebase_token;
+            $titleCreate = $notificationCreate->title;
+            $bodyCreate = str_replace('{order_id}', $Parcel->tracking_number, $notificationCreate->message);
+
+            if (!empty($deviceTokenCreate)) {
+                sendFirebaseNotification($deviceTokenCreate, $titleCreate, $bodyCreate, $this->user->id, $Parcel->id, 'Order Created');
+            }
+
+            if (!empty($validatedData['driver_id'])) {
+                $DriverData = User::where('id', $validatedData['driver_id'])->first();
+                $notificationOrderAssigned = NotificationParcelMessage::find(4);
+                $deviceTokenOrderAssigned = $DriverData->firebase_token;
+                $titleOrderAssigned = $notificationOrderAssigned->title;
+                $formattedDate = Carbon::parse($validatedData['pickup_date'])->format('d-m-Y');
+                $bodyOrderAssigned = str_replace(
+                    ['{order_id}', '{pickup_date}', '{pickup_time}'],
+                    [$Parcel->tracking_number, $formattedDate, $validatedData['pickup_time']],
+                    $notificationOrderAssigned->message
+                );
+
+                if (!empty($deviceTokenOrderAssigned)) {
+                    sendFirebaseNotification($deviceTokenOrderAssigned, $titleOrderAssigned, $bodyOrderAssigned, $DriverData->id, $Parcel->id, 'Order Assigned');
+                }
+
+                $notificationDriverAssigned = NotificationParcelMessage::find(3);
+                $deviceTokenDriverAssigned = $this->user->firebase_token;
+                $titleDriverAssigned = $notificationDriverAssigned->title;
+                $bodyDriverAssigned = str_replace('{driver_name}', ($DriverData->name ?? '') . ' ' . ($DriverData->last_name ?? ''), $notificationDriverAssigned->message);
+
+                if (!empty($deviceTokenDriverAssigned)) {
+                    sendFirebaseNotification($deviceTokenDriverAssigned, $titleDriverAssigned, $bodyDriverAssigned, $this->user->id, $Parcel->id, 'Driver Assigned');
+                }
+            } else {
+                $notificationPending = NotificationParcelMessage::find(2);
+                $deviceTokenPending = $this->user->firebase_token;
+                $titlePending = $notificationPending->title;
+                $bodyPending = $notificationPending->message;
+
+                if (!empty($deviceTokenPending)) {
+                    sendFirebaseNotification($deviceTokenPending, $titlePending, $bodyPending, $this->user->id, $Parcel->id, 'Order Pending');
+                }
+            }
+
 
             // Create Parcel History
             ParcelHistory::create([
@@ -351,7 +400,6 @@ class OrderShipmentController extends Controller
 
         return $this->sendResponse($ParcelHistoriesArray, 'Order histories fetch successfully.');
     }
-
 
     public function OrderShipmentStatus(Request $request)
     {
@@ -758,6 +806,26 @@ class OrderShipmentController extends Controller
 
             // Create Parcel
             $parcel = Parcel::create($validatedData);
+
+            $notificationCreate = NotificationParcelMessage::find(1);
+            $deviceTokenCreate = $this->user->firebase_token;
+            $titleCreate = $notificationCreate->title;
+            $bodyCreate = str_replace('{order_id}', $parcel->tracking_number, $notificationCreate->message);
+
+            if (!empty($deviceTokenCreate)) {
+                sendFirebaseNotification($deviceTokenCreate, $titleCreate, $bodyCreate, $this->user->id, $parcel->id, 'Order Created');
+            }
+
+
+            $notificationPending = NotificationParcelMessage::find(2);
+            $deviceTokenPending = $this->user->firebase_token;
+            $titlePending = $notificationPending->title;
+            $bodyPending = $notificationPending->message;
+
+            if (!empty($deviceTokenPending)) {
+                sendFirebaseNotification($deviceTokenPending, $titlePending, $bodyPending, $this->user->id, $parcel->id, 'Order Pending');
+            }
+
 
             // Store Parcel Inventories
             foreach ($request->inventorie_data as $item) {

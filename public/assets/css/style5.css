@@ -573,9 +573,10 @@ table tbody {
 }
 
 .btn-close {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     margin-bottom: 10px !important;
+    font-size: 12px !important;
 }
 
 .paid-cancel-btn {

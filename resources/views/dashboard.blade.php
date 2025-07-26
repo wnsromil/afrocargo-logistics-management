@@ -10,6 +10,12 @@
                 background-color: #007bff;
                 color: white;
             }
+            .custom-close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+              color: black !important;
+            }
         </style>
 
     @endsection
@@ -31,11 +37,30 @@
 
 
     <div class="dashboardContent">
-        <div class="row">
-            @php
+           @php
                 $role_id = Auth::user()->role_id;
-            @endphp
+                $notificationRead = Auth::user()->notification_read;
 
+                   $status = $notification->type ?? '';
+                    $alertClass = 'alert-secondary'; // default
+
+                    if (strpos($status, 'In transit') !== false) {
+                        $alertClass = 'alert-primary'; // blue
+                    } elseif (strpos($status, 'Custom Hold') !== false || strpos($status, 'Custom Hold') !== false) {
+                        $alertClass = 'alert-warning'; // yellow/orange
+                    } elseif (strpos($status, 'Custom Cleared') !== false || strpos($status, 'Custom Cleared') !== false) {
+                        $alertClass = 'alert-success'; // green
+                    }
+            @endphp
+            {{-- @if($notificationRead != 0)
+            <div class="alert {{ $alertClass }} position-relative" role="alert">
+                <h5 class="alert-heading">{{ $notification->title ?? "" }}</h5>
+                <button type="button" id="closealerticon" class="btn-close custom-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <hr>
+                <p>{{ $notification->message ?? "" }}</p>
+            </div>
+            @endif --}}
+        <div class="row">
             @if($role_id == 2 || $role_id == 4)
                 {{-- ✅ Readonly Input for Single Warehouse --}}
                 <div class="col-md-4 mb-3">
@@ -682,7 +707,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div style="background-size: 45px;"
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                            {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
+                             {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -742,8 +767,8 @@
                                     <div class="status-toggle float-end me-0">
                                         <input
                                             onclick="handleContainerClick('{{ $latestContainer->id }}', '{{ $latestContainer->container_no_1 }}', '{{ $latestContainer->warehouse_id }}')"
-                                            id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
-                                        <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                            id="rating_{{$latestContainer->id}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
+                                        <label for="rating_{{$latestContainer->id}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
                             </div>
@@ -2247,25 +2272,24 @@
         @endif
 
         <script>
-            function handleContainerClick(containerId, containerNumber, warehouseId) {
-                // Step 1: First fetch current active container
+              function handleContainerClick(containerId, containerNumber, warehouseId) {
+                const checkbox = document.getElementById(`rating_${containerId}`);
+                const isChecked = checkbox.checked;
+                // Step 1: Fetch current active container
                 axios.post('/api/vehicle/getAdminActiveContainer', {
-                    warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
+                    warehouse_id: warehouseId
                 }).then(response => {
                     const activeContainer = response.data.container;
 
                     let message = '';
                     let checkbox_status = '';
 
-                    if (activeContainer?.container_no_1 === containerNumber) {
-                        message = `That you need to close this <b>${containerNumber}</b> container`;
-                        checkbox_status = "only_close";
-                    } else if (!activeContainer?.container_no_1) {
-                        message = `That you need to open this <b>${containerNumber}</b> container`;
+                    if (isChecked) {
+                        message = `You are about to <b>OPEN</b> the container <b>${containerNumber}</b>`;
                         checkbox_status = "only_open";
                     } else {
-                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
-                        checkbox_status = "both_open_close";
+                        message = `You are about to <b>CLOSE</b> the container <b>${containerNumber}</b>`;
+                        checkbox_status = "only_close";
                     }
 
                     Swal.fire({
@@ -2278,21 +2302,28 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             axios.post('/api/vehicle/toggle-status', {
-                                open_id: containerId,
-                                close_id: activeContainer?.id,
+                                open_id: isChecked ? containerId : null,
+                                close_id: !isChecked ? containerId : (activeContainer?.id ?? null),
                                 checkbox_status: checkbox_status,
                                 warehouseId: warehouseId,
                             })
                                 .then((res) => {
-                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
-                                        location.reload();
-                                    });
+                                    console.log(res.data.success);
+                                    if (res.data.success) {
+                                        Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire('Error', res.data.message, 'error').then(() => {
+                                            location.reload();
+                                        });
+                                    }
                                 })
                                 .catch(error => {
                                     Swal.fire('Error', 'Failed to update container status.', 'error');
                                 });
                         } else {
-                            location.reload();
+                            location.reload(); // rollback visual state
                         }
                     });
                 })
@@ -2379,11 +2410,11 @@
                                                                         <div class="status-toggle float-end me-0">
                                                                             <input 
                                                                                 onclick="handleContainerClick('${container.id}', '${container.container_no_1}', '${container.warehouse_id}')"
-                                                                                id="rating_${index}" 
+                                                                                id="rating_${container.id}" 
                                                                                 class="toggle-btn1 check" 
                                                                                 type="checkbox" 
                                                                                 ${isActive ? 'checked' : ''}>
-                                                                            <label for="rating_${index}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                                                            <label for="rating_${container.id}" class="checktoggle tog checkbox-bg">checkbox</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -2531,6 +2562,7 @@
                 initDatePicker('percel_delivery_date_input');
             });
         </script>
+
         <script>
             $(document).ready(function () {
                 $('#shipping_type').select2({
@@ -2546,6 +2578,7 @@
                 });
             });
         </script>
+
         <script>
             function fetchDriversBywarehouse(warehouseId) {
                 if (!warehouseId) {
@@ -2648,6 +2681,7 @@
                 });
             }
         </script>
+
         <script>
             document.getElementById('self_pickup_img').addEventListener('change', function (event) {
                 const preview = document.getElementById('preview');
@@ -2670,8 +2704,27 @@
 
         </script>
 
-        {{-- Supply Order JS --}}
+         <script>
+            document.getElementById("closealerticon").addEventListener("click", function () {
+                const userId = {{ auth()->id() }};
 
+                fetch("{{ url('/api/mark-as-read-notification') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                      
+                    })
+                    .catch(err => {
+                        console.error("API error:", err);
+                    });
+            });
+        </script>
 
     @endsection
 </x-app-layout>

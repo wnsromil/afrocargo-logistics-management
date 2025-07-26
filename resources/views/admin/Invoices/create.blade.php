@@ -729,7 +729,7 @@
                                             name="tax"></td>
                                     <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="total"></td>
-                                    <td>
+                                    <td style="padding: 0px;">
                                         <div class="text-center">
                                             <button type="button" class="btn btn-danger iconBtn dltBtn"><i
                                                     class="ti ti-minus"></i></button>

@@ -54,6 +54,7 @@
     <script src="{{ asset('assets/js/scriptmain.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,6 +146,7 @@
     @include('partial.loader')
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="{{asset('js/pagination.js')}}"></script>
 
@@ -158,8 +160,14 @@
     <script src="{{ asset('assets/plugins/apexchart/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/apexchart/chart-data.js') }}"></script>
 
+    {{-- <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
+    
+    <script src="{{ asset('js/fcm.js') }}"></script> --}}
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places"
         async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     <!-- Sweetalert 2 -->
     <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sweetalert/sweetalerts.min.js') }}"></script>
@@ -191,7 +199,6 @@
 
     @yield('script')
 
-
     <script>
         @session('success')
             Swal.fire({
@@ -208,7 +215,7 @@
             });
         @endsession
 
-        function deleteData(self, msg) {
+            function deleteData(self, msg) {
                 Swal.fire({
                     title: msg
                     , icon: "question"

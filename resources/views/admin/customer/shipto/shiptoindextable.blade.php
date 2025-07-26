@@ -20,39 +20,42 @@
     </x-slot>
     <x-slot name="cardTitle">
         <div class="d-flex topnavs justify-content-between">
-            <p class="head">All Customers</p>
-            <a href="{{ route('admin.customer.create') }}" class="btn btn-primary buttons">
-                <i class="ti ti-circle-plus me-2 text-white"></i>
-                Add Customer
-            </a>
+            <p class="head">All ShipTo Customers</p>
         </div>
     </x-slot>
 
     @php
         $warehouseIdFromUrl = request()->query('warehouse_id');
+        $customerIdFromUrl = request()->query('customer_id');
         $authUser = auth()->user();
     @endphp
 
-     <form action="{{ route('admin.customer.index') }}" method="GET" id="filterForm">
+    <form action="{{ route('admin.customer.shipToIndex') }}" method="GET" id="filterForm">
         <div class="row gx-3 inputheight40">
-            {{-- Customer Search --}}
-            <div class="col-md-3 mb-3">
-                <label for="searchInput">Customer</label>
-                <div class="inputGroup height40 position-relative">
-                    <i class="ti ti-search"></i>
-                    <input type="text" class="form-control height40 form-cs" placeholder="Search Customer" name="search"
-                        value="{{ request('search') }}">
-                </div>
-            </div>
-
             {{-- ShipTo Search --}}
             <div class="col-md-3 mb-3">
-                <label for="searchInput">Customer</label>
+                <label for="searchInput">ShipTo Customer</label>
                 <div class="inputGroup height40 position-relative">
                     <i class="ti ti-search"></i>
                     <input type="text" class="form-control height40 form-cs" placeholder="Search ShipTo Customer"
                         name="ShipTosearch" value="{{ request('ShipTosearch') }}">
                 </div>
+            </div>
+
+            {{-- Warehouse --}}
+            <div class="col-md-3 mb-3">
+                <label>By Customer</label>
+                <select class="js-example-basic-single select2 form-control" name="customer_id">
+                    <option value="">Select Customer</option>
+                    @foreach ($CustomerLists as $customer)
+                        <option value="{{ $customer->id }}" {{ $customerIdFromUrl == $customer->id || old('customer_id') == $customer->id ? 'selected' : '' }}>
+                            {{ $customer->name ?? '' }} {{ $customer->last_name ?? '' }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('customer_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             {{-- Warehouse --}}
@@ -113,7 +116,7 @@
                             @forelse ($customers as $index => $customer)
                                 <tr>
                                     <td> {{ $customer->unique_id ?? "--" }}</td>
-                                    <td>{{ ucfirst($customer->name ?? '') }}</td>
+                                    <td>{{ ucfirst($customer->name ?? '') }} {{$customer->last_name ?? ""}}</td>
                                     <td>{{ $customer->email ?? '-' }}</td>
                                     <td>{{ $customer->license_number ?? '-' }}</td>
                                     <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
@@ -153,32 +156,19 @@
                                                 <ul>
                                                     <li>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('admin.customer.edit', $customer->id) . '?page=' . request()->page ?? 1 }}"><i
-                                                                class="far fa-edit me-2"></i>Update</a>
+                                                            href="{{ route('admin.customer.updateShipTo', $customer->id) }}"><i
+                                                                class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                     </li>
                                                     <li>
-                                                        @if($customer)
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.customer.show', $customer->id) }}">
-                                                                <i class="far fa-eye me-2"></i>View
-                                                            </a>
-                                                        @endif
+                                                        <form
+                                                            action="{{ route('admin.customer.destroyShipTo', $customer->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="button" class="dropdown-item"
+                                                                onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to customer?')"><i
+                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
+                                                        </form>
                                                     </li>
-                                                    @if($customer->status == 'Active')
-                                                        <li>
-                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                data-id="{{ $customer->id }}" data-status="Inactive">
-                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                            </a>
-                                                        </li>
-                                                    @elseif($customer->status == 'Inactive')
-                                                        <li>
-                                                            <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                data-id="{{ $customer->id }}" data-status="Active">
-                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                            </a>
-                                                        </li>
-                                                    @endif
                                                 </ul>
                                             </div>
                                         </div>
@@ -352,7 +342,7 @@
             });
 
             function resetForm() {
-                window.location.href = "{{ route('admin.customer.index') }}";
+                window.location.href = "{{ route('admin.customer.shipToIndex') }}";
             }
 
         </script>

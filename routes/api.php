@@ -32,7 +32,8 @@ use App\Http\Controllers\Api\{
     OrderShipmentController,
     ProductController,
     DriverController,
-    VehicleController
+    VehicleController,
+    WarehouseManagerController
 };
 
 use App\Http\Controllers\Web\Admin\{
@@ -116,6 +117,12 @@ Route::post('/mark-as-read-notification', [NotificationController::class, 'markA
 
 //Driver
 Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+
+//Manager
+Route::get('/warehouse-managers/{id}', [WarehouseManagerController::class, 'getWarehouseManagers']);
+
+//Manager
+Route::get('/warehouse-customers/{id}', [CustomerController::class, 'getCustomerByWarehouse']);
 
 //Vehicle
 Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
@@ -220,6 +227,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/get-shipto-users', [ShiptoController::class, 'getCustomerShipToUsers']);
 
         Route::post('/invoiceUpdate/{id}', [InvoiceController::class, 'invoiceUpdate']);
+        Route::post('/check-invoice-item-status', [InvoiceController::class, 'checkItemInvoices']);
     });
 
     //invoice controller
@@ -231,7 +239,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/invoice-details/{id}', 'invoiceDetails');
         Route::get('/invoice-get/{type}', 'invoicesGet');
     });
-
 });
 
 Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');

@@ -28,9 +28,9 @@ class MenuSeeder extends Seeder
                 'title' => 'Customers',
                 'icon' => '<i class="menuIcon ti ti-users"></i>',
                 'route' => 'admin.customer.index',
-                'active' => 'customer*',
+                'active' => 'customer*,customer-shipTo',
                 'roles' => ['admin', 'warehouse_manager', 'driver'],
-                'permissions' => ['customers.view'],
+                //'permissions' => ['customers.view'],
             ],
             [
                 'title' => 'Warehouses',
@@ -191,6 +191,25 @@ class MenuSeeder extends Seeder
             // }
 
             Menu::create($menu);
+        }
+
+        $customer = Menu::where('title', 'Customers')->first();
+        if ($customer) {
+            Menu::create([
+                'title' => 'Customers',
+                'route' => 'admin.customer.index',
+                'active' => 'customer',
+                'parent_id' => $customer->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Ship To Customers',
+                'route' => 'admin.customer.shipToIndex',
+                'active' => 'customer-shipTo',
+                'parent_id' => $customer->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
         }
 
         $inventory = Menu::where('title', 'Inventory')->first();

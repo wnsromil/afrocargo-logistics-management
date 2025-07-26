@@ -107,12 +107,15 @@ class DriversController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'alternative_mobile_number' => 'required|string|max:15',
+            'alternative_mobile_number' => "required|digits:$altPhoneLength|unique:users,phone_2",
             'alternative_mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             'email' => 'required|email|unique:users,email',
@@ -121,6 +124,14 @@ class DriversController extends Controller
             'license_document' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
+        ], [
+            'mobile_number.required' => 'Contact Number is required.',
+            'mobile_number.digits' => 'Contact Number must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This Contact Number is already in use.',
+
+            'alternative_mobile_number.required' => 'Office Contact Number is required.',
+            'alternative_mobile_number.digits' => 'Office Contact Number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This Office Contact Number is already in use.',
         ]);
         $status  = !empty($request->status) ? $request->status : 'Active';
         // Handle License Document Upload
@@ -200,7 +211,6 @@ class DriversController extends Controller
         return redirect()->route('admin.drivers.index')
             ->with('success', 'Driver created successfully.');
     }
-
 
     /**
      * Display the specified resource.
@@ -283,11 +293,13 @@ class DriversController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+        
         $rules = [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'mobile_number_code_id' => 'required|exists:countries,id',
             'address_1' => 'required|string|max:500',
             //'vehicle_type' => 'required',
@@ -295,7 +307,7 @@ class DriversController extends Controller
             'license_number' => 'required',
             'edit_license_expiry_date' => 'required',
             'status' => 'in:Active,Inactive',
-            'alternative_mobile_number' => 'required|string|max:15',
+            'alternative_mobile_number' => 'required|digits:' . $altPhoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'required|exists:countries,id',
         ];
 
@@ -304,11 +316,24 @@ class DriversController extends Controller
             $rules['license_document'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        // ✅ Custom error messages
+        $messages = [
+            'mobile_number.required' => 'Contact Number is required.',
+            'mobile_number.digits' => 'Contact Number must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This Contact Number is already in use.',
+
+            'alternative_mobile_number.required' => 'Office Contact Number is required.',
+            'alternative_mobile_number.digits' => 'Office Contact Number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This Office Contact Number is already in use.',
+        ];
+
+        // Apply validation
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
 
 
         $warehouse = User::find($id);

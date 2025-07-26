@@ -54,7 +54,7 @@ class SettingsHelper
     {
         // Get unique country names from warehouses and convert to lowercase, with warehouse ids
         $warehouses = Warehouse::select('id', 'country_id')
-        ->where('status', 'Active')
+            ->where('status', 'Active')
             ->get()
             ->groupBy(function ($item) {
                 return strtolower($item->country_id);
@@ -85,7 +85,7 @@ class SettingsHelper
         // Get countries where LOWER(name) matches any lowercase country_id
         return Warehouse::leftJoin('countries', 'warehouses.country_id', '=', 'countries.name')
             ->where('warehouses.status', 'Active')
-            ->select('warehouses.*', 'countries.id as countryId','countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
+            ->select('warehouses.*', 'countries.id as countryId', 'countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
             ->get();
     }
 
@@ -220,7 +220,6 @@ class SettingsHelper
             throw $th;
         }
     }
-
 
 
     private static function formatValue($type, $value)

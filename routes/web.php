@@ -224,6 +224,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
         Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('invoice.updateNote');
         Route::post('updateClaim', [InvoiceController::class, 'updateClaim'])->name('invoice.updateClaim');
+        Route::post('/invoice-create-order-details-service', [InvoiceController::class, 'orderDetailsCreateInvoice']);
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
@@ -240,6 +241,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         // Customer 
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
+
+        // Customer Ship To
+        Route::get('customer-shipTo', [CustomerController::class, 'ShipTo_index'])->name('customer.shipToIndex');
 
         // Customer Ship To Address
         Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
@@ -287,6 +291,11 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         // Customer 
         Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
+
+        // Notification
+        Route::post('notification_schedule/warehouseManagerStore', [NotificationScheduleController::class, 'warehouseManagerStore'])->name('notification_schedule.warehouseManagerStore');
+        Route::post('notification_schedule/DriverStore', [NotificationScheduleController::class, 'DriverStore'])->name('notification_schedule.DriverStore');
+        Route::post('notification_schedule/CustomerStore', [NotificationScheduleController::class, 'CustomerStore'])->name('notification_schedule.CustomerStore');
 
 
         Route::get('/orderdetails', function () {
