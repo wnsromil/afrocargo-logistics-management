@@ -8,18 +8,18 @@
     @endsection
 
     <x-slot name="header">
-        {{ __('Invoices') }}
+        {{ __('Trashed Invoices') }}
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="head" style="color:black">Invoices </p>
+        <p class="head" style="color:black">Trashed Invoices </p>
         <div class="d-flex align-items-center justify-content-end">
             <div class="usersearch d-flex">
                 <div class="mt-0">
-                    <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons">
+                    {{-- <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
                         Add Invoice
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>

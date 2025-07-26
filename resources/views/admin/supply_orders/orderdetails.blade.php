@@ -172,13 +172,24 @@
         <div>
 
             @php
+             if($parcel->delivery_type == 'self') {
+                $statusSteps = [
+                    1 => 'Pending',
+                    35 => 'Order Received',
+                    36 => 'In Process',
+                    37 => 'Ready to Pick Up',
+                    38 => 'Picked Up'
+                ];
+
+             }else{
                 $statusSteps = [
                     1 => 'Pending',
                     22 => 'Assign delivery with driver',
                     10 => 'Out for delivery',
                     11 => 'Delivered'
-
                 ];
+             }
+
 
                 $statusDates = [];
                 $completedStatusMap = [];

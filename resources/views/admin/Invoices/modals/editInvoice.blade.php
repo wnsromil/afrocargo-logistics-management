@@ -258,7 +258,7 @@
                                         </td>
 
                                         <td style="text-align: right;">
-                                            @if($invoice->invoiceParcelData->arrivedWarehouse)
+                                            @if(!empty($invoice->invoiceParcelData->arrivedWarehouse))
                                             <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                                 ?? ''}}</b><br>
                                                 {{$invoice->invoiceParcelData->arrivedWarehouse->address
@@ -587,7 +587,7 @@
                                     <td style="width: 25%; text-align: center;">
                                     </td>
                                     <td style="width: 35%; text-align: right;">
-                                        @if($invoice->invoiceParcelData->arrivedWarehouse)
+                                        @if(!empty($invoice->invoiceParcelData->arrivedWarehouse))
                                         <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                             ?? ''}}</b><br>
                                             {{$invoice->invoiceParcelData->arrivedWarehouse->address
@@ -671,7 +671,7 @@
                                                             <td style="width: 20; text-align: center;">
                                                             </td>
                                                             <td style="width: 40%; text-align: right;">
-                                                                @if($invoice->invoiceParcelData->arrivedWarehouse)
+                                                                @if(!empty($invoice->invoiceParcelData->arrivedWarehouse))
                                                                 <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                                                     ?? ''}}</b><br>
                                                                     {{$invoice->invoiceParcelData->arrivedWarehouse->address

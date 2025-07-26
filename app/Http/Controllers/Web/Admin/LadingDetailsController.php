@@ -14,8 +14,9 @@ class LadingDetailsController extends Controller
      */
     public function index(Request $request)
     {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
 
-        
         $query = BillOfLadingDetail::with(['shipperDetails', 'consigneeDetails']);
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -171,7 +172,7 @@ class LadingDetailsController extends Controller
         $billOfLading = BillOfLadingDetail::with(['shipperDetails', 'consigneeDetails'])->findOrFail($id);
 
         $pdf = \PDF::loadView('admin.bill_of_lading.pdf.bill-of-lading-pdf', compact('billOfLading'));
-        
+
         $pdf->setPaper('A4', 'portrait');
 
         // First return the PDF as a response to load it

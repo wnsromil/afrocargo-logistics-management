@@ -38,6 +38,7 @@ use App\Http\Controllers\Web\Admin\{
     CustomReportController,
     VerifyLicenseController,
     SupplyInventoryController,
+    OrderStatusManage
 };
 use App\Mail\RegistorMail;
 
@@ -224,6 +225,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
         Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('invoice.updateNote');
         Route::post('updateClaim', [InvoiceController::class, 'updateClaim'])->name('invoice.updateClaim');
+        Route::get('invoices/trashed/list', [InvoiceController::class, 'trashed'])->name('invoice.trashed');
+        Route::get('invoices/restore/{id}', [InvoiceController::class, 'restore'])->name('invoice.restore');
+        Route::delete('invoices/delete/{id}', [InvoiceController::class, 'delete'])->name('invoice.delete');
         Route::post('/invoice-create-order-details-service', [InvoiceController::class, 'orderDetailsCreateInvoice']);
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
@@ -239,7 +243,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.delete');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
-        // Customer 
+        // Customer
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
 
         // Customer Ship To
@@ -265,10 +269,10 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('/update-Pickup/{id}', [CustomerController::class, 'updatePickup'])->name('customer.updatePickup');
         Route::post('/edit-Pickup/{id}', [CustomerController::class, 'Editupdate'])->name('customer.pickup-edit');
 
-        // Warehouse 
+        // Warehouse
         Route::post('warehouses/status/{id}', [WarehouseController::class, 'changeStatus'])->name('warehouses.status');
 
-        // Warehouse manager 
+        // Warehouse manager
         Route::post('warehouse_manager/status/{id}', [WarehouseManagerController::class, 'changeStatus'])->name('warehouse_manager.status');
 
         // Schedule
@@ -289,8 +293,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('/container-sizes/update', [CBMCalculatoarController::class, 'ContainerSizeStore'])->name('cbm_calculator.container-sizes.update');
         Route::post('/store-port-freight', [CBMCalculatoarController::class, 'storePortFreight'])->name('cbm_calculator.store-port-freight');
 
-        // Customer 
+        // Customer
         Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
+        Route::post('/statusUpdate_self', [OrderStatusManage::class, 'statusUpdate_self'])->name('statusUpdate_self');
 
         // Notification
         Route::post('notification_schedule/warehouseManagerStore', [NotificationScheduleController::class, 'warehouseManagerStore'])->name('notification_schedule.warehouseManagerStore');

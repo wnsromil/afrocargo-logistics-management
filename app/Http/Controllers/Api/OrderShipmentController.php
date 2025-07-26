@@ -802,6 +802,9 @@ class OrderShipmentController extends Controller
                 $validatedData['warehouse_id'] = Inventory::where('id', $request->inventorie_data[0]['inventorie_id'])->first()->warehouse_id ?? null;
             }
 
+            if($validatedData['delivery_type'] == 'self') {
+                $validatedData['status'] = 35;
+            }
 
 
             // Create Parcel

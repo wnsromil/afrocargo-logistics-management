@@ -484,17 +484,17 @@
                                         <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                                     </div>
                                     <div class="d-fex justify-content-between flex-wrap row mt-2">
-                                        <div class="input-block mb-3 col-lg-2 col-md-2">
+                                        <div class="input-block mb-3 col-lg-3 col-md-3">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
                                             <input class="form-check-input mt-0" type="radio" value="Ocean Cargo"
                                             name="transport_type" {{ $invoice->transport_type == 'Ocean Cargo' ? 'checked' : '' }}>
                                         </div>
-                                        <div class="input-block mb-3 col-lg-2 col-md-2">
+                                        <div class="input-block mb-3 col-lg-3 col-md-3">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
                                             <input class="form-check-input mt-0" type="radio" value="Air Cargo"
                                             name="transport_type" {{ $invoice->transport_type == 'Air Cargo' ? 'checked' : '' }}>
                                         </div>
-                                        <div class="col-8"></div>
+                                        <div class="col-6"></div>
                                     </div>
                                     @error('transport_type')
                                         <span class="text-danger">{{ $message }}</span>
@@ -645,7 +645,7 @@
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
                                     <th class="thwidth">Ins</th>
-                                    <th class="thwidth">Discount</th>
+                                    <th class="thwidth d-none">Discount</th>
                                     <th class="thwidth">Tax%</th>
                                     <th class="thwidth">Total</th>
                                     <th style="width:100px">Actions</th>
@@ -697,7 +697,7 @@
                                         <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="ins" value="{{ $item['ins'] ?? '' }}">
                                     </td>
-                                    <td>
+                                    <td class="d-none">
                                         <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="discount" value="{{ $item['discount'] ?? '' }}">
                                     </td>
@@ -758,7 +758,7 @@
                                     </td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="ins"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="discount"></td>
                                     <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
                                             name="tax"></td>
@@ -797,13 +797,13 @@
                         <input type="text" class="form-control smInput" placeholder="0" name="tax"
                             value="{{$invoice->tax ?? 0}}">
                     </div>
-                    <div><label>Discount</label>
-                        <input type="text" class="form-control smInput" placeholder="0" name="discount"
-                            value="{{$invoice->discount ?? 0}}">
-                    </div>
                     <div><label>Ins</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
                             value="{{$invoice->ins ?? 0}}" value="{{$invoice->ins ?? 0}}">
+                    </div>
+                    <div><label>Discount</label>
+                        <input type="text" class="form-control smInput" placeholder="0" id="dis" name="discount"
+                            value="{{$invoice->discount ?? 0}}">
                     </div>
                     <div><label>Payment</label>
                         <input type="text" class="form-control" placeholder="0" name="payment"
@@ -817,7 +817,7 @@
                         <input type="text" class="form-control" placeholder="0" name="balance"
                             value="{{$invoice->balance ?? 0}}">
                     </div>
-                    <div> <button type="submit" class="btn btn-success invocebuttoncolor ">Submit</button></div>
+                    <div> <button type="submit" class="btn btn-success invocebuttoncolor " id="fnsubmit">Submit</button></div>
                 </div>
             </div>
 
@@ -923,6 +923,10 @@
             // const urlParams = new URLSearchParams(window.location.search);
             // const formType = urlParams.get('id') || 'services';
             // toggleLoginForm(formType);
+            $('#fnsubmit').prop('disabled', true);
+            $("#dynamicTable tbody tr:last").on('click',function(){
+                $('#fnsubmit').prop('disabled', false);
+            });
             setTimeout(() => {
                 console.log("invoce_typ", invoce_type);
                 toggleInventoryList();

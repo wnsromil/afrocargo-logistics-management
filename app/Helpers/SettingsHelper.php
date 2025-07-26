@@ -9,6 +9,11 @@ use App\Models\{
     Country,
     LocationSchedule,
     WeeklySchedule,
+    ParcelHistory,
+    Invoice,
+    InvoiceHistory,
+    Parcel,
+    ParcelInventorie
 };
 use Carbon\Carbon;
 
@@ -88,8 +93,6 @@ class SettingsHelper
             ->select('warehouses.*', 'countries.id as countryId', 'countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
             ->get();
     }
-
-
     public static function getNearbyWarehouseDriverIds($lat, $lng, $nearestWarehouseId =null, $radius = 50)
     {
         return LocationSchedule::join('users','users.id','=','location_schedules.user_id')
@@ -104,6 +107,7 @@ class SettingsHelper
             ->having('distance', '<=', $radius)
             ->pluck('user_id');
     }
+
 
     public static function getDriverTimeSlot($userIds, $dayName = null)
     {
@@ -234,6 +238,137 @@ class SettingsHelper
             default:
                 return $value;
         }
+    }
+
+    public static function saveInvoiceHistory($invoice_id, $status, $orderData = [])
+    {
+        $invoice = Invoice::with(['barcodes','deliveryAddress', 'pickupAddress'])->findOrFail($invoice_id);
+
+        // Create invoice history
+        InvoiceHistory::create([
+            'invoice_id' => $invoice_id,
+            'status' => $status,
+            'created_by' => auth()->id(),
+            'histry_info' => $invoice // Typo fixed from 'histry_info'
+        ]);
+
+        $parcel = null;
+        $typeMap = ['services' => 'Service', 'supplies' => 'Supply'];
+
+        $validatedData = [
+            'parcel_type' => $typeMap[strtolower($invoice->invoce_type ?? 'service')] ?? 'Service',
+            'total_amount' => $invoice->total_amount,
+            'partial_payment' => $invoice->total_amount,
+            'remaining_payment' => $invoice->total_amount,
+            'descriptions' => $invoice->descrition ?? null,
+            'weight' => $invoice->weight ?? null,
+            'destination_address' => optional($invoice->deliveryAddress)->address,
+            'destination_user_name' => optional($invoice->deliveryAddress)->full_name,
+            'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
+            'pickup_address_id' => optional($invoice->deliveryAddress)->id,
+            'delivery_address_id' => optional($invoice->pickupAddress)->id,
+            'customer_id' => optional($invoice->pickupAddress)->user_id ?? null,
+            'ship_customer_id' => optional($invoice->deliveryAddress)->user_id ?? null,
+            'pickup_time' => now(),
+            'pickup_date' => now(),
+            'customer_id' => $invoice->customer_id ?? auth()->id(),
+            'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid',
+            'invoice_id'=>$invoice_id,
+            'status' => 4,
+        ];
+        if($invoice->transport_type){
+            $validatedData['transport_type'] = $invoice->transport_type;
+        }
+
+        if (empty($invoice->parcel_id)) {
+
+            $validatedData['weight'] = $orderData['weight'] ?? 0;
+            $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
+
+
+            // Check if warehouses exist before saving arrived_warehouse_id
+            if (!empty($invoice->arrived_warehouse_id) && Warehouse::where('id', $invoice->arrived_warehouse_id)->exists()) {
+                $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
+            }
+            $parcel = Parcel::create($validatedData);
+
+            $invoice->update(['parcel_id' => $parcel->id]);
+        } else {
+            $parcel = Parcel::find($invoice->parcel_id);
+            $validatedData['delivery_type'] = 'self';
+            $parcel->update($validatedData);
+        }
+        $qty = 0;
+
+
+        // Save inventory items to ParcelInventorie
+        foreach ($invoice->invoce_item ?? [] as $item) {
+            if(!empty($item['supply_id'])){
+                $qty += $item['qty'] ?? 0;
+                if(!empty($item['inventory_id'])){
+                    $cp = [
+                                'parcel_id' => $invoice->parcel_id,
+                                'id' => $item['inventory_id'],
+                            ];
+                }else{
+                    $cp = [
+                                'parcel_id' => $invoice->parcel_id,
+                                'invoice_id' => $invoice->id,
+                                'inventorie_id' => $item['supply_id'],
+                            ];
+                }
+                $supply =  ParcelInventorie::updateOrCreate(
+                            $cp,
+                            [
+                                'invoice_id' => $invoice->id,
+                                'inventorie_item_quantity' => $item['qty'],
+                                'inventory_name' => $item['supply_name'],
+                                'label_qty' => $item['label_qty'],
+                                'price' => $item['price'] ?? 0,
+                                'volume' => $item['volume'] ?? 0,
+                                'value' => $item['value'] ?? 0,
+                                'ins' => $item['ins'] ?? 0,
+                                'tax' => $item['tax'] ?? 0,
+                                'discount' => $item['discount'] ?? 0,
+                                'total' => $item['total'] ?? 0,
+                            ]
+                        );
+                if(!empty($invoice->barcodes)){
+                    for ($i=0; $i < $item['qty']; $i++) {
+                        store_barcode([
+                            'parcel_id' => $invoice->parcel_id,
+                            'invoice_id' => $invoice->id,
+                            'supply_id' => $supply->id,
+                        ]);
+                    }
+                }
+
+            }
+        }
+
+        if($parcel->arrived_warehouse_id){
+            $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
+        }
+
+        $invoice->total_qty = $qty;
+        $invoice->save();
+
+
+
+        // Create parcel history (if parcel was created or exists)
+        if ($parcel) {
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => auth()->id(),
+                'customer_id' => $invoice->customer_id ?? optional($invoice->deliveryAddress)->user_id,
+                'warehouse_id' => $invoice->warehouse_id,
+                'status' => $status,
+                'parcel_status' => 4,
+                'description' => $parcel
+            ]);
+        }
+
+        return $parcel;
     }
 
 }

@@ -1097,4 +1097,41 @@ class OrderStatusManage extends Controller
 
         return $earthRadius * $c; // Distance in km
     }
+
+    public function statusUpdate_self(Request $request)
+    {
+
+        // Validate the request data
+        $request->validate([
+            'parcel_id' => 'required|exists:parcels,id',
+            'status' => 'required',
+        ]);
+
+        // Find the parcel by ID
+        $parcel = Parcel::findOrFail($request->parcel_id);
+
+        // Update the parcel details
+        $parcel->update([
+            'status' => $request->status,
+        ]);
+
+        ParcelInventorie::where('parcel_id', $request->parcel_id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => $request->status]);
+
+        $parcelHistory = ParcelHistory::where('parcel_id', $request->parcel_id)->first();
+        // Create a new entry in ParcelHistory
+        ParcelHistory::create([
+            'parcel_id' => $parcel->id,
+            'created_user_id' => $request->created_user_id,
+            'customer_id' => $parcelHistory->customer_id,
+            'status' => 'Updated',
+            'parcel_status' => $request->status,
+            'note' => null,
+            'warehouse_id' => $parcelHistory->warehouse_id,
+            'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
+        ]);
+
+        return back()->with('success', 'Parcel status updated successfully.');
+    }
 }

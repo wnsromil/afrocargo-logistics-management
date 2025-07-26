@@ -66,6 +66,8 @@ function toggleLoginForm(type) {
     }
 }
 
+
+
 $('input[name="transport_type"]').on("click", function () {
     const transportType = $(this).val();
     console.log("Transport Type:", transportType);
@@ -283,6 +285,41 @@ $(document).ready(function () {
             $('select[name="warehouse_id"]').val(shipCountry.id ?? null).trigger('change');
         }
 
+
+        $("#delivery_customer_inf_form")
+            .find('select[name="alternative_mobile_number_code_id"]')
+            .val(shipCountry.countryId ?? 1)
+            .trigger("change");
+        $("#delivery_customer_inf_form")
+            .find('select[name="mobile_number_code_id"]')
+            .val(shipCountry.countryId ?? 1)
+            .trigger("change");
+
+        $("#delivery_customer_inf_form")
+            .find('input[name="mobile_number"]')
+            .val(shipCountry.mobile_number ?? "");
+        $("#delivery_customer_inf_form")
+            .find('input[name="alternative_mobile_number"]');
+
+
+        $("#ship_to_address").find('input[name="country"]').val(shipCountry.country_id ?? "");
+        $("#delivery_customer_inf_form").find('input[name="zip_code"]').val(shipCountry.zip_code ?? "");
+        $("#delivery_customer_inf_form").find('input[name="address"]').val(shipCountry.address ?? "");
+        $("#delivery_customer_inf_form").find('input[name="state"]').val(shipCountry.state_id ?? "");
+        $("#delivery_customer_inf_form").find('input[name="city"]').val(shipCountry.city_id ?? "");
+        $("#delivery_customer_inf_form").find('input[name="address_1"]').val(shipCountry.address ?? "");
+
+        setPickupDeleveryFormValue({
+            alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
+            mobile_number_code_id:shipCountry.countryId ?? 1,
+            country:shipCountry.country_id ?? "",
+            state:shipCountry.state_id ?? "",
+            city:shipCountry.city_id ?? "",
+            pincode:shipCountry.zip_code ?? "",
+            address1:"",
+            address2:shipCountry.address ?? "",
+        },"#CustomerCreate_Form")
+
     });
 
 
@@ -321,11 +358,11 @@ $(document).ready(function () {
 
         $("#ship_to_address")
             .find('select[name="alternative_mobile_number_code_id"]')
-            .val(deleveryCountry.alternative_mobile_number_code_id ?? 1)
+            .val(deleveryCountry.countryId ?? 1)
             .trigger("change");
         $("#ship_to_address")
             .find('select[name="mobile_number_code_id"]')
-            .val(deleveryCountry.mobile_number_code_id ?? 1)
+            .val(deleveryCountry.countryId ?? 1)
             .trigger("change");
 
         $("#ship_to_address")
@@ -333,11 +370,11 @@ $(document).ready(function () {
             .val(deleveryCountry.mobile_number ?? "");
         $("#ship_to_address")
             .find('input[name="alternative_mobile_number"]');
-        $("#ship_to_address").find('input[name="zip_code"]').val(deleveryCountry.pincode ?? "");
-        $("#ship_to_address").find('input[name="address"]').val(deleveryCountry.address1 ?? "");
-        $("#ship_to_address").find('input[name="country"]').val(deleveryCountry.country ?? "");
-        $("#ship_to_address").find('input[name="state"]').val(deleveryCountry.state ?? "");
-        $("#ship_to_address").find('input[name="city"]').val(deleveryCountry.city ?? "");
+        $("#ship_to_address").find('input[name="zip_code"]').val(deleveryCountry.zip_code ?? "");
+        $("#ship_to_address").find('input[name="address"]').val(deleveryCountry.address ?? "");
+        $("#ship_to_address").find('input[name="country"]').val(deleveryCountry.country_id ?? "");
+        $("#ship_to_address").find('input[name="state"]').val(deleveryCountry.state_id ?? "");
+        $("#ship_to_address").find('input[name="city"]').val(deleveryCountry.city_id ?? "");
 
 
 
@@ -348,7 +385,7 @@ $(document).ready(function () {
             state:deleveryCountry.state_id ?? "",
             city:deleveryCountry.city_id ?? "",
             pincode:deleveryCountry.zip_code ?? "",
-            address1:deleveryCountry.address ?? "",
+            address1: "",
             address2:deleveryCountry.address ?? "",
         },"#model_shipto_Form")
     });
@@ -592,7 +629,7 @@ $(document).ready(function () {
                     <td><input type="text" class="form-control tdbor inputcolor" name="ins" value="${
                         item.ins || 0
                     }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor discount-input" name="discount" value="${
+                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor discount-input" name="discount" value="${
                         item.discount || 0
                     }"></td>
                     <td><input type="text" class="form-control tdbor inputcolor tax-input" name="tax" value="${
@@ -704,7 +741,11 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
             }
         } else {
 
-            $('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
+            if(customer.user_id){
+                $('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
+                $('#model_shipto_Form').find('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
+            }
+
             // delevery select box
 
             if(!setCustomerInfo){
@@ -748,11 +789,31 @@ function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
 
         userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
         userAddress.find('input[name="address"]').val(customer.address1 ?? "");
-        userAddress.find('input[name="country"]').val(customer.country ?? "");
+        if(setCustomerInfo){
+            const countryVal = customer.country ?? '';
+
+            userAddress.find('select[name="country"]')
+                .val(countryVal)
+                .trigger("change")
+                .prop('disabled', true); // disable the dropdown
+
+            // add hidden input to submit country value
+            if (userAddress.find('input[name="country"]').length === 0) {
+                userAddress.append(`<input type="hidden" name="country" value="${countryVal}">`);
+            } else {
+                userAddress.find('input[name="country"]').val(countryVal);
+            }
+        }else{
+            userAddress.find('input[name="country"]').val(customer.country ?? "");
+        }
+
+
         userAddress.find('input[name="state"]').val(customer.state ?? "");
         userAddress.find('input[name="city"]').val(customer.city ?? "");
         userAddress.find('input[name="user_id"]').val(customer.user_id ?? "");
         // Address 2 can be left empty or filled with additional info if available
+
+
     }
 }
 
@@ -887,6 +948,11 @@ $(document).on("input", 'input[name="payment"]', function () {
     updateSummary(); // recalculate balance
 });
 
+$(document).on("input", 'input[name="discount"]', function () {
+    console.log("Discount changed");
+    updateSummary(); // recalculate balance
+});
+
 // Recalculate row total and update blueRibbon on quantity, price, tax, discount, ins change
 $(document).on(
     "input",
@@ -926,10 +992,11 @@ function updateSummary() {
     let value = 0;
     let totalPrice = 0;
     let tax = 0;
-    let discount = 0;
     let ins = 0;
     let totalItems = 0;
+    let discount = 0;
     const service_fee = parseFloat($('input[name="service_fee"]').val()) || 0;
+    const dis = parseFloat($('#dis').val()) || 0;
 
     $("#dynamicTable tbody tr").each(function () {
         const row = $(this);
@@ -938,8 +1005,7 @@ function updateSummary() {
         const BaseValue =
             parseFloat(row.find('input[name="value"]').val()) || 0;
         const rowTax = parseFloat(row.find('input[name="tax"]').val()) || 0;
-        const rowDiscount =
-            parseFloat(row.find('input[name="discount"]').val()) || 0;
+        const rowDiscount = parseFloat(row.find('input[name="discount"]').val()) || 0;
         const rowIns = parseFloat(row.find('input[name="ins"]').val()) || 0;
 
         const base = qty * price;
@@ -956,7 +1022,8 @@ function updateSummary() {
         if (qty > 0) totalItems += 1;
     });
 
-    const grandTotal = totalPrice + tax + ins + service_fee - discount;
+
+    const grandTotal = totalPrice + tax + ins + service_fee - (dis ?? discount);
     const payment = parseFloat($('input[name="payment"]').val()) || 0;
     const balance = grandTotal - payment;
 
@@ -966,8 +1033,8 @@ function updateSummary() {
     ribbon.find("input").eq(0).val(subtotal.toFixed(2)); // Subtotal
     ribbon.find("input").eq(1).val(value.toFixed(2)); // Value
     ribbon.find("input").eq(2).val(tax.toFixed(2)); // Tax
-    ribbon.find("input").eq(3).val(discount.toFixed(2)); // Discount
-    ribbon.find("input").eq(4).val(ins.toFixed(2)); // Ins
+    // ribbon.find("input").eq(3).val(discount.toFixed(2)); // Discount
+    ribbon.find("input").eq(3).val(ins.toFixed(2)); // Ins
     $("#grand_total").val(grandTotal.toFixed(2));
     $("#payment").val(payment.toFixed(2));
     $("#balance").val(balance.toFixed(2));
@@ -1553,3 +1620,9 @@ $(document)
         let length = $(self).select('option:selected').data('length');
         let phoneNumber = $(self).val();
     }
+    showLoader();
+    $(window).on('load', function () {
+        setTimeout(() => {
+            hideLoader();
+        }, 900);
+    });

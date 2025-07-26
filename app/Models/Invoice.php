@@ -191,4 +191,8 @@ class Invoice extends Model
     {
         return $this->hasMany(Claim::class, 'invoice_id')->with(['user']);
     }
+    public function deletedByUser()
+    {
+        return $this->belongsTo(User::class, 'deleted_by')->select('id', 'name', 'last_name','role','role_id');
+    }
 }

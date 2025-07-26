@@ -5,7 +5,6 @@
     <x-slot name="cardTitle">
         <p class="head">Supply Order Management</p>
     </x-slot>
-
     @php
         $warehouseIdFromUrl = request()->query('warehouse_id');
         $authUser = auth()->user();
@@ -85,7 +84,6 @@
             </div>
         </div>
     </form>
-
     <div id='ajexTable'>
         <div class="card-table">
             <div class="card-body">
@@ -162,8 +160,8 @@
                                             'Unpaid' => 'unpaid_status',
                                             'Paid' => 'status',
                                             'Completed' => 'partial_status',
-                                            default => 'unpaid_status',
-                                        };
+                                            default => 'unknown_status',
+                                        }
                                     @endphp
                                     <td>
                                         <label class="labelstatusy" for="{{ $forValue }}">
@@ -220,6 +218,27 @@
                                                 <div class="profilemenu">
                                                     <div class="subscription-menu">
                                                         <ul>
+                                                            @php
+                                                                $statusSteps = [
+                                                                    1 => 'Pending',
+                                                                    35 => 'Order Received',
+                                                                    36 => 'In Process',
+                                                                    37 => 'Ready to Pick Up',
+                                                                    38 => 'Picked Up'
+                                                                ];
+                                                            @endphp
+                                                            @if ($parcel->delivery_type == 'self')
+                                                                @foreach ($statusSteps as $key => $label)
+                                                                    @if ($key > $parcel->status || $key == 38)
+                                                                        <!-- Trigger Button -->
+                                                                    <li>
+                                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $key }}">
+                                                                            {{ $label ?? '' }}
+                                                                        </a>
+                                                                    </li>
+                                                                    @endif
+                                                                @endforeach
+                                                            @else
 
                                                             <li>
                                                                 <a class="dropdown-item {{ $parcel->status == 1 ? '' : 'disabled-link-supply' }}"
@@ -229,6 +248,7 @@
                                                                     Assign delivery with driver
                                                                 </a>
                                                             </li>
+                                                            @endif
                                                         </ul>
                                                     </div>
 
@@ -345,6 +365,36 @@
         </div>
     </div>
 
+
+
+    {{-- status change --}}
+    <div class="modal custom-modal signature-add-modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title" id="updateStatusModalLabel">Update Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="{{ route('admin.statusUpdate_self') }}" method="POST">
+                @csrf
+                <input type="hidden" name="parcel_id" id="modalParcelId">
+                <input type="hidden" name="status" id="modalStatus">
+
+                <div class="modal-body">
+                <p>Are you sure you want to update the status to <b id="modalStatusLabel"></b>?</p>
+                </div>
+
+                <div class="modal-footer py-2">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-outline-primary custom-btn ml-2">Cancel</button>
+                    <button type="submit" class="btn btn-primary ml-2">Yes, Update</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+
     @section('script')
         <script>
             function resetForm() {
@@ -377,6 +427,23 @@
                     }
                 });
             }
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var updateStatusModal = document.getElementById('updateStatusModal');
+
+                updateStatusModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+
+                    var parcelId = button.getAttribute('data-parcel_id');
+                    var status = button.getAttribute('data-status');
+                    var statusLabel = button.getAttribute('data-status_label');
+
+                    updateStatusModal.querySelector('#modalParcelId').value = parcelId;
+                    updateStatusModal.querySelector('#modalStatus').value = status;
+                    updateStatusModal.querySelector('#modalStatusLabel').textContent = statusLabel;
+                });
+            });
         </script>
     @endsection
 </x-app-layout>

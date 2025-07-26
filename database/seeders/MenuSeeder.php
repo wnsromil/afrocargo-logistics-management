@@ -230,7 +230,7 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ]);
         }
-        
+
         // Add submenus
         $warehouse = Menu::where('title', 'Warehouses')->first();
         if ($warehouse) {
@@ -323,6 +323,26 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill Of Lading Details',
                 'route' => 'admin.lading_details.index',
                 'active' => 'lading_details*',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus Invoice
+        $template = Menu::where('title', 'Invoice')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'Invoice',
+                'route' => 'admin.invoices.index',
+                'active' => 'invoices',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Trashed Invoice',
+                'route' => 'admin.invoice.trashed',
+                'active' => 'invoices/trashed/list',
                 'parent_id' => $template->id,
                 'roles' => ['admin', 'warehouse_manager']
             ]);

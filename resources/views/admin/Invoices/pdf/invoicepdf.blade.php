@@ -51,7 +51,7 @@
                                 <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
                                 {{$invoice->warehouse->address ?? ''}}<br>
                                 {{-- The {{$invoice->warehouse->warehouse_code ?? ''}}<br> --}}
-                                {{$invoice->warehouse->country ?? ''}}<br>
+                                {{-- {{$invoice->warehouse->country ?? ''}}<br> --}}
                                 Tel-{{$invoice->warehouse->phone ?? ''}}<br>
                                 {{-- Tel 718-954-9093<br> --}}
                             @endif
@@ -72,7 +72,7 @@
                 </table>
             </td>
         </tr>
-        <tr>
+        <tr>warehouse
             <td colspan="2" style="padding: 0 20px 20px 20px;">
                 <table width="100%">
                     <tr>
@@ -140,6 +140,25 @@
                 </table>
             </td>
         </tr> --}}
+
+        <tr>
+            {{-- <td style="width: 50%; padding: 10px 20px;">
+                <span style="font-size: 17px;">
+                    Invoice Date: <b>{{$invoice->created_at->format('d/m/Y') ?? ''}}</b><br>
+                    Pay Terms: <b>United States</b><br>
+                    Ship Via: <b>{{$invoice->created_at ?? ''}}</b>
+                </span>
+            </td> --}}
+            <td style="width: 100%; padding: 10px 20px;" colspan="2">
+                <span style="font-size: 17px;">
+                    User: <b>{{ $invoice->user->name ?? '' }} {{ $invoice->user->last_name ?? '' }}</b> |
+                    @if($invoice->driver)
+                    Driver: <b>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</b> |
+                    @endif
+                    Invoice Date: <b>{{ $invoice->created_at->format('d/m/Y') ?? '' }}</b>
+                </span>
+            </td>
+        </tr>
         <tr>
             <td colspan="2">
                 <table
@@ -240,8 +259,9 @@
                         <td style="text-align: center; padding: 5px; width: 20%;">Discount</td>
                         <td style="text-align: center; padding: 5px; width: 20%;">Insurance</td>
                         <td style="text-align: center; padding: 5px; width: 20%;">Tax</td>
-                        <td style="text-align: center; padding: 5px; width: 20%;">Items</td>
+                        <td style="text-align: center; padding: 5px; width: 20%;">Qty</td>
                         <td style="text-align: center; padding: 5px; width: 20%;">Amount</td>
+                        <td style="text-align: center; padding: 5px; width: 20%;">Service Fee</td>
                         <td style="text-align: center; padding: 5px; width: 20%;">Payments</td>
                         <td style="text-align: center; padding: 5px 20px; width: 20%;">
                             <strong>Balance</strong></td>
@@ -253,6 +273,7 @@
                         <td style=" text-align: center; padding: 5px;">${{$invoice->tax ?? 0}}0</td>
                         <td style=" text-align: center; padding: 5px;">{{ isset($invoice->total_qty) ? (int)$invoice->total_qty : 0 }}</td>
                         <td style=" text-align: center; padding: 5px;">${{$invoice->grand_total ?? 0}}</td>
+                        <td style=" text-align: center; padding: 5px;">${{$invoice->service_fee ?? 0}}</td>
                         <td style=" text-align: center; padding: 5px;">${{$invoice->payment ?? 0}}</td>
                         <td style=" text-align: center; padding: 5px 20px;"><strong>${{$invoice->balance ?? 0}}</strong></td>
                     </tr>
@@ -260,6 +281,7 @@
             </td>
         </tr>
         <tr>
+            @if($invoice->transport_type)
             <td colspan="2">
                 <table
                     style="width: 100%; border-collapse: collapse; margin-bottom: 20px;  border: 1px solid black; border-top:unset;">
@@ -315,6 +337,7 @@
                     </tr>
                 </table>
             </td>
+            @endif
         </tr>
         <tr>
             <td colspan="2">

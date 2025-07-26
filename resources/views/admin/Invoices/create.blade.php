@@ -523,15 +523,15 @@
                                         <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                                     </div>
                                     <div class="d-fex justify-content-between flex-wrap row mt-2">
-                                        <div class="input-block mb-3 col-lg-2 col-md-2">
+                                        <div class="input-block mb-3 col-lg-3 col-md-3">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
                                             <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
                                         </div>
-                                        <div class="input-block mb-3 col-lg-2 col-md-2">
+                                        <div class="input-block mb-3 col-lg-3 col-md-3">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
                                             <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
                                         </div>
-                                        <div class="col-8"></div>
+                                        <div class="col-6"></div>
                                     </div>
                                     @error('transport_type')
                                         <span class="text-danger">{{ $message }}</span>
@@ -682,7 +682,7 @@
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
                                     <th class="thwidth">Ins</th>
-                                    <th class="thwidth">Discount</th>
+                                    <th class="thwidth d-none">Discount</th>
                                     <th class="thwidth">Tax%</th>
                                     <th class="thwidth">Total</th>
                                     <th style="width:100px">Actions</th>
@@ -723,7 +723,7 @@
                                     </td>
                                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="ins"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor" placeholder=""
                                             name="discount"></td>
                                     <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
                                             name="tax"></td>
@@ -758,12 +758,12 @@
                     <div><label>Tax</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="tax">
                     </div>
-                    <div><label>Discount</label>
-                        <input type="text" class="form-control smInput" placeholder="0" name="discount">
-                    </div>
                     <div><label>Ins</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
                             value="{{$invoice->ins ?? 0}}">
+                    </div>
+                    <div><label>Discount</label>
+                        <input type="text" class="form-control" placeholder="0" id="dis" name="discount">
                     </div>
                     <div><label>Payment</label>
                         <input type="text" class="form-control" placeholder="0" name="payment"
@@ -850,7 +850,12 @@
         <script>
             var supplyItems = @json($inventories->get('Supply'));
             var serviceItems = @json($inventories->get('Service'));
+            var pickupAddress = @json($pickup_address) ?? {};
+            var sipToAddress = @json($delivery_address) ?? [];
             var currentRow = null;
+            var type = "{{ $type ?? 'services' }}";
+
+
 
             window.onload = function () {
                 // const urlParams = new URLSearchParams(window.location.search);
@@ -868,6 +873,29 @@
                     } else {
                         $('select[name="container_id"]').prop("disabled", false);
                     }
+
+                    if (pickupAddress) {
+                        setPickupDeleveryFormValue(pickupAddress);
+                        setPickupDeleveryFormValue(pickupAddress,$("#CustomerCreate_Form"));
+
+                        if(sipToAddress.length > 0) {
+                            $('#order_list').empty() // Clear existing options
+                            $('#order_list_div').addClass('d-none');
+                            // Clear existing options
+                            $('#ship_customer').empty();
+                            // Add new options to the select element
+                            sipToAddress.forEach(function(addr) {
+                                let option = new Option(addr.text, addr.id, false, false);
+                                $('#ship_customer').append(option);
+                            });
+                            // Re-initialize Select2 to reflect the new options
+                            $('#ship_customer').val(null).trigger('change');
+                            $('#ship_customer').select2({
+                                placeholder: "Search Customer"
+                            });
+                        }
+                    }
+                    toggleLoginForm(type);
                 }, 600);
             };
 

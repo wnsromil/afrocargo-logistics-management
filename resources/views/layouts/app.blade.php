@@ -270,6 +270,36 @@
             window.location.href = url;
         }
 
+        $(document).on('shown.bs.modal', '.custom-modal', function () {
+            const $modal = $(this);
+
+            // Prevent duplicate Select2 initialization
+            $modal.find('.js-example-basic-single').each(function () {
+                const $select = $(this);
+
+                // Destroy if already initialized
+                if ($select.hasClass('select2-hidden-accessible')) {
+                    $select.select2('destroy');
+                }
+
+                // Initialize Select2 with correct dropdown parent (modal body)
+                $select.select2({
+                    dropdownParent: $modal,
+                    width: '100%',
+                    allowClear: true,
+                    placeholder: 'Select an option',
+                    templateResult: typeof formatCountryOption === 'function' ? formatCountryOption : undefined,
+                    templateSelection: typeof formatCountrySelection === 'function' ? formatCountrySelection : undefined
+                });
+            });
+
+            // Fix tabindex issue inside Bootstrap modal (important for search)
+            setTimeout(() => {
+                $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+            }, 10);
+        });
+
+
         document.addEventListener("DOMContentLoaded", function () {
             const phoneInput = document.querySelector('input[type="tel"]');
 

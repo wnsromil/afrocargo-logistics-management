@@ -124,6 +124,102 @@ class InvoiceController extends Controller
         return view('admin.Invoices.index', compact('invoices', 'drivers', 'warehouses', 'search', 'perPage'));
     }
 
+    public function trashed(Request $request)
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default pagination
+        // return $request->all();
+        $user = collect(User::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })->get());
+
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+        $drivers = $user->where('role_id', 4)->values();
+
+
+        $invoices = Invoice::
+            //    with(['invoiceParcelData','user','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->
+            when($this->user->role_id != 1, function ($q) {
+                // Uncomment if warehouse filtering is required
+                // return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($request->input('warehouse_id'), function ($q) use ($request) {
+                return $q->where('warehouse_id', $request->input('warehouse_id'));
+            })
+            ->when($request->input('driver_id'), function ($q) use ($request) {
+                return $q->where('driver_id', $request->input('driver_id'));
+            })
+            ->when($request->input('invoice_id'), function ($q) use ($request) {
+                return $q->where('invoice_no', $request->input('invoice_id'));
+            })
+            ->when($request->input('transport_type'), function ($q) use ($request) {
+                if ($request->input('transport_type') == 'Supply') {
+                    return $q->whereNull('transport_type');
+                }
+                return $q->where('transport_type', $request->input('transport_type'));
+            })
+            ->when($request->input('datetrange'), function ($q) use ($request) {
+                $dates = explode(' - ', $request->input('datetrange'));
+                if (count($dates) === 2) {
+                    try {
+                        $start = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[0]))->startOfDay();
+                        $end = \Carbon\Carbon::createFromFormat('m/d/Y', trim($dates[1]))->endOfDay();
+                        // dd($start!=$end,$start,$end);
+                        if ($start->format('Y-m-d') != $end->format('Y-m-d')) {
+                            $q->whereBetween('created_at', [
+                                $start->format('Y-m-d H:i:s'),
+                                $end->format('Y-m-d H:i:s')
+                            ]);
+                        }
+                    } catch (\Exception $e) {
+                        // Invalid date format, do not apply filter
+                    }
+                }
+            })
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('invoice_no', 'like', "%$search%")
+                        ->orWhere('total_amount', 'like', "%$search%")
+                        ->orWhere('invoce_type', 'like', "%$search%")
+                        ->orWhere('status', 'like', "%$search%")
+                        // 🔹 Search in related tables
+                        ->orWhereHas('pickupAddress', function ($q) use ($search) {
+                            $q->where('full_name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('deliveryAddress', function ($q) use ($search) {
+                            $q->where('full_name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('driver', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('warehouse', function ($q) use ($search) {
+                            $q->where('warehouse_name', 'like', "%$search%");
+                        });
+                });
+            })
+            ->onlyTrashed()
+            ->latest('deleted_at')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'per_page' => $perPage,
+                'warehouse_id' => $request->input('warehouse_id'),
+                'driver_id' => $request->input('driver_id'),
+                'invoice_id' => $request->input('invoice_id'),
+                'datetrange' => $request->input('datetrange'),
+            ]);
+
+        if ($request->ajax() && $request->isAjaxPagination == 1) {
+            // dd($request);
+            return view('admin.Invoices.trashed-table', compact('invoices', 'drivers', 'warehouses', 'search', 'perPage'));
+        }
+
+        return view('admin.Invoices.trashedIndex', compact('invoices', 'drivers', 'warehouses', 'search', 'perPage'));
+    }
+
 
     public function invoices_details($id)
     {
@@ -134,9 +230,26 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $customerId = $request->customerId ?? null;
+        $type = $request->type ?? null;
+        $pickup_address = null;
+        $delivery_address = null;
+
+        if ($customerId) {
+            $customer = User::join('addresses', function ($join) {
+                $join->on('addresses.user_id', '=', 'users.id');
+            })->whereIn('users.role', [3, 5])->where('users.id',$customerId)
+            ->select('users.*', 'addresses.id as address_id', 'addresses.user_id', 'addresses.full_name', 'addresses.mobile_number', 'addresses.alternative_mobile_number', 'addresses.address', 'addresses.pincode', 'addresses.address_type')
+            ->first();
+
+
+            $pickup_address = $this->formatAddress($customer, null, 'pickup');
+
+            $delivery_address = $this->shipToAddress($customer, null, 'delivery');
+        }
 
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
@@ -172,7 +285,7 @@ class InvoiceController extends Controller
 
 
 
-        return view('admin.Invoices.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes', 'countries', 'nextInvoiceNo', 'containers', 'inventories'));
+        return view('admin.Invoices.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes', 'countries', 'nextInvoiceNo', 'containers', 'inventories','pickup_address', 'delivery_address','type'));
     }
 
     /**
@@ -316,7 +429,7 @@ class InvoiceController extends Controller
             $data = $this->individualPayment($validated);
         }
 
-        $this->saveInvoiceHistory($invoice->id, "created");
+        setting()->saveInvoiceHistory($invoice->id, "created");
         return redirect()->route('admin.invoices.edit',$invoice->id)->with('success', 'Invoice saved successfully.');
     }
 
@@ -491,7 +604,7 @@ class InvoiceController extends Controller
 
         $invoice->save();
 
-        $this->saveInvoiceHistory($invoice->id, "updated");
+        setting()->saveInvoiceHistory($invoice->id, "updated");
 
         return back()->with('success', 'Invoice updated successfully.');
     }
@@ -525,8 +638,11 @@ class InvoiceController extends Controller
 
         // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
         // InvoiceHistory::where('invoice_id', $id)->delete();
-        IndividualPayment::where('invoice_id', $id)->delete();
-        ParcelInventorie::where('invoice_id', $id)->update(['invoice_id' => null]);
+        // IndividualPayment::where('invoice_id', $id)->delete();
+        // ParcelInventorie::where('invoice_id', $id)->update(['invoice_id' => null]);
+
+        $invoice->deleted_by = auth()->id();
+        $invoice->save();
 
         $invoice->delete();
 
@@ -853,6 +969,7 @@ class InvoiceController extends Controller
             'zip_code' => 'nullable|string|max:10',
             'address_type' => 'required|in:pickup,delivery',
             'user_id' => 'nullable|integer',
+            'invoice_custmore_id' => 'nullable|required_if:address_type,delivery|integer',
         ]);
 
         if ($request->email) {
@@ -927,6 +1044,8 @@ class InvoiceController extends Controller
             $storeUser
         );
 
+
+
         if ($request->let && $request->lng) {
             $user->latitude = $request->let;
             $user->longitude = $request->lng;
@@ -972,6 +1091,7 @@ class InvoiceController extends Controller
             'user_id' => $user->id,
             'data' => [
                 'id' => $address->id,
+                'user_id' => $address->user_id,
                 'role_id' => $user->role_id,
                 'text' => ($address->full_name ?? $user->name) . ", " . $address->address,
                 'name' => $user->name,
@@ -1121,144 +1241,6 @@ class InvoiceController extends Controller
         return $payment;
     }
 
-    protected function saveInvoiceHistory($invoice_id, $status, $orderData = [])
-    {
-        $invoice = Invoice::with(['barcodes', 'deliveryAddress', 'pickupAddress'])->findOrFail($invoice_id);
-
-        // Create invoice history
-        InvoiceHistory::create([
-            'invoice_id' => $invoice_id,
-            'status' => $status,
-            'created_by' => auth()->id(),
-            'histry_info' => $invoice // Typo fixed from 'histry_info'
-        ]);
-
-        $parcel = null;
-        $typeMap = ['services' => 'Service', 'supplies' => 'Supply'];
-
-        $validatedData = [
-            'parcel_type' => $typeMap[strtolower($invoice->invoce_type ?? 'service')] ?? 'Service',
-            'total_amount' => $invoice->total_amount,
-            'partial_payment' => $invoice->total_amount,
-            'remaining_payment' => $invoice->total_amount,
-            'descriptions' => $invoice->descrition ?? null,
-            'weight' => $invoice->weight ?? null,
-            'destination_address' => optional($invoice->deliveryAddress)->address,
-            'destination_user_name' => optional($invoice->deliveryAddress)->full_name,
-            'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
-            'pickup_address_id' => optional($invoice->deliveryAddress)->id,
-            'delivery_address_id' => optional($invoice->pickupAddress)->id,
-            'pickup_time' => now(),
-            'pickup_date' => now(),
-            'customer_id' => $invoice->customer_id ?? auth()->id(),
-            'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid',
-            'invoice_id' => $invoice_id,
-            'driver_id' => $invoice->driver_id ?? null,
-            'status' => $invoice->driver_id ? 2:1,
-        ];
-        if ($invoice->transport_type) {
-            $validatedData['transport_type'] = $invoice->transport_type;
-        }
-
-        if (empty($invoice->parcel_id)) {
-
-            $validatedData['weight'] = $orderData['weight'] ?? 0;
-            $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
-
-            if ($invoice->arrived_warehouse_id) {
-                $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
-            }
-            $parcel = Parcel::create($validatedData);
-
-            $invoice->update(['parcel_id' => $parcel->id]);
-        } else {
-            $parcel = Parcel::find($invoice->parcel_id);
-
-            if ($parcel->arrived_warehouse_id) {
-                $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
-                $invoice->save();
-            }
-
-            $parcel->update($validatedData);
-        }
-
-
-        // Save inventory items to ParcelInventorie
-        foreach ($invoice->invoce_item ?? [] as $item) {
-            if (!empty($invoice->parcel_id)) {
-                $cp = [
-                    'parcel_id' => $invoice->parcel_id,
-                    'id' => $item['inventory_id'] ?? null,
-                ];
-            $supply =  ParcelInventorie::updateOrCreate(
-                $cp,
-                [
-                    'invoice_id' => $invoice->id,
-                    'inventorie_item_quantity' => $item['qty'],
-                    'inventory_name' => $item['supply_name'],
-                    'label_qty' => $item['label_qty'],
-                    'price' => $item['price'] ?? 0,
-                    'volume' => $item['volume'] ?? 0,
-                    'value' => $item['value'] ?? 0,
-                    'ins' => $item['ins'] ?? 0,
-                    'tax' => $item['tax'] ?? 0,
-                    'discount' => $item['discount'] ?? 0,
-                    'total' => $item['total'],
-                    'status' => $invoice->driver_id ? 2:1,
-                ]
-            );
-            if (!empty($invoice->barcodes)) {
-                for ($i = 0; $i < $item['qty']; $i++) {
-                    store_barcode([
-                        'parcel_id' => $invoice->parcel_id,
-                        'invoice_id' => $invoice->id,
-                        'supply_id' => $supply->id,
-                    ]);
-                }
-            }
-
-            }
-        }
-
-        if ($invoice->payment > 0 && $invoice->status != 'paid' && $status == 'created') {
-            IndividualPayment::create([
-                "payment_date" => $invoice->currentdate,
-                "currentTime" => $invoice->currentTime,
-                "created_by" => auth()->id(),
-                "invoice_id" => $invoice->id,
-                "local_currency" => "United State",
-                "exchange_rate" => null,
-                "payment_type" => "cash",
-                "payment_amount" => $invoice->payment,
-                "reference" => null,
-                "comment" => null,
-                "invoice_amount" => $invoice->grand_total,
-                "total_balance" => $invoice->balance,
-                "exchange_rate_balance" => $invoice->balance,
-                "applied_payments" => $invoice->payment,
-                "balance_after_exchange_rate" => $invoice->balance,
-                "applied_total_usd" => $invoice->payment,
-                "current_balance" => $invoice->balance
-            ]);
-        }
-
-
-
-        // Create parcel history (if parcel was created or exists)
-        if ($parcel) {
-            ParcelHistory::create([
-                'parcel_id' => $parcel->id,
-                'created_user_id' => auth()->id(),
-                'customer_id' => $invoice->customer_id ?? optional($invoice->deliveryAddress)->user_id,
-                'warehouse_id' => $invoice->warehouse_id,
-                'status' => $status,
-                'description' => $parcel
-            ]);
-        }
-
-        return $parcel;
-    }
-
     protected function formatAddress($address, $parcel = null, $type = null)
     {
         if ((empty($address) || empty($address->user)) && empty($address->role_id)) return null;
@@ -1339,34 +1321,26 @@ class InvoiceController extends Controller
         })->filter(fn($i) => $i)->values();
     }
 
-
-    public function invoiceModal(Request $request, string $id)
+    // Restore a soft-deleted invoice
+    public function restore($id)
     {
-        //
-        $invoice = Invoice::with(['ParcelInventory', 'invoiceParcelData', 'deliveryAddress', 'pickupAddress', 'createdByUser', 'container', 'driver', 'invoiceParcelData', 'comments', 'individualPayment', 'barcodes', 'warehouse', 'claims'])->findOrFail($id);
+        $invoice = Invoice::onlyTrashed()->findOrFail($id);
+        $invoice->restore();
 
+        return back()->with('success', 'Invoice restored successfully.');
+    }
 
+    // Permanently delete an invoice
+    public function delete($id)
+    {
+        $invoice = Invoice::onlyTrashed()->findOrFail($id);
 
-        $user = collect(User::when($this->user->role_id != 1, function ($q) {
-            // return $q->where('warehouse_id', $this->user->warehouse_id);
-        })->get());
+        // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
+        IndividualPayment::where('invoice_id', $id)->delete();
+        ParcelInventorie::where('invoice_id', $id)->update(['invoice_id' => null]);
 
-        $customers = $user->where('role_id', 3)->values();
+        $invoice->forceDelete();
 
-        $drivers = $user->where('role_id', 4)->values();
-
-        $view = 'admin.Invoices.modals.individual_payment_modal';
-
-        if ($request->type == 'view') {
-            $view = 'admin.Invoices.modals';
-        }
-
-
-        return view($view, compact(
-            'invoice',
-            'warehouses',
-            'customers',
-            'drivers'
-        ));
+        return back()->with('success', 'Invoice permanently deleted.');
     }
 }

