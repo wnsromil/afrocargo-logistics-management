@@ -118,9 +118,11 @@ class InvoiceController extends Controller
 
         // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
         // InvoiceHistory::where('invoice_id', $id)->delete();
-        IndividualPayment::where('invoice_id', $id)->delete();
-        ParcelInventorie::where('invoice_id', $id)->update(['invoice_id'=>null]);
+        // IndividualPayment::where('invoice_id', $id)->delete();
+        // ParcelInventorie::where('invoice_id', $id)->update(['invoice_id'=>null]);
 
+        $invoice->deleted_by = auth()->id();
+        $invoice->save();
         $invoice->delete();
 
         return response()->json([
@@ -208,7 +210,7 @@ class InvoiceController extends Controller
                 });
             });
 
-        $invoices = $query->paginate(5);
+        $invoices = $query->latest('id')->paginate(5);
 
         return response()->json($invoices);
     }
@@ -673,9 +675,10 @@ class InvoiceController extends Controller
 
             $validatedData['weight'] = $orderData['weight'] ?? 0;
             $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
-            $validatedData['arrived_warehouse_id'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
 
-            if($invoice->arrived_warehouse_id){
+
+            // Check if warehouses exist before saving arrived_warehouse_id
+            if (!empty($invoice->arrived_warehouse_id) && Warehouse::where('id', $invoice->arrived_warehouse_id)->exists()) {
                 $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
             }
             $parcel = Parcel::create($validatedData);
@@ -683,19 +686,16 @@ class InvoiceController extends Controller
             $invoice->update(['parcel_id' => $parcel->id]);
         } else {
             $parcel = Parcel::find($invoice->parcel_id);
-
-            if($parcel->arrived_warehouse_id){
-                $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
-                $invoice->save();
-            }
-
+            $validatedData['delivery_type'] = 'self';
             $parcel->update($validatedData);
         }
+        $qty = 0;
 
 
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
             if(!empty($item['supply_id'])){
+                $qty += $item['qty'] ?? 0;
                 if(!empty($item['inventory_id'])){
                     $cp = [
                                 'parcel_id' => $invoice->parcel_id,
@@ -737,6 +737,15 @@ class InvoiceController extends Controller
             }
         }
 
+        if($parcel->arrived_warehouse_id){
+            $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
+        }
+
+        $invoice->total_qty = $qty;
+        $invoice->save();
+
+
+
         // Create parcel history (if parcel was created or exists)
         if ($parcel) {
             ParcelHistory::create([
@@ -745,6 +754,7 @@ class InvoiceController extends Controller
                 'customer_id' => $invoice->customer_id ?? optional($invoice->deliveryAddress)->user_id,
                 'warehouse_id' => $invoice->warehouse_id,
                 'status' => $status,
+                'parcel_status' => 4,
                 'description' => $parcel
             ]);
         }

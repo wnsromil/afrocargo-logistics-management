@@ -16,6 +16,8 @@
                         <th>Container</th>
                         <th>User</th>
                         <th>Warehouse </th>
+                        <th>Deleted By</th>
+                        <th>Deleted At</th>
                         {{-- <th>Items</th> --}}
                         <th>Action</th>
                     </tr>
@@ -59,6 +61,8 @@
                         <td>{{ $invoice->container->unique_id ?? '-' }}</td>
                         <td>{{ $invoice->user->fullName ?? '-' }}</td>
                         <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
+                        <td>{{ $invoice->deletedByUser->fullName ?? '-' }}</td>
+                        <td>{{ $invoice->deleted_at->format('d/m/Y H:i') ?? '-' }}</td>
 
                         <td>
 
@@ -68,10 +72,10 @@
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul>
                                         <li>
-                                            <a class="dropdown-item" data-bs-placement="bottom"
-                                                title="Individual Payment" data-bs-toggle="modal"
-                                                data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
-                                                <i class="ti ti-cash me-2"></i>Payment</a>
+                                            <a class="dropdown-item" title="Restore Invoice"
+                                                href="{{route('admin.invoice.restore',$invoice->id)}}">
+                                                <i class="fas fa-undo me-2"></i>Restore Invoice
+                                            </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" title="Invoice PDF" target="_blank"
@@ -79,38 +83,11 @@
                                                 <i class="ti ti-file-invoice"></i>Invoice PDF</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" data-bs-placement="bottom"
-                                                title="Send Invoice pdf" data-bs-toggle="modal"
-                                                data-bs-target="#sendinvoicepdf{{$invoice->id ?? ''}}">
-                                                <i class="ti ti-mail me-2"></i>Send Email</a>
-
-                                        </li>
-                                        <li>
-
-                                            <a class="dropdown-item" title="Labels"
-                                                    href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
-                                                    target="_blank">
-                                                    <i class="ti ti-tag-starred me-2"></i>Labels</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" title="Labels"
-                                                href="javascript:void(0)"
-                                                {{--onclick="alertMsg('Please generate labels. No labels have been generated for this invoice yet.', 'error')"--}}
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#createLabel{{ $invoice->id }}">
-                                                <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
-
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" title="Edit Invoice"
-                                                href="{{route('admin.invoices.edit',$invoice->id)}}"><i
-                                                    class="far fa-edit me-2"></i>Edit Invoice</a>
-                                        </li>
-                                        <li>
                                             <a class="dropdown-item" title="Delete Invoice"
                                                 href="javascript:void(0)"
-                                                onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
-                                                    class="ti ti-trash me-2"></i>Delete Invoice</a>
+                                                onclick="deleteRaw('{{route('admin.invoice.delete',$invoice->id)}}')">
+                                                <i class="ti ti-trash me-2"></i>Delete Invoice
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>

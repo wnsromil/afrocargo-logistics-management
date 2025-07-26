@@ -2,6 +2,7 @@
 include('timeSlot.php');
 include('BarcodeHelper.php');
 use App\Helpers\SettingsHelper;
+use App\Models\Country;
 
 
 function isActive($urls, $class = 'active',$default='')
@@ -113,5 +114,15 @@ function getStepArray($input,$steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 50
     }
 
     return $result;
+}
+
+function getPhoneLengthById($id)
+{
+    if (!$id) {
+        return 10;
+    }
+
+    $country = Country::find($id);
+    return $country ? $country->phone_length : 10;
 }
 

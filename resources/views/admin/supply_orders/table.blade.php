@@ -73,8 +73,8 @@
                                     'Unpaid' => 'unpaid_status',
                                     'Paid' => 'status',
                                     'Completed' => 'partial_status',
-                                    default => 'unpaid_status',
-                                };
+                                    default => 'unknown_status',
+                                }
                             @endphp
                             <td>
                                 <label class="labelstatusy" for="{{ $forValue }}">
@@ -103,6 +103,10 @@
                                     "15" => 'badge-abandoned',
                                     "21" => 'badge-picked-up',
                                     "22" => 'badge-in-transit',
+                                    "35" => 'badge-pickup',
+                                    "36" => 'badge-ready-pickup',
+                                    "37" => 'badge-re-delivery',
+                                    "38" => 'badge-delivered',
                                     default => 'badge-pending',
                                 };
                             @endphp
@@ -123,7 +127,7 @@
 
                                         <span class="user-content"
                                             style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                   height: 26px;align-content: center;">
+                                                                                                                                                                height: 26px;align-content: center;">
                                             <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                         </span>
                                     </a>
@@ -131,15 +135,52 @@
                                         <div class="profilemenu">
                                             <div class="subscription-menu">
                                                 <ul>
+                                                    @php
+                                                        $statusSteps = [
+                                                            1 => 'Pending',
+                                                            35 => 'Order Received',
+                                                            36 => 'In Process',
+                                                            37 => 'Ready to Pick Up',
+                                                            38 => 'Picked Up'
+                                                        ];
+                                                        $cont = false;
+                                                    @endphp
+                                                    @if ($parcel->delivery_type == 'self')
+                                                        @foreach ($statusSteps as $key => $label)
+                                                            @if ($key > $parcel->status || $key == 38)
+                                                                <!-- Trigger Button -->
+                                                                {{-- @if($cont)
+                                                                 @continue
+                                                                @endif --}}
+                                                                <li>
+                                                                    <a class="dropdown-item"
+                                                                    @if($parcel->status != 38)
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#updateStatusModal"
+                                                                    @endif
+                                                                        data-parcel_id="{{ $parcel->id }}"
+                                                                        data-status="{{ $key }}"
+                                                                        data-status_label="{{ $label }}"
+                                                                    >
+                                                                        {{ $label ?? '' }}
+                                                                    </a>
+                                                                </li>
+                                                                {{-- @php
+                                                                    $cont = true;
+                                                                @endphp --}}
+                                                            @endif
+                                                        @endforeach
+                                                    @else
 
                                                     <li>
                                                         <a class="dropdown-item {{ $parcel->status == 1 ? '' : 'disabled-link-supply' }}"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#delivery_with_driver"
-                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
-                                                                    Assign delivery with driver
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#delivery_with_driver"
+                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                            Assign delivery with driver
                                                         </a>
                                                     </li>
+                                                    @endif
                                                 </ul>
                                             </div>
 
@@ -184,4 +225,5 @@
         </div>
     </div>
 </div>
+
 <input type="hidden" id="parcel_id_input_hidden" name="parcel_id_hidden" class="form-control" readonly>
