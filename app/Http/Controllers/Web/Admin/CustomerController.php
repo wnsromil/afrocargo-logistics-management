@@ -39,7 +39,7 @@ class CustomerController extends Controller
             ->get();
 
         // Set role_id based on ShipTosearch
-        $roleId = $shipTosearch ? 5 : 3;
+        $roleId = 3;
 
         $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
             ->when($this->user->role_id != 1, function ($q) {
@@ -59,7 +59,70 @@ class CustomerController extends Controller
                             ->orWhere('status', 'LIKE', "%$search%")
                             ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
                     }
+                });
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'ShipTosearch' => $shipTosearch,
+                'per_page' => $perPage,
+                'type' => $type,
+            ]);
 
+        $serialStart = ($currentPage - 1) * $perPage;
+
+        if ($request->ajax()) {
+            return view('admin.customer.table', compact('customers', 'serialStart', 'warehouses'))->render();
+        }
+
+        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
+    }
+
+    public function ShipTo_index(Request $request)
+    {
+        $search = $request->input('search');
+        $shipTosearch = $request->input('ShipTosearch');
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
+        $warehouse_id = $request->input('warehouse_id');
+        $customer_id = $request->input('customer_id');
+
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
+        $CustomerLists = User::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->select('id', 'name', 'last_name')
+            ->get();
+
+        // Set role_id based on ShipTosearch
+        $roleId = 5;
+
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($customer_id, function ($q) use ($customer_id) {
+                return $q->where(function ($query) use ($customer_id) {
+                    $query->where('invoice_custmore_id', $customer_id)
+                        ->orWhere('parent_customer_id', $customer_id);
+                });
+            })
+            ->where('is_deleted', 'No')
+            ->where('role_id', $roleId)
+            ->when($search || $shipTosearch, function ($q) use ($search, $shipTosearch) {
+                $q->where(function ($query) use ($search, $shipTosearch) {
                     if ($shipTosearch) {
                         $query->orWhere('name', 'LIKE', "%$shipTosearch%")
                             ->orWhere('unique_id', 'LIKE', "%$shipTosearch%")
@@ -86,21 +149,12 @@ class CustomerController extends Controller
 
         $serialStart = ($currentPage - 1) * $perPage;
 
-        if ($shipTosearch) {
-            if ($request->ajax()) {
-                return view('admin.customer.shipto.shiptotable', compact('customers', 'serialStart', 'warehouses'))->render();
-            } else {
-                return view('admin.customer.shipto.shiptoindextable', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
-            }
-        }
-
         if ($request->ajax()) {
-            return view('admin.customer.table', compact('customers', 'serialStart', 'warehouses'))->render();
+            return view('admin.customer.shipto.shiptotable', compact('CustomerLists','customers', 'serialStart', 'warehouses'))->render();
         }
 
-        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
+        return view('admin.customer.shipto.shiptoindextable', compact('CustomerLists','customers', 'search', 'perPage', 'serialStart', 'warehouses'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -126,6 +180,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -136,9 +193,9 @@ class CustomerController extends Controller
                 'unique:users,email'
             ],
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength",
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -248,7 +305,9 @@ class CustomerController extends Controller
                     : null,
                 'city_id' => $validated['city'] ?? null,
                 'country_id' => $validated['country'] ?? null,
-                'full_name' => $validated['first_name'],
+                'full_name' => $validated['first_name'] . ' ' . $validated['last_name'] ?? null,
+                'last_name' => $validated['last_name'] ?? null,
+                'name' => $validated['first_name'] ?? null,
                 'pincode' => $validated['Zip_code'] ?? null,
                 'state_id' => $validated['state'] ?? null,
                 'warehouse_id' => $request->warehouse_id ?? null,
@@ -402,6 +461,8 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -413,9 +474,9 @@ class CustomerController extends Controller
                 'unique:users,email,' . $id,
             ],
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => 'nullable|digits:' . $altPhoneLength,
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -547,7 +608,9 @@ class CustomerController extends Controller
                 : $user->phone_2_code_id_id,
             'city_id' => $validated['city'] ?? $user->city_id,
             'country_id' => $validated['country'] ?? $user->country_id,
-            'full_name' => $validated['first_name'] ?? $user->name,
+            'full_name' => $validated['first_name'] . ' ' . $validated['last_name'] ?? $user->full_name,
+            'last_name' => $validated['last_name'] ?? $user->last_name,
+            'name' => $validated['first_name'] ?? $user->name,
             'pincode' => $validated['Zip_code'] ?? $user->pincode,
             'state_id' => $validated['state'] ?? $user->state_id,
             'warehouse_id' => $request->warehouse_id ?? $user->warehouse_id,
@@ -622,15 +685,18 @@ class CustomerController extends Controller
 
     public function createShipTo(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
 
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'email' => [
                 'required',
                 'email',
@@ -641,10 +707,16 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
-            'last_name' => 'nullable|string|max:255',
             'zip_code' => 'nullable|string|max:10',
             'state_id' => 'nullable|integer',
             'city_id' => 'nullable|integer',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
         try {
 
@@ -737,15 +809,19 @@ class CustomerController extends Controller
 
     public function editeShipTo(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         // Validation
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone," . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2," . $id,
             'email' => [
                 'required',
                 'email',
@@ -756,6 +832,13 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
 
         try {
@@ -868,14 +951,17 @@ class CustomerController extends Controller
 
     public function createPickupAddress(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'address_1' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -883,6 +969,13 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
         try {
             $randomPassword = Str::random(8); // Random password of 8 characters
@@ -972,15 +1065,17 @@ class CustomerController extends Controller
 
     public function editPickupAddress(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // Validation
         $validated = $request->validate([
             'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => 'nullable|digits:' . $altPhoneLength . '|unique:users,phone,' . $id,
             'address_1' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -988,6 +1083,13 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
 
         try {
@@ -1144,9 +1246,9 @@ class CustomerController extends Controller
             'Zone' => $request->zone,
             'Driver_id' => $request->Driver_id, // update later if needed
             'Note' => $request->note,
-            'Box_quantity' => $request->Box_quantity,
-            'Barrel_quantity' => $request->Barrel_quantity,
-            'Tapes_quantity' => $request->Tapes_quantity,
+            'Box_quantity' => $request->Box_quantity ?? 0,
+            'Barrel_quantity' => $request->Barrel_quantity ?? 0,
+            'Tapes_quantity' => $request->Tapes_quantity ?? 0,
             'pickup_type' => $request->pickup_type,
             'pickup_status_type' => $request->pickup_status_type,
         ]);
@@ -1248,9 +1350,9 @@ class CustomerController extends Controller
                 'Zone' => $request->zone,
                 'Driver_id' => $request->Driver_id,
                 'Note' => $request->note,
-                'Box_quantity' => $request->Box_quantity,
-                'Barrel_quantity' => $request->Barrel_quantity,
-                'Tapes_quantity' => $request->Tapes_quantity,
+                'Box_quantity' => $request->Box_quantity ?? 0,
+                'Barrel_quantity' => $request->Barrel_quantity ?? 0,
+                'Tapes_quantity' => $request->Tapes_quantity ?? 0,
                 'pickup_type' => $request->pickup_type,
                 'pickup_status_type' => $request->pickup_status_type,
             ]);

@@ -8,6 +8,7 @@
                         <th>Notification ID</th>
                         <th>Title</th>
                         <th>Message</th>
+                        <th>Role</th>
                         <th>Notification For</th>
                         <th>Date/Time</th>
                         <th>Status</th>
@@ -20,8 +21,13 @@
                             <td>{{ $serialStart + $index + 1 }}</td>
                             <td>{{ $notification->unique_id ?? '-' }}</td>
                             <td>{{ $notification->title }}</td>
-                            <td>{{ $notification->message }}</td>
-                            <td>{{ $notification->notification_for }}</td>
+                            <td title="{{ $notification->message }}">
+                                {{ \Illuminate\Support\Str::limit($notification->message, 30) }}
+                            </td>
+                            <td>{{ $notification->role ?? "All" }}</td>
+                            <td>
+                                {{ $notification->notification_for ?? ($notification->user ? $notification->user->name . ' ' . ($notification->user->last_name ?? '') : '') }}
+                            </td>
                             <td>{{ \Carbon\Carbon::parse($notification->notification_datetime)->format('d-m-Y h:i A') }}
                             </td>
                             <td>

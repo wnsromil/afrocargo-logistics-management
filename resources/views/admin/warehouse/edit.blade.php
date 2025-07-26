@@ -118,6 +118,7 @@
                                                     @foreach ($coutry as $key => $item)
                                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                             data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                            data-length="{{ $item->phone_length ?? 10 }}"
                                                             {{ $item->id == old('mobile_number_code_id', $warehouse->phone_code_id) ? 'selected' : '' }}>
                                                             {{ $item->name }} +{{ $item->phonecode }}
                                                         </option>
@@ -127,7 +128,7 @@
                                             <input type="number" class="form-control flagInput inp"
                                                 placeholder="Enter Mobile No" name="mobile_number"
                                                 value="{{ old('mobile_number', $warehouse->phone) }}"
-                                                oninput="this.value = this.value.slice(0, 10)">
+                                                >
                         </div>
                         @error('mobile_number')
                             <small class="text-danger">{{ $message }}</small>
@@ -157,6 +158,11 @@
 
                     </div>
                 </div>
+
+        <input type="hidden" name="latitude" value="{{ old('latitude') }}" class="form-control inp inputbackground"
+            placeholder="0" readonly style="background: #ececec;">
+        <input type="hidden" name="longitude" value="{{ old('longitude') }}" class="form-control inp inputbackground"
+            placeholder="0" readonly style="background: #ececec;">
 
 
             </div>

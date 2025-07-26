@@ -365,7 +365,7 @@ class HubTrackingController extends Controller
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        $parcel = Parcel::where('id', $id)->first();
+        $parcel = Parcel::with('ParcelInventory')->where('id', $id)->first();
 
         $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
 
@@ -377,6 +377,8 @@ class HubTrackingController extends Controller
         $customers = $user->where('role_id', 3)->values();
 
         $drivers = $user->where('role_id', 4)->values();
+
+        //return  $parcel;
 
         return view('admin.hubs.orderdetails', compact('user', 'customers', 'drivers', 'parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel', 'invoice'));
     }

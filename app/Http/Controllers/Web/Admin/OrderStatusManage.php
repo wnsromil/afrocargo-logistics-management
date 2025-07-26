@@ -18,11 +18,16 @@ use App\Models\{
     ContainerHistory,
     ParcelPickupDriver,
     ParcelSignaturePickup,
-    ParcelInventorie
+    ParcelInventorie,
+    NotificationParcelMessage,
+    Notification
 };
 use \Carbon\Carbon;
 
 use function Laravel\Prompts\note;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image; // agar Intervention Image package use karte ho
 
 class OrderStatusManage extends Controller
 {
@@ -97,6 +102,31 @@ class OrderStatusManage extends Controller
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
         ]);
 
+        $DriverData = User::where('id', $request->driver_id)->first();
+        $notificationOrderAssigned = NotificationParcelMessage::find(4);
+        $deviceTokenOrderAssigned = $DriverData->firebase_token;
+        $titleOrderAssigned = $notificationOrderAssigned->title;
+        $formattedDate = Carbon::parse($parcel->pickup_date)->format('d-m-Y');
+        $bodyOrderAssigned = str_replace(
+            ['{order_id}', '{pickup_date}', '{pickup_time}'],
+            [$parcel->tracking_number, $formattedDate, $parcel->pickup_time],
+            $notificationOrderAssigned->message
+        );
+
+        if (!empty($deviceTokenOrderAssigned)) {
+            sendFirebaseNotification($deviceTokenOrderAssigned, $titleOrderAssigned, $bodyOrderAssigned, $DriverData->id, $parcel->id, 'Order Assigned');
+        }
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationDriverAssigned = NotificationParcelMessage::find(3);
+        $deviceTokenDriverAssigned = $CustomerData->firebase_token;
+        $titleDriverAssigned = $notificationDriverAssigned->title;
+        $bodyDriverAssigned = str_replace('{driver_name}', ($DriverData->name ?? '') . ' ' . ($DriverData->last_name ?? ''), $notificationDriverAssigned->message);
+
+        if (!empty($deviceTokenDriverAssigned)) {
+            sendFirebaseNotification($deviceTokenDriverAssigned, $titleDriverAssigned, $bodyDriverAssigned, $parcel->customer_id, $parcel->id, 'Driver Assigned');
+        }
+
         // Return success response
         return response()->json([
             'message' => 'Parcel and ParcelHistory updated successfully',
@@ -141,6 +171,17 @@ class OrderStatusManage extends Controller
             'warehouse_id' => $parcelHistory->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
         ]);
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $WarehouseData = Warehouse::where('id', $parcel->warehouse_id)->first();
+        $notificationWarehouseArrived = NotificationParcelMessage::find(6);
+        $deviceTokenWarehouseArrived = $CustomerData->firebase_token;
+        $titleDriverWarehouseArrived = $notificationWarehouseArrived->title;
+        $bodyDriverWarehouseArrived = str_replace('{warehouse_name}', ($WarehouseData->warehouse_name ?? ''), $notificationWarehouseArrived->message);
+
+        if (!empty($deviceTokenWarehouseArrived)) {
+            sendFirebaseNotification($deviceTokenWarehouseArrived, $titleDriverWarehouseArrived, $bodyDriverWarehouseArrived, $CustomerData->id, $parcel->id, 'Warehouse Arrived');
+        }
 
         // Return success response
         return response()->json([
@@ -270,7 +311,46 @@ class OrderStatusManage extends Controller
                 'warehouse_id' => $vehicle->warehouse_id,
                 'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
+
+            if ($parcel->status === 5) {
+                $CustomerData = User::where('id', $parcel->customer_id)->first();
+                $notificationInTransit = NotificationParcelMessage::find(7);
+                $deviceTokenInTransit = $CustomerData->firebase_token;
+                $titleDriverInTransit = $notificationInTransit->title;
+                $bodyDriverInTransit = $notificationInTransit->message;
+
+                if (!empty($deviceTokenInTransit)) {
+                    sendFirebaseNotification($deviceTokenInTransit, $titleDriverInTransit, $bodyDriverInTransit, $CustomerData->id, $parcel->id, 'In transit');
+                }
+            }
         }
+
+        // Fetch notification template safely
+        $WarehousenotificationInTransit = NotificationParcelMessage::find(32);
+
+        if ($WarehousenotificationInTransit && $vehicle) {
+            $title = str_replace('{container_id}', $Vehicle->container_no_1 ?? '', $WarehousenotificationInTransit->title);
+            $message = str_replace('{container_id}', $Vehicle->container_no_1 ?? '', $WarehousenotificationInTransit->message);
+
+            Notification::create([
+                'user_id' => null,
+                'warehouse_id' => $request->to_warehouse_id,
+                'title' => $title,
+                'message' => $message,
+                'notification_for' => 'All Warehouse Managers',
+                'role' => 'Warehouse Manager',
+                'type' => 'In transit',
+            ]);
+
+            $users = User::where('role_id', 2)
+                ->where('warehouse_id', $request->to_warehouse_id)
+                ->get();
+
+            foreach ($users as $user) {
+                User::where('id', $user->id)->increment('notification_read', 1);
+            }
+        }
+
 
         return response()->json(['message' => 'Transfer to hub completed successfully.']);
     }
@@ -313,6 +393,18 @@ class OrderStatusManage extends Controller
                 'warehouse_id' => $vehicle->warehouse_id,
                 'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
+
+            if ($parcel->status === 8) {
+                $CustomerData = User::where('id', $parcel->customer_id)->first();
+                $notificationFinalDestination = NotificationParcelMessage::find(10);
+                $deviceTokenFinalDestination = $CustomerData->firebase_token;
+                $titleDriverFinalDestination = $notificationFinalDestination->title;
+                $bodyDriverFinalDestination = str_replace('{container_number}', ($Vehicle->container_no_1 ?? ''), $notificationFinalDestination->message);
+
+                if (!empty($deviceTokenFinalDestination)) {
+                    sendFirebaseNotification($deviceTokenFinalDestination, $titleDriverFinalDestination, $bodyDriverFinalDestination, $CustomerData->id, $parcel->id, 'Arrived at final destination warehouse');
+                }
+            }
         }
 
         // Step 6a: Update only latest Transfer record
@@ -388,12 +480,21 @@ class OrderStatusManage extends Controller
                     'warehouse_id' => $Vehicle->warehouse_id,
                     'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
                 ];
+
+                if ($parcel->status == 16) {
+                    $CustomerData = User::where('id', $parcel->customer_id)->first();
+                    $notificationContainerFullLoad = NotificationParcelMessage::find(16);
+                    $deviceTokenContainerFullLoad = $CustomerData->firebase_token;
+                    $titleDriverContainerFullLoad = $notificationContainerFullLoad->title;
+                    $bodyDriverContainerFullLoad = $notificationContainerFullLoad->message;
+
+                    if (!empty($deviceTokenContainerFullLoad)) {
+                        sendFirebaseNotification($deviceTokenContainerFullLoad, $titleDriverContainerFullLoad, $bodyDriverContainerFullLoad, $CustomerData->id, $parcel->id, 'Ready to transfer');
+                    }
+                }
             }
             ParcelHistory::insert($q);
         }
-
-
-
         // Return success response
         return response()->json([
             'message' => 'Container status updated successfully',
@@ -443,14 +544,54 @@ class OrderStatusManage extends Controller
                 Parcel::where('container_history_id', $history->id)
                     ->update(['status' => 24]);
             }
+
+            $parcels = Parcel::where('container_history_id', $TransfercontainerHistory->id)->get();
+            foreach ($parcels as $parcel) {
+                if ($parcel->status === 24) {
+                    $CustomerData = User::where('id', $parcel->customer_id)->first();
+                    $notificationInTransit = NotificationParcelMessage::find(id: 23);
+                    $deviceTokenInTransit = $CustomerData->firebase_token;
+                    $titleDriverInTransit = $notificationInTransit->title;
+                    $bodyDriverInTransit = $notificationInTransit->message;
+
+                    if (!empty($deviceTokenInTransit)) {
+                        sendFirebaseNotification($deviceTokenInTransit, $titleDriverInTransit, $bodyDriverInTransit, $CustomerData->id, $parcel->id, 'Custom hold');
+                    }
+                }
+            }
         }
+
+        $WarehousenotificationInTransit = NotificationParcelMessage::find(33);
+
+        if ($WarehousenotificationInTransit && $Vehicle) {
+            $title = str_replace('{container_id}', $Vehicle->container_no_1 ?? '', $WarehousenotificationInTransit->title);
+            $message = str_replace('{container_id}', $Vehicle->container_no_1 ?? '', $WarehousenotificationInTransit->message);
+
+            Notification::create([
+                'user_id' => null,
+                'warehouse_id' => $arrivedWarehouseId,
+                'title' => $title,
+                'message' => $message,
+                'notification_for' => 'All Warehouse Managers',
+                'role' => 'Warehouse Manager',
+                'type' => 'Custom Hold',
+            ]);
+
+            $users = User::where('role_id', 2)
+                ->where('warehouse_id', $arrivedWarehouseId)
+                ->get();
+
+            foreach ($users as $user) {
+                User::where('id', $user->id)->increment('notification_read', 1);
+            }
+        }
+
 
         return response()->json([
             'message' => 'Container and related data marked as Custom Hold successfully.',
             'parcel' => $Vehicle,
         ]);
     }
-
 
     public function statusUpdate_customcleared(Request $request)
     {
@@ -489,6 +630,46 @@ class OrderStatusManage extends Controller
                 Parcel::where('container_history_id', $history->id)
                     ->update(['status' => 33]);
             }
+
+            $parcels = Parcel::where('container_history_id', $TransfercontainerHistory->id)->get();
+            foreach ($parcels as $parcel) {
+                if ($parcel->status === 33) {
+                    $CustomerData = User::where('id', $parcel->customer_id)->first();
+                    $notificationInTransit = NotificationParcelMessage::find(id: 30);
+                    $deviceTokenInTransit = $CustomerData->firebase_token;
+                    $titleDriverInTransit = $notificationInTransit->title;
+                    $bodyDriverInTransit = $notificationInTransit->message;
+
+                    if (!empty($deviceTokenInTransit)) {
+                        sendFirebaseNotification($deviceTokenInTransit, $titleDriverInTransit, $bodyDriverInTransit, $CustomerData->id, $parcel->id, 'Custom cleared');
+                    }
+                }
+            }
+
+            $WarehousenotificationInTransit = NotificationParcelMessage::find(34);
+
+            if ($WarehousenotificationInTransit && $Vehicle) {
+                $title = str_replace('{container_id}', $Vehicle->container_no_1 ?? '', $WarehousenotificationInTransit->title);
+                $message = str_replace('{container_id}', $Vehicle->container_no_1 ?? '', $WarehousenotificationInTransit->message);
+
+                Notification::create([
+                    'user_id' => null,
+                    'warehouse_id' => $arrivedWarehouseId,
+                    'title' => $title,
+                    'message' => $message,
+                    'notification_for' => 'All Warehouse Managers',
+                    'role' => 'Warehouse Manager',
+                    'type' => 'Custom Cleared',
+                ]);
+
+                $users = User::where('role_id', 2)
+                    ->where('warehouse_id', $arrivedWarehouseId)
+                    ->get();
+
+                foreach ($users as $user) {
+                    User::where('id', $user->id)->increment('notification_read', 1);
+                }
+            }
         }
 
         return response()->json([
@@ -496,7 +677,6 @@ class OrderStatusManage extends Controller
             'parcel' => $Vehicle,
         ]);
     }
-
 
     public function statusUpdate_fullydischargecontainer(Request $request)
     {
@@ -540,6 +720,18 @@ class OrderStatusManage extends Controller
                 ParcelInventorie::where('parcel_id', $parcel->id)
                     ->where('container_id', $parcel->container_id)
                     ->update(['status' => 21]);
+
+                if ($parcel->status == 21) {
+                    $CustomerData = User::where('id', $parcel->customer_id)->first();
+                    $notificationReadyForSelfPickup = NotificationParcelMessage::find(21);
+                    $deviceTokenReadyForSelfPickup = $CustomerData->firebase_token;
+                    $titleReadyForSelfPickup = $notificationReadyForSelfPickup->title;
+                    $bodyReadyForSelfPickup = $notificationReadyForSelfPickup->message;
+
+                    if (!empty($deviceTokenReadyForSelfPickup)) {
+                        sendFirebaseNotification($deviceTokenReadyForSelfPickup, $titleReadyForSelfPickup, $bodyReadyForSelfPickup, $CustomerData->id, $parcel->id, 'Ready for self pick up');
+                    }
+                }
             } else {
                 $parcel->update(['status' => 9]);
                 $parcel_status_id = 9;
@@ -561,6 +753,18 @@ class OrderStatusManage extends Controller
                 'warehouse_id' => $Vehicle->warehouse_id,
                 'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
             ]);
+
+            if ($parcel->status == 9) {
+                $CustomerData = User::where('id', $parcel->customer_id)->first();
+                $notificationReadyForSelfPickup = NotificationParcelMessage::find(11);
+                $deviceTokenReadyForSelfPickup = $CustomerData->firebase_token;
+                $titleReadyForSelfPickup = $notificationReadyForSelfPickup->title;
+                $bodyReadyForSelfPickup = $notificationReadyForSelfPickup->message;
+
+                if (!empty($deviceTokenReadyForSelfPickup)) {
+                    sendFirebaseNotification($deviceTokenReadyForSelfPickup, $titleReadyForSelfPickup, $bodyReadyForSelfPickup, $CustomerData->id, $parcel->id, 'Final destination pick up');
+                }
+            }
         }
 
 
@@ -644,6 +848,37 @@ class OrderStatusManage extends Controller
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
         ]);
 
+        $DriverData = User::where('id', $request->driver_id)->first();
+        $notificationOrderAssigned = NotificationParcelMessage::find(31);
+        $deviceTokenOrderAssigned = $DriverData->firebase_token;
+        $titleOrderAssigned = $notificationOrderAssigned->title;
+        $bodyOrderAssigned = str_replace(
+            '{order_id}',
+            $parcel->tracking_number,
+            $notificationOrderAssigned->message
+        );
+
+        if (!empty($deviceTokenOrderAssigned)) {
+            sendFirebaseNotification($deviceTokenOrderAssigned, $titleOrderAssigned, $bodyOrderAssigned, $DriverData->id, $parcel->id, 'Order Assigned for Delivery');
+        }
+
+        $notificationID = 0;
+        if ($parcel->parcel_type == "Service") {
+            $notificationID = 20;
+        } else {
+            $notificationID = 3;
+        }
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationDriverAssigned = NotificationParcelMessage::find($notificationID);
+        $deviceTokenDriverAssigned = $CustomerData->firebase_token;
+        $titleDriverAssigned = $notificationDriverAssigned->title;
+        $bodyDriverAssigned = str_replace('{driver_name}', ($DriverData->name ?? '') . ' ' . ($DriverData->last_name ?? ''), $notificationDriverAssigned->message);
+
+        if (!empty($deviceTokenDriverAssigned)) {
+            sendFirebaseNotification($deviceTokenDriverAssigned, $titleDriverAssigned, $bodyDriverAssigned, $parcel->customer_id, $parcel->id, 'Final destination Assigned');
+        }
+
         // Return success response
         return response()->json([
             'message' => 'Parcel and ParcelHistory updated successfully',
@@ -653,29 +888,32 @@ class OrderStatusManage extends Controller
 
     public function statusUpdate_SignatureSelfDelivery(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'parcel_id' => 'required|exists:parcels,id',
             'notes' => 'nullable|string',
             'img' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'signature' => 'nullable', // base64 drawn signature
             'amount' => 'nullable|numeric',
             'currency_name' => 'nullable|string',
             'created_user_id' => 'required|exists:users,id',
-            //'warehouse_id' => 'required|exists:warehouses,id',
+            'parcel_items' => 'nullable|string', // aapko json string milega, usko decode karenge
         ]);
 
-        // Default image path
         $imgPath = null;
 
-        // Handle image upload if present
         if ($request->hasFile('img')) {
             $file = $request->file('img');
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads/pickup_self', $filename, 'public');
             $imgPath = 'storage/' . $filePath;
+        } elseif ($request->hasFile('signature')) {
+            $file = $request->file('signature');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/pickup_self', $filename, 'public');
+            $imgPath = 'storage/' . $filePath;
         }
 
-        // Save data to ParcelSignaturePickup
+        // Save to ParcelSignaturePickup
         ParcelSignaturePickup::create([
             'parcel_id' => $request->parcel_id,
             'notes' => $request->notes,
@@ -685,14 +923,22 @@ class OrderStatusManage extends Controller
             'customer_id' => Parcel::findOrFail($request->parcel_id)->customer_id,
         ]);
 
+        // Parcel status update
         $parcel = Parcel::findOrFail($request->parcel_id);
+        $parcel->update(['status' => 11]);
 
-        // Update the parcel status
-        $parcel->update([
-            'status' => 11,
-        ]);
+        // Update ParcelInventorie status for each parcel_item id
+        if ($request->parcel_items) {
+            // parcel_items string aapke example me JSON string hai
+            $parcelItems = json_decode($request->parcel_items, true); // ['7','8'] etc.
 
-        // Create a new entry in ParcelHistory
+            if (is_array($parcelItems)) {
+                ParcelInventorie::whereIn('id', $parcelItems)
+                    ->update(['status' => 11]);
+            }
+        }
+
+        // Parcel history
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
             'created_user_id' => $request->created_user_id,

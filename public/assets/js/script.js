@@ -1824,6 +1824,41 @@ Version      : 1.0
     //     });
     // }
 
+    document.querySelectorAll(".flaginputwrap").forEach(function (wrapper) {
+        const select = wrapper.querySelector(".flag-select");
+        const input = wrapper.querySelector(".flagInput");
+
+        function getMaxLen() {
+            const selectedOption = select.querySelector("option:checked");
+            return parseInt(selectedOption?.dataset.length || 10);
+        }
+
+        // ✅ Trim input live on each input
+        input.addEventListener("input", function () {
+            const maxLen = getMaxLen();
+            if (this.value.length > maxLen) {
+                this.value = this.value.slice(0, maxLen);
+            }
+        });
+
+        // ✅ On country select change
+        $(select).on("change", function () {
+            const maxLen = getMaxLen();
+
+            // Set maxlength attribute
+            input.setAttribute("maxlength", maxLen);
+
+            // Trim current value if it's too long
+            if (input.value.length > maxLen) {
+                input.value = input.value.slice(0, maxLen);
+            }
+        });
+
+        // ✅ On page load (in case already selected)
+        const initialLen = getMaxLen();
+        input.setAttribute("maxlength", initialLen);
+    });
+
     function updateCodeWithCountryPrefix(countryName) {
         if (!countryName) return;
 

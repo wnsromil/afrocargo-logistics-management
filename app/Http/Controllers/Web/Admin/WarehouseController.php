@@ -77,6 +77,8 @@ class WarehouseController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+
         // Validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required|string|max:255',
@@ -86,7 +88,7 @@ class WarehouseController extends Controller
             'state' => 'required|string',
             'city' => 'nullable|string',
             'Zip_code' => 'nullable|string|max:20',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:warehouses,phone",
             'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'in:Active,Inactive',
         ]);
@@ -158,6 +160,7 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
         // Custom validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'string|max:255',
@@ -167,7 +170,7 @@ class WarehouseController extends Controller
             'state' => 'required|string',
             'city' => 'nullable|string',
             'Zip_code' => 'nullable|string|max:20',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:warehouses,phone,' . $id,
             'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'nullable|in:Active,Inactive',  // Nullable kiya
         ]);
@@ -198,6 +201,8 @@ class WarehouseController extends Controller
             'phone_code_id'  => $request->mobile_number_code_id,
             'country_code' => +0,
             'status' => $request->status ?? 'Active', // Default 'Inactive' agar request me na ho
+            'lat' => $request->latitude,
+            'long' => $request->longitude,
         ]);
 
         // Redirect to the warehouse index page with a success message

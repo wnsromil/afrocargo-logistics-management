@@ -35,62 +35,60 @@
                                 <tr>
                                     <td> {{ $serialStart + $index + 1 }}</td>
                                     <td>{{ $parcel->tracking_number ?? "-"}}</td>
-                                       <td>
+                                    <td>
+                                    <div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="td"><i
+                                                        class="me-2 ti ti-user"></i>{{$parcel->pickupaddress->full_name ?? "--"}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i
+                                                        class="me-2 ti ti-phone"></i>{{$parcel->pickupaddress->mobile_number ?? "--"}}
+                                                    <br> {{$parcel->pickupaddress->alternative_mobile_number ?? "--"}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="td"><i class="me-2 ti ti-map-pin"></i>
+                                                    <p>{{$parcel->pickupaddress->address ?? "--"}}<br>
+                                                        {{$parcel->pickupaddress->pincode ?? "--"}} <br>
+                                                        {{$parcel->pickupaddress->city->name ?? "--"}}
+                                                        {{$parcel->pickupaddress->state->name ?? "--"}}
+                                                        {{$parcel->pickupaddress->country->name ?? "--"}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </td>
+                                    <td>
                                         <div>
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="td"><i
-                                                            class="me-2 ti ti-user"></i>{{$parcel->pickupaddress->full_name ?? "--"}}
+                                                            class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="td"><i
-                                                            class="me-2 ti ti-phone"></i>{{$parcel->pickupaddress->mobile_number ?? "--"}}
-                                                        <br> {{$parcel->pickupaddress->alternative_mobile_number ?? "--"}}
+                                                            class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
+                                                        <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                        <p>{{$parcel->pickupaddress->address ?? "--"}}<br>
-                                                            {{$parcel->pickupaddress->pincode ?? "--"}} <br>
-                                                            {{$parcel->pickupaddress->city->name ?? "--"}}
-                                                            {{$parcel->pickupaddress->state->name ?? "--"}}
-                                                            {{$parcel->pickupaddress->country->name ?? "--"}}
+                                                        <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
+                                                            {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
+                                                            {{$parcel->deliveryaddress->city->name ?? "--"}}
+                                                            {{$parcel->deliveryaddress->state->name ?? "--"}}
+                                                            {{$parcel->deliveryaddress->country->name ?? "--"}}
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <div class="col">
-                                                    <div class="row">
-                                                        <div class="td"><i
-                                                                class="me-2 ti ti-user"></i>{{$parcel->deliveryaddress->full_name ?? "--"}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="td"><i
-                                                                class="me-2 ti ti-phone"></i>{{$parcel->deliveryaddress->mobile_number ?? "--"}}
-                                                            <br> {{$parcel->deliveryaddress->alternative_mobile_number ?? "--"}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="td"><i class="me-2 ti ti-map-pin"></i>
-                                                            <p>{{$parcel->deliveryaddress->address ?? "--"}}<br>
-                                                                {{$parcel->deliveryaddress->pincode ?? "--"}} <br>
-                                                                {{$parcel->deliveryaddress->city->name ?? "--"}}
-                                                                {{$parcel->deliveryaddress->state->name ?? "--"}}
-                                                                {{$parcel->deliveryaddress->country->name ?? "--"}}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    <td>
-
+                                    </td>                         
                                     <td>
                                         <div>{{ ucfirst($parcel->transport_type) ?? '-' }}</div>
                                     </td>
@@ -269,7 +267,7 @@
                                                                 <a class="dropdown-item {{ $currentStatusId == 9 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
                                                                     href="javascript:void(0);">Ready for pick up</a>
                                                             </li>
-                                                            <li>
+                                                            {{-- <li>
                                                                 <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                                     class="dropdown-item {{ $currentStatusId == 21 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
                                                                     data-bs-toggle="modal" data-id="{{ $parcel->id }}"
@@ -277,7 +275,7 @@
                                                                     href="javascript:void(0);">
                                                                     Ready for self pick up
                                                                 </a>
-                                                            </li>
+                                                            </li> --}}
                                                             <li>
                                                                 <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                                     class="dropdown-item {{ $currentStatusId == 22 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"

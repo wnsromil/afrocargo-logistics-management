@@ -69,7 +69,7 @@
             <p class="pdata">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
             <p class="pdata">
                 @if (!empty($user->phone_2))
-                    +{{ $custuseromer->phone_2_code->phonecode ?? '' }} {{ $user->phone_2 }}
+                    +{{ $user->phone_2_code->phonecode ?? '' }} {{ $user->phone_2 }}
                 @else
                     -
                 @endif
