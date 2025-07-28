@@ -371,7 +371,30 @@ class RegisterController extends Controller
                 ]
             );
 
+            if ($user->role_id === 4) {
+                $time = Carbon::now()->format('h:i A');
+                // Reference HTML structure (with dynamic time injected)
+                $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                                <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">logout</label></p>
+                                <p class=\"col737 fs_18 fw_500\">Status — <label class=\"col00 mb-0\">Successful</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+            storeDriverLog($html, $user->id, 'logout');
+            }
+
             $user->token()->revoke();
+
+
 
             return $this->sendResponse([], 'User logged out successfully.');
         }

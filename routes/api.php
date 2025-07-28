@@ -39,7 +39,8 @@ use App\Http\Controllers\Api\{
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
     CBMCalculatoarController,
-    LadingDetailsController
+    LadingDetailsController,
+    AdvanceReportsController
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -68,6 +69,9 @@ Route::post('/vehicle/getAdminActiveContainer', [ContainerController::class, 'ge
 Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'getUsersByWarehouse']);
 Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
 Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']);
+
+Route::get('/admin/advance-orders/print-data', [AdvanceReportsController::class, 'printData']);
+
 
 
 //Order Status Manage Apis

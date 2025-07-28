@@ -162,6 +162,25 @@ class InvoiceController extends Controller
             User::where('role_id', 1)->increment('notification_read', 1);
         }
 
+        $time = Carbon::now()->format('h:i A');
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Invoice Deleted</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Invoice ID — <label class=\"col00 mb-0\">{$invoice->invoice_no}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, auth()->user()->id, 'Invoice Deleted');
+
         return response()->json([
             'status' => true,
             'message' => 'Invoice deleted successfully',

@@ -2,7 +2,9 @@ CREATE OR REPLACE VIEW advanced_order_reports AS
 SELECT
     order_with_invoices.*,
     users.name AS user_main_id,
-    users.name AS user_name,
+    users.username,
+    users.name,
+    users.last_name,
     users.email,
     users.role_id,
     users.role,
@@ -10,7 +12,7 @@ SELECT
     addresses.mobile_number,
     addresses.alternative_mobile_number,
     addresses.address_type,
-    addresses.full_name
+    addresses.full_name,
 FROM
     users
     LEFT JOIN addresses ON addresses.user_id = users.id

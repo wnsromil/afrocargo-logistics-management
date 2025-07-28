@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Container;
 use App\Models\Vehicle;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\ContainerHistory;
@@ -137,7 +138,7 @@ class ContainerController extends Controller
 
         return response()->json($response);
     }
-    
+
     public function updateContainerInDateTime(Request $request)
     {
         // Validate input
@@ -166,6 +167,7 @@ class ContainerController extends Controller
             'message' => 'Container date and time updated successfully.',
         ]);
     }
+
     public function updateContainerOutDateTime(Request $request)
     {
         // Validate input
@@ -248,5 +250,29 @@ class ContainerController extends Controller
             'message' => 'Container updated successfully.',
             'container' => $vehicle,
         ]);
+    }
+
+
+    public function getVehiclesByWarehouseAndCustomer($warehouse_id, $customer_id)
+    {
+        if ($customer_id === 'all') {
+            // Agar sabhi customers ke liye data chahiye
+            $vehicles = Vehicle::where('warehouse_id', $warehouse_id)->get();
+        } else {
+            // Specific customer ke liye
+            $user = User::find($customer_id);
+
+            if (!$user) {
+                return response()->json(['message' => 'Customer not found'], 404);
+            }
+
+            $container_id = $user->container_id;
+
+            $vehicles = Vehicle::where('id', $container_id)
+                ->where('warehouse_id', $warehouse_id)
+                ->get();
+        }
+
+        return response()->json($vehicles);
     }
 }

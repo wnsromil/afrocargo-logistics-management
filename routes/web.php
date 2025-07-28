@@ -302,6 +302,10 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('notification_schedule/DriverStore', [NotificationScheduleController::class, 'DriverStore'])->name('notification_schedule.DriverStore');
         Route::post('notification_schedule/CustomerStore', [NotificationScheduleController::class, 'CustomerStore'])->name('notification_schedule.CustomerStore');
 
+        //
+
+       Route::get('/admin/advance-reports/export', [AdvanceReportsController::class, 'exportReports'])->name('advance.reports.export');
+
 
         Route::get('/orderdetails', function () {
             return view('admin.OrderShipment.orderdetails');
