@@ -72,8 +72,8 @@
                                 @if(auth()->user()->role_id == 1)
                                  <option value="">Select Warehouse Country</option>
                                 @endif
-                                @foreach (setting()->ActiveWarehouseContries() as $key => $item)
-                                <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
+                                @foreach (setting()->ActiveWarehouseContries((auth()->user()->role_id != 1 ? [auth()->user()->warehouse_id]:false)) as $key => $item)
+                                <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id || $invoice->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
                                     {{ $item->warehouse_code ?? '' }}, {{ $item->warehouse_name ?? '' }}, {{ $item->name ?? '' }}</option>
                                 @endforeach
                             </select>
@@ -96,7 +96,7 @@
                                  <option value="">Select Warehouse Country</option>
                                 @endif
                                 @foreach (setting()->ActiveWarehouseContries() as $key => $item)
-                                <option {{ auth()->user()->role_id != 1 && auth()->user()->warehouse_id == $item->id ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
+                                <option {{ $invoice->arrived_warehouse_id  == $item->id  ? 'selected':'' }} value="{{ $item->iso2 ?? 'AF' }}" data-shipcounty="{{ $item ?? '' }}">
                                     {{ $item->warehouse_code ?? '' }}, {{ $item->warehouse_name ?? '' }}, {{ $item->name ?? '' }}</option>
                                 @endforeach
                             </select>
@@ -355,6 +355,7 @@
                                 <input type="hidden" name="address_id">
                                 <input type="hidden" name="user_id">
                                 <input type="hidden" name="invoice_custmore_type" value="ship_to">
+                                <input type="hidden" name="arrived_warehouse_id" value="{{ $invoice->arrived_warehouse_id ?? '' }}">
 
 
                                 <div class="col-md-6">
@@ -833,7 +834,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Select Supply</h5>
+                            <h5 class="modal-title">Select <span id="supplyModalTitle">Service</span></h5>
                         </div>
                         <div class="modal-body">
                             <select class="form-control select2" id="supplySelector">
@@ -917,7 +918,7 @@
         var deliveryAddress = @json($deliveryAddress);
         var currentRow = null;
         var maxPaymentAmountValue = '{{ $invoice->balance ?? 0 }}';
-        var invoce_type ='{{$invoice->invoce_type}}';
+        var invoce_type = "{{ $invoce_type ?? 'services' }}";
 
         window.onload = function () {
             // const urlParams = new URLSearchParams(window.location.search);

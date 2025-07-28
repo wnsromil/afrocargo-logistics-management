@@ -108,6 +108,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
     public function parent_customer()
     {
         return $this->belongsTo(User::class, 'parent_customer_id');

@@ -831,15 +831,6 @@ $("#auto_invoice_gen").on("click", function () {
     }
 });
 
-// Helper to parse supply data from option
-function getSupplyData(option) {
-    try {
-        return JSON.parse(option.getAttribute("data-supply"));
-    } catch (e) {
-        return {};
-    }
-}
-
 // total and grand total
 
 $(document).on("click", ".open-supply-modal", function () {
@@ -858,7 +849,7 @@ $(document).on("click", ".confirm-supply", function () {
     if (selectedItem && currentRow) {
         currentRow.find('input[name="supply_id"]').val(selectedItem.id);
         currentRow.find(".selected-supply-name").val(selectedItem.name);
-        currentRow.find('input[name="valume"]').val(selectedItem.valume ?? 0);
+        currentRow.find('input[name="valume"]').val(selectedItem.volume_total ?? 0);
 
         currentRow.find('input[name="qty"]').val(1);
         currentRow.find('input[name="label_qty"]').val(selectedItem.label_qty ?? '-');
@@ -874,14 +865,21 @@ $(document).on("click", ".confirm-supply", function () {
     }
 });
 
-$("#supplySelector").on("change", function () {
-    let selectedOption = this.options[this.selectedIndex];
-    let selectedItem = getSupplyData(selectedOption);
+$("#supplySelector").on("change", function (e) {
+    const selectedId = $("#supplySelector").val();
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
+
+    console.log('selectedItem',selectedItem);
 
     if (selectedItem) {
         $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
         $("#volume_price_display").text(selectedItem.volume_price ?? 0);
-        $("#price_display").text(selectedItem.price ?? 0);
+        $("#price_display").text(selectedItem.price ?? 1);
         $("#height_display").text(selectedItem.height ?? "N/A");
         $("#width_display").text(selectedItem.width ?? "N/A");
         $("#weight_display").text(selectedItem.weight ?? "N/A");
@@ -894,6 +892,7 @@ $("#supplySelector").on("change", function () {
         $("#weight_display").text("");
     }
 });
+
 
 // Open modal and set selected supply
 document
@@ -933,6 +932,30 @@ $("#supplyModal").on("shown.bs.modal", function () {
     let selector = document.getElementById("supplySelector");
     if (selector) {
         selector.dispatchEvent(new Event("change"));
+    }
+
+    const selectedId = $("#supplySelector").val();
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
+
+    if (selectedItem) {
+        $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
+        $("#volume_price_display").text(selectedItem.volume_price ?? 0);
+        $("#price_display").text(selectedItem.price ?? 1);
+        $("#height_display").text(selectedItem.height ?? "N/A");
+        $("#width_display").text(selectedItem.width ?? "N/A");
+        $("#weight_display").text(selectedItem.weight ?? "N/A");
+    } else {
+        $("#volume_total_display").text("");
+        $("#volume_price_display").text(0);
+        $("#price_display").text(0);
+        $("#height_display").text("");
+        $("#width_display").text("");
+        $("#weight_display").text("");
     }
 });
 

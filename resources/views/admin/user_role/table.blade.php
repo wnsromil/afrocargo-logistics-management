@@ -18,13 +18,13 @@
                             <td class="text-start">{{ $index + 1 }}</td>
                             <td>{{ $user->name ?? '' }} {{ $user->last_name ?? '' }}</td>
                             <td>
-                                @if($user->role == 'driver')
+                                @if($user->role_id == 4)
                                     Driver
-                                @elseif($user->role == 'customer')
+                                @elseif($user->role_id == 3)
                                     Customer
-                                @elseif($user->role == 'warehouse_manager')
+                                @elseif($user->role_id == 2)
                                     Warehouse Manager
-                                @elseif($user->role == 'ship_to_customer')
+                                @elseif($user->role == 'ship_to_customer' || $user->role_id == 5)
                                     Ship To Customer
                                 @else
                                     {{ $user->role ?? '' }}
