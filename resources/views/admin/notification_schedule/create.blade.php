@@ -333,10 +333,8 @@
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
                             <label for="Container_name" class="foncolor">Container</label>
-                            <select name="Container_name" class="form-control inp select2">
-                                <option value="" disabled hidden selected>Select Container </option>
-                                <option>CTN0000125 </option>
-                                <option>CTN0000225</option>
+                            <select name="customer_container_id" id="customer_containerSelect" class="form-control inp select2">
+                                <option value="" disabled hidden selected>Select Container</option>
                             </select>
                         </div>
                     </div>
@@ -769,6 +767,59 @@
                 });
             });
         </script>
+
+        <script>
+            function fetchContainersIfReady() {
+                const warehouseId = $('#warehouseCustomerSelect').val();
+                let customerId = $('#warehouseCustomer').val();
+
+                // Default value if customer not selected
+                if (!customerId || customerId === "") {
+                    customerId = "All Warehouse Customers";
+                }
+
+                // Run only if both values are selected
+                if (warehouseId) {
+                    $.ajax({
+                        url: '/api/get-customers-container',
+                        method: 'GET',
+                        data: {
+                            warehouse_id: warehouseId,
+                            customer_id: customerId
+                        },
+                        success: function (response) {
+                            // Clear and fill container dropdown
+                            $('#customer_containerSelect').empty().append(
+                                '<option value="" disabled hidden selected>Select Container</option>'
+                            );
+
+                            $.each(response, function (index, vehicle) {
+                                let label = vehicle.unique_id;
+                                if (vehicle.ship_to_country) {
+                                    label += ' ' + vehicle.ship_to_country;
+                                }
+                                $('#customer_containerSelect').append('<option value="' + vehicle.id + '">' + label + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert('Failed to load container data');
+                        }
+                    });
+                }
+            }
+
+            $('#warehouseCustomerSelect').on('change', function () {
+                fetchContainersIfReady();
+            });
+
+            $('#warehouseCustomer').on('change', function () {
+                fetchContainersIfReady();
+            });
+
+
+        </script>
+
+
 
     @endsection
 </x-app-layout>

@@ -142,14 +142,13 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Warehouse</th>
-                                <th>Hub</th>
                                 <th>Driver</th>
                                 <th>Order Date</th>
                                 <th>Order Status</th>
                                 <th>Amount</th>
                                 <th>Payment Mode</th>
                                 <th>Payment Status</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -157,16 +156,26 @@
                                 <tr>
                                     <td>{{ $advanceOrderResports->firstItem() + $index }}</td>
                                     <td>{{ $report->tracking_number ?? '-' }}</td>
-                                    <td>
-                                        {{ $report->full_name ?? '-' }}<br>
-                                        {{ $report->mobile_number ?? '-' }}
-                                    </td>
-                                    <td>
-                                        {{ $report->ship_full_name ?? '-' }}<br>
-                                        {{ $report->ship_mobile_number ?? '-' }}
-                                    </td>
-                                    <td>{{ $report->warehouse->warehouse_name ?? '-' }}</td>
-                                    <td>{{ $report->hub_name ?? '-' }}</td>
+                                 <td>
+                                    {{ $report->full_name ?? '-' }}<br>
+                                    {{ $report->mobile_number ?? '-' }}<br>
+                                    @if ($report->address)
+                                        <span title="{{ $report->address }}">{{ Str::limit($report->address, 30) }}</span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $report->ship_full_name ?? '-' }}<br>
+                                    {{ $report->ship_mobile_number ?? '-' }}<br>
+                                    @if ($report->ship_address)
+                                        <span title="{{ $report->ship_address }}">{{ Str::limit($report->ship_address, 30) }}</span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                    <td>{{ $report->warehouse->warehouse_name ?? '-' }}</td>                     
                                     <td>{{ $report->driver_name ?? '-' }}</td>
                                     <td>{{ $report->created_at ?? '-' }}</td>
                                     @php
@@ -220,7 +229,7 @@
                                             {{ $report->is_paid ? 'Paid' : 'Unpaid' }}
                                         </span>
                                     </td>
-                                    <td class="d-flex align-items-center">
+                                    {{-- <td class="d-flex align-items-center">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"
                                                 aria-expanded="false">
@@ -230,13 +239,13 @@
                                                 <ul>
                                                     <li>
                                                         <a class="dropdown-item"
-                                                            {{--href="{{ route('admin.orders.show', $report->id) }}" --}}>
+                                                            href="{{ route('admin.orders.show', $report->id) }}">
                                                             <i class="far fa-eye me-2"></i>View Details
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item"
-                                                            {{--href="{{ route('admin.orders.edit', $report->id) }}" --}}>
+                                                            href="{{ route('admin.orders.edit', $report->id) }}">
                                                             <i class="far fa-edit me-2"></i>Edit
                                                         </a>
                                                     </li>
@@ -251,7 +260,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @empty
                                 <tr>
@@ -346,8 +355,8 @@
                         <tr>
                             <td>${index + 1}</td>
                             <td>${report.tracking_number ?? '-'}</td>
-                            <td>${report.full_name ?? '-'}<br>${report.mobile_number ?? '-'}</td>
-                            <td>${report.ship_full_name ?? '-'}<br>${report.ship_mobile_number ?? '-'}</td>
+                            <td>${report.full_name ?? '-'}<br>${report.mobile_number ?? '-'}<br>${report.address ?? '-'}</td>
+                            <td>${report.ship_full_name ?? '-'}<br>${report.ship_mobile_number ?? '-'}<br>${report.ship_address ?? '-'}</td>
                             <td>${report.warehouse?.warehouse_name ?? '-'}</td>
                             <td>${report.hub_name ?? '-'}</td>
                             <td>${report.driver_name ?? '-'}</td>

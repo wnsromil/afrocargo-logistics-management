@@ -252,21 +252,21 @@ class ContainerController extends Controller
         ]);
     }
 
-
-    public function getVehiclesByWarehouseAndCustomer($warehouse_id, $customer_id)
+    public function getVehiclesByWarehouseAndCustomer(Request $request)
     {
-        if ($customer_id === 'all') {
-            // Agar sabhi customers ke liye data chahiye
+        $warehouse_id = $request->warehouse_id;
+        $customer_id = $request->customer_id;
+
+        if ($customer_id === 'All Warehouse Customers') {
             $vehicles = Vehicle::where('warehouse_id', $warehouse_id)->get();
         } else {
-            // Specific customer ke liye
             $user = User::find($customer_id);
 
             if (!$user) {
                 return response()->json(['message' => 'Customer not found'], 404);
             }
 
-            $container_id = $user->container_id;
+            $container_id = $user->vehicle_id;
 
             $vehicles = Vehicle::where('id', $container_id)
                 ->where('warehouse_id', $warehouse_id)

@@ -72,8 +72,6 @@ Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']
 
 Route::get('/admin/advance-orders/print-data', [AdvanceReportsController::class, 'printData']);
 
-
-
 //Order Status Manage Apis
 Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriversByParcelId']);
 Route::post('/fetch-transfer-to-hub-data', [OrderStatusManage::class, 'fetchTransferToHubData']);
@@ -106,6 +104,8 @@ Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 Route::post('/updateContainer', [ContainerController::class, 'updateContainer'])->name('updateContainer');
+Route::get('/get-customers-container', [ContainerController::class, 'getVehiclesByWarehouseAndCustomer']);
+
 
 //CBM
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');

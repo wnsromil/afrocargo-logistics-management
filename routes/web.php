@@ -38,7 +38,8 @@ use App\Http\Controllers\Web\Admin\{
     CustomReportController,
     VerifyLicenseController,
     SupplyInventoryController,
-    OrderStatusManage
+    OrderStatusManage,
+    EODController
 };
 use App\Mail\RegistorMail;
 
@@ -216,6 +217,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('autocall', AutoCallBatchController::class);
         Route::resource('bill_of_lading', BillofLadingController::class);
         Route::resource('lading_details', LadingDetailsController::class);
+        Route::resource('end_of_day', EODController::class);
+
+
         Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
 
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
@@ -304,7 +308,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         //
 
-       Route::get('/admin/advance-reports/export', [AdvanceReportsController::class, 'exportReports'])->name('advance.reports.export');
+        Route::get('/admin/advance-reports/export', [AdvanceReportsController::class, 'exportReports'])->name('advance.reports.export');
 
 
         Route::get('/orderdetails', function () {

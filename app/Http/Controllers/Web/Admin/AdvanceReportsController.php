@@ -14,7 +14,7 @@ use App\Models\{
     AdvancedOrderReport
 };
 use \Carbon\Carbon;
-use App\Exports\VehicleExport;
+use App\Exports\AdvanceOrderReportsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AdvanceReportsController extends Controller
@@ -175,7 +175,7 @@ class AdvanceReportsController extends Controller
         $advanceOrderReports = $query->orderBy('id', 'desc')->get();
 
         return Excel::download(
-            new VehicleExport($advanceOrderReports),
+            new AdvanceOrderReportsExport($advanceOrderReports),
             Carbon::now()->format('d-m-y') . '_Advance_reports.xlsx'
         );
     }

@@ -157,6 +157,14 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['advance_reports.view'],
             ],
+             [
+                'title' => 'End Of Day',
+                'icon' => '<i class="menuIcon ti ti-file-text"></i>',
+                'route' => 'admin.end_of_day.index',
+                'active' => 'end_of_day*',
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['end_of_day.view'],
+            ],
             [
                 'title' => 'Template Management',
                 'icon' => '<i class="menuIcon ti ti-template"></i>',
