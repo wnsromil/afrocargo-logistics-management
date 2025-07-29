@@ -191,9 +191,10 @@ aria-hidden="true">
                             </div>
                         </div>
 
-                        <div class="row align-items-center margin-top-top">
+                        <div class="row align-items-center margin-top-top d-none">
                             <div class="col text-end px-0">
-                                <label for="neighborhood" class="col-form-label text-dark">Neighborhood</label>
+                                <label for="neighborhood" class="col-form-label text-dark">Neighborhood<i
+                                        class="text-danger">*</i></label>
                             </div>
                             <div class="col-9 justify-content-end">
                                 <input type="text" name="neighborhood" class="form-control inp"

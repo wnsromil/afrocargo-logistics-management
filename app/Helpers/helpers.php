@@ -229,3 +229,24 @@ if (!function_exists('sendFirebaseNotificationSystem')) {
         }
     }
 }
+
+function numberFormat($value, $decimals = 2)
+{
+    // If not numeric, return "0.00" or equivalent based on decimal places
+    if (!is_numeric($value)) {
+        return number_format(0, $decimals > 0 ? $decimals : 2, '.', '');
+    }
+
+    // If 0 or float-like 0.0, return formatted 0.00
+    if (floatval($value) == 0) {
+        return number_format(0, $decimals > 0 ? $decimals : 2, '.', '');
+    }
+
+    // If decimals specified, format using number_format
+    if ($decimals > 0) {
+        return number_format((float)$value, $decimals, '.', '');
+    }
+
+    // Otherwise, return the number as-is
+    return (string)(floatval($value) + 0);
+}

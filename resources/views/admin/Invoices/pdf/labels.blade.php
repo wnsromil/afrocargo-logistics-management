@@ -108,7 +108,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2"
-                                    style="font-weight: bold; font-size: 30px; color: #000; text-align: center;">
+                                    style="font-weight: bold; font-size: 20px; color: #000; text-align: center;">
                                     {{ $invoice->invoice_no ?? '' }}
                                 </td>
                             </tr>
@@ -132,10 +132,10 @@
                             <tr>
                                 <td style="padding-top: 8px; padding-bottom: 8px; font-weight: 700; font-size: 13px;">
                                     {{ $invoice->created_at ? $invoice->created_at->format('m/d/Y') : '' }}</td>
-                                <td
+                                {{-- <td
                                     style="padding-top: 8px; padding-bottom: 8px; font-weight: 700; font-size: 13px; text-align: right; width: 80%;">
                                     {{$invoice->warehouse->name ?? ''}}
-                                    {{$invoice->warehouse->address ?? ''}} </td>
+                                    {{$invoice->warehouse->address ?? ''}} </td> --}}
                             </tr>
                         </tbody>
                     </table>
@@ -151,17 +151,16 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr></tr>
                             <tr>
-                                @if ($invoice->deliveryAddress)
                                 <td>
-                                    <b style="font-size: 13px;">Ship To:</b><br>
-                                    {{ $invoice->deliveryAddress->full_name ?? '' }} <br>
-                                    {{ $invoice->deliveryAddress->address ?? '' }}<br>
-                                    {{ $invoice->deliveryAddress->state_id ?? '' }} {{
-                                    $invoice->deliveryAddress->country_id ?? '' }} <br>
+                                    {{ $invoice->pickupAddress->full_name ?? '' }} <br>
+                                    {{ $invoice->pickupAddress->address ?? '' }}
+                                    {{-- <br>
+                                    {{ $invoice->pickupAddress->state_id ?? '' }}
+                                    {{ $invoice->pickupAddress->country_id ?? '' }} --}}
                                 </td>
-                                @endif
                                 <td style="width: 60%; text-align: right; font-size: 14px; font-weight: 700;">
                                     <!-- Tracking Items: {{count($invoice->barcodes??[])}} -->
                                     Tracking Items: {{$loop->iteration}} out of {{count($invoice->barcodes)}}
@@ -170,19 +169,24 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="height:0px;"></td>
+                                <td colspan="2" style="height: 0px;"></td>
                             </tr>
                             <tr></tr>
                             <tr>
+                                @if ($invoice->deliveryAddress)
                                 <td>
-                                    {{ $invoice->pickupAddress->full_name ?? '' }} <br>
-                                    {{ $invoice->pickupAddress->address ?? '' }}<br>
-                                    {{ $invoice->pickupAddress->state_id ?? '' }} {{ $invoice->pickupAddress->country_id
-                                    ?? '' }}
+                                    <b style="font-size: 13px;">Ship To:</b><br>
+                                    {{ $invoice->deliveryAddress->full_name ?? '' }} <br>
+                                    {{ $invoice->deliveryAddress->address ?? '' }}
+                                    {{-- <br>
+                                    {{ $invoice->deliveryAddress->state_id ?? '' }}
+                                    {{$invoice->deliveryAddress->country_id ?? '' }} --}}
                                 </td>
+                                @endif
+
                             </tr>
                             <tr>
-                                <td colspan="2" style="height: 0px;"></td>
+                                <td style="height:0px;"></td>
                             </tr>
                             {{-- <tr>
                                 <td style="text-align: left; font-weight: 500; font-size: 14px;">
@@ -227,7 +231,9 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <td style="border: 1px solid #000; text-align: center; vertical-align: middle; width: 100px; height: 60px; font-weight: 700; font-size: 52px;">D</td>
+                                            <td style="border: 1px solid #000; text-align: center; vertical-align: middle; width: 100px; height: 60px; font-weight: 700; font-size: 52px;">
+                                                {{$invoice->delivery_type =='self' ? 'P' : 'D'}}
+                                            </td>
                                         </tr>
                                         <!-- <tr>
                                             <td>

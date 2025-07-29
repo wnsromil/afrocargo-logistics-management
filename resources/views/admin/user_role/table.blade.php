@@ -48,7 +48,7 @@
                                 @endforeach
                             </td>
                             <td>
-                                {{ $user->created_at ? \Carbon\Carbon::parse($user->created_at)->format('d-m-Y') : '-' }}
+                                {{ $user->created_at ? carbon()->parse($user->created_at)->format('d-m-Y') : '-' }}
                             </td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action container justify-content-end">

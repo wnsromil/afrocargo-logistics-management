@@ -122,9 +122,34 @@
                 </table>
             </td>
         </tr>
-
+        {{-- <tr>
+            <td colspan="2" style="padding: 10px 20px; border-top: 3px solid #EFEFEF;">
+                <table width="100%">
+                    <tr>
+                        <td style="width: 40%; color: #3a3a3a;">Date & Time Printed:
+                            <b style="color: #000000;">
+                                {{ $invoice->created_at ? $invoice->created_at->format('M.d.Y') . ' ---' : '' }}
+                                <br>
+                                {{ $invoice->created_at ? $invoice->created_at->format('H:i:s') : '' }}
+                            </b>
+                        </td>
+                        <td style="width: 40%; color: #3a3a3a; font-size: 20px; text-align: center;">Inv
+                            No.: <b style="color: #000000;">{{$invoice->invoice_no ?? ''}}</b></td>
+                        <td style="width: 20%; color: #3a3a3a; font-size: 20px;">Cont: <b
+                                style="color: #000000;">{{$invoice->container && $invoice->container->unique_id ? $invoice->container->unique_id:'' }}</b></td>
+                    </tr>
+                </table>
+            </td>
+        </tr> --}}
 
         <tr>
+            {{-- <td style="width: 50%; padding: 10px 20px;">
+                <span style="font-size: 17px;">
+                    Invoice Date: <b>{{$invoice->created_at->format('d/m/Y') ?? ''}}</b><br>
+                    Pay Terms: <b>United States</b><br>
+                    Ship Via: <b>{{$invoice->created_at ?? ''}}</b>
+                </span>
+            </td> --}}
             <td style="width: 100%; padding: 10px 0px; text-align: left;" colspan="2">
                 <span style="font-size: 15px;">
                     User: <b>{{ $invoice->user->name ?? '' }} {{ $invoice->user->last_name ?? '' }}</b> |
@@ -152,6 +177,22 @@
                             country#: <b>{{ $invoice->deliveryAddress && $invoice->deliveryAddress->country_id ? $invoice->deliveryAddress->country_id : '' }}</b>
                         </td>
                     </tr>
+                    {{-- <tr>
+                        <td style="width: 50%; padding: 10px 20px;">
+                            <span style="font-size: 17px;">
+                                Invoice Date: <b>{{$invoice->created_at->format('d/m/Y') ?? ''}}</b><br>
+                                Pay Terms: <b>United States</b><br>
+                                Ship Via: <b>{{$invoice->created_at ?? ''}}</b>
+                            </span>
+                        </td>
+                        <td style="width: 50%; padding: 10px 20px;" colspan="2">
+                            <span style="font-size: 17px;">
+                                Driver: <b>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</b><br>
+                                Branch: <b>{{ $invoice->createdByUser && $invoice->createdByUser->warehouse ? $invoice->createdByUser->warehouse->name : '' }}</b><br>
+                                User: <b>{{ $invoice->createdByUser->name ?? '' }} {{ $invoice->createdByUser->last_name ?? '' }}</b>
+                            </span>
+                        </td>
+                    </tr> --}}
                 </table>
             </td>
         </tr>
@@ -182,7 +223,7 @@
                         <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['qty'] ?? 0 }}</td>
                         {{-- <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['label_qty'] ?? 0 }}</td> --}}
                         <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['label_qty'] ?? '' }}</td>
-                        <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['value'] ?? 0 }}</td>
+                        <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ numberFormat($item['value'] ?? 0) }}</td>
                         <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['price'] ?? 0 }}</td>
                         {{-- <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['discount'] ?? 0 }}</td> --}}
                         <td style="border: 1px solid black; padding: 4px 5px; text-align: center;">{{ $item['ins'] ?? 0 }}</td>
@@ -226,15 +267,15 @@
                             <strong>Balance</strong></td>
                     </tr>
                     <tr style="border: 1px solid black;">
-                        <td style=" text-align: start; padding: 5px 20px;">${{$invoice->grand_total ?? 0}}</td>
-                        <td style=" text-align: center; padding: 5px;">${{$invoice->discount ?? 0}}</td>
-                        <td style=" text-align: center; padding: 5px;">${{$invoice->ins ?? 0}}</td>
-                        <td style=" text-align: center; padding: 5px;">${{$invoice->tax ?? 0}}0</td>
+                        <td style=" text-align: start; padding: 5px 20px;">${{numberFormat($invoice->grand_total ?? 0)}}</td>
+                        <td style=" text-align: center; padding: 5px;">${{numberFormat($invoice->discount ?? 0)}}</td>
+                        <td style=" text-align: center; padding: 5px;">${{numberFormat($invoice->ins ?? 0)}}</td>
+                        <td style=" text-align: center; padding: 5px;">${{numberFormat($invoice->tax ?? 0)}}</td>
                         <td style=" text-align: center; padding: 5px;">{{ isset($invoice->total_qty) ? (int)$invoice->total_qty : 0 }}</td>
-                        <td style=" text-align: center; padding: 5px;">${{$invoice->grand_total ?? 0}}</td>
-                        <td style=" text-align: center; padding: 5px;">${{$invoice->service_fee ?? 0}}</td>
-                        <td style=" text-align: center; padding: 5px;">${{$invoice->payment ?? 0}}</td>
-                        <td style=" text-align: center; padding: 5px 20px;"><strong>${{$invoice->balance ?? 0}}</strong></td>
+                        <td style=" text-align: center; padding: 5px;">${{numberFormat($invoice->grand_total ?? 0)}}</td>
+                        <td style=" text-align: center; padding: 5px;">${{numberFormat($invoice->service_fee ?? 0)}}</td>
+                        <td style=" text-align: center; padding: 5px;">${{numberFormat($invoice->payment ?? 0)}}</td>
+                        <td style=" text-align: center; padding: 5px 20px;"><strong>${{numberFormat($invoice->balance ?? 0)}}</strong></td>
                     </tr>
                 </table>
             </td>
@@ -314,10 +355,10 @@
                         <td
                             style="width: 40%; text-align: end; font-size: 16px; vertical-align: top; padding: 0px 20px;">
                             <span style="color: #737B8B;">Sub-Total: <b
-                                    style="color: #000;">${{$invoice->grand_total ?? 0}}</b></span><br><br>
+                                    style="color: #000;">${{numberFormat($invoice->grand_total ?? 0)}}</b></span><br><br>
                             <span style="color: #737B8B; line-height: 50px;">Paid: <b
-                                    style="color: #000;">${{$invoice->payment ?? 0}}</b></span><br>
-                            <span style="color: #000;"><b>Total Amount:</b> ${{$invoice->balance ?? 0}} </span><br>
+                                    style="color: #000;">${{numberFormat($invoice->payment ?? 0)}}</b></span><br>
+                            <span style="color: #000;"><b>Total Amount:</b> ${{numberFormat($invoice->balance ?? 0)}} </span><br>
                         </td>
                     </tr>
                 </table>

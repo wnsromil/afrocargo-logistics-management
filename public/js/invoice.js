@@ -1647,5 +1647,5 @@ $(document)
     $(window).on('load', function () {
         setTimeout(() => {
             hideLoader();
-        }, 900);
+        }, 400);
     });

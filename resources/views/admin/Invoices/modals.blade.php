@@ -52,27 +52,28 @@
         data-bs-target="#InvoiceLabel{{$invoice->id ?? ''}}">
         <i class="ti ti-tag-starred"></i>
     </a> --}}
+    @if(!empty($invoice->transport_type))
+        @if (!empty($invoice->barcodes) && count($invoice->barcodes) > 0)
+            <a class="circleIconBtn" data-bs-placement="bottom" title="Labels"
+                href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
+                target="_blank">
+                <i class="ti ti-tag-starred"></i>
+            </a>
+        @else
+            <a class="circleIconBtn" data-bs-placement="bottom" title="Labels"
+                href="javascript:void(0)"
+                onclick="alertMsg('Please generated labels, No labels have been generated for this invoice yet.','error')"
+                data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
+                data-bs-target="#createLabel{{$invoice->id ?? ''}}">
+                <i class="ti ti-tag-starred"></i>
+            </a>
+        @endif
 
-    @if (!empty($invoice->barcodes) && count($invoice->barcodes) > 0)
-        <a class="circleIconBtn" data-bs-placement="bottom" title="Labels"
-            href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}?type=labels"
-            target="_blank">
-            <i class="ti ti-tag-starred"></i>
-        </a>
-    @else
-        <a class="circleIconBtn" data-bs-placement="bottom" title="Labels"
-            href="javascript:void(0)"
-            onclick="alertMsg('Please generated labels, No labels have been generated for this invoice yet.','error')"
-            data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
+        <a class="circleIconBtn" data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
             data-bs-target="#createLabel{{$invoice->id ?? ''}}">
-            <i class="ti ti-tag-starred"></i>
+            <i class="ti ti-tag-plus"></i>
         </a>
     @endif
-
-    <a class="circleIconBtn" data-bs-placement="bottom" title="Add Labels" data-bs-toggle="modal"
-        data-bs-target="#createLabel{{$invoice->id ?? ''}}">
-        <i class="ti ti-tag-plus"></i>
-    </a>
 
     <a class="circleIconBtn" data-bs-placement="bottom" title="Tracking" data-bs-toggle="modal"
         data-bs-target="#trackingDetails{{$invoice->id ?? ''}}">

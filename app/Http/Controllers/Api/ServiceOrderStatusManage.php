@@ -88,7 +88,7 @@ class ServiceOrderStatusManage extends Controller
         }
 
         // Fetch and map order_type
-        $orders = $query->get()->map(function ($order) {
+        $orders = $query->latest('id')->get()->map(function ($order) {
             if ($order->arrived_driver_id && $order->driver_id) {
                 $order->order_type = 'Delivery';
             } elseif ($order->driver_id) {

@@ -85,11 +85,11 @@ FROM
     ALTER TABLE `invoices` ADD `status` VARCHAR(255) NULL AFTER `is_paid`;
 
     -- 12/05/25
-    ALTER TABLE `addresses` CHANGE `country_id` `country_id` VARCHAR(200) NULL, 
+    ALTER TABLE `addresses` CHANGE `country_id` `country_id` VARCHAR(200) NULL,
     CHANGE `state_id` `state_id` VARCHAR(200) NULL, CHANGE `city_id` `city_id` VARCHAR(200) NULL;
 
     -- 23/05/25
-    ALTER TABLE `individual_payments` CHANGE `payment_type` `payment_type` 
+    ALTER TABLE `individual_payments` CHANGE `payment_type` `payment_type`
     VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'COD';
 
     -- 28/05/25
@@ -112,3 +112,5 @@ FROM
     ALTER TABLE `addresses` CHANGE `city_id` `city_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
     -- 11/07/25
     ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+    -- 28-july-2025
+    ALTER TABLE `invoices` ADD `delivery_type` VARCHAR(25) NULL AFTER `transport_type`;

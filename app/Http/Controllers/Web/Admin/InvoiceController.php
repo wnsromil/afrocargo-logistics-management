@@ -456,7 +456,7 @@ class InvoiceController extends Controller
         //
         $invoice = Invoice::with(['ParcelInventory', 'invoiceParcelData', 'deliveryAddress', 'pickupAddress', 'createdByUser', 'container', 'driver', 'invoiceParcelData', 'comments', 'individualPayment', 'barcodes', 'warehouse', 'claims'])->findOrFail($id);
 
-        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->first();
+        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest('id')->first();
 
         $deliveryAddress = $this->formatAddress($invoice->deliveryAddress, null, 'delivery');
         $pickupAddress  = $this->formatAddress($invoice->pickupAddress, null, 'pickup');

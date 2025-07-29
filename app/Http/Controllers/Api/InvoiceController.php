@@ -239,7 +239,7 @@ class InvoiceController extends Controller
             }
         }
         $invoice = Invoice::with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->where('id',$id)->first();
-        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->get();
+        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest('id')->get();
 
         // return view('admin.Invoices.pdf.invoicepdf', compact('invoice', 'invoiceHistory'));
 
@@ -260,6 +260,7 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
             ]);
+            $pdf->setPaper([0, 0, 288, 432]);
             // Generate a filename
             $filename = 'invoice-' . $invoice->invoice_no . '.pdf';
         }else{
@@ -268,6 +269,7 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
             ]);
+            $pdf->setPaper('A4', 'portrait');
 
             // Generate a filename
             $filename = 'labels-' . $invoice->invoice_no . '.pdf';
@@ -276,7 +278,8 @@ class InvoiceController extends Controller
 
 
         // Set paper options
-        $pdf->setPaper('A4', 'portrait');
+        //
+
 
         // $pdf->setPaper('A4', 'landscape');
 

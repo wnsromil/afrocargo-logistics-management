@@ -29,18 +29,6 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-3">
-                <label>By Permissions</label>
-                <select class="js-example-basic-single select2 form-control" name="permission">
-                    <option value="">All Permissions</option>
-                    @foreach($permissions as $permission)
-                        <option value="{{ $permission->name }}" {{ $selectedPermission == $permission->name ? 'selected' : '' }}>
-                            {{ ucwords(str_replace(['.', '_'], ' ', $permission->name)) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
             {{-- ✅ Select Dropdown for Multiple Warehouses --}}
             <div class="col-md-3 mb-3">
                 <label>By Warehouse</label>
@@ -67,10 +55,32 @@
                 @enderror
             </div>
 
+
+            <div class="col-md-3 mb-3">
+                <label>Role Name</label>
+                <select class="form-control inp select2" name="role" onchange="this.form.submit()">
+                    <option>Select Role</option>
+                    <option value="warehouse_manager" {{request()->role == "warehouse_manager" ? 'selected' : '' }}>Warehouse Manager</option>
+                    <option value="driver" {{request()->role == "driver" ? 'selected' : '' }}>Driver</option>
+                </select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>By Permissions</label>
+                <select class="js-example-basic-single select2 form-control" name="permission">
+                    <option value="">All Permissions</option>
+                    @foreach($permissions as $permission)
+                        <option value="{{ $permission->name }}" {{ $selectedPermission == $permission->name ? 'selected' : '' }}>
+                            {{ ucwords(str_replace(['.', '_'], ' ', $permission->name)) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="col-12">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>
-                    <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="window.location.href='/user_role'">Reset</button>
                 </div>
             </div>
         </div>
@@ -78,105 +88,7 @@
 
 
     <div id='ajexTable'>
-        <div class="card-table">
-            <div class="card-body">
-                <form method="GET" action="">
-                    <div class="row mb-2">
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <label class="col3a fw_600 mb-0">Role Name</label>
-                            <select class="form-control inp select2" name="role" onchange="this.form.submit()">
-                                <option>Select Role</option>
-                                <option value="warehouse_manager" {{request()->role == "warehouse_manager" ? 'selected' : '' }}>Warehouse Manager</option>
-                                <option value="driver" {{request()->role == "driver" ? 'selected' : '' }}>Driver</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="permission" class="col3a fw_600 mb-0">Filter By Permission</label>
-                            <select name="permission" class="form-control inp select2" onchange="this.form.submit()">
-                                <option value="">All Permissions</option>
-                                @foreach($permissions as $permission)
-                                    <option value="{{ $permission->name }}"
-                                        {{ $selectedPermission == $permission->name ? 'selected' : '' }}>
-                                        {{ ucwords(str_replace(['.', '_'], ' ', $permission->name)) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-lg-12 text-end mt-3">
-                                <button type="button" class="btn btn-primary refeshuser ">
-                                    <a class="btn-filters" href="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a>
-                                </button>
-                        </div>
-                    </div>
-                </form>
-
-                <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>S No.</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Role</th>
-                                <th>Permissions</th>
-                                <th>Created Date</th>
-                                <th class="text-end">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($users as $index=>$user)
-                            <tr>
-                                <td class="text-start">{{ $index + 1 }}</td>
-                                <td>{{ $user->name ?? '-' }}</td>
-                                <td>{{ $user->last_name ?? '-' }}</td>
-                                <td>{{ $user->role ?? '-' }}</td>
-                                <td>
-                                    @foreach($user->roles as $role)
-                                        <div class="mb-1">
-                                            <strong>{{ $role->name }}:</strong>
-                                            @foreach($role->permissions->take(3) as $permission)
-                                                <span class="badge bg-primary me-1">
-                                                    {{ ucwords(str_replace('.', ' ', $permission->name)) }}
-                                                </span>
-                                            @endforeach
-                                            @if($role->permissions->count() > 3)
-                                                <span class="badge bg-secondary">
-                                                    +{{ $role->permissions->count() - 3 }} more
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="text-center">No users found</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
-                <div class="col-md-6 d-flex p-2 align-items-center">
-                    <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                    <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
-                        id="pageSizeSelect">
-                        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
-                        <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
-                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                    </select>
-                    <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
-                </div>
-                <div class="col-md-6">
-                    <div class="float-end">
-                        <div class="bottom-user-page mt-3">
-                            {!! $users->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('admin.user_role.table')
     </div>
 
 </x-app-layout>
@@ -215,6 +127,5 @@
                 allowClear: true
             });
         });
-    });
 </script>
 @endsection

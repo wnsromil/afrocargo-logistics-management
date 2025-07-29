@@ -295,6 +295,7 @@ class SettingsHelper
                 $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
             }
             $validatedData['delivery_type'] = 'self';
+            $invoice->delivery_type = 'self';
             $validatedData['driver_id'] = $invoice->driver_id ?? null;
 
             $parcel = Parcel::create($validatedData);
@@ -340,7 +341,7 @@ class SettingsHelper
                                 'total' => $item['total'] ?? 0,
                             ]
                         );
-                if(!empty($invoice->barcodes)){
+                if(!empty($invoice->barcodes) && !empty($invoice->transport_type)){
                     for ($i=0; $i < $item['qty']; $i++) {
                         store_barcode([
                             'parcel_id' => $invoice->parcel_id,

@@ -191,7 +191,7 @@ aria-hidden="true">
                                     style="background: #ececec;">
                             </div>
                         </div>
-                        <div class="row align-items-center margin-top-top">
+                        <div class="row align-items-center margin-top-top d-none">
                             <div class="col text-end px-0">
                                 <label for="neighborhood" class="col-form-label text-dark">Neighborhood</label>
                             </div>
