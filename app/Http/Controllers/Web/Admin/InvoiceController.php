@@ -1182,8 +1182,6 @@ class InvoiceController extends Controller
             'currentTime' => 'nullable',
         ]);
 
-        return $request->all();
-
         $data = $this->individualPayment($validated);
         return redirect()->back()->with('success', 'Payment saved successfully!');
     }

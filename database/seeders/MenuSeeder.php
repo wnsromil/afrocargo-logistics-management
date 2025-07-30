@@ -160,7 +160,7 @@ class MenuSeeder extends Seeder
              [
                 'title' => 'End Of Day',
                 'icon' => '<i class="menuIcon ti ti-file-text"></i>',
-                'route' => 'admin.end_of_day.index',
+                'route' => 'admin.end_of_day.Invoice_index',
                 'active' => 'end_of_day*',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['end_of_day.view'],

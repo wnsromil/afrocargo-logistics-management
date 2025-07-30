@@ -372,6 +372,40 @@ Version      : 1.0
         }
     }
 
+    if ($('input[name="eod_datetimes"]').length > 0) {
+        const $dateInput = $('input[name="eod_datetimes"]');
+
+        $dateInput.daterangepicker({
+            timePicker: false,
+            startDate: moment().startOf("hour"),
+            endDate: moment().startOf("hour").add(32, "hour"),
+            locale: {
+                format: "YYYY-MM-DD", // Year included
+            },
+            autoUpdateInput: false, // <-- Yeh important hai
+        });
+
+        // Jab user date select kare to input update karo
+        $dateInput.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD") +
+                    " - " +
+                    picker.endDate.format("YYYY-MM-DD")
+            );
+        });
+
+        // Jab cancel kare to input clear karo
+        $dateInput.on("cancel.daterangepicker", function (ev, picker) {
+            $(this).val("");
+            $(this).attr("placeholder", "Select Date Range");
+        });
+
+        // Agar input empty hai to placeholder dikhao
+        if (!$dateInput.val()) {
+            $dateInput.attr("placeholder", "Select Date Range");
+        }
+    }
+
     $(".onlyTimePicker").each(function () {
         const $this = $(this);
 

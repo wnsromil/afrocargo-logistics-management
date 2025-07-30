@@ -449,6 +449,8 @@ class CustomerController extends Controller
         if ($request->ajax() && $type == "PickupAddresss") {
             return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
+
+        
         return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 

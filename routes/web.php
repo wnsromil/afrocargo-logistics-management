@@ -219,9 +219,17 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('lading_details', LadingDetailsController::class);
         Route::resource('end_of_day', EODController::class);
 
+        // EOD
+        Route::get('invoice-index', [EODController::class, 'Invoice_index'])->name('end_of_day.Invoice_index');
+        Route::get('supply-index', [EODController::class, 'Supply_index'])->name('end_of_day.Supply_index');
+        Route::get('payments-index', [EODController::class, 'Payments_index'])->name('end_of_day.Payments_index');
+        Route::get('expenses-index', [EODController::class, 'Expenses_index'])->name('end_of_day.Expenses_index');
+        Route::get('void-index', [EODController::class, 'Void_index'])->name('end_of_day.Void_index');
+        Route::get('deposit-index', [EODController::class, 'Deposit_index'])->name('end_of_day.Deposit_index');
+        Route::get('print-index', [EODController::class, 'Print_index'])->name('end_of_day.Print_index');
+
 
         Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
-
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
         Route::get('getOrderList', [InvoiceController::class, 'getOrderList'])->name('getOrderList');

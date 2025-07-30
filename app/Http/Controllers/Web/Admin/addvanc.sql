@@ -114,3 +114,7 @@ FROM
     ALTER TABLE `addresses` CHANGE `city_id` `city_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
     -- 11/07/25
     ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+
+ALTER TABLE `invoices` ADD `customer_id` INT NULL AFTER `deleted_at`, ADD `ship_customer_id` INT NULL AFTER `customer_id`;
+ 
+ ALTER TABLE `individual_payments` ADD `warehouse_id` INT NULL AFTER `updated_at`, ADD `unique_id` VARCHAR(200) NULL AFTER `warehouse_id`;
