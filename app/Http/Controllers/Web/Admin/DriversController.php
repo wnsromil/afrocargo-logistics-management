@@ -22,6 +22,7 @@ use App\Models\{
 use DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DriverMail;
+use Laravel\Passport\Token;
 
 use function Pest\Laravel\json;
 
@@ -426,6 +427,10 @@ class DriversController extends Controller
         if ($driver) {
             $driver->status = $request->status; // 1 = Active, 0 = Deactive
             $driver->save();
+
+             if ($request->status == 'Inactive') {
+                $driver->tokens()->update(['revoked' => true]);
+            }
 
             return response()->json(['success' => 'Status Updated Successfully']);
         }
