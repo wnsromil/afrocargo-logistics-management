@@ -11,11 +11,13 @@ use App\Models\{
     Stock,
     Inventory,
     Vehicle,
-    AdvancedOrderReport
+    AdvancedOrderReport,
+    Parcel
 };
 use \Carbon\Carbon;
 use App\Exports\AdvanceOrderReportsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class AdvanceReportsController extends Controller
 {
@@ -24,21 +26,34 @@ class AdvanceReportsController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request->all());
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default to 10 per page
+        $currentPage = $request->input('page', 1);
 
-        $query = AdvancedOrderReport::query()
-            ->with(['warehouse', 'expenses'])
-            ->when($this->user->role_id != 1, function ($q) {
-                return $q->where('warehouse_id', $this->user->warehouse_id);
-            })
+        $query = Parcel::when($this->user->role_id != 1, function ($q) {
+            return $q->where('warehouse_id', $this->user->warehouse_id);
+        })
             ->when($request->filled('search'), function ($q) use ($request) {
-                $q->where(function ($query) use ($request) {
-                    $query->where('tracking_number', 'like', '%' . $request->search . '%')
-                        ->orWhere('full_name', 'like', '%' . $request->search . '%')
-                        ->orWhere('user_name', 'like', '%' . $request->search . '%')
-                        ->orWhere('ship_full_name', 'like', '%' . $request->search . '%');
+                $search = $request->search;
+
+                // Find user IDs based on search match
+                $userIds = User::where(function ($query) use ($search) {
+                    $query->where('username', 'like', "%$search%")
+                        ->orWhere('name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->orWhere(DB::raw("CONCAT(name, ' ', last_name)"), 'like', "%$search%");
+                })->pluck('id')->toArray();
+
+                $q->where(function ($query) use ($search, $userIds) {
+                    $query->where('tracking_number', 'like', "%$search%");
+
+                    if (!empty($userIds)) {
+                        $query->orWhereIn('pickup_address_id', $userIds)
+                            ->orWhereIn('delivery_address_id', $userIds)
+                            ->orWhereIn('driver_id', $userIds)
+                            ->orWhereIn('customer_id', $userIds)
+                            ->orWhereIn('ship_customer_id', $userIds);
+                    }
                 });
             })
             ->when($request->filled('warehouse'), function ($q) use ($request) {
@@ -48,14 +63,11 @@ class AdvanceReportsController extends Controller
                 $q->where('tracking_number', $request->tracking_id);
             })
             ->when($request->filled('customer'), function ($q) use ($request) {
-                $q->where('full_name', 'like', '%' . $request->customer . '%');
+                $q->where('name', 'like', '%' . $request->customer . '%');
             })
             ->when($request->filled('driver'), function ($q) use ($request) {
                 $q->where('driver_id', $request->driver);
             })
-            // ->when($request->filled('hub'), function($q) use ($request) {
-            //     $q->where('hub_id', $request->hub);
-            // })
             ->when($request->filled('container'), function ($q) use ($request) {
                 $q->where('container_id', $request->container);
             })
@@ -73,7 +85,6 @@ class AdvanceReportsController extends Controller
                         $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
                         $q->whereBetween('created_at', [$startDate, $endDate]);
                     } catch (\Exception $e) {
-                        // Fallback to different format if needed
                         try {
                             $startDate = Carbon::parse(trim($dates[0]))->startOfDay();
                             $endDate = Carbon::parse(trim($dates[1]))->endOfDay();
@@ -85,12 +96,8 @@ class AdvanceReportsController extends Controller
                 }
             });
 
-        $advanceOrderResports = $query->orderBy('id', 'desc')->paginate($perPage)
+        $parcels = $query->orderBy('id', 'desc')->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
-
-        if ($request->ajax()) {
-            return view('admin.advance_reports.table', compact('advanceOrderResports'));
-        }
 
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
@@ -107,27 +114,46 @@ class AdvanceReportsController extends Controller
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('vehicle_type', '1')->get();
 
-        return view('admin.advance_reports.index', compact('advanceOrderResports', 'warehouses', 'drivers', 'containers', 'search', 'perPage'));
-    }
+        $serialStart = ($currentPage - 1) * $perPage;
 
+
+
+        if ($request->ajax()) {
+            return view('admin.advance_reports.table', compact('parcels', 'warehouses', 'drivers', 'containers', 'search', 'perPage', 'serialStart'));
+        }
+
+        return view('admin.advance_reports.index', compact('parcels', 'warehouses', 'drivers', 'containers', 'search', 'perPage', 'serialStart'));
+    }
 
     public function exportReports(Request $request)
     {
         $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default to 10 per page
+        $currentPage = $request->input('page', 1);
 
-        $query = AdvancedOrderReport::query()
-            ->with(['warehouse', 'expenses'])
-            // ->when($this->user->role_id != 1, function ($q) {
-            //     return $q->where('warehouse_id', $this->user->warehouse_id);
-            // })
-            ->when($request->filled('search'), function ($q) use ($request) {
-                $q->where(function ($query) use ($request) {
-                    $query->where('tracking_number', 'like', '%' . $request->search . '%')
-                        ->orWhere('full_name', 'like', '%' . $request->search . '%')
-                        ->orWhere('user_name', 'like', '%' . $request->search . '%')
-                        ->orWhere('ship_full_name', 'like', '%' . $request->search . '%');
-                });
-            })
+        $query = Parcel::with('pickupaddress', 'deliveryaddress')->when($request->filled('search'), function ($q) use ($request) {
+            $search = $request->search;
+
+            // Find user IDs based on search match
+            $userIds = User::where(function ($query) use ($search) {
+                $query->where('username', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%")
+                    ->orWhere(DB::raw("CONCAT(name, ' ', last_name)"), 'like', "%$search%");
+            })->pluck('id')->toArray();
+
+            $q->where(function ($query) use ($search, $userIds) {
+                $query->where('tracking_number', 'like', "%$search%");
+
+                if (!empty($userIds)) {
+                    $query->orWhereIn('pickup_address_id', $userIds)
+                        ->orWhereIn('delivery_address_id', $userIds)
+                        ->orWhereIn('driver_id', $userIds)
+                        ->orWhereIn('customer_id', $userIds)
+                        ->orWhereIn('ship_customer_id', $userIds);
+                }
+            });
+        })
             ->when($request->filled('warehouse'), function ($q) use ($request) {
                 $q->where('warehouse_id', $request->warehouse);
             })
@@ -135,13 +161,10 @@ class AdvanceReportsController extends Controller
                 $q->where('tracking_number', $request->tracking_id);
             })
             ->when($request->filled('customer'), function ($q) use ($request) {
-                $q->where('full_name', 'like', '%' . $request->customer . '%');
+                $q->where('name', 'like', '%' . $request->customer . '%');
             })
             ->when($request->filled('driver'), function ($q) use ($request) {
                 $q->where('driver_id', $request->driver);
-            })
-            ->when($request->filled('hub'), function ($q) use ($request) {
-                $q->where('hub_id', $request->hub);
             })
             ->when($request->filled('container'), function ($q) use ($request) {
                 $q->where('container_id', $request->container);
@@ -152,15 +175,14 @@ class AdvanceReportsController extends Controller
             ->when($request->filled('payment_status'), function ($q) use ($request) {
                 $q->where('is_paid', $request->payment_status == 'paid');
             })
-            ->when($request->filled('orderDate'), function ($q) use ($request) {
-                $dates = explode(' - ', $request->orderDate);
+            ->when($request->filled('logs_datetimes'), function ($q) use ($request) {
+                $dates = explode(' - ', $request->logs_datetimes);
                 if (count($dates) == 2) {
                     try {
                         $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->startOfDay();
                         $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
                         $q->whereBetween('created_at', [$startDate, $endDate]);
                     } catch (\Exception $e) {
-                        // Fallback to different format if needed
                         try {
                             $startDate = Carbon::parse(trim($dates[0]))->startOfDay();
                             $endDate = Carbon::parse(trim($dates[1]))->endOfDay();
@@ -183,20 +205,32 @@ class AdvanceReportsController extends Controller
     public function printData(Request $request)
     {
         $search = $request->input('search');
+        $perPage = $request->input('per_page', 10); // Default to 10 per page
+        $currentPage = $request->input('page', 1);
 
-        $query = AdvancedOrderReport::query()
-            ->with(['warehouse', 'expenses'])
-            // ->when($this->user->role_id != 1, function ($q) {
-            //     return $q->where('warehouse_id', $this->user->warehouse_id);
-            // })
-            ->when($request->filled('search'), function ($q) use ($request) {
-                $q->where(function ($query) use ($request) {
-                    $query->where('tracking_number', 'like', '%' . $request->search . '%')
-                        ->orWhere('full_name', 'like', '%' . $request->search . '%')
-                        ->orWhere('user_name', 'like', '%' . $request->search . '%')
-                        ->orWhere('ship_full_name', 'like', '%' . $request->search . '%');
-                });
-            })
+        $query = Parcel::with('pickupaddress', 'deliveryaddress')->when($request->filled('search'), function ($q) use ($request) {
+            $search = $request->search;
+
+            // Find user IDs based on search match
+            $userIds = User::where(function ($query) use ($search) {
+                $query->where('username', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%")
+                    ->orWhere(DB::raw("CONCAT(name, ' ', last_name)"), 'like', "%$search%");
+            })->pluck('id')->toArray();
+
+            $q->where(function ($query) use ($search, $userIds) {
+                $query->where('tracking_number', 'like', "%$search%");
+
+                if (!empty($userIds)) {
+                    $query->orWhereIn('pickup_address_id', $userIds)
+                        ->orWhereIn('delivery_address_id', $userIds)
+                        ->orWhereIn('driver_id', $userIds)
+                        ->orWhereIn('customer_id', $userIds)
+                        ->orWhereIn('ship_customer_id', $userIds);
+                }
+            });
+        })
             ->when($request->filled('warehouse'), function ($q) use ($request) {
                 $q->where('warehouse_id', $request->warehouse);
             })
@@ -204,13 +238,10 @@ class AdvanceReportsController extends Controller
                 $q->where('tracking_number', $request->tracking_id);
             })
             ->when($request->filled('customer'), function ($q) use ($request) {
-                $q->where('full_name', 'like', '%' . $request->customer . '%');
+                $q->where('name', 'like', '%' . $request->customer . '%');
             })
             ->when($request->filled('driver'), function ($q) use ($request) {
                 $q->where('driver_id', $request->driver);
-            })
-            ->when($request->filled('hub'), function ($q) use ($request) {
-                $q->where('hub_id', $request->hub);
             })
             ->when($request->filled('container'), function ($q) use ($request) {
                 $q->where('container_id', $request->container);
@@ -221,15 +252,14 @@ class AdvanceReportsController extends Controller
             ->when($request->filled('payment_status'), function ($q) use ($request) {
                 $q->where('is_paid', $request->payment_status == 'paid');
             })
-            ->when($request->filled('orderDate'), function ($q) use ($request) {
-                $dates = explode(' - ', $request->orderDate);
+            ->when($request->filled('logs_datetimes'), function ($q) use ($request) {
+                $dates = explode(' - ', $request->logs_datetimes);
                 if (count($dates) == 2) {
                     try {
                         $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->startOfDay();
                         $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
                         $q->whereBetween('created_at', [$startDate, $endDate]);
                     } catch (\Exception $e) {
-                        // Fallback to different format if needed
                         try {
                             $startDate = Carbon::parse(trim($dates[0]))->startOfDay();
                             $endDate = Carbon::parse(trim($dates[1]))->endOfDay();

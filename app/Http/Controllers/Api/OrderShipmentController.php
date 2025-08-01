@@ -212,12 +212,15 @@ class OrderShipmentController extends Controller
             // Step 6: Check if any vehicle has status = 'Active'
             $activeVehicle = $vehicles->firstWhere('status', 'Active');
 
-            if (!$activeVehicle) {
+           if (!$activeVehicle && $request->transport_type == "Ocean Cargo") {
                 return response()->json(['message' => 'Container is not open'], 200);
             }
 
             // Store container_id
-            $validatedData['container_id'] = $activeVehicle->id;
+            if($request->transport_type == "Ocean Cargo"){
+             $validatedData['container_id'] = $activeVehicle->id;
+            }
+           
             $validatedData['warehouse_id'] = $nearestWarehouseId;
 
             if ($request->arrived_warehouse_id) {
@@ -234,7 +237,7 @@ class OrderShipmentController extends Controller
                 ->latest() // optional: if multiple transfer records exist, get the latest
                 ->first();
 
-            if ($containerHistory) {
+            if ($containerHistory && $request->transport_type == "Ocean Cargo") {
                 // $containerHistory->increment('no_of_orders', 1);
 
                 // $containerHistory->total_amount += $request->total_amount;

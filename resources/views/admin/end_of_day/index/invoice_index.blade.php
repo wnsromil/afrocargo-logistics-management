@@ -111,9 +111,9 @@
         <a href="{{ route('admin.end_of_day.Supply_index') }}" class="btn btn-primary btnf">Supply</a>
         <a href="{{ route('admin.end_of_day.Payments_index') }}" class="btn btn-primary btnf">Payments</a>
         <a href="{{ route('admin.end_of_day.Expenses_index') }}" class="btn btn-primary btnf">Expenses</a>
-        <a href="{{ route('admin.end_of_day.Void_index') }}" class="btn btn-primary btnf">Void</a>
+        {{-- <a href="{{ route('admin.end_of_day.Void_index') }}" class="btn btn-primary btnf">Void</a> --}}
         <a href="{{ route('admin.end_of_day.Deposit_index') }}" class="btn btn-primary btnf">Deposit</a>
-        <a href="{{ route('admin.end_of_day.Print_index') }}" class="btn btn-primary btnf">Print</a>
+        <a href="#" class="btn btn-primary btnf" onclick="openPrintInNewTab()">Print</a>
     </div>
     <hr>
 
@@ -227,6 +227,22 @@
             function resetForm() {
                 window.location.href = "{{ route('admin.end_of_day.Invoice_index') }}";
             }
+        </script>
+        <script>
+            function openPrintInNewTab() {
+                // Get current URL search params (after ?)
+                const params = window.location.search; // eg: ?date=2023-08-01&warehouse=5
+
+                // Base route URL (without params)
+                const baseUrl = "{{ route('admin.end_of_day.Print_index') }}";
+
+                // Construct full URL with params
+                const fullUrl = baseUrl + params;
+
+                // Open in new tab
+                window.open(fullUrl, '_blank');
+            }
+
         </script>
     @endsection
 
