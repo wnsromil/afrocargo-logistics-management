@@ -359,6 +359,8 @@ class SettingsHelper
         }
 
         $invoice->total_qty = $qty;
+        $invoice->customer_id = optional($invoice->pickupAddress)->user_id ?? null;
+        $invoice->ship_customer_id = optional($invoice->deliveryAddress)->user_id ?? null;
         $invoice->save();
 
 

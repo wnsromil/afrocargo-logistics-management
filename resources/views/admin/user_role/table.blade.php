@@ -30,23 +30,64 @@
                                     {{ $user->role ?? '' }}
                                 @endif
                             </td>
-                            <td>
-                                @foreach($user->roles as $role)
-                                    <div class="mb-1">
-                                        <strong>{{ $role->name }}:</strong>
-                                        @foreach($role->permissions->take(3) as $permission)
-                                            <span class="badge bg-primary me-1">
-                                                {{ ucwords(str_replace('.', ' ', $permission->name)) }}
-                                            </span>
-                                        @endforeach
-                                        @if($role->permissions->count() > 3)
-                                            <span class="badge bg-secondary">
-                                                +{{ $role->permissions->count() - 3 }} more
-                                            </span>
-                                        @endif
+                            <td style="min-width: 320px;">
+                                <div class="d-flex flex-column align-items-start">
+                                    @if(!empty($user->permissions) && is_iterable($user->permissions) && $user->permissions->count())
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach($user->permissions->take(3) as $permission)
+                                                <span class="badge bg-primary rounded-pill" style="font-size: 0.85rem;">
+                                                    {{ ucwords(str_replace('.', ' ', $permission->name)) }}
+                                                </span>
+                                            @endforeach
+
+                                            @if($user->permissions->count() > 3)
+                                                @php
+                                                    $extraPermissions = $user->permissions->slice(3);
+                                                @endphp
+                                                <button type="button"
+                                                        class="badge bg-secondary rounded-pill border-0"
+                                                        style="font-size: 0.85rem; cursor: pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#permissionsModal-{{ $user->id }}">
+                                                    +{{ $user->permissions->count() - 3 }} more
+                                                </button>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <span class="text-muted" style="font-size: 0.9rem;">No permissions</span>
+                                    @endif
+                                </div>
+
+                                {{-- Modal --}}
+                                @if(isset($extraPermissions) && $extraPermissions->count())
+                                    <div class="modal fade" id="permissionsModal-{{ $user->id }}" tabindex="-1" aria-labelledby="permissionsModalLabel-{{ $user->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="permissionsModalLabel-{{ $user->id }}">Extra Permissions</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {{-- Grid layout for better alignment --}}
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            @foreach($extraPermissions as $permission)
+                                                                <div class="col-6 col-md-4 col-lg-3 mb-2">
+                                                                    <span class="badge bg-primary rounded-pill w-100 text-wrap" style="font-size: 0.85rem;">
+                                                                        {{ ucwords(str_replace('.', ' ', $permission->name)) }}
+                                                                    </span>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                @endforeach
+                                @endif
+
                             </td>
+
                             <td>
                                 {{ $user->created_at ? carbon()->parse($user->created_at)->format('d-m-Y') : '-' }}
                             </td>
@@ -59,7 +100,7 @@
                                         <ul>
                                             <li>
                                                 <a class="dropdown-item" href="{{ route('user-permissions.edit', $user) }}">
-                                                    <i class="far fa-edit me-2"></i>Update
+                                                    <i class="far fa-edit me-2"></i>Permissions
                                                 </a>
                                             </li>
                                             <li>

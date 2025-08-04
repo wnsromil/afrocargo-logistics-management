@@ -51,8 +51,10 @@
             // if($menu->permissions){
             //     dd($menu->permissions,auth()->user()->hasAnyPermission($menu->permissions));
             // }
-            // $hasPermission = auth()->user()->role_id !=1 ? empty($menu->permissions) || auth()->user()->hasAnyPermission($menu->permissions):true;
-            $hasPermission = true;
+            $hasPermission = auth()->user()->role_id !=1 ? (!empty($menu->permissions) && auth()->user()->hasAnyPermission($menu->permissions)):true;
+            // $hasPermission = true;
+
+            // dd($hasPermission);
         @endphp
 
         @if ($hasPermission)
@@ -67,8 +69,8 @@
                     <ul class="mt-3" style="display: {{ !empty($menu->active) ? isActive($menu->active, 'block', 'none') : '' }};">
                         @foreach ($menu->submenu as $submenu)
                             @php
-                                // $submenuHasPermission = empty($submenu->permissions) || auth()->user()->hasAnyPermission($submenu->permissions);
-                                $submenuHasPermission = true;
+                                $submenuHasPermission = empty($submenu->permissions) || auth()->user()->hasAnyPermission($submenu->permissions);
+                                // $submenuHasPermission = true;
                             @endphp
 
                             @if ($submenuHasPermission)

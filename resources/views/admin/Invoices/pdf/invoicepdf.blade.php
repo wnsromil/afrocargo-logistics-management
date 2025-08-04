@@ -153,9 +153,12 @@
             <td style="width: 100%; padding: 10px 0px; text-align: left;" colspan="2">
                 <span style="font-size: 15px;">
                     User: <b>{{ $invoice->user->name ?? '' }} {{ $invoice->user->last_name ?? '' }}</b> |
-                    @if($invoice->driver)
-                    Driver: <b>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</b>|                    @endif
-                     Invoice Date: <b>{{ $invoice->created_at->format('d/m/Y') ?? '' }}</b> | Payment Type: <b>{{ $invoice->payment_type ?? '' }}</b>
+                    @if($invoice->transport_type)
+                        @if($invoice->driver)
+                        Driver: <b>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</b>|
+                        @endif
+                    @endif
+                    Invoice Date: <b>{{ $invoice->created_at->format('d/m/Y') ?? '' }}</b> | Payment Type: <b>{{ $invoice->payment_type ?? '' }}</b>
                 </span>
             </td>
         </tr>
@@ -170,12 +173,18 @@
                         <td style="border: 1px solid black; padding: 9px 10px;text-align: start;">
                             ivnoce# : <b>{{$invoice->invoice_no ?? ''}}</b>
                         </td>
+                        @if($invoice->transport_type)
                         <td style="border: 1px solid black; padding: 9px 10px;text-align: start;">
                             container# : <b>{{$invoice->container && $invoice->container->unique_id ? $invoice->container->unique_id:'' }}</b>
                         </td>
                         <td style="border: 1px solid black; padding: 9px 10px;text-align: start;">
                             country#: <b>{{ $invoice->deliveryAddress && $invoice->deliveryAddress->country_id ? $invoice->deliveryAddress->country_id : '' }}</b>
                         </td>
+                        @else
+                        <td style="border: 1px solid black; padding: 9px 10px;text-align: start;">
+                           Driver: <b>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</b>
+                        </td>
+                        @endif
                     </tr>
                     {{-- <tr>
                         <td style="width: 50%; padding: 10px 20px;">

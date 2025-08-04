@@ -918,7 +918,7 @@
         var deliveryAddress = @json($deliveryAddress);
         var currentRow = null;
         var maxPaymentAmountValue = '{{ $invoice->balance ?? 0 }}';
-        var invoce_type = "{{ $invoce_type ?? 'services' }}";
+        var invoce_type = "{{ $invoice->invoce_type ?? 'services' }}";
 
         window.onload = function () {
             // const urlParams = new URLSearchParams(window.location.search);

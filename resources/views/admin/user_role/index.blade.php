@@ -6,10 +6,10 @@
     <x-slot name="cardTitle">
         <div class="d-flex topnavs justify-content-between">
             <p class="head">Role Management</p>
-            <a href="{{ route('admin.user_role.create') }}" class="btn btn-primary buttons">
+            {{-- <a href="{{ route('admin.user_role.create') }}" class="btn btn-primary buttons">
                 <i class="ti ti-circle-plus me-2 text-white"></i>
                 Add Roles
-            </a>
+            </a> --}}
         </div>
     </x-slot>
 
@@ -36,7 +36,7 @@
                     <select class="js-example-basic-single select2 form-control" name="warehouse_id">
                         <option value="">Select Warehouse</option>
                         @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || request()->warehouse_id== $warehouse->id ? 'selected' : '' }}>
                                 {{ $warehouse->warehouse_name ?? '' }}
                             </option>
                         @endforeach
@@ -60,8 +60,8 @@
                 <label>Role Name</label>
                 <select class="form-control inp select2" name="role" onchange="this.form.submit()">
                     <option>Select Role</option>
-                    <option value="warehouse_manager" {{request()->role == "warehouse_manager" ? 'selected' : '' }}>Warehouse Manager</option>
-                    <option value="driver" {{request()->role == "driver" ? 'selected' : '' }}>Driver</option>
+                    <option value="2" {{request()->role == "2" ? 'selected' : '' }}>Warehouse Manager</option>
+                    <option value="4" {{request()->role == "4" ? 'selected' : '' }}>Driver</option>
                 </select>
             </div>
 
