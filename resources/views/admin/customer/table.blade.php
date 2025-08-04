@@ -70,16 +70,22 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
+                                            @can('has-dynamic-permission', 'customers_list.edit')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.customer.edit', $customer->id) . '?page=' . request()->page ?? 1 }}"><i
                                                         class="far fa-edit me-2"></i>Update</a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'customers_list.show')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.customer.show', $customer->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
+                                             @endcan
+
+                                            @can('has-dynamic-permission', 'customers_list.account_status')
                                             @if($customer->status == 'Active')
                                                             <li>
                                                                 <a class="dropdown-item deactivate" href="javascript:void(0)"
@@ -87,7 +93,7 @@
                                                                     <i class="far fa-bell-slash me-2"></i>Deactivate
                                                                 </a>
                                                             </li>
-                                                        @elseif($customer->status == 'Inactive')
+                                            @elseif($customer->status == 'Inactive')
                                                             <li>
                                                                 <a class="dropdown-item activate" href="javascript:void(0)"
                                                                     data-id="{{ $customer->id }}" data-status="Active">
@@ -95,6 +101,7 @@
                                                                 </a>
                                                             </li>
                                             @endif
+                                           <!-- #region --> @endcan
                                         </ul>
                                     </div>
                                 </div>

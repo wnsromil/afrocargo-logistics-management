@@ -51,12 +51,14 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.expenses.edit', $expense->id) }}">
-                                                    <i class="far fa-edit me-2"></i>Update
-                                                </a>
-                                            </li>
+                                            @can('has-dynamic-permission', 'expenses.edit')
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.expenses.edit', $expense->id) }}">
+                                                        <i class="far fa-edit me-2"></i>Update
+                                                    </a>
+                                                </li>
+                                            @endcan
                                             {{-- <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.expenses.show', $expense->id) }}">
@@ -78,6 +80,7 @@
                                                 </a>
                                             </li>
                                             @endif --}}
+                                            @can('has-dynamic-permission', 'expenses.delete')
                                             <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
@@ -86,6 +89,7 @@
                                                     onclick="deleteData(this,'Wait! Are you sure you want to remove this expense?')"><i
                                                         class="far fa-trash-alt me-2"></i>Delete</button>
                                             </form>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

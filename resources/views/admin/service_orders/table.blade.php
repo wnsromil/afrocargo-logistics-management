@@ -195,11 +195,14 @@
                             </td>
                             <td>
                                 <li class="nav-item dropdown">
-                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                        data-bs-toggle="dropdown">
-
-                                        <span class="user-content droparrow droparrow">
-                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                    <a class="amargin user-link nav-link" href="javascript:void(0)"
+                                        @can('has-dynamic-permission', 'orders_list.order_status') data-bs-toggle="dropdown"
+                                        @endcan>
+                                        <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'orders_list.order_status')
+                                                    style="opacity: 0.6;" @endcannot>
+                                            <div>
+                                                <img src="{{ asset('assets/img/downarrow.png') }}">
+                                            </div>
                                         </span>
                                     </a>
                                     <div class="dropdown-menu menu-drop-user">
@@ -308,9 +311,19 @@
                                 </li>
                             </td>
                             <td class="btntext">
-                                <a href="{{ route('admin.service_orders.show', $parcel->id) }}"> <button
-                                        class=orderbutton><img
-                                            src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
+                              @can('has-dynamic-permission', 'orders_list.order_details')
+                                <a href="{{ route('admin.service_orders.show', $parcel->id) }}">
+                                        <button class="orderbutton">
+                                            <img src="{{ asset('assets/img/ordereye.png') }}">
+                                        </button>
+                                    </a>
+                                @else
+                                    <a href="javascript:void(0)">
+                                        <button class="orderbutton" style="opacity: 0.6;">
+                                            <img src="{{ asset('assets/img/ordereye.png') }}">
+                                        </button>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                     @empty

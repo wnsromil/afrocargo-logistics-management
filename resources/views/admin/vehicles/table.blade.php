@@ -57,16 +57,21 @@
                                             class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
+                                            @can('has-dynamic-permission', 'vehicle_manage.edit')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.vehicle.edit', $vehicle->id) }}"><i
                                                         class="far fa-edit me-2"></i>Edit</a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'vehicle_manage.show')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'vehicle_manage.vehicle_status')
                                             @if($vehicle->status == 'Active')
                                                 <li>
                                                     <a class="dropdown-item deactivate" href="javascript:void(0)"
@@ -82,7 +87,7 @@
                                                     </a>
                                                 </li>
                                             @endif
-
+                                              @endcan
                                         </ul>
                                     </div>
                                 </div>

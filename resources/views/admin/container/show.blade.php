@@ -302,7 +302,9 @@
 
                 <!-- Action Buttons -->
                 <div class="text-end not-for-print">
+                    @can('has-dynamic-permission', 'container_list.edit')
                     <a href="{{ route('admin.container.edit', $vehicle->id) }}" class="btn btn-primary me-2">Edit</a>
+                    @endcan
                 </div>
             </div>
         </div>

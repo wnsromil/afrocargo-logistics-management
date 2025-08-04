@@ -69,9 +69,14 @@
 
                             <td>---</td> {{-- Dropdowns/history actions skip kar sakte ho agar zarurat nahi --}}
                             <td class="btntext">
-                                <button
+                             @can('has-dynamic-permission', 'container_received_history_list.order_details')
+                                  <button
                                     onClick="redirectTo('{{route('admin.container.orders.percel.list', [$container_history->id ?? 0, 'Arrived'])}}')"
                                     class=orderbutton><img src="{{ asset('assets/img/ordereye.png') }}"></button>
+                                @else
+                                    <button style="opacity: 0.6;" class=orderbutton><img
+                                            src="{{asset('assets/img/ordereye.png')}}"></button>
+                                @endcan
                             </td>
                         </tr>
                     @empty

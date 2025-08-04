@@ -33,11 +33,10 @@ class RoleManagementController extends Controller
         $role = $request->input('role');
         $warehouse_id = $request->input('warehouse_id');
 
+        // Sync roles
         $roleMap = Role::where('name', '!=', 'admin')->pluck('name', 'id')->toArray();
-
         foreach ($roleMap as $id => $roleName) {
             $users = User::where('role_id', $id)->get();
-
             foreach ($users as $user) {
                 if (!$user->hasRole($roleName)) {
                     $user->assignRole($roleName);
@@ -45,6 +44,7 @@ class RoleManagementController extends Controller
             }
         }
 
+        // Load active warehouses
         $warehouses = Warehouse::where('status', 'Active')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('id', $this->user->warehouse_id);
@@ -52,26 +52,27 @@ class RoleManagementController extends Controller
             ->select('id', 'warehouse_name')
             ->get();
 
+        // Load permissions
         $permissions = Permission::orderBy('name')->get();
         $selectedPermission = $request->input('permission');
 
-        // User Query with Search and Filter
+        // User listing with filters
         $users = User::with(['roles', 'permissions'])
             ->whereHas('roles', function ($q) {
-                $q->whereIn('id', [4,2]); // Exclude admin
+                $q->whereIn('id', [4, 2]); // Only specific roles
             })
-            ->when($query, function ($q) use ($query) {
-                $q->where(function ($subQuery) use ($query) {
-                    $subQuery->where('name', 'like', "%{$query}%")
-                        ->orWhere('last_name', 'like', "%{$query}%")
-                        ->orWhere('unique_id', 'like', "%{$query}%")
-                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%{$query}%"]);
-                });
-            })
-            ->when($query, function ($q) use ($query) {
-                $q->orWhereHas('permissions', function ($permQ) use ($query) {
-                    $permQ->where('name', 'like', "%{$query}%");
-                });
+            ->where(function ($q) use ($query) {
+                if ($query) {
+                    $q->where(function ($subQuery) use ($query) {
+                        $subQuery->where('name', 'like', "%{$query}%")
+                            ->orWhere('last_name', 'like', "%{$query}%")
+                            ->orWhere('unique_id', 'like', "%{$query}%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%{$query}%"]);
+                    })
+                        ->orWhereHas('permissions', function ($permQ) use ($query) {
+                            $permQ->where('name', 'like', "%{$query}%");
+                        });
+                }
             })
             ->when($selectedPermission, function ($query) use ($selectedPermission) {
                 $query->whereHas('permissions', function ($q) use ($selectedPermission) {
@@ -93,7 +94,6 @@ class RoleManagementController extends Controller
 
         return view('admin.user_role.index', compact('users', 'warehouses', 'permissions', 'selectedPermission'));
     }
-
 
 
     /**

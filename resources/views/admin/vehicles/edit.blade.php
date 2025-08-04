@@ -281,7 +281,9 @@
         <div class="add-customer-btns text-end">
             <button type="button" onclick="redirectTo('{{route('admin.vehicle.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>
+            @can('has-dynamic-permission', 'vehicle_manage.edit')    
             <button type="submit" class="btn btn-primary ">Update</button>
+            @endcan
         </div>
     </form>
 

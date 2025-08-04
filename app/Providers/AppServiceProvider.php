@@ -11,7 +11,8 @@ use \App\Models\ContainerCompany;
 use \App\Models\ParcelStatus;
 use App\Models\User;
 use App\Observers\UserObserver;
-
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -77,5 +78,29 @@ class AppServiceProvider extends ServiceProvider
         View::share('viewParcelStatus', $ParcelStatus);
         View::share('viewSupplyParcelStatus', $SupplyParcelStatus);
         View::share('containerParcelStatus', $ContainerParcelStatus);
+
+        // Step 1: Ek universal dynamic gate define karo
+        Gate::define('has-dynamic-permission', function ($user, $permissionName) {
+
+            // Step 2: Agar user admin hai (role_id = 1), sab allowed
+            if ($user->role_id == 1) {
+                return true;
+            }
+
+            // Step 3: Manual DB check (model_has_permissions + permissions)
+            $permissionId = DB::table('permissions')
+                ->where('name', $permissionName)
+                ->value('id');
+
+            if (!$permissionId) {
+                return false; // Agar permission mili hi nahi
+            }
+
+            // Step 4: Check model_has_permissions table me user ke paas yeh permission hai ya nahi
+            return DB::table('model_has_permissions')
+                ->where('model_id', $user->id)
+                ->where('permission_id', $permissionId)
+                ->exists();
+        });
     }
 }

@@ -86,7 +86,6 @@
                                     <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                 </div>
                             </td>
-                         
                             <td>
                                 <div>
                                     {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
@@ -99,13 +98,14 @@
                             </td>
                             <td>
                                 <li class="nav-item dropdown">
-                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                        data-bs-toggle="dropdown">
-
-                                        <span class="user-content"
-                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                height: 26px;align-content: center;">
-                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                  <a class="amargin user-link nav-link" href="javascript:void(0)"
+                                        @can('has-dynamic-permission', 'supply_orders.order_status') data-bs-toggle="dropdown"
+                                        @endcan>
+                                        <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'supply_orders.order_status')
+                                                    style="opacity: 0.6;" @endcannot>
+                                            <div>
+                                                <img src="{{ asset('assets/img/downarrow.png') }}">
+                                            </div>
                                         </span>
                                     </a>
                                     <div class="dropdown-menu menu-drop-user">
@@ -166,9 +166,17 @@
                                 </li>
                             </td>
                             <td class="btntext">
+                              @can('has-dynamic-permission', 'supply_orders.order_details')
                                 <button onClick="redirectTo('{{route('admin.supply_orders.show', $parcel->id)}}')"
                                     class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                            </td>
+                                @else
+                                    <a href="javascript:void(0)">
+                                        <button class="orderbutton" style="opacity: 0.6;">
+                                            <img src="{{ asset('assets/img/ordereye.png') }}">
+                                        </button>
+                                    </a>
+                                @endcan
+                                </td>
                         </tr>
                     @empty
                         <tr>

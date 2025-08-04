@@ -75,16 +75,21 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
+                                             @can('has-dynamic-permission', 'container_list.edit')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.container.edit', $vehicle->id)}}"><i
                                                         class="far fa-edit me-2"></i>Update</a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'container_list.show')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.container.show', $vehicle->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
+                                             @endcan
+                                            @can('has-dynamic-permission', 'container_list.in_time')
                                             <li>
                                                 <a class="dropdown-item" data-bs-toggle="modal"
                                                     data-bs-target="#In_time_model" href="javascript:void(0);"
@@ -93,6 +98,8 @@
                                                     In Time
                                                 </a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'container_list.out_time')
                                             <li>
                                                 <a class="dropdown-item" data-bs-toggle="modal"
                                                     data-bs-target="#Out_time_model" href="javascript:void(0);"
@@ -101,7 +108,7 @@
                                                     Out Time
                                                 </a>
                                             </li>
-
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

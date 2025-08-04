@@ -202,12 +202,11 @@
                             placeholder="Enter License ID" value="{{ $id }}">
                         <div class="col-md-12">
                             <div class="add-customer-btns text-end">
-
                                 <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')"
                                     class="btn btn-outline-primary custom-btn">Cancel</button>
-
+                                @can('has-dynamic-permission', 'ship_to_customers_list.create')
                                 <button type="submit" class="btn btn-primary ">Submit</button>
-
+                                @endcan
                             </div>
                         </div>
                     </div>

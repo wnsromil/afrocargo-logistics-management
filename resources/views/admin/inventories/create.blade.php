@@ -658,7 +658,9 @@
             <div class="btnWrapper">
                 <button type="button" onclick="redirectTo('{{ route('admin.inventories.index') }}')"
                     class="btn btn-outline-primary custom-btn">Cancel</button>
+                @can('has-dynamic-permission', 'service_inventory_list.create')    
                 <button type="submit" class="btn btn-primary ">Submit</button>
+                @endcan
             </div>
         </div>
 

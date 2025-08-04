@@ -99,7 +99,9 @@
                 <div class="add-customer-btns text-end mt-3">
                     <button type="button" onclick="redirectTo('{{ route('admin.signature.index') }}')"
                         class="btn btn-outline-primary custom-btn">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    @can('has-dynamic-permission', 'signature_list.edit')
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    @endcan
                 </div>
             </div>
         </div>

@@ -225,9 +225,9 @@
 
             <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>
-
+            @can('has-dynamic-permission', 'drivers.create')
             <button type="submit" class="btn btn-primary ">Submit</button>
-
+            @endcan
         </div>
     </form>
 

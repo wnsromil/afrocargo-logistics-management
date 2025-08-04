@@ -28,6 +28,7 @@
                                             <td style="border: 1px solid #000;">{{ $item->in_out ?? '--' }}</td>
                                             <td style="border: 1px solid #000;">{{ $item->quantity ?? '--' }}</td>
                                             <td style="border: 1px solid #000;">
+                                                @can('has-dynamic-permission', 'driver_inventory.delete')
                                                 <form action="{{ route('admin.driver_inventory.destroy', $item->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
@@ -37,6 +38,7 @@
                                                         <img src="{{ asset('assets/img/Vector (13).png') }}" alt="Delete Icon">
                                                     </button>
                                                 </form>
+                                                @endcan 
                                             </td>
                                         </tr>
                                          <tr style="background-color: #fff;">
