@@ -9,6 +9,8 @@ use \App\Models\VehicleType;
 use \App\Models\Broker;
 use \App\Models\ContainerCompany;
 use \App\Models\ParcelStatus;
+use App\Models\User;
+use App\Observers\UserObserver;
 
 
 
@@ -27,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        User::observe(UserObserver::class);
 
         View::share('parcelStatuses', [
             'Pending',

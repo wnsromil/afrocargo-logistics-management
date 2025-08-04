@@ -54,7 +54,7 @@
                                 </div>
                             </td>
                             <td>
-                                {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
+                                {{ $parcel->warehouse->warehouse_name ?? "-"}}
                             </td>
                             <td>
                                 <div>{{ $parcel->created_at ? $parcel->created_at->format('m-d-Y') : '-' }}</div>

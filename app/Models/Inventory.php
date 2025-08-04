@@ -101,6 +101,13 @@ class Inventory extends Model
         );
     }
 
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->inventary_sub_type == "Supply" ? $this->retail_vaule_price: $value ?? $this->retail_shipping_price,
+        );
+    }
+
 
     protected static function booted()
     {

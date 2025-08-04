@@ -85,6 +85,7 @@
                                                 <i class="ti ti-mail me-2"></i>Send Email</a>
 
                                         </li>
+                                        @if(!empty($invoice->transport_type))
                                         <li>
 
                                             <a class="dropdown-item" title="Labels"
@@ -101,6 +102,7 @@
                                                 <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
 
                                         </li>
+                                        @endif
                                         <li>
                                             <a class="dropdown-item" title="Edit Invoice"
                                                 href="{{route('admin.invoices.edit',$invoice->id)}}"><i

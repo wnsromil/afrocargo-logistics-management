@@ -458,7 +458,7 @@ class InvoiceController extends Controller
         //
         $invoice = Invoice::with(['ParcelInventory', 'invoiceParcelData', 'deliveryAddress', 'pickupAddress', 'createdByUser', 'container', 'driver', 'invoiceParcelData', 'comments', 'individualPayment', 'barcodes', 'warehouse', 'claims'])->findOrFail($id);
 
-        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->first();
+        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest('id')->first();
 
         $deliveryAddress = $this->formatAddress($invoice->deliveryAddress, null, 'delivery');
         $pickupAddress  = $this->formatAddress($invoice->pickupAddress, null, 'pickup');
@@ -933,6 +933,12 @@ class InvoiceController extends Controller
 
     public function getOrderList(Request $request)
     {
+        $request->validate([
+            'invoice_type' => 'required|in:services,supplies',
+            'delivery_address_id' => 'required|numeric',
+            'delivery_address_id' => 'nullable|numeric'
+        ]);
+
         $parcelType = ['services' => 'Service', 'supplies' => 'Supply'];
         $invoice_type = $parcelType[$request->invoice_type] ?? 'Service';
 
@@ -941,17 +947,17 @@ class InvoiceController extends Controller
             'deliveryaddress',
             'ParcelInventory'
         ])
-            ->where('parcel_type', $invoice_type)
-            ->when('pickup_address_id', function ($query) use ($request) {
-                return $query->where('delivery_address_id', $request->pickup_address_id);
-                //note delivery_address_id is as pickup_address
-            })
-            ->when('delivery_address_id', function ($query) use ($request, $invoice_type) {
-                if ($invoice_type != 'Supply') {
-                    return $query->where('pickup_address_id', $request->delivery_address_id);
-                }
-                //note pickup_address_id is as delivery_address
-            })->get();
+        ->whereNull('invoice_id')
+        ->when($invoice_type != 'Supply', function ($query) use ($request) {
+            return $query->where('delivery_address_id', $request->pickup_address_id)
+            ->where('pickup_address_id', $request->delivery_address_id);
+            //note delivery_address_id is as pickup_address
+        })
+        ->when($invoice_type == 'Supply' && !empty($request->delivery_address_id), function ($query) use ($request) {
+            return $query->where('delivery_address_id', $request->delivery_address_id);
+        })
+        ->latest('id')
+        ->get();
 
 
 
@@ -959,11 +965,17 @@ class InvoiceController extends Controller
             $parcel->invoice_type = $invoice_type;
             $parcel->address_type = request()->address_type;
             $parcel->parcel_id = $parcel->id ?? null;
-            $parcel->invoice_custmore_type = $parcel->deliveryaddress->user ? $parcel->deliveryaddress->user->invoice_custmore_type : 'ship_to';
-            $parcel->invoice_custmore_id = $parcel->deliveryaddress->user ? $parcel->deliveryaddress->user->invoice_custmore_id : null;
+            $parcel->invoice_custmore_type = optional($parcel->deliveryaddress)->user ? optional($parcel->deliveryaddress->user)->invoice_custmore_type : 'ship_to';
+            $parcel->invoice_custmore_id = optional($parcel->deliveryaddress)->user ? optional($parcel->deliveryaddress->user)->invoice_custmore_id : null;
             $parcel->pickup_address = $this->formatAddress($parcel->pickupaddress, $parcel);
             $parcel->delivery_address = $this->formatAddress($parcel->deliveryaddress, $parcel);
+            $parcel->source_address =optional($parcel->pickupaddress)->address ?? optional($parcel->deliveryaddress)->address;
             return $parcel;
+        })->filter(function($i) use ($request) {
+            if($request->invoice_type == 'supplies'){
+                return (empty($i->transport_type) || $i->transport_type == 'null') && !empty($i->ParcelInventory) && empty($i->invoice_id);
+            }
+            return !empty($i->ParcelInventory) && empty($i->invoice_id);
         })->toArray();
 
 
@@ -1229,6 +1241,7 @@ class InvoiceController extends Controller
         // Update the associated invoice
         if ($validated['invoice_id']) {
             $invoice = Invoice::find($validated['invoice_id']);
+            $payment->warehouse_id = $invoice->warehouse_id;
             if ($invoice && empty($validated['current_balance']) && !isset($validated['current_balance'])) {
                 // Subtract payment from invoice balance
                 $newBalance = $invoice->balance - $validated['payment_amount'];
@@ -1260,6 +1273,7 @@ class InvoiceController extends Controller
                 $invoice->payment = ($invoice->payment ?? 0) + $paymentAmount;
 
                 $payment->payment_amount = $paymentAmount; //usd amont
+
                 $payment->save();
 
                 // If fully paid, update is_paid and status

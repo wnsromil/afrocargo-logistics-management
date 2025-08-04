@@ -30,6 +30,7 @@ class RoleManagementController extends Controller
         $query = $request->search;
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
+        $role = $request->input('role');
         $warehouse_id = $request->input('warehouse_id');
 
         $roleMap = Role::where('name', '!=', 'admin')->pluck('name', 'id')->toArray();
@@ -57,12 +58,13 @@ class RoleManagementController extends Controller
         // User Query with Search and Filter
         $users = User::with(['roles', 'permissions'])
             ->whereHas('roles', function ($q) {
-                $q->where('id', '!=', 1); // Exclude admin
+                $q->whereIn('id', [4,2]); // Exclude admin
             })
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('name', 'like', "%{$query}%")
                         ->orWhere('last_name', 'like', "%{$query}%")
+                        ->orWhere('unique_id', 'like', "%{$query}%")
                         ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%{$query}%"]);
                 });
             })
@@ -75,6 +77,12 @@ class RoleManagementController extends Controller
                 $query->whereHas('permissions', function ($q) use ($selectedPermission) {
                     $q->where('name', $selectedPermission);
                 });
+            })
+            ->when($role, function ($query) use ($role) {
+                return $query->where('role_id', $role);
+            })
+            ->when($warehouse_id, function ($query) use ($warehouse_id) {
+                return $query->where('warehouse_id', $warehouse_id);
             })
             ->latest('id')
             ->paginate($perPage, ['*'], 'page', $currentPage);
@@ -181,22 +189,4 @@ class RoleManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $parcel = Parcel::find($id);
-
-        ParcelHistory::create([
-            'parcel_id' => $parcel->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $parcel['customer_id'],
-            'warehouse_id' => $parcel['warehouse_id'],
-            'status' => 'Deleted',
-            'parcel_status' => 'Deleted',
-            'description' => collect($parcel)
-        ]);
-
-        $parcel->delete();
-        return redirect()->route('admin.user_role.index')
-            ->with('success', 'Order deleted successfully');
-    }
 }

@@ -30,7 +30,7 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.customer.index',
                 'active' => 'customer*,customer-shipTo',
                 'roles' => ['admin', 'warehouse_manager', 'driver'],
-                //'permissions' => ['customers.view'],
+                'permissions' => ['customers.view'],
             ],
             [
                 'title' => 'Warehouses',
@@ -188,7 +188,8 @@ class MenuSeeder extends Seeder
                 //'route' => 'admin.cbm_calculator.freight_Calculator',
                 'route' => '#',
                 'active' => 'cbm_calculator*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['cbm_calculator.view'],
             ],
         ];
 

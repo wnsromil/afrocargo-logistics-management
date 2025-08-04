@@ -83,7 +83,7 @@ class SettingsHelper
         return $countries;
     }
 
-    public static function ActiveWarehouseContries()
+    public static function ActiveWarehouseContries($warehouseId=false)
     {
 
 
@@ -91,6 +91,9 @@ class SettingsHelper
         return Warehouse::leftJoin('countries', 'warehouses.country_id', '=', 'countries.name')
             ->where('warehouses.status', 'Active')
             ->select('warehouses.*', 'countries.id as countryId', 'countries.name', 'countries.iso2', 'countries.iso3', 'countries.phonecode', 'countries.currency', 'countries.currency_symbol')
+            ->when($warehouseId && is_array($warehouseId),function($q) use($warehouseId){
+                return $q->whereIn('warehouses.id',$warehouseId);
+            })
             ->get();
     }
     public static function getNearbyWarehouseDriverIds($lat, $lng, $nearestWarehouseId =null, $radius = 50)
@@ -265,13 +268,12 @@ class SettingsHelper
             'destination_address' => optional($invoice->deliveryAddress)->address,
             'destination_user_name' => optional($invoice->deliveryAddress)->full_name,
             'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
-            'pickup_address_id' => optional($invoice->deliveryAddress)->id,
-            'delivery_address_id' => optional($invoice->pickupAddress)->id,
-            'customer_id' => optional($invoice->pickupAddress)->user_id ?? null,
+            'pickup_address_id' => optional($invoice->pickupAddress)->id,
+            'delivery_address_id' => optional($invoice->deliveryAddress)->id ?? optional($invoice->pickupAddress)->id,
             'ship_customer_id' => optional($invoice->deliveryAddress)->user_id ?? null,
             'pickup_time' => now(),
             'pickup_date' => now(),
-            'customer_id' => $invoice->customer_id ?? auth()->id(),
+            'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id ?? null,
             'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid',
             'invoice_id'=>$invoice_id,
             'status' => 4,
@@ -279,6 +281,8 @@ class SettingsHelper
         if($invoice->transport_type){
             $validatedData['transport_type'] = $invoice->transport_type;
         }
+
+        $validatedData['warehouse_id'] = $invoice->warehouse_id ?? null;
 
         if (empty($invoice->parcel_id)) {
 
@@ -290,12 +294,16 @@ class SettingsHelper
             if (!empty($invoice->arrived_warehouse_id) && Warehouse::where('id', $invoice->arrived_warehouse_id)->exists()) {
                 $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
             }
+            $validatedData['delivery_type'] = 'self';
+            $invoice->delivery_type = 'self';
+            $validatedData['driver_id'] = $invoice->driver_id ?? null;
+
             $parcel = Parcel::create($validatedData);
 
             $invoice->update(['parcel_id' => $parcel->id]);
         } else {
             $parcel = Parcel::find($invoice->parcel_id);
-            $validatedData['delivery_type'] = 'self';
+
             $parcel->update($validatedData);
         }
         $qty = 0;
@@ -333,7 +341,7 @@ class SettingsHelper
                                 'total' => $item['total'] ?? 0,
                             ]
                         );
-                if(!empty($invoice->barcodes)){
+                if(!empty($invoice->barcodes) && !empty($invoice->transport_type)){
                     for ($i=0; $i < $item['qty']; $i++) {
                         store_barcode([
                             'parcel_id' => $invoice->parcel_id,
@@ -351,6 +359,8 @@ class SettingsHelper
         }
 
         $invoice->total_qty = $qty;
+        $invoice->customer_id = optional($invoice->pickupAddress)->user_id ?? null;
+        $invoice->ship_customer_id = optional($invoice->deliveryAddress)->user_id ?? null;
         $invoice->save();
 
 
@@ -360,11 +370,29 @@ class SettingsHelper
             ParcelHistory::create([
                 'parcel_id' => $parcel->id,
                 'created_user_id' => auth()->id(),
-                'customer_id' => $invoice->customer_id ?? optional($invoice->deliveryAddress)->user_id,
+                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                'warehouse_id' => $invoice->warehouse_id,
+                'status' => $status,
+                'parcel_status' => 1,
+                'description' => []
+            ]);
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => auth()->id(),
+                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                'warehouse_id' => $invoice->warehouse_id,
+                'status' => $status,
+                'parcel_status' => 3,
+                'description' => []
+            ]);
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => auth()->id(),
+                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
                 'warehouse_id' => $invoice->warehouse_id,
                 'status' => $status,
                 'parcel_status' => 4,
-                'description' => $parcel
+                'description' => []
             ]);
         }
 

@@ -22,10 +22,7 @@ use App\Models\{
     Invoice,
     Country,
     Address,
-    InvoiceComment,
-    Notification,
-    NotificationParcelMessage
-
+    InvoiceComment
 };
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
@@ -128,59 +125,6 @@ class InvoiceController extends Controller
         $invoice->save();
         $invoice->delete();
 
-         if (auth()->user()->role_id != 1) {
-            $notificationInvoiceDelete = NotificationParcelMessage::find(38);
-
-            $DriverData = User::where('id', auth()->id())->with('warehouse')->first();
-
-            $titleInvoiceDelete = str_replace(
-                '{invoice_id}',
-                $invoice->invoice_no ?? '',
-                $notificationInvoiceDelete->title
-            );
-
-            $bodyInvoiceDelete = str_replace(
-                ['{driver_name}', '{warehouse_name}', '{invoice_id}'],
-                [
-                    $DriverData->name ?? '' ." " . $DriverData->last_name ?? '',
-                    $DriverData->warehouse->warehouse_name ?? '',
-                    $invoice->invoice_no ?? ''
-                ],
-                $notificationInvoiceDelete->message
-            );
-
-            Notification::create([
-                'user_id' => 1,
-                'warehouse_id' => auth()->user()->warehouse_id,
-                'title' => $titleInvoiceDelete,
-                'message' => $bodyInvoiceDelete,
-                'notification_for' => 'Admin',
-                'role' => 'Admin',
-                'type' => 'Invoice Delete',
-            ]);
-
-            User::where('role_id', 1)->increment('notification_read', 1);
-        }
-
-        $time = Carbon::now()->format('h:i A');
-        $html = "
-            <div class=\"col-md-12\">
-                <div class=\"card activityCard\">
-                    <div class=\"card-body\">
-                        <div class=\"d-flex\">
-                            <i class=\"ti ti-clock-filled\"></i>
-                            <div>
-                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Invoice Deleted</label></p>
-                               <p class=\"col737 fs_18 fw_500\">Invoice ID — <label class=\"col00 mb-0\">{$invoice->invoice_no}</label></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            ";
-
-        storeDriverLog($html, auth()->user()->id, 'Invoice Deleted');
-
         return response()->json([
             'status' => true,
             'message' => 'Invoice deleted successfully',
@@ -231,14 +175,14 @@ class InvoiceController extends Controller
             });
         }
         $query->when($request->input('customer_id'), function ($q) use ($request) {
-            
+
             return $q->whereHas('pickupAddress', function ($q) use ($request) {
                         $q->where('user_id', $request->input('customer_id'));
                     })
             ->orWhereHas('deliveryAddress', function ($q) use ($request) {
                         $q->where('user_id', $request->input('customer_id'));
                     });
-            
+
 
         })->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
@@ -295,10 +239,10 @@ class InvoiceController extends Controller
             }
         }
         $invoice = Invoice::with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->where('id',$id)->first();
-        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->get();
+        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest('id')->get();
 
         // return view('admin.Invoices.pdf.invoicepdf', compact('invoice', 'invoiceHistory'));
-        
+
         if($request->type == 'page'){
             return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
         }
@@ -316,6 +260,7 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
             ]);
+            $pdf->setPaper([0, 0, 288, 432]);
             // Generate a filename
             $filename = 'invoice-' . $invoice->invoice_no . '.pdf';
         }else{
@@ -324,22 +269,24 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
             ]);
+            $pdf->setPaper('A4', 'portrait');
 
             // Generate a filename
             $filename = 'labels-' . $invoice->invoice_no . '.pdf';
         }
-        
+
 
 
         // Set paper options
-        $pdf->setPaper('A4', 'portrait');
+        //
+
 
         // $pdf->setPaper('A4', 'landscape');
 
         // First return the PDF as a response to load it
         // Then you can call download() on the client side if needed
         return $pdf->stream($filename);
-        
+
         // Alternatively, if you want to force download immediately:
         // return $pdf->download($filename);
 
@@ -400,11 +347,11 @@ class InvoiceController extends Controller
         }
 
         if($action == 'generate') {
-            for ($i=0; $i < $qty; $i++) { 
+            for ($i=0; $i < $qty; $i++) {
                 store_barcode($barcodeData);
             }
         }
-        
+
 
         return response()->json([
             'status' => 'success',
@@ -416,7 +363,7 @@ class InvoiceController extends Controller
     public function invoiceOrderCreateService(Request $request)
     {
         // return $request->all();
-        
+
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
             'customer_id' => 'required|exists:users,id',
@@ -477,10 +424,10 @@ class InvoiceController extends Controller
                 'default_address' => 'Yes',
             ]);
             }
-            
+
         }
 
-        $pickup_address = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first(); 
+        $pickup_address = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first();
 
         if(empty($pickup_address)){
             $pickup_user = User::where('id',$request->customer_id)->first();
@@ -504,13 +451,13 @@ class InvoiceController extends Controller
                 ]);
             }
         }
-        
-        
+
+
         $invoice->generated_by = \Auth::user()->role ?? 'admin';
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
-        $invoice->delivery_address_id = $delivery_address ? $delivery_address->id : null; 
-        $invoice->pickup_address_id = $pickup_address ? $pickup_address->id : null; 
+        $invoice->delivery_address_id = $delivery_address ? $delivery_address->id : null;
+        $invoice->pickup_address_id = $pickup_address ? $pickup_address->id : null;
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
@@ -523,7 +470,7 @@ class InvoiceController extends Controller
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
         $invoice->duedaterange = $request->pickup_time;
-        $invoice->currentdate = $request->pickup_date; 
+        $invoice->currentdate = $request->pickup_date;
         $invoice->warehouse_id = $this->user->warehouse_id;
         $invoice->driver_id = auth()->id();
         if($request->container_id){
@@ -549,7 +496,7 @@ class InvoiceController extends Controller
         if($request->arrived_warehouse_id){
             $invoice->arrived_warehouse_id = $request->arrived_warehouse_id;
         }
-    
+
         $invoice->save();
 
         $validated =[
@@ -578,13 +525,13 @@ class InvoiceController extends Controller
         setting()->saveInvoiceHistory($invoice->id,"updated");
 
         return $this->sendResponse($invoice, 'Invoice saved successfully.');
-   
+
     }
 
     public function invoiceUpdate(Request $request, $id)
     {
         // return $request->all();
-        
+
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
             'customer_id' => 'required|exists:users,id',
@@ -612,16 +559,16 @@ class InvoiceController extends Controller
         ]);
 
         $invoiceItems = $request->input('customer_subcategories_data');
-        
+
         $invoice = Invoice::findOrFail($id);
         $invoice->generated_by = \Auth::user()->role ?? $invoice->generated_by;
         $invoice->invoce_type = $request->invoce_type;
-        
+
 
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
         $invoice->delivery_address_id = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first()->id ?? null;
-        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null; 
+        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null;
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
@@ -634,7 +581,7 @@ class InvoiceController extends Controller
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
         $invoice->duedaterange = $request->pickup_time;
-        $invoice->currentdate = $request->pickup_date; 
+        $invoice->currentdate = $request->pickup_date;
         $invoice->warehouse_id = $this->user->warehouse_id;
         $invoice->driver_id = auth()->id();
         if($request->container_id){
@@ -665,9 +612,9 @@ class InvoiceController extends Controller
         setting()->saveInvoiceHistory($invoice->id,"updated");
 
         return $this->sendResponse($invoice, 'Invoice updated successfully.');
-   
+
     }
-    
+
     protected function individualPayment($validated){
         // Save individual payment
         $payment = IndividualPayment::create($validated);
@@ -675,6 +622,7 @@ class InvoiceController extends Controller
         // Update the associated invoice
         if ($validated['invoice_id']) {
             $invoice = Invoice::find($validated['invoice_id']);
+            $payment->warehouse_id = $invoice->warehouse_id;
             if ($invoice) {
                 // Subtract payment from invoice balance
                 $newBalance = $invoice->balance - $validated['payment_amount'];

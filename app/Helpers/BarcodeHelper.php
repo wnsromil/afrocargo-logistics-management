@@ -6,7 +6,7 @@ use App\Models\Barcode;
 if (!function_exists('generate_barcode_number')) {
     /**
      * Generate a unique barcode number
-     * 
+     *
      * @return string
      */
     function generate_barcode_number()
@@ -22,16 +22,19 @@ if (!function_exists('generate_barcode_number')) {
 if (!function_exists('generate_barcode_image')) {
     /**
      * Generate barcode image HTML
-     * 
+     *
      * @param string $barcodeNumber
      * @param string $type
      * @param int $widthFactor
      * @param int $height
      * @return string
      */
-    function generate_barcode_image($barcodeNumber, $type = 'C128', $widthFactor = 2, $height = 50)
+    function generate_barcode_image($barcodeNumber, $type = 'C128', $widthFactor = 2, $height = 50,$barColor = false)
     {
         $generator = new DNS1D();
+        if($barColor){
+            $generator->setColor($barColor);
+        }
         return $generator->getBarcodeHTML($barcodeNumber, $type, $widthFactor, $height);
     }
 }
@@ -39,7 +42,7 @@ if (!function_exists('generate_barcode_image')) {
 if (!function_exists('store_barcode')) {
     /**
      * Store barcode in database
-     * 
+     *
      * @param array $data
      * @return array
      */
@@ -71,7 +74,7 @@ if (!function_exists('store_barcode')) {
 if (!function_exists('generate_and_store_barcode')) {
     /**
      * Generate and store barcode (all-in-one function)
-     * 
+     *
      * @param array $data
      * @return array
      */

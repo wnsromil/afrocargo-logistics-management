@@ -335,8 +335,6 @@ $(document).ready(function () {
         }
 
         // --------------------------
-        $('#order_list').empty() // Clear existing options
-        $('#order_list_div').addClass('d-none');
         // Clear existing options
         $('#ship_customer').empty();
         // Add new options to the select element
@@ -462,6 +460,8 @@ $(document).ready(function () {
         if (customer.invoice_type != "Service" && customer.pickup_address) {
             setPickupDeleveryFormValue(customer.pickup_address);
             console.log("supply pickup_address", customer.pickup_address, data);
+
+            getOrderList();
         }
     });
 
@@ -491,40 +491,7 @@ $(document).ready(function () {
 
 
         if(customer){
-            $.ajax({
-                url: "/getOrderList",
-                type: "GET",
-                data: {
-                    pickup_address_id: $('input[name="pickup_address_id"]').val() ?? null,
-                    delivery_address_id: $('input[name="delivery_address_id"]').val() ?? null,
-                    invoice_type: invoce_type
-                },
-                success: function (response) {
-                    $('#order_list_div').removeClass('d-none');
-                    response.data.forEach(function(addr) {
-                        // Create option with text and tracking number as value
-                        let option = new Option(
-                            addr.tracking_number + ',' + addr.source_address,
-                            addr.tracking_number, // Use a unique identifier as value
-                            false,
-                            false
-                        );
-                        // Store the entire object as a data attribute
-                        $(option).data('object', addr);
-                        $('#order_list').append(option);
-                    });
-
-                    $('#order_list').val(null).trigger('change');
-                    $('#order_list').select2({
-                        placeholder: "Search Order"
-                    });
-                },
-                error: function (error) {
-                    $('#order_list').empty()
-                    $('#order_list_div').addClass('d-none');
-                    console.error("Error fetching customer details:", error);
-                },
-            });
+            getOrderList();
         }
 
         console.log("selected sipToAddress customer:", customer,sipToAddress);
@@ -582,132 +549,172 @@ $(document).ready(function () {
         }
     });
 
-    function dynamicInventoryTable(inventoryItems) {
-        // Clear existing rows
-        $("#dynamicTable tbody").empty();
-        if (inventoryItems && inventoryItems.length > 0) {
-            // Loop through inventory items and create rows
-            inventoryItems.forEach((item, index) => {
-                let newRow = `
-                <tr>
+
+
+});
+
+function getOrderList() {
+    $('#order_list').empty() // Clear existing options
+    $.ajax({
+            url: "/getOrderList",
+            type: "GET",
+            data: {
+                pickup_address_id: $('input[name="pickup_address_id"]').val() ?? null,
+                delivery_address_id: $('input[name="delivery_address_id"]').val() ?? null,
+                invoice_type: invoce_type
+            },
+            success: function (response) {
+                $('#order_list_div').removeClass('d-none');
+                response.data.forEach(function(addr) {
+                    // Create option with text and tracking number as value
+                    let option = new Option(
+                        addr.tracking_number + ', ' + addr.source_address,
+                        addr.tracking_number, // Use a unique identifier as value
+                        false,
+                        false
+                    );
+                    // Store the entire object as a data attribute
+                    $(option).data('object', addr);
+                    $('#order_list').append(option);
+                });
+
+                $('#order_list').val(null).trigger('change');
+                $('#order_list').select2({
+                    placeholder: "Search Order"
+                });
+            },
+            error: function (error) {
+                $('#order_list').empty()
+                $('#order_list_div').addClass('d-none');
+                console.error("Error fetching customer details:", error);
+            },
+        });
+}
+function dynamicInventoryTable(inventoryItems) {
+    // Clear existing rows
+    $("#dynamicTable tbody").empty();
+    if (inventoryItems && inventoryItems.length > 0) {
+        // Loop through inventory items and create rows
+        inventoryItems.forEach((item, index) => {
+            let newRow = `
+            <tr>
+                <td class="mwidth open-supply-modal">
+                    <div class="d-flex align-items-center">
+                        <input type="text" name="supply_name" value="${
+                            item.supply_name || ""
+                        }" class="selected-supply-name form-control tdbor inputcolor">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal" class="btn iconbtn p-0">
+                            <i class="ti ti-chevron-down"></i>
+                        </button>
+                    </div>
+                    <input type="hidden" name="supply_id" value="${
+                        item.supply_id || ""
+                    }">
+                    <input type="hidden" name="inventory_id" value="${
+                        item.id || ""
+                    }">
+                </td>
+                <td><input type="text" class="form-control tdbor inputcolor qty-input" name="qty" value="${
+                    item.qty || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor" name="label_qty" value="${
+                    item.label_qty || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor" placeholder="" name="volume" value="${
+                    item.volume || 0
+                    }"></td>
+                <td>
+                    <div class="d-flex align-items-center priceInput">
+                        <input type="text" class="form-control inputcolor price-input" name="price" value="${
+                            item.price || 0
+                        }">
+                        <button type="button" class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button>
+                    </div>
+                </td>
+                <td><input type="text" class="form-control tdbor inputcolor value-input" name="value" value="${
+                    item.value || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor" name="ins" value="${
+                    item.ins || 0
+                }"></td>
+                <td class="d-none"><input type="text" class="form-control tdbor inputcolor discount-input" name="discount" value="${
+                    item.discount || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor tax-input" name="tax" value="${
+                    item.tax || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor total-input" name="total" value="${
+                    item.total || 0
+                }"></td>
+                <td>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                        <button type="button" class="btn btn-primary iconBtn addBtn ${
+                            index !== inventoryItems.length - 1
+                                ? "d-none"
+                                : ""
+                        }"><i class="ti ti-plus"></i></button>
+                        <button type="button" class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `;
+
+            $("#dynamicTable tbody").append(newRow);
+        });
+    } else {
+        $("#dynamicTable tbody")
+        .append(`<tr>
                     <td class="mwidth open-supply-modal">
                         <div class="d-flex align-items-center">
-                            <input type="text" name="supply_name" value="${
-                                item.supply_name || ""
-                            }" class="selected-supply-name form-control tdbor inputcolor">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal" class="btn iconbtn p-0">
+                            <input type="text" name="supply_name"
+                                class="selected-supply-name form-control tdbor inputcolor">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
+                                class="btn iconbtn p-0">
                                 <i class="ti ti-chevron-down"></i>
                             </button>
                         </div>
-                        <input type="hidden" name="supply_id" value="${
-                            item.supply_id || ""
-                        }">
-                        <input type="hidden" name="inventory_id" value="${
-                            item.id || ""
-                        }">
+                        <input type="hidden" name="supply_id">
+                        <input type="hidden" name="inventory_id">
                     </td>
-                    <td><input type="text" class="form-control tdbor inputcolor qty-input" name="qty" value="${
-                        item.qty || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" name="label_qty" value="${
-                        item.label_qty || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" placeholder="" name="volume" value="${
-                        item.volume || 0
-                        }"></td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="qty"></td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="label_qty"></td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="volume"></td>
                     <td>
-                        <div class="d-flex align-items-center priceInput">
-                            <input type="text" class="form-control inputcolor price-input" name="price" value="${
-                                item.price || 0
-                            }">
-                            <button type="button" class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button>
-                        </div>
+                        <div class="d-flex align-items-center priceInput"><input type="text"
+                                class="form-control inputcolor" placeholder="" name="price"><button
+                                type="button" class="btn btn-secondary p-0 flat-btn"><i
+                                    class="ti ti-circle-plus col737"></i></button></div>
                     </td>
-                    <td><input type="text" class="form-control tdbor inputcolor value-input" name="value" value="${
-                        item.value || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" name="ins" value="${
-                        item.ins || 0
-                    }"></td>
-                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor discount-input" name="discount" value="${
-                        item.discount || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor tax-input" name="tax" value="${
-                        item.tax || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor total-input" name="total" value="${
-                        item.total || 0
-                    }"></td>
+                    <td>
+                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="value">
+                    </td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="ins"></td>
+                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="discount"></td>
+                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
+                            name="tax"></td>
+                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="total"></td>
                     <td>
                         <div class="text-center">
-                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                            <button type="button" class="btn btn-primary iconBtn addBtn ${
-                                index !== inventoryItems.length - 1
-                                    ? "d-none"
-                                    : ""
-                            }"><i class="ti ti-plus"></i></button>
-                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
+                                    class="ti ti-minus"></i></button>
+                            <button type="button" class="btn btn-primary iconBtn addBtn"><i
+                                    class="ti ti-plus"></i></button>
+                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
+                                    class="ti ti-edit"></i></button>
                         </div>
                     </td>
-                </tr>
-            `;
 
-                $("#dynamicTable tbody").append(newRow);
-            });
-        } else {
-            $("#dynamicTable tbody").append(`<tr>
-                                    <td class="mwidth open-supply-modal">
-                                        <div class="d-flex align-items-center">
-                                            <input type="text" name="supply_name"
-                                                class="selected-supply-name form-control tdbor inputcolor">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
-                                                class="btn iconbtn p-0">
-                                                <i class="ti ti-chevron-down"></i>
-                                            </button>
-                                        </div>
-                                        <input type="hidden" name="supply_id">
-                                        <input type="hidden" name="inventory_id">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="qty"></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="label_qty"></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="volume"></td>
-                                    <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text"
-                                                class="form-control inputcolor" placeholder="" name="price"><button
-                                                type="button" class="btn btn-secondary p-0 flat-btn"><i
-                                                    class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="value">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="ins"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="discount"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
-                                            name="tax"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="total"></td>
-                                    <td>
-                                        <div class="text-center">
-                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
-                                                    class="ti ti-minus"></i></button>
-                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i
-                                                    class="ti ti-plus"></i></button>
-                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
-                                                    class="ti ti-edit"></i></button>
-                                        </div>
-                                    </td>
-
-                                </tr>`);
-        }
+                </tr>`);
     }
-
-});
+}
 
 function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
     console.log("customer=>", customer);
@@ -831,15 +838,6 @@ $("#auto_invoice_gen").on("click", function () {
     }
 });
 
-// Helper to parse supply data from option
-function getSupplyData(option) {
-    try {
-        return JSON.parse(option.getAttribute("data-supply"));
-    } catch (e) {
-        return {};
-    }
-}
-
 // total and grand total
 
 $(document).on("click", ".open-supply-modal", function () {
@@ -858,7 +856,7 @@ $(document).on("click", ".confirm-supply", function () {
     if (selectedItem && currentRow) {
         currentRow.find('input[name="supply_id"]').val(selectedItem.id);
         currentRow.find(".selected-supply-name").val(selectedItem.name);
-        currentRow.find('input[name="valume"]').val(selectedItem.valume ?? 0);
+        currentRow.find('input[name="volume"]').val(selectedItem.volume_total ?? 0);
 
         currentRow.find('input[name="qty"]').val(1);
         currentRow.find('input[name="label_qty"]').val(selectedItem.label_qty ?? '-');
@@ -874,14 +872,21 @@ $(document).on("click", ".confirm-supply", function () {
     }
 });
 
-$("#supplySelector").on("change", function () {
-    let selectedOption = this.options[this.selectedIndex];
-    let selectedItem = getSupplyData(selectedOption);
+$("#supplySelector").on("change", function (e) {
+    const selectedId = $("#supplySelector").val();
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
+
+    // console.log('selectedItem',selectedItem);
 
     if (selectedItem) {
         $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
         $("#volume_price_display").text(selectedItem.volume_price ?? 0);
-        $("#price_display").text(selectedItem.price ?? 0);
+        $("#price_display").text(selectedItem.price ?? 1);
         $("#height_display").text(selectedItem.height ?? "N/A");
         $("#width_display").text(selectedItem.width ?? "N/A");
         $("#weight_display").text(selectedItem.weight ?? "N/A");
@@ -894,6 +899,7 @@ $("#supplySelector").on("change", function () {
         $("#weight_display").text("");
     }
 });
+
 
 // Open modal and set selected supply
 document
@@ -933,6 +939,30 @@ $("#supplyModal").on("shown.bs.modal", function () {
     let selector = document.getElementById("supplySelector");
     if (selector) {
         selector.dispatchEvent(new Event("change"));
+    }
+
+    const selectedId = $("#supplySelector").val();
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
+
+    if (selectedItem) {
+        $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
+        $("#volume_price_display").text(selectedItem.volume_price ?? 0);
+        $("#price_display").text(selectedItem.price ?? 1);
+        $("#height_display").text(selectedItem.height ?? "N/A");
+        $("#width_display").text(selectedItem.width ?? "N/A");
+        $("#weight_display").text(selectedItem.weight ?? "N/A");
+    } else {
+        $("#volume_total_display").text("");
+        $("#volume_price_display").text(0);
+        $("#price_display").text(0);
+        $("#height_display").text("");
+        $("#width_display").text("");
+        $("#weight_display").text("");
     }
 });
 
@@ -1578,51 +1608,51 @@ $(document)
     });
 
 
-    if ($(".datetimepickerDefault").length > 0) {
-        $(".datetimepickerDefault").datetimepicker({
-            format: "YYYY/MM/DD",
-            icons: {
-                up: "fas fa-angle-up",
-                down: "fas fa-angle-down",
-                next: "fas fa-angle-right",
-                previous: "fas fa-angle-left",
-            },
-        });
-    }
+if ($(".datetimepickerDefault").length > 0) {
+    $(".datetimepickerDefault").datetimepicker({
+        format: "YYYY/MM/DD",
+        icons: {
+            up: "fas fa-angle-up",
+            down: "fas fa-angle-down",
+            next: "fas fa-angle-right",
+            previous: "fas fa-angle-left",
+        },
+    });
+}
 
-    // 🖼 Image Preview Function
-    function previewImage(input, imageType) {
-        if (input.files && input.files[0]) {
-            let file = input.files[0];
+// 🖼 Image Preview Function
+function previewImage(input, imageType) {
+    if (input.files && input.files[0]) {
+        let file = input.files[0];
 
-            // ✅ Sirf PNG ya JPG Allow Hai
-            if (file.type === "image/png" || file.type === "image/jpeg") {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('preview_' + imageType).src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert("Only PNG & JPG images are allowed!");
-                input.value = ""; // Invalid file ko remove karna
-            }
+        // ✅ Sirf PNG ya JPG Allow Hai
+        if (file.type === "image/png" || file.type === "image/jpeg") {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('preview_' + imageType).src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Only PNG & JPG images are allowed!");
+            input.value = ""; // Invalid file ko remove karna
         }
     }
+}
 
-    // ❌ Remove Image Function
-    function removeImage(imageType) {
-        document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
-        document.getElementById('file_' + imageType).value = "";
-    }
+// ❌ Remove Image Function
+function removeImage(imageType) {
+    document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+    document.getElementById('file_' + imageType).value = "";
+}
 
 
-    function phonevalidate(self){
-        let length = $(self).select('option:selected').data('length');
-        let phoneNumber = $(self).val();
-    }
-    showLoader();
-    $(window).on('load', function () {
-        setTimeout(() => {
-            hideLoader();
-        }, 900);
-    });
+function phonevalidate(self){
+    let length = $(self).select('option:selected').data('length');
+    let phoneNumber = $(self).val();
+}
+showLoader();
+$(window).on('load', function () {
+    setTimeout(() => {
+        hideLoader();
+    }, 300);
+});
