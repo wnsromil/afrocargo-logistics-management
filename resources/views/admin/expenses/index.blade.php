@@ -18,7 +18,7 @@
         </div>
     </x-slot>
 
-     @php
+    @php
         $warehouseIdFromUrl = request()->query('warehouse_id');
         $authUser = auth()->user();
     @endphp
@@ -62,7 +62,7 @@
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
-            
+
             <div class="col-md-3 mb-3">
                 <label>Date</label>
                 <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
@@ -82,7 +82,7 @@
                 </select>
             </div>
 
-              <div class="col-md-3 mb-3">
+            <div class="col-md-3 mb-3">
                 <label>Type</label>
                 <select class="js-example-basic-single select2" name="type">
                     <option value="">Select Type</option>
@@ -92,6 +92,19 @@
                     </option>
                 </select>
             </div>
+
+            <div class="col-md-3 mb-3">
+                <label>By User</label>
+                <select name="user_id" class="js-example-basic-single select2 form-cs">
+                    <option value="">Select User</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}" {{ request()->query('user_id') == $user->id ? 'selected' : '' }}>
+                            {{ $user->name ?? '' }} {{ $user->last_name ?? '' }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="col-12">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>
@@ -140,7 +153,8 @@
                                     <td>
                                         <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="{{  $expense->description ?? '--' }}">
-                                            {{  $expense->description ?? '--' }}</p>
+                                            {{  $expense->description ?? '--' }}
+                                        </p>
 
                                     </td>
                                     {{-- <td>
@@ -169,29 +183,28 @@
                                                         </a>
                                                     </li> --}}
                                                     {{-- @if($expense->status == 'Active')
-                                                        <li>
-                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                data-id="{{ $expense->id }}" data-status="Inactive">
-                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                            </a>
-                                                        </li>
+                                                    <li>
+                                                        <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                            data-id="{{ $expense->id }}" data-status="Inactive">
+                                                            <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                        </a>
+                                                    </li>
                                                     @elseif($expense->status == 'Inactive')
-                                                        <li>
-                                                            <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                data-id="{{ $expense->id }}" data-status="Active">
-                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                            </a>
-                                                        </li>
+                                                    <li>
+                                                        <a class="dropdown-item activate" href="javascript:void(0)"
+                                                            data-id="{{ $expense->id }}" data-status="Active">
+                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                        </a>
+                                                    </li>
                                                     @endif --}}
-                                                        <form
-                                                            action="{{ route('admin.expenses.destroy', $expense->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="dropdown-item"
-                                                                onclick="deleteData(this,'Wait! Are you sure you want to remove this expense?')"><i
-                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
-                                                        </form>
+                                                    <form action="{{ route('admin.expenses.destroy', $expense->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this,'Wait! Are you sure you want to remove this expense?')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
                                                 </ul>
                                             </div>
                                         </div>
@@ -211,7 +224,8 @@
         <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
             <div class="col-md-6 d-flex p-2 align-items-center">
                 <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example" id="pageSizeSelect">
+                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
+                    id="pageSizeSelect">
                     <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                     <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
                     <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -225,7 +239,7 @@
                         {!! $expenses->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 

@@ -47,6 +47,13 @@ class NotificationParcelMessageSeeder extends Seeder
             ['title' => 'Container {container_id} is In Transit', 'message' => 'Container {container_id} has been marked as In Transit. Please track its movement and prepare for arrival.', 'type' => 'Warehouse Manager'],
             ['title' => 'Container {container_id} is on Customs Hold', 'message' => 'Container {container_id} has been held at customs. Further updates will be shared once clearance is processed.', 'type' => 'Warehouse Manager'],
             ['title' => 'Container {container_id} Released from Customs', 'message' => 'Container {container_id} has been successfully released from customs and is now cleared for further handling.', 'type' => 'Warehouse Manager'],
+            ['title' => 'Invoice {invoice_id} Deleted by Manager', 'message' => 'In warehouse {warehouse_name}, Manager {manager_name} has deleted invoice {invoice_id}.', 'type' => 'Manager',],
+            ['title' => 'Invoice {invoice_id} Restored by Manager', 'message' => 'In warehouse {warehouse_name}, Manager {manager_name} has restored invoice {invoice_id}.', 'type' => 'Manager',],
+            ['title' => 'Invoice {invoice_id} Permanently Deleted by Manager', 'message' => 'In warehouse {warehouse_name}, Manager {manager_name} has permanently deleted invoice #{invoice_id}.', 'type' => 'Manager',],
+            ['title' => 'Invoice {invoice_id} Deleted by Driver', 'message' => 'In warehouse {warehouse_name}, Driver {driver_name} has deleted invoice {invoice_id}.', 'type' => 'Driver',],
+            ['title' => 'Invoice {invoice_id} Restored by Driver', 'message' => 'In warehouse {warehouse_name}, Driver {driver_name} has restored invoice {invoice_id}.', 'type' => 'Driver',],['title' => 'Invoice {invoice_id} Permanently Deleted by Driver','message' => 'In warehouse {warehouse_name}, Driver {driver_name} has permanently deleted invoice #{invoice_id}.','type' => 'Driver',],
+            ['title' => 'Invoice {invoice_id} Permanently Deleted by Driver','message' => 'In warehouse {warehouse_name}, Driver {driver_name} has permanently deleted invoice #{invoice_id}.','type' => 'Driver',],
+
         ];
 
         foreach ($messages as $msg) {

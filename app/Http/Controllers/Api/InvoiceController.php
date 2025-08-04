@@ -622,6 +622,7 @@ class InvoiceController extends Controller
         // Update the associated invoice
         if ($validated['invoice_id']) {
             $invoice = Invoice::find($validated['invoice_id']);
+            $payment->warehouse_id = $invoice->warehouse_id;
             if ($invoice) {
                 // Subtract payment from invoice balance
                 $newBalance = $invoice->balance - $validated['payment_amount'];

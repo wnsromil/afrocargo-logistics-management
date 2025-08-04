@@ -11,7 +11,8 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Illuminate\Support\Facades\Log;
-
+use App\Models\DriverLog;
+use Illuminate\Support\Facades\Http;
 
 function isActive($urls, $class = 'active', $default = '')
 {
@@ -249,4 +250,46 @@ function numberFormat($value, $decimals = 2)
 
     // Otherwise, return the number as-is
     return (string)(floatval($value) + 0);
+}
+
+if (! function_exists('storeDriverLog')) {
+    /**
+     * Store driver log with given HTML, user ID and type
+     *
+     * @param string $html
+     * @param int $userId
+     * @param string $type
+     * @return DriverLog
+     */
+    function storeDriverLog(string $html, int $userId, string $type): DriverLog
+    {
+
+        $log = new DriverLog();
+        $log->user_id = $userId;
+        $log->type = $type;
+        $log->metadata = json_encode(['html' => $html]);
+        $log->save();
+
+        return $log;
+    }
+}
+
+if (!function_exists('sendWhataAppTemplate')) {
+    function sendWhataAppTemplate($toPhone)
+    {
+        $response = Http::withToken(env('WHATSAPP_TOKEN'))
+            ->post("https://graph.facebook.com/" . env('WHATSAPP_API_VERSION') . "/" . env('WHATSAPP_PHONE_ID') . "/messages", [
+                "messaging_product" => "whatsapp",
+                "to" => $toPhone,
+                "type" => "template",
+                "template" => [
+                    "name" => "hello_world",
+                    "language" => [
+                        "code" => "en_US"
+                    ]
+                ]
+            ]);
+
+        return $response->json();
+    }
 }

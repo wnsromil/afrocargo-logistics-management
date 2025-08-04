@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\VerifyAuthIp;
+use Illuminate\Support\Facades\Auth;
 
 class ApiAuthUserCheck
 {
@@ -16,6 +17,11 @@ class ApiAuthUserCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $user = Auth::user();
+        if (!in_array($user->role_id, [4, 3])) {
+            Auth::logout();
+            return response()->json(['error' => 'You have been logged out. Please log in again.'], 401);
+        }
 
         // $check = VerifyAuthIp::where([
         //     'user_id' => auth()->id(),
@@ -26,8 +32,8 @@ class ApiAuthUserCheck
         // ->whereNull('otp')               // OTP should be null
         // ->whereNull('otp_expire_at');      // OTP expiry should be null
         // // ->first();
-    
-            
+
+
         // if (!$check->exists()) {
 
         //     return response()->json(['error' => 'Unauthorized'], 401);

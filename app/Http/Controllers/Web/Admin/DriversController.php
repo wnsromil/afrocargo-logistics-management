@@ -16,11 +16,13 @@ use App\Models\{
     Vehicle,
     Availability,
     WeeklySchedule,
-    LocationSchedule
+    LocationSchedule,
+    DriverLog
 };
 use DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DriverMail;
+use Laravel\Passport\Token;
 
 use function Pest\Laravel\json;
 
@@ -220,9 +222,15 @@ class DriversController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        return view('admin.drivers.show', compact('user'));
+        // Unique types for this user
+        $types = DriverLog::where('user_id', $id)
+            ->select('type')
+            ->groupBy('type')
+            ->pluck('type');  // ye sirf array of unique types dega
+
+        return view('admin.drivers.show', compact('user', 'types'));
     }
 
 
@@ -295,7 +303,7 @@ class DriversController extends Controller
     {
         $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
         $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
-        
+
         $rules = [
             'warehouse_name' => 'required',
             'driver_name' => 'required|string',
@@ -419,6 +427,10 @@ class DriversController extends Controller
         if ($driver) {
             $driver->status = $request->status; // 1 = Active, 0 = Deactive
             $driver->save();
+
+             if ($request->status == 'Inactive') {
+                $driver->tokens()->update(['revoked' => true]);
+            }
 
             return response()->json(['success' => 'Status Updated Successfully']);
         }

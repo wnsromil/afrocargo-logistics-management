@@ -16,7 +16,7 @@
         </style>
     @endsection
     <x-slot name="header">
-        {{ __('Customer List') }}
+        {{ __('ShipTo Customer List') }}
     </x-slot>
     <x-slot name="cardTitle">
         <div class="d-flex topnavs justify-content-between">

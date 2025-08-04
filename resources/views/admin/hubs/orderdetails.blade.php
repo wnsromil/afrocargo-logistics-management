@@ -339,28 +339,8 @@
                                         <td>{{$parcelItem->qty ?? "0"}}</td>
                                         <td>${{ number_format($parcelItem->price ?? 0, 2)}}</td>
                                         <td>{{ucfirst(string: $parcelItem->quantity_type ?? "-")}}</td>
-                                        @php
-                                            $classValue = match ((string) $parcelItem->status) {
-                                                "1" => 'badge-pending',
-                                                "2" => 'badge-pickup',
-                                                "3" => 'badge-picked-up',
-                                                "4" => 'badge-arrived-warehouse',
-                                                "5" => 'badge-in-transit',
-                                                "8" => 'badge-arrived-final',
-                                                "9" => 'badge-ready-pickup',
-                                                "10" => 'badge-out-delivery',
-                                                "11" => 'badge-delivered',
-                                                "12" => 'badge-re-delivery',
-                                                "13" => 'badge-on-hold',
-                                                "14" => 'badge-cancelled',
-                                                "15" => 'badge-abandoned',
-                                                "21" => 'badge-picked-up',
-                                                "22" => 'badge-in-transit',
-                                                default => 'badge-pending',
-                                            };
-                                        @endphp
                                         <td>
-                                            <label class="{{ $classValue }}" for="status">
+                                            <label class="{{ $parcelItem->parcelStatus->class_name ?? null }}" for="status">
                                                 {{ $parcelItem->parcelStatus->status ?? '-' }}
                                             </label>
                                         </td>
@@ -374,7 +354,7 @@
 
                             </tbody>
                         </table>
-                        @if ($parcel->invoice_id)
+                        @if (!$parcel->invoice)
                             @include('admin.Invoices.modals.individual_payment_modal')
                         @endif
                     </div>

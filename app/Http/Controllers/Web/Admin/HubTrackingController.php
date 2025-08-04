@@ -33,6 +33,8 @@ class HubTrackingController extends Controller
         $warehouse_id = $request->input('warehouse_id');
         $fromWarehouse_id = $request->input('from_warehouse_id');
         $query = $request->search;
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
 
         // Search matching Vehicle IDs where vehicle_type = 1
         $matchedVehicleIds = collect();
@@ -54,7 +56,7 @@ class HubTrackingController extends Controller
             ->get();
 
         // Vehicle data from ContainerHistory
-        $vehicles = ContainerHistory::where('arrived_container', 'No')
+        $vehicles = ContainerHistory::where('arrived_container', 'No')->with(['container', 'driver'])
             ->when($warehouseId, function ($query, $warehouseId) {
                 return $query->where('warehouse_id', $warehouseId);
             })
@@ -68,8 +70,52 @@ class HubTrackingController extends Controller
             ->when($query, function ($q) use ($matchedVehicleIds) {
                 return $q->whereIn('container_id', $matchedVehicleIds);
             })
-            ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
+
+
+        // Get all warehouses again for dropdown
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
+
+        // return $drivers;
+        if ($request->ajax()) {
+            return view('admin.hubs.transfer_hub.transfer_hub_table', compact('vehicles',  'warehouses'))->render();
+        }
+
+        return view('admin.hubs.transfer_hub.transfer_hub', compact('vehicles', 'warehouses'));
+    }
+
+    public function transfer_history_hub(Request $request)
+    {
+        $user = auth()->user(); // ya $this->user depending on your context
+        $warehouseId = $user->role_id != 1 ? $user->warehouse_id : null;
+        $warehouse_id = $request->input('warehouse_id');
+        $fromWarehouse_id = $request->input('from_warehouse_id');
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+
+        // Search matching Vehicle IDs where vehicle_type = 1
+        $matchedVehicleIds = collect();
+        if (!empty($query)) {
+            $matchedVehicleIds = Vehicle::where('vehicle_type', 1)
+                ->where(function ($q) use ($query) {
+                    $q->where('unique_id', 'LIKE', "%{$query}%");
+                    //->orWhere('vehicle_name', 'LIKE', "%{$query}%");
+                })
+                ->pluck('id');
+        }
+
+        // Get list of warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
             ->get();
 
         // History Vehicles from ContainerHistory
@@ -89,14 +135,21 @@ class HubTrackingController extends Controller
             })
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
 
         // Get all warehouses again for dropdown
         $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
         })->get();
 
-        return view('admin.hubs.transfer_hub', compact('vehicles', 'historyVehicles', 'warehouses'));
+
+        // return $drivers;
+        if ($request->ajax()) {
+            return view('admin.hubs.transfer_hub.transfer_history_hub_table', compact('historyVehicles', 'warehouses'))->render();
+        }
+
+        return view('admin.hubs.transfer_hub.transfer_history_hub', compact('historyVehicles', 'warehouses'));
     }
 
     public function received_hub(Request $request)
@@ -106,6 +159,9 @@ class HubTrackingController extends Controller
         $warehouse_id = $request->input('warehouse_id');
         $fromWarehouse_id = $request->input('from_warehouse_id');
         $query = $request->search;
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+
 
         // Search matching Vehicle IDs where vehicle_type = 1
         $matchedVehicleIds = collect();
@@ -144,9 +200,45 @@ class HubTrackingController extends Controller
             ->where('full_discharge', 'No')
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
+
+        if ($request->ajax()) {
+            return view('admin.hubs.received_hub.received_hub_table', compact('incoming_containers', 'warehouses'))->render();
+        }
+
+        return view('admin.hubs.received_hub.received_hub', compact('incoming_containers', 'warehouses'));
+    }
+
+    public function received_history_hub(Request $request)
+    {
+        $user = auth()->user(); // ya $this->user depending on your context
+        $warehouseId = $user->role_id != 1 ? $user->warehouse_id : null;
+        $warehouse_id = $request->input('warehouse_id');
+        $fromWarehouse_id = $request->input('from_warehouse_id');
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+
+
+        // Search matching Vehicle IDs where vehicle_type = 1
+        $matchedVehicleIds = collect();
+        if (!empty($query)) {
+            $matchedVehicleIds = Vehicle::where('vehicle_type', 1)
+                ->where(function ($q) use ($query) {
+                    $q->where('unique_id', 'LIKE', "%{$query}%");
+                    //->orWhere('vehicle_name', 'LIKE', "%{$query}%");
+                })
+                ->pluck('id');
+        }
+
+        // Get list of warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
             ->get();
-
-
 
         // 2. Container history (exclude status = 5 and 7 for 'Arrived')
         $container_historys = ContainerHistory::where('full_discharge', 'Yes')->where('type', 'Arrived')
@@ -164,10 +256,14 @@ class HubTrackingController extends Controller
             })
             ->with(['container', 'driver'])
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate($perPage)
+            ->appends(['search' => $query, 'per_page' => $perPage]);
 
+        if ($request->ajax()) {
+            return view('admin.hubs.received_hub.received_history_hub_table', compact('warehouses', 'container_historys'))->render();
+        }
 
-        return view('admin.hubs.received_hub', compact('incoming_containers', 'warehouses', 'container_historys'));
+        return view('admin.hubs.received_hub.received_history_hub', compact('warehouses', 'container_historys'));
     }
 
     public function received_orders(Request $request)
@@ -365,7 +461,7 @@ class HubTrackingController extends Controller
 
         $parcelTpyes = Category::whereIn('name', ['box', 'bag', 'barrel'])->get();
 
-        $parcel = Parcel::with('ParcelInventory')->where('id', $id)->first();
+        $parcel = Parcel::with('ParcelInventory', 'invoice')->where('id', $id)->first();
 
         $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
 
@@ -377,8 +473,6 @@ class HubTrackingController extends Controller
         $customers = $user->where('role_id', 3)->values();
 
         $drivers = $user->where('role_id', 4)->values();
-
-        //return  $parcel;
 
         return view('admin.hubs.orderdetails', compact('user', 'customers', 'drivers', 'parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel', 'invoice'));
     }

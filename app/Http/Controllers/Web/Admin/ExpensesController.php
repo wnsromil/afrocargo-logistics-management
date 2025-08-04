@@ -29,6 +29,7 @@ class ExpensesController extends Controller
         // Get input parameters
         $search = $request->input('search');
         $warehouse_id = $request->input('warehouse_id');
+        $user_id = $request->input('user_id');
         $category = $request->input('category');
         $type = $request->input('type');
 
@@ -87,6 +88,10 @@ class ExpensesController extends Controller
             $query->where('warehouse_id', $warehouse_id);
         }
 
+         if ($user_id) {
+            $query->where('creator_user_id', $user_id);
+        }
+
         // Apply date range filter
         if (!empty($start_date) && !empty($end_date)) {
             $query->whereBetween('date', [$start_date, $end_date]);
@@ -115,9 +120,15 @@ class ExpensesController extends Controller
             })
             ->get();
 
+        $users = User::whereIn('role_id', [4, 2])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
+
         // Return view or AJAX response
         if ($request->ajax()) {
-            return view('admin.expenses.table', compact('expenses', 'serialStart', 'warehouses'))->render();
+            return view('admin.expenses.table', compact('expenses', 'serialStart', 'warehouses', 'users'))->render();
         }
 
         return view('admin.expenses.index', compact(
@@ -128,7 +139,8 @@ class ExpensesController extends Controller
             'dateRange',
             'category',
             'perPage',
-            'serialStart'
+            'serialStart',
+            'users'
         ));
     }
 

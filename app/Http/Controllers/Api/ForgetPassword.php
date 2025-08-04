@@ -23,7 +23,7 @@ class ForgetPassword extends Controller
         $request->validate([
             'loginWith' => 'required|in:email,phone',
             'email' => 'required_if:loginWith,email|email',
-            'phone' => 'required_if:loginWith,phone|numeric|digits:10',
+            'phone' => 'required_if:loginWith,phone|numeric',
             'role'=>'required|in:driver,customer,warehouse_manager,admin'
         ]);
 

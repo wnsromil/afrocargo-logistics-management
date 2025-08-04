@@ -338,6 +338,74 @@ Version      : 1.0
         });
     }
 
+    if ($('input[name="logs_datetimes"]').length > 0) {
+        const $dateInput = $('input[name="logs_datetimes"]');
+
+        $dateInput.daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf("hour"),
+            endDate: moment().startOf("hour").add(32, "hour"),
+            locale: {
+                format: "YYYY-MM-DD hh:mm A", // Year included
+            },
+            autoUpdateInput: false, // <-- Yeh important hai
+        });
+
+        // Jab user date select kare to input update karo
+        $dateInput.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD hh:mm A") +
+                    " - " +
+                    picker.endDate.format("YYYY-MM-DD hh:mm A")
+            );
+        });
+
+        // Jab cancel kare to input clear karo
+        $dateInput.on("cancel.daterangepicker", function (ev, picker) {
+            $(this).val("");
+            $(this).attr("placeholder", "Select Date Range");
+        });
+
+        // Agar input empty hai to placeholder dikhao
+        if (!$dateInput.val()) {
+            $dateInput.attr("placeholder", "Select Date Range");
+        }
+    }
+
+    if ($('input[name="eod_datetimes"]').length > 0) {
+        const $dateInput = $('input[name="eod_datetimes"]');
+
+        $dateInput.daterangepicker({
+            timePicker: false,
+            startDate: moment().startOf("hour"),
+            endDate: moment().startOf("hour").add(32, "hour"),
+            locale: {
+                format: "YYYY-MM-DD", // Year included
+            },
+            autoUpdateInput: false, // <-- Yeh important hai
+        });
+
+        // Jab user date select kare to input update karo
+        $dateInput.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD") +
+                    " - " +
+                    picker.endDate.format("YYYY-MM-DD")
+            );
+        });
+
+        // Jab cancel kare to input clear karo
+        $dateInput.on("cancel.daterangepicker", function (ev, picker) {
+            $(this).val("");
+            $(this).attr("placeholder", "Select Date Range");
+        });
+
+        // Agar input empty hai to placeholder dikhao
+        if (!$dateInput.val()) {
+            $dateInput.attr("placeholder", "Select Date Range");
+        }
+    }
+
     $(".onlyTimePicker").each(function () {
         const $this = $(this);
 
@@ -2235,24 +2303,30 @@ Version      : 1.0
 
     if (glocations) {
         glocations.forEach(function (locationModalShow) {
-            locationModalShow.addEventListener("click", function() {
-            // Get the country <select> inside the clicked element
-            let countryInput = this.querySelector("select[name='country']");
-            const input = this.querySelector("input[name='address']");
+            locationModalShow.addEventListener("click", function () {
+                // Get the country <select> inside the clicked element
+                let countryInput = this.querySelector("select[name='country']");
+                const input = this.querySelector("input[name='address']");
 
-            if (!input) return;
+                if (!input) return;
 
-            if (countryInput) {
-                let selectedOption = countryInput.options[countryInput.selectedIndex];
-                let countryData = selectedOption.getAttribute("data-country"); // fixed typo
+                if (countryInput) {
+                    let selectedOption =
+                        countryInput.options[countryInput.selectedIndex];
+                    let countryData =
+                        selectedOption.getAttribute("data-country"); // fixed typo
 
-                if (countryData) {
-                    selectedCountry = countryData.toLowerCase();
-                    console.log("Selected Country:", selectedCountry, countryData);
-                    autoFillAddressFields(input, selectedCountry);
+                    if (countryData) {
+                        selectedCountry = countryData.toLowerCase();
+                        console.log(
+                            "Selected Country:",
+                            selectedCountry,
+                            countryData
+                        );
+                        autoFillAddressFields(input, selectedCountry);
+                    }
                 }
-            }
-        });
+            });
         });
     }
 
@@ -2267,9 +2341,9 @@ Version      : 1.0
             componentRestrictions: { country: selectedCountry },
         });
 
-        console.log('selectedCountryselectedCountry',selectedCountry);
+        console.log("selectedCountryselectedCountry", selectedCountry);
 
-        autocomplete.addListener("place_changed", function() {
+        autocomplete.addListener("place_changed", function () {
             const place = autocomplete.getPlace();
             if (!place) return;
 
@@ -2322,7 +2396,6 @@ Version      : 1.0
             setField("lng", lng);
         });
     }
-
 
     window.addEventListener("load", function () {
         initAutocomplete();

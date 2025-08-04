@@ -17,7 +17,7 @@
         <input type="radio" id="tab5" name="tab">
         <div class="tab-titles mt-1">
             <label for="tab1" class="tab-title">All</label>
-            <label for="tab2" class="tab-title">Warehouses</label>
+            <label for="tab2" class="tab-title">Warehouse Managers</label>
             <label for="tab3" class="tab-title">Drivers</label>
             <label for="tab4" class="tab-title">Customer</label>
             <label for="tab5" class="tab-title">Invoice</label>
@@ -30,7 +30,7 @@
             <form action="{{route('admin.notification_schedule.store')}}" method="post" id="AllnotificationForm">
                 @csrf
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
                             <label class="foncolor"> Notification Title <i class="text-danger">*</i></label>
                             <input type="text" name="notification_title" id="notification_title"
@@ -58,7 +58,7 @@
             </form>
         </div>
 
-        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content2" style="padding:0">
+        <div class="tab-content ps-sm-0 pt-2 pb-0 bg-white" id="content2">
             <form action="{{route('admin.notification_schedule.warehouseManagerStore')}}" method="post"
                 id="Warehouse_manager_notificationForm">
                 @csrf
@@ -98,7 +98,7 @@
                         <div class="input-block mb-3">
                             <label for="container" class="foncolor">Container</label>
                             <select name="container" class="form-control inp select2">
-                                <option value="" disabled hidden selected>Select Containers </option>
+                                <option value="" disabled hidden selected>Select Container </option>
                                 <option>All</option>
                                 <option>CNUS00125</option>
                                 <option>CNFR00225</option>
@@ -144,10 +144,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-6 mt-3 col-sm-12">
+                    <div class="col-lg-12 col-md-6 col-sm-12">
                         <div class="tabs m-0 mw-100">
                             <div class="row">
-                                <div class="col-lg-4 me-sm-5 col-md-6 col-sm-12 pe-sm-0">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
                                         <label class="col737 fw-medium mb-1">Notification Title<i
                                                 class="text-danger">*</i></label>
@@ -264,7 +264,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
                             <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
                             <input type="text" name="notification_title" id="driver_notification_title"
@@ -333,23 +333,8 @@
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
                             <label for="Container_name" class="foncolor">Container</label>
-                            <select name="Container_name" class="form-control inp select2">
-                                <option value="" disabled hidden selected>Select Container </option>
-                                <option>All</option>
-                                <option>CTN0000125 </option>
-                                <option>CTN0000225</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <div class="input-block mb-3">
-                            <label for="EndoftheDay_name" class="foncolor">End of the Day</label>
-                            <select name="EndoftheDay_name" class="form-control inp select2">
-                                <option value="" disabled hidden selected>Select End of the Days </option>
-                                <option>All</option>
-                                <option>000128</option>
-                                <option>000129</option>
+                            <select name="customer_container_id" id="customer_containerSelect" class="form-control inp select2">
+                                <option value="" disabled hidden selected>Select Container</option>
                             </select>
                         </div>
                     </div>
@@ -382,8 +367,10 @@
                             </select>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
                             <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
                             <input type="text" name="notification_title" id="customer_notification_title"
@@ -490,7 +477,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12 me-lg-5">
+                <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label class="foncolor"> Notification Title<i class="text-danger">*</i></label>
                         <input type="text" name="notification_title" class="form-control inp"
@@ -780,6 +767,59 @@
                 });
             });
         </script>
+
+        <script>
+            function fetchContainersIfReady() {
+                const warehouseId = $('#warehouseCustomerSelect').val();
+                let customerId = $('#warehouseCustomer').val();
+
+                // Default value if customer not selected
+                if (!customerId || customerId === "") {
+                    customerId = "All Warehouse Customers";
+                }
+
+                // Run only if both values are selected
+                if (warehouseId) {
+                    $.ajax({
+                        url: '/api/get-customers-container',
+                        method: 'GET',
+                        data: {
+                            warehouse_id: warehouseId,
+                            customer_id: customerId
+                        },
+                        success: function (response) {
+                            // Clear and fill container dropdown
+                            $('#customer_containerSelect').empty().append(
+                                '<option value="" disabled hidden selected>Select Container</option>'
+                            );
+
+                            $.each(response, function (index, vehicle) {
+                                let label = vehicle.unique_id;
+                                if (vehicle.ship_to_country) {
+                                    label += ' ' + vehicle.ship_to_country;
+                                }
+                                $('#customer_containerSelect').append('<option value="' + vehicle.id + '">' + label + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert('Failed to load container data');
+                        }
+                    });
+                }
+            }
+
+            $('#warehouseCustomerSelect').on('change', function () {
+                fetchContainersIfReady();
+            });
+
+            $('#warehouseCustomer').on('change', function () {
+                fetchContainersIfReady();
+            });
+
+
+        </script>
+
+
 
     @endsection
 </x-app-layout>

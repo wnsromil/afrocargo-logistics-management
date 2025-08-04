@@ -51,6 +51,11 @@ class Parcel extends Model
         return $this->belongsTo(User::class, 'customer_id')->with(['country', 'state', 'city']);
     }
 
+     public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'invoice_id');
+    }
+
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);

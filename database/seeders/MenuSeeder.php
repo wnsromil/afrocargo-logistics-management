@@ -15,7 +15,7 @@ class MenuSeeder extends Seeder
         if (Schema::hasTable('menus')) {
             DB::statement('TRUNCATE TABLE menus');
         }
-         $menus = [
+        $menus = [
             [
                 'title' => 'Dashboard',
                 'icon' => '<i class="menuIcon ti ti-layout-dashboard"></i>',
@@ -82,7 +82,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Service Orders',
                 'icon' => '<i class="menuIcon ti ti-packages"></i>',
                 'route' => 'admin.service_orders.index',
-                'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
+                'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*,transferHub-history,receivedHub-history',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['service_orders.view'],
             ],
@@ -156,6 +156,14 @@ class MenuSeeder extends Seeder
                 'active' => 'advance_reports*',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['advance_reports.view'],
+            ],
+            [
+                'title' => 'End Of Day',
+                'icon' => '<i class="menuIcon ti ti-file-text"></i>',
+                'route' => 'admin.end_of_day.Invoice_index',
+                'active' => 'end_of_day*',
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['end_of_day.view'],
             ],
             [
                 'title' => 'Template Management',
@@ -245,7 +253,7 @@ class MenuSeeder extends Seeder
             Menu::create(['title' => 'Verify License', 'route' => 'admin.verify-license.index', 'active' => 'verify-license*', 'parent_id' => $CustomReports->id, 'roles' => ['admin', 'warehouse_manager']]);
         }
         // Add submenus
-        $orderShip = Menu::where('title', 'Service Orders')->first();
+      $orderShip = Menu::where('title', 'Service Orders')->first();
         if ($orderShip) {
             Menu::create([
                 'title' => 'Order',
@@ -253,7 +261,6 @@ class MenuSeeder extends Seeder
                 'active' => 'service_orders*',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['order.view'],
             ]);
             Menu::create([
                 'title' => 'Received Order',
@@ -263,28 +270,37 @@ class MenuSeeder extends Seeder
                 'roles' => ['admin', 'warehouse_manager']
             ]);
             Menu::create([
-                'title' => 'Transfer To Hub',
+                'title' => 'Container Transfer To Hub',
                 'route' => 'admin.transfer.hub.list',
-                'active' => 'transferHub*',
+                'active' => 'transferHub',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['transfer_to_hub.view'],
+
             ]);
             Menu::create([
                 'title' => 'Container Received by Hub',
                 'route' => 'admin.received.hub.list',
-                'active' => 'receivedHub*',
+                'active' => 'receivedHub',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['container_received_by_hub.view'],
+
             ]);
-            // Menu::create([
-            //     'title' => 'Received Orders',
-            //     'route' => 'admin.received.orders.hub.list',
-            //     'active' => 'receivedOrders*',
-            //     'parent_id' => $orderShip->id,
-            //     'roles' => ['admin', 'warehouse_manager']
-            // ]);
+            Menu::create([
+                'title' => 'Container Transfer History',
+                'route' => 'admin.transfer.hub.history.list',
+                'active' => 'transferHub-history',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager'],
+
+            ]);
+            Menu::create([
+                'title' => 'Container Received History',
+                'route' => 'admin.received.hub.history.list',
+                'active' => 'receivedHub-history',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager'],
+
+            ]);
         }
 
         // Add submenus

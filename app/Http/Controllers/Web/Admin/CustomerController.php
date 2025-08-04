@@ -14,6 +14,7 @@ use App\Mail\RegistorMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Token;
 
 class CustomerController extends Controller
 {
@@ -150,10 +151,10 @@ class CustomerController extends Controller
         $serialStart = ($currentPage - 1) * $perPage;
 
         if ($request->ajax()) {
-            return view('admin.customer.shipto.shiptotable', compact('CustomerLists','customers', 'serialStart', 'warehouses'))->render();
+            return view('admin.customer.shipto.shiptotable', compact('CustomerLists', 'customers', 'serialStart', 'warehouses'))->render();
         }
 
-        return view('admin.customer.shipto.shiptoindextable', compact('CustomerLists','customers', 'search', 'perPage', 'serialStart', 'warehouses'));
+        return view('admin.customer.shipto.shiptoindextable', compact('CustomerLists', 'customers', 'search', 'perPage', 'serialStart', 'warehouses'));
     }
 
     /**
@@ -449,6 +450,8 @@ class CustomerController extends Controller
         if ($request->ajax() && $type == "PickupAddresss") {
             return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
+
+
         return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
@@ -664,16 +667,20 @@ class CustomerController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        $driver = User::find($id);
+        $user = User::find($id);
 
-        if ($driver) {
-            $driver->status = $request->status; // 1 = Active, 0 = Deactive
-            $driver->save();
+        if ($user) {
+            $user->status = $request->status;
+            $user->save();
+
+            if ($request->status == 'Inactive') {
+                $user->tokens()->update(['revoked' => true]);
+            }
 
             return response()->json(['success' => 'Status Updated Successfully']);
         }
 
-        return response()->json(['error' => 'Driver Not Found']);
+        return response()->json(['error' => 'User Not Found']);
     }
 
     public function viewShipTo($id)

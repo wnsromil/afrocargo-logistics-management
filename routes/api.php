@@ -39,7 +39,8 @@ use App\Http\Controllers\Api\{
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
     CBMCalculatoarController,
-    LadingDetailsController
+    LadingDetailsController,
+    AdvanceReportsController
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -69,6 +70,7 @@ Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'get
 Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
 Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']);
 
+Route::get('/admin/advance-orders/print-data', [AdvanceReportsController::class, 'printData']);
 
 //Order Status Manage Apis
 Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriversByParcelId']);
@@ -102,6 +104,8 @@ Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 Route::post('/updateContainer', [ContainerController::class, 'updateContainer'])->name('updateContainer');
+Route::get('/get-customers-container', [ContainerController::class, 'getVehiclesByWarehouseAndCustomer']);
+
 
 //CBM
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
@@ -117,6 +121,7 @@ Route::post('/mark-as-read-notification', [NotificationController::class, 'markA
 
 //Driver
 Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+Route::post('/driver-logs', [DriverController::class, 'getLogsByUser']);
 
 //Manager
 Route::get('/warehouse-managers/{id}', [WarehouseManagerController::class, 'getWarehouseManagers']);
@@ -129,7 +134,7 @@ Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseV
 
 Route::get('/get-all-items', [InventoryController::class, 'getAllItems']);
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
     Route::post('verifyOtp', [RegisterController::class, 'verifyOtp']);
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);

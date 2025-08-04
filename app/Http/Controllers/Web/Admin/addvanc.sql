@@ -2,7 +2,9 @@ CREATE OR REPLACE VIEW advanced_order_reports AS
 SELECT
     order_with_invoices.*,
     users.name AS user_main_id,
-    users.name AS user_name,
+    users.username,
+    users.name,
+    users.last_name,
     users.email,
     users.role_id,
     users.role,
@@ -10,7 +12,7 @@ SELECT
     addresses.mobile_number,
     addresses.alternative_mobile_number,
     addresses.address_type,
-    addresses.full_name
+    addresses.full_name,
 FROM
     users
     LEFT JOIN addresses ON addresses.user_id = users.id
@@ -114,3 +116,7 @@ FROM
     ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
     -- 28-july-2025
     ALTER TABLE `invoices` ADD `delivery_type` VARCHAR(25) NULL AFTER `transport_type`;
+
+ALTER TABLE `invoices` ADD `customer_id` INT NULL AFTER `deleted_at`, ADD `ship_customer_id` INT NULL AFTER `customer_id`;
+
+ ALTER TABLE `individual_payments` ADD `warehouse_id` INT NULL AFTER `updated_at`, ADD `unique_id` VARCHAR(200) NULL AFTER `warehouse_id`;
