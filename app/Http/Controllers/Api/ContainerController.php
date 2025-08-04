@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Container;
 use App\Models\Vehicle;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\ContainerHistory;
@@ -70,7 +71,7 @@ class ContainerController extends Controller
                     if ($alreadyOpen) {
                         return response()->json([
                             'success' => false,
-                            'message' => "This route {$shipTo} container is already open.",
+                            'message' => $shipTo
                         ]);
                     }
                 }
@@ -138,7 +139,6 @@ class ContainerController extends Controller
         return response()->json($response);
     }
 
-
     public function updateContainerInDateTime(Request $request)
     {
         // Validate input
@@ -167,6 +167,7 @@ class ContainerController extends Controller
             'message' => 'Container date and time updated successfully.',
         ]);
     }
+
     public function updateContainerOutDateTime(Request $request)
     {
         // Validate input
@@ -249,5 +250,29 @@ class ContainerController extends Controller
             'message' => 'Container updated successfully.',
             'container' => $vehicle,
         ]);
+    }
+
+    public function getVehiclesByWarehouseAndCustomer(Request $request)
+    {
+        $warehouse_id = $request->warehouse_id;
+        $customer_id = $request->customer_id;
+
+        if ($customer_id === 'All Warehouse Customers') {
+            $vehicles = Vehicle::where('warehouse_id', $warehouse_id)->get();
+        } else {
+            $user = User::find($customer_id);
+
+            if (!$user) {
+                return response()->json(['message' => 'Customer not found'], 404);
+            }
+
+            $container_id = $user->vehicle_id;
+
+            $vehicles = Vehicle::where('id', $container_id)
+                ->where('warehouse_id', $warehouse_id)
+                ->get();
+        }
+
+        return response()->json($vehicles);
     }
 }

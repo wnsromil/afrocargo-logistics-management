@@ -38,7 +38,8 @@ use App\Http\Controllers\Web\Admin\{
     CustomReportController,
     VerifyLicenseController,
     SupplyInventoryController,
-    OrderStatusManage
+    OrderStatusManage,
+    EODController
 };
 use App\Mail\RegistorMail;
 
@@ -216,8 +217,19 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('autocall', AutoCallBatchController::class);
         Route::resource('bill_of_lading', BillofLadingController::class);
         Route::resource('lading_details', LadingDetailsController::class);
-        Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
+        Route::resource('end_of_day', EODController::class);
 
+        // EOD
+        Route::get('invoice-index', [EODController::class, 'Invoice_index'])->name('end_of_day.Invoice_index');
+        Route::get('supply-index', [EODController::class, 'Supply_index'])->name('end_of_day.Supply_index');
+        Route::get('payments-index', [EODController::class, 'Payments_index'])->name('end_of_day.Payments_index');
+        Route::get('expenses-index', [EODController::class, 'Expenses_index'])->name('end_of_day.Expenses_index');
+        Route::get('void-index', [EODController::class, 'Void_index'])->name('end_of_day.Void_index');
+        Route::get('deposit-index', [EODController::class, 'Deposit_index'])->name('end_of_day.Deposit_index');
+        Route::get('print-index', [EODController::class, 'Print_index'])->name('end_of_day.Print_index');
+
+
+        Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
         Route::get('getOrderList', [InvoiceController::class, 'getOrderList'])->name('getOrderList');
@@ -232,6 +244,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
+        Route::get('transferHub-history', [HubTrackingController::class, 'transfer_history_hub'])->name('transfer.hub.history.list');
+        Route::get('receivedHub-history', [HubTrackingController::class, 'received_history_hub'])->name('received.hub.history.list');
+      
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
         Route::get('receivedOrders/{id}', [HubTrackingController::class, 'received_orders_show'])->name('received.received_orders_show');
         Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
@@ -301,6 +316,10 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('notification_schedule/warehouseManagerStore', [NotificationScheduleController::class, 'warehouseManagerStore'])->name('notification_schedule.warehouseManagerStore');
         Route::post('notification_schedule/DriverStore', [NotificationScheduleController::class, 'DriverStore'])->name('notification_schedule.DriverStore');
         Route::post('notification_schedule/CustomerStore', [NotificationScheduleController::class, 'CustomerStore'])->name('notification_schedule.CustomerStore');
+
+        //
+
+        Route::get('/admin/advance-reports/export', [AdvanceReportsController::class, 'exportReports'])->name('advance.reports.export');
 
 
         Route::get('/orderdetails', function () {

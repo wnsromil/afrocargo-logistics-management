@@ -214,10 +214,13 @@ class CustomerController extends Controller
             $role_id = 3;
             $parent_customer_id = null;
 
+            $LogCustomerType = "Customer";
+
             if ($validated['invoice_custmore_type'] === 'ship_to') {
                 $role = 'ship_to_customer';
                 $role_id = 5;
                 $parent_customer_id = $request->invoice_custmore_id ?? null;
+                $LogCustomerType = "ShipTo Customer";
             }
 
 
@@ -304,6 +307,28 @@ class CustomerController extends Controller
                 'type' => 'Services', // Default type
                 'default_address' => 'Yes'
             ]);
+
+            $time = Carbon::now()->format('h:i A');
+
+            $html = "
+                <div class=\"col-md-12\">
+                    <div class=\"card activityCard\">
+                        <div class=\"card-body\">
+                            <div class=\"d-flex\">
+                                <i class=\"ti ti-clock-filled\"></i>
+                                <div>
+                                <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">{$LogCustomerType} Added</label></p>
+                                <p class=\"col737 fs_18 fw_500\">{$LogCustomerType} Name — <label class=\"col00 mb-0\">" .
+                                     (($user->name ?? '') . ' ' . ($user->last_name ?? '')) . "</label></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             ";
+
+
+           storeDriverLog($html, $this->user->id, $LogCustomerType . "Added");
 
 
             return response()->json([

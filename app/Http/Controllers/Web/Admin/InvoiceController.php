@@ -22,7 +22,9 @@ use App\Models\{
     Country,
     Address,
     InvoiceComment,
-    Claim
+    Claim,
+    NotificationParcelMessage,
+    Notification
 };
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -241,9 +243,9 @@ class InvoiceController extends Controller
         if ($customerId) {
             $customer = User::join('addresses', function ($join) {
                 $join->on('addresses.user_id', '=', 'users.id');
-            })->whereIn('users.role', [3, 5])->where('users.id',$customerId)
-            ->select('users.*', 'addresses.id as address_id', 'addresses.user_id', 'addresses.full_name', 'addresses.mobile_number', 'addresses.alternative_mobile_number', 'addresses.address', 'addresses.pincode', 'addresses.address_type')
-            ->first();
+            })->whereIn('users.role', [3, 5])->where('users.id', $customerId)
+                ->select('users.*', 'addresses.id as address_id', 'addresses.user_id', 'addresses.full_name', 'addresses.mobile_number', 'addresses.alternative_mobile_number', 'addresses.address', 'addresses.pincode', 'addresses.address_type')
+                ->first();
 
 
             $pickup_address = $this->formatAddress($customer, null, 'pickup');
@@ -285,7 +287,7 @@ class InvoiceController extends Controller
 
 
 
-        return view('admin.Invoices.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes', 'countries', 'nextInvoiceNo', 'containers', 'inventories','pickup_address', 'delivery_address','type'));
+        return view('admin.Invoices.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes', 'countries', 'nextInvoiceNo', 'containers', 'inventories', 'pickup_address', 'delivery_address', 'type'));
     }
 
     /**
@@ -430,7 +432,7 @@ class InvoiceController extends Controller
         }
 
         setting()->saveInvoiceHistory($invoice->id, "created");
-        return redirect()->route('admin.invoices.edit',$invoice->id)->with('success', 'Invoice saved successfully.');
+        return redirect()->route('admin.invoices.edit', $invoice->id)->with('success', 'Invoice saved successfully.');
     }
 
 
@@ -645,6 +647,40 @@ class InvoiceController extends Controller
         $invoice->save();
 
         $invoice->delete();
+
+        if (auth()->user()->role_id != 1) {
+            $notificationInvoiceDelete = NotificationParcelMessage::find(35);
+
+            $managerData = User::where('id', auth()->id())->with('warehouse')->first();
+
+            $titleInvoiceDelete = str_replace(
+                '{invoice_id}',
+                $invoice->invoice_no ?? '',
+                $notificationInvoiceDelete->title
+            );
+
+            $bodyInvoiceDelete = str_replace(
+                ['{manager_name}', '{warehouse_name}', '{invoice_id}'],
+                [
+                    $managerData->name ?? '',
+                    $managerData->warehouse->warehouse_name ?? '',
+                    $invoice->invoice_no ?? ''
+                ],
+                $notificationInvoiceDelete->message
+            );
+
+            Notification::create([
+                'user_id' => 1,
+                'warehouse_id' => auth()->user()->warehouse_id,
+                'title' => $titleInvoiceDelete,
+                'message' => $bodyInvoiceDelete,
+                'notification_for' => 'Admin',
+                'role' => 'Admin',
+                'type' => 'Invoice Delete',
+            ]);
+
+            User::where('role_id', 1)->increment('notification_read', 1);
+        }
 
         return redirect()->route('admin.invoices.index')->with('success', 'Invoice deleted successfully.');
     }
@@ -1146,8 +1182,6 @@ class InvoiceController extends Controller
             'currentTime' => 'nullable',
         ]);
 
-        return $request->all();
-
         $data = $this->individualPayment($validated);
         return redirect()->back()->with('success', 'Payment saved successfully!');
     }
@@ -1327,6 +1361,40 @@ class InvoiceController extends Controller
         $invoice = Invoice::onlyTrashed()->findOrFail($id);
         $invoice->restore();
 
+        if (auth()->user()->role_id != 1) {
+            $notificationInvoiceDelete = NotificationParcelMessage::find(36);
+
+            $managerData = User::where('id', auth()->id())->with('warehouse')->first();
+
+            $titleInvoiceDelete = str_replace(
+                '{invoice_id}',
+                $invoice->invoice_no ?? '',
+                $notificationInvoiceDelete->title
+            );
+
+            $bodyInvoiceDelete = str_replace(
+                ['{manager_name}', '{warehouse_name}', '{invoice_id}'],
+                [
+                    $managerData->name ?? '',
+                    $managerData->warehouse->warehouse_name ?? '',
+                    $invoice->invoice_no ?? ''
+                ],
+                $notificationInvoiceDelete->message
+            );
+
+            Notification::create([
+                'user_id' => 1,
+                'warehouse_id' => auth()->user()->warehouse_id,
+                'title' => $titleInvoiceDelete,
+                'message' => $bodyInvoiceDelete,
+                'notification_for' => 'Admin',
+                'role' => 'Admin',
+                'type' => 'Invoice Delete',
+            ]);
+
+            User::where('role_id', 1)->increment('notification_read', 1);
+        }
+
         return back()->with('success', 'Invoice restored successfully.');
     }
 
@@ -1340,6 +1408,40 @@ class InvoiceController extends Controller
         ParcelInventorie::where('invoice_id', $id)->update(['invoice_id' => null]);
 
         $invoice->forceDelete();
+
+          if (auth()->user()->role_id != 1) {
+            $notificationInvoiceDelete = NotificationParcelMessage::find(37);
+
+            $managerData = User::where('id', auth()->id())->with('warehouse')->first();
+
+            $titleInvoiceDelete = str_replace(
+                '{invoice_id}',
+                $invoice->invoice_no ?? '',
+                $notificationInvoiceDelete->title
+            );
+
+            $bodyInvoiceDelete = str_replace(
+                ['{manager_name}', '{warehouse_name}', '{invoice_id}'],
+                [
+                    $managerData->name ?? '',
+                    $managerData->warehouse->warehouse_name ?? '',
+                    $invoice->invoice_no ?? ''
+                ],
+                $notificationInvoiceDelete->message
+            );
+
+            Notification::create([
+                'user_id' => 1,
+                'warehouse_id' => auth()->user()->warehouse_id,
+                'title' => $titleInvoiceDelete,
+                'message' => $bodyInvoiceDelete,
+                'notification_for' => 'Admin',
+                'role' => 'Admin',
+                'type' => 'Invoice Delete',
+            ]);
+
+            User::where('role_id', 1)->increment('notification_read', 1);
+        }
 
         return back()->with('success', 'Invoice permanently deleted.');
     }

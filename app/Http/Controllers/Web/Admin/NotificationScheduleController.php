@@ -226,6 +226,7 @@ class NotificationScheduleController extends Controller
             'notification_message' => 'required|string',
             'warehouse_id' => 'required|exists:warehouses,id',
             'customer_id' => 'required',
+            'customer_container_id' => 'nullable'
         ]);
 
         // Get users based on customer_id
@@ -245,6 +246,7 @@ class NotificationScheduleController extends Controller
         // Create notifications and dispatch jobs
         Notification::create([
             'user_id' => is_numeric($request->customer_id) ? $request->customer_id : null,
+            'container_id' => $request->customer_container_id ?? null,
             'warehouse_id' => $request->warehouse_id,
             'title' => $request->notification_title,
             'message' => $request->notification_message,
@@ -267,8 +269,6 @@ class NotificationScheduleController extends Controller
         return redirect()->route('admin.notification_schedule.index')
             ->with('success', 'Notification created and sent successfully!');
     }
-
-
 
     /**
      * Display the specified resource.

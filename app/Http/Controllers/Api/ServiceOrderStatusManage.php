@@ -18,6 +18,7 @@ use App\Models\{
     ContainerHistory,
     NotificationParcelMessage
 };
+use Carbon\Carbon;
 
 class ServiceOrderStatusManage extends Controller
 {
@@ -206,6 +207,29 @@ class ServiceOrderStatusManage extends Controller
             sendFirebaseNotification($deviceTokenPDriverPickup, $titleDriverPickup, $bodyDriverPickup, $CustomerData->id, $parcel->id, 'Driver Order Picked up');
         }
 
+        $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $pickupDate = Carbon::parse($parcel->pickup_date)->format('m-d-Y');
+
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Order Picked up</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Tracking ID — <label class=\"col00 mb-0\">{$parcel->tracking_number}</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Pickup Date — <label class=\"col00 mb-0\">{$pickupDate}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $this->user->id, 'Order Picked up');
+
         return response()->json([
             'status' => true,
             'message' => 'Driver service order status updated successfully.',
@@ -273,6 +297,29 @@ class ServiceOrderStatusManage extends Controller
         if (!empty($deviceTokenOutForDelivery)) {
             sendFirebaseNotification($deviceTokenOutForDelivery, $titleOutForDelivery, $bodyOutForDelivery, $CustomerData->id, $parcel->id, 'Out for delivery');
         }
+
+         $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $deliveryDate = Carbon::parse($parcel->delivery_date)->format('m-d-Y');
+
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Out for delivery</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Tracking ID — <label class=\"col00 mb-0\">{$parcel->tracking_number}</label></p>
+                               <p class=\"col737 fs_18 fw_500\">delivery Date — <label class=\"col00 mb-0\">{$deliveryDate}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $this->user->id, 'Out for delivery');
 
 
         return response()->json([
@@ -349,6 +396,29 @@ class ServiceOrderStatusManage extends Controller
         if (!empty($deviceTokenDelivered)) {
             sendFirebaseNotification($deviceTokenDelivered, $titleDelivered, $bodyDelivered, $this->user->id, $parcel->id, 'Delivered');
         }
+
+        $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $deliveryDate = Carbon::parse($parcel->delivery_date)->format('m-d-Y');
+
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Delivered</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Tracking ID — <label class=\"col00 mb-0\">{$parcel->tracking_number}</label></p>
+                               <p class=\"col737 fs_18 fw_500\">delivery Date — <label class=\"col00 mb-0\">{$deliveryDate}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $this->user->id, 'Delivered');
 
 
         return response()->json([

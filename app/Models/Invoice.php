@@ -78,7 +78,7 @@ class Invoice extends Model
 
     public function ParcelInventory()
     {
-        return $this->hasMany(ParcelInventorie::class, 'invoice_id', 'id')->select(
+        return $this->hasMany(ParcelInventorie::class, 'invoice_id', 'id')->with('container')->select(
             'id',
             'inventorie_id as supply_id',
             'inventory_name as supply_name',
@@ -95,7 +95,9 @@ class Invoice extends Model
             'discount',
             'total',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'img',
+            'container_id'
         );
     }
     public function user()

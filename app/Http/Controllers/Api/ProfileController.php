@@ -26,6 +26,10 @@ class ProfileController extends Controller
         $userData = $user->toArray();
         $userData['active_vehicles'] = $activeVehicles;
 
+        // $response = sendWhataAppTemplate('919754075878');
+
+        // dd($response);
+
         return $this->sendResponse($userData, 'User profile data.');
     }
     public function update(Request $request)
