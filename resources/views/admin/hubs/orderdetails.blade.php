@@ -290,10 +290,12 @@
                                     data-bs-target="#individualPayment{{ $parcel->invoice_id ?? '' }}">
                                     <i class="ti ti-credit-card me-1"></i>Payment
                                 </button> --}}
+                                 @can('has-dynamic-permission', 'received_orders_list.order_status')
                                 <button type="button" class="btn btn-primary btnf me-2 signatureBtn"
                                     data-id="{{ $parcel->id }}">
                                     <i class="ti ti-signature me-1"></i>Signature
                                 </button>
+                                @endcan
                                 <a href="{{ route('invoices.invoicesdownload', encrypt($parcel->invoice_id)) }}"
                                     class="btn btn-primary btnf me-2" target="_blank" title="Invoice PDF">
                                     <i class="ti ti-file-invoice"></i> Invoice PDF

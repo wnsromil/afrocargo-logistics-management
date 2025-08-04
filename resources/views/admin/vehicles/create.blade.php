@@ -179,7 +179,7 @@
                     </div>
                 </div>
 
-                  <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_registration_exp_date" class="foncolor">Vehicle Registration Expire Date<i
                                 class="text-danger">*</i></label>
@@ -228,7 +228,7 @@
                     </div>
                 </div>
 
-                  <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_insurance_exp_date" class="foncolor">Vehicle Insurance Expire Date<i
                                 class="text-danger">*</i></label>
@@ -262,8 +262,9 @@
             <div class="add-customer-btns text-end">
                 <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
                     class="btn btn-outline-primary custom-btn">Cancel</button>
-                <button type="submit" class="btn btn-primary ">Submit</button>
-
+                @can('has-dynamic-permission', 'vehicle_manage.create')
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                @endcan
             </div>
         </div>
 

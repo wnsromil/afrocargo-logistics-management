@@ -226,7 +226,7 @@
                             </div>
                         </div>
                     </div>
-                </div>        
+                </div>
             </div>
 
             <div class="col-12 pt-3 mt-3 border-top">
@@ -665,7 +665,9 @@
             <div class="btnWrapper">
                 <button type="button" onclick="redirectTo('{{ route('admin.supply_inventories.index') }}')"
                     class="btn btn-outline-primary custom-btn">Cancel</button>
-                <button type="submit" class="btn btn-primary ">Submit</button>
+                @can('has-dynamic-permission', 'supply_inventory_list.create')
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                @endcan
             </div>
         </div>
 
@@ -678,7 +680,7 @@
     </form>
 
     @section('script')
-    <script src="{{asset('js/inventory.js')}}"></script>
+        <script src="{{asset('js/inventory.js')}}"></script>
         <script>
             var countryOptionsData = @json(setting()->warehouseContries());
         </script>

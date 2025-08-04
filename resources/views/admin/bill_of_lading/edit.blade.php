@@ -162,7 +162,9 @@
                 <div class="col-12">
                     <div class="add-customer-btns text-end mt-4">
                         <button type="button" onclick="redirectTo('{{ route('admin.bill_of_lading.index') }}')" class="btn btn-outline-primary custom-btn">Cancel</button>
+                        @can('has-dynamic-permission', 'bill_of_landing_list.edit')
                         <button type="submit" class="btn btn-primary">Update</button>
+                        @endcan
                     </div>
                 </div>
 

@@ -68,13 +68,14 @@
                             </td>
                             <td>
                                 <li class="nav-item dropdown">
-                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                        data-bs-toggle="dropdown">
-
-                                        <span class="user-content"
-                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       height: 26px;align-content: center;">
-                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                  <a class="amargin user-link nav-link" href="javascript:void(0)"
+                                        @can('has-dynamic-permission', 'transfer_to_hub_list.order_status') data-bs-toggle="dropdown"
+                                        @endcan>
+                                        <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'transfer_to_hub_list.order_status')
+                                                    style="opacity: 0.6;" @endcannot>
+                                            <div>
+                                                <img src="{{ asset('assets/img/downarrow.png') }}">
+                                            </div>
                                         </span>
                                     </a>
                                     {{-- @if($vehicle->container->container_status == 20 ||
@@ -158,9 +159,15 @@
                                 </li>
                             </td>
                             <td class="btntext">
+                                @can('has-dynamic-permission', 'transfer_to_hub_list.order_details')
                                 <button
-                                    onClick="redirectTo('{{route('admin.container.orders.percel.list', [$vehicle->id ?? 0, 'OnLoading'])}}')"
-                                    class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                onClick="redirectTo('{{route('admin.container.orders.percel.list', [$vehicle->id ?? 0, 'OnLoading'])}}')"
+                                class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                    @else
+                                <button
+                                style="opacity: 0.6;"
+                                class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                @endcan                         
                             </td>
                         </tr>
                         <input type="hidden" id="partial_payment_sum_input_hidden" name="partial_payment_sum_hidden"

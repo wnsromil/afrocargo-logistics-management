@@ -59,20 +59,24 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.customer.updateShipTo', $customer->id) }}"><i
-                                                        class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                            </li>
-                                            <li>
-                                                <form action="{{ route('admin.customer.destroyShipTo', $customer->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to customer?')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
-                                                </form>
-                                            </li>
+                                            @can('has-dynamic-permission', 'ship_to_customers_list.edit')
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.customer.updateShipTo', $customer->id) }}"><i
+                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'ship_to_customers_list.delete')
+                                                <li>
+                                                    <form action="{{ route('admin.customer.destroyShipTo', $customer->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to customer?')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
+                                                </li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

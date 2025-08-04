@@ -204,8 +204,9 @@
 
             <!-- Action Buttons -->
             <div class="text-end">
+                @can('has-dynamic-permission', 'vehicle_manage.edit')
                 <a href="{{ route('admin.vehicle.edit', $vehicle->id) }}" class="btn btn-primary me-2">Edit</a>
-
+                @endcan
                 <!-- Delete Button (with confirmation) -->
                 {{-- <form action="{{ route('admin.vehicle.destroy', $vehicle->id) }}" method="POST" class="d-inline">
                     @csrf

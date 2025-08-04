@@ -406,10 +406,10 @@
         <div class="add-customer-btns text-end">
             <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>
+            @can('has-dynamic-permission', 'container_list.create')
             <button type="submit" class="btn btn-primary ">Submit</button>
-
+            @endcan
         </div>
-
     </form>
 
     {{-- jqury cdn --}}

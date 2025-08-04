@@ -623,9 +623,9 @@
 
                                 <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')"
                                     class="btn btn-outline-primary custom-btn">Cancel</button>
-
+                                @can('has-dynamic-permission', 'customers_list.create')
                                 <button type="submit" class="btn btn-primary ">Submit</button>
-
+                               @endcan
                             </div>
                         </div>
 

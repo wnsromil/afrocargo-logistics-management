@@ -59,7 +59,7 @@
             <div class="col-md-3 mb-3">
                 <label>Role Name</label>
                 <select class="form-control inp select2" name="role" onchange="this.form.submit()">
-                    <option>Select Role</option>
+                    <option value="">Select Role</option>
                     <option value="2" {{request()->role == "2" ? 'selected' : '' }}>Warehouse Manager</option>
                     <option value="4" {{request()->role == "4" ? 'selected' : '' }}>Driver</option>
                 </select>

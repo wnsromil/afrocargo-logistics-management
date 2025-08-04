@@ -34,15 +34,15 @@
                             <td>+{{ $driver->phone_code->phonecode ?? '' }} {{ $driver->phone ?? '-' }}
                             </td>
                             <td>
-                                 @if($driver->vehicle)
-                                    <span>{{ $driver->vehicle->vehicle_type ?? 'N/A' }}</span>
-                                    <span>(
-                                        {{
-                                            $driver->vehicle->vehicle_type === 'Container'
-                                                ? ($driver->vehicle->container_no_1 ?? 'N/A')
-                                                : ($driver->vehicle->vehicle_number ?? 'N/A')
-                                        }}
-                                    )</span>
+                                @if($driver->vehicle)
+                                                    <span>{{ $driver->vehicle->vehicle_type ?? 'N/A' }}</span>
+                                                    <span>(
+                                                        {{
+                                    $driver->vehicle->vehicle_type === 'Container'
+                                    ? ($driver->vehicle->container_no_1 ?? 'N/A')
+                                    : ($driver->vehicle->vehicle_number ?? 'N/A')
+                                                                }}
+                                                        )</span>
                                 @else
                                     <span>N/A</span>
                                 @endif
@@ -84,32 +84,37 @@
                                             class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.drivers.edit', $driver->id) }}"><i
-                                                        class="far fa-edit me-2"></i>Edit</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.drivers.show', $driver->id) }}"><i
-                                                        class="far fa-eye me-2"></i>View</a>
-                                            </li>
-                                            @if($driver->status == 'Active')
+                                            @can('has-dynamic-permission', 'drivers.edit')
                                                 <li>
-                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                        data-id="{{ $driver->id }}" data-status="Inactive">
-                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                    </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.drivers.edit', $driver->id) }}"><i
+                                                            class="far fa-edit me-2"></i>Edit</a>
                                                 </li>
-                                            @elseif($driver->status == 'Inactive')
+                                            @endcan
+                                            @can('has-dynamic-permission', 'drivers.show')
                                                 <li>
-                                                    <a class="dropdown-item activate" href="javascript:void(0)"
-                                                        data-id="{{ $driver->id }}" data-status="Active">
-                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                    </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.drivers.show', $driver->id) }}"><i
+                                                            class="far fa-eye me-2"></i>View</a>
                                                 </li>
-                                            @endif
-
+                                            @endcan
+                                            @can('has-dynamic-permission', 'drivers.account_status')
+                                                @if($driver->status == 'Active')
+                                                    <li>
+                                                        <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                            data-id="{{ $driver->id }}" data-status="Inactive">
+                                                            <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                        </a>
+                                                    </li>
+                                                @elseif($driver->status == 'Inactive')
+                                                    <li>
+                                                        <a class="dropdown-item activate" href="javascript:void(0)"
+                                                            data-id="{{ $driver->id }}" data-status="Active">
+                                                            <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

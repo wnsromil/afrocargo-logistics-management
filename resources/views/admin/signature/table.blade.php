@@ -36,11 +36,14 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
+                                            @can('has-dynamic-permission', 'signature_list.edit')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.signature.edit', $signature->id)}}"><i
                                                         class="far fa-edit me-2"></i>Update</a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'signature_list.signature_status')
                                             @if($signature->status == 'Active')
                                                 <li>
                                                     <a class="dropdown-item deactivate" href="javascript:void(0)"
@@ -56,6 +59,9 @@
                                                     </a>
                                                 </li>
                                             @endif
+                                            @endcan
+
+                                             @can('has-dynamic-permission', 'signature_list.delete')
                                             <li>
                                                 <form action="{{ route('admin.signature.destroy', $signature->id) }}"
                                                     method="POST" class="d-inline">
@@ -66,6 +72,8 @@
                                                             class="far fa-trash-alt me-2"></i>Delete</button>
                                                 </form>
                                             </li>
+                                            @endcan
+
                                         </ul>
                                     </div>
                                 </div>

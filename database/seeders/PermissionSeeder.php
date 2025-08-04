@@ -24,7 +24,7 @@ class PermissionSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $resources = [
-            'dashboard' => ['view'],
+            // 'dashboard' => ['view'],
 
             'customers' => ['view'],
             'customers_list' => ['create', 'edit', 'delete', 'show', 'account_status', 'view'],
@@ -35,7 +35,7 @@ class PermissionSeeder extends Seeder
             'warehouse_manager_list' => ['create', 'edit', 'delete','show', 'warehouse_manager_status', 'view'],
 
             'vehicle_manage' => ['create', 'edit', 'delete','show', 'vehicle_status', 'view'],
-            'container_list' => ['create', 'edit', 'delete','show', 'container_status', 'view'],
+            'container_list' => ['create', 'edit', 'delete','show', 'container_status', 'view' ,'in_time', 'out_time'],
 
             'drivers' => ['create', 'edit', 'delete','show', 'account_status', 'view'],
 
@@ -46,12 +46,14 @@ class PermissionSeeder extends Seeder
             'driver_inventory' => ['create', 'edit', 'delete','show', 'account_status', 'view'],
 
             'service_orders' => ['view'],
-            'orders_list' => ['create', 'edit', 'delete','show', 'order_status', 'view','delivery','pickup'],
-            'transfer_to_hub_list' => ['create', 'edit', 'delete','show', 'order_status', 'view'],
-            'container_received_by_hub_list' => ['create', 'edit', 'delete','show', 'order_status', 'view'],
-            'received_orders_list' => ['create', 'edit', 'delete','show', 'order_status', 'view'],
+            'orders_list' => ['create', 'edit', 'delete','order_details', 'order_status', 'view','delivery','pickup'],
+            'received_orders_list' => ['create', 'edit', 'delete','order_details', 'order_status', 'view'],
+            'transfer_to_hub_list' => ['create', 'edit', 'delete','order_details', 'order_status', 'view'],
+            'container_received_by_hub_list' => ['create', 'edit', 'delete','order_details', 'order_status', 'view'],
+            'container_transfer_history_list' => ['create', 'edit', 'delete','order_details', 'order_status', 'view'],
+            'container_received_history_list' => ['create', 'edit', 'delete','order_details', 'order_status', 'view'],
 
-            'supply_orders' => ['create', 'edit', 'delete','show', 'supply_status', 'view'],
+            'supply_orders' => ['create', 'edit', 'delete','order_details', 'supply_status', 'view'],
 
             'expenses' => ['create', 'edit', 'delete','show', 'status', 'view'],
 
@@ -65,11 +67,11 @@ class PermissionSeeder extends Seeder
                 'internal_camment','comment', 'print_custom_invoice', 'tracting','notes',
                 'signature_image','contract_image'
             ],
-            'invoice_trash_list' => ['create', 'edit', 'delete','show', 'status', 'view', 'print'],
+            'invoice_trash_list' => ['view', 'restore', 'delete', 'PDF_print'],
 
             'bill_of_landing' => ['view'],
-            'bill_of_landing_list' => ['create', 'edit', 'delete','show', 'status', 'view', 'print'],
-            'bill_of_landing_details_list' => ['create', 'edit', 'delete','show', 'status', 'view', 'print'],
+            'bill_of_landing_list' => ['create', 'edit', 'delete','show', 'status', 'view'],
+            'bill_of_landing_details_list' => ['create', 'edit', 'delete','show', 'status', 'view'],
 
 
             'custom_report' => ['view'],
