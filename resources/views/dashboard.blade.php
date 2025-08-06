@@ -1103,31 +1103,12 @@
                                                 </div>
                                             </td>
                                             @php
-                                                $status_class = $serviceOrder->status ?? null;
-                                                $serviceOrderStatus = $serviceOrder->parcelStatus->status ?? null;
-                                                $classValue = match ((string) $status_class) {
-                                                    "1" => 'badge-pending',
-                                                    "2" => 'badge-pickup',
-                                                    "3" => 'badge-picked-up',
-                                                    "4" => 'badge-arrived-warehouse',
-                                                    "5" => 'badge-in-transit',
-                                                    "8" => 'badge-arrived-final',
-                                                    "9" => 'badge-ready-pickup',
-                                                    "10" => 'badge-out-delivery',
-                                                    "11" => 'badge-delivered',
-                                                    "12" => 'badge-re-delivery',
-                                                    "13" => 'badge-on-hold',
-                                                    "14" => 'badge-cancelled',
-                                                    "15" => 'badge-abandoned',
-                                                    "21" => 'badge-picked-up',
-                                                    "22" => 'badge-in-transit',
-                                                    "23" => 'badge-pickup_re-schedule',
-                                                    default => 'badge-pending',
-                                                };
-
-                                            @endphp
+                                            $status_class = $serviceOrder->status ?? null;
+                                            $serviceOrderStatus = $serviceOrder->parcelStatus->status ?? null;
+                                            $ClassStatus = $serviceOrder->parcelStatus->class_name ?? null;
+                                           @endphp
                                             <td>
-                                                <label class="{{ $classValue }}" for="status">
+                                                <label class="{{ $ClassStatus }}" for="status">
                                                     {{ $serviceOrderStatus ?? '-' }}
                                                 </label>
                                             </td>
@@ -1143,13 +1124,16 @@
                                             </td>
                                             <td>
                                                 <li class="nav-item dropdown">
-                                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                                        data-bs-toggle="dropdown">
-
-                                                        <span class="user-content droparrow droparrow">
-                                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
-                                                        </span>
-                                                    </a>
+                                                       <a class="amargin user-link nav-link" href="javascript:void(0)"
+                                                            @can('has-dynamic-permission', 'orders_list.order_status') data-bs-toggle="dropdown"
+                                                            @endcan>
+                                                            <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'orders_list.order_status')
+                                                                        style="opacity: 0.6;" @endcannot>
+                                                                <div>
+                                                                    <img src="{{ asset('assets/img/downarrow.png') }}">
+                                                                </div>
+                                                            </span>
+                                                        </a>
                                                     <div class="dropdown-menu menu-drop-user">
                                                         <div class="profilemenu">
                                                             <div class="subscription-menu">
@@ -1267,9 +1251,18 @@
                                                 </li>
                                             </td>
                                             <td class="btntext">
-                                                <a href="{{ route('admin.service_orders.show', $serviceOrder->id) }}">
+                                                  @can('has-dynamic-permission', 'orders_list.order_details')
+                                              <a href="{{ route('admin.service_orders.show', $serviceOrder->id) }}">
                                                     <button class=orderbutton><img
                                                             src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
+                                                @else
+                                                    <a href="javascript:void(0)">
+                                                        <button class="orderbutton" style="opacity: 0.6;">
+                                                            <img src="{{ asset('assets/img/ordereye.png') }}">
+                                                        </button>
+                                                    </a>
+                                                @endcan
+                                              
                                             </td>
                                         </tr>
                                     @empty
@@ -1379,27 +1372,7 @@
                                                         ${{ number_format($supplyOrder->total_amount ?? 0, 2) }}
                                                     </div>
                                                 </div>
-                                            </td>
-                                            @php
-                                                $classValue = match ((string) $supplyOrder->status) {
-                                                    "1" => 'badge-pending',
-                                                    "2" => 'badge-pickup',
-                                                    "3" => 'badge-picked-up',
-                                                    "4" => 'badge-arrived-warehouse',
-                                                    "5" => 'badge-in-transit',
-                                                    "8" => 'badge-arrived-final',
-                                                    "9" => 'badge-ready-pickup',
-                                                    "10" => 'badge-out-delivery',
-                                                    "11" => 'badge-delivered',
-                                                    "12" => 'badge-re-delivery',
-                                                    "13" => 'badge-on-hold',
-                                                    "14" => 'badge-cancelled',
-                                                    "15" => 'badge-abandoned',
-                                                    "21" => 'badge-picked-up',
-                                                    "22" => 'badge-in-transit',
-                                                    default => 'badge-pending',
-                                                };
-                                            @endphp
+                                            </td>                  
                                             <td>
                                                 <div>
                                                     {{ $supplyOrder->payment_type === 'COD' ? 'Cash' : ($supplyOrder->payment_type ?? '-') }}
@@ -1411,14 +1384,20 @@
                                                 </label>
                                             </td>
                                             <td>
+                                                <label class="{{ $supplyOrder->parcelStatus->class_name }}" for="status">
+                                                    {{ $supplyOrder->parcelStatus->status ?? '-' }}
+                                                </label>
+                                            </td>
+                                            <td>
                                                 <li class="nav-item dropdown">
-                                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                                        data-bs-toggle="dropdown">
-
-                                                        <span class="user-content"
-                                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                                                               height: 26px;align-content: center;">
-                                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                                    <a class="amargin user-link nav-link" href="javascript:void(0)"
+                                                        @can('has-dynamic-permission', 'supply_orders.order_status') data-bs-toggle="dropdown"
+                                                        @endcan>
+                                                        <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'supply_orders.order_status')
+                                                                    style="opacity: 0.6;" @endcannot>
+                                                            <div>
+                                                                <img src="{{ asset('assets/img/downarrow.png') }}">
+                                                            </div>
                                                         </span>
                                                     </a>
                                                     <div class="dropdown-menu menu-drop-user">
@@ -1443,10 +1422,16 @@
                                                 </li>
                                             </td>
                                             <td class="btntext">
-                                                <button
-                                                    onClick="redirectTo('{{route('admin.supply_orders.show', $supplyOrder->id)}}')"
-                                                    class=orderbutton><img
-                                                        src="{{asset('assets/img/ordereye.png')}}"></button>
+                                                @can('has-dynamic-permission', 'supply_orders.order_details')
+                                                        <button onClick="redirectTo('{{route('admin.supply_orders.show', $supplyOrder->id)}}')"
+                                                            class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
+                                                        @else
+                                                            <a href="javascript:void(0)">
+                                                                <button class="orderbutton" style="opacity: 0.6;">
+                                                                    <img src="{{ asset('assets/img/ordereye.png') }}">
+                                                                </button>
+                                                            </a>
+                                                        @endcan
                                             </td>
                                         </tr>
                                     @empty
