@@ -355,7 +355,7 @@
                                 <input type="hidden" name="address_id">
                                 <input type="hidden" name="user_id">
                                 <input type="hidden" name="invoice_custmore_type" value="ship_to">
-                                <input type="hidden" name="arrived_warehouse_id" value="{{ $invoice->arrived_warehouse_id ?? '' }}">
+
 
 
                                 <div class="col-md-6">
@@ -523,7 +523,7 @@
                                 <button type="button" {{--id="auto_invoice_gen" --}}
                                     class="btn-primary square sm">Auto</button>
                                 <input type="text" name="invoice_no" class="form-control form-cs inp"
-                                    placeholder="INV 00021">
+                                    placeholder="INV 00021" value="{{$invoice->invoice_no ?? 'INV 00021'}}">
                             </div>
                         </div>
 
@@ -808,7 +808,7 @@
                     </div>
                     <div><label>Payment</label>
                         <input type="text" class="form-control" placeholder="0" name="payment"
-                            value="{{$invoice->payment ?? 0}}" value="{{$invoice->payment ?? 0}}">
+                            value="{{$invoice->payment ?? 0}}" value="{{$invoice->payment ?? 0}}" readonly>
                     </div>
                     <div><label>Service Fee</label>
                         <input type="text" class="form-control" placeholder="0" name="service_fee"
@@ -829,6 +829,8 @@
             <input type="hidden" name="pickup_address_id" value="{{ $invoice->pickupAddress->id ?? '' }}">
             <input type="hidden" name="delivery_address_id" value="{{ $invoice->deliveryAddress->id ?? '' }}">
             <input type="hidden" name="parcel_id" value="{{$invoice->parcel_id ?? 0}}">
+            <input type="hidden" name="arrived_warehouse_id" value="{{ $invoice->arrived_warehouse_id ?? '' }}">
+            <input type="hidden" name="deletedItrmId">
 
             <div class="modal custom-modal fade" id="supplyModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -928,6 +930,7 @@
             $("#dynamicTable tbody tr:last").on('click',function(){
                 $('#fnsubmit').prop('disabled', false);
             });
+
             setTimeout(() => {
                 console.log("invoce_typ", invoce_type);
                 toggleInventoryList();
@@ -940,6 +943,9 @@
                 } else {
                     $('select[name="container_id"]').prop("disabled", false);
                 }
+                $('#services').on('change',function(){
+                    $('#fnsubmit').prop('disabled', false);
+                });
             }, 600);
         };
 
