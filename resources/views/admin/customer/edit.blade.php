@@ -267,7 +267,7 @@
                                             @foreach ($containers as $container)
                                                                                     <option value="{{ $container->id }}" {{ old('country', $user->vehicle_id) == $container->id ?
                                                 'selected' : '' }}>
-                                                                                        {{ $container->container_no_1 }}
+                                                                                       {{ $container->unique_id }} {{ $container->ship_to_country }}
                                                                                     </option>
                                             @endforeach
                                         </select>

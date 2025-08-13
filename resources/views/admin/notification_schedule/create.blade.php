@@ -320,6 +320,16 @@
 
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
+                            <label for="Container_name" class="foncolor">Group Container</label>
+                            <select name="customer_container_id" id="customer_containerSelect"
+                                class="form-control inp select2">
+                                <option value="" disabled hidden selected>Select Group Container</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="input-block mb-3">
                             <label for="customer_id" class="foncolor">Customer <i class="text-danger">*</i></label>
                             <select name="customer_id" id="warehouseCustomer" class="form-control inp select2">
                                 <option value="" disabled hidden selected>Select Warehouse Customer</option>
@@ -327,15 +337,6 @@
                             </select>
                             <small class="text-danger d-none" id="warehouse_customer_Error">Customer is
                                 required.</small>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <div class="input-block mb-3">
-                            <label for="Container_name" class="foncolor">Container</label>
-                            <select name="customer_container_id" id="customer_containerSelect" class="form-control inp select2">
-                                <option value="" disabled hidden selected>Select Container</option>
-                            </select>
                         </div>
                     </div>
 
@@ -737,12 +738,12 @@
 
         <script>
             $(document).ready(function () {
-                $('#warehouseCustomerSelect').on('change', function () {
-                    var warehouseId = $(this).val();
-
+                $('#customer_containerSelect').on('change', function () {
+                    const warehouseId = document.getElementById("warehouseCustomerSelect").value;
+                    const containerId = document.getElementById("customer_containerSelect").value;
                     if (warehouseId) {
                         $.ajax({
-                            url: '/api/warehouse-customers/' + warehouseId,
+                            url: '/api/warehouse-customers/' + warehouseId + "/" + containerId,
                             type: 'GET',
                             success: function (data) {
                                 $('#warehouseCustomer').empty();

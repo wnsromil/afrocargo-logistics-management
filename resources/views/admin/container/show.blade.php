@@ -102,7 +102,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Trucking company</label>
-                        <p>{{ $vehicle->trucking_company ?? '--'}}</p>
+                        <p>{{ $vehicle->TruckingCompanyData->name ?? '--'}}</p>
                     </div>
                 </div>
 

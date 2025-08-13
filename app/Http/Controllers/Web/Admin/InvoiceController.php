@@ -24,7 +24,9 @@ use App\Models\{
     InvoiceComment,
     Claim,
     NotificationParcelMessage,
-    Notification
+    Notification,
+    AdminReward,
+    UserReward
 };
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -406,7 +408,7 @@ class InvoiceController extends Controller
             $invoice->parcel_id = $request->parcel_id;
         }
 
-        $invoice->save();
+       $invoice_Id =  $invoice->save();
 
         $validated = [
             'invoice_id' => $invoice->id,
@@ -429,6 +431,7 @@ class InvoiceController extends Controller
         ];
         if ($invoice->payment > 0) {
             $data = $this->individualPayment($validated);
+
         }
 
         setting()->saveInvoiceHistory($invoice->id, "created");

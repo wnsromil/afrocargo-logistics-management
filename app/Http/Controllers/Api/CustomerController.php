@@ -74,11 +74,11 @@ class CustomerController extends Controller
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%$search%")
-                ->orWhere('last_name', 'LIKE', "%$search%")
-                ->orWhere('unique_id', 'LIKE', "%$search%")
-                ->orWhere('phone', 'LIKE', "%$search%")
-                ->orWhere('address', 'LIKE', "%$search%")
-                ->orWhere('email', 'LIKE', "%$search%");
+                    ->orWhere('last_name', 'LIKE', "%$search%")
+                    ->orWhere('unique_id', 'LIKE', "%$search%")
+                    ->orWhere('phone', 'LIKE', "%$search%")
+                    ->orWhere('address', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
             });
         }
 
@@ -323,7 +323,7 @@ class CustomerController extends Controller
                                 <div>
                                 <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">{$LogCustomerType} Added</label></p>
                                 <p class=\"col737 fs_18 fw_500\">{$LogCustomerType} Name — <label class=\"col00 mb-0\">" .
-                                     (($user->name ?? '') . ' ' . ($user->last_name ?? '')) . "</label></p>
+                (($user->name ?? '') . ' ' . ($user->last_name ?? '')) . "</label></p>
                                 </div>
                             </div>
                         </div>
@@ -332,7 +332,7 @@ class CustomerController extends Controller
              ";
 
 
-           storeDriverLog($html, $this->user->id, $LogCustomerType . "Added");
+            storeDriverLog($html, $this->user->id, $LogCustomerType . "Added");
 
 
             return response()->json([
@@ -626,16 +626,17 @@ class CustomerController extends Controller
         }
     }
 
-    public function getCustomerByWarehouse($id)
+    public function getCustomerByWarehouseAndVehicle($warehouseId, $vehicleId)
     {
-        $customers = User::where('warehouse_id', $id)
+        $customers = User::where('warehouse_id', $warehouseId)
+            ->where('vehicle_id', $vehicleId)
             ->where('role_id', 3)
-            ->select('id', 'name', 'last_name', 'warehouse_id')
+            ->select('id', 'name', 'last_name', 'warehouse_id', 'vehicle_id')
             ->get();
 
         if ($customers->isEmpty()) {
             return response()->json([
-                'message' => 'No customers found for this warehouse',
+                'message' => 'No customers found for this warehouse and vehicle',
             ], 404);
         }
 

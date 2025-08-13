@@ -186,6 +186,20 @@ class MenuSeeder extends Seeder
                 'permissions' => ['notification.view'],
             ],
             [
+                'title' => 'Payment Transaction',
+                'icon' => '<i class="menuIcon ti ti-currency-dollar"></i>', // dollar icon for payments
+                'route' => 'admin.payment_transaction.index', // yahan actual route name laga dena
+                'active' => 'payment_transaction*',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Settings',
+                'icon' => '<i class="menuIcon ti ti-settings"></i>', // dollar icon for payments
+                'route' => 'admin.reward_point.index', // yahan actual route name laga dena
+                'active' => 'reward_point*',
+                'roles' => ['admin'],
+            ],
+            [
                 'title' => 'CBM Calculator',
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 //'route' => 'admin.cbm_calculator.freight_Calculator',
@@ -203,6 +217,17 @@ class MenuSeeder extends Seeder
             // }
 
             Menu::create($menu);
+        }
+
+        $setting = Menu::where('title', 'Settings')->first();
+        if ($setting) {
+            Menu::create([
+                'title' => 'Reward Point',
+                'route' => 'admin.reward_point.index',
+                'active' => 'reward_point',
+                'parent_id' => $setting->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
         }
 
         $customer = Menu::where('title', 'Customers')->first();

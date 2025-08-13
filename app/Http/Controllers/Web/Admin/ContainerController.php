@@ -14,6 +14,7 @@ use App\Models\{
     Country,
     Vehicle,
     ContainerSize,
+    TruckingCompany
 };
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -179,6 +180,12 @@ class ContainerController extends Controller
             ['status' => 'Active']
         );
 
+        $truckingCompany = TruckingCompany::firstOrCreate(
+            ['name' => $request->trucking_company],
+            ['status' => 'Active']
+        );
+
+
         // Create and save vehicle
         $vehicleStore = new Vehicle();
         $vehicleStore->warehouse_id   = $request->warehouse_name;
@@ -195,7 +202,7 @@ class ContainerController extends Controller
         $vehicleStore->doc_id         = $request->doc_id;
         $vehicleStore->volume         = $request->volume;
         $vehicleStore->container_company_id = $containerCompany->id;
-        $vehicleStore->trucking_company = $request->trucking_company;
+        $vehicleStore->trucking_company = $truckingCompany->id;
         $vehicleStore->chassis_number = $request->chassis_number;
         $vehicleStore->vessel_voyage = $request->vessel_voyage;
         $vehicleStore->tir_number = $request->tir_number;
@@ -306,6 +313,11 @@ class ContainerController extends Controller
             ['status' => 'Active']
         );
 
+        $truckingCompany = TruckingCompany::firstOrCreate(
+            ['name' => $request->trucking_company],
+            ['status' => 'Active']
+        );
+
         $containerInDate = null;
         $containerInTime = null;
 
@@ -331,7 +343,7 @@ class ContainerController extends Controller
         $vehicle->doc_id         = $request->doc_id;
         $vehicle->volume         = $request->volume;
         $vehicle->container_company_id = $containerCompany->id;
-        $vehicle->trucking_company = $request->trucking_company;
+        $vehicle->trucking_company = $truckingCompany->id;
         $vehicle->chassis_number = $request->chassis_number;
         $vehicle->vessel_voyage = $request->vessel_voyage;
         $vehicle->tir_number = $request->tir_number;
@@ -346,7 +358,7 @@ class ContainerController extends Controller
         $vehicle->transit_country = $request->transit_country;
         $vehicle->save();
 
-        return redirect()->route('admin.container.show', ['id' => $id])->with('success', 'Container added successfully.');
+        return redirect()->route('admin.container.show', ['container' => $id])->with('success', 'Container added successfully.');
     }
 
     /**

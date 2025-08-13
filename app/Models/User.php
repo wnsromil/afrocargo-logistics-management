@@ -78,6 +78,7 @@ class User extends Authenticatable
         'notification_read',
         'firebase_token',
         'device_type',
+        'reward_dollar'
     ];
 
 

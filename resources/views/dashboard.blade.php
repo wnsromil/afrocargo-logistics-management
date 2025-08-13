@@ -1379,11 +1379,6 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <label class="{{ $classValue }}" for="status">
-                                                    {{ $supplyOrder->parcelStatus->status ?? '-' }}
-                                                </label>
-                                            </td>
-                                            <td>
                                                 <label class="{{ $supplyOrder->parcelStatus->class_name }}" for="status">
                                                     {{ $supplyOrder->parcelStatus->status ?? '-' }}
                                                 </label>

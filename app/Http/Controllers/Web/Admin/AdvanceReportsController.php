@@ -75,7 +75,7 @@ class AdvanceReportsController extends Controller
                 $q->where('status', $request->status);
             })
             ->when($request->filled('payment_status'), function ($q) use ($request) {
-                $q->where('is_paid', $request->payment_status == 'paid');
+                $q->where('payment_status', $request->payment_status);
             })
             ->when($request->filled('logs_datetimes'), function ($q) use ($request) {
                 $dates = explode(' - ', $request->logs_datetimes);

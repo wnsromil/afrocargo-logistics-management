@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use \App\Models\Country;
 use \App\Models\VehicleType;
 use \App\Models\Broker;
+use \App\Models\TruckingCompany;
 use \App\Models\ContainerCompany;
 use \App\Models\ParcelStatus;
 use App\Models\User;
@@ -62,7 +63,9 @@ class AppServiceProvider extends ServiceProvider
 
         $Brokers = Broker::where('status', 'Active')->get();
 
-        $Containercompanys = ContainerCompany::where('status', 'Active')->get();
+        $TruckingCompanys = ContainerCompany::where('status', 'Active')->get();
+
+        $Containercompanys = TruckingCompany::where('status', 'Active')->get();
 
         $ParcelStatus = ParcelStatus::get();
         $SupplyParcelStatus = ParcelStatus::where('parcel_type', 'Comman')->get();
@@ -74,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('viewCurrencys', $currencies);
         View::share('viewVehicleTypes', $vehicleType);
         View::share('viewBrokers', $Brokers);
+        View::share('viewTruckingCompanys', $TruckingCompanys);
         View::share('viewVContainercompanys', $Containercompanys);
         View::share('viewParcelStatus', $ParcelStatus);
         View::share('viewSupplyParcelStatus', $SupplyParcelStatus);

@@ -39,7 +39,9 @@ use App\Http\Controllers\Web\Admin\{
     VerifyLicenseController,
     SupplyInventoryController,
     OrderStatusManage,
-    EODController
+    EODController,
+    PaymentTransactionController,
+    RewardController
 };
 use App\Mail\RegistorMail;
 
@@ -218,6 +220,9 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('bill_of_lading', BillofLadingController::class);
         Route::resource('lading_details', LadingDetailsController::class);
         Route::resource('end_of_day', EODController::class);
+        Route::resource('payment_transaction', PaymentTransactionController::class);
+        Route::resource('reward_point', RewardController::class);
+
 
         // EOD
         Route::get('invoice-index', [EODController::class, 'Invoice_index'])->name('end_of_day.Invoice_index');
@@ -246,7 +251,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('transferHub-history', [HubTrackingController::class, 'transfer_history_hub'])->name('transfer.hub.history.list');
         Route::get('receivedHub-history', [HubTrackingController::class, 'received_history_hub'])->name('received.hub.history.list');
-      
+
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
         Route::get('receivedOrders/{id}', [HubTrackingController::class, 'received_orders_show'])->name('received.received_orders_show');
         Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');

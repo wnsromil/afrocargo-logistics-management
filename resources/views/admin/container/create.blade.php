@@ -50,7 +50,7 @@
                             @foreach($containerSizes as $size)
                                 <option value="{{ $size->id }}"
                                         data-volume="{{ $size->volume }}"
-                                      {{ old('container_size') == $size->container_name ? 'selected' : '' }}>
+                                      {{ old('container_size') == $size->id ? 'selected' : '' }}>
                                     {{ $size->container_name }}
                                 </option>
                             @endforeach
@@ -193,18 +193,44 @@
                     </div>
                 @endif
 
-                {{-- Trucking company --}}
-                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
-                    <div class="input-block mb-3">
-                        <label for="trucking_company" class="foncolor">Trucking Company<i
-                                class="text-danger">*</i></label>
-                        <input type="text" name="trucking_company" id="trucking_company" class="form-control inp"
-                            placeholder="Enter trucking company" value="{{ old('trucking_company') }}">
-                        @error('trucking_company')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                  {{-- Trucking company --}}
+                @if($role_id == 1)
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="trucking_company" class="foncolor">Trucking company<i class="text-danger">*</i></label>
+                            <select id="trucking_company" name="trucking_company" class="profileUpdateFont">
+                                <option value="">Select Trucking company</option>
+                                @foreach($viewTruckingCompanys as $viewTruckingCompany)
+                                    <option {{ old('trucking_company') == $viewTruckingCompany->name ? 'selected' : '' }}
+                                        value="{{ $viewTruckingCompany->name }}">
+                                        {{ $viewTruckingCompany->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('trucking_company')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="trucking_company" class="foncolor">Trucking company<i class="text-danger">*</i></label>
+                            <select id="trucking_company" name="trucking_company" class="profileUpdateFont">
+                                <option value="">Select Trucking company</option>
+                                @foreach($viewTruckingCompanys as $viewTruckingCompany)
+                                    <option {{ old('trucking_company') == $viewTruckingCompany->name ? 'selected' : '' }}
+                                        value="{{ $viewTruckingCompany->name }}">
+                                        {{ $viewTruckingCompany->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('trucking_company')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
 
                 {{-- In Date & Time --}}
                 <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
@@ -426,6 +452,13 @@
                 $('#broker').select2({
                     tags: true,
                     placeholder: 'Select Or Type Broker',
+                    allowClear: true
+                });
+            });
+              $(document).ready(function () {
+                $('#trucking_company').select2({
+                    tags: true,
+                    placeholder: 'Select Or Type Trucking Company',
                     allowClear: true
                 });
             });

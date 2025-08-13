@@ -258,7 +258,7 @@ class ContainerController extends Controller
         $customer_id = $request->customer_id;
 
         if ($customer_id === 'All Warehouse Customers') {
-            $vehicles = Vehicle::where('warehouse_id', $warehouse_id)->get();
+            $vehicles = Vehicle::where('warehouse_id', $warehouse_id)->where('vehicle_type', 1)->get();
         } else {
             $user = User::find($customer_id);
 
@@ -270,6 +270,7 @@ class ContainerController extends Controller
 
             $vehicles = Vehicle::where('id', $container_id)
                 ->where('warehouse_id', $warehouse_id)
+                ->where('vehicle_type', 1)
                 ->get();
         }
 

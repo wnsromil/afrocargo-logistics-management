@@ -46,6 +46,9 @@ use App\Http\Controllers\Web\Admin\{
 //     return $request->user()->load('warehouse');
 // })->middleware('auth:api');
 
+// routes/web.php ya api.php me
+Route::post('/stripe/webhook', [\App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
+
 //country city state api's
 Route::get('/get-countries', [LocationController::class, 'getCountries']);
 Route::get('/get-states/{country_id}', [LocationController::class, 'getStates']);
@@ -127,7 +130,7 @@ Route::post('/driver-logs', [DriverController::class, 'getLogsByUser']);
 Route::get('/warehouse-managers/{id}', [WarehouseManagerController::class, 'getWarehouseManagers']);
 
 //Manager
-Route::get('/warehouse-customers/{id}', [CustomerController::class, 'getCustomerByWarehouse']);
+Route::get('/warehouse-customers/{warehouseId}/{vehicleId}', [CustomerController::class, 'getCustomerByWarehouseAndVehicle']);
 
 //Vehicle
 Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);

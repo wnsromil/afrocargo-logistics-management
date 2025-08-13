@@ -94,6 +94,11 @@ class Vehicle extends Model
         return $this->belongsTo(Broker::class, 'broker');
     }
 
+      public function TruckingCompanyData()
+    {
+        return $this->belongsTo(TruckingCompany::class, 'trucking_company');
+    }
+
     public function getVehicleTypeAttribute($value)
     {
         if ($this->relationLoaded('type') && $this->type) {
