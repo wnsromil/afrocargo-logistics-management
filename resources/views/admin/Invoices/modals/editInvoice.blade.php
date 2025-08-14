@@ -1307,7 +1307,6 @@
     </div>
 </div>
 <!--/Note Modal -->
-
 <!-- signature_Image Modal -->
 <div class="modal custom-modal invoiceSModel fade" id="signatureImage{{$invoice->id ?? ''}}" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -1317,7 +1316,11 @@
                     <h4 class="mb-0">Signature Image</h4>
                 </div>
                 <p class="col3a text-center">
-                    {{ $invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->signature_date ? \Carbon\Carbon::parse($invoice->deliveryAddress->user->signature_date)->format('m-d-Y, h:i A') : '' }}
+                    @if ($invoice->pickupAddress)
+                       {{ $invoice->pickupAddress && $invoice->pickupAddress->user && $invoice->pickupAddress->user->signature_date ? \Carbon\Carbon::parse($invoice->pickupAddress->user->signature_date)->format('m-d-Y, h:i A') : '' }}
+                    @else
+                       {{ $invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->signature_date ? \Carbon\Carbon::parse($invoice->deliveryAddress->user->signature_date)->format('m-d-Y, h:i A') : '' }}
+                    @endif
                 </p>
                 <button type="button" class="btn-close m-0 mt-n2" data-bs-dismiss="modal" aria-label="Close">
 
@@ -1326,8 +1329,13 @@
             <div class="modal-body pt-3 pb-2">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <img class="w-100 mx_150 p-4"
-                            src="{{ $invoice->deliveryAddress &&  $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->signature_img ? $invoice->deliveryAddress->user->signature_img : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
+                        @if ($invoice->pickupAddress)
+                          <img class="w-100 mx_150 p-4"
+                            src="{{ $invoice->pickupAddress &&  $invoice->pickupAddress->user && $invoice->pickupAddress->user->signature_img ? asset("storage/".$invoice->pickupAddress->user->signature_img) : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
+                        @else
+                          <img class="w-100 mx_150 p-4"
+                            src="{{ $invoice->deliveryAddress &&  $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->signature_img ? asset("storage/".$invoice->deliveryAddress->user->signature_img) : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
+                        @endif
                     </div>
                 </div>
             </div>
@@ -1345,7 +1353,11 @@
                     <h4 class="mb-0">Contract Image</h4>
                 </div>
                 <p class="col3a text-center">
-                    {{ $invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->license_expiry_date ? \Carbon\Carbon::parse($invoice->deliveryAddress->user->license_expiry_date)->format('m-d-Y, h:i A') : '' }}
+                    @if ($invoice->pickupAddress)
+                      {{ $invoice->pickupAddress && $invoice->pickupAddress->user && $invoice->pickupAddress->user->license_expiry_date ? \Carbon\Carbon::parse($invoice->pickupAddress->user->license_expiry_date)->format('m-d-Y, h:i A') : '' }}
+                    @else
+                      {{ $invoice->deliveryAddress && $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->license_expiry_date ? \Carbon\Carbon::parse($invoice->deliveryAddress->user->license_expiry_date)->format('m-d-Y, h:i A') : '' }}
+                    @endif
                 </p>
                 <button type="button" class="btn-close m-0 mt-n2" data-bs-dismiss="modal" aria-label="Close">
 
@@ -1354,8 +1366,14 @@
             <div class="modal-body pt-3 pb-2">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <img class="w-100 mx_150 p-4"
-                            src="{{ $invoice->deliveryAddress &&  $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->contract_signature_img ? $invoice->deliveryAddress->user->contract_signature_img : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
+                        @if ($invoice->pickupAddress)
+                           <img class="w-100 mx_150 p-4"
+                            src="{{ $invoice->pickupAddress &&  $invoice->pickupAddress->user && $invoice->pickupAddress->user->contract_signature_img ? asset("storage/".$invoice->pickupAddress->user->contract_signature_img) : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
+                        @else
+                          <img class="w-100 mx_150 p-4"
+                            src="{{ $invoice->deliveryAddress &&  $invoice->deliveryAddress->user && $invoice->deliveryAddress->user->contract_signature_img ? asset("storage/".$invoice->deliveryAddress->user->contract_signature_img) : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -1363,3 +1381,4 @@
     </div>
 </div>
 <!--/Contract_Image Modal -->
+
