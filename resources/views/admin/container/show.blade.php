@@ -282,6 +282,13 @@
                     </div>
                 </div>
 
+                 <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="vehicle_capacity">Created By</label>
+                        <p>{{ $vehicle->createdBy->name ?? '--'}} {{ $vehicle->createdBy->last_name ?? ''}}</p>
+                    </div>
+                </div>
+
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label for="vehicle_capacity">Created At</label>

@@ -215,6 +215,7 @@ class ContainerController extends Controller
         $vehicleStore->celliling_date = Carbon::createFromFormat('m/d/Y', $request->celliling_date)->format('Y-m-d');
         $vehicleStore->eta_date = Carbon::createFromFormat('m/d/Y', $request->eta_date)->format('Y-m-d');
         $vehicleStore->transit_country = $request->transit_country;
+         $vehicleStore->created_by = auth()->id();
         $vehicleStore->save();
 
         $insertedId = $vehicleStore->id;

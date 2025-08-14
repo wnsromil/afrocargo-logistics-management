@@ -38,6 +38,11 @@ class Vehicle extends Model
         return $this->belongsTo(User::class, 'driver_id');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function parcelsCount()
     {
         return $this->hasMany(Parcel::class, 'container_id')
@@ -94,7 +99,7 @@ class Vehicle extends Model
         return $this->belongsTo(Broker::class, 'broker');
     }
 
-      public function TruckingCompanyData()
+    public function TruckingCompanyData()
     {
         return $this->belongsTo(TruckingCompany::class, 'trucking_company');
     }

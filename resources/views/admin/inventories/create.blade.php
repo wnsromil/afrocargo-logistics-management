@@ -295,7 +295,7 @@
 
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
-                            <label for="item_length_inch" class="table-content col737 fw-medium">Item Length(inch)
+                            <label for="item_length_inch" class="table-content col737 fw-medium">Item Length(Cm)
                             </label>
                             <input class="form-control input-padding" name="item_length_inch" id="length" type="number"
                                 step="any" value="{{ old('item_length_inch') }}" placeholder="Enter Item Length"
@@ -305,7 +305,7 @@
 
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
-                            <label for="width" class="table-content col737 fw-medium">Item Width </label>
+                            <label for="width" class="table-content col737 fw-medium">Item Width(Cm) </label>
                             <input class="form-control input-padding" name="width" id="width" type="number" step="any"
                                 value="{{ old('width') }}" placeholder="Enter Item Width"
                                 aria-label="default input example">
@@ -318,7 +318,7 @@
 
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="input-block mb-3">
-                            <label for="height" class="table-content col737 fw-medium">Item Height</label>
+                            <label for="height" class="table-content col737 fw-medium">Item Height(Cm)</label>
                             <input class="form-control input-padding" name="height" id="height" type="number" step="any"
                                 value="{{ old('height') }}" placeholder="Enter Item Height"
                                 aria-label="default input example">

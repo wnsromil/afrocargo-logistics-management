@@ -139,8 +139,7 @@ class DriverInventoryController extends Controller
             })
             ->get();
 
-        $items = Inventory::where('inventary_sub_type', 'Supply')
-            ->where('status', 'Active')
+        $items = Inventory::where('status', 'Active')
             ->get();
         $time = Carbon::now()->format('h:i A');
         return view('admin.driver_inventory.create', compact('warehouses', 'time', 'users', 'items'));

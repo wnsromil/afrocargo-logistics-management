@@ -1,5 +1,3 @@
-
-
 $('input[name="retail_vaule_price"], input[name="retail_shipping_price"]').on(
     "input",
     function (e) {
@@ -35,7 +33,8 @@ function calculateVolume() {
     const width = parseFloat(widthInput.value) || 0;
     const height = parseFloat(heightInput.value) || 0;
 
-    const volume = length * width * height;
+    const volume = ((length * width * height) / 1000000).toFixed(0);
+
     volumeInput.value = volume;
 }
 
@@ -141,17 +140,24 @@ $(document).ready(function () {
         if (!stateId) return;
 
         $("#city_inventory").html("<option selected>Loading...</option>");
-        $("#city_inventory_supply").html("<option selected>Loading...</option>");
+        $("#city_inventory_supply").html(
+            "<option selected>Loading...</option>"
+        );
 
         $.ajax({
             url: "/api/get-cities/" + stateId,
             type: "GET",
             success: function (cities) {
-                $("#city_inventory").html('<option value="">Select City</option>');
-                $("#city_inventory_supply").html('<option value="">Select City</option>');
+                $("#city_inventory").html(
+                    '<option value="">Select City</option>'
+                );
+                $("#city_inventory_supply").html(
+                    '<option value="">Select City</option>'
+                );
 
                 $.each(cities, function (key, city) {
-                    const selected = city.name === selectedCityName ? "selected" : "";
+                    const selected =
+                        city.name === selectedCityName ? "selected" : "";
                     const option = `<option data-id="${city.id}" value="${city.name}" ${selected}>${city.name}</option>`;
                     $("#city_inventory").append(option);
                     $("#city_inventory_supply").append(option);
@@ -161,23 +167,34 @@ $(document).ready(function () {
     }
 
     // ✅ Load states based on country ID and selected state name
-    function loadStates(countryId, selectedStateName = null, selectedCityName = null) {
+    function loadStates(
+        countryId,
+        selectedStateName = null,
+        selectedCityName = null
+    ) {
         if (!countryId) return;
 
         $("#state_inventory").html("<option selected>Loading...</option>");
-        $("#state_inventory_supply").html("<option selected>Loading...</option>");
+        $("#state_inventory_supply").html(
+            "<option selected>Loading...</option>"
+        );
 
         $.ajax({
             url: "/api/get-states/" + countryId,
             type: "GET",
             success: function (states) {
-                $("#state_inventory").html('<option value="">Select State</option>');
-                $("#state_inventory_supply").html('<option value="">Select State</option>');
+                $("#state_inventory").html(
+                    '<option value="">Select State</option>'
+                );
+                $("#state_inventory_supply").html(
+                    '<option value="">Select State</option>'
+                );
 
                 let matchedStateId = null;
 
                 $.each(states, function (key, state) {
-                    const selected = state.name === selectedStateName ? "selected" : "";
+                    const selected =
+                        state.name === selectedStateName ? "selected" : "";
                     const option = `<option data-id="${state.id}" value="${state.name}" ${selected}>${state.name}</option>`;
                     $("#state_inventory").append(option);
                     $("#state_inventory_supply").append(option);
@@ -204,10 +221,13 @@ $(document).ready(function () {
     }
 
     // ✅ Country change → load states (no old value in this case)
-    $("#country_inventory, #country_inventory_supply").on("change", function () {
-        const countryId = $(this).find("option:selected").data("id");
-        loadStates(countryId); // No old values here
-    });
+    $("#country_inventory, #country_inventory_supply").on(
+        "change",
+        function () {
+            const countryId = $(this).find("option:selected").data("id");
+            loadStates(countryId); // No old values here
+        }
+    );
 
     // ✅ State change → debounce city load
     let debounceTimer;
@@ -221,4 +241,3 @@ $(document).ready(function () {
         }, 300);
     });
 });
-
