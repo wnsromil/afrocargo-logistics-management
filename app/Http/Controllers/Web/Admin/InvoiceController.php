@@ -55,7 +55,7 @@ class InvoiceController extends Controller
             //    with(['invoiceParcelData','user','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->
             when($this->user->role_id != 1, function ($q) {
                 // Uncomment if warehouse filtering is required
-                // return $q->where('warehouse_id', $this->user->warehouse_id);
+                return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->when($request->input('warehouse_id'), function ($q) use ($request) {
                 return $q->where('warehouse_id', $request->input('warehouse_id'));
@@ -245,9 +245,9 @@ class InvoiceController extends Controller
         if ($customerId) {
             $customer = User::join('addresses', function ($join) {
                 $join->on('addresses.user_id', '=', 'users.id');
-            })->whereIn('users.role', [3, 5])->where('users.id', $customerId)
-                ->select('users.*', 'addresses.id as address_id', 'addresses.user_id', 'addresses.full_name', 'addresses.mobile_number', 'addresses.alternative_mobile_number', 'addresses.address', 'addresses.pincode', 'addresses.address_type')
-                ->first();
+            })->whereIn('users.role', [3, 5])->where('users.id',$customerId)
+            ->select('users.*', 'addresses.id as address_id', 'addresses.user_id', 'addresses.full_name', 'addresses.mobile_number', 'addresses.alternative_mobile_number', 'addresses.address', 'addresses.pincode', 'addresses.address_type')
+            ->first();
 
 
             $pickup_address = $this->formatAddress($customer, null, 'pickup');
@@ -289,7 +289,7 @@ class InvoiceController extends Controller
 
 
 
-        return view('admin.Invoices.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes', 'countries', 'nextInvoiceNo', 'containers', 'inventories', 'pickup_address', 'delivery_address', 'type'));
+        return view('admin.Invoices.create', compact('warehouses', 'customers', 'drivers', 'parcelTpyes', 'countries', 'nextInvoiceNo', 'containers', 'inventories','pickup_address', 'delivery_address','type'));
     }
 
     /**
@@ -407,6 +407,9 @@ class InvoiceController extends Controller
         if ($request->parcel_id) {
             $invoice->parcel_id = $request->parcel_id;
         }
+        if ($request->service_fee) {
+            $invoice->service_fee = $request->service_fee;
+        }
 
        $invoice_Id =  $invoice->save();
 
@@ -435,7 +438,7 @@ class InvoiceController extends Controller
         }
 
         setting()->saveInvoiceHistory($invoice->id, "created");
-        return redirect()->route('admin.invoices.edit', $invoice->id)->with('success', 'Invoice saved successfully.');
+        return redirect()->route('admin.invoices.edit',$invoice->id)->with('success', 'Invoice saved successfully.');
     }
 
 
@@ -572,6 +575,9 @@ class InvoiceController extends Controller
         if ($request->parcel_id) {
             $invoice->parcel_id = $request->parcel_id;
         }
+        if ($request->service_fee) {
+            $invoice->service_fee = $request->service_fee;
+        }
         if ($request->currentdate) {
             try {
                 $invoice->currentdate = Carbon::parse($request->currentdate)->format('Y-m-d');
@@ -587,9 +593,10 @@ class InvoiceController extends Controller
             $invoice->arrived_warehouse_id = $request->arrived_warehouse_id;
         }
         $invoice->driver_id = $request->driver_id ?? null;
-        if ($request->container_id) {
-            $invoice->container_id = $request->container_id;
-        }
+        // if ($request->container_id) {
+        //     $invoice->container_id = $request->container_id;
+        // }
+        $invoice->container_id = $request->container_id ?? null;
         $invoice->generated_status = $request->generated_status ?? $invoice->generated_status;
         $invoice->total_amount = $request->total_amount;
         $invoice->grand_total = $request->grand_total;
@@ -1362,13 +1369,17 @@ class InvoiceController extends Controller
     {
         // $user = User::with(['shipToAddress'])->find($user->id);
 
-        $users = User::with('defaultAddress')->where('invoice_custmore_id', $user->id)->orWhere('parent_customer_id', $user->id)->get();
+        $users = User::with('addresses')
+        // ->where('invoice_custmore_id', $user->id)
+        // ->orWhere('parent_customer_id', $user->id)
+        ->where('parent_customer_id', $user->id)
+        ->get();
 
         // if (empty($user) || empty($user->shipToAddress) || $user->shipToAddress->isEmpty()) return null;
         // $users = $user->shipToAddress;
         // if ($users->isEmpty()) return null;
         return $users->map(function ($usr) use ($type, $parcel) {
-            return $this->formatAddress($usr->defaultAddress, $parcel, $type);
+            return $this->formatAddress($usr->addresses, $parcel, $type);
         })->filter(fn($i) => $i)->values();
     }
 
@@ -1423,6 +1434,7 @@ class InvoiceController extends Controller
         // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
         IndividualPayment::where('invoice_id', $id)->delete();
         ParcelInventorie::where('invoice_id', $id)->update(['invoice_id' => null]);
+        Parcel::where('invoice_id', $id)->update(['invoice_id' => null]);
 
         $invoice->forceDelete();
 

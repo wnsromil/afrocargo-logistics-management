@@ -304,6 +304,10 @@ class SettingsHelper
         } else {
             $parcel = Parcel::find($invoice->parcel_id);
 
+            if(!empty($invoice->arrived_warehouse_id)){
+                $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
+            }
+
             $parcel->update($validatedData);
         }
         $qty = 0;
@@ -311,46 +315,51 @@ class SettingsHelper
 
         // Save inventory items to ParcelInventorie
         foreach ($invoice->invoce_item ?? [] as $item) {
-            if(!empty($item['supply_id'])){
-                $qty += $item['qty'] ?? 0;
-                if(!empty($item['inventory_id'])){
-                    $cp = [
-                                'parcel_id' => $invoice->parcel_id,
-                                'id' => $item['inventory_id'],
-                            ];
-                }else{
-                    $cp = [
-                                'parcel_id' => $invoice->parcel_id,
-                                'invoice_id' => $invoice->id,
-                                'inventorie_id' => $item['supply_id'],
-                            ];
-                }
-                $supply =  ParcelInventorie::updateOrCreate(
-                            $cp,
-                            [
-                                'invoice_id' => $invoice->id,
-                                'inventorie_item_quantity' => $item['qty'],
-                                'inventory_name' => $item['supply_name'],
-                                'label_qty' => $item['label_qty'],
-                                'price' => $item['price'] ?? 0,
-                                'volume' => $item['volume'] ?? 0,
-                                'value' => $item['value'] ?? 0,
-                                'ins' => $item['ins'] ?? 0,
-                                'tax' => $item['tax'] ?? 0,
-                                'discount' => $item['discount'] ?? 0,
-                                'total' => $item['total'] ?? 0,
-                            ]
-                        );
-                if(!empty($invoice->barcodes) && !empty($invoice->transport_type)){
-                    for ($i=0; $i < $item['qty']; $i++) {
-                        store_barcode([
-                            'parcel_id' => $invoice->parcel_id,
-                            'invoice_id' => $invoice->id,
-                            'supply_id' => $supply->id,
-                        ]);
-                    }
-                }
+            // if(!empty($item['supply_id'])){
+            // }
 
+            $qty += $item['qty'] ?? 0;
+            $saveData=[
+                            'invoice_id' => $invoice->id,
+                            'inventorie_item_quantity' => $item['qty'],
+                            'inventory_name' => $item['supply_name'],
+                            'label_qty' => $item['label_qty'],
+                            'price' => $item['price'] ?? 0,
+                            'volume' => $item['volume'] ?? 0,
+                            'value' => $item['value'] ?? 0,
+                            'ins' => $item['ins'] ?? 0,
+                            'tax' => $item['tax'] ?? 0,
+                            'discount' => $item['discount'] ?? 0,
+                            'total' => $item['total'] ?? 0,
+                    ];
+            if(!empty($item['inventory_id'])){
+                $cp = [
+                            'parcel_id' => $invoice->parcel_id,
+                            'id' => $item['inventory_id'],
+                        ];
+            }else if(!empty($item['supply_id'])){
+                $cp = [
+                            'parcel_id' => $invoice->parcel_id,
+                            'inventorie_id' => $item['supply_id'],
+                        ];
+            }else{
+                $cp = [
+                        'id' => null,
+                    ];
+                $saveData['parcel_id'] = $invoice->parcel_id;
+            }
+            $supply =  ParcelInventorie::updateOrCreate(
+                        $cp,
+                        $saveData
+                    );
+            if(!empty($invoice->barcodes) && !empty($invoice->transport_type)){
+                for ($i=0; $i < $item['qty']; $i++) {
+                    store_barcode([
+                        'parcel_id' => $invoice->parcel_id,
+                        'invoice_id' => $invoice->id,
+                        'supply_id' => $supply->id,
+                    ]);
+                }
             }
         }
 

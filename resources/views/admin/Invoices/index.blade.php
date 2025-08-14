@@ -16,10 +16,12 @@
         <div class="d-flex align-items-center justify-content-end">
             <div class="usersearch d-flex">
                 <div class="mt-0">
+                    @can('has-dynamic-permission', 'invoice_list.create')
                     <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons">
                         <i class="ti ti-circle-plus me-2 text-white"></i>
                         Add Invoice
                     </a>
+                    @endcan
                 </div>
             </div>
         </div>

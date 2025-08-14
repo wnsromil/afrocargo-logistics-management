@@ -8,6 +8,7 @@ var currentRow = null;
 var invoce_type = "services";
 let exchangeRates = [];
 var maxPaymentAmountValue = 0;
+var deletedItrmId =[];
 
 function toggleLoginForm(type) {
     if (type === "services") {
@@ -32,6 +33,9 @@ function toggleLoginForm(type) {
         // $("#weight_services_items").removeClass("d-none");//old code
         if ($('input[name="transport_type"]').val() == "Air Cargo") {
             $('select[name="container_id"]').prop("disabled", true);
+            $('select[name="container_id"]')
+            .val(null)
+            .trigger("change");
         } else {
             $('select[name="container_id"]').prop("disabled", false);
         }
@@ -76,6 +80,9 @@ $('input[name="transport_type"]').on("click", function () {
             .prop("disabled", true) // this is essential
             .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
             .css("opacity", "1"); // optional: restores visual state
+        $('select[name="container_id"]')
+            .val(null)
+            .trigger("change");
     } else {
         $('select[name="container_id"]').prop("disabled", false);
     }
@@ -131,6 +138,11 @@ document.addEventListener("DOMContentLoaded", function () {
     $(document).on("click", ".dltBtn:not(.detele)", function () {
         if ($("#dynamicTable tbody tr").length > 1) {
             var $row = $(this).closest("tr");
+            let invoiceId = $row.find("input[name='inventory_id']").val();
+            if(invoiceId){
+                deletedItrmId.push(invoiceId);
+            }
+            console.log("inventory_id", invoiceId);
             $row.remove();
             updateSummary();
             // Ensure the new last row shows the add button
@@ -695,7 +707,7 @@ function dynamicInventoryTable(inventoryItems) {
                     </td>
                     <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
                             name="ins"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor" placeholder=""
                             name="discount"></td>
                     <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
                             name="tax"></td>
@@ -1284,7 +1296,7 @@ $("#services").on("submit", function (e) {
         status: "required",
     };
 
-    if(invoce_type == "services") {
+    if(invoce_type != "supplies") {
         rules.pickup_address_id = "required";
         // rules.transport_type = "required";
         // If transport_type is a checkbox group, check if any checked value is "Ocean Cargo"
@@ -1302,6 +1314,16 @@ $("#services").on("submit", function (e) {
         if ($checkedTransport.length > 0 && $checkedTransport.filter(function() { return $(this).val() === "Ocean Cargo"; }).length > 0) {
             rules.container_id = "required|numeric";
         }
+        var $arrived_warehouse_id = $('input[name="arrived_warehouse_id"]').val() || null;
+        if (!$arrived_warehouse_id) {
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please select a arrived warehouse .",
+            });
+            e.preventDefault();
+            return false;
+        }
     }
 
     if (!jsValidator(rules, $("#services"))) {
@@ -1314,6 +1336,11 @@ $("#services").on("submit", function (e) {
     const jsonData = JSON.stringify(items); // convert to JSON string
 
     $('input[name="invoce_item"]').val(jsonData);
+
+    if($('input[name="deletedItrmId"]')){
+        const jsonDeletedItrmId = JSON.stringify(deletedItrmId); // convert to JSON string
+        $('input[name="deletedItrmId"]').val(jsonDeletedItrmId);
+    }
 
     // Now submit the form programmatically
     this.submit();
