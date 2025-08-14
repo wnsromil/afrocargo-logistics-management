@@ -67,17 +67,22 @@
                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul>
+                                        @can('has-dynamic-permission', 'invoice_list.individuel_payment')
                                         <li>
                                             <a class="dropdown-item" data-bs-placement="bottom"
                                                 title="Individual Payment" data-bs-toggle="modal"
                                                 data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
                                                 <i class="ti ti-cash me-2"></i>Payment</a>
                                         </li>
+                                        @endcan
+                                        @can('has-dynamic-permission', 'invoice_list.invoice_pdf')
                                         <li>
                                             <a class="dropdown-item" title="Invoice PDF" target="_blank"
                                                 href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
                                                 <i class="ti ti-file-invoice"></i>Invoice PDF</a>
                                         </li>
+                                        @endcan
+                                        @can('has-dynamic-permission', 'invoice_list.send_invoice')
                                         <li>
                                             <a class="dropdown-item" data-bs-placement="bottom"
                                                 title="Send Invoice pdf" data-bs-toggle="modal"
@@ -85,7 +90,9 @@
                                                 <i class="ti ti-mail me-2"></i>Send Email</a>
 
                                         </li>
+                                        @endcan
                                         @if(!empty($invoice->transport_type))
+                                        @can('has-dynamic-permission', 'invoice_list.label_pdf')
                                         <li>
 
                                             <a class="dropdown-item" title="Labels"
@@ -93,6 +100,8 @@
                                                     target="_blank">
                                                     <i class="ti ti-tag-starred me-2"></i>Labels</a>
                                         </li>
+                                        @endcan
+                                        @can('has-dynamic-permission', 'invoice_list.create_label')
                                         <li>
                                             <a class="dropdown-item" title="Labels"
                                                 href="javascript:void(0)"
@@ -102,18 +111,23 @@
                                                 <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
 
                                         </li>
+                                        @endcan
                                         @endif
+                                        @can('has-dynamic-permission', 'invoice_list.edit')
                                         <li>
                                             <a class="dropdown-item" title="Edit Invoice"
                                                 href="{{route('admin.invoices.edit',$invoice->id)}}"><i
                                                     class="far fa-edit me-2"></i>Edit Invoice</a>
                                         </li>
+                                        @endcan
+                                        @can('has-dynamic-permission', 'invoice_list.delete')
                                         <li>
                                             <a class="dropdown-item" title="Delete Invoice"
                                                 href="javascript:void(0)"
                                                 onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
                                                     class="ti ti-trash me-2"></i>Delete Invoice</a>
                                         </li>
+                                        @endcan
                                     </ul>
                                 </div>
                             </div>
