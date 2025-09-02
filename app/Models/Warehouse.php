@@ -59,16 +59,18 @@ class Warehouse extends Model
             }
             $fullPrefix = $rolePrefix . $countryIso . '-';
 
-            // Get last vehicle with similar prefix
+            // Get last warehouse with similar prefix
             $lastVehicle = self::where('unique_id', 'like', $rolePrefix . '%')
                 ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
                 ->value('max_number') ?? 0;
 
-            $newNumber = str_pad($lastVehicle + 1, 6, '0', STR_PAD_LEFT);
+            // No zero-padding
+            $newNumber = (string) ($lastVehicle + 1);
 
             $warehouse->unique_id = $fullPrefix . $newNumber;
         });
     }
+
 
     public function signature()
     {

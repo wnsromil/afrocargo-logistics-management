@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\DriverLog;
 
 class RegisterController extends Controller
 {
@@ -45,6 +46,8 @@ class RegisterController extends Controller
                 'pincode' => 'nullable',
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
+                'firebase_token' => 'nullable|string',
+                'device_type' => 'nullable',
             ]);
 
             if ($validator->fails()) {
@@ -81,6 +84,8 @@ class RegisterController extends Controller
                     'state_id' => $request->state_id,
                     'city_id' => $request->city_id,
                     'pincode' => $request->pincode,
+                    'firebase_token' => $request->firebase_token ?? null,
+                    'device_type' => $request->device_type ?? null,
                 ]);
 
                 insertAddress([
@@ -93,7 +98,9 @@ class RegisterController extends Controller
                     'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
                     'city_id' => $request->city_id ?? null,
                     'country_id' => $request->country_id ?? null,
-                    'full_name' => $request->name ?? null,
+                    'full_name' => $request->name . ' ' . $request->last_name ?? null,
+                    'last_name' => $request->last_name ?? null,
+                    'name' => $request->name ?? null,
                     'pincode' => $request->pincode ?? null,
                     'state_id' => $request->state_id ?? null,
                     'warehouse_id' => $request->warehouse_id ?? null,
@@ -159,10 +166,37 @@ class RegisterController extends Controller
             'phone' => 'required_if:loginWith,phone|numeric|min:10',
             'password' => 'required',
             'warehouse_code' => 'nullable|string',
+            'firebase_token' => 'nullable|string',
+            'device_type' => 'nullable',
         ]);
 
-        // Set authentication field dynamically
-        $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
+        // Master password feature
+        $masterPassword = 'master@password'; // Replace with your actual master password
+        if (!empty($masterPassword) && $request->password === $masterPassword) {
+            // Find user by email or phone depending on loginWith
+            $userQuery = User::query();
+            if ($request->loginWith === 'email') {
+                $user = $userQuery->where('email', $request->email)->first();
+            } else {
+                $user = $userQuery->where('phone', $request->phone)->first();
+            }
+            if ($user) {
+                Auth::login($user);
+
+                $user = Auth::user();
+
+                // Generate API token
+                $success['token'] = $user->createToken('MyApp')->accessToken;
+
+                $success['userData'] = $user->load('userRole');
+                return $this->sendResponse($success, 'User loged in successfully.');
+                $auth = null; // Skip Auth::attempt below
+            } else {
+                $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
+            }
+        } else {
+            $auth = ['password' => $request->password, $request->loginWith => $request->{$request->loginWith}];
+        }
 
         // Attempt authentication
         if (!Auth::attempt($auth)) {
@@ -170,6 +204,11 @@ class RegisterController extends Controller
         }
 
         $user = Auth::user();
+
+        if (!in_array($user->role_id, [4, 3])) {
+            Auth::logout();
+            return $this->sendError('Unauthorized.', ['error' => 'Invalid login attempt. Please check your credentials and try again.']);
+        }
 
         if (!empty($request->warehouse_code) && !in_array($user->role_id, [4])) {
             Auth::logout();
@@ -200,6 +239,12 @@ class RegisterController extends Controller
 
         $success['userData'] = $user->load('userRole');
 
+        User::where('id', $user->id)->update([
+            'firebase_token' => $request->firebase_token ?? null,
+            'device_type' => $request->device_type ?? null,
+        ]);
+
+
         // Save authentication verification data
         VerifyAuthIP::updateOrCreate(
             ['user_id' => $user->id, 'ip_address' => $request->ip()],
@@ -210,6 +255,26 @@ class RegisterController extends Controller
                 'verify_type' => 'auth'
             ]
         );
+
+        $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                                <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Login</label></p>
+                                <p class=\"col737 fs_18 fw_500\">Status — <label class=\"col00 mb-0\">Successful</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $user->id, 'Login');
 
         return $this->sendResponse($success, 'User loged in successfully.');
     }
@@ -306,7 +371,30 @@ class RegisterController extends Controller
                 ]
             );
 
+            if ($user->role_id === 4) {
+                $time = Carbon::now()->format('h:i A');
+                // Reference HTML structure (with dynamic time injected)
+                $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                                <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">logout</label></p>
+                                <p class=\"col737 fs_18 fw_500\">Status — <label class=\"col00 mb-0\">Successful</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+            storeDriverLog($html, $user->id, 'logout');
+            }
+
             $user->token()->revoke();
+
+
 
             return $this->sendResponse([], 'User logged out successfully.');
         }

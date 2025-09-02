@@ -245,9 +245,9 @@
 
                                                 <button type="button"
                                                     class="btn btn-outline-primary custom-btn">Cancel</button>
-
+                                             @can('has-dynamic-permission', 'expenses.create')
                                                 <button type="submit" class="btn btn-primary ">Submit</button>
-
+                                             @endcan
                                             </div>
                                         </div>
 

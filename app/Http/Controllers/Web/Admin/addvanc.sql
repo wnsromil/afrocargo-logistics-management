@@ -2,7 +2,9 @@ CREATE OR REPLACE VIEW advanced_order_reports AS
 SELECT
     order_with_invoices.*,
     users.name AS user_main_id,
-    users.name AS user_name,
+    users.username,
+    users.name,
+    users.last_name,
     users.email,
     users.role_id,
     users.role,
@@ -10,7 +12,7 @@ SELECT
     addresses.mobile_number,
     addresses.alternative_mobile_number,
     addresses.address_type,
-    addresses.full_name
+    addresses.full_name,
 FROM
     users
     LEFT JOIN addresses ON addresses.user_id = users.id
@@ -85,11 +87,11 @@ FROM
     ALTER TABLE `invoices` ADD `status` VARCHAR(255) NULL AFTER `is_paid`;
 
     -- 12/05/25
-    ALTER TABLE `addresses` CHANGE `country_id` `country_id` VARCHAR(200) NULL, 
+    ALTER TABLE `addresses` CHANGE `country_id` `country_id` VARCHAR(200) NULL,
     CHANGE `state_id` `state_id` VARCHAR(200) NULL, CHANGE `city_id` `city_id` VARCHAR(200) NULL;
 
     -- 23/05/25
-    ALTER TABLE `individual_payments` CHANGE `payment_type` `payment_type` 
+    ALTER TABLE `individual_payments` CHANGE `payment_type` `payment_type`
     VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'COD';
 
     -- 28/05/25
@@ -101,3 +103,43 @@ FROM
 
     -- 07/05/25
     ALTER TABLE `parcel_inventories` ADD `volume` DECIMAL(10,2) NULL AFTER `inventorie_item_quantity`;
+    -- 10/0725
+
+    ALTER TABLE `addresses` ADD `name` VARCHAR(255) NULL AFTER `default_address`, ADD `last_name` VARCHAR(255) NULL AFTER `name`;
+
+    ALTER TABLE `invoices` ADD `payment_type` VARCHAR(255) NULL DEFAULT 'Cash' AFTER `invoce_type`;
+
+    -- 14 july 2025
+    ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+    ALTER TABLE `addresses` CHANGE `city_id` `city_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+    -- 11/07/25
+    ALTER TABLE `addresses` CHANGE `pincode` `pincode` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+    -- 28-july-2025
+    ALTER TABLE `invoices` ADD `delivery_type` VARCHAR(25) NULL AFTER `transport_type`;
+
+ALTER TABLE `invoices` ADD `customer_id` INT NULL AFTER `deleted_at`, ADD `ship_customer_id` INT NULL AFTER `customer_id`;
+
+ ALTER TABLE `individual_payments` ADD `warehouse_id` INT NULL AFTER `updated_at`, ADD `unique_id` VARCHAR(200) NULL AFTER `warehouse_id`;
+
+--  22-aug 25
+ALTER TABLE `parcels`
+CHANGE `payment_type` `payment_type` ENUM('COD', 'Online', 'Cash', 'Box Credit', 'Cheque', 'Credit Card', 'DigitalPay')
+NOT NULL
+DEFAULT 'Online';
+
+ALTER TABLE parcels
+MODIFY payment_type VARCHAR(20) NOT NULL DEFAULT 'Online';
+
+-- 26 aug 25
+ALTER TABLE `invoices` ADD `product_type` VARCHAR(100) NULL AFTER `delivery_type`;
+ALTER TABLE `parcels` ADD `product_type` VARCHAR(100) NULL AFTER `delivery_type`;
+
+-- 27 aug 25
+ALTER TABLE `parcels` ADD `rating` TINYINT NULL AFTER `status`,
+ADD `review` VARCHAR(255) NULL AFTER `rating`;
+
+-- 29 aug 25
+ALTER TABLE `vehicles` ADD `close_invoice` ENUM('yes','no') NULL DEFAULT 'no' AFTER `status`,
+ADD `close_warehouse` ENUM('yes','no') NULL DEFAULT 'no' AFTER `close_invoice`;
+
+

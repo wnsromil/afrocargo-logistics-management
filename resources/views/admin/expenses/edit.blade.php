@@ -239,7 +239,9 @@
                                         <div class="add-customer-btns">
                                             <a href="{{ route('admin.expenses.index') }}"
                                                 class="btn btn-outline-primary custom-btn">Cancel</a>
+                                            @can('has-dynamic-permission', 'expenses.edit')
                                             <button type="submit" class="btn btn-primary">Submit</button>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>

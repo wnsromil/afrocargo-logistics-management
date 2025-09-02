@@ -27,39 +27,74 @@ class RoleManagementController extends Controller
 
     public function index(Request $request)
     {
-        $roleMap = Role::where('name', '!=', 'admin')->pluck('name', 'id')->toArray();
-        // Assign roles to users based on role_id
+        $query = $request->search;
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+        $role = $request->input('role');
+        $warehouse_id = $request->input('warehouse_id');
 
+        // Sync roles
+        $roleMap = Role::where('name', '!=', 'admin')->pluck('name', 'id')->toArray();
         foreach ($roleMap as $id => $roleName) {
             $users = User::where('role_id', $id)->get();
-
             foreach ($users as $user) {
                 if (!$user->hasRole($roleName)) {
                     $user->assignRole($roleName);
                 }
             }
         }
-        
-        // Get all permissions for filter dropdown
+
+        // Load active warehouses
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
+        // Load permissions
         $permissions = Permission::orderBy('name')->get();
-        
-        // Get selected permission from request
         $selectedPermission = $request->input('permission');
 
-        // Query users with roles and their own direct permissions
-        $users = User::with(['roles', 'permissions']) // Load user-level permissions
-            ->whereHas('roles', function($q) {
-                $q->where('id', '!=', 1); // Exclude admin
+        // User listing with filters
+        $users = User::with(['roles', 'permissions'])
+            ->whereHas('roles', function ($q) {
+                $q->whereIn('id', [4, 2]); // Only specific roles
+            })
+            ->where(function ($q) use ($query) {
+                if ($query) {
+                    $q->where(function ($subQuery) use ($query) {
+                        $subQuery->where('name', 'like', "%{$query}%")
+                            ->orWhere('last_name', 'like', "%{$query}%")
+                            ->orWhere('unique_id', 'like', "%{$query}%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%{$query}%"]);
+                    })
+                        ->orWhereHas('permissions', function ($permQ) use ($query) {
+                            $permQ->where('name', 'like', "%{$query}%");
+                        });
+                }
             })
             ->when($selectedPermission, function ($query) use ($selectedPermission) {
                 $query->whereHas('permissions', function ($q) use ($selectedPermission) {
                     $q->where('name', $selectedPermission);
                 });
-            })->latest('id')
-            ->paginate(10);
+            })
+            ->when($role, function ($query) use ($role) {
+                return $query->where('role_id', $role);
+            })
+            ->when($warehouse_id, function ($query) use ($warehouse_id) {
+                return $query->where('warehouse_id', $warehouse_id);
+            })
+            ->latest('id')
+            ->paginate($perPage, ['*'], 'page', $currentPage);
 
-        return view('admin.user_role.index', compact('users', 'permissions', 'selectedPermission'));
+        if ($request->ajax()) {
+            return view('admin.user_role.table', compact('users', 'warehouses', 'permissions', 'selectedPermission'));
+        }
+
+        return view('admin.user_role.index', compact('users', 'warehouses', 'permissions', 'selectedPermission'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -133,9 +168,9 @@ class RoleManagementController extends Controller
         $groupedPermissions = Permission::all()->groupBy(function ($item) {
             return explode('.', $item->name)[0];
         });
-        
+
         $userPermissions = $user->permissions->pluck('name')->toArray();
-        
+
         return view('admin.user_role.edit', compact('user', 'groupedPermissions', 'userPermissions'));
     }
 
@@ -145,31 +180,13 @@ class RoleManagementController extends Controller
             'permissions' => 'array',
             'permissions.*' => 'exists:permissions,name'
         ]);
-        
+
         $user->syncPermissions($validated['permissions'] ?? []);
-        
+
         return redirect()->back()->with('success', 'Permissions updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $parcel = Parcel::find($id);
-
-        ParcelHistory::create([
-            'parcel_id' => $parcel->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $parcel['customer_id'],
-            'warehouse_id' => $parcel['warehouse_id'],
-            'status' => 'Deleted',
-            'parcel_status' => 'Deleted',
-            'description' => collect($parcel)
-        ]);
-
-        $parcel->delete();
-        return redirect()->route('admin.user_role.index')
-            ->with('success', 'Order deleted successfully');
-    }
 }

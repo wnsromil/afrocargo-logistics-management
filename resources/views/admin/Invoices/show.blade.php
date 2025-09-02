@@ -41,7 +41,7 @@
     <div style="justify-items: center; ">
         <div style="border:solid 1px #737B8B; height:590px;width:650px;margin-top:87px;border-radius:6px;">
             <div class="d-flex">
-                <div style="margin-left:10px"><img src="{{asset('assets/img/AfroCargoLogo.png')}}"></div>
+                <div style="margin-left:10px"><img src="{{asset('assets/img/logo_image.png')}}"></div>
                 <div class="challanh">
                     <p class="invoicei">Ivoirien Cargo NY 366 Concord </p>
                     <p class="invoicei">Ave NY, The Bronx10454</p>

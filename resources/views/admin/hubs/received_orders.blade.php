@@ -91,7 +91,14 @@
 
             <div class="col-md-3 mb-3">
                 <label>Pickups</label>
-                <select class="js-example-basic-single select2" name="days_pickup_type" id="days_pickup_type">
+                <div class="daterangepicker-wrap cal-icon cal-icon-info bordered">
+                    <input type="text"
+                        name="days_pickup_type"
+                        class="btn-filters form-cs inp Expensefillterdate"
+                        value="{{ old('days_pickup_type', request()->query('days_pickup_type')) ?? '' }}"
+                        placeholder="Select date range" />
+                </div>
+                {{-- <select class="js-example-basic-single select2" name="days_pickup_type" id="days_pickup_type">
                     <option value="">Select Pickups</option>
                     <option value="Yesterdays_pickups" {{ request()->query('days_pickup_type') == "Yesterdays_pickups" ? 'selected' : '' }}>Yesterdays Pickups
                     </option>
@@ -99,7 +106,7 @@
                     </option>
                     <option value="Tomorrows_pickup" {{ request()->query('days_pickup_type') == "Tomorrows_pickup" ? 'selected' : '' }}>Tomorrows Pickup
                     </option>
-                </select>
+                </select> --}}
             </div>
 
 
@@ -289,32 +296,12 @@
                                             {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
                                         </div>
                                     </td>
-                                    @php
-                                        $status_class = $parcel->status ?? null;
+                                     @php
                                         $parcelStatus = $parcel->parcelStatus->status ?? null;
-                                        $classValue = match ((string) $status_class) {
-                                            "1" => 'badge-pending',
-                                            "2" => 'badge-pickup',
-                                            "3" => 'badge-picked-up',
-                                            "4" => 'badge-arrived-warehouse',
-                                            "5" => 'badge-in-transit',
-                                            "8" => 'badge-arrived-final',
-                                            "9" => 'badge-ready-pickup',
-                                            "10" => 'badge-out-delivery',
-                                            "11" => 'badge-delivered',
-                                            "12" => 'badge-re-delivery',
-                                            "13" => 'badge-on-hold',
-                                            "14" => 'badge-cancelled',
-                                            "15" => 'badge-abandoned',
-                                            "21" => 'badge-picked-up',
-                                            "22" => 'badge-in-transit',
-                                            "23" => 'badge-pickup_re-schedule',
-                                            default => 'badge-pending',
-                                        };
-
+                                        $ClassStatus = $parcel->parcelStatus->class_name ?? null;
                                     @endphp
                                     <td>
-                                        <label class="{{ $classValue }}" for="status">
+                                        <label class="{{ $ClassStatus }}" for="status">
                                             {{ $parcelStatus ?? '-' }}
                                         </label>
                                     </td>
@@ -447,7 +434,7 @@
                                         </li>
                                     </td>
                                     <td class="btntext">
-                                        <a href="{{ route('admin.received.received_orders_show', $parcel->id) }}"> <button
+                                        <a href="{{ route('admin.hubs.show', $parcel->id) }}"> <button
                                                 class=orderbutton><img
                                                     src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
                                     </td>
@@ -526,9 +513,20 @@
 
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block">
-                                    <label class="foncolor">Note</label>
+                                    {{-- <label class="foncolor">Note</label>
                                     <input type="text" name="notes" class="form-control inp Note"
-                                        placeholder="Enter note">
+                                        placeholder="Enter note"> --}}
+                                    <label for="notes">Reason For Action</label>
+                                    <select id="notes" name="notes" class="form-select" required>
+                                        <option value="">Select Reason</option>
+                                        <option value="cancel_or_reschedule">Customer requested to cancel or reschedule the order.</option>
+                                        <option value="payment_failed">Payment was not completed or failed during processing.</option>
+                                        <option value="out_of_stock">The ordered item is currently out of stock.</option>
+                                        <option value="bad_weather">Delivery affected due to bad weather conditions.</option>
+                                        <option value="incorrect_address">Incorrect or incomplete delivery address provided.</option>
+                                        <option value="logistics_delay">Unexpected logistics or transportation delays.</option>
+                                        <option value="others">Others</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -579,9 +577,20 @@
 
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block">
-                                    <label class="foncolor">Note</label>
+                                    {{-- <label class="foncolor">Note</label>
                                     <input type="text" name="notes" class="form-control inp Note"
-                                        placeholder="Enter note">
+                                        placeholder="Enter note"> --}}
+                                    <label for="notes">Reason For Action</label>
+                                    <select id="notes" name="notes" class="form-select" required>
+                                        <option value="">Select Reason</option>
+                                        <option value="cancel_or_reschedule">Customer requested to cancel or reschedule the order.</option>
+                                        <option value="payment_failed">Payment was not completed or failed during processing.</option>
+                                        <option value="out_of_stock">The ordered item is currently out of stock.</option>
+                                        <option value="bad_weather">Delivery affected due to bad weather conditions.</option>
+                                        <option value="incorrect_address">Incorrect or incomplete delivery address provided.</option>
+                                        <option value="logistics_delay">Unexpected logistics or transportation delays.</option>
+                                        <option value="others">Others</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -627,9 +636,20 @@
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block">
-                                    <label class="foncolor">Note</label>
+                                    {{-- <label class="foncolor">Note</label>
                                     <input type="text" name="notes" class="form-control inp Note"
-                                        placeholder="Enter note">
+                                        placeholder="Enter note"> --}}
+                                    <label for="notes">Reason For Action</label>
+                                    <select id="notes" name="notes" class="form-select" required>
+                                        <option value="">Select Reason</option>
+                                        <option value="cancel_or_reschedule">Customer requested to cancel or reschedule the order.</option>
+                                        <option value="payment_failed">Payment was not completed or failed during processing.</option>
+                                        <option value="out_of_stock">The ordered item is currently out of stock.</option>
+                                        <option value="bad_weather">Delivery affected due to bad weather conditions.</option>
+                                        <option value="incorrect_address">Incorrect or incomplete delivery address provided.</option>
+                                        <option value="logistics_delay">Unexpected logistics or transportation delays.</option>
+                                        <option value="others">Others</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -941,11 +961,23 @@
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block ">
-                                    <label class="foncolor">Note</label>
+                                    {{-- <label class="foncolor">Note</label>
                                     <div class="input-block mb-0">
                                         <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
-                                    </div>
+                                    </div> --}}
+
+                                    <label for="Note">Reason For Action</label>
+                                    <select id="Note" name="Note" class="form-select" required>
+                                        <option value="">Select Reason</option>
+                                        <option value="cancel_or_reschedule">Customer requested to cancel or reschedule the order.</option>
+                                        <option value="payment_failed">Payment was not completed or failed during processing.</option>
+                                        <option value="out_of_stock">The ordered item is currently out of stock.</option>
+                                        <option value="bad_weather">Delivery affected due to bad weather conditions.</option>
+                                        <option value="incorrect_address">Incorrect or incomplete delivery address provided.</option>
+                                        <option value="logistics_delay">Unexpected logistics or transportation delays.</option>
+                                        <option value="others">Others</option>
+                                    </select>
 
                                 </div>
                             </div>
@@ -1153,11 +1185,22 @@
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <div class="input-block ">
-                                    <label class="foncolor">Note</label>
+                                    {{-- <label class="foncolor">Note</label>
                                     <div class="input-block mb-0">
                                         <input type="Note" name="Note" class="form-control inp Note" placeholder="">
 
-                                    </div>
+                                    </div> --}}
+                                    <label for="Note">Reason For Action</label>
+                                    <select id="Note" name="Note" class="form-select" required>
+                                        <option value="">Select Reason</option>
+                                        <option value="cancel_or_reschedule">Customer requested to cancel or reschedule the order.</option>
+                                        <option value="payment_failed">Payment was not completed or failed during processing.</option>
+                                        <option value="out_of_stock">The ordered item is currently out of stock.</option>
+                                        <option value="bad_weather">Delivery affected due to bad weather conditions.</option>
+                                        <option value="incorrect_address">Incorrect or incomplete delivery address provided.</option>
+                                        <option value="logistics_delay">Unexpected logistics or transportation delays.</option>
+                                        <option value="others">Others</option>
+                                    </select>
 
                                 </div>
                             </div>

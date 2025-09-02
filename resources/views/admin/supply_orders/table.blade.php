@@ -54,7 +54,7 @@
                                 </div>
                             </td>
                             <td>
-                                {{ $parcel->arrivedWarehouse->warehouse_name ?? "-"}}
+                                {{ $parcel->warehouse->warehouse_name ?? "-"}}
                             </td>
                             <td>
                                 <div>{{ $parcel->created_at ? $parcel->created_at->format('m-d-Y') : '-' }}</div>
@@ -73,8 +73,8 @@
                                     'Unpaid' => 'unpaid_status',
                                     'Paid' => 'status',
                                     'Completed' => 'partial_status',
-                                    default => 'unpaid_status',
-                                };
+                                    default => 'unknown_status',
+                                }
                             @endphp
                             <td>
                                 <label class="labelstatusy" for="{{ $forValue }}">
@@ -86,60 +86,78 @@
                                     <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                 </div>
                             </td>
-                            @php
-                                $classValue = match ((string) $parcel->status) {
-                                    "1" => 'badge-pending',
-                                    "2" => 'badge-pickup',
-                                    "3" => 'badge-picked-up',
-                                    "4" => 'badge-arrived-warehouse',
-                                    "5" => 'badge-in-transit',
-                                    "8" => 'badge-arrived-final',
-                                    "9" => 'badge-ready-pickup',
-                                    "10" => 'badge-out-delivery',
-                                    "11" => 'badge-delivered',
-                                    "12" => 'badge-re-delivery',
-                                    "13" => 'badge-on-hold',
-                                    "14" => 'badge-cancelled',
-                                    "15" => 'badge-abandoned',
-                                    "21" => 'badge-picked-up',
-                                    "22" => 'badge-in-transit',
-                                    default => 'badge-pending',
-                                };
-                            @endphp
                             <td>
                                 <div>
                                     {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
                                 </div>
                             </td>
                             <td>
-                                <label class="{{ $classValue }}" for="status">
+                                <label class="{{ $parcel->parcelStatus->class_name }}" for="status">
                                     {{ $parcel->parcelStatus->status ?? '-' }}
                                 </label>
                             </td>
                             <td>
                                 <li class="nav-item dropdown">
-                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
-                                        data-bs-toggle="dropdown">
-
-                                        <span class="user-content"
-                                            style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                   height: 26px;align-content: center;">
-                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
+                                  <a class="amargin user-link nav-link" href="javascript:void(0)"
+                                        @can('has-dynamic-permission', 'supply_orders.order_status') data-bs-toggle="dropdown"
+                                        @endcan>
+                                        <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'supply_orders.order_status')
+                                                    style="opacity: 0.6;" @endcannot>
+                                            <div>
+                                                <img src="{{ asset('assets/img/downarrow.png') }}">
+                                            </div>
                                         </span>
                                     </a>
                                     <div class="dropdown-menu menu-drop-user">
                                         <div class="profilemenu">
                                             <div class="subscription-menu">
                                                 <ul>
+                                                    @php
+                                                        $statusSteps = [
+                                                            1 => 'Pending',
+                                                            35 => 'Order Received',
+                                                            36 => 'In Process',
+                                                            37 => 'Ready to Pick Up',
+                                                            38 => 'Picked Up'
+                                                        ];
+                                                        $cont = false;
+                                                    @endphp
+                                                    @if ($parcel->delivery_type == 'self')
+                                                        @foreach ($statusSteps as $key => $label)
+                                                            @if ($key > $parcel->status || $key == 38)
+                                                                <!-- Trigger Button -->
+                                                                {{-- @if($cont)
+                                                                 @continue
+                                                                @endif --}}
+                                                                <li>
+                                                                    <a class="dropdown-item"
+                                                                    @if($parcel->status != 38)
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#updateStatusModal"
+                                                                    @endif
+                                                                        data-parcel_id="{{ $parcel->id }}"
+                                                                        data-status="{{ $key }}"
+                                                                        data-status_label="{{ $label }}"
+                                                                    >
+                                                                        {{ $label ?? '' }}
+                                                                    </a>
+                                                                </li>
+                                                                {{-- @php
+                                                                    $cont = true;
+                                                                @endphp --}}
+                                                            @endif
+                                                        @endforeach
+                                                    @else
 
                                                     <li>
                                                         <a class="dropdown-item {{ $parcel->status == 1 ? '' : 'disabled-link-supply' }}"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#delivery_with_driver"
-                                                                    data-id="{{ $parcel->id }}" href="javascript:void(0);">
-                                                                    Assign delivery with driver
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#delivery_with_driver"
+                                                            data-id="{{ $parcel->id }}" href="javascript:void(0);">
+                                                            Assign delivery with driver
                                                         </a>
                                                     </li>
+                                                    @endif
                                                 </ul>
                                             </div>
 
@@ -148,9 +166,17 @@
                                 </li>
                             </td>
                             <td class="btntext">
+                              @can('has-dynamic-permission', 'supply_orders.order_details')
                                 <button onClick="redirectTo('{{route('admin.supply_orders.show', $parcel->id)}}')"
                                     class=orderbutton><img src="{{asset('assets/img/ordereye.png')}}"></button>
-                            </td>
+                                @else
+                                    <a href="javascript:void(0)">
+                                        <button class="orderbutton" style="opacity: 0.6;">
+                                            <img src="{{ asset('assets/img/ordereye.png') }}">
+                                        </button>
+                                    </a>
+                                @endcan
+                                </td>
                         </tr>
                     @empty
                         <tr>
@@ -184,4 +210,5 @@
         </div>
     </div>
 </div>
+
 <input type="hidden" id="parcel_id_input_hidden" name="parcel_id_hidden" class="form-control" readonly>

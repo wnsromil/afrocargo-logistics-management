@@ -34,10 +34,10 @@
 
                 @if ($user->profile_pic)
                     <img src="{{ ($user->profile_pic) }}" alt="license" style="margin-left: 15px; max-width: 150px; 
-                                   border-top-left-radius: 50% 50%; 
-                                   border-top-right-radius: 50% 50%; 
-                                   border-bottom-right-radius: 50% 50%; 
-                                   border-bottom-left-radius: 50% 50%;">
+                                       border-top-left-radius: 50% 50%; 
+                                       border-top-right-radius: 50% 50%; 
+                                       border-bottom-right-radius: 50% 50%; 
+                                       border-bottom-left-radius: 50% 50%;">
 
                 @else
                     <p> - No Image</p>
@@ -46,21 +46,21 @@
             <div>
                 <div style="margin-left: 30px !important;margin-top: 20px;">
                     <p style="font-size=22px;font-weight:600px;color:#000000">{{ ucfirst($user->name ?? '') }}
-                        {{$user->last_name ?? ""}}</p>
+                        {{$user->last_name ?? ""}}
+                    </p>
                     <p style="font-size=14px;font-weight:500px; color:#3A3A3A">{{ $user->email }}</p>
                 </div>
             </div>
             <div style="margin-left:auto">
-                <a href="{{ route('admin.customer.edit', $user->id) }}" class="btn btn-primary buttons">
-                    <img class="imgs" src="{{ asset('assets/img/Vector (9).png')}}">
-                    Update Customer
-                </a>
+                @can('has-dynamic-permission', 'customers_list.edit')
+                    <a href="{{ route('admin.customer.edit', $user->id) }}" class="btn btn-primary buttons">
+                        <img class="imgs" src="{{ asset('assets/img/Vector (9).png')}}">
+                        Update Customer
+                    </a>
+                @endcan
             </div>
         </div>
     </div>
-
-
-
 
 
     <div class="row customerbody">
@@ -69,7 +69,7 @@
             <p class="pdata">+{{ $user->phone_code->phonecode ?? '' }} {{ $user->phone ?? '-' }}</p>
             <p class="pdata">
                 @if (!empty($user->phone_2))
-                    +{{ $custuseromer->phone_2_code->phonecode ?? '' }} {{ $user->phone_2 }}
+                    +{{ $user->phone_2_code->phonecode ?? '' }} {{ $user->phone_2 }}
                 @else
                     -
                 @endif

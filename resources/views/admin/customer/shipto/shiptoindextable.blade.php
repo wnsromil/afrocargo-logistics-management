@@ -16,188 +16,84 @@
         </style>
     @endsection
     <x-slot name="header">
-        {{ __('Customer List') }}
+        {{ __('ShipTo Customer List') }}
     </x-slot>
     <x-slot name="cardTitle">
         <div class="d-flex topnavs justify-content-between">
-            <p class="head">All Customers</p>
-            <a href="{{ route('admin.customer.create') }}" class="btn btn-primary buttons">
-                <i class="ti ti-circle-plus me-2 text-white"></i>
-                Add Customer
-            </a>
+            <p class="head">All ShipTo Customers</p>
         </div>
     </x-slot>
 
-    <div>
-        <div class="row">
-            <div class="col-md-6">
-                <form action="{{ route('admin.customer.index') }}" method="GET">
-                    <div class="d-flex align-items-center">
-                        <label class="foncolor m-0 p-0">Customer</label>
-                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
-                            <i class="ti ti-search"></i>
-                            <input type="text" class="form-control form-cs" placeholder="Search" name="search"
-                                value="{{ request('type') === 'customer' ? request('search') : '' }}"
-                                id="customerSearch">
-                            <input type="hidden" name="type" value="customer">
-                        </div>
-                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
-                                class="fe fe-refresh-ccw"></i> </button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-6">
-                <form action="{{ route('admin.customer.index') }}" method="GET" id="shipToformSearch">
-                    <div class="d-flex align-items-center justify-content-sm-end">
-                        <label class="foncolor m-0 p-0">ShipTo</label>
-                        <div class="inputGroup w-50 position-relative customInputSearch mx-3">
-                            <i class="ti ti-search"></i>
-                            <input type="text" class="form-control form-cs" placeholder="Search" name="search"
-                                value="{{ request('type') === 'ShipTo' ? request('search') : '' }}">
-                            <input type="hidden" name="type" value="ShipTo">
-                        </div>
-                        <button type="submit" class="btn px-3 btn-primary me-2">Search</button>
-                        <button type="button" class="btn btn-danger icon-btn" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Refresh" onclick="resetForm()"> <i
-                                class="fe fe-refresh-ccw"></i> </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id='ajexTable'>
-        <div class="card-table">
-            <div class="card-body">
-                <div class="table-responsive mt-3">
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $customerIdFromUrl = request()->query('customer_id');
+        $authUser = auth()->user();
+    @endphp
 
-                    <table class="table tables table-stripped table-hover datatable ">
-                        <thead class="thead-light">
-
-                            <tr>
-                                <th>Ship To ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>License ID</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Customer ID</th>
-                                <th style="text-align: center;">Status</th>
-                                <th>Action</th>
-
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($customers as $index => $customer)
-                                <tr>
-                                    <td> {{ $customer->unique_id ?? "--" }}</td>
-                                    <td>{{ ucfirst($customer->name ?? '') }}</td>
-                                    <td>{{ $customer->email ?? '-' }}</td>
-                                    <td>{{ $customer->license_number ?? '-' }}</td>
-                                    <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
-                                        +{{ $customer->phone_2_code->phonecode ?? '' }} {{ $customer->phone_2 ?? '-' }}
-                                    </td>
-                                    <td>{{ $customer->address ?? '-' }}<br>
-                                        {{ $customer->address_2 ?? '-' }}
-                                    </td>
-                                    <td>
-                                        @if($customer->parent_customer)
-                                            <a href="{{ route('admin.customer.show', $customer->parent_customer_id) }}">
-                                                {{ $customer->parent_customer->unique_id }}
-                                            </a>
-                                        @else
-                                            -
-                                        @endif
-
-                                    </td>
-                                    <td>
-                                        @if ($customer->status == 'Active')
-                                            <div class="container">
-                                                <img src="{{ asset('assets/img/checkbox.png')}}" alt="Image" />
-                                                <p>Active</p>
-                                            </div>
-                                        @else
-                                            <div class="container">
-                                                <img src="{{ asset('assets/img/inactive.png')}}" alt="Image" />
-                                                <p>Inactive</p>
-                                            </div>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <ul>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('admin.customer.edit', $customer->id) . '?page=' . request()->page ?? 1 }}"><i
-                                                                class="far fa-edit me-2"></i>Update</a>
-                                                    </li>
-                                                    <li>
-                                                        @if($customer)
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.customer.show', $customer->id) }}">
-                                                                <i class="far fa-eye me-2"></i>View
-                                                            </a>
-                                                        @endif
-                                                    </li>
-                                                    @if($customer->status == 'Active')
-                                                        <li>
-                                                            <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                                data-id="{{ $customer->id }}" data-status="Inactive">
-                                                                <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                            </a>
-                                                        </li>
-                                                    @elseif($customer->status == 'Inactive')
-                                                        <li>
-                                                            <a class="dropdown-item activate" href="javascript:void(0)"
-                                                                data-id="{{ $customer->id }}" data-status="Active">
-                                                                <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                            </a>
-                                                        </li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="px-4 py-4 text-center text-gray-500">No users found.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-
-                    </table>
-
-
+    <form action="{{ route('admin.customer.shipToIndex') }}" method="GET" id="filterForm">
+        <div class="row gx-3 inputheight40">
+            {{-- ShipTo Search --}}
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">ShipTo Customer</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" class="form-control height40 form-cs" placeholder="Search ShipTo Customer"
+                        name="ShipTosearch" value="{{ request('ShipTosearch') }}">
                 </div>
             </div>
-        </div>
-        <div class="row col-md-12 d-flex mt-4 p-2 input-box align-items-center">
-            <div class="col-md-6 d-flex p-2 align-items-center">
-                <h3 class="profileUpdateFont fw-medium me-2">Show</h3>
-                <select class="form-select input-width form-select-sm opacity-50" aria-label="Small select example"
-                    id="pageSizeSelect">
-                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
-                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
-                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+
+            {{-- Warehouse --}}
+            <div class="col-md-3 mb-3">
+                <label>By Customer</label>
+                <select class="js-example-basic-single select2 form-control" name="customer_id">
+                    <option value="">Select Customer</option>
+                    @foreach ($CustomerLists as $customer)
+                        <option value="{{ $customer->id }}" {{ $customerIdFromUrl == $customer->id || old('customer_id') == $customer->id ? 'selected' : '' }}>
+                            {{ $customer->name ?? '' }} {{ $customer->last_name ?? '' }}
+                        </option>
+                    @endforeach
                 </select>
-                <h3 class="profileUpdateFont fw-medium ms-2">Entries</h3>
+                @error('customer_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
-            <div class="col-md-6">
-                <div class="float-end">
-                    <div class="bottom-user-page mt-3">
-                        {!! $customers->appends(['per_page' => request('per_page')])->links('pagination::bootstrap-5') !!}
-                    </div>
-                </div>
+
+            {{-- Warehouse --}}
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            {{-- Buttons --}}
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>
             </div>
         </div>
+    </form>
+
+    <div id='ajexTable'>
+       @include('admin.customer.shipto.shiptotable')
     </div>
 
     <!-- Delete Items Modal -->
@@ -332,7 +228,7 @@
             });
 
             function resetForm() {
-                window.location.href = "{{ route('admin.customer.index') }}";
+                window.location.href = "{{ route('admin.customer.shipToIndex') }}";
             }
 
         </script>

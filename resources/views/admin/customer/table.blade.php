@@ -1,10 +1,8 @@
 <div class="card-table">
     <div class="card-body">
         <div class="table-responsive mt-3">
-
             <table class="table tables table-stripped table-hover datatable ">
                 <thead class="thead-light">
-
                     <tr>
                         <th>Customer ID</th>
                         <th>Photo</th>
@@ -18,8 +16,6 @@
                         <th>Address</th>
                         <th style="text-align: center;">Status</th>
                         <th>Action</th>
-
-
                     </tr>
                 </thead>
                 <tbody>
@@ -77,31 +73,38 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
+                                            @can('has-dynamic-permission', 'customers_list.edit')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.customer.edit', $customer->id) . '?page=' . request()->page ?? 1 }}"><i
                                                         class="far fa-edit me-2"></i>Update</a>
                                             </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'customers_list.show')
                                             <li>
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.customer.show', $customer->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
-                                            @if ($customer->status == 'Active')
-                                                <li>
-                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                        data-id="{{ $customer->id }}" data-status="Inactive">
-                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                    </a>
-                                                </li>
+                                             @endcan
+
+                                            @can('has-dynamic-permission', 'customers_list.account_status')
+                                            @if($customer->status == 'Active')
+                                                            <li>
+                                                                <a class="dropdown-item deactivate" href="javascript:void(0)"
+                                                                    data-id="{{ $customer->id }}" data-status="Inactive">
+                                                                    <i class="far fa-bell-slash me-2"></i>Deactivate
+                                                                </a>
+                                                            </li>
                                             @elseif($customer->status == 'Inactive')
-                                                <li>
-                                                    <a class="dropdown-item activate" href="javascript:void(0)"
-                                                        data-id="{{ $customer->id }}" data-status="Active">
-                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                    </a>
-                                                </li>
+                                                            <li>
+                                                                <a class="dropdown-item activate" href="javascript:void(0)"
+                                                                    data-id="{{ $customer->id }}" data-status="Active">
+                                                                    <i class="fa-solid fa-power-off me-2"></i>Activate
+                                                                </a>
+                                                            </li>
                                             @endif
+                                           <!-- #region --> @endcan
                                         </ul>
                                     </div>
                                 </div>
@@ -116,8 +119,6 @@
                 </tbody>
 
             </table>
-
-
         </div>
     </div>
 </div>

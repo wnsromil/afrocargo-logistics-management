@@ -19,33 +19,47 @@ class Notification extends Model
         'type',
         'user_id',
         'img',
+        'role', // Added role field
+        'warehouse_id',
+        'container_id',
+        'eod_id',
+        'invoice_id',
+        'bill_id',
+        'user_id',
     ];
 
-     protected static function booted()
+    protected static function booted()
     {
         parent::boot();
 
         static::creating(function ($notification) {
             // Generate unique_id when creating a new notification
-            $notification->unique_id = self::generateUniqueId();
+            $notification->unique_id = self::generateUniqueId($notification->type);
         });
     }
 
-    public static function generateUniqueId()
+    public function user()
     {
-        // Get the last notification record with status 'Active', ordered by unique_id
-        $lastNotification = Notification::where('status', 'Active')
-            ->orderByDesc('unique_id')
-            ->first();
+        return $this->belongsTo(User::class);
+    }
 
-        // Get the last number from unique_id (assuming it follows the format "TNT-XXXXXX")
-        $lastNumber = 0;
-        if ($lastNotification && preg_match('/(\d+)$/', $lastNotification->unique_id, $matches)) {
-            $lastNumber = (int)$matches[0];
+    public static function generateUniqueId($type = null)
+    {
+        // Agar type 'Order' ho to unique_id null return kare
+        if ($type === 'Order') {
+            return null;
         }
 
-        // Increment the number for the new unique_id
-        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+        // Get the last notification with numeric sorting of unique_id
+        $lastNotification = Notification::where('status', 'Active')
+            ->selectRaw("CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED) as number_part")
+            ->orderByDesc('number_part')
+            ->first();
+
+        $lastNumber = $lastNotification ? (int) $lastNotification->number_part : 0;
+
+        // No zero-padding
+        $newNumber = (string) ($lastNumber + 1);
 
         // Return the generated unique_id with TNT- prefix
         return 'TNT-' . $newNumber;

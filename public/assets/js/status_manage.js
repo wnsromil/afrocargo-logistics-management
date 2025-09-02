@@ -146,11 +146,16 @@
                     delivery_man: delivery_man || null,
                     note: note || null,
                     vehicle_id_hidden: vehicle_id_hidden || null,
-                    partial_payment_sum_input_hidden: partial_payment_sum_input_hidden || null,
-                    remaining_payment_sum_input_hidden: remaining_payment_sum_input_hidden || null,
-                    total_amount_sum_input_hidden: total_amount_sum_input_hidden || null,
-                    no_of_orders_input_hidden: no_of_orders_input_hidden || null,
-                    containerHistoryId: container_history_id_input_hidden || null,
+                    partial_payment_sum_input_hidden:
+                        partial_payment_sum_input_hidden || null,
+                    remaining_payment_sum_input_hidden:
+                        remaining_payment_sum_input_hidden || null,
+                    total_amount_sum_input_hidden:
+                        total_amount_sum_input_hidden || null,
+                    no_of_orders_input_hidden:
+                        no_of_orders_input_hidden || null,
+                    containerHistoryId:
+                        container_history_id_input_hidden || null,
                 },
                 headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}", // CSRF token for Laravel
@@ -182,7 +187,7 @@
                     if (errorMessages.length > 0) {
                         Swal.fire({
                             title: "Validation Error",
-                            text: errorMessages.join('\n'),
+                            text: errorMessages.join("\n"),
                             icon: "error",
                         });
                     }
@@ -343,78 +348,91 @@
             // Clear previous errors
             $("#amountError").text("");
             let hasError = false;
-            // Prepare FormData object
-            let formData = new FormData();
-            let amount = $(this).find('input[name="amount"]').val();
 
-            if (!amount) {
-                $("#amountError").text("Amount is required.");
-                hasError = true;
-            }
+            let formData = new FormData();
+            let amount = 0;
 
             // Add fields
             formData.append("parcel_id", $("#parcel_id_input_hidden").val());
-            formData.append(
-                "amount",
-                $(this).find('input[name="amount"]').val()
-            );
-            formData.append("notes", $(this).find('input[name="notes"]').val());
+            formData.append("amount", 0);
 
-            // Add hidden fields
+            // ✅ Get all checked checkboxes and push their values (IDs) in an array
+            let selectedItems = [];
+            $('input[name="parcel_items[]"]:checked').each(function () {
+                selectedItems.push($(this).val());
+            });
+            formData.append("parcel_items", JSON.stringify(selectedItems)); // Send as JSON string
+
+            formData.append("notes", $('input[name="notes"]').val());
+
+            // Hidden fields
             formData.append("warehouse_id", $("#warehouse_id_input").val());
             formData.append(
                 "created_user_id",
                 $("#created_user_id_input").val()
             );
 
-            // Add image file
-            let imgFile = $("#self_pickup_img")[0].files[0]; // Make sure input has id="self_pickup_img"
+            // ✅ If image file selected
+            let imgFile = $("#self_pickup_img")[0]?.files[0];
             if (imgFile) {
                 formData.append("img", imgFile);
             }
 
-            // CSRF token
-            let csrfToken = $('meta[name="csrf-token"]').attr("content");
-
-            // Disable button
-            $(".btn-primary").html("Processing...").prop("disabled", true);
-
-            if (hasError) {
-                return;
+            // ✅ Signature canvas to image (if exists)
+            let canvas = document.getElementById("signaturePad"); // Make sure your canvas has this ID
+            if (canvas) {
+                canvas.toBlob(function (blob) {
+                    if (blob) {
+                        formData.append("signature", blob, "signature.png");
+                        sendForm(formData); // Send ajax inside callback
+                    } else {
+                        sendForm(formData); // Send anyway
+                    }
+                });
+            } else {
+                sendForm(formData);
             }
 
-            // AJAX request
-            $.ajax({
-                url: "/api/update-status-signature-self-delivery",
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-                data: formData,
-                processData: false, // Required for FormData
-                contentType: false, // Required for FormData
-                success: function (response) {
-                    $("#delivery_with_driver .custom-btn").click();
-                    Swal.fire({
-                        title: "Good job!",
-                        text: "Status changed successfully!",
-                        icon: "success",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
+            // CSRF Token
+            let csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+            function sendForm(formData) {
+                $(".signatureBtn").html("Processing...").prop("disabled", true);
+
+                if (hasError) return;
+
+                $.ajax({
+                    url: "/api/update-status-signature-self-delivery",
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $("#delivery_with_driver .custom-btn").click();
+                        Swal.fire({
+                            title: "Good job!",
+                            text: "Status changed successfully!",
+                            icon: "success",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error: function (xhr) {
+                        let errors = xhr.responseJSON?.errors || {};
+                        if (errors.driver_id) {
+                            $("#deliverydriverError").text(errors.driver_id[0]);
                         }
-                    });
-                },
-                error: function (xhr) {
-                    let errors = xhr.responseJSON?.errors || {};
-                    if (errors.driver_id) {
-                        $("#deliverydriverError").text(errors.driver_id[0]);
-                    }
-                },
-                complete: function () {
-                    $(".btn-primary").html("Save").prop("disabled", false);
-                },
-            });
+                    },
+                    complete: function () {
+                        //$(".btn-primary").html("Save").prop("disabled", false);
+                    },
+                });
+            }
         });
     });
 
@@ -597,5 +615,24 @@
                     }
                 });
             });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOMContentLoaded fired");
+        setTimeout(() => {
+            document.querySelectorAll(".pickup-tooltip").forEach(function (el) {
+                const tooltipHTML = el.getAttribute("data-tooltip-html");
+                if (tooltipHTML) {
+                    tippy(el, {
+                        content: tooltipHTML,
+                        allowHTML: true,
+                        theme: "light-border",
+                        placement: "top",
+                        animation: "shift-away-subtle",
+                        delay: [0, 0], // ⏱ instantly open and close
+                    });
+                }
+            });
+        }, 1000); // 1 second delay for DOM stability
     });
 })(jQuery);

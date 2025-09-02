@@ -42,6 +42,7 @@
                             @enderror
                         </div>
                     </div>
+
                     <div class="col-md-6 me-sm-2">
                         <label class="fw-bold mb-2">Choose Signature Type</label><br>
                         <div class="form-check form-check-inline">
@@ -115,7 +116,9 @@
                 <div class="add-customer-btns text-end">
                     <button type="button" onclick="redirectTo('{{ route('admin.signature.index') }}')"
                         class="btn btn-outline-primary custom-btn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ">Submit</button>
+                    @can('has-dynamic-permission', 'signature_list.create')
+                        <button type="submit" class="btn btn-primary ">Submit</button>
+                    @endcan
                 </div>
             </div>
         </div>

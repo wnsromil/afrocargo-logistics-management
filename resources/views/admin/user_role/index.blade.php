@@ -6,148 +6,126 @@
     <x-slot name="cardTitle">
         <div class="d-flex topnavs justify-content-between">
             <p class="head">Role Management</p>
-            <a href="{{ route('admin.user_role.create') }}" class="btn btn-primary buttons">
+            {{-- <a href="{{ route('admin.user_role.create') }}" class="btn btn-primary buttons">
                 <i class="ti ti-circle-plus me-2 text-white"></i>
                 Add Roles
-            </a>
+            </a> --}}
         </div>
     </x-slot>
 
-    <div>
-        <div class="card-table">
-            <div class="card-body">
-                <form method="GET" action="">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="d-flex align-items-center w-auto mb-3">
-                                <label for="permission" class="col3a fw_600 mb-0 col-md-5">Filter By Permission</label>
-                                <select name="permission" class="form-control inp select2" onchange="this.form.submit()">
-                                    <option value="">All Permissions</option>
-                                    @foreach($permissions as $permission)
-                                        <option value="{{ $permission->name }}" 
-                                            {{ $selectedPermission == $permission->name ? 'selected' : '' }}>
-                                            {{ ucwords(str_replace(['.', '_'], ' ', $permission->name)) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="mx-1">
-                                <button type="button" class="btn btn-primary refeshuser ">
-                                    <a class="btn-filters" href="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Refresh"><span><i class="fe fe-refresh-ccw"></i></span></a>
-                                </button>
-                            </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </form>
+    @php
+        $warehouseIdFromUrl = request()->query('warehouse_id');
+        $authUser = auth()->user();
+    @endphp
 
-                <div class="table-responsive">
-                    <table class="table table-stripped table-hover datatable">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>S No.</th>
-                                <th>Role Name</th>
-                                <th>Permissions</th>
-                                <th>Created Date</th>
-                                <th class="text-end">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($users as $index=>$user)
-                            <tr>
-                                <td class="text-start">{{ $index + 1 }}</td>
-                                <td>{{ $user->name ?? '-' }}</td>
-                                <td>
-                                    @foreach($user->roles as $role)
-                                        <div class="mb-1">
-                                            <strong>{{ $role->name }}:</strong>
-                                            @foreach($role->permissions->take(3) as $permission)
-                                                <span class="badge bg-primary me-1">
-                                                    {{ ucwords(str_replace('.', ' ', $permission->name)) }}
-                                                </span>
-                                            @endforeach
-                                            @if($role->permissions->count() > 3)
-                                                <span class="badge bg-secondary">
-                                                    +{{ $role->permissions->count() - 3 }} more
-                                                </span>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    {{ $user->created_at ? \Carbon\Carbon::parse($user->created_at)->format('d-m-Y') : '-' }}
-                                </td>
-                                <td class="text-end">
-                                    <div class="dropdown dropdown-action container justify-content-end">
-                                        <a href="#" class="btn-action-icon" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <ul>
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ route('user-permissions.edit', $user) }}">
-                                                        <i class="far fa-edit me-2"></i>Update
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    {{-- <a class="dropdown-item" href="#" onclick="confirmDelete('{{ route('admin.user_role.destroy', $user) }}')">
-                                                        <i class="far fa-trash-alt me-2"></i>Delete
-                                                    </a> --}}
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5" class="text-center">No users found</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+    <form id="expenseFilterForm" action="{{ route('admin.user_role.index') }}" method="GET">
+        <div class="row gx-3 inputheight40">
+            <div class="col-md-3 mb-3">
+                <label for="searchInput">Search</label>
+                <div class="inputGroup height40 position-relative">
+                    <i class="ti ti-search"></i>
+                    <input type="text" id="searchInputExpense" class="form-control height40 form-cs"
+                        placeholder="Search" name="search" value="{{ request('search') }}">
                 </div>
-                <div class="bottom-user-page mt-3">
-                    {!! $users->appends(['permission' => $selectedPermission])->links('pagination::bootstrap-5') !!}
+            </div>
+
+            {{-- ✅ Select Dropdown for Multiple Warehouses --}}
+            <div class="col-md-3 mb-3">
+                <label>By Warehouse</label>
+                @if ($authUser->role_id == 1)
+                    <select class="js-example-basic-single select2 form-control" name="warehouse_id">
+                        <option value="">Select Warehouse</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || request()->warehouse_id== $warehouse->id ? 'selected' : '' }}>
+                                {{ $warehouse->warehouse_name ?? '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                @else
+                    @php
+                        $singleWarehouse = $warehouses->first();
+                    @endphp
+
+                    <input type="text" class="form-control" value="{{ $singleWarehouse->warehouse_name }}" readonly
+                        style="background-color: #e9ecef; color: #6c757d;">
+                    <input type="hidden" name="warehouse_id" value="{{ $singleWarehouse->id }}">
+                @endif
+                @error('warehouse_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+
+            <div class="col-md-3 mb-3">
+                <label>Role Name</label>
+                <select class="form-control inp select2" name="role" onchange="this.form.submit()">
+                    <option value="">Select Role</option>
+                    <option value="2" {{request()->role == "2" ? 'selected' : '' }}>Warehouse Manager</option>
+                    <option value="4" {{request()->role == "4" ? 'selected' : '' }}>Driver</option>
+                </select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>By Permissions</label>
+                <select class="js-example-basic-single select2 form-control" name="permission">
+                    <option value="">All Permissions</option>
+                    @foreach($permissions as $permission)
+                        <option value="{{ $permission->name }}" {{ $selectedPermission == $permission->name ? 'selected' : '' }}>
+                            {{ ucwords(str_replace(['.', '_'], ' ', $permission->name)) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btnf me-2">Search</button>
+                    <button type="button" class="btn btn-outline-danger btnr" onclick="window.location.href='/user_role'">Reset</button>
                 </div>
             </div>
         </div>
+    </form>
+
+
+    <div id='ajexTable'>
+        @include('admin.user_role.table')
     </div>
+
 </x-app-layout>
 
 @section('scripts')
-<script>
-    function confirmDelete(url) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Create a form and submit it
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = url;
-                form.innerHTML = `
-                    @csrf
-                    @method('DELETE')
-                `;
-                document.body.appendChild(form);
-                form.submit();
-            }
-        });
-    }
+    <script>
+        function confirmDelete(url) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Create a form and submit it
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.innerHTML = `
+                                        @csrf
+                                        @method('DELETE')
+                                    `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
 
-    // Initialize select2 if needed
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select Permission",
-            allowClear: true
+        // Initialize select2 if needed
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "Select Permission",
+                allowClear: true
+            });
         });
-    });
 </script>
 @endsection

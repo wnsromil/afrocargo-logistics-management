@@ -62,7 +62,9 @@
                                 <select class="flag-select" name="mobile_number_code_id">
                                     @foreach ($coutry as $key => $item)
                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                            data-length="{{ $item->phone_length ?? 10 }}"
+                                            {{ old('mobile_number_code_id') == $item->id ? 'selected' : '' }}>
                                             {{ $item->name }} +{{ $item->phonecode }}
                                         </option>
                                     @endforeach
@@ -70,10 +72,10 @@
                             </div>
                             <input type="number" class="form-control flagInput inp" placeholder="Enter Contact Number"
                                 name="mobile_number" value="{{ old('mobile_number') }}"
-                                oninput="this.value = this.value.slice(0, 10)">
+                                >
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">The Contact Number field is required.</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -86,7 +88,10 @@
                                 <select class="flag-select" name="alternative_mobile_number_code_id">
                                     @foreach ($coutry as $key => $item)
                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
+                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                            data-length="{{ $item->phone_length ?? 10 }}"
+                                            {{ old('alternative_mobile_number_code_id') == $item->id ? 'selected' : '' }}
+                                            >
                                             {{ $item->name }} +{{ $item->phonecode }}
                                         </option>
                                     @endforeach
@@ -95,10 +100,10 @@
                             <input type="number" class="form-control flagInput inp"
                                 placeholder="Enter Office Contact Number" name="alternative_mobile_number"
                                 value="{{ old('alternative_mobile_number') }}"
-                                oninput="this.value = this.value.slice(0, 10)">
+                                >
                         </div>
                         @error('alternative_mobile_number')
-                            <small class="text-danger">The Office Contact Number field is required.</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -156,7 +161,7 @@
                     <div class="input-block mb-3">
                         <label class="foncolor" for="license_expiry_date">License Expiry Date<i
                                 class="text-danger">*</i></label>
-                        <input type="text" name="license_expiry_date" class="form-control inp"
+                        <input readonly style="cursor: pointer;" type="text" name="license_expiry_date" class="form-control inp"
                             placeholder="Select Expiry Date" value="{{ old('license_expiry_date') }}">
                         @error('license_expiry_date')
                             <span class="text-danger">{{ $message }}</span>
@@ -172,6 +177,18 @@
                         <input type="file" name="license_document" class="form-control inp" placeholder="Enter Address"
                             value="{{ old('license_document') }}">
                         @error('license_document')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="gate_in_driver_id" class="foncolor">Assgin driver</label>
+                        <select name="gate_in_driver_id" id="gateInDriver" class="js-example-basic-single select2">
+                            <option value="">Select Driver </option>
+                        </select>
+                        @error('gate_in_driver_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -208,9 +225,9 @@
 
             <button type="button" onclick="redirectTo('{{ route('admin.drivers.index') }}')"
                 class="btn btn-outline-primary custom-btn">Cancel</button>
-
+            @can('has-dynamic-permission', 'drivers.create')
             <button type="submit" class="btn btn-primary ">Submit</button>
-
+            @endcan
         </div>
     </form>
 

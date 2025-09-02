@@ -25,11 +25,11 @@
                 <tbody>
                     @forelse ($inventories as $inventory)
                         <tr class="background-instock text-center" style="
-                                                                    @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
-                                                                    @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
-                                                                        @else background-color: #FFD6A5;
-                                                                    @endif
-                                                                ">
+                                                                            @if ($inventory->stock_status == 'In Stock') background-color: #B6FFD3;
+                                                                            @elseif($inventory->stock_status == 'Out of Stock') background-color: #FFB5AA;
+                                                                            @else background-color: #FFD6A5;
+                                                                            @endif
+                                                                        ">
                             <td>
                                 {{ $inventory->unique_id }}
                             </td>
@@ -63,28 +63,34 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.supply_inventories.edit', $inventory->id) }}"><i
-                                                        class="far fa-edit me-2"></i>Edit</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.supply_inventories.show', $inventory->id) }}"><i
-                                                        class="far fa-eye me-2"></i>View</a>
-                                            </li>
-                                            <li>
+                                            @can('has-dynamic-permission', 'supply_inventory_list.edit')
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.supply_inventories.edit', $inventory->id) }}"><i
+                                                            class="far fa-edit me-2"></i>Edit</a>
+                                                </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'supply_inventory_list.show')
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.supply_inventories.show', $inventory->id) }}"><i
+                                                            class="far fa-eye me-2"></i>View</a>
+                                                </li>
+                                            @endcan
+                                            @can('has-dynamic-permission', 'supply_inventory_list.delete')
+                                                <li>
 
-                                                <form
-                                                    action="{{ route('admin.supply_inventories.destroy', $inventory->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="dropdown-item"
-                                                        onclick="deleteData(this,'Wait! Are you sure you want to remove this inventory?')"><i
-                                                            class="far fa-trash-alt me-2"></i>Delete</button>
-                                                </form>
-                                            </li>
+                                                    <form
+                                                        action="{{ route('admin.supply_inventories.destroy', $inventory->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this,'Wait! Are you sure you want to remove this inventory?')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
+                                                </li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

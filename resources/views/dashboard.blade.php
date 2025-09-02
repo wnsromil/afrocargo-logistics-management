@@ -10,6 +10,12 @@
                 background-color: #007bff;
                 color: white;
             }
+            .custom-close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+              color: black !important;
+            }
         </style>
 
     @endsection
@@ -31,18 +37,37 @@
 
 
     <div class="dashboardContent">
-        <div class="row">
-            @php
+           @php
                 $role_id = Auth::user()->role_id;
-            @endphp
+                $notificationRead = Auth::user()->notification_read;
 
+                   $status = $notification->type ?? '';
+                    $alertClass = 'alert-secondary'; // default
+
+                    if (strpos($status, 'In transit') !== false) {
+                        $alertClass = 'alert-primary'; // blue
+                    } elseif (strpos($status, 'Custom Hold') !== false || strpos($status, 'Custom Hold') !== false) {
+                        $alertClass = 'alert-warning'; // yellow/orange
+                    } elseif (strpos($status, 'Custom Cleared') !== false || strpos($status, 'Custom Cleared') !== false) {
+                        $alertClass = 'alert-success'; // green
+                    }
+            @endphp
+            {{-- @if($notificationRead != 0)
+            <div class="alert {{ $alertClass }} position-relative" role="alert">
+                <h5 class="alert-heading">{{ $notification->title ?? "" }}</h5>
+                <button type="button" id="closealerticon" class="btn-close custom-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <hr>
+                <p>{{ $notification->message ?? "" }}</p>
+            </div>
+            @endif --}}
+        <div class="row">
             @if($role_id == 2 || $role_id == 4)
                 {{-- ✅ Readonly Input for Single Warehouse --}}
                 <div class="col-md-4 mb-3">
                     <label class="foncolor" for="warehouse"> Warehouse <i class="text-danger">*</i></label>
                     <input type="text" class="form-control" value="{{ $warehouses[0]->warehouse_name }}" readonly
                         style="background-color: #e9ecef; color: #6c757d;">
-                    <input type="hidden" name="warehouse" value="{{ $warehouses[0]->id }}">
+                    <input type="hidden" name="warehouse" id="hiddenWarehouseId" value="{{ $warehouses[0]->id }}">
                 </div>
             @else
                 <div class="col-sm-4 mb-3">
@@ -208,13 +233,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <!-- Second Row (4 Columns) -->
-            <!-- ----------------- 5th -------------------- -->
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
@@ -345,16 +363,9 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-
-            <!-- ----------------- Row 3rd ------------------ -->
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-
 
                     <!-- ------------------------- 9th card --------------------------->
+                    @if ($role_id == 1)
                     <div class="col-md-3 col-sm-6">
                         <div class="card innerCards w-100 setCard">
                             <div class="d-flex flex-row justify-content-between">
@@ -383,6 +394,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <!-- -------------------------10th --------------------------- -->
                     <div class="col-md-3 col-sm-6">
@@ -473,12 +485,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <!-- ------------------- Row 4th ------------------------ -->
-            <div class="col-md-12">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <!-- ------------------------- 13th card --------------------------->
                     <div class="col-md-3 col-sm-6">
@@ -601,10 +607,77 @@
                             </div>
                         </div>
                     </div>
+              
 
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
+                                <!-- <div class="dash-widget-header col-md-12"> -->
+                                <div class="col-md-9 float-left">
+                                    <div class="dash-count">
+                                        <p class="fontSize fw-medium">Total Expenses</p>
+                                        <div class="dash-counts countFontSize2" id="total-expenses">
+                                            0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                            viewBox="0 0 24 24" fill="none" stroke="#203A5F" stroke-width="1"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-dollar">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M13 21h-7a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
+                                            <path d="M16 3v4" />
+                                            <path d="M8 3v4" />
+                                            <path d="M4 11h12.5" />
+                                            <path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+                                            <path d="M19 21v1m0 -8v1" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="card innerCards w-100 setCard">
+                            <div class="d-flex flex-row justify-content-between">
+                                <!-- <div class="dash-widget-header col-md-12"> -->
+                                <div class="col-md-9 float-left">
+                                    <div class="dash-count">
+                                        <p class="fontSize fw-medium">Today Expenses</p>
+                                        <div class="dash-counts countFontSize2" id="todays-expenses">
+                                            0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="dash-widget-icon col-md-6 float-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                            viewBox="0 0 24 24" fill="none" stroke="#203A5F" stroke-width="1"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-dollar">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M13 21h-7a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
+                                            <path d="M16 3v4" />
+                                            <path d="M8 3v4" />
+                                            <path d="M4 11h12.5" />
+                                            <path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+                                            <path d="M19 21v1m0 -8v1" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -634,7 +707,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div style="background-size: 45px;"
                             class="card innerCards w-100 setCard setCardSize rounded 
-                            {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
+                             {{ $upcomingContainer->container->status == 'Active' ? 'bg-selected1' : '' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -675,7 +748,7 @@
                     <div class="col-md-5 col-xl-3 col-sm-6">
                         <div style="background-size: 45px;"
                             class="card innerCards w-100 setCard setCardSize rounded 
-                                                                                                                                                                                                                {{ $latestContainer->status == 'Active' ? 'bg-selected1' : '' }}">
+                                        {{ $latestContainer->status == 'Active' ? 'bg-selected1 open_container_img' : 'close_container_img' }}">
                             <div class="card2 d-flex flex-row justify-content-between">
                                 <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
                                     <p class="font13 fw-medium"><span class="col737">Seal No :</span>
@@ -694,8 +767,8 @@
                                     <div class="status-toggle float-end me-0">
                                         <input
                                             onclick="handleContainerClick('{{ $latestContainer->id }}', '{{ $latestContainer->container_no_1 }}', '{{ $latestContainer->warehouse_id }}')"
-                                            id="rating_{{$index}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
-                                        <label for="rating_{{$index}}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                            id="rating_{{$latestContainer->id}}" class="toggle-btn1 check" type="checkbox" {{ $latestContainer->status == 'Active' ? 'checked' : '' }}>
+                                        <label for="rating_{{$latestContainer->id}}" class="checktoggle tog checkbox-bg">checkbox</label>
                                     </div>
                                 </div>
                             </div>
@@ -1344,7 +1417,7 @@
 
                                                         <span class="user-content"
                                                             style="background-color:#203A5F;border-radius:5px;width: 30px;
-                                                                                                                                                               height: 26px;align-content: center;">
+                                                                                                                                                                                               height: 26px;align-content: center;">
                                                             <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                                         </span>
                                                     </a>
@@ -2181,26 +2254,42 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+        @if ($role_id == 2 || $role_id == 4)
+            <script>
+                document.addEventListener('DOMContentLoaded', async function () {
+                    const warehouseId = document.getElementById('hiddenWarehouseId')?.value;
+                    if (warehouseId) {
+                        await fetchDashboardData(warehouseId);
+                    }
+                });
+            </script>
+        @else
+            <script>
+                document.addEventListener('DOMContentLoaded', async function () {
+                    await fetchDashboardData();
+                });
+            </script>
+        @endif
+
         <script>
-            function handleContainerClick(containerId, containerNumber, warehouseId) {
-                // Step 1: First fetch current active container
+              function handleContainerClick(containerId, containerNumber, warehouseId) {
+                const checkbox = document.getElementById(`rating_${containerId}`);
+                const isChecked = checkbox.checked;
+                // Step 1: Fetch current active container
                 axios.post('/api/vehicle/getAdminActiveContainer', {
-                    warehouse_id: warehouseId // जो भी warehouse ID यूज़र ने चुना है
+                    warehouse_id: warehouseId
                 }).then(response => {
                     const activeContainer = response.data.container;
 
                     let message = '';
                     let checkbox_status = '';
 
-                    if (activeContainer?.container_no_1 === containerNumber) {
-                        message = `That you need to close this <b>${containerNumber}</b> container`;
-                        checkbox_status = "only_close";
-                    } else if (!activeContainer?.container_no_1) {
-                        message = `That you need to open this <b>${containerNumber}</b> container`;
+                    if (isChecked) {
+                        message = `You are about to <b>OPEN</b> the container <b>${containerNumber}</b>`;
                         checkbox_status = "only_open";
                     } else {
-                        message = `That you want to close this <b>${activeContainer?.container_no_1 ?? 'N/A'}</b> container and open this <b>${containerNumber}</b> container`;
-                        checkbox_status = "both_open_close";
+                        message = `You are about to <b>CLOSE</b> the container <b>${containerNumber}</b>`;
+                        checkbox_status = "only_close";
                     }
 
                     Swal.fire({
@@ -2213,21 +2302,32 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             axios.post('/api/vehicle/toggle-status', {
-                                open_id: containerId,
-                                close_id: activeContainer?.id,
+                                open_id: isChecked ? containerId : null,
+                                close_id: !isChecked ? containerId : (activeContainer?.id ?? null),
                                 checkbox_status: checkbox_status,
                                 warehouseId: warehouseId,
                             })
                                 .then((res) => {
-                                    Swal.fire('Success', 'Container status updated.', 'success').then(() => {
-                                        location.reload();
-                                    });
+                                    console.log(res.data.success);
+                                    if (res.data.success) {
+                                        Swal.fire('Success', 'Container status updated.', 'success').then(() => {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            html: `This route <strong>${res.data.message}</strong> container is already open.`,
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+                                    }
                                 })
                                 .catch(error => {
                                     Swal.fire('Error', 'Failed to update container status.', 'error');
                                 });
                         } else {
-                            location.reload();
+                            location.reload(); // rollback visual state
                         }
                     });
                 })
@@ -2235,7 +2335,6 @@
                         Swal.fire('Error', 'Failed to fetch current active container.', 'error');
                     });
             }
-
         </script>
 
         <script>
@@ -2248,8 +2347,10 @@
                         }
                     });
                     const data = await response.json();
-
-                    console.log(data); // Yahan apna dashboard update kar lena
+                    const role_id = {{ $role_id }};
+                        if (role_id === 1) {
+                            document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
+                        }
                     document.getElementById('todays-orders').textContent = data.todays_orders ? data.todays_orders : 0;
                     document.getElementById('total-orders').textContent = data.total_orders ? data.total_orders : 0;
                     document.getElementById('ready-for-shipping').textContent = data.ready_for_shipping ? data.ready_for_shipping : 0;
@@ -2258,7 +2359,6 @@
                     document.getElementById('total-customers').textContent = data.total_customers ? data.total_customers : 0;
                     document.getElementById('new-customers').textContent = data.new_customers ? data.new_customers : 0;
                     document.getElementById('total-drivers').textContent = data.total_drivers ? data.total_drivers : 0;
-                    document.getElementById('total-warehouses').textContent = data.total_warehouses ? data.total_warehouses : 0;
                     document.getElementById('total-vehicles').textContent = data.total_vehicles ? data.total_vehicles : 0;
                     document.getElementById('total-earnings').textContent =
                         '$' + (data.total_earnings ? Number(data.total_earnings).toLocaleString() : '0');
@@ -2268,6 +2368,10 @@
                     document.getElementById('new-supply').textContent = data.new_supply ? data.new_supply : 0;
                     document.getElementById('cargo-order').textContent = data.total_Cargo ? data.total_Cargo : 0;
                     document.getElementById('air-order').textContent = data.total_Air ? data.total_Air : 0;
+                    document.getElementById('total-expenses').textContent =
+                        '$' + (data.totalExpenses ? Number(data.totalExpenses).toLocaleString() : '0');
+                    document.getElementById('todays-expenses').textContent =
+                        '$' + (data.todaysExpenses ? Number(data.todaysExpenses).toLocaleString() : '0');
                     updateContainerCards(data.latest_containers || []);
                     updateUpcomingContainerCards(data.upcomingContainers || []);
 
@@ -2291,34 +2395,34 @@
                     card.className = 'col-md-5 col-xl-3 col-sm-6';
 
                     card.innerHTML = `
-                            <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1' : ''}">
-                                <div class="card2 d-flex flex-row justify-content-between">
-                                    <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                        <p class="font13 fw-medium">
-                                            <span class="col737">Seal No :</span> ${container.seal_no ?? "-"}
-                                        </p>
-                                        <h5 class="text-black countFontSize fw-medium">
-                                            ${container.container_no_1 ?? "-"}
-                                        </h5>
-                                        <div class="cardFontSize mt-2 fw-medium">
-                                            <span class="fw-regular col737">Total Order :</span> ${container.parcels_count ?? 0}
-                                        </div>
-                                    </div>
+                                                            <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1 open_container_img' : 'close_container_img'}">
+                                                                <div class="card2 d-flex flex-row justify-content-between">
+                                                                    <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                                                        <p class="font13 fw-medium">
+                                                                            <span class="col737">Seal No :</span> ${container.seal_no ?? "-"}
+                                                                        </p>
+                                                                        <h5 class="text-black countFontSize fw-medium">
+                                                                            ${container.container_no_1 ?? "-"}
+                                                                        </h5>
+                                                                        <div class="cardFontSize mt-2 fw-medium">
+                                                                            <span class="fw-regular col737">Total Order :</span> ${container.parcels_count ?? 0}
+                                                                        </div>
+                                                                    </div>
 
-                                    <div class="col-3 justify-content-end mt-1">
-                                        <div class="status-toggle float-end me-0">
-                                            <input 
-                                                onclick="handleContainerClick('${container.id}', '${container.container_no_1}', '${container.warehouse_id}')"
-                                                id="rating_${index}" 
-                                                class="toggle-btn1 check" 
-                                                type="checkbox" 
-                                                ${isActive ? 'checked' : ''}>
-                                            <label for="rating_${index}" class="checktoggle tog checkbox-bg">checkbox</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
+                                                                    <div class="col-3 justify-content-end mt-1">
+                                                                        <div class="status-toggle float-end me-0">
+                                                                            <input 
+                                                                                onclick="handleContainerClick('${container.id}', '${container.container_no_1}', '${container.warehouse_id}')"
+                                                                                id="rating_${container.id}" 
+                                                                                class="toggle-btn1 check" 
+                                                                                type="checkbox" 
+                                                                                ${isActive ? 'checked' : ''}>
+                                                                            <label for="rating_${container.id}" class="checktoggle tog checkbox-bg">checkbox</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        `;
 
                     containerList.appendChild(card);
                 });
@@ -2339,22 +2443,22 @@
                     const card = document.createElement('div');
                     card.className = 'col-md-5 col-xl-3 col-sm-6';
                     card.innerHTML = `
-                        <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1' : ''}">
-                            <div class="card2 d-flex flex-row justify-content-between">
-                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
-                                    <p class="font13 fw-medium">
-                                        <span class="col737">Seal No :</span> ${container.container.seal_no ?? "-"}
-                                    </p>
-                                    <h5 class="text-black countFontSize fw-medium">
-                                        ${container.container.container_no_1 ?? "-"}
-                                    </h5>
-                                    <div class="cardFontSize mt-2 fw-medium">
-                                        <span class="fw-regular col737">Total Order :</span> ${container.no_of_orders ?? 0}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                                                            `;
+                                                        <div style="background-size: 45px;" class="card innerCards w-100 setCard setCardSize rounded ${isActive ? 'bg-selected1 close_container_img' : 'close_container_img'}">
+                                                            <div class="card2 d-flex flex-row justify-content-between">
+                                                                <div class="col-md-9 justify-content-start p-2 ps-3 pe-1">
+                                                                    <p class="font13 fw-medium">
+                                                                        <span class="col737">Seal No :</span> ${container.container.seal_no ?? "-"}
+                                                                    </p>
+                                                                    <h5 class="text-black countFontSize fw-medium">
+                                                                        ${container.container.container_no_1 ?? "-"}
+                                                                    </h5>
+                                                                    <div class="cardFontSize mt-2 fw-medium">
+                                                                        <span class="fw-regular col737">Total Order :</span> ${container.no_of_orders ?? 0}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                                                            `;
                     containerList.appendChild(card);
                 });
             }
@@ -2365,7 +2469,7 @@
                 const warehouseSelect = document.getElementById('warehouse');
 
                 let warehouseId = warehouseSelect && warehouseSelect.value ? warehouseSelect.value : null;
-                fetchDashboardData(warehouseId);
+                //fetchDashboardData(warehouseId);
 
                 // ✅ select2 ke liye jQuery ka change event use karo
                 $(warehouseSelect).on('change', function () {
@@ -2461,11 +2565,8 @@
                 initDatePicker('percel_delivery_date_input');
             });
         </script>
-        <script>
-            function resetForm() {
-                window.location.href = "{{ route('admin.service_orders.index') }}";
-            }
 
+        <script>
             $(document).ready(function () {
                 $('#shipping_type').select2({
                     tags: false,
@@ -2480,6 +2581,7 @@
                 });
             });
         </script>
+
         <script>
             function fetchDriversBywarehouse(warehouseId) {
                 if (!warehouseId) {
@@ -2582,6 +2684,7 @@
                 });
             }
         </script>
+
         <script>
             document.getElementById('self_pickup_img').addEventListener('change', function (event) {
                 const preview = document.getElementById('preview');
@@ -2604,8 +2707,27 @@
 
         </script>
 
-        {{-- Supply Order JS --}}
+         <script>
+            document.getElementById("closealerticon").addEventListener("click", function () {
+                const userId = {{ auth()->id() }};
 
+                fetch("{{ url('/api/mark-as-read-notification') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                      
+                    })
+                    .catch(err => {
+                        console.error("API error:", err);
+                    });
+            });
+        </script>
 
     @endsection
 </x-app-layout>

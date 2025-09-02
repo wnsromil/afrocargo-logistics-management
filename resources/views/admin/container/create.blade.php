@@ -395,6 +395,225 @@
                             @enderror
                         </div>
                     </div>
+                @endif
+
+                {{-- Broker --}}
+                @if($role_id == 1)
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="broker" class="foncolor">Broker<i class="text-danger">*</i></label>
+                            <select id="broker" name="broker" class="profileUpdateFont">
+                                <option value="">Select Broker</option>
+                                @foreach($viewBrokers as $viewBroker)
+                                    <option {{ old('broker') == $viewBroker->name ? 'selected' : '' }}
+                                        value="{{ $viewBroker->name }}">
+                                        {{ $viewBroker->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('broker')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                @else
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="broker" class="foncolor">Broker<i class="text-danger">*</i></label>
+                            <select id="broker" name="broker" class="profileUpdateFont">
+                                <option value="">Select Broker</option>
+                                @foreach($viewBrokers as $viewBroker)
+                                    <option {{ old('broker') == $viewBroker->name ? 'selected' : '' }}
+                                        value="{{ $viewBroker->name }}">
+                                        {{ $viewBroker->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('broker')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Trucking company --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="trucking_company" class="foncolor">Trucking Company<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="trucking_company" id="trucking_company" class="form-control inp"
+                            placeholder="Enter trucking company" value="{{ old('trucking_company') }}">
+                        @error('trucking_company')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- In Date & Time --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="container_date_time" class="foncolor">In Date & Time</label>
+                        <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                            <input type="text" name="container_date_time" style="cursor: pointer;"
+                                class="btn-filters  form-cs inp" value="{{ old('container_date_time') }}"
+                                placeholder="M/DD/YYYY hh:mm A" readonly style="background: #ececec;" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gate In Driver -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="gate_in_driver_id" class="foncolor">Gate In Driver</label>
+                      <select name="gate_in_driver_id" id="gateInDriver" class="js-example-basic-single select2">
+                            <option value="">Select Driver </option>
+                        </select>
+                        @error('gate_in_driver_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Gate Out Driver -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block fwNormal mb-3">
+                        <label for="gate_out_driver_id" class="foncolor">Gate Out Driver</label>
+                      <select name="gate_out_driver_id" id="gateOutDriver" class="js-example-basic-single select2">
+                            <option value="">Select Driver </option>
+                    </select>
+                        @error('gate_out_driver_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Port Of Loading --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="port_of_loading" class="foncolor">Port Of Loading<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="port_of_loading" id="port_of_loading" class="form-control inp"
+                            placeholder="Enter port of loading" value="{{ old('port_of_loading') }}">
+                        @error('port_of_loading')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Port Of Discharge --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="port_of_discharge" class="foncolor">Port Of Discharge<i
+                                class="text-danger">*</i></label>
+                        <input type="text" name="port_of_discharge" id="port_of_discharge" class="form-control inp"
+                            placeholder="Enter port of discharge" value="{{ old('port_of_discharge') }}">
+                        @error('port_of_discharge')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Celliling Date --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="celliling_date" class="foncolor">Celliling Date<i class="text-danger">*</i></label>
+                        <input type="text" name="celliling_date" readonly style="cursor: pointer;"
+                            class="form-control inp" value="{{ old('celliling_date') }}" placeholder="M/DD/YYYY" />
+                        @error('celliling_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- ETA Date --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="eta_date" class="foncolor">ETA Date<i class="text-danger">*</i></label>
+                        <input type="text" name="eta_date" readonly style="cursor: pointer;" class="form-control inp"
+                            value="{{ old('eta_date') }}" placeholder="M/DD/YYYY" />
+                        @error('eta_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Transit --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="transit_country" class="foncolor">Transit<i class="text-danger">*</i></label>
+                        <input type="text" name="transit_country" id="transit_country" class="form-control inp"
+                            placeholder="Enter transit" value="{{ old('transit_country') }}">
+                        @error('transit_country')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Chassis Number --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="chassis_number" class="foncolor">Chassis Number<i class="text-danger">*</i></label>
+                        <input type="text" name="chassis_number" id="chassis_number" class="form-control inp"
+                            placeholder="Enter chassis number" value="{{ old('chassis_number') }}">
+                        @error('chassis_number')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Vessel/Voyage --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="vessel_voyage" class="foncolor">Vessel/Voyage</label>
+                        <input type="text" name="vessel_voyage" id="vessel_voyage" class="form-control inp"
+                            placeholder="Enter vessel/voyage" value="{{ old('vessel_voyage') }}">
+                        @error('vessel_voyage')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- TIR Number --}}
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <div class="input-block mb-3">
+                        <label for="tir_number" class="foncolor">TIR Number</label>
+                        <input type="text" name="tir_number" id="tir_number" class="form-control inp"
+                            placeholder="Enter TIR number" value="{{ old('tir_number') }}">
+                        @error('tir_number')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Ship To Country -->
+                <div class="col-lg-4 col-md-6 col-sm-12 seal-no-field">
+                    <label class="foncolor" for="ship_to_country">Ship To Country <i class="text-danger">*</i></label>
+                    <div class="widthmannual">
+                    <select id="ship_to_country" name="ship_to_country" class="js-example-basic-single select2">
+                       <option selected="selected" value="">Select Ship To Country</option>
+                        @foreach (setting()->warehouseContries() as $country )
+                        <option value="{{ $country['name'] }}" {{ old('ship_to_country') == $country['name'] ? 'selected' : '' }}>
+                            {{ $country['name'] }}
+                        </option>
+                        @endforeach
+                    </select>
+                    </div>
+                    @error('ship_to_country')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Doc Id -->
+                <div class="col-lg-4 col-md-6 col-sm-12 container-inputs container-no-1-field">
+                    <div class="input-block mb-3">
+                        <label for="doc_id" class="foncolor">Doc Id<i class="text-danger">*</i></label>
+                        <input type="text" name="doc_id" id="doc_id" class="form-control inp"
+                            placeholder=" Enter Doc Id." value="{{ old('doc_id') }}">
+                        @error('doc_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
 
                     <!-- Status -->
@@ -414,14 +633,14 @@
                 </div>
             </div>
 
-            <div class="add-customer-btns text-end">
-                <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
-                    class="btn btn-outline-primary custom-btn">Cancel</button>
-                <button type="submit" class="btn btn-primary ">Submit</button>
-
-            </div>
-
-        </form>
+        <div class="add-customer-btns text-end">
+            <button type="button" onclick="redirectTo('{{route('admin.warehouses.index') }}')"
+                class="btn btn-outline-primary custom-btn">Cancel</button>
+            @can('has-dynamic-permission', 'container_list.create')
+            <button type="submit" class="btn btn-primary ">Submit</button>
+            @endcan
+        </div>
+    </form>
 
         {{-- jqury cdn --}}
     @section('script')

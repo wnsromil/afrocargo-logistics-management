@@ -29,7 +29,7 @@ class CustomerController extends Controller
         $type = $request->query('invoice_custmore_type');
         $invoiceCustomerId = $request->query(key: 'invoice_custmore_id');
 
-        $query = User::where('role_id', operator: 3)->orderBy('id', 'desc');
+        $query = User::whereIn('role_id', [3, 5])->orderBy('id', 'desc');
         $query->where('invoice_custmore_id', $invoiceCustomerId);
         $query->orWhere('parent_customer_id', $invoiceCustomerId);
         if ($request->has('search') && !empty($request->query('search'))) {
@@ -40,7 +40,7 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+        $customers = $query->orderBy(column: 'name')->get();
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
@@ -74,11 +74,15 @@ class CustomerController extends Controller
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%$search%")
-                    ->orWhere('email', 'LIKE', "%$search%");
+                ->orWhere('last_name', 'LIKE', "%$search%")
+                ->orWhere('unique_id', 'LIKE', "%$search%")
+                ->orWhere('phone', 'LIKE', "%$search%")
+                ->orWhere('address', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
             });
         }
 
-        $customers = $query->orderBy(column: 'name')->get(['id', 'address', 'name', 'phone', 'phone_2', 'email', 'profile_pic', 'signature_img', 'contract_signature_img', 'license_document']);
+        $customers = $query->orderBy(column: 'name')->get();
 
         foreach ($customers as $customer) {
             $address = Address::where('user_id', $customer->id)->with(['country', 'state', 'city'])->first();
@@ -148,7 +152,7 @@ class CustomerController extends Controller
         }
 
         // Step 1: Main customer record by ID
-        $customer = User::where('role_id', 3)
+        $customer = User::whereIn('role_id', [5, 3])
             ->where('id', $id)
             ->with('vehicle', 'invoiceCustmore')
             ->first();
@@ -212,10 +216,15 @@ class CustomerController extends Controller
 
             $role = 'customer';
             $role_id = 3;
+            $parent_customer_id = null;
+
+            $LogCustomerType = "Customer";
 
             if ($validated['invoice_custmore_type'] === 'ship_to') {
                 $role = 'ship_to_customer';
                 $role_id = 5;
+                $parent_customer_id = $request->invoice_custmore_id ?? null;
+                $LogCustomerType = "ShipTo Customer";
             }
 
 
@@ -257,6 +266,7 @@ class CustomerController extends Controller
                 'country_code_2' => $request->country_code_2 ?? null,
                 'invoice_custmore_type' => $request->invoice_custmore_type,
                 'invoice_custmore_id' => $request->invoice_custmore_id ?? null,
+                'parent_customer_id' => $parent_customer_id,
                 //'invoice_custmore_id' => null,
                 'vehicle_id'        => $request->container_id ?? null,
             ];
@@ -290,7 +300,9 @@ class CustomerController extends Controller
                 'alternative_mobile_number_code_id' => $request->country_code_2 ?? null,
                 'city_id' => $validated['city'] ?? null,
                 'country_id' => $validated['country'] ?? null,
-                'full_name' => $validated['first_name'],
+                'full_name' => $validated['first_name'] . ' ' . ($validated['last_name'] ?? ''),
+                'last_name' => $validated['last_name'] ?? null,
+                'name' => $validated['first_name'] ?? null,
                 'pincode' => $validated['Zip_code'] ?? null,
                 'state_id' => $validated['state'] ?? null,
                 'warehouse_id' => $request->warehouse_id ?? null,
@@ -299,6 +311,28 @@ class CustomerController extends Controller
                 'type' => 'Services', // Default type
                 'default_address' => 'Yes'
             ]);
+
+            $time = Carbon::now()->format('h:i A');
+
+            $html = "
+                <div class=\"col-md-12\">
+                    <div class=\"card activityCard\">
+                        <div class=\"card-body\">
+                            <div class=\"d-flex\">
+                                <i class=\"ti ti-clock-filled\"></i>
+                                <div>
+                                <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">{$LogCustomerType} Added</label></p>
+                                <p class=\"col737 fs_18 fw_500\">{$LogCustomerType} Name — <label class=\"col00 mb-0\">" .
+                                     (($user->name ?? '') . ' ' . ($user->last_name ?? '')) . "</label></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             ";
+
+
+           storeDriverLog($html, $this->user->id, $LogCustomerType . "Added");
 
 
             return response()->json([
@@ -324,7 +358,7 @@ class CustomerController extends Controller
             'customer_id' => 'required|integer|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'required|string|max:255|unique:users,phone',
             'phone_2' => 'nullable|string|max:255',
             'country_id' => 'required|string|max:15',
             // 'state_id' => 'required|string|max:255',
@@ -590,5 +624,47 @@ class CustomerController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getCustomerByWarehouse($id)
+    {
+        $customers = User::where('warehouse_id', $id)
+            ->where('role_id', 3)
+            ->select('id', 'name', 'last_name', 'warehouse_id')
+            ->get();
+
+        if ($customers->isEmpty()) {
+            return response()->json([
+                'message' => 'No customers found for this warehouse',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Customers fetched successfully',
+            'data' => $customers
+        ]);
+    }
+
+    public function review(Request $request)
+    {
+        $validated = $request->validate([
+            'order_id' => 'required|integer|exists:parcels,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'nullable|string|max:1000',
+        ]);
+
+        $parcel = Parcel::where(['customer_id' => $this->user->id, 'id' => $validated['order_id']])->first();
+        if (!$parcel) {
+            return response()->json([
+                'message' => 'Order not found or does not belong to the user',
+            ], 404);
+        }
+        $parcel->rating = $validated['rating'];
+        $parcel->review = $validated['review'] ?? null;
+        $parcel->save();
+
+        return response()->json([
+            'message' => 'Review added successfully',
+        ]);
     }
 }

@@ -1,10 +1,8 @@
 <div class="card-table">
     <div class="card-body">
         <div class="table-responsive mt-3">
-
             <table class="table tables table-stripped table-hover datatable ">
                 <thead class="thead-light">
-
                     <tr>
                         <th>Ship To ID</th>
                         <th>Name</th>
@@ -23,7 +21,7 @@
                     @forelse ($customers as $index => $customer)
                         <tr>
                             <td> {{ $customer->unique_id ?? "--" }}</td>
-                            <td>{{ ucfirst($customer->name ?? '') }}</td>
+                            <td>{{ ucfirst($customer->name ?? '') }} {{$customer->last_name ?? ""}}</td>
                             <td>{{ $customer->email ?? '-' }}</td>
                             <td>{{ $customer->license_number ?? '-' }}</td>
                             <td>+{{ $customer->phone_code->phonecode ?? '' }} {{ $customer->phone ?? '-' }}<br>
@@ -33,9 +31,14 @@
                                 {{ $customer->address_2 ?? '-' }}
                             </td>
                             <td>
-                                <a href="{{ route('admin.customer.show', $customer->parent_customer_id) }}">
-                                    {{ $customer->parent_customer->unique_id ?? '-' }}
-                                </a>
+                                @if($customer->parent_customer)
+                                    <a href="{{ route('admin.customer.show', $customer->parent_customer_id) }}">
+                                        {{ $customer->parent_customer->unique_id }}
+                                    </a>
+                                @else
+                                    -
+                                @endif
+
                             </td>
                             <td>
                                 @if ($customer->status == 'Active')
@@ -56,31 +59,24 @@
                                         aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.customer.edit', $customer->id) . '?page=' . request()->page ?? 1 }}"><i
-                                                        class="far fa-edit me-2"></i>Update</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.customer.show', $customer->id) }}"><i
-                                                        class="far fa-eye me-2"></i>View</a>
-                                            </li>
-                                            @if($customer->status == 'Active')
+                                            @can('has-dynamic-permission', 'ship_to_customers_list.edit')
                                                 <li>
-                                                    <a class="dropdown-item deactivate" href="javascript:void(0)"
-                                                        data-id="{{ $customer->id }}" data-status="Inactive">
-                                                        <i class="far fa-bell-slash me-2"></i>Deactivate
-                                                    </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.customer.updateShipTo', $customer->id) }}"><i
+                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
                                                 </li>
-                                            @elseif($customer->status == 'Inactive')
+                                            @endcan
+                                            @can('has-dynamic-permission', 'ship_to_customers_list.delete')
                                                 <li>
-                                                    <a class="dropdown-item activate" href="javascript:void(0)"
-                                                        data-id="{{ $customer->id }}" data-status="Active">
-                                                        <i class="fa-solid fa-power-off me-2"></i>Activate
-                                                    </a>
+                                                    <form action="{{ route('admin.customer.destroyShipTo', $customer->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to customer?')"><i
+                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                    </form>
                                                 </li>
-                                            @endif
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

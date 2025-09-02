@@ -75,7 +75,9 @@ class User extends Authenticatable
         'no_service',
         'call',
         'sales_call',
-        'notification_read'
+        'notification_read',
+        'firebase_token',
+        'device_type',
     ];
 
 
@@ -103,6 +105,10 @@ class User extends Authenticatable
     }
 
     public function userRole()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+    public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
@@ -179,7 +185,7 @@ class User extends Authenticatable
 
     public function defaultAddress()
     {
-        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes');
+        return $this->hasOne(Address::class, 'user_id')->where('default_address', 'Yes')->with('user');
     }
 
     protected function profilePic(): Attribute
@@ -254,15 +260,45 @@ class User extends Authenticatable
             ->selectRaw("MAX(CAST(SUBSTRING_INDEX(unique_id, '-', -1) AS UNSIGNED)) as max_number")
             ->value('max_number') ?? 0;
 
-        $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
+        $newNumber = (string) ($lastNumber + 1); // ✅ zero-free number
 
         return $fullPrefix . $newNumber;
     }
 
-    public function shipToAddress(){
+    public function shipToAddress()
+    {
         return $this->hasMany(User::class, 'invoice_custmore_id')->with('defaultAddress');
     }
 
+
+    public function reviewsParcels()
+    {
+        return $this->hasMany(Parcel::class, 'driver_id')
+        ->whereNotNull('rating')->with('customer:id,name,last_name')
+        ->select('id','customer_id','driver_id','rating','review','created_at','updated_at');
+    }
+
+    // ✅ Average rating accessor
+    public function getAvgRatingAttribute()
+    {
+        return $this->reviewsParcels()->avg('rating');
+    }
+
+    // ✅ Total reviews count accessor
+    public function getReviewsCountAttribute()
+    {
+        return $this->reviewsParcels()->whereNotNull('rating')->count();
+    }
+
+    protected $appends = ['driver_reviews'];
+    public function getDriverReviewsAttribute()
+    {
+        return [
+            'average_rating' => $this->avg_rating,
+            'total_reviews' => $this->reviews_count,
+            'reviews' => $this->reviewsParcels,
+        ];
+    }
 
 
     public static function boot()

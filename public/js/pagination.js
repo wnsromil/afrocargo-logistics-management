@@ -1,20 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
+    paginate({
+        showLoader: showLoader,
+        hideLoader: hideLoader,
+    });
 
-      paginate({
-                showLoader: showLoader,
-                hideLoader: hideLoader,
-            });
-    
-
-    const dataTable = document.getElementById('ajexTable');
+    const dataTable = document.getElementById("ajexTable");
 
     if (dataTable) {
         const pageSizeSelect = dataTable.querySelector("#pageSizeSelect");
+
         if (pageSizeSelect) {
-            pageSizeSelect.addEventListener("change", function (e) {
-                let selectedNumber = e.target.value ?? null;
-                if (selectedNumber && selectedNumber !== "") {
-                    console.log("Page size select changed");
+            document.addEventListener("change", function (e) {
+                if (e.target && e.target.id === "pageSizeSelect") {
+                    let selectedNumber = e.target.value ?? null;
+                    console.log(
+                        "Page size select changed (delegated)",
+                        selectedNumber
+                    );
                     paginate({
                         showLoader: showLoader,
                         hideLoader: hideLoader,
@@ -23,16 +25,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
-    
+
     function paginate(obj = {}) {
         const {
-            searchIn = 'searchInput',
-            ajexTable = 'ajexTable',
-            pageSizeSlt = 'pageSizeSelect',
+            searchIn = "searchInput",
+            ajexTable = "ajexTable",
+            pageSizeSlt = "pageSizeSelect",
             type = null,
             showLoader = false,
             hideLoader = false,
-            
         } = obj;
         const ajxtbl = document.getElementById(ajexTable);
         const searchInput = document.querySelector(`#${searchIn}`);
@@ -42,40 +43,62 @@ document.addEventListener("DOMContentLoaded", function () {
             pageSizeSelect = ajxtbl.querySelector(`#${pageSizeSlt}`);
         }
 
-
         // Debounce utility
         function debounce(fn, delay) {
             let timer;
             return function (...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn.apply(this, args), delay);
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, args), delay);
             };
         }
 
         // Debounced updateTable
-        const debouncedUpdateTable = debounce(function(url) {
+        const debouncedUpdateTable = debounce(function (url) {
             // ✅ Push new URL to browser history (without reloading)
             window.history.pushState({}, "", url);
 
-            if(showLoader) {
+            if (showLoader) {
                 showLoader();
             }
             // ✅ Fetch updated data using AJAX
-            fetch(url+'&isAjaxPagination=1', { headers: { "X-Requested-With": "XMLHttpRequest" } })
-            .then((response) => response.text())
-            .then((html) => {
-                ajxtbl.innerHTML = html;
-                if(hideLoader) {
-                    hideLoader();
-                }
-                initializeSorting();
+            fetch(url + "&isAjaxPagination=1", {
+                headers: { "X-Requested-With": "XMLHttpRequest" },
             })
-            .catch((error) => {
-                if(hideLoader) {
-                    hideLoader();
-                }
-                console.error("Error fetching data:", error);
-            });
+                .then((response) => response.text())
+                .then((html) => {
+                    ajxtbl.innerHTML = html;
+                    if (hideLoader) {
+                        hideLoader();
+                    }
+                    initializeSorting();
+                    if ($('[data-bs-toggle="tooltip"]')) {
+                        console.log("Initializing tooltips");
+                        setTimeout(() => { 
+                            $('#'+ajexTable).find('[data-bs-toggle="tooltip"]').each(function () {
+                                const $el = $(this);
+                                console.log("Initializing tooltips for", $el);
+                                // Pull HTML from the custom attribute, if present
+                                const htmlContent = $el.attr('data-tooltip-html');
+                                if (htmlContent) {
+                                    console.log("Initializing tooltips attr",htmlContent);
+                                    $el.attr({
+                                        'data-bs-title': htmlContent, // Bootstrap 5 looks here for title                                         // element‑level HTML flag
+                                    });
+                                }
+                            }).tooltip({
+                                container: 'body',
+                                html: true,
+                                trigger: 'hover focus'
+                            });
+                        }, 1000);
+                    }
+                })
+                .catch((error) => {
+                    if (hideLoader) {
+                        hideLoader();
+                    }
+                    console.error("Error fetching data:", error);
+                });
         }, 300);
 
         // Use debouncedUpdateTable instead of updateTable
@@ -85,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🔹 2. Handle Per-Page Change
         if (pageSizeSelect) {
-            console.log("Page size changed sdsd",pageSizeSelect,pageSizeSelect.value);
             let selectedValue = pageSizeSelect.value;
             let url = new URL(window.location.href);
 
@@ -132,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 🔹 5. Sorting Functionality
         function initializeSorting() {
             const headers = document.querySelectorAll(`#${ajexTable} table th`);
-            if(headers){
+            if (headers) {
                 headers.forEach((header, index) => {
                     let iconSpan = header.querySelector(".sort-icon");
                     if (!iconSpan) {
@@ -183,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return 0;
             });
 
-            table.querySelectorAll(".sort-icon").forEach(icon => {
+            table.querySelectorAll(".sort-icon").forEach((icon) => {
                 icon.classList.remove("active-asc", "active-desc");
             });
 
@@ -192,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon.classList.add(asc ? "active-asc" : "active-desc");
             }
 
-            rows.forEach(row => tbody.appendChild(row));
+            rows.forEach((row) => tbody.appendChild(row));
 
             header.dataset.asc = (!asc).toString();
         }

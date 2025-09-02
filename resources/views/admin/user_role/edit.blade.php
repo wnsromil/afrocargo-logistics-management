@@ -7,6 +7,7 @@
         <p class="fw-semibold fs-5 text-dark">User Permissions</p>
     </x-slot>
 
+    {{--
     <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
         <label class="required">Role Name</label>
         <select class="form-select border-dark border-1 opacity-75 bg-checkbox" id="inputGroupSelect01">
@@ -14,6 +15,26 @@
             <option>Warehouse Manager</option>
             <option>Driver</option>
         </select>
+    </div>
+    --}}
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">ID</label>
+            <input type="text" class="form-control border-dark opacity-75" value="{{ $user->unique_id ?? '' }}" readonly>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">User Name</label>
+            <input type="text" class="form-control border-dark opacity-75" value="{{ $user->name }}" readonly>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">Last Name</label>
+            <input type="text" class="form-control border-dark opacity-75" value="{{ $user->last_name ?? '' }}" readonly>
+        </div>
+        <div class="col-md-4 mt-3">
+            <label class="form-label fw-semibold">Role</label>
+            <input type="text" class="form-control border-dark opacity-75" value="{{ $user->role ?? '' }}" readonly>
+        </div>
     </div>
 
     <div class="cardTitle my-3">
@@ -37,7 +58,7 @@
         <div class="form-group-customer customer-additional-form">
             <div class="row">
                 @foreach($groupedPermissions as $resource => $permissions)
-                
+
                 <div class="mt-3 mb-2 px-2 py-1 permission-group">
                     <div class="input-group">
                         <div class="form-check text-checkbox">
@@ -49,20 +70,30 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12 d-flex my-2 ms-4 child-checkboxes">
+                    <div class="row col-md-12 d-flex my-2 ms-4 child-checkboxes">
                         @foreach($permissions as $permission)
                         @php
                         $action = explode('.', $permission->name)[1];
                         $checked = in_array($permission->name, $userPermissions) ? 'checked' : '';
                         @endphp
 
-                        <div class="px-1">
-                            <div class="border border-dark opacity-75 bg-checkbox rounded p-1 pe-2 child-container">
+                        @php
+                            $actionLength = strlen(str_replace('_', ' ', $action));
+                            if ($actionLength <= 12) {
+                                $colClass = 'col-2';
+                            } elseif ($actionLength <= 35) {
+                                $colClass = 'col-3';
+                            } else {
+                                $colClass = 'col-4';
+                            }
+                        @endphp
+                        <div class="{{ $colClass }} px-1">
+                            <div class="checkboxlable border border-dark opacity-75 bg-checkbox rounded p-1 pe-2 child-container">
                                 <input type="checkbox"
-                                    class="form-check-input border-dark opacity-75 mx-2 child-checkbox"
+                                    class="checkmark form-check-input border-dark opacity-75 mx-2 child-checkbox"
                                     name="permissions[]" value="{{ $permission->name }}" id="perm-{{ $permission->id }}"
                                     {{ $checked }} data-resource="{{ $resource }}">
-                                <label class="form-check-label font13 fw-regular mb-0" for="perm-{{ $permission->id }}">
+                                <label class="custom_check primary fw_500" for="perm-{{ $permission->id }}">
                                     {{ str_replace('_', ' ', $action) }}
                                 </label>
                             </div>
@@ -113,13 +144,13 @@
             // Highlight checked permissions
             document.querySelectorAll('.child-checkbox').forEach(checkbox => {
                 const parentDiv = checkbox.closest(".child-container");
-                
+
                 // Initial highlight
                 if(checkbox.checked) {
                     parentDiv.classList.add('selected');
                     updateParentCheckbox(checkbox);
                 }
-                
+
                 // Change handler
                 checkbox.addEventListener('change', function() {
                     if(this.checked) {
@@ -135,10 +166,10 @@
             document.querySelectorAll('.parent-checkbox').forEach(parentCheckbox => {
                 const resource = parentCheckbox.dataset.resource;
                 const childCheckboxes = document.querySelectorAll(`.child-checkbox[data-resource="${resource}"]`);
-                
+
                 // Set initial parent state
                 updateParentCheckboxState(parentCheckbox, resource);
-                
+
                 // Parent checkbox change handler
                 parentCheckbox.addEventListener('change', function() {
                     const isChecked = this.checked;
@@ -164,7 +195,7 @@
             function updateParentCheckboxState(parentCheckbox, resource) {
                 const childCheckboxes = document.querySelectorAll(`.child-checkbox[data-resource="${resource}"]`);
                 const checkedCount = document.querySelectorAll(`.child-checkbox[data-resource="${resource}"]:checked`).length;
-                
+
                 if(checkedCount === 0) {
                     parentCheckbox.checked = false;
                     parentCheckbox.indeterminate = false;

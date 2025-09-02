@@ -121,8 +121,6 @@ class DriverInventoryController extends Controller
         ));
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -175,12 +173,12 @@ class DriverInventoryController extends Controller
             $quantity = $request->in_stock_quantity[$index];
 
             // Total Out - Total In = Available
-            $totalOut = \App\Models\DriverInventory::where('driver_id', $driverId)
+            $totalOut = DriverInventory::where('driver_id', $driverId)
                 ->where('items_id', $itemId)
                 ->where('in_out', 'Out')
                 ->sum('quantity');
 
-            $totalIn = \App\Models\DriverInventory::where('driver_id', $driverId)
+            $totalIn = DriverInventory::where('driver_id', $driverId)
                 ->where('items_id', $itemId)
                 ->where('in_out', 'In')
                 ->sum('quantity');
@@ -200,17 +198,19 @@ class DriverInventoryController extends Controller
             }
         }
 
+        $driver = User::where('id', $request->driver_id)->first();
+
         // ✅ Save All Items
         foreach ($request->item_id as $index => $itemId) {
-            \App\Models\DriverInventory::create([
-                'date' => $formattedDate,
-                'warehouse_id' => $request->warehouse_id,
-                'time' => $request->currentTIme,
-                'driver_id' => $request->driver_id,
-                'in_out' => $request->InOutType,
-                'items_id' => $itemId,
-                'quantity' => $request->in_stock_quantity[$index],
-                'creator_id' => auth()->id(),
+            DriverInventory::create([
+                'date'         => $formattedDate,
+                'warehouse_id' => $driver->warehouse_id ?? null,
+                'time'         => $request->currentTIme,
+                'driver_id'    => $request->driver_id,
+                'in_out'       => $request->InOutType,
+                'items_id'     => $itemId,
+                'quantity'     => $request->in_stock_quantity[$index],
+                'creator_id'   => auth()->id(),
             ]);
         }
 

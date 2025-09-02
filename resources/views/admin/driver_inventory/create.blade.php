@@ -130,7 +130,9 @@
         </div>
         <div class="add-customer-btns text-end">
             <a href="{{ route('admin.inventories.index') }}" class="btn customer-btn-cancel">Cancel</a>
+             @can('has-dynamic-permission', 'driver_inventory.create')
             <button type="submit" class="btn customer-btn-save btn-primary">Submit</button>
+            @endcan
         </div>
     </form>
     @section('script')

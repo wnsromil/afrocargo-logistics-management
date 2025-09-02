@@ -22,13 +22,13 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.dashboard',
                 'active' => 'dashboard*',
                 'roles' => ['admin', 'warehouse_manager', 'driver'],
-                'permissions' => ['dashboard.view'],
+                // 'permissions' => ['dashboard.view'],
             ],
             [
                 'title' => 'Customers',
                 'icon' => '<i class="menuIcon ti ti-users"></i>',
                 'route' => 'admin.customer.index',
-                'active' => 'customer*',
+                'active' => 'customer*,customer-shipTo',
                 'roles' => ['admin', 'warehouse_manager', 'driver'],
                 'permissions' => ['customers.view'],
             ],
@@ -45,14 +45,16 @@ class MenuSeeder extends Seeder
                 'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
                 'route' => 'admin.vehicle.index',
                 'active' => 'vehicle*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['vehicle_manage.view'],
             ],
             [
                 'title' => 'Container',
-                'icon' => '<i class="menuIcon ti ti-truck-delivery"></i>',
+                'icon' => '<img src="https://afrocargo.senomicsecurity.in/public/assets/images/container_icon.svg" alt="Container Icon" class="menuIcon">',
                 'route' => 'admin.container.index',
                 'active' => 'container*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['container_list.view'],
             ],
             [
                 'title' => 'Drivers',
@@ -82,7 +84,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Service Orders',
                 'icon' => '<i class="menuIcon ti ti-packages"></i>',
                 'route' => 'admin.service_orders.index',
-                'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*',
+                'active' => 'service_orders*,OrderShipment*,transferHub*,receivedHub*,receivedOrders*,transferHub-history,receivedHub-history',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['service_orders.view'],
             ],
@@ -124,7 +126,8 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.BillofLading.index',
                 //  'route' => '#',
                 'active' => 'bill_of_lading*,lading_details*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['bill_of_landing.view'],
             ],
             [
                 'title' => 'Ro Ro Shipping',
@@ -165,6 +168,14 @@ class MenuSeeder extends Seeder
                 'permissions' => ['advance_reports.view'],
             ],
             [
+                'title' => 'End Of Day',
+                'icon' => '<i class="menuIcon ti ti-file-text"></i>',
+                'route' => 'admin.end_of_day.Invoice_index',
+                'active' => 'end_of_day*',
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['end_of_day.view'],
+            ],
+            [
                 'title' => 'Template Management',
                 'icon' => '<i class="menuIcon ti ti-template"></i>',
                 'route' => 'admin.Categorytemplate.index',
@@ -187,7 +198,8 @@ class MenuSeeder extends Seeder
                 //'route' => 'admin.cbm_calculator.freight_Calculator',
                 'route' => '#',
                 'active' => 'cbm_calculator*',
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['cbm_calculator.view'],
             ],
         ];
 
@@ -198,6 +210,25 @@ class MenuSeeder extends Seeder
             // }
 
             Menu::create($menu);
+        }
+
+        $customer = Menu::where('title', 'Customers')->first();
+        if ($customer) {
+            Menu::create([
+                'title' => 'Customers',
+                'route' => 'admin.customer.index',
+                'active' => 'customer',
+                'parent_id' => $customer->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Ship To Customers',
+                'route' => 'admin.customer.shipToIndex',
+                'active' => 'customer-shipTo',
+                'parent_id' => $customer->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
         }
 
         $inventory = Menu::where('title', 'Inventory')->first();
@@ -240,38 +271,53 @@ class MenuSeeder extends Seeder
                 'active' => 'service_orders*',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['order.view'],
+                'permissions' => ['orders_list.view'],
             ]);
             Menu::create([
                 'title' => 'Received Order',
                 'route' => 'admin.received.orders.hub.list',
                 'active' => 'receivedOrders*',
                 'parent_id' => $orderShip->id,
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['received_orders_list.view'],
+
             ]);
             Menu::create([
-                'title' => 'Transfer To Hub',
+                'title' => 'Container Transfer To Hub',
                 'route' => 'admin.transfer.hub.list',
-                'active' => 'transferHub*',
+                'active' => 'transferHub',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['transfer_to_hub.view'],
+                'permissions' => ['transfer_to_hub_list.view'],
+
             ]);
             Menu::create([
                 'title' => 'Container Received by Hub',
                 'route' => 'admin.received.hub.list',
-                'active' => 'receivedHub*',
+                'active' => 'receivedHub',
                 'parent_id' => $orderShip->id,
                 'roles' => ['admin', 'warehouse_manager'],
-                'permissions' => ['container_received_by_hub.view'],
+                'permissions' => ['container_received_by_hub_list.view'],
+
             ]);
-            // Menu::create([
-            //     'title' => 'Received Orders',
-            //     'route' => 'admin.received.orders.hub.list',
-            //     'active' => 'receivedOrders*',
-            //     'parent_id' => $orderShip->id,
-            //     'roles' => ['admin', 'warehouse_manager']
-            // ]);
+            Menu::create([
+                'title' => 'Container Transfer History',
+                'route' => 'admin.transfer.hub.history.list',
+                'active' => 'transferHub-history',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['container_transfer_history_list.view'],
+
+            ]);
+            Menu::create([
+                'title' => 'Container Received History',
+                'route' => 'admin.received.hub.history.list',
+                'active' => 'receivedHub-history',
+                'parent_id' => $orderShip->id,
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['container_received_history_list.view'],
+
+            ]);
         }
 
         // Add submenus
@@ -325,7 +371,8 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.bill_of_lading.index',
                 'active' => 'bill_of_lading*',
                 'parent_id' => $template->id,
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['bill_of_landing_list.view'],
             ]);
 
             Menu::create([
@@ -333,7 +380,30 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.lading_details.index',
                 'active' => 'lading_details*',
                 'parent_id' => $template->id,
-                'roles' => ['admin', 'warehouse_manager']
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['bill_of_landing_details_list.view'],
+            ]);
+        }
+
+        // Add submenus Invoice
+        $template = Menu::where('title', 'Invoice')->first();
+        if ($template) {
+            Menu::create([
+                'title' => 'Invoice',
+                'route' => 'admin.invoices.index',
+                'active' => 'invoices',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['invoice_list.view'],
+            ]);
+
+            Menu::create([
+                'title' => 'Trashed Invoice',
+                'route' => 'admin.invoice.trashed',
+                'active' => 'invoices/trashed/list',
+                'parent_id' => $template->id,
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['invoice_trash_list.view'],
             ]);
         }
         $roroshipping = Menu::where('title', 'Ro Ro Shipping')->first();

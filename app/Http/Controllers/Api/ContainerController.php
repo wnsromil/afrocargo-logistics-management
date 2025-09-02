@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Container;
 use App\Models\Vehicle;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\ContainerHistory;
@@ -51,64 +52,51 @@ class ContainerController extends Controller
             'toggled' => [],
         ];
 
-        $today = Carbon::now()->toDateString(); // current date
+        $today = Carbon::now()->toDateString();
 
-        // Step 1: If we're activating a container, first deactivate all containers in that warehouse
-        if ($warehouseId && $openId) {
-            Vehicle::where('warehouse_id', $warehouseId)
-                ->where('id', '!=', $openId)
-                ->update(['status' => 'Inactive']);
-        }
-
-        // Step 2: Activate selected open container
-        if ($openId) {
+        // STEP 1: Validate route conflict before opening
+        if ($openId && $checkbox_status === 'only_open') {
             $openVehicle = Vehicle::find($openId);
+
             if ($openVehicle) {
-                $openVehicle->status = 'Active';
+                $shipTo = $openVehicle->ship_to_country;
 
-                if ($checkbox_status == 'only_open' || $checkbox_status == 'both_open_close') {
-                    $openVehicle->open_date = $today;
-                    $openVehicle->container_status = 20;
-                    $containerHistory = ContainerHistory::create([
-                        'container_id' => $openVehicle->id,
-                        'status' => 20,
-                        'type' => 'Active',
-                        'warehouse_id' => $openVehicle->warehouse_id,
-                        'open_date' => $today,
-                    ]);
+                if (!is_null($shipTo)) {
+                    $alreadyOpen = Vehicle::where('warehouse_id', $warehouseId)
+                        ->where('id', '!=', $openVehicle->id)
+                        ->where('status', 'Active')
+                        ->where('ship_to_country', $shipTo)
+                        ->first();
+
+                    if ($alreadyOpen) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => $shipTo
+                        ]);
+                    }
                 }
-
-                $openVehicle->save();
-
-                $response['toggled'][] = [
-                    'id' => $openVehicle->id,
-                    'status' => $openVehicle->status,
-                    'open_date' => $openVehicle->open_date
-                ];
             }
         }
 
-        // Step 3: Close selected container (if any)
-        if ($closeId) {
+        // STEP 2: Close container
+        if ($closeId && $checkbox_status === 'only_close') {
             $closeVehicle = Vehicle::find($closeId);
+
             if ($closeVehicle) {
                 $closeVehicle->status = 'Inactive';
+                $closeVehicle->close_date = $today;
+                $closeVehicle->container_status = 0;
 
-                if ($checkbox_status == 'only_close' || $checkbox_status == 'both_open_close') {
-                    $closeVehicle->close_date = $today;
-                    $closeVehicle->container_status = 0;
+                $containerHistory = ContainerHistory::where('container_id', $closeVehicle->id)
+                    ->where('warehouse_id', $closeVehicle->warehouse_id)
+                    ->where('type', 'Active')
+                    ->first();
 
-                    $containerHistory = ContainerHistory::where('container_id', $closeVehicle->id)
-                        ->where('warehouse_id', $closeVehicle->warehouse_id)
-                        ->first();
-
-                    if ($containerHistory) {
-                        // Update the existing record
-                        $containerHistory->update([
-                            'type' => 'Inactive',
-                            'close_date' => $today,
-                        ]);
-                    }
+                if ($containerHistory) {
+                    $containerHistory->update([
+                        'type' => 'Inactive',
+                        'close_date' => $today,
+                    ]);
                 }
 
                 $closeVehicle->save();
@@ -117,6 +105,33 @@ class ContainerController extends Controller
                     'id' => $closeVehicle->id,
                     'status' => $closeVehicle->status,
                     'close_date' => $closeVehicle->close_date
+                ];
+            }
+        }
+
+        // STEP 3: Open container
+        if ($openId && $checkbox_status === 'only_open') {
+            $openVehicle = Vehicle::find($openId);
+
+            if ($openVehicle) {
+                $openVehicle->status = 'Active';
+                $openVehicle->open_date = $today;
+                $openVehicle->container_status = 20;
+
+                ContainerHistory::create([
+                    'container_id' => $openVehicle->id,
+                    'status' => 20,
+                    'type' => 'Active',
+                    'warehouse_id' => $openVehicle->warehouse_id,
+                    'open_date' => $today,
+                ]);
+
+                $openVehicle->save();
+
+                $response['toggled'][] = [
+                    'id' => $openVehicle->id,
+                    'status' => $openVehicle->status,
+                    'open_date' => $openVehicle->open_date
                 ];
             }
         }
@@ -152,6 +167,7 @@ class ContainerController extends Controller
             'message' => 'Container date and time updated successfully.',
         ]);
     }
+
     public function updateContainerOutDateTime(Request $request)
     {
         // Validate input
@@ -181,7 +197,8 @@ class ContainerController extends Controller
         ]);
     }
 
-    public function updateContainer(Request $request){
+    public function updateContainer(Request $request)
+    {
         // Validate input
         $request->validate([
             'container_id' => 'required|exists:vehicles,id',
@@ -201,29 +218,29 @@ class ContainerController extends Controller
         if ($request->container_number) {
             $vehicle->container_number = $request->container_number;
         }
-        if($request->container_in_date || $request->container_in_time) {
+        if ($request->container_in_date || $request->container_in_time) {
             $vehicle->container_in_date = $request->container_in_date ?? null;
             $vehicle->container_in_time = $request->container_in_time ?? null;
         }
-        if($request->container_type){
+        if ($request->container_type) {
             $vehicle->container_type = $request->container_type;
         }
-        if($request->container_capacity) {
+        if ($request->container_capacity) {
             $vehicle->container_capacity = $request->container_capacity;
         }
-        if($request->warehouse_id) {
+        if ($request->warehouse_id) {
             $vehicle->warehouse_id = $request->warehouse_id;
         }
-        if($request->container_status) {
+        if ($request->container_status) {
             $vehicle->container_status = $request->container_status;
         }
-        if($request->doc_id) {
+        if ($request->doc_id) {
             $vehicle->doc_id = $request->doc_id;
         }
-        if($request->bill_of_lading) {
+        if ($request->bill_of_lading) {
             $vehicle->bill_of_lading = $request->bill_of_lading;
         }
-        
+
 
         // Save changes
         $vehicle->save();
@@ -234,4 +251,77 @@ class ContainerController extends Controller
             'container' => $vehicle,
         ]);
     }
+
+    public function getVehiclesByWarehouseAndCustomer(Request $request)
+    {
+        $warehouse_id = $request->warehouse_id;
+        $customer_id = $request->customer_id;
+
+        if ($customer_id === 'All Warehouse Customers') {
+            $vehicles = Vehicle::where('warehouse_id', $warehouse_id)->get();
+        } else {
+            $user = User::find($customer_id);
+
+            if (!$user) {
+                return response()->json(['message' => 'Customer not found'], 404);
+            }
+
+            $container_id = $user->vehicle_id;
+
+            $vehicles = Vehicle::where('id', $container_id)
+                ->where('warehouse_id', $warehouse_id)
+                ->get();
+        }
+
+        return response()->json($vehicles);
+    }
+
+    public function updateCloseInvoiceWarehouse(Request $request)
+    {
+        $request->validate([
+            'container_id' => 'required|exists:vehicles,id',
+            'close_invoice' => 'nullable|in:no,yes',
+            'close_warehouse' => 'nullable|in:no,yes',
+        ]);
+
+        $containers = Vehicle::where('vehicle_type', 1)
+            ->where('id', $request->container_id)
+            ->first();
+
+        if ($containers){
+            $containers->close_invoice = $request->close_invoice ?? $containers->close_invoice;
+            $containers->close_warehouse = $request->close_warehouse ?? $containers->close_warehouse;
+            $containers->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Container updated successfully.',
+            'container' => $containers,
+        ]);
+    }
+
+    public function filterContainers(Request $request)
+    {
+        // Sirf active aur Container type vehicles fetch kar rahe hain
+
+        $containers = Vehicle::where('vehicle_type', 1)
+        ->where('status', 'Active')
+        ->when($request->country_id,function ($q) use ($request) {
+            return $q->where('ship_to_country', $request->country_id);
+        })
+        ->when(!empty($request->container_id),function ($q) use ($request) {
+            return $q->where('id', $request->container_id);
+        })
+        ->where('close_invoice','no')
+        ->whereNotNull(['unique_id','ship_to_country'])
+        ->get();
+
+        return response()->json([
+            'message' => 'Active Containers fetched successfully',
+            'containers' => $containers
+        ]);
+    }
+
+    // end
 }

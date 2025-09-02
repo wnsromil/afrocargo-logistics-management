@@ -11,7 +11,7 @@
                         <th>To</th>
                         <th>Shipping Type</th>
                         <th>Pickup Date</th>
-                        <th>Delivery Date</th>
+                        <th>Estimated Arrival</th>
                         <th>Container ID</th>
                         <th>From Warehouse</th>
                         <th>To Warehouse</th>
@@ -115,7 +115,7 @@
                             <td>
                                 <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="{{  $parcel->descriptions ?? '-' }}">
-                                    {{  $parcel->descriptions ?? '-' }}
+                                    {{ $parcel->descriptions ?? '-' }}
                                 </p>
                             </td>
                             <td>
@@ -176,29 +176,10 @@
                             @php
                                 $status_class = $parcel->status ?? null;
                                 $parcelStatus = $parcel->parcelStatus->status ?? null;
-                                $classValue = match ((string) $status_class) {
-                                    "1" => 'badge-pending',
-                                    "2" => 'badge-pickup',
-                                    "3" => 'badge-picked-up',
-                                    "4" => 'badge-arrived-warehouse',
-                                    "5" => 'badge-in-transit',
-                                    "8" => 'badge-arrived-final',
-                                    "9" => 'badge-ready-pickup',
-                                    "10" => 'badge-out-delivery',
-                                    "11" => 'badge-delivered',
-                                    "12" => 'badge-re-delivery',
-                                    "13" => 'badge-on-hold',
-                                    "14" => 'badge-cancelled',
-                                    "15" => 'badge-abandoned',
-                                    "21" => 'badge-picked-up',
-                                    "22" => 'badge-in-transit',
-                                    "23" => 'badge-pickup_re-schedule',
-                                    default => 'badge-pending',
-                                };
-
+                                $ClassStatus = $parcel->parcelStatus->class_name ?? null;
                             @endphp
                             <td>
-                                <label class="{{ $classValue }}" for="status">
+                                <label class="{{ $ClassStatus }}" for="status">
                                     {{ $parcelStatus ?? '-' }}
                                 </label>
                             </td>
@@ -265,7 +246,7 @@
                                                         <a class="dropdown-item {{ $currentStatusId == 9 ? 'active disabled-link-for-active-service' : 'disabled-link' }}"
                                                             href="javascript:void(0);">Ready for pick up</a>
                                                     </li>
-                                                    <li>
+                                                    {{-- <li>
                                                         <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                             class="dropdown-item {{ $currentStatusId == 21 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"
                                                             data-bs-toggle="modal" data-id="{{ $parcel->id }}"
@@ -273,7 +254,7 @@
                                                             href="javascript:void(0);">
                                                             Ready for self pick up
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li>
                                                         <a onclick="{{ $currentStatusId == 9 ? 'fetchDeliveryDriversByParcelId(' . $parcel->id . ')' : '' }}"
                                                             class="dropdown-item {{ $currentStatusId == 22 ? 'active disabled-link-for-active-service' : ($currentStatusId == 9 ? '' : 'disabled-link') }}"

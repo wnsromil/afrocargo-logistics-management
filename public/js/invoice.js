@@ -8,6 +8,8 @@ var currentRow = null;
 var invoce_type = "services";
 let exchangeRates = [];
 var maxPaymentAmountValue = 0;
+var deletedItrmId =[];
+var invoceType = "services";
 
 function toggleLoginForm(type) {
     if (type === "services") {
@@ -16,6 +18,7 @@ function toggleLoginForm(type) {
         document.getElementById("servicesBtn").classList.add("active3");
         document.getElementById("suppliesBtn").classList.remove("active3");
         $('#service_type').removeClass('d-none');
+        $('#product_type').removeClass('d-none');
 
         $('input[name="invoce_type"]').val("services");
         invoce_type = "services";
@@ -32,6 +35,9 @@ function toggleLoginForm(type) {
         // $("#weight_services_items").removeClass("d-none");//old code
         if ($('input[name="transport_type"]').val() == "Air Cargo") {
             $('select[name="container_id"]').prop("disabled", true);
+            $('select[name="container_id"]')
+            .val(null)
+            .trigger("change");
         } else {
             $('select[name="container_id"]').prop("disabled", false);
         }
@@ -42,6 +48,7 @@ function toggleLoginForm(type) {
         document.getElementById("servicesBtn").classList.remove("active3");
         document.getElementById("suppliesBtn").classList.add("active3");
         $('#service_type').addClass('d-none');
+        $('#product_type').addClass('d-none');
 
         $('input[name="invoce_type"]').val("supplies");
         invoce_type = "supplies";
@@ -66,6 +73,8 @@ function toggleLoginForm(type) {
     }
 }
 
+
+
 $('input[name="transport_type"]').on("click", function () {
     const transportType = $(this).val();
     console.log("Transport Type:", transportType);
@@ -74,6 +83,9 @@ $('input[name="transport_type"]').on("click", function () {
             .prop("disabled", true) // this is essential
             .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
             .css("opacity", "1"); // optional: restores visual state
+        $('select[name="container_id"]')
+            .val(null)
+            .trigger("change");
     } else {
         $('select[name="container_id"]').prop("disabled", false);
     }
@@ -95,18 +107,19 @@ $("#addShiptoAddress").on("click", function () {
     $(".newShipmentAddress").toggleClass("none");
     $(this).addClass("d-none");
     $("#add_ship_save_body").removeClass("d-none");
-    $("#add_location").removeClass("d-none");
+    // $("#add_location").removeClass("d-none");
 });
 
 $("#add_ship_cancel").on("click", function () {
     $(".newShipmentAddress").toggleClass("none");
     $("#add_ship_save_body").addClass("d-none");
-    $("#add_location").addClass("d-none");
+    // $("#add_location").addClass("d-none");
     $("#addShiptoAddress").removeClass("d-none");
 });
 
 // plus minus adding row
 document.addEventListener("DOMContentLoaded", function () {
+    invoceType = invoce_type;
     // Add new row
     $(document).on("click", ".addBtn", function () {
         var row = $(this).closest("tr");
@@ -129,6 +142,11 @@ document.addEventListener("DOMContentLoaded", function () {
     $(document).on("click", ".dltBtn:not(.detele)", function () {
         if ($("#dynamicTable tbody tr").length > 1) {
             var $row = $(this).closest("tr");
+            let invoiceId = $row.find("input[name='inventory_id']").val();
+            if(invoiceId){
+                deletedItrmId.push(invoiceId);
+            }
+            console.log("inventory_id", invoiceId);
             $row.remove();
             updateSummary();
             // Ensure the new last row shows the add button
@@ -212,6 +230,8 @@ $(document).ready(function () {
         console.log("address_type", address_type);
     });
 
+
+
     $('#delevery_customer_id').select2({
         ajax: {
             transport: function (params, success, failure) {
@@ -228,8 +248,13 @@ $(document).ready(function () {
             dataType: "json",
             delay: 250,
             data: function (params) {
+                // Get the selected option and its data-shipcounty attribute
+                let shipCountry = $('#ship_country option:selected').attr('data-shipcounty') ?? '';
+
+                // console.log("shipCountry", shipCountry);
                 return {
                     search: params.term,
+                    ship_country:shipCountry ? JSON.parse(shipCountry):'',
                     address_type: address_type,
                     invoice_type: invoce_type,
                     invoice_custmore_id:
@@ -249,26 +274,13 @@ $(document).ready(function () {
                                     customer: customer ?? "", // Store the full customer object
                                     delivery_address:customer.delivery_address
                                 };
-                            } 
-                            // if(customer.delivery_address){
-                            //     customer.delivery_address.forEach(addr => {
-                            //         let newOption = new Option(addr.text, addr.id, true, true);
-                            //         // Add new option if not already present
-                            //         $("#ship_customer").append(newOption).trigger("change");
-                            //     });
-                            // }
-                            // else if (customer.delivery_address) {
-                            //     return {
-                            //         id: customer.delivery_address.id ?? "",
-                            //         text: customer.delivery_address.text ?? "",
-                            //         customer: customer ?? "", // Store the full customer object
-                            //     };
-                            // } 
+                            }
                             else {
                                 return false;
                             }
                         })
                         .filter((i) => i),
+
                 };
             },
             cache: true,
@@ -277,49 +289,151 @@ $(document).ready(function () {
         minimumInputLength: 1,
     });
 
+    $('#ship_country').on("select2:select", function (e) {
+        $('#order_list').empty() // Clear existing options
+        $('#order_list_div').addClass('d-none');
+
+        let shipCountry = $('#ship_country option:selected').attr('data-shipcounty') ?? '';
+        shipCountry = JSON.parse(shipCountry);
+        console.log("shipCountry.id",shipCountry.id,shipCountry);
+
+        if(shipCountry){
+            console.log("shipCountry.id",shipCountry.id,shipCountry);
+            $('select[name="warehouse_id"]').val(shipCountry.id ?? null).trigger('change');
+        }
+
+
+        $("#delivery_customer_inf_form")
+            .find('select[name="alternative_mobile_number_code_id"]')
+            .val(shipCountry.countryId ?? 1)
+            .trigger("change");
+        $("#delivery_customer_inf_form")
+            .find('select[name="mobile_number_code_id"]')
+            .val(shipCountry.countryId ?? 1)
+            .trigger("change");
+
+        $("#delivery_customer_inf_form")
+            .find('input[name="mobile_number"]')
+            .val(shipCountry.mobile_number ?? "");
+        $("#delivery_customer_inf_form")
+            .find('input[name="alternative_mobile_number"]');
+
+
+        $("#ship_to_address").find('input[name="country"]').val(shipCountry.country_id ?? "");
+        $("#delivery_customer_inf_form").find('input[name="zip_code"]').val(shipCountry.zip_code ?? "");
+        $("#delivery_customer_inf_form").find('input[name="address"]').val(shipCountry.address ?? "");
+        $("#delivery_customer_inf_form").find('input[name="state"]').val(shipCountry.state_id ?? "");
+        $("#delivery_customer_inf_form").find('input[name="city"]').val(shipCountry.city_id ?? "");
+        $("#delivery_customer_inf_form").find('input[name="address_1"]').val(shipCountry.address ?? "");
+
+        setPickupDeleveryFormValue({
+            alternative_mobile_number_code_id:shipCountry.countryId ?? 1,
+            mobile_number_code_id:shipCountry.countryId ?? 1,
+            country:shipCountry.country_id ?? "",
+            state:shipCountry.state_id ?? "",
+            city:shipCountry.city_id ?? "",
+            pincode:shipCountry.zip_code ?? "",
+            address1:"",
+            address2:shipCountry.address ?? "",
+        },"#CustomerCreate_Form")
+
+    });
+
+
+    $('#deleveryCountry').on("select2:select", function (e) {
+        $('#order_list').empty() // Clear existing options
+        $('#order_list_div').addClass('d-none');
+
+        let deleveryCountry = $('#deleveryCountry option:selected').attr('data-shipcounty') ?? '';
+        deleveryCountry = JSON.parse(deleveryCountry);
+        if(deleveryCountry){
+            $('input[name="arrived_warehouse_id"]').val(deleveryCountry.id ?? null);
+            $('#countryForLocation').val(deleveryCountry.iso2 ?? null).trigger('change');
+        }
+
+        getContainer({
+            'country_id':deleveryCountry.country_id ?? null,
+            'container_id':$('select[name="container_id"]').val() ?? null,
+        })
+        // --------------------------
+        // Clear existing options
+        $('#ship_customer').empty();
+        // Add new options to the select element
+        const sipToAdd = sipToAddress || [];
+        sipToAdd.filter(function(addr) {
+            return addr.country_id == deleveryCountry.name;
+        })
+        .forEach(function(addr) {
+            let option = new Option(addr.text, addr.id, false, false);
+            $('#ship_customer').append(option);
+        });
+        // Re-initialize Select2 to reflect the new options
+        $('#ship_customer').val(null).trigger('change');
+        $('#ship_customer').select2({
+            placeholder: "Search Customer"
+        });
+        // ----------------------------------------------
+
+
+        $("#ship_to_address")
+            .find('select[name="alternative_mobile_number_code_id"]')
+            .val(deleveryCountry.countryId ?? 1)
+            .trigger("change");
+        $("#ship_to_address")
+            .find('select[name="mobile_number_code_id"]')
+            .val(deleveryCountry.countryId ?? 1)
+            .trigger("change");
+
+        $("#ship_to_address")
+            .find('input[name="mobile_number"]')
+            .val(deleveryCountry.mobile_number ?? "");
+        $("#ship_to_address")
+            .find('input[name="alternative_mobile_number"]');
+        $("#ship_to_address").find('input[name="zip_code"]').val(deleveryCountry.zip_code ?? "");
+        $("#ship_to_address").find('input[name="address"]').val(deleveryCountry.address ?? "");
+        $("#ship_to_address").find('input[name="country"]').val(deleveryCountry.country_id ?? "");
+        $("#ship_to_address").find('input[name="state"]').val(deleveryCountry.state_id ?? "");
+        $("#ship_to_address").find('input[name="city"]').val(deleveryCountry.city_id ?? "");
+
+
+
+        setPickupDeleveryFormValue({
+            alternative_mobile_number_code_id:deleveryCountry.countryId ?? 1,
+            mobile_number_code_id:deleveryCountry.countryId ?? 1,
+            country:deleveryCountry.country_id ?? "",
+            state:deleveryCountry.state_id ?? "",
+            city:deleveryCountry.city_id ?? "",
+            pincode:deleveryCountry.zip_code ?? "",
+            address1: "",
+            address2:deleveryCountry.address ?? "",
+        },"#model_shipto_Form")
+    });
+
     $('#delevery_customer_id').on("select2:select", function (e) {
         var data = e.params.data;
         var customer = data.customer;
-        sipToAddress = data.delivery_address;
-        // Add sipToAddress as a Select2 option to the ship_customer select box if present
-        if (sipToAddress) {
-            // Check if option already exists in Select2
+        sipToAddress = data.delivery_address ?? [];
 
-            // Clear existing options
-            $('#ship_customer').empty();
-            // Add new options to the select element
-            sipToAddress.forEach(function(addr) {
-                let option = new Option(addr.text, addr.id, false, false);
-                $('#ship_customer').append(option);
-            });
-            // Re-initialize Select2 to reflect the new options
-            $('#ship_customer').val(null).trigger('change');
-            $('#ship_customer').select2({
-                placeholder: "Search Customer"
-            });
+        $('#order_list').empty() // Clear existing options
+        $('#order_list_div').addClass('d-none');
+        // Clear existing options
+        $('#ship_customer').empty();
+        // Add new options to the select element
+        sipToAddress.forEach(function(addr) {
+            let option = new Option(addr.text, addr.id, false, false);
+            $('#ship_customer').append(option);
+        });
+        // Re-initialize Select2 to reflect the new options
+        $('#ship_customer').val(null).trigger('change');
+        $('#ship_customer').select2({
+            placeholder: "Search Customer"
+        });
 
-            // $('#ship_customer').empty().select2({
-            //     data: sipToAddress.map(function(addr){
-            //         return {
-            //             id: addr.id,
-            //             text: addr.text,
-            //             customer: addr
-            //         }
-            //     }),
-            //     placeholder: "Search Customer"
-            // }).trigger('change');
-
-        
-        }
-        
-
-        
-        console.log("sipToAddress customer:", sipToAddress);
         $('input[name="parcel_id"]').val(customer.id);
 
         // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
         $('input[name="invoce_item"]').val(customer.parcel_inventory);
-        $('input[name="transport_type"]').val(customer.transport_type);
+
 
         let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
 
@@ -367,6 +481,8 @@ $(document).ready(function () {
         if (customer.invoice_type != "Service" && customer.pickup_address) {
             setPickupDeleveryFormValue(customer.pickup_address);
             console.log("supply pickup_address", customer.pickup_address, data);
+
+            getOrderList();
         }
     });
 
@@ -381,220 +497,326 @@ $(document).ready(function () {
         // Add sipToAddress as a Select2 option to the ship_customer select box if present
 
 
-        
+
+
+        $('#order_list').empty() // Clear existing options
+        $('#ship_customer').empty() // Clear existing options
+        sipToAddress.forEach(function(addr) {
+            let option = new Option(addr.text, addr.id, false, false);
+            $('#ship_customer').append(option);
+        });
+
+        setPickupDeleveryFormValue(customer);
+
+        setPickupDeleveryFormValue(customer,"#model_shipto_Form")
+
+
         if(customer){
-            setPickupDeleveryFormValue(customer);
+            getOrderList();
         }
+
         console.log("selected sipToAddress customer:", customer,sipToAddress);
-        // $('input[name="parcel_id"]').val(customer.id ?? null);
+    });
 
-        // if (customer.invoice_type == "Supply" && customer.parcel_inventory) {
-        // $('input[name="invoce_item"]').val(customer.parcel_inventory);
-        // $('input[name="transport_type"]').val(customer.transport_type);
+    $('#order_list').on("select2:select", function (e) {
+        // Get the selected option's data
+        var selectedOption = $(this).find('option:selected');
+        var selectedObject = selectedOption.data('object');
 
-        // let inventoryItems = customer.parcel_inventory; // assuming this is an array of objects
+        console.log("selectedObject",selectedObject);
 
-        // Show table if hidden
-        // $("#supplies_items").removeClass("d-none");
+        let inventoryItems = selectedObject.parcel_inventory;
+        dynamicInventoryTable(inventoryItems);
 
-        // dynamicInventoryTable(inventoryItems);
-        
-
-        // Recalculate totals
         // setTimeout(() => {
         //     $("#dynamicTable tbody tr").each(function () {
         //         const row = $(this);
         //         syncSummary(row);
         //     });
         // }, 100); // Adjust the timeout as needed
-        // }else{
-        // $('input[name="descriptions"]').val(customer.descriptions);
-        // $('input[name="weight"]').val(customer.weight);
-        // $('input[name="parcel_id"]').val(customer.parcel_id ?? null);
-        // }
 
-        // if (customer.address_type == "delivery" && customer.delivery_address) {
-        //     console.log("delivery pickup_address", customer.pickup_address);
-        //     setPickupDeleveryFormValue(customer.delivery_address);
-        // }
-        // if (
-        //     customer.invoice_type == "Service" &&
-        //     inventoryItems &&
-        //     inventoryItems.length > 0
-        // ) {
-        //     console.log("service pickup_address", customer.pickup_address);
-        //     setPickupDeleveryFormValue(customer.pickup_address);
-        // }
-        // if (
-        //     customer.invoice_type == "Service" &&
-        //     customer.address_type == "pickup"
-        // ) {
-        //     console.log(
-        //         "service pickup pickup_address",
-        //         customer.pickup_address
-        //     );
-        //     setPickupDeleveryFormValue(customer.pickup_address);
-        // }
-        // if (customer.invoice_type != "Service" && customer.pickup_address) {
-        //     setPickupDeleveryFormValue(customer.pickup_address);
-        //     console.log("supply pickup_address", customer.pickup_address, data);
-        // }
+        $('input[name="descriptions"]').val(selectedObject.descriptions);
+        $('input[name="weight"]').val(selectedObject.weight ?? null);
+        $('input[name="parcel_id"]').val(selectedObject.parcel_id ?? null);
+        // Set the value and trigger change for Select2 to show the selected option
+        $('select[name="container_id"]').val(selectedObject.container_id ?? null).trigger('change');
+        $('select[name="driver_id"]').val(selectedObject.driver_id ?? null).trigger('change');
+
+        if(selectedObject.warehouse_id!=null){
+            $('select[name="warehouse_id"]').val(selectedObject.warehouse_id ?? null).trigger('change');
+        }
+
+        if(selectedObject.parcel_type == "Service"){
+            // Set the transport_type checkboxes according to customer.transport_type
+            $('input[name="transport_type"]').prop('checked', false); // Uncheck all first
+            if (selectedObject.transport_type == 'Ocean Cargo') {
+                console.log('Ocean Cargo');
+                $('input[name="transport_type"]').each(function () {
+                    if ($(this).val() === selectedObject.transport_type) {
+                        $(this).prop('checked', true);
+                    }
+                });
+            } else {
+                console.log('Air Cargo');
+                // Default to "Air Cargo" if not set
+                $('input[name="transport_type"]').each(function () {
+
+                    if ($(this).val() === "Air Cargo") {
+                        console.log('Select Air Cargo');
+                        $(this).prop('checked', true);
+                    }
+                });
+            }
+        }
     });
 
-    function dynamicInventoryTable(inventoryItems) {
-        // Clear existing rows
-        $("#dynamicTable tbody").empty();
-        if (inventoryItems && inventoryItems.length > 0) {
-            // Loop through inventory items and create rows
-            inventoryItems.forEach((item, index) => {
-                let newRow = `
-                <tr>
+    $("#suppliesBtn, #servicesBtn").on("click", function () {
+        if($('input[name="invoce_type"]').val() != invoceType){
+            invoceType = $('input[name="invoce_type"]').val();
+            dynamicInventoryTable(""); // 👈 call your function
+        }
+    });
+
+
+//  end of document ready
+});
+
+function getContainer(data={}){
+    $.ajax({
+            url: "/api/filterContainers",
+            method: "GET",
+            data: data,
+            success: function (res) {
+                if (res.containers) {
+                    let containerOptions = '<option value="">Select Container</option>';
+                    res.containers.forEach(function (container) {
+                        containerOptions += `<option value="${container.id}">${container.unique_id}, ${container.ship_to_country}</option>`;
+                    });
+
+                    $('select[name="container_id"]').html(containerOptions);
+                }
+            },
+            error: function (xhr) {
+                console.error("Error sending invoice:", xhr);
+            }
+        });
+}
+
+function getOrderList() {
+    $('#order_list').empty() // Clear existing options
+    $.ajax({
+            url: "/getOrderList",
+            type: "GET",
+            data: {
+                pickup_address_id: $('input[name="pickup_address_id"]').val() ?? null,
+                delivery_address_id: $('input[name="delivery_address_id"]').val() ?? null,
+                invoice_type: invoce_type
+            },
+            success: function (response) {
+                $('#order_list_div').removeClass('d-none');
+                response.data.forEach(function(addr) {
+                    // Create option with text and tracking number as value
+                    let option = new Option(
+                        addr.tracking_number + ', ' + addr.source_address,
+                        addr.tracking_number, // Use a unique identifier as value
+                        false,
+                        false
+                    );
+                    // Store the entire object as a data attribute
+                    $(option).data('object', addr);
+                    $('#order_list').append(option);
+                });
+
+                $('#order_list').val(null).trigger('change');
+                $('#order_list').select2({
+                    placeholder: "Search Order"
+                });
+            },
+            error: function (error) {
+                $('#order_list').empty()
+                $('#order_list_div').addClass('d-none');
+                console.error("Error fetching customer details:", error);
+            },
+        });
+}
+function dynamicInventoryTable(inventoryItems) {
+    // Clear existing rows
+    $("#dynamicTable tbody").empty();
+    if (inventoryItems && inventoryItems.length > 0) {
+        // Loop through inventory items and create rows
+        inventoryItems.forEach((item, index) => {
+            let newRow = `
+            <tr>
+                <td class="mwidth open-supply-modal">
+                    <div class="d-flex align-items-center">
+                        <input type="text" name="supply_name" value="${
+                            item.supply_name || ""
+                        }" class="selected-supply-name form-control tdbor inputcolor">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal" class="btn iconbtn p-0">
+                            <i class="ti ti-chevron-down"></i>
+                        </button>
+                    </div>
+                    <input type="hidden" name="supply_id" value="${
+                        item.supply_id || ""
+                    }">
+                    <input type="hidden" name="inventory_id" value="${
+                        item.id || ""
+                    }">
+                </td>
+                <td><input type="text" class="form-control tdbor inputcolor qty-input" name="qty" value="${
+                    item.qty || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor" name="label_qty" value="${
+                    item.label_qty || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor" placeholder="" name="volume" value="${
+                    item.volume || 0
+                    }"></td>
+                <td>
+                    <div class="d-flex align-items-center priceInput">
+                        <input type="text" class="form-control inputcolor price-input" name="price" value="${
+                            item.price || 0
+                        }">
+                        <button type="button" class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button>
+                    </div>
+                </td>
+                <td><input type="text" class="form-control tdbor inputcolor value-input" name="value" value="${
+                    item.value || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor" name="ins" value="${
+                    item.ins || 0
+                }"></td>
+                <td class="d-none"><input type="text" class="form-control tdbor inputcolor discount-input" name="discount" value="${
+                    item.discount || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor tax-input" name="tax" value="${
+                    item.tax || 0
+                }"></td>
+                <td><input type="text" class="form-control tdbor inputcolor total-input" name="total" value="${
+                    item.total || 0
+                }"></td>
+                <td>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
+                        <button type="button" class="btn btn-primary iconBtn addBtn ${
+                            index !== inventoryItems.length - 1
+                                ? "d-none"
+                                : ""
+                        }"><i class="ti ti-plus"></i></button>
+                        <button type="button" class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `;
+
+            $("#dynamicTable tbody").append(newRow);
+        });
+    } else {
+        $("#dynamicTable tbody")
+        .append(`<tr>
                     <td class="mwidth open-supply-modal">
                         <div class="d-flex align-items-center">
-                            <input type="text" name="supply_name" value="${
-                                item.inventory_name || ""
-                            }" class="selected-supply-name form-control tdbor inputcolor">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal" class="btn iconbtn p-0">
+                            <input type="text" name="supply_name"
+                                class="selected-supply-name form-control tdbor inputcolor">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
+                                class="btn iconbtn p-0">
                                 <i class="ti ti-chevron-down"></i>
                             </button>
                         </div>
-                        <input type="hidden" name="supply_id" value="${
-                            item.id || ""
-                        }">
+                        <input type="hidden" name="supply_id">
+                        <input type="hidden" name="inventory_id">
                     </td>
-                    <td><input type="text" class="form-control tdbor inputcolor qty-input" name="qty" value="${
-                        item.inventorie_item_quantity || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" name="label_qty" value="${
-                        item.label_qty || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="volume" value="${
-                                                $item.volume || 0
-                                            }">
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="qty"></td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="label_qty"></td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="volume"></td>
+                    <td>
+                        <div class="d-flex align-items-center priceInput"><input type="text"
+                                class="form-control inputcolor" placeholder="" name="price"><button
+                                type="button" class="btn btn-secondary p-0 flat-btn"><i
+                                    class="ti ti-circle-plus col737"></i></button></div>
                     </td>
                     <td>
-                        <div class="d-flex align-items-center priceInput">
-                            <input type="text" class="form-control inputcolor price-input" name="price" value="${
-                                item.price || 0
-                            }">
-                            <button type="button" class="btn btn-secondary p-0 flat-btn"><i class="ti ti-circle-plus col737"></i></button>
-                        </div>
+                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="value">
                     </td>
-                    <td><input type="text" class="form-control tdbor inputcolor value-input" name="value" value="${
-                        item.value || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor" name="ins" value="${
-                        item.ins || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor discount-input" name="discount" value="${
-                        item.discount || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor tax-input" name="tax" value="${
-                        item.tax || 0
-                    }"></td>
-                    <td><input type="text" class="form-control tdbor inputcolor total-input" name="total" value="${
-                        item.total || 0
-                    }"></td>
+                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="ins"></td>
+                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="discount"></td>
+                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
+                            name="tax"></td>
+                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                            name="total"></td>
                     <td>
                         <div class="text-center">
-                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i class="ti ti-minus"></i></button>
-                            <button type="button" class="btn btn-primary iconBtn addBtn ${
-                                index !== inventoryItems.length - 1
-                                    ? "d-none"
-                                    : ""
-                            }"><i class="ti ti-plus"></i></button>
-                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i class="ti ti-edit"></i></button>
+                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
+                                    class="ti ti-minus"></i></button>
+                            <button type="button" class="btn btn-primary iconBtn addBtn"><i
+                                    class="ti ti-plus"></i></button>
+                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
+                                    class="ti ti-edit"></i></button>
                         </div>
                     </td>
-                </tr>
-            `;
 
-                $("#dynamicTable tbody").append(newRow);
-            });
-        } else {
-            $("#dynamicTable tbody").append(`<tr>
-                                    <td class="mwidth open-supply-modal">
-                                        <div class="d-flex align-items-center">
-                                            <input type="text" name="supply_name"
-                                                class="selected-supply-name form-control tdbor inputcolor">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
-                                                class="btn iconbtn p-0">
-                                                <i class="ti ti-chevron-down"></i>
-                                            </button>
-                                        </div>
-                                        <input type="hidden" name="supply_id">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="qty"></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="label_qty"></td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="volume"></td>
-                                    <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text"
-                                                class="form-control inputcolor" placeholder="" name="price"><button
-                                                type="button" class="btn btn-secondary p-0 flat-btn"><i
-                                                    class="ti ti-circle-plus col737"></i></button></div>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="value">
-                                    </td>
-                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="ins"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="discount"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
-                                            name="tax"></td>
-                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                            name="total"></td>
-                                    <td>
-                                        <div class="text-center">
-                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
-                                                    class="ti ti-minus"></i></button>
-                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i
-                                                    class="ti ti-plus"></i></button>
-                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
-                                                    class="ti ti-edit"></i></button>
-                                        </div>
-                                    </td>
-
-                                </tr>`);
-        }
+                </tr>`);
     }
 
-    // Toggle new customer form
-    $("#addCustomer").click(function () {
-        // $(".newCustomerAdd").toggleClass("disablesectionnew");
-    });
-});
+    setTimeout(() => {
+        $("#dynamicTable tbody tr").each(function () {
+            const row = $(this);
+            syncSummary(row);
+        });
+    }, 100);
+}
 
-function setPickupDeleveryFormValue(customer) {
+function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
     console.log("customer=>", customer);
     // Fill the form fields with customer data
     let userAddress = "";
     if (customer) {
-        userAddress =
+        if(setCustomerInfo){
+            userAddress = $(setCustomerInfo);
+        }else{
+            userAddress =
             customer.address_type == "delivery"
                 ? $("#ship_to_address"):$("#delivery_to_address");
+        }
+
         // Split full name into first and last name
         // var names = customer.full_name.split(' ');
         // var firstName = names[0];
         // var lastName = names.length > 1 ? names.slice(1).join(' ') : '';
-        let newOption = new Option(customer.text, customer.id, true, true);
+        let newOption = '';
+        if(customer.text){
+            newOption = new Option(customer.text, customer.id, true, true);
+        }
+
 
         if (customer.address_type == "delivery") {
-            $('input[name="pickup_address_id"]').val(customer.id);
+            if(!setCustomerInfo){
+                $('input[name="pickup_address_id"]').val(customer.id ?? '');
 
-            // Add new option if not already present
-            $("#ship_customer").append(newOption).trigger("change");
+                // Add new option if not already present
+                $("#ship_customer").append(newOption).trigger("change");
+            }
         } else {
-            $('input[name="delivery_address_id"]').val(customer.id);
-            $('input[name="invoice_custmore_id"]').val(customer.user_id);
+
+            if(customer.user_id){
+                $('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
+                $('#model_shipto_Form').find('input[name="invoice_custmore_id"]').val(customer.user_id ?? '');
+            }
+
             // delevery select box
-            // Add new option if not already present
-            $("#delevery_customer_id").append(newOption).trigger("change");
+
+            if(!setCustomerInfo){
+                // Add new option if not already present
+                $('input[name="delivery_address_id"]').val(customer.id ?? '');
+                $("#delevery_customer_id").append(newOption).trigger("change");
+            }
+
         }
 
         // Fill the form fields
@@ -602,10 +824,10 @@ function setPickupDeleveryFormValue(customer) {
 
         let last_name = nm.length > 1 ? nm[nm.length - 1] : null;
         let first_name =
-            nm.length > 1 ? nm.slice(0, -1).join(" ") : customer.name;
+            nm.length > 1 ? nm.slice(0, -1).join(" ") : customer.name ?? "";
 
-        userAddress.find('input[name="first_name"]').val(first_name);
-        userAddress.find('input[name="last_name"]').val(last_name);
+        userAddress.find('input[name="first_name"]').val(first_name ?? "");
+        userAddress.find('input[name="last_name"]').val(last_name ?? "");
 
         // For country/state/city, you'll need to have options preloaded or make additional AJAX calls
         // userAddress.find('select[name="country_id"]').val(customer.country_id).trigger('change');
@@ -620,20 +842,41 @@ function setPickupDeleveryFormValue(customer) {
 
         userAddress
             .find('input[name="mobile_number"]')
-            .val(customer.mobile_number);
+            .val(customer.mobile_number ?? "");
         userAddress
             .find('input[name="alternative_mobile_number"]')
             .val(customer.alternative_mobile_number);
-        userAddress.find('input[name="zip_code"]').val(customer.pincode);
-        userAddress.find('input[name="address"]').val(customer.address1);
-        userAddress.find('input[name="address_2"]').val(customer.address2);
-        userAddress.find('input[name="address_id"]').val(customer.id);
 
-        userAddress.find('input[name="country"]').val(customer.country);
-        userAddress.find('input[name="state"]').val(customer.state);
-        userAddress.find('input[name="city"]').val(customer.city);
-        userAddress.find('input[name="user_id"]').val(customer.user_id);
+        userAddress.find('input[name="address_2"]').val(customer.address2 ?? "");
+        userAddress.find('input[name="address_id"]').val(customer.id ?? "");
+
+        userAddress.find('input[name="zip_code"]').val(customer.pincode ?? "");
+        userAddress.find('input[name="address"]').val(customer.address1 ?? "");
+        if(setCustomerInfo){
+            const countryVal = customer.country ?? '';
+
+            userAddress.find('select[name="country"]')
+                .val(countryVal)
+                .trigger("change")
+                .prop('disabled', true); // disable the dropdown
+
+            // add hidden input to submit country value
+            if (userAddress.find('input[name="country"]').length === 0) {
+                userAddress.append(`<input type="hidden" name="country" value="${countryVal}">`);
+            } else {
+                userAddress.find('input[name="country"]').val(countryVal);
+            }
+        }else{
+            userAddress.find('input[name="country"]').val(customer.country ?? "");
+        }
+
+
+        userAddress.find('input[name="state"]').val(customer.state ?? "");
+        userAddress.find('input[name="city"]').val(customer.city ?? "");
+        userAddress.find('input[name="user_id"]').val(customer.user_id ?? "");
         // Address 2 can be left empty or filled with additional info if available
+
+
     }
 }
 
@@ -651,29 +894,33 @@ $("#auto_invoice_gen").on("click", function () {
     }
 });
 
-// Helper to parse supply data from option
-function getSupplyData(option) {
-    try {
-        return JSON.parse(option.getAttribute("data-supply"));
-    } catch (e) {
-        return {};
-    }
-}
-
 // total and grand total
 
 $(document).on("click", ".open-supply-modal", function () {
     currentRow = $(this).closest("tr");
+
+    let selector = $("#supplySelector");
+    let supplynm = $(this).closest("tr").find('input[name="price"]').val() || null;
+    console.log(supplynm);
+    if (selector.length && !supplynm) {
+        // Reset to default (first option or empty)
+        selector.val("").trigger("change");
+    }
 });
 
 $(document).on("click", ".confirm-supply", function () {
     const selectedId = $("#supplySelector").val();
-    const selectedItem = supplyItems.find((item) => item.id == selectedId);
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
 
     if (selectedItem && currentRow) {
         currentRow.find('input[name="supply_id"]').val(selectedItem.id);
         currentRow.find(".selected-supply-name").val(selectedItem.name);
-        currentRow.find('input[name="valume"]').val(selectedItem.valume ?? 0);
+        currentRow.find('input[name="volume"]').val(selectedItem.volume_total ?? 0);
 
         currentRow.find('input[name="qty"]').val(1);
         currentRow.find('input[name="label_qty"]').val(selectedItem.label_qty ?? '-');
@@ -689,17 +936,24 @@ $(document).on("click", ".confirm-supply", function () {
     }
 });
 
-$("#supplySelector").on("change", function () {
-    let selectedOption = this.options[this.selectedIndex];
-    let selectedItem = getSupplyData(selectedOption);
+$("#supplySelector").on("change", function (e) {
+    const selectedId = $("#supplySelector").val();
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
+
+    // console.log('selectedItem',selectedItem);
 
     if (selectedItem) {
-        $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
+        $("#volume_total_display").text(selectedItem.volume_total ?? 0);
         $("#volume_price_display").text(selectedItem.volume_price ?? 0);
-        $("#price_display").text(selectedItem.price ?? 0);
-        $("#height_display").text(selectedItem.height ?? "N/A");
-        $("#width_display").text(selectedItem.width ?? "N/A");
-        $("#weight_display").text(selectedItem.weight ?? "N/A");
+        $("#price_display").text(selectedItem.price ?? 1);
+        $("#height_display").text(selectedItem.height ?? 0);
+        $("#width_display").text(selectedItem.width ?? 0);
+        $("#weight_display").text(selectedItem.weight ?? 0);
     } else {
         $("#volume_total_display").text("");
         $("#volume_price_display").text(0);
@@ -709,6 +963,7 @@ $("#supplySelector").on("change", function () {
         $("#weight_display").text("");
     }
 });
+
 
 // Open modal and set selected supply
 document
@@ -749,6 +1004,30 @@ $("#supplyModal").on("shown.bs.modal", function () {
     if (selector) {
         selector.dispatchEvent(new Event("change"));
     }
+
+    const selectedId = $("#supplySelector").val();
+    let selectedItem = {};
+    if(invoce_type == 'services') {
+        selectedItem = serviceItems.find((item) => item.id == selectedId);
+    }else{
+        selectedItem = supplyItems.find((item) => item.id == selectedId);
+    }
+
+    if (selectedItem) {
+        $("#volume_total_display").text(selectedItem.volume_total ?? 0);
+        $("#volume_price_display").text(selectedItem.volume_price ?? 0);
+        $("#price_display").text(selectedItem.price ?? 1);
+        $("#height_display").text(selectedItem.height ?? 0);
+        $("#width_display").text(selectedItem.width ?? 0);
+        $("#weight_display").text(selectedItem.weight ?? 0);
+    } else {
+        $("#volume_total_display").text("");
+        $("#volume_price_display").text(0);
+        $("#price_display").text(0);
+        $("#height_display").text("");
+        $("#width_display").text("");
+        $("#weight_display").text("");
+    }
 });
 
 $(document).on(
@@ -760,6 +1039,11 @@ $(document).on(
 );
 
 $(document).on("input", 'input[name="payment"]', function () {
+    updateSummary(); // recalculate balance
+});
+
+$(document).on("input", 'input[name="discount"]', function () {
+    console.log("Discount changed");
     updateSummary(); // recalculate balance
 });
 
@@ -802,10 +1086,11 @@ function updateSummary() {
     let value = 0;
     let totalPrice = 0;
     let tax = 0;
-    let discount = 0;
     let ins = 0;
     let totalItems = 0;
+    let discount = 0;
     const service_fee = parseFloat($('input[name="service_fee"]').val()) || 0;
+    const dis = parseFloat($('#dis').val()) || 0;
 
     $("#dynamicTable tbody tr").each(function () {
         const row = $(this);
@@ -814,8 +1099,7 @@ function updateSummary() {
         const BaseValue =
             parseFloat(row.find('input[name="value"]').val()) || 0;
         const rowTax = parseFloat(row.find('input[name="tax"]').val()) || 0;
-        const rowDiscount =
-            parseFloat(row.find('input[name="discount"]').val()) || 0;
+        const rowDiscount = parseFloat(row.find('input[name="discount"]').val()) || 0;
         const rowIns = parseFloat(row.find('input[name="ins"]').val()) || 0;
 
         const base = qty * price;
@@ -832,7 +1116,8 @@ function updateSummary() {
         if (qty > 0) totalItems += 1;
     });
 
-    const grandTotal = totalPrice + tax + ins + service_fee - discount;
+
+    const grandTotal = totalPrice + tax + ins + service_fee - (dis ?? discount);
     const payment = parseFloat($('input[name="payment"]').val()) || 0;
     const balance = grandTotal - payment;
 
@@ -842,8 +1127,8 @@ function updateSummary() {
     ribbon.find("input").eq(0).val(subtotal.toFixed(2)); // Subtotal
     ribbon.find("input").eq(1).val(value.toFixed(2)); // Value
     ribbon.find("input").eq(2).val(tax.toFixed(2)); // Tax
-    ribbon.find("input").eq(3).val(discount.toFixed(2)); // Discount
-    ribbon.find("input").eq(4).val(ins.toFixed(2)); // Ins
+    // ribbon.find("input").eq(3).val(discount.toFixed(2)); // Discount
+    ribbon.find("input").eq(3).val(ins.toFixed(2)); // Ins
     $("#grand_total").val(grandTotal.toFixed(2));
     $("#payment").val(payment.toFixed(2));
     $("#balance").val(balance.toFixed(2));
@@ -873,7 +1158,6 @@ $(document).ready(function () {
             "address",
             "country",
             "state",
-            "city",
             "alternative_mobile_number_code_id",
             "mobile_number_code_id",
         ];
@@ -895,6 +1179,7 @@ $(document).ready(function () {
             "mobile_number",
             "address",
             "country",
+            "country",
         ];
 
         if (!jsValidator(requiredFields,$("#pick_up_customer_inf_form"))) {
@@ -906,11 +1191,54 @@ $(document).ready(function () {
         hendelAjex("/saveInvoceCustomer", formData);
     });
 
+    $("#add_ship_modal_save").on("click", function (e) {
+        e.preventDefault();
+
+        const requiredFields = [
+            "first_name",
+            "last_name",
+            "mobile_number",
+            "address",
+            "country",
+        ];
+
+        if (!jsValidator(requiredFields,$("#model_shipto_Form"))) {
+            return;
+        }
+
+        let formData = $("#model_shipto_Form").serialize();
+        // Submit via AJAX
+        hendelAjex("/saveInvoceCustomer", formData);
+    });
+
+    $("#add_customer_modal_save").on("click", function (e) {
+        e.preventDefault();
+
+        const requiredFields = [
+            "first_name",
+            "last_name",
+            "mobile_number",
+            "address",
+            "country",
+            "email"
+        ];
+
+        if (!jsValidator(requiredFields,$("#CustomerCreate_Form"))) {
+            return;
+        }
+
+        let formData = $("#CustomerCreate_Form").serialize();
+        // Submit via AJAX
+        hendelAjex("/saveInvoceCustomer", formData);
+    });
+
     if (pickupAddress) {
         setPickupDeleveryFormValue(pickupAddress);
+        setPickupDeleveryFormValue(pickupAddress,$("#CustomerCreate_Form"));
     }
     if (deliveryAddress) {
         setPickupDeleveryFormValue(deliveryAddress);
+        setPickupDeleveryFormValue(deliveryAddress,$("#model_shipto_Form"));
     }
 
     $("#dynamicTable tbody tr:last").find(".addBtn").show();
@@ -918,17 +1246,19 @@ $(document).ready(function () {
 
 function hendelAjex(url, formData) {
     // Submit via AJAX
+    showLoader();
     $.ajax({
         url: url,
         method: "POST",
         data: formData,
         success: function (response) {
             setPickupDeleveryFormValue(response.data);
-            if (response.data.address_type == "pickup") {
-                $("#add_ship_cancel").click();
-            } else {
-                $("#add_delevery_cancel").click();
-            }
+            $("#add_ship_cancel").click();
+            $("#add_delevery_cancel").click();
+            $("#add_ship_modal_cancel").click();
+            $("#add_cutomer_modal_cancel").click();
+            hideLoader();
+
             if (response.success) {
                 // alert(response.message);
 
@@ -947,6 +1277,7 @@ function hendelAjex(url, formData) {
             }
         },
         error: function (xhr) {
+            hideLoader();
             let errors = xhr.responseJSON?.errors;
             if (errors) {
                 Object.keys(errors).forEach((key) => {
@@ -972,6 +1303,7 @@ function getInvoiceItemsJSON() {
         const item = {
             supply_name: $(this).find('[name="supply_name"]').val(),
             supply_id: $(this).find('[name="supply_id"]').val(),
+            inventory_id: $(this).find('[name="inventory_id"]').val() ?? null,
             qty: parseFloat($(this).find('[name="qty"]').val()) || 0,
             label_qty:$(this).find('[name="label_qty"]').val() || '-',
             volume: parseFloat($(this).find('[name="volume"]').val()) || 0,
@@ -982,7 +1314,11 @@ function getInvoiceItemsJSON() {
             tax: parseFloat($(this).find('[name="tax"]').val()) || 0,
             total: parseFloat($(this).find('[name="total"]').val()) || 0,
         };
-        items.push(item);
+        if(parseFloat($(this).find('[name="price"]').val()) > 0 && parseFloat($(this).find('[name="total"]').val()) > 0 && $(this).find('[name="supply_name"]').val()!="") {
+            // Only include items with price > 0 and qty > 0
+            items.push(item);
+
+        }
     });
 
     return items;
@@ -994,15 +1330,16 @@ $("#services").on("submit", function (e) {
     const rules = {
         invoce_type: "required|in:services,supplies",
         delivery_address_id: "required",
+        payment_type: "required",
         // pickup_address_id: "required_if:invoce_type,services",
         // container_id:
         //     "required_if:invoce_type,services|required_if:transport_type,cargo|numeric",
-        driver_id: "numeric",
+        // driver_id: "nullable|numeric",
         warehouse_id: "required|numeric",
-        ins: "numeric",
-        discount: "numeric",
+        ins: "nullable|numeric",
+        discount: "nullable|numeric",
         tax: "numeric",
-        weight: "numeric",
+        weight: "nullable",
         balance: "numeric",
         total_price: "required|numeric",
         total_qty: "required|numeric",
@@ -1016,7 +1353,7 @@ $("#services").on("submit", function (e) {
         status: "required",
     };
 
-    if(invoce_type == "services") {
+    if(invoce_type != "supplies") {
         rules.pickup_address_id = "required";
         // rules.transport_type = "required";
         // If transport_type is a checkbox group, check if any checked value is "Ocean Cargo"
@@ -1034,7 +1371,34 @@ $("#services").on("submit", function (e) {
         if ($checkedTransport.length > 0 && $checkedTransport.filter(function() { return $(this).val() === "Ocean Cargo"; }).length > 0) {
             rules.container_id = "required|numeric";
         }
+        var $arrived_warehouse_id = $('input[name="arrived_warehouse_id"]').val() || null;
+        if (!$arrived_warehouse_id) {
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please select a arrived warehouse .",
+            });
+            e.preventDefault();
+            return false;
+        }
     }
+
+
+
+    const items = getInvoiceItemsJSON();
+    if (!items || items.length === 0) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please add at least one item.",
+        });
+        e.preventDefault();
+        return false;
+    }
+
+    const jsonData = JSON.stringify(items); // convert to JSON string
+
+    $('input[name="invoce_item"]').val(jsonData);
 
     if (!jsValidator(rules, $("#services"))) {
         // alert("Please fix the errors");
@@ -1042,10 +1406,10 @@ $("#services").on("submit", function (e) {
         return false;
     }
 
-    const items = getInvoiceItemsJSON();
-    const jsonData = JSON.stringify(items); // convert to JSON string
-
-    $('input[name="invoce_item"]').val(jsonData);
+    if($('input[name="deletedItrmId"]')){
+        const jsonDeletedItrmId = JSON.stringify(deletedItrmId); // convert to JSON string
+        $('input[name="deletedItrmId"]').val(jsonDeletedItrmId);
+    }
 
     // Now submit the form programmatically
     this.submit();
@@ -1113,7 +1477,7 @@ function calculateExchangeFields(form) {
     // Get values
     form.find('input[name="exchange_rate"]').prop("readonly", false);
 
-    const payment = parseFloat($('input[name="payment_amount"]').val()) || 0;
+    const payment = parseFloat(form.find('input[name="payment_amount"]').val()) || 0;
     const totalBalance =
         parseFloat(form.find('input[name="total_balance"]').val()) || 0;
     let rate = form.find('input[name="exchange_rate"]').val() || 1;
@@ -1129,7 +1493,7 @@ function calculateExchangeFields(form) {
     // $('input[name="exchange_rate"]').val(rate);
 
     // Calculate payment in USD (or base currency)
-    const paymentInBase = payment * rate;
+    const paymentInBase = payment/rate;
     maxPaymentAmountValue = totalBalance * rate;
     form.find('input[name="exchange_rate_balance"]').val(
         maxPaymentAmountValue.toFixed(2)
@@ -1167,12 +1531,20 @@ function maxPaymentAmount(selt) {
     if (parseFloat(selt.value) < parseFloat(0)) return (selt.value = 0);
 }
 
-// Use delegated event for select[name="local_currency"] to ensure handler works for dynamically loaded elements
-$('input[name="payment_amount"], input[name="exchange_rate"]').on("input", function () {
+// // Use delegated event for select[name="local_currency"] to ensure handler works for dynamically loaded elements
+// $('input[name="payment_amount"], input[name="exchange_rate"]').on("input", function () {
+//     console.log("calculateExchangeFields called");
+//     const form = $(this).closest("form");
+//     calculateExchangeFields(form);
+// });
+
+// Use event delegation: listen on 'form', match the inputs via selector
+$(document).on("input", 'input[name="payment_amount"], input[name="exchange_rate"]', function () {
     console.log("calculateExchangeFields called");
     const form = $(this).closest("form");
     calculateExchangeFields(form);
 });
+
 
 // Delegated event for select[name="local_currency"]
 $(document).on("change", 'select[name="local_currency"]', function () {
@@ -1181,76 +1553,6 @@ $(document).on("change", 'select[name="local_currency"]', function () {
     calculateExchangeFields(form);
 });
 
-// Update calculateExchangeFields to accept a form parameter
-// function calculateExchangeFields(form) {
-//     // Use the provided form or default to the whole document
-//     form = form || $(document);
-
-//     // Get values from the closest form
-//     const payment = parseFloat(form.find('input[name="payment_amount"]').val()) || 0;
-//     const totalBalance = parseFloat(form.find('input[name="total_balance"]').val()) || 0;
-//     let rate = form.find('input[name="exchange_rate"]').val() || 1;
-//     const currency = form.find('select[name="local_currency"]').val();
-
-//     form.find('input[name="exchange_rate"]').prop("readonly", false);
-
-//     if (currency === "USD") {
-//         rate = 1;
-//         form.find('input[name="exchange_rate"]').prop("readonly", true);
-//     }
-
-//     // Calculate payment in USD (or base currency)
-//     const paymentInBase = payment * rate;
-//     maxPaymentAmountValue = totalBalance * rate;
-//     form.find('input[name="exchange_rate_balance"]').val(
-//         maxPaymentAmountValue.toFixed(2)
-//     );
-
-//     // Applied payments (for now, just current payment)
-//     form.find('input[name="applied_payments"]').val(payment.toFixed(2));
-//     form.find('input[name="applied_total_usd"]').val(paymentInBase.toFixed(2));
-
-//     // Balance after payment (in original currency)
-//     const balanceAfterPayment = totalBalance - payment / rate;
-//     form.find('input[name="current_balance"]').val(balanceAfterPayment.toFixed(2));
-
-//     // Balance after payment, converted to base currency
-//     const balanceAfterExchange = balanceAfterPayment * rate;
-//     form.find('input[name="balance_after_exchange_rate"]').val(
-//         balanceAfterExchange.toFixed(2)
-//     );
-// }
-
-// // Fetch and set exchange rates on page load and when currency changes
-// function fetchAndSetExchangeRates() {
-//     $.get(`/api/getCurrencyExchangeRate`, function (res) {
-//         if (res) {
-//             exchangeRates = res;
-//             // Set select options if input[name="currency"] exists
-//             const $currencyInput = $('select[name="local_currency"]');
-//             if ($currencyInput.length) {
-//                 let options = "";
-//                 res.forEach(function (cur) {
-//                     options += `<option value="${cur.currency_code}">${cur.currency_name}-${cur.currency_code}</option>`;
-//                 });
-//                 // If input is actually a select, set options
-//                 if ($currencyInput.is("select")) {
-//                     $currencyInput.html(options);
-//                 }
-//             }
-//         }
-//     });
-// }
-
-// // Call on page load
-// $(document).ready(function () {
-//     fetchAndSetExchangeRates();
-// });
-
-// // Also call when currency changes (if needed)
-// $('input[name="local_currency"]').on("change", fetchAndSetExchangeRates);
-
-// Handles sending invoice email or SMS using the form and invoice ID
 // Listen for form submission
 $(document)
     .off("submit", "#sendInvoiceForm")
@@ -1410,14 +1712,51 @@ $(document)
     });
 
 
-    if ($(".datetimepickerDefault").length > 0) {
-        $(".datetimepickerDefault").datetimepicker({
-            format: "YYYY/MM/DD",
-            icons: {
-                up: "fas fa-angle-up",
-                down: "fas fa-angle-down",
-                next: "fas fa-angle-right",
-                previous: "fas fa-angle-left",
-            },
-        });
+if ($(".datetimepickerDefault").length > 0) {
+    $(".datetimepickerDefault").datetimepicker({
+        format: "YYYY/MM/DD",
+        icons: {
+            up: "fas fa-angle-up",
+            down: "fas fa-angle-down",
+            next: "fas fa-angle-right",
+            previous: "fas fa-angle-left",
+        },
+    });
+}
+
+// 🖼 Image Preview Function
+function previewImage(input, imageType) {
+    if (input.files && input.files[0]) {
+        let file = input.files[0];
+
+        // ✅ Sirf PNG ya JPG Allow Hai
+        if (file.type === "image/png" || file.type === "image/jpeg") {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('preview_' + imageType).src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Only PNG & JPG images are allowed!");
+            input.value = ""; // Invalid file ko remove karna
+        }
     }
+}
+
+// ❌ Remove Image Function
+function removeImage(imageType) {
+    document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+    document.getElementById('file_' + imageType).value = "";
+}
+
+
+function phonevalidate(self){
+    let length = $(self).select('option:selected').data('length');
+    let phoneNumber = $(self).val();
+}
+showLoader();
+$(window).on('load', function () {
+    setTimeout(() => {
+        hideLoader();
+    }, 300);
+});

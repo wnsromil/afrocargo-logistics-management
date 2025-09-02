@@ -28,7 +28,7 @@ class ContainerController extends Controller
         $query = $request->search;
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
-
+        $status_search = $request->input('status_search');
         $openDateRange = $request->input('open_date');
         $closeDateRange = $request->input('close_date');
         $warehouseId = $request->input('warehouse_id');
@@ -41,6 +41,7 @@ class ContainerController extends Controller
             ->when($warehouseId, function ($q) use ($warehouseId) {
                 return $q->where('warehouse_id', $warehouseId);
             })
+            ->when($status_search, fn($q) => $q->where('container_status', $status_search))
             ->when($query, function ($q) use ($query) {
                 return $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('container_no_1', 'like', '%' . $query . '%')
@@ -104,7 +105,7 @@ class ContainerController extends Controller
         $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
             ->Where('is_deleted', 'no')->select('id', 'name')->get();
 
-        $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+        $containerSizes = ContainerSize::take(3)->get(['id', 'container_name', 'volume']);
 
         return view('admin.container.create', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }
@@ -239,7 +240,7 @@ class ContainerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
 
-        $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+        $containerSizes = ContainerSize::take(3)->get(['id', 'container_name', 'volume']);
 
         return view('admin.container.edit', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }
@@ -345,7 +346,7 @@ class ContainerController extends Controller
         $vehicle->transit_country = $request->transit_country;
         $vehicle->save();
 
-        return redirect()->route('admin.container.show', ['container' => $id])->with('success', 'Container added successfully.');
+        return redirect()->route('admin.container.show', ['id' => $id])->with('success', 'Container added successfully.');
     }
 
     /**

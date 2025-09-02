@@ -1,0 +1,14 @@
+mere pass 1 xlsx sheet hai jisme tread ka mangment hota hai 
+
+usme formula me kuch ceculetion galat chal raha hai 
+
+dekho 4 condition ho sakti hai 
+
+Profit me Buy or Sell
+Loss me Buy or Sell
+
+matlab maine buy kiya to ya to profit hua ya loss hua
+maine sell kiya to ya to profit hua ye loss hua 
+
+apko 1 aise formula bana hai hai jo in cecultion ko ache se kar paye apko - + ka dayan rakhna hai agar loss hua hai to wo vaule mujhe sheet me - me show hogi or profit hua hai to wo vaule mujhe + me show hogi 
+

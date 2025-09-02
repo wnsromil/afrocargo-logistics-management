@@ -15,8 +15,10 @@ use App\Models\{
     Invoice,
     ParcelInventorie,
     ParcelPickupDriver,
-    ContainerHistory
+    ContainerHistory,
+    NotificationParcelMessage
 };
+use Carbon\Carbon;
 
 class ServiceOrderStatusManage extends Controller
 {
@@ -27,7 +29,7 @@ class ServiceOrderStatusManage extends Controller
         $status = $request->status;
         $search = $request->search;
 
-        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse','container']);
+        $query = Parcel::with(['pickupaddress', 'deliveryaddress', 'parcelStatus', 'customer', 'warehouse', 'container']);
 
         // Filter by driver type
         if ($percelType === 'Service') {
@@ -87,7 +89,7 @@ class ServiceOrderStatusManage extends Controller
         }
 
         // Fetch and map order_type
-        $orders = $query->get()->map(function ($order) {
+        $orders = $query->latest('id')->get()->map(function ($order) {
             if ($order->arrived_driver_id && $order->driver_id) {
                 $order->order_type = 'Delivery';
             } elseif ($order->driver_id) {
@@ -175,11 +177,11 @@ class ServiceOrderStatusManage extends Controller
                 ->first();
 
             if ($containerHistory) {
-                // $containerHistory->increment('no_of_orders', 1);
-                // $containerHistory->total_amount += $request->estimate_cost;
-                // $containerHistory->partial_payment += $request->partial_payment;
-                // $containerHistory->remaining_payment += $request->remaining_payment;
-                // $containerHistory->save();
+                $containerHistory->increment('no_of_orders', 1);
+                $containerHistory->total_amount += $request->estimate_cost;
+                $containerHistory->partial_payment += $request->partial_payment;
+                $containerHistory->remaining_payment += $request->remaining_payment;
+                $containerHistory->save();
             }
         }
 
@@ -194,6 +196,39 @@ class ServiceOrderStatusManage extends Controller
             'warehouse_id' => $this->user->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationDriverPickup = NotificationParcelMessage::find(5);
+        $deviceTokenPDriverPickup = $CustomerData->firebase_token;
+        $titleDriverPickup = $notificationDriverPickup->title;
+        $bodyDriverPickup = str_replace('{driver_name}', ($this->user->name ?? '') . ' ' . ($this->user->last_name ?? ''), $notificationDriverPickup->message);
+
+        if (!empty($deviceTokenPDriverPickup)) {
+            sendFirebaseNotification($deviceTokenPDriverPickup, $titleDriverPickup, $bodyDriverPickup, $CustomerData->id, $parcel->id, 'Driver Order Picked up');
+        }
+
+        $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $pickupDate = Carbon::parse($parcel->pickup_date)->format('m-d-Y');
+
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Order Picked up</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Tracking ID — <label class=\"col00 mb-0\">{$parcel->tracking_number}</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Pickup Date — <label class=\"col00 mb-0\">{$pickupDate}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $this->user->id, 'Order Picked up');
 
         return response()->json([
             'status' => true,
@@ -233,6 +268,10 @@ class ServiceOrderStatusManage extends Controller
             ->where('container_id', $parcel->container_id)
             ->update(['status' => 10]);
 
+        ParcelInventorie::where('parcel_id', $parcel->id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 10]);
+
         // Create a new entry in ParcelHistory
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
@@ -244,6 +283,44 @@ class ServiceOrderStatusManage extends Controller
             'warehouse_id' => $this->user->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE), // Store full request details
         ]);
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationOutForDelivery = NotificationParcelMessage::find(12);
+        $deviceTokenOutForDelivery = $CustomerData->firebase_token;
+        $titleOutForDelivery = $notificationOutForDelivery->title;
+        $bodyOutForDelivery = str_replace(
+            '{driver_name}',
+            ($this->user->name ?? '') . ' ' . ($this->user->last_name ?? ''),
+            $notificationOutForDelivery->message
+        );
+
+        if (!empty($deviceTokenOutForDelivery)) {
+            sendFirebaseNotification($deviceTokenOutForDelivery, $titleOutForDelivery, $bodyOutForDelivery, $CustomerData->id, $parcel->id, 'Out for delivery');
+        }
+
+         $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $deliveryDate = Carbon::parse($parcel->delivery_date)->format('m-d-Y');
+
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Out for delivery</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Tracking ID — <label class=\"col00 mb-0\">{$parcel->tracking_number}</label></p>
+                               <p class=\"col737 fs_18 fw_500\">delivery Date — <label class=\"col00 mb-0\">{$deliveryDate}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $this->user->id, 'Out for delivery');
+
 
         return response()->json([
             'status' => true,
@@ -290,6 +367,10 @@ class ServiceOrderStatusManage extends Controller
             ->where('container_id', $parcel->container_id)
             ->update(['status' => 11]);
 
+        ParcelInventorie::where('parcel_id', $parcel->id)
+            ->where('container_id', $parcel->container_id)
+            ->update(['status' => 11]);
+
         // ✅ Add Parcel History
         ParcelHistory::create([
             'parcel_id' => $parcel->id,
@@ -301,6 +382,44 @@ class ServiceOrderStatusManage extends Controller
             'warehouse_id' => $this->user->warehouse_id,
             'description' => json_encode($parcel, JSON_UNESCAPED_UNICODE),
         ]);
+
+        $CustomerData = User::where('id', $parcel->customer_id)->first();
+        $notificationDelivered = NotificationParcelMessage::find(13);
+        $deviceTokenDelivered = $CustomerData->firebase_token;
+        $titleDelivered = $notificationDelivered->title;
+        $bodyDelivered = str_replace(
+            '{driver_name}',
+            ($this->user->name ?? '') . ' ' . ($this->user->last_name ?? ''),
+            $notificationDelivered->message
+        );
+
+        if (!empty($deviceTokenDelivered)) {
+            sendFirebaseNotification($deviceTokenDelivered, $titleDelivered, $bodyDelivered, $this->user->id, $parcel->id, 'Delivered');
+        }
+
+        $time = Carbon::now()->format('h:i A');
+        // Reference HTML structure (with dynamic time injected)
+        $deliveryDate = Carbon::parse($parcel->delivery_date)->format('m-d-Y');
+
+        $html = "
+            <div class=\"col-md-12\">
+                <div class=\"card activityCard\">
+                    <div class=\"card-body\">
+                        <div class=\"d-flex\">
+                            <i class=\"ti ti-clock-filled\"></i>
+                            <div>
+                               <p class=\"col737 fs_18 fw_500\">{$time} — <label class=\"col00 mb-0\">Delivered</label></p>
+                               <p class=\"col737 fs_18 fw_500\">Tracking ID — <label class=\"col00 mb-0\">{$parcel->tracking_number}</label></p>
+                               <p class=\"col737 fs_18 fw_500\">delivery Date — <label class=\"col00 mb-0\">{$deliveryDate}</label></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
+
+        storeDriverLog($html, $this->user->id, 'Delivered');
+
 
         return response()->json([
             'status' => true,

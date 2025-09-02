@@ -562,7 +562,9 @@
                 <div class="btnWrapper">
                     <button type="button" onclick="redirectTo('{{ route('admin.supply_inventories.index') }}')"
                         class="btn btn-outline-primary custom-btn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ">Submit</button>
+                    @can('has-dynamic-permission', 'supply_inventory_list.edit')
+                        <button type="submit" class="btn btn-primary ">Submit</button>
+                    @endcan
                 </div>
             </div>
             @error('status')

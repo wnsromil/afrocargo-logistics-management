@@ -51,6 +51,11 @@ class Parcel extends Model
         return $this->belongsTo(User::class, 'customer_id')->with(['country', 'state', 'city']);
     }
 
+     public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'invoice_id');
+    }
+
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id')->with(['country', 'state', 'city']);
@@ -147,9 +152,9 @@ class Parcel extends Model
 
     public function ParcelInventory()
     {
-        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id')->with('barcode')->select(
+        return $this->hasMany(ParcelInventorie::class, 'parcel_id', 'id')->with('barcode','container:id,unique_id,container_no_1,ship_to_country','parcelStatus')->select(
             'id',
-            'id as supply_id',
+            'inventorie_id as supply_id',
             'parcel_id',
             'invoice_id',
             'inventorie_id',
@@ -162,7 +167,11 @@ class Parcel extends Model
             'discount',
             'total',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'img',
+            'quantity_type',
+            'status',
+            'container_id',
         );
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Warehouse;
 
 class NotificationController extends Controller
 {
@@ -17,13 +18,19 @@ class NotificationController extends Controller
         $currentPage = $request->input('page', 1); // Current page number
 
         $notifications = Notification::when($query, function ($q) use ($query) {
-            return $q->where(function ($q) use ($query) {
+            $q->where(function ($q) use ($query) {
                 $q->where('title', 'LIKE', "%$query%")
                     ->orWhere('description', 'LIKE', "%$query%")
                     ->orWhere('type', 'LIKE', "%$query%")
                     ->orWhere('status', 'LIKE', "%$query%");
             });
         })
+            ->when($this->user->role_id != 1, function ($q) {
+                $q->where(function ($q) {
+                    $q->where('user_id', $this->user->id)
+                        ->orWhereIn('notification_for', ['All', 'All Warehouse Managers']);
+                });
+            })
             ->latest()
             ->paginate($perPage)
             ->appends(['search' => $query, 'per_page' => $perPage]);
@@ -31,12 +38,20 @@ class NotificationController extends Controller
         // Serial number calculation for pagination
         $serialStart = ($currentPage - 1) * $perPage;
 
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
         if ($request->ajax()) {
-            return view('admin.notification.table', compact('notifications', 'serialStart'))->render();
+            return view('admin.notification.table', compact('notifications', 'serialStart', 'warehouses'))->render();
         }
 
-        return view('admin.notification.index', compact('notifications', 'query', 'perPage', 'serialStart'));
+        return view('admin.notification.index', compact('notifications', 'query', 'perPage', 'serialStart', 'warehouses'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -87,5 +102,4 @@ class NotificationController extends Controller
     {
         //
     }
-    
 }

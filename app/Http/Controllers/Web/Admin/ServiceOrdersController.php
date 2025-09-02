@@ -15,7 +15,8 @@ use App\Models\{
     Vehicle,
     ParcelHistory,
     HubTracking,
-    ParcelPickupDriver
+    ParcelPickupDriver,
+    ParcelInventorie
 };
 
 class ServiceOrdersController extends Controller
@@ -56,13 +57,19 @@ class ServiceOrdersController extends Controller
             ->when($shipping_type, fn($q) => $q->where('transport_type', $shipping_type))
             ->when($status_search, fn($q) => $q->where('status', $status_search))
             ->when($daysPickupType, function ($q) use ($daysPickupType) {
-                $today = now()->toDateString();
-                $yesterday = now()->subDay()->toDateString();
-                $tomorrow = now()->addDay()->toDateString();
+                [$start, $end] = explode(' - ', $daysPickupType);
 
-                return $q->when($daysPickupType === 'Yesterdays_pickups', fn($q) => $q->whereDate('pickup_date', $yesterday))
-                    ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
-                    ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
+                $start = carbon()->createFromFormat('m/d/Y', trim($start))->startOfDay();
+                $end   = carbon()->createFromFormat('m/d/Y', trim($end))->endOfDay();
+
+                return $q->whereBetween('pickup_date', [$start, $end])->get();
+                // $today = now()->toDateString();
+                // $yesterday = now()->subDay()->toDateString();
+                // $tomorrow = now()->addDay()->toDateString();
+
+                // return $q->when($daysPickupType === 'Yesterdays_pickups', fn($q) => $q->whereDate('pickup_date', $yesterday))
+                //     ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
+                    // ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
             })
             ->latest('id');
 
@@ -107,8 +114,6 @@ class ServiceOrdersController extends Controller
             'daysPickupType' // optional: if you want to use this in blade
         ));
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -191,7 +196,7 @@ class ServiceOrdersController extends Controller
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })->where('id', $id)->first();
 
-        $parcelItems = ParcelPickupDriver::where('parcel_id', $id)->get();
+        $parcelItems = ParcelInventorie::where('parcel_id', $id)->get();
 
         return view('admin.service_orders.orderdetails', compact('parcelItems', 'ParcelHistories', 'parcelTpyes', 'parcel'));
     }

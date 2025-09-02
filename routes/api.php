@@ -32,13 +32,15 @@ use App\Http\Controllers\Api\{
     OrderShipmentController,
     ProductController,
     DriverController,
-    VehicleController
+    VehicleController,
+    WarehouseManagerController
 };
 
 use App\Http\Controllers\Web\Admin\{
     OrderStatusManage,
     CBMCalculatoarController,
-    LadingDetailsController
+    LadingDetailsController,
+    AdvanceReportsController
 };
 // Route::get('/user', function (Request $request) {
 //     return $request->user()->load('warehouse');
@@ -68,6 +70,7 @@ Route::get('/user-by-warehouse/{warehouse_id}', [CustomerController::class, 'get
 Route::get('/container-by-warehouse/{warehouse_id}', [CustomerController::class, 'getVehiclesByWarehouse']);
 Route::get('/dashboard-stats', [DashboardController::class, 'getDashboardStats']);
 
+Route::get('/admin/advance-orders/print-data', [AdvanceReportsController::class, 'printData']);
 
 //Order Status Manage Apis
 Route::post('/get-drivers-by-assign-status', [OrderStatusManage::class, 'getDriversByParcelId']);
@@ -84,6 +87,9 @@ Route::post('/update-status-delivery-with-driver', action: [OrderStatusManage::c
 Route::post('/update-status-signature-self-delivery', action: [OrderStatusManage::class, 'statusUpdate_SignatureSelfDelivery']);
 Route::post('/update-status-admin-cancel', [OrderStatusManage::class, 'statusUpdateAdmin_Cancel']);
 Route::post('/update-status-admin-reschedule', [OrderStatusManage::class, 'statusUpdateAdmin_reschedule']);
+Route::post('/update-status-custom-hold', action: [OrderStatusManage::class, 'statusUpdate_customhold']);
+Route::post('/update-status-custom-cleared', action: [OrderStatusManage::class, 'statusUpdate_customcleared']);
+
 
 // Pickup
 Route::get('/pickup-users/{id}', [PickupController::class, 'getPickupUsers']);
@@ -94,12 +100,15 @@ Route::post('/pickup-address', [PickupController::class, 'CreatePickupAddress'])
 Route::post('/shipto-address', [ShiptoController::class, 'CreateShipTo']);
 Route::get('/ship-to-users/{id}', [ShiptoController::class, 'getShipToUsers']);
 
-// Container 
+// Container
 Route::post('/update-in-container-time', [ContainerController::class, 'updateContainerInDateTime']);
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 Route::post('/updateContainer', [ContainerController::class, 'updateContainer'])->name('updateContainer');
+Route::get('/get-customers-container', [ContainerController::class, 'getVehiclesByWarehouseAndCustomer']);
+Route::post('/updateCloseInvoiceWarehouse', [ContainerController::class, 'updateCloseInvoiceWarehouse'])->name('updateCloseInvoiceWarehouse');
 
-//CBM 
+
+//CBM
 Route::get('/default-container-sizes', [CBMCalculatoarController::class, 'getDefaultContainerSizes'])->name('default.container.sizes');
 Route::get('/get-ports/{country}', [CBMCalculatoarController::class, 'getPortsByCountryName']);
 Route::get('/port-freight-containers/{id}', [CBMCalculatoarController::class, 'getContainersByPortFreightId']);
@@ -113,12 +122,21 @@ Route::post('/mark-as-read-notification', [NotificationController::class, 'markA
 
 //Driver
 Route::get('/warehouse-drivers/{id}', [DriverController::class, 'getWarehouseDrivers']);
+Route::post('/driver-logs', [DriverController::class, 'getLogsByUser']);
+
+//Manager
+Route::get('/warehouse-managers/{id}', [WarehouseManagerController::class, 'getWarehouseManagers']);
+
+//Manager
+Route::get('/warehouse-customers/{id}', [CustomerController::class, 'getCustomerByWarehouse']);
 
 //Vehicle
 Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
 
+Route::get('/get-all-items', [InventoryController::class, 'getAllItems']);
+Route::get('/filterContainers', [ContainerController::class, 'filterContainers']);
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
     Route::post('verifyOtp', [RegisterController::class, 'verifyOtp']);
     Route::post('resendOtp', [RegisterController::class, 'resendOtp']);
@@ -216,6 +234,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/get-shipto-users', [ShiptoController::class, 'getCustomerShipToUsers']);
 
         Route::post('/invoiceUpdate/{id}', [InvoiceController::class, 'invoiceUpdate']);
+        Route::post('/check-invoice-item-status', [InvoiceController::class, 'checkItemInvoices']);
     });
 
     //invoice controller
@@ -227,7 +246,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/invoice-details/{id}', 'invoiceDetails');
         Route::get('/invoice-get/{type}', 'invoicesGet');
     });
-    
 });
 
 Route::get('invoices/invoices_download/{id}', [InvoiceController::class, 'invoices_download'])->name('invoices.invoicesdownload');

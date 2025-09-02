@@ -118,9 +118,11 @@ class InvoiceController extends Controller
 
         // Optionally, delete related records (e.g., InvoiceHistory, IndividualPayment, ParcelInventorie)
         // InvoiceHistory::where('invoice_id', $id)->delete();
-        IndividualPayment::where('invoice_id', $id)->delete();
-        ParcelInventorie::where('invoice_id', $id)->update(['invoice_id'=>null]);
+        // IndividualPayment::where('invoice_id', $id)->delete();
+        // ParcelInventorie::where('invoice_id', $id)->update(['invoice_id'=>null]);
 
+        $invoice->deleted_by = auth()->id();
+        $invoice->save();
         $invoice->delete();
 
         return response()->json([
@@ -157,9 +159,9 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function invoicesGet($type)
+    public function invoicesGet(Request $request,$type)
     {
-
+        $search = $request->input('search');
         $query = Invoice::
         when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -172,14 +174,45 @@ class InvoiceController extends Controller
                 $q->where('invoce_type', $type);
             });
         }
+        $query->when($request->input('customer_id'), function ($q) use ($request) {
 
-        $invoices = $query->get();
+            return $q->whereHas('pickupAddress', function ($q) use ($request) {
+                        $q->where('user_id', $request->input('customer_id'));
+                    })
+            ->orWhereHas('deliveryAddress', function ($q) use ($request) {
+                        $q->where('user_id', $request->input('customer_id'));
+                    });
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Invoices fetched successfully',
-            'data' => $invoices
-        ]);
+
+        })->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('invoice_no', 'like', "%$search%")
+                    ->orWhere('total_amount', 'like', "%$search%")
+                    ->orWhere('invoce_type', 'like', "%$search%")
+                    ->orWhere('status', 'like', "%$search%")
+                    // 🔹 Search in related tables
+                    ->orWhereHas('pickupAddress', function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%")
+                        ->orWhere('mobile_number', 'like', "%$search%");
+                    })
+                    ->orWhereHas('deliveryAddress', function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%")
+                        ->orWhere('mobile_number', 'like', "%$search%");
+                    })
+                    // ->orWhereHas('driver', function ($q) use ($search) {
+                    //     $q->where('name', 'like', "%$search%");
+                    // })
+                    ->orWhereHas('warehouse', function ($q) use ($search) {
+                        $q->where('warehouse_name', 'like', "%$search%");
+                    });
+                });
+            });
+
+        $invoices = $query->latest('id')->paginate(5);
+
+        return response()->json($invoices);
     }
 
     public function invoices_download(Request $request, $b64id)
@@ -206,12 +239,15 @@ class InvoiceController extends Controller
             }
         }
         $invoice = Invoice::with(['invoiceParcelData','deliveryAddress','pickupAddress','createdByUser','container','driver','invoiceParcelData','comments','individualPayment','barcodes','warehouse','claims'])->where('id',$id)->first();
-        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest()->get();
+        $invoiceHistory = InvoiceHistory::with('createdByUser')->where('invoice_id', $id)->latest('id')->get();
+
+        // return view('admin.Invoices.pdf.invoicepdf', compact('invoice', 'invoiceHistory'));
+
         if($request->type == 'page'){
             return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
         }
         if($request->type == 'pagenew'){
-            return view('admin.Invoices.pdf.labels_new', compact('invoice', 'invoiceHistory'));
+            return view('admin.Invoices.pdf.labels', compact('invoice', 'invoiceHistory'));
         }
         if($request->type == 'labels'){
             if(empty($invoice->barcodes)){
@@ -224,6 +260,7 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
             ]);
+            $pdf->setPaper([0, 0, 288, 432]);
             // Generate a filename
             $filename = 'invoice-' . $invoice->invoice_no . '.pdf';
         }else{
@@ -232,22 +269,24 @@ class InvoiceController extends Controller
                 'invoice' => $invoice,
                 'invoiceHistory' => $invoiceHistory
             ]);
+            $pdf->setPaper('A4', 'portrait');
 
             // Generate a filename
             $filename = 'labels-' . $invoice->invoice_no . '.pdf';
         }
-        
+
 
 
         // Set paper options
-        // $pdf->setPaper('A4', 'portrait');
+        //
 
-        $pdf->setPaper('A4', 'landscape');
+
+        // $pdf->setPaper('A4', 'landscape');
 
         // First return the PDF as a response to load it
         // Then you can call download() on the client side if needed
         return $pdf->stream($filename);
-        
+
         // Alternatively, if you want to force download immediately:
         // return $pdf->download($filename);
 
@@ -308,11 +347,11 @@ class InvoiceController extends Controller
         }
 
         if($action == 'generate') {
-            for ($i=0; $i < $qty; $i++) { 
+            for ($i=0; $i < $qty; $i++) {
                 store_barcode($barcodeData);
             }
         }
-        
+
 
         return response()->json([
             'status' => 'success',
@@ -324,12 +363,12 @@ class InvoiceController extends Controller
     public function invoiceOrderCreateService(Request $request)
     {
         // return $request->all();
-        
+
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
             'customer_id' => 'required|exists:users,id',
             'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:users,id',
-            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'container_id' => 'nullable|numeric',
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
@@ -359,12 +398,66 @@ class InvoiceController extends Controller
         if(empty($invoice)){
             $invoice = new Invoice();
         }
-        
+        if(!empty($request->parcel_id)){
+            $invoice->parcel_id = $request->parcel_id;
+        }
+        $delivery_address = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first();
+
+        if(empty($delivery_address)){
+            $delivery_user = User::where('id',$request->ship_customer_id)->first();
+            if(!empty($delivery_user)){
+                $delivery_address = Address::create([
+                'user_id' =>  $delivery_user->id,
+                'address' =>  $delivery_user->address,
+                'name' =>  $delivery_user->name,
+                'last_name' =>  $delivery_user->name.' '.$delivery_user->last_name,
+                'full_name' =>  $delivery_user->last_name,
+                'city_id' =>  $delivery_user->city_id ?? null,
+                'state_id' =>  $delivery_user->state_id ?? null,
+                'country_id' =>  $delivery_user->country_id,
+                'pincode' =>  $delivery_user->pincode ?? null,
+                'mobile_number'=>  $delivery_user->phone ?? null,
+                'mobile_number_code_id'=>  $delivery_user->phone_code_id ?? null,
+                'alternative_mobile_number_code_id'=>  $delivery_user->phone_2_code_id_id ?? null,
+                'alternative_mobile_number'=>  $delivery_user->phone_2 ?? null,
+                'address_2' =>  $delivery_user->address_2,
+                'default_address' => 'Yes',
+            ]);
+            }
+
+        }
+
+        $pickup_address = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first();
+
+        if(empty($pickup_address)){
+            $pickup_user = User::where('id',$request->customer_id)->first();
+            if(!empty($pickup_user)){
+                $pickup_address = Address::create([
+                    'user_id' =>  $pickup_user->id,
+                    'address' =>  $pickup_user->address,
+                    'name' =>  $pickup_user->name,
+                    'last_name' =>  $pickup_user->name.' '.$pickup_user->last_name,
+                    'full_name' =>  $pickup_user->last_name,
+                    'city_id' =>  $pickup_user->city_id ?? null,
+                    'state_id' =>  $pickup_user->state_id ?? null,
+                    'country_id' =>  $pickup_user->country_id ?? null,
+                    'pincode' =>  $pickup_user->pincode ?? null,
+                    'mobile_number'=>  $delivery_user->phone ?? null,
+                    'mobile_number_code_id'=>  $delivery_user->phone_code_id ?? null,
+                    'alternative_mobile_number_code_id'=>  $delivery_user->phone_2_code_id_id ?? null,
+                    'alternative_mobile_number'=>  $delivery_user->phone_2 ?? null,
+                    'address_2' =>  $delivery_user->address_2,
+                    'default_address' => 'Yes',
+                ]);
+            }
+        }
+
+
         $invoice->generated_by = \Auth::user()->role ?? 'admin';
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
-        $invoice->delivery_address_id = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first()->id ?? null;
-        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null; 
+        $invoice->delivery_address_id = $delivery_address ? $delivery_address->id : null;
+        $invoice->pickup_address_id = $pickup_address ? $pickup_address->id : null;
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
@@ -377,7 +470,7 @@ class InvoiceController extends Controller
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
         $invoice->duedaterange = $request->pickup_time;
-        $invoice->currentdate = $request->pickup_date; 
+        $invoice->currentdate = $request->pickup_date;
         $invoice->warehouse_id = $this->user->warehouse_id;
         $invoice->driver_id = auth()->id();
         if($request->container_id){
@@ -399,7 +492,11 @@ class InvoiceController extends Controller
         if($request->transport_type){
             $invoice->transport_type = $request->transport_type;
         }
-    
+
+        if($request->arrived_warehouse_id){
+            $invoice->arrived_warehouse_id = $request->arrived_warehouse_id;
+        }
+
         $invoice->save();
 
         $validated =[
@@ -425,21 +522,21 @@ class InvoiceController extends Controller
             $data = $this->individualPayment($validated);
         }
 
-        $this->saveInvoiceHistory($invoice->id,"updated");
+        setting()->saveInvoiceHistory($invoice->id,"updated");
 
         return $this->sendResponse($invoice, 'Invoice saved successfully.');
-   
+
     }
 
     public function invoiceUpdate(Request $request, $id)
     {
         // return $request->all();
-        
+
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
             'customer_id' => 'required|exists:users,id',
             'ship_customer_id' => 'nullable|required_if:invoce_type,services|exists:users,id',
-            'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
+            'container_id' => 'nullable|numeric',
             'warehouse_id' => 'nullable|numeric',
             'ins' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
@@ -462,16 +559,16 @@ class InvoiceController extends Controller
         ]);
 
         $invoiceItems = $request->input('customer_subcategories_data');
-        
+
         $invoice = Invoice::findOrFail($id);
         $invoice->generated_by = \Auth::user()->role ?? $invoice->generated_by;
         $invoice->invoce_type = $request->invoce_type;
-        
+
 
         // $invoice->generated_by = auth()->user()->role ?? 'admin';
         $invoice->invoce_type = $request->invoce_type;
         $invoice->delivery_address_id = Address::where('user_id',$request->ship_customer_id)->where('default_address','Yes')->first()->id ?? null;
-        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null; 
+        $invoice->pickup_address_id = Address::where('user_id',$request->customer_id)->where('default_address','Yes')->first()->id ?? null;
         $invoice->ins = $request->ins ?? 0;
         $invoice->discount = $request->discount ?? 0;
         $invoice->tax = $request->tax ?? 0;
@@ -484,7 +581,7 @@ class InvoiceController extends Controller
         $invoice->descrition = $request->descrition ?? null;
         $invoice->invoce_item = $invoiceItems; // should be already JSON from frontend
         $invoice->duedaterange = $request->pickup_time;
-        $invoice->currentdate = $request->pickup_date; 
+        $invoice->currentdate = $request->pickup_date;
         $invoice->warehouse_id = $this->user->warehouse_id;
         $invoice->driver_id = auth()->id();
         if($request->container_id){
@@ -506,15 +603,18 @@ class InvoiceController extends Controller
         if($request->transport_type){
             $invoice->transport_type = $request->transport_type;
         }
+        if($request->parcel_id){
+            $invoice->parcel_id = $request->parcel_id;
+        }
 
         $invoice->save();
 
-        $this->saveInvoiceHistory($invoice->id,"updated");
+        setting()->saveInvoiceHistory($invoice->id,"updated");
 
         return $this->sendResponse($invoice, 'Invoice updated successfully.');
-   
+
     }
-    
+
     protected function individualPayment($validated){
         // Save individual payment
         $payment = IndividualPayment::create($validated);
@@ -522,6 +622,7 @@ class InvoiceController extends Controller
         // Update the associated invoice
         if ($validated['invoice_id']) {
             $invoice = Invoice::find($validated['invoice_id']);
+            $payment->warehouse_id = $invoice->warehouse_id;
             if ($invoice) {
                 // Subtract payment from invoice balance
                 $newBalance = $invoice->balance - $validated['payment_amount'];
@@ -542,102 +643,6 @@ class InvoiceController extends Controller
         }
 
         return $payment;
-    }
-
-    protected function saveInvoiceHistory($invoice_id, $status, $orderData = [])
-    {
-        $invoice = Invoice::with(['deliveryAddress', 'pickupAddress'])->findOrFail($invoice_id);
-
-        // Create invoice history
-        InvoiceHistory::create([
-            'invoice_id' => $invoice_id,
-            'status' => $status,
-            'created_by' => auth()->id(),
-            'histry_info' => $invoice // Typo fixed from 'histry_info'
-        ]);
-
-        $parcel = null;
-        $typeMap = ['services' => 'Service', 'supplies' => 'Supply'];
-
-        $validatedData = [
-            'parcel_type' => $typeMap[strtolower($invoice->invoce_type ?? 'service')] ?? 'Service',
-            'total_amount' => $invoice->total_amount,
-            'partial_payment' => $invoice->total_amount,
-            'remaining_payment' => $invoice->total_amount,
-            'descriptions' => $invoice->descrition ?? null,
-            'weight' => $invoice->weight ?? null,
-            'destination_address' => optional($invoice->deliveryAddress)->address,
-            'destination_user_name' => optional($invoice->deliveryAddress)->full_name,
-            'destination_user_phone' => optional($invoice->deliveryAddress)->mobile_number,
-            'pickup_address_id' => optional($invoice->pickupAddress)->id,
-            'delivery_address_id' => optional($invoice->deliveryAddress)->id,
-            'pickup_time' => $invoice->duedaterange ?? null,
-            'pickup_date' => $invoice->currentdate ?? now()->format('Y-m-d'),
-            'customer_id' => $invoice->customer_id ?? auth()->id(),
-            'payment_status' => ($invoice->total_amount > 0) ? 'Partial' : 'Paid'
-        ];
-
-        if (empty($invoice->parcel_id)) {
-    
-            $validatedData['weight'] = $orderData['weight'] ?? 0;
-            $validatedData['estimate_cost'] = $orderData['estimate_cost'] ?? null;
-            $validatedData['source_address'] = $orderData['source_address'] ?? optional($invoice->pickupAddress)->address;
-
-            $parcel = Parcel::create($validatedData);
-
-            $invoice->update(['parcel_id' => $parcel->id]);
-        } else {
-            $parcel = Parcel::find($invoice->parcel_id);
-            $parcel->update($validatedData);
-        }
-        
-
-        // Save inventory items to ParcelInventorie
-        foreach ($invoice->invoce_item ?? [] as $item) {
-            if(!empty($item['supply_id'])){
-                $supply =  ParcelInventorie::updateOrCreate(
-                            [
-                                'parcel_id' => $invoice->parcel_id,
-                                'invoice_id' => $invoice->id,
-                                'inventorie_id' => $item['supply_id'],
-                            ],
-                            [
-                                'inventorie_item_quantity' => $item['qty'],
-                                'inventory_name' => $item['supply_name'],
-                                'label_qty' => $item['label_qty'],
-                                'price' => $item['price'],
-                                'ins' => $item['ins'],
-                                'tax' => $item['tax'],
-                                'discount' => $item['discount'] ?? 0,
-                                'total' => $item['total'],
-                            ]
-                        );
-                if($status != 'updated'){
-                    for ($i=0; $i < $item['label_qty']; $i++) { 
-                        store_barcode([
-                            'parcel_id' => $invoice->parcel_id,
-                            'invoice_id' => $invoice->id,
-                            'supply_id' => $supply->id,
-                        ]);
-                    }
-                }
-
-            }
-        }
-
-        // Create parcel history (if parcel was created or exists)
-        if ($parcel) {
-            ParcelHistory::create([
-                'parcel_id' => $parcel->id,
-                'created_user_id' => auth()->id(),
-                'customer_id' => $invoice->customer_id ?? optional($invoice->deliveryAddress)->user_id,
-                'warehouse_id' => $invoice->warehouse_id,
-                'status' => $status,
-                'description' => $parcel
-            ]);
-        }
-
-        return $parcel;
     }
 
 }

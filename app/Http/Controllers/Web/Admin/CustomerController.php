@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail};
+use App\Models\{User, Menu, Container, Warehouse, Country, Vehicle, UserPickupDetail, Address};
 use Spatie\Permission\Models\Role;
 use DB;
 use Illuminate\Support\Arr;
@@ -14,6 +14,7 @@ use App\Mail\RegistorMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Token;
 
 class CustomerController extends Controller
 {
@@ -25,52 +26,135 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $shipTosearch = $request->input('ShipTosearch');
         $perPage = $request->input('per_page', 10);
         $currentPage = $request->input('page', 1);
         $type = $request->input('type');
+        $warehouse_id = $request->input('warehouse_id');
 
-        // Determine role_id based on type
-        $roleId = 3; // default: customer
-        if ($type === 'ShipTo') {
-            $roleId = 5;
-        }
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
+        // Set role_id based on ShipTosearch
+        $roleId = 3;
 
         $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             })
             ->where('is_deleted', 'No')
-            ->where('role_id', $roleId) // ✅ role_id based on type
-            ->when($search, function ($q) use ($search) {
-                return $q->where(function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%$search%")
-                        ->orWhere('unique_id', 'LIKE', "%$search%")
-                        ->orWhere('email', 'LIKE', "%$search%")
-                        ->orWhere('phone', 'LIKE', "%$search%")
-                        ->orWhere('address', 'LIKE', "%$search%")
-                        ->orWhere('status', 'LIKE', "%$search%")
-                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+            ->where('role_id', $roleId)
+            ->when($search || $shipTosearch, function ($q) use ($search, $shipTosearch) {
+                $q->where(function ($query) use ($search, $shipTosearch) {
+                    if ($search) {
+                        $query->where('name', 'LIKE', "%$search%")
+                            ->orWhere('unique_id', 'LIKE', "%$search%")
+                            ->orWhere('username', 'LIKE', "%$search%")
+                            ->orWhere('email', 'LIKE', "%$search%")
+                            ->orWhere('phone', 'LIKE', "%$search%")
+                            ->orWhere('address', 'LIKE', "%$search%")
+                            ->orWhere('status', 'LIKE', "%$search%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+                    }
                 });
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
             })
             ->latest('id')
             ->paginate($perPage)
-            ->appends(['search' => $search, 'per_page' => $perPage, 'type' => $type]); // Include type in pagination
+            ->appends([
+                'search' => $search,
+                'ShipTosearch' => $shipTosearch,
+                'per_page' => $perPage,
+                'type' => $type,
+            ]);
 
         $serialStart = ($currentPage - 1) * $perPage;
 
-        if ($type == 'ShipTo') {
-            if ($request->ajax() && $type == 'ShipTo') {
-                return view('admin.customer.shipto.shiptotable', compact('customers', 'serialStart'))->render();
-            } else {
-                // dd($customers);
-                return view('admin.customer.shipto.shiptoindextable', compact('customers', 'search', 'perPage', 'serialStart'));
-            }
-        }
         if ($request->ajax()) {
-            return view('admin.customer.table', compact('customers', 'serialStart'))->render();
+            return view('admin.customer.table', compact('customers', 'serialStart', 'warehouses'))->render();
         }
 
-        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart'));
+        return view('admin.customer.index', compact('customers', 'search', 'perPage', 'serialStart', 'warehouses'));
+    }
+
+    public function ShipTo_index(Request $request)
+    {
+        $search = $request->input('search');
+        $shipTosearch = $request->input('ShipTosearch');
+        $perPage = $request->input('per_page', 10);
+        $currentPage = $request->input('page', 1);
+        $type = $request->input('type');
+        $warehouse_id = $request->input('warehouse_id');
+        $customer_id = $request->input('customer_id');
+
+        $warehouses = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
+        $CustomerLists = User::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->select('id', 'name', 'last_name')
+            ->get();
+
+        // Set role_id based on ShipTosearch
+        $roleId = 5;
+
+        $customers = User::with(['warehouse.country', 'warehouse.state', 'warehouse.city'])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->when($customer_id, function ($q) use ($customer_id) {
+                return $q->where(function ($query) use ($customer_id) {
+                    $query->where('invoice_custmore_id', $customer_id)
+                        ->orWhere('parent_customer_id', $customer_id);
+                });
+            })
+            ->where('is_deleted', 'No')
+            ->where('role_id', $roleId)
+            ->when($search || $shipTosearch, function ($q) use ($search, $shipTosearch) {
+                $q->where(function ($query) use ($search, $shipTosearch) {
+                    if ($shipTosearch) {
+                        $query->orWhere('name', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('unique_id', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('username', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('email', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('phone', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('address', 'LIKE', "%$shipTosearch%")
+                            ->orWhere('status', 'LIKE', "%$shipTosearch%")
+                            ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$shipTosearch%"]);
+                    }
+                });
+            })
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'ShipTosearch' => $shipTosearch,
+                'per_page' => $perPage,
+                'type' => $type,
+            ]);
+
+        $serialStart = ($currentPage - 1) * $perPage;
+
+        if ($request->ajax()) {
+            return view('admin.customer.shipto.shiptotable', compact('CustomerLists', 'customers', 'serialStart', 'warehouses'))->render();
+        }
+
+        return view('admin.customer.shipto.shiptoindextable', compact('CustomerLists', 'customers', 'search', 'perPage', 'serialStart', 'warehouses'));
     }
 
     /**
@@ -97,6 +181,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -107,9 +194,9 @@ class CustomerController extends Controller
                 'unique:users,email'
             ],
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength",
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -219,7 +306,9 @@ class CustomerController extends Controller
                     : null,
                 'city_id' => $validated['city'] ?? null,
                 'country_id' => $validated['country'] ?? null,
-                'full_name' => $validated['first_name'],
+                'full_name' => $validated['first_name'] . ' ' . $validated['last_name'] ?? null,
+                'last_name' => $validated['last_name'] ?? null,
+                'name' => $validated['first_name'] ?? null,
                 'pincode' => $validated['Zip_code'] ?? null,
                 'state_id' => $validated['state'] ?? null,
                 'warehouse_id' => $request->warehouse_id ?? null,
@@ -264,7 +353,7 @@ class CustomerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response 
+     * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
@@ -318,6 +407,23 @@ class CustomerController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'per_page' => $perPage]);
 
+        $PickupAddress = Address::where('user_id', $id)
+            ->when($search, function ($q) use ($search) {
+                return $q->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%")
+                        ->orWhere('unique_id', 'LIKE', "%$search%")
+                        ->orWhere('mobile_number', 'LIKE', "%$search%")
+                        ->orWhere('address', 'LIKE', "%$search%")
+                        ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$search%"]);
+                });
+            })
+            ->where('address_type', 'pickup')
+            ->where('is_deleted', 'No')
+            ->latest('id')
+            ->paginate($perPage)
+            ->appends(['search' => $search, 'per_page' => $perPage]);
+
+
 
         $Pickups = UserPickupDetail::where('parent_customer_id', $id)
             ->when($search, function ($q) use ($search) {
@@ -338,13 +444,15 @@ class CustomerController extends Controller
 
 
         if ($request->ajax() && $type == "ShipTo") {
-            return view('admin.customer.shipto.shiptotable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+            return view('admin.customer.shipto.shiptotable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
 
         if ($request->ajax() && $type == "PickupAddresss") {
-            return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
+            return view('admin.customer.pickups.pickup_addresstable', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'))->render();
         }
-        return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
+
+
+        return view('admin.customer.edit', compact('user', 'ShipToCustomer', 'PickupCustomer', 'PickupAddress', 'Pickups', 'roles', 'userRole', 'warehouses', 'countries', 'page_no', 'containers'));
     }
 
     /**
@@ -356,6 +464,9 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // return $request->all();
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // 🔹 Validation
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -367,9 +478,9 @@ class CustomerController extends Controller
                 'unique:users,email,' . $id,
             ],
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => 'nullable|digits:' . $altPhoneLength,
             'address_1' => 'required|string|max:255',
             'country' => 'required|string',
             'state' => 'required|string',
@@ -384,6 +495,7 @@ class CustomerController extends Controller
 
         $user = User::findOrFail($id);
         $imagePaths = [];
+
         // 🔹 File Upload Handling
         foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType) {
             if ($request->hasFile($imageType)) {
@@ -501,7 +613,9 @@ class CustomerController extends Controller
                 : $user->phone_2_code_id_id,
             'city_id' => $validated['city'] ?? $user->city_id,
             'country_id' => $validated['country'] ?? $user->country_id,
-            'full_name' => $validated['first_name'] ?? $user->name,
+            'full_name' => $validated['first_name'] . ' ' . $validated['last_name'] ?? $user->full_name,
+            'last_name' => $validated['last_name'] ?? $user->last_name,
+            'name' => $validated['first_name'] ?? $user->name,
             'pincode' => $validated['Zip_code'] ?? $user->pincode,
             'state_id' => $validated['state'] ?? $user->state_id,
             'warehouse_id' => $request->warehouse_id ?? $user->warehouse_id,
@@ -555,16 +669,20 @@ class CustomerController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        $driver = User::find($id);
+        $user = User::find($id);
 
-        if ($driver) {
-            $driver->status = $request->status; // 1 = Active, 0 = Deactive
-            $driver->save();
+        if ($user) {
+            $user->status = $request->status;
+            $user->save();
+
+            if ($request->status == 'Inactive') {
+                $user->tokens()->update(['revoked' => true]);
+            }
 
             return response()->json(['success' => 'Status Updated Successfully']);
         }
 
-        return response()->json(['error' => 'Driver Not Found']);
+        return response()->json(['error' => 'User Not Found']);
     }
 
     public function viewShipTo($id)
@@ -576,14 +694,18 @@ class CustomerController extends Controller
 
     public function createShipTo(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'email' => [
                 'required',
                 'email',
@@ -594,6 +716,16 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
+            'zip_code' => 'nullable|string|max:10',
+            'state_id' => 'nullable|integer',
+            'city_id' => 'nullable|integer',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
         try {
 
@@ -618,6 +750,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name' => $request->last_name ?? null,
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -644,6 +777,30 @@ class CustomerController extends Controller
 
             // 📌 Create User
             $user = User::create($userData);
+
+            insertAddress([
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id' => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' => $request->city_id ?? null, // 🟡 city_id from request
+                'country_id' => $validated['country'] ?? null,
+                'name' => $validated['first_name'],
+                'last_name' => $request->last_name ?? null, // 🟡 last_name from request (not validated)
+                'full_name' => $validated['first_name'] . ' ' . ($request->last_name ?? ''),
+                'pincode' => $request->zip_code ?? null, // 🟡 Zip_code from request
+                'state_id' => $request->state_id ?? null, // 🟡 state from request
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null, // 🟢 matching with validated
+                'long' => $validated['longitude'] ?? null, // 🟢 matching with validated
+                'type' => 'Services',
+                'default_address' => 'Yes',
+            ]);
+
+
             return redirect()
                 ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=ShipTo')
                 ->with('success', 'Ship to user created successfully.');
@@ -661,15 +818,19 @@ class CustomerController extends Controller
 
     public function editeShipTo(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         // Validation
         $validated = $request->validate([
             'country' => 'required|string',
             'company_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone," . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2," . $id,
             'email' => [
                 'required',
                 'email',
@@ -680,6 +841,13 @@ class CustomerController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language' => 'required|string',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
 
         try {
@@ -704,6 +872,7 @@ class CustomerController extends Controller
 
             $userData = [
                 'name'       => $validated['first_name'],
+                'last_name' => $request->last_name ?? null,
                 'email'      => $validated['email'],
                 'phone'      => $validated['mobile_number'],
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
@@ -725,6 +894,28 @@ class CustomerController extends Controller
             ];
 
             $user->update($userData);
+
+            updateAddress($id, [
+                'user_id' => $user->id,
+                'address' => $validated['address_1'],
+                'address_type' => 'delivery',
+                'mobile_number' => $validated['mobile_number'] ?? null,
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'mobile_number_code_id' => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id' => (int) $validated['alternative_mobile_number_code_id'],
+                'city_id' => $request->city_id ?? null, // 🟡 city_id from request
+                'country_id' => $validated['country'] ?? null,
+                'name' => $validated['first_name'],
+                'last_name' => $request->last_name ?? null, // 🟡 last_name from request (not validated)
+                'full_name' => $validated['first_name'] . ' ' . ($request->last_name ?? ''),
+                'pincode' => $request->zip_code ?? null, // 🟡 Zip_code from request
+                'state_id' => $request->state_id ?? null, // 🟡 state from request
+                'warehouse_id' => (int) $request->warehouse_id ?? null,
+                'lat' => $validated['latitude'] ?? null, // 🟢 matching with validated
+                'long' => $validated['longitude'] ?? null, // 🟢 matching with validated
+                'type' => 'Services',
+                'default_address' => 'Yes',
+            ]);
 
             return redirect()
                 ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=ShipTo')
@@ -769,13 +960,17 @@ class CustomerController extends Controller
 
     public function createPickupAddress(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
+
         $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required',
-            'mobile_number' => 'required|digits:10|unique:users,phone',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'alternative_mobile_number_code_id' => 'required',
-            'alternative_mobile_number' => 'nullable|max:10',
+            'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'address_1' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -783,40 +978,72 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
         try {
             $randomPassword = Str::random(8); // Random password of 8 characters
             $hashedPassword = Hash::make($randomPassword); // Hashing password
 
-            $userData = [
-                'name'       => $validated['first_name'],
-                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
-                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
-                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
-                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
-                'address'    => $validated['address_1'],
-                'address_2'    => $request->address_2,
-                'latitude'   => $validated['latitude'],
-                'longitude'  => $validated['longitude'],
-                'company_name' => $validated['company_name'],
-                'country_id'   => $validated['country'],
-                'state_id'   => $validated['city'],
-                'city_id'   => $validated['state'],
-                'pincode'   => $validated['Zip_code'],
-                'password'     => $hashedPassword,
-                'signup_type'  => 'for_admin',
-                'role'  => 'pickup_to_customer',
-                'role_id'  => 6,
-                'apartment' => $request->apartment ?? null,
-                'parent_customer_id' => $request->parent_customer_id ?? null,
+            // $userData = [
+            //     'name'       => $validated['first_name'],
+            //     'last_name'        => $validated['last_name'],
+            //     'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+            //     'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+            //     'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+            //     'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+            //     'address'    => $validated['address_1'],
+            //     'address_2'    => $request->address_2,
+            //     'latitude'   => $validated['latitude'],
+            //     'longitude'  => $validated['longitude'],
+            //     'company_name' => $validated['company_name'],
+            //     'country_id'   => $validated['country'],
+            //     'state_id'   => $validated['city'],
+            //     'city_id'   => $validated['state'],
+            //     'pincode'   => $validated['Zip_code'],
+            //     'password'     => $hashedPassword,
+            //     'signup_type'  => 'for_admin',
+            //     'role'  => 'pickup_to_customer',
+            //     'role_id'  => 6,
+            //     'apartment' => $request->apartment ?? null,
+            //     'parent_customer_id' => $request->parent_customer_id ?? null,
 
+            // ];
+
+            $userAddressData = [
+                'address'        => $validated['address_1'],
+                'address_type' => 'pickup',
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'city_id' => $validated['city'],
+                'country_id' => $validated['country'],
+                'mobile_number' => $validated['mobile_number'],
+                'pincode' => $validated['Zip_code'],
+                'state_id' => $validated['state'],
+                'lat' => $validated['latitude'],
+                'long' => $validated['longitude'],
+                'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id'   => (int) $validated['alternative_mobile_number_code_id'],
+                'apartment' => $request->apartment ?? null,
             ];
 
+            $userAddressData['user_id'] = $request->parent_customer_id;
+
+            $userAddressData['name'] = trim($validated['first_name'] ?? '');
+            $userAddressData['last_name'] = trim($validated['last_name'] ?? '');
+            $userAddressData['full_name'] = $validated['first_name'] . ' ' . ($validated['last_name'] ?? '');
+
             // 📌 Create User
-            $user = User::create($userData);
+            // $user = User::create($userData);
+            $address = Address::create($userAddressData);
+
             return redirect()
                 ->to(route('admin.customer.edit', $request->parent_customer_id) . '?type=PickupAddresss')
-                ->with('success', 'Ship to user created successfully.');
+                ->with('success', 'Pickup to user created successfully.');
         } catch (\Throwable $th) {
             dd($th);
             return back()->withErrors(['error' => $th->getMessage()]);
@@ -825,36 +1052,39 @@ class CustomerController extends Controller
 
     public function updatePickupAddress($id)
     {
-        $user = User::find($id);
+        $user = Address::find($id);
         return view('admin.customer.pickups.updatepickup_address', compact('user', 'id'));
     }
 
     public function destroyPickupAddress($id)
     {
 
-        $user = User::find($id);
+        $user = Address::find($id);
 
         if ($user) {
             $user->update(['is_deleted' => "Yes"]); // is_deleted ko 1 set kar rahe hain
             return redirect()
-                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=PickupAddresss')
+                ->to(route('admin.customer.edit', $user->user_id) . '?type=PickupAddresss')
                 ->with('success', 'Pickup address delete successfully.');
         }
         return redirect()
-            ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=PickupAddresss')
+            ->to(route('admin.customer.edit', $user->user_id) . '?type=PickupAddresss')
             ->with('error', 'Pickup address not found');
     }
 
     public function editPickupAddress(Request $request, $id)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+        $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // Validation
         $validated = $request->validate([
-            'company_name' => 'required|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'mobile_number_code_id' => 'required|exists:countries,id',
-            'mobile_number' => 'required|digits:10|unique:users,phone,' . $id,
+            'mobile_number' => 'required|digits:' . $phoneLength . '|unique:users,phone,' . $id,
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
-            'alternative_mobile_number' => 'nullable|digits:10',
+            'alternative_mobile_number' => 'nullable|digits:' . $altPhoneLength . '|unique:users,phone,' . $id,
             'address_1' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -862,36 +1092,64 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
+        ], [
+            'mobile_number.required' => 'Cellphone is required.',
+            'mobile_number.digits' => 'Cellphone must be exactly ' . $phoneLength . ' digits.',
+            'mobile_number.unique' => 'This cellphone is already in use.',
+
+            'alternative_mobile_number.digits' => 'Telephone number must be exactly ' . $altPhoneLength . ' digits.',
+            'alternative_mobile_number.unique' => 'This telephone number is already in use.',
         ]);
 
         try {
-            $user = User::findOrFail($id);
+            //$user = User::findOrFail($id);
+            $address = Address::findOrFail($id);
 
-            $userData = [
-                'name'       => $validated['first_name'],
-                'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
-                'phone_2'    => $validated['alternative_mobile_number'] ?? null,
-                'phone_code_id'        => (int) $validated['mobile_number_code_id'],
-                'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
-                'address'    => $validated['address_1'],
-                'address_2'    => $request->address_2,
-                'latitude'   => $validated['latitude'],
-                'longitude'  => $validated['longitude'],
-                'company_name' => $validated['company_name'],
-                'country_id'   => $validated['country'],
-                'state_id'   => $validated['city'],
-                'city_id'   => $validated['state'],
-                'pincode'   => $validated['Zip_code'],
-                'signup_type'  => 'for_admin',
+            // $userData = [
+            //     'name'       => $validated['first_name'],
+            //     'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
+            //     'phone_2'    => $validated['alternative_mobile_number'] ?? null,
+            //     'phone_code_id'        => (int) $validated['mobile_number_code_id'],
+            //     'phone_2_code_id_id'   => (int) $validated['alternative_mobile_number_code_id'],
+            //     'address'    => $validated['address_1'],
+            //     'address_2'    => $request->address_2,
+            //     'latitude'   => $validated['latitude'],
+            //     'longitude'  => $validated['longitude'],
+            //     'company_name' => $validated['company_name'],
+            //     'country_id'   => $validated['country'],
+            //     'state_id'   => $validated['city'],
+            //     'city_id'   => $validated['state'],
+            //     'pincode'   => $validated['Zip_code'],
+            //     'signup_type'  => 'for_admin',
+            //     'apartment' => $request->apartment ?? null,
+            //     'parent_customer_id' => $request->parent_customer_id ?? null,
+
+            // ];
+
+            $userAddressData = [
+                'address'        => $validated['address_1'],
+                'address_type' => 'pickup',
+                'alternative_mobile_number' => $validated['alternative_mobile_number'] ?? null,
+                'city_id' => $validated['city'],
+                'country_id' => $validated['country'],
+                'mobile_number' => $validated['mobile_number'],
+                'pincode' => $validated['Zip_code'],
+                'state_id' => $validated['state'],
+                'lat' => $validated['latitude'],
+                'long' => $validated['longitude'],
+                'mobile_number_code_id'        => (int) $validated['mobile_number_code_id'],
+                'alternative_mobile_number_code_id'   => (int) $validated['alternative_mobile_number_code_id'],
                 'apartment' => $request->apartment ?? null,
-                'parent_customer_id' => $request->parent_customer_id ?? null,
-
             ];
 
-            $user->update($userData);
+            $userAddressData['name'] = trim($validated['first_name'] ?? '');
+            $userAddressData['last_name'] = trim($validated['last_name'] ?? '');
+            $userAddressData['full_name'] = $validated['first_name'] . ' ' . ($validated['last_name'] ?? '');
+
+            $address->update($userAddressData);
 
             return redirect()
-                ->to(route('admin.customer.edit', $user->parent_customer_id) . '?type=PickupAddresss')
+                ->to(route('admin.customer.edit', $address->user_id) . '?type=PickupAddresss')
                 ->with('success', 'Pickup address updated successfully.');
         } catch (\Throwable $th) {
             dd($th);
@@ -945,23 +1203,23 @@ class CustomerController extends Controller
 
 
         // 1. Pickup Address Update (users table)
-        $pickupUser = User::find($request->pickup_address_id);
+        $pickupUser = Address::find($request->pickup_address_id);
         if ($pickupUser) {
             $pickupUser->update([
-                'unique_id' => $request->unique_id,
                 'name' => $request->pickup_name,
-                'longitude' => $request->Pickup_longitude,
+                'last_name' => $request->pickup_last_name,
+                'full_name' => $request->pickup_name . ' ' . $request->pickup_last_name,
+                'lat' => $request->Pickup_latitude,
+                'long' => $request->Pickup_longitude,
                 'address' => $request->address_1,
-                'address_2' => $request->pickup_address_2,
                 'apartment' => $request->pickup_apartment,
                 'city_id' => $request->city,
                 'state_id' => $request->state,
                 'pincode' => $request->zipcode,
-                'phone_code_id' => $request->phone_code_id,
-                'phone' => $request->Pickup_cell_phone,
-                'phone_2_code_id_id' => $request->phone_2_code_id_id,
-                'phone_2' => $request->Pickup_telePhone,
-                'latitude' => $request->Pickup_latitude,
+                'mobile_number_code_id' => $request->phone_code_id,
+                'mobile_number' => $request->Pickup_cell_phone,
+                'alternative_mobile_number_code_id' => $request->phone_2_code_id_id,
+                'alternative_mobile_number' => $request->Pickup_telePhone,
             ]);
         }
 
@@ -997,9 +1255,9 @@ class CustomerController extends Controller
             'Zone' => $request->zone,
             'Driver_id' => $request->Driver_id, // update later if needed
             'Note' => $request->note,
-            'Box_quantity' => $request->Box_quantity,
-            'Barrel_quantity' => $request->Barrel_quantity,
-            'Tapes_quantity' => $request->Tapes_quantity,
+            'Box_quantity' => $request->Box_quantity ?? 0,
+            'Barrel_quantity' => $request->Barrel_quantity ?? 0,
+            'Tapes_quantity' => $request->Tapes_quantity ?? 0,
             'pickup_type' => $request->pickup_type,
             'pickup_status_type' => $request->pickup_status_type,
         ]);
@@ -1101,9 +1359,9 @@ class CustomerController extends Controller
                 'Zone' => $request->zone,
                 'Driver_id' => $request->Driver_id,
                 'Note' => $request->note,
-                'Box_quantity' => $request->Box_quantity,
-                'Barrel_quantity' => $request->Barrel_quantity,
-                'Tapes_quantity' => $request->Tapes_quantity,
+                'Box_quantity' => $request->Box_quantity ?? 0,
+                'Barrel_quantity' => $request->Barrel_quantity ?? 0,
+                'Tapes_quantity' => $request->Tapes_quantity ?? 0,
                 'pickup_type' => $request->pickup_type,
                 'pickup_status_type' => $request->pickup_status_type,
             ]);

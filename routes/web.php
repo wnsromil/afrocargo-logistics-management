@@ -38,11 +38,8 @@ use App\Http\Controllers\Web\Admin\{
     CustomReportController,
     VerifyLicenseController,
     SupplyInventoryController,
-    RoRoShippingController,
-    RoRoSheduelController,
-    InspectionScheduleController,
-    VehicleLoadUnloadController,
-    CarShippingLeadsController
+    OrderStatusManage,
+    EODController
 };
 use App\Mail\RegistorMail;
 
@@ -166,7 +163,7 @@ Route::get('/VerifyLicense', function () {
 });
 
 
-
+Route::get('/state-city-insert', [AutoCallBatchController::class, 'insertStatesAndCities'])->name('admin.insertStatesAndCities');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -225,17 +222,37 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('vehicle-load-unload', VehicleLoadUnloadController::class);
         Route::resource('carShippingLeads', CarShippingLeadsController::class);
         Route::resource('lading_details', LadingDetailsController::class);
+        Route::resource('end_of_day', EODController::class);
+
+        // EOD
+        Route::get('invoice-index', [EODController::class, 'Invoice_index'])->name('end_of_day.Invoice_index');
+        Route::get('supply-index', [EODController::class, 'Supply_index'])->name('end_of_day.Supply_index');
+        Route::get('payments-index', [EODController::class, 'Payments_index'])->name('end_of_day.Payments_index');
+        Route::get('expenses-index', [EODController::class, 'Expenses_index'])->name('end_of_day.Expenses_index');
+        Route::get('void-index', [EODController::class, 'Void_index'])->name('end_of_day.Void_index');
+        Route::get('deposit-index', [EODController::class, 'Deposit_index'])->name('end_of_day.Deposit_index');
+        Route::get('print-index', [EODController::class, 'Print_index'])->name('end_of_day.Print_index');
+
+
         Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
-        Route::get('vehicle-load-unload/load_unload/{id}', [VehicleLoadUnloadController::class, 'loading_unloading'])->name('vehicle-load-unload.load_unload');
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
+        Route::get('getOrderList', [InvoiceController::class, 'getOrderList'])->name('getOrderList');
         Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
         Route::post('saveIndividualPayment', [InvoiceController::class, 'saveIndividualPayment'])->name('saveIndividualPayment');
         Route::post('updateNote', [InvoiceController::class, 'updateNote'])->name('invoice.updateNote');
         Route::post('updateClaim', [InvoiceController::class, 'updateClaim'])->name('invoice.updateClaim');
+        Route::get('invoices/trashed/list', [InvoiceController::class, 'trashed'])->name('invoice.trashed');
+        Route::get('invoices/restore/{id}', [InvoiceController::class, 'restore'])->name('invoice.restore');
+        Route::delete('invoices/delete/{id}', [InvoiceController::class, 'delete'])->name('invoice.delete');
+        Route::post('/invoice-create-order-details-service', [InvoiceController::class, 'orderDetailsCreateInvoice']);
+        Route::delete('invoices/deleteIndividualPayment/{id}', [InvoiceController::class, 'deleteIndividualPayment'])->name('invoice.deleteIndividualPayment');
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
+        Route::get('transferHub-history', [HubTrackingController::class, 'transfer_history_hub'])->name('transfer.hub.history.list');
+        Route::get('receivedHub-history', [HubTrackingController::class, 'received_history_hub'])->name('received.hub.history.list');
+
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
         Route::get('receivedOrders/{id}', [HubTrackingController::class, 'received_orders_show'])->name('received.received_orders_show');
         Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');
@@ -244,11 +261,14 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::post('drivers/status/{id}', [DriversController::class, 'changeStatus'])->name('drivers.status');
         Route::get('drivers/schedule/{id}', action: [DriversController::class, 'schedule'])->name('drivers.schedule');
         Route::get('drivers/schedule-show/{id}', [DriversController::class, 'scheduleshow'])->name('drivers.scheduleshow');
-        Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.destroy');
+        Route::get('drivers/schedule_destroy/{id}', [DriversController::class, 'scheduleDestroy'])->name('drivers.schedule.delete');
         Route::post('vehicle/status/{id}', [VehicleController::class, 'changeStatus'])->name('vehicle.status');
 
         // Customer
         Route::post('customer/status/{id}', [CustomerController::class, 'changeStatus'])->name('customer.status');
+
+        // Customer Ship To
+        Route::get('customer-shipTo', [CustomerController::class, 'ShipTo_index'])->name('customer.shipToIndex');
 
         // Customer Ship To Address
         Route::get('/view-shipTo/{id}', [CustomerController::class, 'viewShipTo'])->name('customer.viewShipTo');
@@ -298,6 +318,16 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
 
         // Customer
         Route::post('signature/status/{id}', [SignatureController::class, 'changeSignatureStatus'])->name('signature.status');
+        Route::post('/statusUpdate_self', [OrderStatusManage::class, 'statusUpdate_self'])->name('statusUpdate_self');
+
+        // Notification
+        Route::post('notification_schedule/warehouseManagerStore', [NotificationScheduleController::class, 'warehouseManagerStore'])->name('notification_schedule.warehouseManagerStore');
+        Route::post('notification_schedule/DriverStore', [NotificationScheduleController::class, 'DriverStore'])->name('notification_schedule.DriverStore');
+        Route::post('notification_schedule/CustomerStore', [NotificationScheduleController::class, 'CustomerStore'])->name('notification_schedule.CustomerStore');
+
+        //
+
+        Route::get('/admin/advance-reports/export', [AdvanceReportsController::class, 'exportReports'])->name('advance.reports.export');
 
 
         Route::get('/orderdetails', function () {

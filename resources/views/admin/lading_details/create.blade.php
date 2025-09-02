@@ -350,7 +350,9 @@
     <hr>
     <div class="px-2">
         <button class="btn btn-outline-secondary btn-sm" onclick="redirectTo('{{ route('admin.lading_details.index') }}')" data-bs-dismiss="modal">Cancel</button>
+         @can('has-dynamic-permission', 'bill_of_landing_details_list.edit')
         <button class="btn btn-primary btn-sm" id="saveform">Save</button>
+        @endcan
     </div>
 
     @section('script')

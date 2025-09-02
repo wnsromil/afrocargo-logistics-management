@@ -29,6 +29,7 @@ class ExpensesController extends Controller
         // Get input parameters
         $search = $request->input('search');
         $warehouse_id = $request->input('warehouse_id');
+        $user_id = $request->input('user_id');
         $category = $request->input('category');
         $type = $request->input('type');
 
@@ -53,7 +54,7 @@ class ExpensesController extends Controller
         }
 
         // Start building the query
-        $query = Expense::with(['creatorUser', 'warehouse'])
+        $query = Expense::with(['creatorUser', 'warehouse'])->where('status', 'Active')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
             });
@@ -87,6 +88,10 @@ class ExpensesController extends Controller
             $query->where('warehouse_id', $warehouse_id);
         }
 
+         if ($user_id) {
+            $query->where('creator_user_id', $user_id);
+        }
+
         // Apply date range filter
         if (!empty($start_date) && !empty($end_date)) {
             $query->whereBetween('date', [$start_date, $end_date]);
@@ -115,9 +120,15 @@ class ExpensesController extends Controller
             })
             ->get();
 
+        $users = User::whereIn('role_id', [4, 2])
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('warehouse_id', $this->user->warehouse_id);
+            })
+            ->get();
+
         // Return view or AJAX response
         if ($request->ajax()) {
-            return view('admin.expenses.table', compact('expenses', 'serialStart', 'warehouses'))->render();
+            return view('admin.expenses.table', compact('expenses', 'serialStart', 'warehouses', 'users'))->render();
         }
 
         return view('admin.expenses.index', compact(
@@ -128,7 +139,8 @@ class ExpensesController extends Controller
             'dateRange',
             'category',
             'perPage',
-            'serialStart'
+            'serialStart',
+            'users'
         ));
     }
 
@@ -247,7 +259,7 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       // dd($request->all());
+        // dd($request->all());
         $request->validate([
             'edit_expense_date' => 'required|date',
             'warehouse' => 'required|exists:warehouses,id',
@@ -281,8 +293,8 @@ class ExpensesController extends Controller
             $filePath = $file->storeAs('uploads/expenses', $filename, 'public'); // Store in 's
             $expense->img = 'storage/' . $filePath;
         }
-        if($request->delete_img == "Yes"){
-           $expense->img = null;
+        if ($request->delete_img == "Yes") {
+            $expense->img = null;
         }
 
         $expense->save();
@@ -296,21 +308,15 @@ class ExpensesController extends Controller
      */
     public function destroy(string $id)
     {
-        $parcel = Parcel::find($id);
+        $signature = Expense::find($id);
 
-        ParcelHistory::create([
-            'parcel_id' => $parcel->id,
-            'created_user_id' => $this->user->id,
-            'customer_id' => $parcel['customer_id'],
-            'warehouse_id' => $parcel['warehouse_id'],
-            'status' => 'Deleted',
-            'parcel_status' => 'Deleted',
-            'description' => collect($parcel)
-        ]);
+        if ($signature) {
+            $signature->status = 'Inactive'; // ya 0, agar status boolean/int ho
+            $signature->save();
+        }
 
-        $parcel->delete();
         return redirect()->route('admin.expenses.index')
-            ->with('success', 'Order deleted successfully');
+            ->with('success', 'Expense deleted successfully');
     }
 
     public function changeStatus(Request $request, $id)

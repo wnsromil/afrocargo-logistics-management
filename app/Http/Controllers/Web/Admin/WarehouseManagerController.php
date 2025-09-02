@@ -25,11 +25,22 @@ class WarehouseManagerController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default is 10
         $currentPage = $request->input('page', 1);
+        $warehouse_id = $request->input('warehouse_id');
+        $warehouses_name = Warehouse::where('status', 'Active')
+            ->when($this->user->role_id != 1, function ($q) {
+                return $q->where('id', $this->user->warehouse_id);
+            })
+            ->select('id', 'warehouse_name')
+            ->get();
+
         $warehouses = User::when($this->user->role_id != 1, function ($q) {
             return $q->where('warehouse_id', $this->user->warehouse_id);
         })
             ->with('warehouse')
             ->where('role_id', 2)
+            ->when($warehouse_id, function ($q) use ($warehouse_id) {
+                return $q->where('warehouse_id', $warehouse_id);
+            })
             ->when($search, function ($q) use ($search) {
                 return $q->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
@@ -47,10 +58,10 @@ class WarehouseManagerController extends Controller
             ->appends(['search' => $search, 'per_page' => $perPage]);
         $serialStart = ($currentPage - 1) * $perPage;
         if ($request->ajax()) {
-            return view('admin.warehouse_manager.table', compact('warehouses', 'serialStart'));
+            return view('admin.warehouse_manager.table', compact('warehouses_name', 'warehouses', 'serialStart'));
         }
 
-        return view('admin.warehouse_manager.index', compact('warehouses', 'serialStart', 'search', 'perPage'));
+        return view('admin.warehouse_manager.index', compact('warehouses_name', 'warehouses', 'serialStart', 'search', 'perPage'));
     }
 
     /**
@@ -74,12 +85,14 @@ class WarehouseManagerController extends Controller
      */
     public function store(Request $request)
     {
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
+
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required|exists:warehouses,id', // Ensure ID exists
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'address_1' => 'required|string|max:500',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone",
             'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'nullable|in:Active,Inactive',
         ]);
@@ -173,14 +186,14 @@ class WarehouseManagerController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
         // Custom validation rules
         $validator = Validator::make($request->all(), [
             'warehouse_name' => 'required',
             'manager_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id, // Ignore current user ID
             'address_1' => 'required|string|max:500',
-            'mobile_number' => 'required|string|max:15',
+            'mobile_number' => "required|digits:$phoneLength|unique:users,phone,$id",
             'mobile_number_code_id' => 'required|exists:countries,id',
             'status' => 'in:Active,Inactive',
 
@@ -196,6 +209,35 @@ class WarehouseManagerController extends Controller
         // Find the warehouse by ID
         $warehouse = User::find($id);
 
+        // Check if email is changing before update
+        $emailChanged = $warehouse->email !== $request->email;
+
+        //if mail changed than send new mail with new credentials
+        if ($emailChanged) {
+            // Generate random password
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
+            // Update password
+            $warehouse->password = $hashedPassword;
+            $warehouse->save();
+
+            // Prepare Email Data
+            $manager_name   = $request->manager_name;
+            $email          = $request->email;
+            $mobileNumber   = $request->mobile_number;
+            $password       = $randomPassword;
+            $loginUrl       = route('login');
+            $warehouse_code = $warehouse->warehouse_id ?? ''; // adjust as per your schema
+
+            if (!empty($email)) {
+                // Send Email
+                Mail::to($email)->send(
+                    new WarehousemangerMail($manager_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code)
+                );
+            }
+        }
+
         // Update warehouse with validated data
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,
@@ -203,7 +245,7 @@ class WarehouseManagerController extends Controller
             'name' => $request->manager_name,
             'address' => $request->address_1,
             'email' => $request->email,
-             'phone' => $request->mobile_number,
+            'phone' => $request->mobile_number,
             'phone_code_id'  => $request->mobile_number_code_id,
             'country_code' => +0,
             'status' => $request->status ?? 'Active', // Status ko handle karna

@@ -9,6 +9,15 @@
             <p class="subhead pheads">Update Pickup Address</p>
         </div>
     </x-slot>
+       {{-- @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)sss
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif --}}
    <form action="{{ route('admin.customer.editPickupAddress', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -21,14 +30,14 @@
                         <input type="text" class="form-control inp" style="background: #ececec;"
                             placeholder="" value="{{ $user->unique_id }}" readonly>    
                     </div>
-                    <div class="col-md-12 mb-2">
+                    {{-- <div class="col-md-12 mb-2">
                         <label class="foncolor" for="company_name">Company</label>
                         <input type="text" name="company_name" class="form-control inp" placeholder="Enter Company Name"
                                value="{{ old('company_name', $user->company_name) }}">
                         @error('company_name')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-md-12 mb-2">
                         <label class="foncolor" for="fullName">First Name <i class="text-danger">*</i></label>
                         <input type="text" name="first_name" class="form-control inp" placeholder="Enter First Name"
@@ -53,18 +62,19 @@
                                     @foreach ($coutry as $key => $item)
                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                 data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                            {{ $item->id == old('mobile_number_code_id', $user->phone_code_id) ? 'selected' : '' }}>
+                                            data-length="{{ $item->phone_length ?? 10 }}"
+                                                {{ $item->id == old('mobile_number_code_id', $user->mobile_number_code_id) ? 'selected' : '' }}>
                                             {{ $item->name }} +{{ $item->phonecode }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
                             <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
-                                   name="mobile_number" value="{{ old('mobile_number', $user->phone) }}"
-                                   oninput="this.value = this.value.slice(0, 10)">
+                                   name="mobile_number" value="{{ old('mobile_number', $user->mobile_number) }}"
+                                   >
                         </div>
                         @error('mobile_number')
-                            <small class="text-danger">The Cellphone field is required.</small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-12 mb-2 alternate_mobile_no">
@@ -75,16 +85,20 @@
                                     @foreach ($coutry as $key => $item)
                                         <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
                                                 data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                            {{ $item->id == old('alternative_mobile_number_code_id', $user->phone_2_code_id_id) ? 'selected' : '' }}>
+                                           data-length="{{ $item->phone_length ?? 10 }}"
+                                                {{ $item->id == old('alternative_mobile_number_code_id', $user->alternative_mobile_number_code_id) ? 'selected' : '' }}>
                                             {{ $item->name }} +{{ $item->phonecode }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
                             <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No. 2"
-                                   name="alternative_mobile_number" value="{{ old('alternative_mobile_number', $user->phone_2) }}"
-                                   oninput="this.value = this.value.slice(0, 10)">
+                                   name="alternative_mobile_number" value="{{ old('alternative_mobile_number', $user->alternative_mobile_number) }}"
+                                   >
                         </div>
+                        @error('alternative_mobile_number')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <input type="hidden" id="country_code_2" name="country_code_2">
                     <div class="col-md-12 mb-2">
@@ -94,10 +108,10 @@
                            <small class="text-danger">The address field is required.</small>
                         @enderror
                     </div>
-                    <div class="col-md-12 mb-2">
+                    {{-- <div class="col-md-12 mb-2">
                         <label class="foncolor" for="Address_2">Address 2</label>
                         <input type="text" name="address_2" value="{{ old('address_2', $user->address_2) }}" class="form-control inp" placeholder="Enter Address 2">
-                    </div>
+                    </div> --}}
                     <div class="col-md-12 mb-2">
                         <label class="foncolor" for="Apartment">Apartment</label>
                         <input type="text" name="apartment" value="{{ old('apartment', $user->apartment) }}" class="form-control inp" placeholder="Enter Apartment">
@@ -110,13 +124,13 @@
                 <div class="row">
                     <div class="col-md-12 mb-2">
                         <label class="foncolor" for="Latitude">Latitude</label>
-                        <input type="text" name="latitude" value="{{ old('latitude', $user->latitude) }}"
+                        <input type="text" name="latitude" value="{{ old('latitude', $user->lat) }}"
                                class="form-control inp inputbackground" placeholder="0" readonly
                                style="background: #ececec;">
                     </div>
                     <div class="col-md-12 mb-2">
                         <label class="foncolor" for="Longitude">Longitude</label>
-                        <input type="text" name="longitude" value="{{ old('longitude', $user->longitude) }}"
+                        <input type="text" name="longitude" value="{{ old('longitude', $user->long) }}"
                                class="form-control inp inputbackground" placeholder="0" readonly
                                style="background: #ececec;">
                     </div>

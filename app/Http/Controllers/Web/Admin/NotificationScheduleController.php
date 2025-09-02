@@ -17,6 +17,7 @@ use App\Models\{
     HubTracking,
     Notification
 };
+use App\Jobs\SendFirebaseNotification;
 
 class NotificationScheduleController extends Controller
 {
@@ -29,7 +30,7 @@ class NotificationScheduleController extends Controller
         $perPage = $request->input('per_page', 10); // Default 10
         $currentPage = $request->input('page', 1); // Current page number
 
-        $notifications = Notification::when($query, function ($q) use ($query) {
+        $notifications = Notification::where('type', 'System')->when($query, function ($q) use ($query) {
             return $q->where(function ($q) use ($query) {
                 $q->where('title', 'LIKE', "%$query%")
                     ->orWhere('message', 'LIKE', "%$query%")
@@ -96,12 +97,177 @@ class NotificationScheduleController extends Controller
             'type' => 'System',
         ]);
 
-        // 🔁 Increment notification_read for all users by +1
-        User::query()->increment('notification_read', 1);
+        $users = User::all();
+
+        foreach ($users as $user) {
+            if (!empty($user->firebase_token)) {
+                SendFirebaseNotification::dispatch(
+                    $user->id,
+                    $user->firebase_token,
+                    $request->notification_title,
+                    $request->notification_message
+                );
+            }
+
+            if ($user->role_id == 2) {
+                User::where('id', $user->id)->increment('notification_read', 1);
+            }
+        }
+
 
         // Redirect with success message
         return redirect()->route('admin.notification_schedule.index')
             ->with('success', 'Notification created and sent to all users!');
+    }
+    
+
+    public function warehouseManagerStore(Request $request)
+    {
+
+        // Validate request
+        $request->validate([
+            'notification_title' => 'required|string|max:255',
+            'notification_message' => 'required|string',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'warehouse_manager_id' => 'required',
+        ]);
+
+        // Get users based on warehouse_manager_id
+        if ($request->warehouse_manager_id === 'All Warehouse Managers') {
+            // Role 2 means warehouse manager
+            // $users = User::where('role_id', 2)->whereNotNull('firebase_token')->get();
+            $users = User::where('role_id', 2)->where('warehouse_id', $request->warehouse_id)->get();
+        } else {
+            // Validate user exists
+            $request->validate([
+                'warehouse_manager_id' => 'exists:users,id',
+            ]);
+
+            $user = User::where('id', $request->warehouse_manager_id)->first();
+            $users = $user ? collect([$user]) : collect(); // wrap in collection
+        }
+
+        // Create notifications and dispatch jobs
+
+        Notification::create([
+            'user_id' => is_numeric($request->warehouse_manager_id) ? $request->warehouse_manager_id : null,
+            'warehouse_id' => $request->warehouse_id,
+            'title' => $request->notification_title,
+            'message' => $request->notification_message,
+            'notification_for' => is_numeric($request->warehouse_manager_id) ? null : 'All Warehouse Managers',
+            'role' => 'Warehouse Manager',
+            'type' => 'System',
+        ]);
+
+        foreach ($users as $user) {
+            User::where('id', $user->id)->increment('notification_read', 1);
+        }
+
+        // Redirect with success message
+        return redirect()->route('admin.notification_schedule.index')
+            ->with('success', 'Notification created and sent successfully!');
+    }
+
+    public function DriverStore(Request $request)
+    {
+        // Validate request
+        $request->validate([
+            'notification_title' => 'required|string|max:255',
+            'notification_message' => 'required|string',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'driver_id' => 'required',
+        ]);
+
+        // Get users based on driver_id
+        if ($request->driver_id === 'All Warehouse Drivers') {
+            // Role 3 means driver (assuming role_id 3 is for drivers)
+            $users = User::where('role_id', 4)->where('warehouse_id', $request->warehouse_id)->get();
+        } else {
+            // Validate user exists
+            $request->validate([
+                'driver_id' => 'exists:users,id',
+            ]);
+
+            $user = User::where('id', $request->driver_id)->first();
+            $users = $user ? collect([$user]) : collect(); // wrap in collection
+        }
+
+        // Create notifications and dispatch jobs
+        Notification::create([
+            'user_id' => is_numeric($request->driver_id) ? $request->driver_id : null,
+            'warehouse_id' => $request->warehouse_id,
+            'title' => $request->notification_title,
+            'message' => $request->notification_message,
+            'notification_for' => is_numeric($request->driver_id) ? null : 'All Warehouse Drivers',
+            'role' => 'Driver',
+            'type' => 'System',
+        ]);
+
+        foreach ($users as $user) {
+            // User::where('id', $user->id)->increment('notification_read', 1);
+            SendFirebaseNotification::dispatch(
+                $user->id,                 // 👈 user id
+                $user->firebase_token,
+                $request->notification_title,
+                $request->notification_message
+            );
+        }
+
+        // Redirect with success message
+        return redirect()->route('admin.notification_schedule.index')
+            ->with('success', 'Notification created and sent successfully!');
+    }
+
+    public function CustomerStore(Request $request)
+    {
+        // Validate request
+        $request->validate([
+            'notification_title' => 'required|string|max:255',
+            'notification_message' => 'required|string',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'customer_id' => 'required',
+            'customer_container_id' => 'nullable'
+        ]);
+
+        // Get users based on customer_id
+        if ($request->customer_id === 'All Warehouse Customers') {
+            // Role 4 means customer (assuming role_id 4 is for customers)
+            $users = User::where('role_id', 3)->where('warehouse_id', $request->warehouse_id)->get();
+        } else {
+            // Validate user exists
+            $request->validate([
+                'customer_id' => 'exists:users,id',
+            ]);
+
+            $user = User::where('id', $request->customer_id)->first();
+            $users = $user ? collect([$user]) : collect(); // wrap in collection
+        }
+
+        // Create notifications and dispatch jobs
+        Notification::create([
+            'user_id' => is_numeric($request->customer_id) ? $request->customer_id : null,
+            'container_id' => $request->customer_container_id ?? null,
+            'warehouse_id' => $request->warehouse_id,
+            'title' => $request->notification_title,
+            'message' => $request->notification_message,
+            'notification_for' => is_numeric($request->customer_id) ? null : 'All Warehouse Customers',
+            'role' => 'Customer',
+            'type' => 'System',
+        ]);
+
+        foreach ($users as $user) {
+            //  User::where('id', $user->id)->increment('notification_read', 1);
+            SendFirebaseNotification::dispatch(
+                $user->id,                 // 👈 user id
+                $user->firebase_token,
+                $request->notification_title,
+                $request->notification_message
+            );
+        }
+
+        // Redirect with success message
+        return redirect()->route('admin.notification_schedule.index')
+            ->with('success', 'Notification created and sent successfully!');
     }
 
     /**

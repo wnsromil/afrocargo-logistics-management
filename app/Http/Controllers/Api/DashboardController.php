@@ -12,9 +12,10 @@ use App\Models\{
     Country,
     Vehicle,
     Parcel,
+    Expense,
     ContainerHistory
 };
-
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -38,17 +39,20 @@ class DashboardController extends Controller
 
         $totalCustomers = User::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
-        })->count();
+        })
+            ->where('role_id', 3)
+            ->count();
 
         $newCustomers = User::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })
+            ->where('role_id', 3)
             ->whereDate('created_at', today())
             ->count();
 
         $totalDrivers = User::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
-        })
+           })
             ->where('role_id', 4) // ✅ Only role_id = 4 (driver)
             ->count();
 
@@ -62,6 +66,14 @@ class DashboardController extends Controller
         $totalEarnings = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
         })->sum('total_amount');
+
+        $totalExpenses = Expense::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })->where('category', 'Expense')->sum('amount');
+
+        $todaysExpenses = Expense::when($warehouseId, function ($q) use ($warehouseId) {
+            return $q->where('warehouse_id', $warehouseId);
+        })->where('category', 'Expense')->whereDate('date', Carbon::today())->sum('amount');
 
         $todayEarnings = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
             return $q->where('warehouse_id', $warehouseId);
@@ -109,7 +121,7 @@ class DashboardController extends Controller
             return $query->where('arrived_warehouse_id', $warehouseId);
         })->with(['container', 'driver'])
             ->where('type', 'Arrived')
-            ->where('status', 5)
+            ->where('arrived_container', 'No')
             ->get();
 
         $totalCargo = Parcel::when($warehouseId, function ($q) use ($warehouseId) {
@@ -147,6 +159,8 @@ class DashboardController extends Controller
             'total_Cargo' => $totalCargo,
             'total_Air' => $totalAir,
             'upcomingContainers' => $upcomingContainers,
+            'totalExpenses' => $totalExpenses,
+            'todaysExpenses' => $todaysExpenses,
         ]);
     }
 }

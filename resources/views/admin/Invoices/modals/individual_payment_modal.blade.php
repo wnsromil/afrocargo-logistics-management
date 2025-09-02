@@ -64,13 +64,21 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
+                                <label>Exchange Rate<i class="text-danger">*</i></label>
+                                <input type="text" name="exchange_rate" class="form-control inp inputbackground"
+                                    readonly placeholder="Exchange Rate" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="input-block flexblockInput mb-3">
                                 <label for="driver_id">Payment Type<i class="text-danger">*</i></label>
                                 <select class="js-example-basic-single select2  form-cs" name="payment_type">
                                     <option selected="selected" disabled hidden>Select Type</option>
-                                    <option value="boxcredit">Box Credit</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="cheque">Cheque</option>
-                                    <option value="CreditCard">Credit Card</option>
+                                    <option value="Box credit">Box Credit</option>
+                                    <option value="DigitalPay">Cash</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="DigitalPay">DigitalPay</option>
                                 </select>
                             </div>
                         </div>
@@ -127,6 +135,14 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="input-block flexblockInput mb-3">
+                                <label>Current Balance After Ex.Rate<i class="text-danger">*</i></label>
+                                <input type="text" name="balance_after_exchange_rate"
+                                    class="form-control inp inputbackground" readonly
+                                    placeholder="Current Balance After Ex.Rate" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="input-block flexblockInput mb-3">
                                 <label>Applied Payment Total In USD<i class="text-danger">*</i></label>
                                 <input type="text" name="applied_total_usd" class="form-control inp inputbackground"
                                     readonly placeholder="Applied Payment Total In USD" />
@@ -137,21 +153,6 @@
                                 <label>Current Balance<i class="text-danger">*</i></label>
                                 <input type="text" name="current_balance" class="form-control inp inputbackground"
                                     readonly placeholder="Current Balance" />
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="input-block flexblockInput mb-3">
-                                <label>Exchange Rate<i class="text-danger">*</i></label>
-                                <input type="text" name="exchange_rate" class="form-control inp inputbackground"
-                                    readonly placeholder="Exchange Rate" />
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="input-block flexblockInput mb-3">
-                                <label>Current Balance After Ex.Rate<i class="text-danger">*</i></label>
-                                <input type="text" name="balance_after_exchange_rate"
-                                    class="form-control inp inputbackground" readonly
-                                    placeholder="Current Balance After Ex.Rate" />
                             </div>
                         </div>
                     </div>
@@ -168,9 +169,11 @@
                                             <th>User</th>
                                             <th>Payment Type</th>
                                             <th>Payment Date</th>
-                                            <th>Amt. In Dollar</th>
                                             <th>Local Currency</th>
+                                            <th>Local Amount</th>
                                             <th>Currency</th>
+                                            <th>Exchange Amount</th>
+                                            <th>Remaining Amount</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -191,9 +194,13 @@
                                             <td>{{ $payment->payment_date ?
                                                 \Carbon\Carbon::parse($payment->payment_date)->format('m/d/Y, h:i a') :
                                                 '-' }}</td>
-                                            <td>{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
-                                            <td>{{ $payment->local_currency ?? '-' }}</td>
+                                            <td>{{ $payment->local_currency ?? '-' }}, {{$payment->exchange_rate ?? "0.00"}}</td>
+                                            <td>{{ number_format($payment->applied_payments ?? 0, 2) }}</td>
                                             <td>{{ $payment->currency ?? '-' }}</td>
+                                            <td>{{ number_format($payment->payment_amount ?? 0, 2) }}</td>
+                                            <td>{{ number_format($payment->current_balance ?? 0, 2) }}</td>
+
+
                                             <td class="d-flex align-items-center">
                                                 <div class="dropdown dropdown-action">
                                                     <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
@@ -205,10 +212,10 @@
                                                                     href="{{route('invoices.invoicesdownload',encrypt($invoice->id))}}"><i
                                                                         class="ti ti-file-type-pdf me-2"></i>PDF</a>
                                                             </li>
-                                                            {{-- <li>
-                                                                <a class="dropdown-item" href="#"><i
+                                                            <li>
+                                                                <a class="dropdown-item text-danger" href="javascript::void(0)" onclick="deleteRaw('{{route('admin.invoice.deleteIndividualPayment',$payment->id)}}')"><i
                                                                         class="ti ti-trash me-2"></i>Delete</a>
-                                                            </li> --}}
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>

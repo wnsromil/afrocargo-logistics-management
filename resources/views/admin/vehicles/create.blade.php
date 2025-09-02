@@ -273,8 +273,9 @@
             <div class="add-customer-btns text-end">
                 <button type="button" onclick="redirectTo('{{ route('admin.warehouses.index') }}')"
                     class="btn btn-outline-primary custom-btn">Cancel</button>
-                <button type="submit" class="btn btn-primary ">Submit</button>
-
+                @can('has-dynamic-permission', 'vehicle_manage.create')
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                @endcan
             </div>
         </div>
 

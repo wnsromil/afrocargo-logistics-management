@@ -15607,8 +15607,9 @@ body.filter-opened {
     color: #fff;
 }
 .modal-footer .btn-primary {
-    min-width: 69px;
-    margin: 0;
+  min-width: 69px;
+  margin: 0;
+  margin-right: 10px !important;
 }
 
 .add-remove i {

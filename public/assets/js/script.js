@@ -288,16 +288,16 @@ Version      : 1.0
         var end = moment(); // Aaj ka date
 
         // Set input as readonly, placeholder, styles
-        $(".Expensefillterdate")
-            .attr("readonly", true)
-            .attr(
-                "placeholder",
-                start.format("MM-DD-YYYY") + " - " + end.format("MM-DD-YYYY")
-            )
-            .css({
-                cursor: "pointer",
-                backgroundColor: "#ffffff",
-            });
+        // $(".Expensefillterdate")
+        //     .attr("readonly", true)
+        //     .attr(
+        //         "placeholder",
+        //         start.format("MM-DD-YYYY") + " - " + end.format("MM-DD-YYYY")
+        //     )
+        //     .css({
+        //         cursor: "pointer",
+        //         backgroundColor: "#ffffff",
+        //     });
 
         function booking_range(start, end) {
             $(".Expensefillterdate").val(
@@ -336,6 +336,74 @@ Version      : 1.0
                 format: "M/DD hh:mm A",
             },
         });
+    }
+
+    if ($('input[name="logs_datetimes"]').length > 0) {
+        const $dateInput = $('input[name="logs_datetimes"]');
+
+        $dateInput.daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf("hour"),
+            endDate: moment().startOf("hour").add(32, "hour"),
+            locale: {
+                format: "YYYY-MM-DD hh:mm A", // Year included
+            },
+            autoUpdateInput: false, // <-- Yeh important hai
+        });
+
+        // Jab user date select kare to input update karo
+        $dateInput.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD hh:mm A") +
+                    " - " +
+                    picker.endDate.format("YYYY-MM-DD hh:mm A")
+            );
+        });
+
+        // Jab cancel kare to input clear karo
+        $dateInput.on("cancel.daterangepicker", function (ev, picker) {
+            $(this).val("");
+            $(this).attr("placeholder", "Select Date Range");
+        });
+
+        // Agar input empty hai to placeholder dikhao
+        if (!$dateInput.val()) {
+            $dateInput.attr("placeholder", "Select Date Range");
+        }
+    }
+
+    if ($('input[name="eod_datetimes"]').length > 0) {
+        const $dateInput = $('input[name="eod_datetimes"]');
+
+        $dateInput.daterangepicker({
+            timePicker: false,
+            startDate: moment().startOf("hour"),
+            endDate: moment().startOf("hour").add(32, "hour"),
+            locale: {
+                format: "YYYY-MM-DD", // Year included
+            },
+            autoUpdateInput: false, // <-- Yeh important hai
+        });
+
+        // Jab user date select kare to input update karo
+        $dateInput.on("apply.daterangepicker", function (ev, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD") +
+                    " - " +
+                    picker.endDate.format("YYYY-MM-DD")
+            );
+        });
+
+        // Jab cancel kare to input clear karo
+        $dateInput.on("cancel.daterangepicker", function (ev, picker) {
+            $(this).val("");
+            $(this).attr("placeholder", "Select Date Range");
+        });
+
+        // Agar input empty hai to placeholder dikhao
+        if (!$dateInput.val()) {
+            $dateInput.attr("placeholder", "Select Date Range");
+        }
     }
 
     $(".onlyTimePicker").each(function () {
@@ -929,7 +997,7 @@ Version      : 1.0
         $('input[name="pickup_date"]').daterangepicker({
             singleDatePicker: true, // Single Date Picker Enable
             showDropdowns: true, // Month/Year Dropdown Enable
-          //  autoUpdateInput: true, // Auto Update Input With Default Date
+            //  autoUpdateInput: true, // Auto Update Input With Default Date
             locale: {
                 format: "MM/DD/YYYY", // Date Format
             },
@@ -1824,6 +1892,41 @@ Version      : 1.0
     //     });
     // }
 
+    document.querySelectorAll(".flaginputwrap").forEach(function (wrapper) {
+        const select = wrapper.querySelector(".flag-select");
+        const input = wrapper.querySelector(".flagInput");
+
+        function getMaxLen() {
+            const selectedOption = select.querySelector("option:checked");
+            return parseInt(selectedOption?.dataset.length || 10);
+        }
+
+        // ✅ Trim input live on each input
+        input.addEventListener("input", function () {
+            const maxLen = getMaxLen();
+            if (this.value.length > maxLen) {
+                this.value = this.value.slice(0, maxLen);
+            }
+        });
+
+        // ✅ On country select change
+        $(select).on("change", function () {
+            const maxLen = getMaxLen();
+
+            // Set maxlength attribute
+            input.setAttribute("maxlength", maxLen);
+
+            // Trim current value if it's too long
+            if (input.value.length > maxLen) {
+                input.value = input.value.slice(0, maxLen);
+            }
+        });
+
+        // ✅ On page load (in case already selected)
+        const initialLen = getMaxLen();
+        input.setAttribute("maxlength", initialLen);
+    });
+
     function updateCodeWithCountryPrefix(countryName) {
         if (!countryName) return;
 
@@ -2008,8 +2111,8 @@ Version      : 1.0
                 setField("state", state);
                 setField("city", city);
                 // If you have latitude/longitude fields, add them here as needed
-                // setField("latitude", lat);
-                // setField("longitude", lng);
+                setField("lat", lat);
+                setField("lng", lng);
             });
         });
     }
@@ -2194,113 +2297,104 @@ Version      : 1.0
         // });
     }
 
-    function initLocationAutocomplete() {
-        // let selectedCountry = '';
+    let glocations = document.querySelectorAll(".glocation");
+    // Default to 'us'
+    let selectedCountry = "us";
 
-        // // 1. When country changes, update selectedCountry
-        // document.querySelector('#countryForLocation').addEventListener('change', function () {
-        //     selectedCountry = this.value.toLowerCase();
-        //     console.log("Selected Country:", selectedCountry);
-        // });
-
-        // 2. When location modal is opened, attach Google Autocomplete
-        let locationModalShow = document.getElementById("locationModalShow");
-        if (locationModalShow) {
+    if (glocations) {
+        glocations.forEach(function (locationModalShow) {
             locationModalShow.addEventListener("click", function () {
-                const input = document.getElementById("locationSearchBox");
-                let countryForLocation =
-                    document.getElementById("countryForLocation");
+                // Get the country <select> inside the clicked element
+                let countryInput = this.querySelector("select[name='country']");
+                const input = this.querySelector("input[name='address']");
 
                 if (!input) return;
-                if (!countryForLocation) return;
-                let selectedCountry =
-                    countryForLocation.value.toLowerCase() || "us"; // Default to 'us' if no country selected
-                console.log("Selected Country:", selectedCountry);
-                // Clear previous autocomplete instance by cloning node
-                const newInput = input.cloneNode(true);
-                input.parentNode.replaceChild(newInput, input);
 
-                // Initialize autocomplete
-                const autocomplete = new google.maps.places.Autocomplete(
-                    newInput,
-                    {
-                        types: ["geocode"],
-                        componentRestrictions: { country: selectedCountry },
+                if (countryInput) {
+                    let selectedOption =
+                        countryInput.options[countryInput.selectedIndex];
+                    let countryData =
+                        selectedOption.getAttribute("data-country"); // fixed typo
+
+                    if (countryData) {
+                        selectedCountry = countryData.toLowerCase();
+                        console.log(
+                            "Selected Country:",
+                            selectedCountry,
+                            countryData
+                        );
+                        autoFillAddressFields(input, selectedCountry);
                     }
-                );
-
-                autocomplete.addListener("place_changed", function () {
-                    const place = autocomplete.getPlace();
-                    if (!place) return;
-
-                    // Find the closest form to this input
-                    const form = document.getElementById(
-                        "pick_up_customer_inf_form"
-                    );
-                    const addressComponents = place.address_components || [];
-
-                    let postalCode = "",
-                        country = "",
-                        state = "",
-                        city = "",
-                        lat = "",
-                        lng = "",
-                        address = place.formatted_address || "";
-
-                    addressComponents.forEach((component) => {
-                        const types = component.types || [];
-
-                        if (types.includes("postal_code")) {
-                            postalCode = component.long_name || "";
-                        }
-                        if (types.includes("country")) {
-                            country = component.long_name || "";
-                        }
-                        if (types.includes("administrative_area_level_1")) {
-                            state = component.long_name || "";
-                        }
-                        if (types.includes("locality")) {
-                            city = component.long_name || "";
-                        }
-                        if (
-                            types.includes("administrative_area_level_2") &&
-                            !city
-                        ) {
-                            city = component.long_name || "";
-                        }
-                    });
-
-                    // Get Latitude and Longitude
-                    if (place.geometry && place.geometry.location) {
-                        lat = place.geometry.location.lat() || "";
-                        lng = place.geometry.location.lng() || "";
-                    }
-
-                    // Fill only fields within the same form
-                    function setField(name, value) {
-                        if (!form) return;
-                        const field = form.querySelector(`[name="${name}"]`);
-                        if (field) field.value = value;
-                    }
-
-                    setField("zip_code", postalCode);
-                    setField("country", country);
-                    setField("state", state);
-                    setField("city", city);
-                    setField("latitude", lat);
-                    setField("longitude", lng);
-                    setField("shipto_latitude", lat);
-                    setField("shipto_longitude", lng);
-                    setField("address", address);
-                });
-
-                // Show modal
-                // const modal = new bootstrap.Modal(
-                //     document.getElementById("locationModal")
-                // );
-                // modal.show();
+                }
             });
-        }
+        });
+    }
+
+    function autoFillAddressFields(input, selectedCountry) {
+        if (!input) return;
+        // if (input._autocompleteInitialized) return;
+
+        input._autocompleteInitialized = true;
+
+        let autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            componentRestrictions: { country: selectedCountry },
+        });
+
+        console.log("selectedCountryselectedCountry", selectedCountry);
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place) return;
+
+            const form = input.closest("form");
+            const addressComponents = place.address_components || [];
+
+            let postalCode = "",
+                country = "",
+                state = "",
+                city = "",
+                lat = "",
+                lng = "";
+
+            addressComponents.forEach((component) => {
+                const types = component.types || [];
+
+                if (types.includes("postal_code")) {
+                    postalCode = component.long_name || "";
+                }
+                if (types.includes("country")) {
+                    country = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_1")) {
+                    state = component.long_name || "";
+                }
+                if (types.includes("locality")) {
+                    city = component.long_name || "";
+                }
+                if (types.includes("administrative_area_level_2") && !city) {
+                    city = component.long_name || "";
+                }
+            });
+
+            if (place.geometry?.location) {
+                lat = place.geometry.location.lat() || "";
+                lng = place.geometry.location.lng() || "";
+            }
+
+            function setField(name, value) {
+                if (!form) return;
+                const field = form.querySelector(`[name="${name}"]`);
+                if (field) field.value = value;
+            }
+
+            setField("zip_code", postalCode);
+            setField("country", country);
+            setField("state", state);
+            setField("city", city);
+            setField("lat", lat);
+            setField("lng", lng);
+        });
     }
 
     window.addEventListener("load", function () {
@@ -2310,6 +2404,5 @@ Version      : 1.0
         initAutocomplete_2();
         initAutocomplete_3();
         init_transit_Autocomplete();
-        initLocationAutocomplete();
     });
 })(jQuery);
