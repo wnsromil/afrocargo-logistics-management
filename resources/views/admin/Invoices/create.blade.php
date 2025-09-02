@@ -644,10 +644,12 @@
                                             name="volume" value="{{ $item['volume'] ?? '0' }}">
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center priceInput"><input type="text"
-                                                class="form-control inputcolor" placeholder="" name="price"><button
-                                                type="button" class="btn btn-secondary p-0 flat-btn"><i
-                                                    class="ti ti-circle-plus col737"></i></button></div>
+                                        <div class="d-flex align-items-center priceInput">
+                                            <input type="text" class="form-control inputcolor" placeholder="" name="price">
+                                            {{-- <button type="button" class="btn btn-secondary p-0 flat-btn">
+                                                <i class="ti ti-circle-plus col737"></i>
+                                            </button> --}}
+                                        </div>
                                     </td>
                                     <td>
                                         <input type="text" class="form-control tdbor inputcolor" placeholder=""
