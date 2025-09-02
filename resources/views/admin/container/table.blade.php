@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                     @forelse ($vehicles as $index => $vehicle)
-                        <tr>
+                        <tr data-container-id="{{$vehicle->id}}">
                             <td>
                                 {{ $vehicle->unique_id ?? '-' }}
                                 {{ $vehicle->ship_to_country ? ', ' . $vehicle->ship_to_country : ''}}
@@ -33,13 +33,13 @@
                             <td>{{ $vehicle->container_no_1 ?? '-' }}</td>
                             @php
                                 $statusId = (string) ($vehicle->container_status ?? '');
-                                $vehicleStatus = $vehicle->containerStatus->status ?? 'New';
+                                $vehicleStatus = $vehicle->containerStatus->status ?? 'Load';
                                  $ClassStatus = $vehicle->containerStatus->class_name ?? "new-badge-pending new-comman-css";
                             @endphp
 
                             <td>
                                 <label class="{{ $ClassStatus }}">
-                                    {{ $vehicleStatus ?? 'New' }}
+                                    {{ $vehicleStatus ?? 'Load' }}
                                 </label>
                             </td>
 
@@ -47,8 +47,8 @@
                             </td>
                             <td>{{ $vehicle->close_date ? \Carbon\Carbon::parse($vehicle->close_date)->format('m-d-Y') : '-' }}
                             </td>
-                            <td class="tabletext"><input type="checkbox"></td>
-                            <td class="tabletext"><input type="checkbox"></td>
+                            <td class="tabletext"><input type="checkbox" name='close_invoice' {{$vehicle->close_invoice == 'yes' ? 'checked':''}} value='yes'></td>
+                            <td class="tabletext"><input type="checkbox" name='close_warehouse' {{$vehicle->close_warehouse == 'yes' ? 'checked':''}} value='yes'></td>
                             <td>{{ ucfirst($vehicle->volume ?? '-') }}</td>
                             <td>${{number_format(0)}}</td>
                             <td>${{number_format(0)}}</td>

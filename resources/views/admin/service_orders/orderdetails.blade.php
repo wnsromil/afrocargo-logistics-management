@@ -360,6 +360,8 @@
                             @else
                                 @foreach ($statusSteps as $code => $label)
                                     @php $isCompleted = isset($completedStatusMap[$code]); @endphp
+
+                                    @if($isCompleted)
                                     <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
                                         <span class="is-complete"></span>
                                         <p>
@@ -367,6 +369,7 @@
                                             <span>{{ $statusDates[$code] ?? '' }}</span>
                                         </p>
                                     </div>
+                                    @endif
                                 @endforeach
                             @endif
                         </div>

@@ -353,7 +353,7 @@ class CustomerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response 
+     * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
@@ -464,6 +464,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // return $request->all();
         $phoneLength = getPhoneLengthById($request->mobile_number_code_id);
         $altPhoneLength = getPhoneLengthById($request->alternative_mobile_number_code_id);
         // 🔹 Validation
@@ -494,6 +495,7 @@ class CustomerController extends Controller
 
         $user = User::findOrFail($id);
         $imagePaths = [];
+
         // 🔹 File Upload Handling
         foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType) {
             if ($request->hasFile($imageType)) {

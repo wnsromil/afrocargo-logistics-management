@@ -13,7 +13,7 @@
                 href="{{route('admin.invoices.create').'?type=supplies&customerId='.$user->id}}"
                 class="btn btn-primary buttons me-1">
                     Pickup </a>
-                <a href="{{route('admin.invoices.create').'?type=services&customerId='.$user->id}}" class="btn btn-primary buttons"> Invoice </a>
+                <a href="{{route('admin.invoices.create').'?customerId='.$user->id}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>
     </x-slot>
@@ -27,7 +27,7 @@
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#Payments"
                         data-bs-toggle="tab">Payments</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#ShipTo"
-                        data-bs-toggle="tab">ShipTo</a></li>
+                        data-bs-toggle="tab">Consignee</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#Pickups"
                         data-bs-toggle="tab">Pickups</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#PickupAddresss"
@@ -58,13 +58,14 @@
                                             placeholder="Enter Company Name"
                                             value="{{ old('company_name', $user->company_name) }}">
                                     </div>
+
                                     <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="first_name">Full Name <i
                                                 class="text-danger">*</i></label>
                                         <input type="text" name="first_name" class="form-control inp"
                                             placeholder="Enter Full Name" value="{{ old('first_name', $user->name) }}">
                                         @error('first_name')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
@@ -74,9 +75,10 @@
                                         <input type="text" name="last_name" class="form-control inp"
                                             placeholder="Enter Last Name" value="{{ old('last_name', $user->last_name) }}">
                                         @error('last_name')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+
 
                                     <div class="col-md-12 edit_mobile_code_class mb-2" style="display: grid;">
                                         <label class="foncolor" for="edit_mobile_code">Mobile No. <i
@@ -86,12 +88,12 @@
                                             <div class="customflagselect">
                                                 <select class="flag-select" name="mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                                             data-length="{{ $item->phone_length ?? 10 }}"
-                                                            {{ $item->id == old('mobile_number_code_id', $user->phone_code_id) ? 'selected' : '' }}>
-                                                            {{ $item->name }} +{{ $item->phonecode }}
-                                                        </option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                        {{ $item->id == old('mobile_number_code_id', $user->phone_code_id) ? 'selected' : '' }}
+                                                        data-length="{{ $item->phone_length ?? 10 }}">
+                                                        {{ $item->name }} +{{ $item->phonecode }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -101,7 +103,7 @@
                                                 >
                                         </div>
                                         @error('mobile_number')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
 
                                     </div>
@@ -112,12 +114,12 @@
                                             <div class="customflagselect">
                                                 <select class="flag-select" name="alternative_mobile_number_code_id">
                                                     @foreach ($coutry as $key => $item)
-                                                        <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                            data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
-                                                            data-length="{{ $item->phone_length ?? 10 }}"
-                                                            {{ $item->id == old('alternative_mobile_number_code_id', $user->phone_2_code_id_id) ? 'selected' : '' }}>
-                                                            {{ $item->name }} +{{ $item->phonecode }}
-                                                        </option>
+                                                    <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                        data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}"
+                                                        data-length="{{ $item->phone_length ?? 10 }}"
+                                                        {{ $item->id == old('alternative_mobile_number_code_id', $user->phone_2_code_id_id) ? 'selected' : '' }}>
+                                                        {{ $item->name }} +{{ $item->phonecode }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -126,7 +128,7 @@
                                                 value="{{ old('alternative_mobile_number', $user->phone_2) }}"
                                                 >
                                         </div>
-                                         @error('alternative_mobile_number')
+                                            @error('alternative_mobile_number')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
@@ -139,7 +141,7 @@
                                             value="{{ old('address_1', $user->address) }}" class="form-control inp"
                                             placeholder="Enter Address 1">
                                         @error('address_1')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-12 mb-2">
@@ -155,7 +157,7 @@
                                             value="{{ old('country', $user->country_id) }}" class="form-control inp"
                                             readonly style="background: #ececec;">
                                         @error('country')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6 mb-2">
@@ -163,7 +165,7 @@
                                         <input type="text" name="state" value="{{ old('country', $user->state_id) }}"
                                             class="form-control inp" readonly style="background: #ececec;">
                                         @error('state')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6 mb-2">
@@ -171,7 +173,7 @@
                                         <input type="text" name="city" value="{{ old('country', $user->city_id) }}"
                                             class="form-control inp" readonly style="background: #ececec;">
                                         @error('city')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
@@ -187,7 +189,7 @@
                                         <input type="text" name="Zip_code" value="{{ old('Zip_code', $user->pincode) }}"
                                             class="form-control inp" placeholder="Enter Zip">
                                         @error('Zip_code')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
@@ -198,7 +200,7 @@
                                             value="{{ old('Username', $user->username) }}" class="form-control inp"
                                             placeholder="Enter User Name">
                                         @error('username')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
@@ -210,7 +212,7 @@
                                             value="{{ old('latitude', $user->latitude) }}" class="form-control inp"
                                             placeholder="0" readonly style="background: #ececec;">
                                         @error('latitude')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6 mb-2">
@@ -220,7 +222,7 @@
                                             value="{{ old('longitude', $user->longitude) }}" class="form-control inp"
                                             placeholder="0" readonly style="background: #ececec;">
                                         @error('longitude')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <!-- first left side form clouser div is next  -->
@@ -242,7 +244,7 @@
                                         <input type="text" name="email" class="form-control inp"
                                             placeholder="Enter Email ID" value="{{ old('email', $user->email) }}">
                                         @error('email')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
@@ -251,10 +253,10 @@
                                         <select class="js-example-basic-single select2" name="warehouse_id">
                                             <option disabled>Select Warehouse</option>
                                             @foreach ($warehouses as $warehouse)
-                                                                                    <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $user->warehouse_id ?? '') ==
+                                            <option value="{{ $warehouse->id }}" {{ old('warehouse_id', $user->warehouse_id ?? '') ==
                                                 $warehouse->id ? 'selected' : '' }}>
-                                                                                        {{ $warehouse->warehouse_name }}
-                                                                                    </option>
+                                                {{ $warehouse->warehouse_name }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -265,10 +267,10 @@
                                             value="{{ old('container_id') }}">
                                             <option value="">Select Container</option>
                                             @foreach ($containers as $container)
-                                                                                    <option value="{{ $container->id }}" {{ old('country', $user->vehicle_id) == $container->id ?
+                                            <option value="{{ $container->id }}" {{ old('country', $user->vehicle_id) == $container->id ?
                                                 'selected' : '' }}>
-                                                                                        {{ $container->container_no_1 }}
-                                                                                    </option>
+                                                {{ $container->container_no_1 }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -337,42 +339,66 @@
                     </div>
                     <div class="row custodis">
                         @php
-                            $imglabel = ['profile_pic' => 'Profile pics', 'signature_img' => 'Signature', 'contract_signature_img' => 'Contract signature', 'license_document' => 'License picture'];
+                        $imglabel = ['profile_pic' => 'Profile pics', 'signature_img' => 'Signature', 'contract_signature_img' => 'Contract signature', 'license_document' => 'License picture'];
                         @endphp
-                        @foreach (['profile_pic', 'signature_img', 'contract_signature_img', 'license_document'] as $imageType)
-                            <input type="hidden" id="delete_{{ $imageType }}" name="delete_{{ $imageType }}" />
-                            <div class="col-md-3">
-                                <div class="d-flex align-items-center justify-content-center avtard">
-                                    <label class="foncolor set"
-                                        for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType])
-                                                                                                                                                                            }}</label>
-                                    <div class="avtarset" style="position: relative;">
-                                        <!-- Image Preview -->
-                                        <img id="preview_{{ $imageType }}" class="avtars avtarc"
-                                            src="{{ $user->{$imageType} ? (Str::startsWith($user->{$imageType}, 'http') ? $user->{$imageType} : asset("storage/" . $user->{$imageType})) : asset('assets/img.png') }}"
-                                            alt="avatar">
-
-                                        <!-- File Input (Hidden by Default) -->
-                                        <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
-                                            accept="image/png, image/jpeg" style="display: none;"
-                                            onchange="previewImage(this, '{{ $imageType }}')">
-
-                                        <div class="divedit">
-                                            <!-- Edit Button -->
-                                            <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
-                                                style="cursor: pointer;"
-                                                onclick="document.getElementById('file_{{ $imageType }}').click();">
-
-
-                                            <!-- Delete Button -->
-                                            <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
-                                                style="cursor: pointer;" @if (!empty($user->{$imageType}))
-                                                onclick="removeImage('{{ $imageType }}')" @endif>
-
-                                        </div>
-                                    </div>
+                        @foreach (['signature_img', 'contract_signature_img', 'profile_pic', 'license_document'] as $imageType)
+                        <input type="hidden" id="delete_{{ $imageType }}" name="delete_{{ $imageType }}" />
+                        <div class="col-md-3">
+                            <!-- draw  -->
+                            @if(in_array($imageType, ['signature_img','contract_signature_img']))
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input toggle-draw"
+                                        data-target="drawSection_{{ $imageType }}" onchange="toggleDraw('{{ $imageType }}')">
+                                    Draw
+                                </label>
+                                <button type="button" class="btn btn-sm btn-warning d-none {{ $imageType }}"
+                                            onclick="clearCanvas('{{ $imageType }}')">Clear</button>
+                            @endif
+                            {{-- ✅ If this field is a signature-type, also allow canvas drawing --}}
+                            @if(in_array($imageType, ['signature_img','contract_signature_img']))
+                            <div class="{{ $imageType }} d-none">
+                                <div id="drawSection_{{ $imageType }}" style="text-align:center;">
+                                    <canvas id="canvas_{{ $imageType }}" width="250" height="120"
+                                            style="border:1px solid #ccc;"></canvas>
+                                    <input type="hidden" id="drawnData_{{ $imageType }}" name="drawnData_{{ $imageType }}">
                                 </div>
                             </div>
+                            @endif
+                            <div class="d-flex align-items-center justify-content-center {{ "priview_".$imageType }}">
+                                {{-- <label class="foncolor set"
+                                    for="{{ $imageType }}">{{ ucfirst($imglabel[$imageType]) }}</label> --}}
+                                <div class="avtarset" style="position: relative;">
+                                    <!-- Image Preview -->
+                                    <img id="preview_{{ $imageType }}" class="avtars avtarc"
+                                        src="{{ $user->{$imageType} ? (Str::startsWith($user->{$imageType}, 'http') ? $user->{$imageType} : asset("storage/" . $user->{$imageType})) : asset('assets/img.png') }}"
+                                        alt="avatar">
+
+                                    <!-- File Input (Hidden by Default) -->
+                                    <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
+                                        accept="image/png, image/jpeg" style="display: none;"
+                                        onchange="previewImage(this, '{{ $imageType }}')">
+
+                                    <div class="divedit">
+                                        <!-- Edit Button -->
+                                        <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}" alt="edit"
+                                            style="cursor: pointer;"
+                                            onclick="document.getElementById('file_{{ $imageType }}').click();">
+
+
+                                        <!-- Delete Button -->
+                                        <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}" alt="delete"
+                                            style="cursor: pointer;" @if (!empty($user->{$imageType}))
+                                        onclick="removeImage('{{ $imageType }}')" @endif>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <label class="foncolor set" for="{{ $imageType }}">
+                                        {{ ucfirst(str_replace('_', ' ', $imageType)) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
 
                     </div>
@@ -436,7 +462,7 @@
                                     <div class="col-lg-3">
                                         <div class="input-block mb-3 d-flex align-items-center">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A" for="voice_call">No</label>
-                                            <input class="form-check-input mt-0" {{ old('voice_call', $user->voice_call ?? '') == 'No' ? 'checked' : '' }}  type="radio" value="No"
+                                            <input class="form-check-input mt-0" {{ old('voice_call', $user->voice_call ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No"
                                                 name="voice_call">
                                         </div>
                                     </div>
@@ -504,7 +530,7 @@
                                         <div class="input-block mb-3 d-flex align-items-center">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A" for="no_service">No</label>
                                             <input class="form-check-input mt-0" {{ old('no_service', $user->no_service ?? '') == 'No' ? 'checked' : '' }} type="radio" value="No"
-                                                name="no_service" >
+                                                name="no_service">
                                         </div>
                                     </div>
                                 </div>
@@ -519,8 +545,7 @@
                                         <div class="input-block mb-3 d-flex align-items-center">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A" for="call">Yes</label>
                                             <input class="form-check-input mt-0" type="radio" value="Yes" name="call"
-                                            {{ old('call', $user->call ?? '') == 'Yes' ? 'checked' : '' }}
-                                            >
+                                                {{ old('call', $user->call ?? '') == 'Yes' ? 'checked' : '' }}>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
@@ -575,7 +600,7 @@
                                     <p class="profileUpdateFont faded" id="inactiveText">Inactive</p>
                                 </div>
                                 @error('status')
-                                    <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -585,9 +610,9 @@
 
                                 <button type="button" onclick="redirectTo('{{route('admin.customer.index') }}')"
                                     class="btn btn-outline-primary custom-btn">Cancel</button>
-                               @can('has-dynamic-permission', 'customers_list.edit')
+
                                 <button type="submit" class="btn btn-primary ">Submit</button>
-                                @endcan
+
                             </div>
                         </div>
 
@@ -764,13 +789,13 @@
                 <form class="invoice">
                     <div class="row justify-content-between mb-3">
                         <div class="col-md-6">
-                            <p class="mainheading">ShipTo Address List</p>
+                            <p class="mainheading">Consignee Address List</p>
                         </div>
                         <div class="col-md-6 text-end">
                             <a href="{{ route('admin.customer.viewShipTo', $user->id) }}"
                                 class="btn btn-primary buttons">
                                 <i class="ti ti-circle-plus me-2 text-white"></i>
-                                Add ShipTo Address
+                                Add Consignee Address
                             </a>
                         </div>
                     </div>
@@ -802,7 +827,7 @@
                                     <table class="table table-stripped table-hover lessPadding datatable">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>ShipTo Id</th>
+                                                <th>Consignee Id</th>
                                                 <th>Name</th>
                                                 <th>Address</th>
                                                 <th>Cellphone</th>
@@ -813,52 +838,52 @@
                                         </thead>
                                         <tbody>
                                             @foreach($ShipToCustomer as $child)
-                                                <tr>
-                                                    <td>{{ $child->unique_id ?? '-' }}</td>
-                                                    <td>{{ ucfirst($child->name ?? '')}} {{ $child->last_name ?? ''}}</td>
-                                                    <td>{{ $child->address ?? '-' }}</td>
-                                                  <td>
+                                            <tr>
+                                                <td>{{ $child->unique_id ?? '-' }}</td>
+                                                <td>{{ ucfirst($child->name ?? '')}} {{ $child->last_name ?? ''}}</td>
+                                                <td>{{ $child->address ?? '-' }}</td>
+                                                <td>
                                                     @if($child->phone)
-                                                        +{{ $child->phone_code->phonecode ?? '' }} {{ $child->phone }}
+                                                    +{{ $child->phone_code->phonecode ?? '' }} {{ $child->phone }}
                                                     @else
-                                                        -
+                                                    -
                                                     @endif
                                                 </td>
                                                 <td>
                                                     @if($child->phone_2)
-                                                        +{{ $child->phone_2_code->phonecode ?? '' }} {{ $child->phone_2 }}
+                                                    +{{ $child->phone_2_code->phonecode ?? '' }} {{ $child->phone_2 }}
                                                     @else
-                                                        -
+                                                    -
                                                     @endif
                                                 </td>
-                                                    <td>{{ $child->license_number ?? '-' }}</td>
-                                                    <td>
-                                                        <div class="dropdown dropdown-action">
-                                                            <a href="#" class="btn-action-icon fas"
-                                                                data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                                    class="fas fa-ellipsis-v"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <ul>
-                                                                    <li>
-                                                                        <a class="dropdown-item"
-                                                                            href="{{ route('admin.customer.updateShipTo', $child->id) }}"><i
-                                                                                class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <form
-                                                                            action="{{ route('admin.customer.destroyShipTo', $child->id) }}"
-                                                                            method="POST" class="d-inline">
-                                                                            @csrf
-                                                                            <button type="button" class="dropdown-item"
-                                                                                onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to address?')"><i
-                                                                                    class="far fa-trash-alt me-2"></i>Delete</button>
-                                                                        </form>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                <td>{{ $child->license_number ?? '-' }}</td>
+                                                <td>
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="btn-action-icon fas"
+                                                            data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                                class="fas fa-ellipsis-v"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <ul>
+                                                                <li>
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('admin.customer.updateShipTo', $child->id) }}"><i
+                                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                                </li>
+                                                                <li>
+                                                                    <form
+                                                                        action="{{ route('admin.customer.destroyShipTo', $child->id) }}"
+                                                                        method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        <button type="button" class="dropdown-item"
+                                                                            onclick="deleteData(this,'Wait! Are you sure you want to remove this ship to address?')"><i
+                                                                                class="far fa-trash-alt me-2"></i>Delete</button>
+                                                                    </form>
+                                                                </li>
+                                                            </ul>
                                                         </div>
-                                                    </td>
-                                                </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -889,77 +914,79 @@
                     </div>
                 </form>
             </div>
-            <div class="tab-pane" id="Pickups">
+             <div class="tab-pane" id="Pickups">
                 <form class="invoice">
                     <div class="row justify-content-between mb-3">
                         <div class="col-md-6">
                             <p class="mainheading">Pickup List</p>
                         </div>
                     </div>
-                    <div class="card-table">
-                        <div class="card-body">
-                            <div class="table-responsive mt-3">
-                                <table class="table table-stripped table-hover lessPadding littleMore datatable">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>P.Name</th>
-                                            <th>P.Address</th>
-                                            <th>P.City</th>
-                                            <th>P.Cell.No</th>
-                                            <th>Zone</th>
-                                            <th>Pickup Type</th>
-                                            <th>Pickup Date</th>
-                                            <th>Zipcode</th>
-                                            <th>Driver</th>
-                                            <th>Last Modified Date & Time</th>
-                                            <th>Pickup ID</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($Pickups as $child)
+                    <div id="ajexTable">
+                        <div class="card-table">
+                            <div class="card-body">
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-stripped table-hover lessPadding littleMore datatable">
+                                        <thead class="thead-light">
                                             <tr>
-                                                <td class="text-start">{{ucfirst($child->pickupAddress->name ?? "")}} {{$child->pickupAddress->last_name ?? ""}}</td>
-                                                <td>{{$child->pickupAddress->address ?? "-"}}</td>
-                                                <td>{{$child->pickupAddress->city_id ?? "-"}}</td>
-                                                <td>
-                                                    @if($child->pickupAddress && $child->pickupAddress->phone)
-                                                        +{{ $child->pickupAddress->phone_code->phonecode ?? '' }} {{ $child->pickupAddress->phone }}
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td>{{$child->Zone ?? "-"}}</td>
-                                                <td>{{$child->pickup_type ?? "-"}}</td>
-                                                <td>{{ \Carbon\Carbon::parse($child->Date)->format('m-d-Y') }}</td>
-                                                <td>{{$child->pickupAddress->pincode ?? "-"}}</td>
-                                                <td>{{ucfirst($child->driver->name ?? "")}} {{($child->driver->last_name ?? "")}}</td>
-                                                <td>{{ \Carbon\Carbon::parse($child->updated_at)->format('m-d-Y') }}</td>
-                                                <td>{{$child->pickupAddress->unique_id ?? "-"}}</td>
-                                                <td>
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
-                                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <ul>
-                                                                <li>
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('admin.customer.updatePickup', $child->id) }}"><i
-                                                                            class="ti ti-edit fs_18 me-2"></i>Update</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#"><i
-                                                                            class="ti ti-trash fs_18 me-2"></i>Delete</a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <th>P.Name</th>
+                                                <th>P.Address</th>
+                                                <th>P.City</th>
+                                                <th>P.Cell.No</th>
+                                                <th>Zone</th>
+                                                <th>Pickup Type</th>
+                                                <th>Pickup Date</th>
+                                                <th>Zipcode</th>
+                                                <th>Driver</th>
+                                                <th>Last Modified Date & Time</th>
+                                                <th>Pickup ID</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($Pickups as $child)
+                                                <tr>
+                                                    <td class="text-start">{{ucfirst($child->pickupAddress->name ?? "")}} {{$child->pickupAddress->last_name ?? ""}}</td>
+                                                    <td>{{$child->pickupAddress->address ?? "-"}}</td>
+                                                    <td>{{$child->pickupAddress->city_id ?? "-"}}</td>
+                                                    <td>
+                                                        @if($child->pickupAddress && $child->pickupAddress->phone)
+                                                            +{{ $child->pickupAddress->phone_code->phonecode ?? '' }} {{ $child->pickupAddress->phone }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$child->Zone ?? "-"}}</td>
+                                                    <td>{{$child->pickup_type ?? "-"}}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($child->Date)->format('m-d-Y') }}</td>
+                                                    <td>{{$child->pickupAddress->pincode ?? "-"}}</td>
+                                                    <td>{{ucfirst($child->driver->name ?? "")}} {{($child->driver->last_name ?? "")}}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($child->updated_at)->format('m-d-Y') }}</td>
+                                                    <td>{{$child->pickupAddress->unique_id ?? "-"}}</td>
+                                                    <td>
+                                                        <div class="dropdown dropdown-action">
+                                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                                                aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul>
+                                                                    <li>
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('admin.customer.updatePickup', $child->id) }}"><i
+                                                                                class="ti ti-edit fs_18 me-2"></i>Update</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="dropdown-item" href="#"><i
+                                                                                class="ti ti-trash fs_18 me-2"></i>Delete</a>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1203,243 +1230,370 @@
         </div>
     </div>
     @section('script')
-        <script>
-            paginate({
-                searchIn: 'ShipTosearchInput',
-                ajexTable: 'ShipToTable',
-                pageSizeSlt: 'ShipTopageSizeSelect',
-                type: 'ShipTo'
-            })
-            // 🖼 Image Preview Function
-            function previewImage(input, imageType) {
-                if (input.files && input.files[0]) {
-                    let file = input.files[0];
+    <script>
+        // paginate({
+        //     searchIn: 'ShipTosearchInput',
+        //     ajexTable: 'ShipToTable',
+        //     pageSizeSlt: 'ShipTopageSizeSelect',
+        //     type: 'ShipTo'
+        // })
+        // 🖼 Image Preview Function
+        function previewImage(input, imageType) {
+            if (input.files && input.files[0]) {
+                let file = input.files[0];
 
-                    // ✅ Sirf PNG ya JPG Allow Hai
-                    if (file.type === "image/png" || file.type === "image/jpeg") {
-                        let reader = new FileReader();
-                        reader.onload = function (e) {
-                            document.getElementById('preview_' + imageType).src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    } else {
-                        alert("Only PNG & JPG images are allowed!");
-                        input.value = ""; // Invalid file ko remove karna
-                    }
+                // ✅ Sirf PNG ya JPG Allow Hai
+                if (file.type === "image/png" || file.type === "image/jpeg") {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('preview_' + imageType).src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert("Only PNG & JPG images are allowed!");
+                    input.value = ""; // Invalid file ko remove karna
                 }
             }
+        }
 
-            // ❌ Remove Image Function
-            function removeImage(imageType) {
-                let title;
-                if (imageType == 'profile_pic') {
-                    title = "Are you sure you want to remove this profile pic?";
-                } else if (imageType == 'contract_signature_img') {
-                    title = "Are you sure you want to remove this contract signature?";
-                } else if (imageType == 'signature_img') {
-                    title = "Are you sure you want to remove this signature?";
-                } else if (imageType == 'license_document') {
-                    title = "Are you sure you want to remove this license document?";
+        // ❌ Remove Image Function
+        function removeImage(imageType) {
+            let title;
+            if (imageType == 'profile_pic') {
+                title = "Are you sure you want to remove this profile pic?";
+            } else if (imageType == 'contract_signature_img') {
+                title = "Are you sure you want to remove this contract signature?";
+            } else if (imageType == 'signature_img') {
+                title = "Are you sure you want to remove this signature?";
+            } else if (imageType == 'license_document') {
+                title = "Are you sure you want to remove this license document?";
+            }
+            Swal.fire({
+                title: title,
+                icon: 'warning',
+                showCancelButton: true,
+                showCloseButton: true, // ✅ this line adds the "X" close button
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
+                    document.getElementById('file_' + imageType).value = "";
+                    document.getElementById('delete_' + imageType).value = 1;
                 }
-                Swal.fire({
-                    title: title,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    showCloseButton: true, // ✅ this line adds the "X" close button
-                    confirmButtonText: "Delete",
-                    cancelButtonText: "Cancel"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('preview_' + imageType).src = "{{ asset('assets/img.png') }}";
-                        document.getElementById('file_' + imageType).value = "";
-                        document.getElementById('delete_' + imageType).value = 1;
-                    }
-                });
+            });
+        }
+
+        function dataURLtoFile(dataurl, filename) {
+            let arr = dataurl.split(',');
+            let mime = arr[0].match(/:(.*?);/)[1];
+            let bstr = atob(arr[1]);
+            let n = bstr.length;
+            let u8arr = new Uint8Array(n);
+
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
             }
 
-        </script>
-        <script>
-            $(document).ready(function () {
-                loadStatesAndCitiesOnEdit();
-                // Country Change Event
-                $('#country').change(function () {
-                    var country_id = $(this).val();
-                    $('#state').html('<option selected="selected">Loading...</option>');
-                    $('#city').html('<option selected="selected">Select City</option>');
+            return new File([u8arr], filename, { type: mime });
+        }
 
-                    $.ajax({
-                        url: '/api/get-states/' + country_id
-                        , type: 'GET'
-                        , success: function (states) {
-                            $('#state').html('<option selected="selected">Select State</option>');
-                            $.each(states, function (key, state) {
-                                $('#state').append('<option value="' + state.id + '">' +
-                                    state.name + '</option>');
-                            });
-                        }
-                    });
-                });
+        function saveCanvasData(type) {
+            // let canvas = document.getElementById(`canvas_${type}`);
+            // if (!canvas) {
+            //     console.error(`❌ Canvas with id canvas_${type} not found in DOM`);
+            //     return;
+            // }
 
-                // State Change Event
-                $('#state').change(function () {
-                    var state_id = $(this).val();
-                    $('#city').html('<option selected="selected">Loading...</option>');
+            // let dataURL = canvas.toDataURL("image/png");
+            // let file = dataURLtoFile(dataURL, type + ".png");
 
-                    $.ajax({
-                        url: '/api/get-cities/' + state_id
-                        , type: 'GET'
-                        , success: function (cities) {
-                            $('#city').html('<option selected="selected">Select City</option>');
-                            $.each(cities, function (key, city) {
-                                $('#city').append('<option value="' + city.id + '">' + city
-                                    .name + '</option>');
-                            });
-                        }
-                    });
-                });
+            // let dataTransfer = new DataTransfer();
+            // dataTransfer.items.add(file);
 
-                function loadStatesAndCitiesOnEdit() {
-                    var country_id = $('#country').val();
-                    var state_id_defult = $('#state_id_defult').val();
-                    var city_id_defult = $('#city_id_defult').val();
-                    var selected_state = "{{ $user->state ?? '' }}"; // Backend se state ka ID le rahe hain
-                    var selected_city = "{{ $user->city ?? '' }}"; // Backend se city ka ID le rahe hain
+            // let fileInput = document.querySelector(`#file_${type}`);
+            // if (fileInput) {
+            //     fileInput.files = dataTransfer.files;
+            //     console.log(`✅ File assigned to #file_${type}`);
+            // } else {
+            //     console.error(`❌ File input #file_${type} not found`);
+            // }
+        }
 
-                    if (country_id) {
-                        $('#state').html('<option selected="selected">Loading...</option>');
-                        $.ajax({
-                            url: '/api/get-states/' + country_id
-                            , type: 'GET'
-                            , success: function (states) {
-                                $('#state').html('<option selected="selected">Select State</option>');
-                                $.each(states, function (key, state) {
-                                    var selected = state.id == state_id_defult ? 'selected' : '';
-                                    $('#state').append('<option value="' + state.id + '" ' + selected + '>' +
-                                        state.name + '</option>');
-                                });
 
-                                // Call city API only if state is selected
-                                if (state_id_defult) {
-                                    $('#city').html('<option selected="selected">Loading...</option>');
-                                    $.ajax({
-                                        url: '/api/get-cities/' + state_id_defult
-                                        , type: 'GET'
-                                        , success: function (cities) {
-                                            $('#city').html('<option selected="selected">Select City</option>');
-                                            $.each(cities, function (key, city) {
-                                                var selected = city.id == city_id_defult ? 'selected' : '';
-                                                $('#city').append('<option value="' + city.id + '" ' + selected + '>' +
-                                                    city.name + '</option>');
-                                            });
-                                        }
-                                    });
-                                }
-                            }
+
+
+        // Toggle draw section
+    function dataURLtoFile(dataurl, filename) {
+    let arr = dataurl.split(',');
+    let mime = arr[0].match(/:(.*?);/)[1];
+    let bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+}
+
+// ✅ Save canvas to hidden input (and optionally file input)
+function saveCanvasData(type) {
+    let canvas = document.getElementById(`canvas_${type}`);
+    if (!canvas) {
+        console.error(`❌ Canvas with id canvas_${type} not found`);
+        return;
+    }
+
+    let dataURL = canvas.toDataURL("image/png");
+
+    // Save to hidden input
+    let hiddenInput = document.getElementById(`drawnData_${type}`);
+    if (hiddenInput) hiddenInput.value = dataURL;
+
+    // (Optional) also attach to file input if you have one
+    let fileInput = document.querySelector(`#file_${type}`);
+    if (fileInput) {
+        let file = dataURLtoFile(dataURL, `${type}.png`);
+        let dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+    }
+
+    console.log(`✅ Saved drawing for ${type}`);
+}
+
+// Toggle draw section
+function toggleDraw(type) {
+    $('.' + type).toggleClass('d-none');
+    $('.priview_' + type).toggleClass('d-none');
+}
+
+// Canvas drawing setup
+document.addEventListener("DOMContentLoaded", () => {
+    ['signature_img', 'contract_signature_img'].forEach(type => {
+        let canvas = document.getElementById(`canvas_${type}`);
+        if (!canvas) return;
+
+        let ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", e => {
+            drawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener("mousemove", e => {
+            if (drawing) {
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener("mouseup", () => {
+            drawing = false;
+            saveCanvasData(type); // ✅ call only once
+        });
+
+        canvas.addEventListener("mouseleave", () => {
+            drawing = false;
+        });
+    });
+});
+
+function clearCanvas(type) {
+    let canvas = document.getElementById(`canvas_${type}`);
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let hiddenInput = document.getElementById(`drawnData_${type}`);
+    if (hiddenInput) hiddenInput.value = "";
+}
+
+    </script>
+    <script>
+        $(document).ready(function() {
+            loadStatesAndCitiesOnEdit();
+            // Country Change Event
+            $('#country').change(function() {
+                var country_id = $(this).val();
+                $('#state').html('<option selected="selected">Loading...</option>');
+                $('#city').html('<option selected="selected">Select City</option>');
+
+                $.ajax({
+                    url: '/api/get-states/' + country_id,
+                    type: 'GET',
+                    success: function(states) {
+                        $('#state').html('<option selected="selected">Select State</option>');
+                        $.each(states, function(key, state) {
+                            $('#state').append('<option value="' + state.id + '">' +
+                                state.name + '</option>');
                         });
                     }
-                }
-
-            });
-            $(document).ready(function () {
-                function getIsoCodeFromDialCode(dialCode) {
-                    const allCountries = window.intlTelInputGlobals.getCountryData();
-                    dialCode = dialCode.replace('+', '');
-                    const match = allCountries.find(c => c.dialCode === dialCode);
-                    return match ? match.iso2 : 'us'; // fallback to India
-                }
-
-                function initializeIntlTelInput(inputId, hiddenInputId, userDialCode) {
-                    const isoCode = getIsoCodeFromDialCode(userDialCode);
-                    const input = document.querySelector(inputId);
-
-                    const iti = window.intlTelInput(input, {
-                        initialCountry: isoCode,
-                        separateDialCode: true,
-                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-                    });
-
-                    // Update country code when country changes
-                    input.addEventListener("countrychange", function () {
-                        const dialCode = iti.getSelectedCountryData().dialCode;
-                        $(hiddenInputId).val("+" + dialCode);
-                    });
-
-                    // Also update immediately on page load
-                    const initialDialCode = iti.getSelectedCountryData().dialCode;
-                    $(hiddenInputId).val("+" + initialDialCode);
-                }
-
-                // Pass dial code like '+91' from Laravel
-                initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+1' }}");
-                initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+1' }}");
+                });
             });
 
-        </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const tabs = document.querySelectorAll('.nav-tabs .nav-item a');
-                const tabContentPanes = document.querySelectorAll('.tab-pane');
-                const url = new URL(window.location.href);
-                const urlParams = url.searchParams;
-                let activeTab = urlParams.get('type');
+            // State Change Event
+            $('#state').change(function() {
+                var state_id = $(this).val();
+                $('#city').html('<option selected="selected">Loading...</option>');
 
-                // If 'type' is missing in URL, default to 'customerDetails'
-                if (!activeTab) {
-                    activeTab = 'customerDetails';
-                    urlParams.set('type', activeTab);
-                    window.history.replaceState(null, '', url.toString());
+                $.ajax({
+                    url: '/api/get-cities/' + state_id,
+                    type: 'GET',
+                    success: function(cities) {
+                        $('#city').html('<option selected="selected">Select City</option>');
+                        $.each(cities, function(key, city) {
+                            $('#city').append('<option value="' + city.id + '">' + city
+                                .name + '</option>');
+                        });
+                    }
+                });
+            });
+
+            function loadStatesAndCitiesOnEdit() {
+                var country_id = $('#country').val();
+                var state_id_defult = $('#state_id_defult').val();
+                var city_id_defult = $('#city_id_defult').val();
+                var selected_state = "{{ $user->state ?? '' }}"; // Backend se state ka ID le rahe hain
+                var selected_city = "{{ $user->city ?? '' }}"; // Backend se city ka ID le rahe hain
+
+                if (country_id) {
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $.ajax({
+                        url: '/api/get-states/' + country_id,
+                        type: 'GET',
+                        success: function(states) {
+                            $('#state').html('<option selected="selected">Select State</option>');
+                            $.each(states, function(key, state) {
+                                var selected = state.id == state_id_defult ? 'selected' : '';
+                                $('#state').append('<option value="' + state.id + '" ' + selected + '>' +
+                                    state.name + '</option>');
+                            });
+
+                            // Call city API only if state is selected
+                            if (state_id_defult) {
+                                $('#city').html('<option selected="selected">Loading...</option>');
+                                $.ajax({
+                                    url: '/api/get-cities/' + state_id_defult,
+                                    type: 'GET',
+                                    success: function(cities) {
+                                        $('#city').html('<option selected="selected">Select City</option>');
+                                        $.each(cities, function(key, city) {
+                                            var selected = city.id == city_id_defult ? 'selected' : '';
+                                            $('#city').append('<option value="' + city.id + '" ' + selected + '>' +
+                                                city.name + '</option>');
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
+            }
 
-                // ✅ Always show the correct tab and tab-pane
-                const tabTrigger = document.querySelector(`.nav-tabs a[href="#${activeTab}"]`);
-                const activePane = document.getElementById(activeTab);
+        });
+        $(document).ready(function() {
+            function getIsoCodeFromDialCode(dialCode) {
+                const allCountries = window.intlTelInputGlobals.getCountryData();
+                dialCode = dialCode.replace('+', '');
+                const match = allCountries.find(c => c.dialCode === dialCode);
+                return match ? match.iso2 : 'us'; // fallback to India
+            }
 
-                if (tabTrigger && activePane) {
-                    new bootstrap.Tab(tabTrigger).show();
+            function initializeIntlTelInput(inputId, hiddenInputId, userDialCode) {
+                const isoCode = getIsoCodeFromDialCode(userDialCode);
+                const input = document.querySelector(inputId);
 
-                    // ✅ Always update tab-pane classes (even on refresh)
+                const iti = window.intlTelInput(input, {
+                    initialCountry: isoCode,
+                    separateDialCode: true,
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                });
+
+                // Update country code when country changes
+                input.addEventListener("countrychange", function() {
+                    const dialCode = iti.getSelectedCountryData().dialCode;
+                    $(hiddenInputId).val("+" + dialCode);
+                });
+
+                // Also update immediately on page load
+                const initialDialCode = iti.getSelectedCountryData().dialCode;
+                $(hiddenInputId).val("+" + initialDialCode);
+            }
+
+            // Pass dial code like '+91' from Laravel
+            initializeIntlTelInput("#edit_mobile_code", "#country_code", "{{ $user->country_code ?? '+1' }}");
+            initializeIntlTelInput("#edit_mobile", "#country_code_2", "{{ $user->country_code_2 ?? '+1' }}");
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabs = document.querySelectorAll('.nav-tabs .nav-item a');
+            const tabContentPanes = document.querySelectorAll('.tab-pane');
+            const url = new URL(window.location.href);
+            const urlParams = url.searchParams;
+            let activeTab = urlParams.get('type');
+
+            // If 'type' is missing in URL, default to 'customerDetails'
+            if (!activeTab) {
+                activeTab = 'customerDetails';
+                urlParams.set('type', activeTab);
+                window.history.replaceState(null, '', url.toString());
+            }
+
+            // ✅ Always show the correct tab and tab-pane
+            const tabTrigger = document.querySelector(`.nav-tabs a[href="#${activeTab}"]`);
+            const activePane = document.getElementById(activeTab);
+
+            if (tabTrigger && activePane) {
+                new bootstrap.Tab(tabTrigger).show();
+
+                // ✅ Always update tab-pane classes (even on refresh)
+                tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
+                activePane.classList.add('show', 'active');
+            }
+
+            // On tab switch: update URL + activate content pane
+            tabs.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    const newTabId = e.target.getAttribute('href').replace('#', '');
+
                     tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
-                    activePane.classList.add('show', 'active');
-                }
+                    const newPane = document.getElementById(newTabId);
+                    if (newPane) newPane.classList.add('show', 'active');
 
-                // On tab switch: update URL + activate content pane
-                tabs.forEach(tab => {
-                    tab.addEventListener('shown.bs.tab', function (e) {
-                        const newTabId = e.target.getAttribute('href').replace('#', '');
-
-                        tabContentPanes.forEach(pane => pane.classList.remove('show', 'active'));
-                        const newPane = document.getElementById(newTabId);
-                        if (newPane) newPane.classList.add('show', 'active');
-
-                        const updatedUrl = new URL(window.location.href);
-                        updatedUrl.searchParams.set('type', newTabId);
-                        window.history.replaceState(null, '', updatedUrl.toString());
-                    });
+                    const updatedUrl = new URL(window.location.href);
+                    updatedUrl.searchParams.set('type', newTabId);
+                    window.history.replaceState(null, '', updatedUrl.toString());
                 });
             });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const resetBtn = document.getElementById('shipto_reset'); // Reset button by ID
-                const form = resetBtn.closest('form'); // Closest form
-                const searchInput = form.querySelector('input[name="search"]'); // Search input field
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resetBtn = document.getElementById('shipto_reset'); // Reset button by ID
+            const form = resetBtn.closest('form'); // Closest form
+            const searchInput = form.querySelector('input[name="search"]'); // Search input field
 
-                resetBtn.addEventListener('click', function () {
-                    searchInput.value = ''; // Clear the search input
-                    form.submit(); // Submit the form
-                });
+            resetBtn.addEventListener('click', function() {
+                searchInput.value = ''; // Clear the search input
+                form.submit(); // Submit the form
             });
-            document.addEventListener('DOMContentLoaded', function () {
-                const resetBtn = document.getElementById('pickup_addresss_reset'); // Reset button by ID
-                const form = resetBtn.closest('form'); // Closest form
-                const searchInput = form.querySelector('input[name="search"]'); // Search input field
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const resetBtn = document.getElementById('pickup_addresss_reset'); // Reset button by ID
+            const form = resetBtn.closest('form'); // Closest form
+            const searchInput = form.querySelector('input[name="search"]'); // Search input field
 
-                resetBtn.addEventListener('click', function () {
-                    searchInput.value = ''; // Clear the search input
-                    form.submit(); // Submit the form
-                });
+            resetBtn.addEventListener('click', function() {
+                searchInput.value = ''; // Clear the search input
+                form.submit(); // Submit the form
             });
-        </script>
+        });
+    </script>
 
     @endsection
 </x-app-layout>

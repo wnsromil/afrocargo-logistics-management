@@ -144,7 +144,7 @@
                 <div class="col-md-6">
                     <div class="d-sm-flex align-items-center">
                         <div class="first">
-                            <label for="customer_id">Ship To <i class="text-danger">*</i></label>
+                            <label for="customer_id">Consignee <i class="text-danger">*</i></label>
                         </div>
                         <div class="middleDiv">
                             <input type="hidden" value="delivery">
@@ -165,7 +165,7 @@
 
                             <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal"
                             data-bs-target="#shiptoAddressModal">
-                                Add Shipto Address
+                                Add Consignee Address
                             </button>
 
                             @include('admin.Invoices.modals.shipToCreate')
@@ -249,14 +249,14 @@
                                     <label class="foncolor" for="warehouse_name">First Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="first_name" class="form-control inp"
-                                        placeholder="Enter First Name">
+                                        placeholder="Enter First Name" readonly>
 
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="last_name">Last Name <i
                                             class="text-danger">*</i></label>
                                     <input type="text" name="last_name" class="form-control inp"
-                                        placeholder="Enter Last Name">
+                                        placeholder="Enter Last Name" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="contact_no1">Contact No.1 <i
@@ -273,7 +273,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="mobile_number">
+                                            placeholder="Enter Contact No. 2" name="mobile_number" readonly>
                                     </div>
 
                                 </div>
@@ -291,7 +291,7 @@
                                             </select>
                                         </div>
                                         <input type="text" class="form-control flagInput inp"
-                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number">
+                                            placeholder="Enter Contact No. 2" name="alternative_mobile_number" readonly>
                                     </div>
 
                                 </div>
@@ -300,18 +300,18 @@
                                             class="text-danger">*</i></label>
                                     <!-- Address 1 -->
                                     <input type="text" name="address" class="form-control inp address"
-                                        placeholder="Enter Address 1">
+                                        placeholder="Enter Address 1" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Address.2">Address 2 </label>
                                     <!-- Address 2 — optional, you may remove or merge -->
                                     <input type="text" name="address_2" class="form-control inp"
-                                        placeholder="Enter Address 2">
+                                        placeholder="Enter Address 2" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="foncolor" for="country">Country <i class="text-danger">*</i></label>
                                     <input type="text" name="country" id="country" class="form-control inp address"
-                                        placeholder="Country">
+                                        placeholder="Country" readonly>
 
                                     @error('country_id')
                                     <span class="text-danger">{{ $message }}</span>
@@ -320,7 +320,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="State">State</label>
                                     <input type="text" name="state" id="state" class="form-control inp address"
-                                        placeholder="state">
+                                        placeholder="state" readonly>
                                     @error('state_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -329,7 +329,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="city">City</label>
                                     <input type="text" name="city" id="city" class="form-control inp address"
-                                        placeholder="city">
+                                        placeholder="city" readonly>
                                     @error('city_id')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -337,7 +337,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Zip_code">Zip code</label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip">
+                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
                             </div>
                         </div>
@@ -471,13 +471,14 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12">
-                                    <label for="payment_type">Payment Type</label>
+                                    <label for="payment_type">Payment Type<i class="text-danger">*</i></label>
                                     <select class="form-control select2  form-cs" name="payment_type">
                                         <option value="" disabled >Select Type</option>
-                                        <option {{ $invoice->payment_type == 'Boxcredit' ? 'selected':''}} value="Boxcredit">Box Credit</option>
+                                        <option {{ $invoice->payment_type == 'Box credit' ? 'selected':''}} value="Box credit">Box Credit</option>
                                         <option {{ $invoice->payment_type == 'Cash' ? 'selected':''}} value="Cash">Cash</option>
                                         <option {{ $invoice->payment_type == 'Cheque' ? 'selected':''}} value="Cheque">Cheque</option>
-                                        <option {{ $invoice->payment_type == 'CreditCard' ? 'selected':''}} value="CreditCard">Credit Card</option>
+                                        <option {{ $invoice->payment_type == 'Credit Card' ? 'selected':''}} value="Credit Card">Credit Card</option>
+                                        <option {{ $invoice->payment_type == 'DigitalPay' ? 'selected':''}} value="DigitalPay">DigitalPay</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-9 col-md-9 d-none" id="service_type">
@@ -645,7 +646,7 @@
                                     <th class="thwidth">Volume</th>
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
-                                    <th class="thwidth">Ins</th>
+                                    <th class="thwidth">Insurance</th>
                                     <th class="thwidth d-none">Discount</th>
                                     <th class="thwidth">Tax%</th>
                                     <th class="thwidth">Total</th>
@@ -685,9 +686,9 @@
                                         <div class="d-flex align-items-center priceInput">
                                             <input type="text" class="form-control inputcolor" placeholder=""
                                                 name="price" value="{{ $item['price'] ?? '' }}">
-                                            <button type="button" class="btn btn-secondary p-0 flat-btn">
+                                            {{-- <button type="button" class="btn btn-secondary p-0 flat-btn">
                                                 <i class="ti ti-circle-plus col737"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                     </td>
                                     <td>
@@ -749,9 +750,11 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center priceInput"><input type="text"
-                                                class="form-control inputcolor" placeholder="" name="price"><button
+                                                class="form-control inputcolor" placeholder="" name="price">
+                                                {{-- <button
                                                 type="button" class="btn btn-secondary p-0 flat-btn"><i
-                                                    class="ti ti-circle-plus col737"></i></button></div>
+                                                    class="ti ti-circle-plus col737"></i></button> --}}
+                                        </div>
                                     </td>
                                     <td>
                                         <input type="text" class="form-control tdbor inputcolor" placeholder=""
@@ -798,7 +801,7 @@
                         <input type="text" class="form-control smInput" placeholder="0" name="tax"
                             value="{{$invoice->tax ?? 0}}">
                     </div>
-                    <div><label>Ins</label>
+                    <div><label>Insurance</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
                             value="{{$invoice->ins ?? 0}}" value="{{$invoice->ins ?? 0}}">
                     </div>
@@ -930,7 +933,6 @@
             $("#dynamicTable tbody tr:last").on('click',function(){
                 $('#fnsubmit').prop('disabled', false);
             });
-
             setTimeout(() => {
                 console.log("invoce_typ", invoce_type);
                 toggleInventoryList();

@@ -57,13 +57,19 @@ class ServiceOrdersController extends Controller
             ->when($shipping_type, fn($q) => $q->where('transport_type', $shipping_type))
             ->when($status_search, fn($q) => $q->where('status', $status_search))
             ->when($daysPickupType, function ($q) use ($daysPickupType) {
-                $today = now()->toDateString();
-                $yesterday = now()->subDay()->toDateString();
-                $tomorrow = now()->addDay()->toDateString();
+                [$start, $end] = explode(' - ', $daysPickupType);
 
-                return $q->when($daysPickupType === 'Yesterdays_pickups', fn($q) => $q->whereDate('pickup_date', $yesterday))
-                    ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
-                    ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
+                $start = carbon()->createFromFormat('m/d/Y', trim($start))->startOfDay();
+                $end   = carbon()->createFromFormat('m/d/Y', trim($end))->endOfDay();
+
+                return $q->whereBetween('pickup_date', [$start, $end])->get();
+                // $today = now()->toDateString();
+                // $yesterday = now()->subDay()->toDateString();
+                // $tomorrow = now()->addDay()->toDateString();
+
+                // return $q->when($daysPickupType === 'Yesterdays_pickups', fn($q) => $q->whereDate('pickup_date', $yesterday))
+                //     ->when($daysPickupType === 'Today_pickups', fn($q) => $q->whereDate('pickup_date', $today))
+                    // ->when($daysPickupType === 'Tomorrows_pickup', fn($q) => $q->whereDate('pickup_date', $tomorrow));
             })
             ->latest('id');
 

@@ -644,4 +644,27 @@ class CustomerController extends Controller
             'data' => $customers
         ]);
     }
+
+    public function review(Request $request)
+    {
+        $validated = $request->validate([
+            'order_id' => 'required|integer|exists:parcels,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'nullable|string|max:1000',
+        ]);
+
+        $parcel = Parcel::where(['customer_id' => $this->user->id, 'id' => $validated['order_id']])->first();
+        if (!$parcel) {
+            return response()->json([
+                'message' => 'Order not found or does not belong to the user',
+            ], 404);
+        }
+        $parcel->rating = $validated['rating'];
+        $parcel->review = $validated['review'] ?? null;
+        $parcel->save();
+
+        return response()->json([
+            'message' => 'Review added successfully',
+        ]);
+    }
 }

@@ -1,5 +1,6 @@
 
 <!-- Invoice History Modal -->
+
 <div class="modal fade" id="invoiceHistory{{ $invoice->id ?? '' }}" tabindex="-1" role="dialog" aria-labelledby="invoiceHistoryLabel{{ $invoice->id }}" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content" style="font-size: 14px;">
@@ -138,36 +139,36 @@
 
                         <div class="col-12">
                             <div class="custodis d-flex mt-0">
-                                @foreach (['image1', 'image2', 'image3'] as $imageType)
-                                <div class="col-md-3">
-                                    <div class="d-flex align-items-center justify-content-center  avtard">
-                                        <label class="foncolor set me-sm-2">Image 1</label>
-                                        <div class="avtarset" style="position: relative;">
-                                            <!-- Image Preview -->
-                                            <img id="preview_{{ $imageType }}" class="avtars avtarc"
-                                                src="{{ asset('assets/img.png') }}" alt="avatar">
+  @foreach (['image1','image2','image3'] as $imageType)
+    <div class="col-md-3">
+      <div class="d-flex align-items-center justify-content-center avtard">
+        <label class="foncolor set me-sm-2">Image</label>
+        <div class="avtarset" style="position:relative;">
+          <!-- preview + store default src in data-default -->
+          <img id="preview_{{ $imageType }}" class="avtars avtarc"
+               src="{{ asset('assets/img.png') }}"
+               data-default="{{ asset('assets/img.png') }}" alt="avatar">
 
-                                            <!-- File Input (Hidden by Default) -->
-                                            <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
-                                                accept="image/png, image/jpeg" style="display: none;"
-                                                onchange="previewImage(this, '{{ $imageType }}')">
+          <input type="file" id="file_{{ $imageType }}" name="{{ $imageType }}"
+                 accept="image/png, image/jpeg" style="display:none;">
 
-                                            <div class="divedit">
-                                                <!-- Edit Button -->
-                                                <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}"
-                                                    alt="edit" style="cursor: pointer;"
-                                                    onclick="document.getElementById('file_{{ $imageType }}').click();">
+          <div class="divedit">
+            <img class="editstyle" src="{{ asset('assets/img/edit (1).png') }}"
+                 alt="edit" style="cursor:pointer"
+                 onclick="document.getElementById('file_{{ $imageType }}').click();">
 
-                                                <!-- Delete Button -->
-                                                <img class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}"
-                                                    alt="delete" style="cursor: pointer;"
-                                                    onclick="removeImage('{{ $imageType }}')">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
+            <!-- delete hidden by default -->
+            <img id="delete_{{ $imageType }}" class="editstyle" src="{{ asset('assets/img/dlt (1).png') }}"
+                 alt="delete" style="cursor:pointer; display:none;">
+          </div>
+        </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
+
+
                         </div>
 
                         <div class="col-12">
@@ -216,7 +217,7 @@
 
 <!-- print_Invoice2 Modal -->
 <div class="modal custom-modal invoiceSModel pdfModal fade" id="printInvoice2{{$invoice->id ?? ''}}" role="dialog">
-    <div class="modal-dialog modal-dialog-centered mxWidth">
+    <div class="modal-dialog modal-dialog-centered widthauto">
         <div class="modal-content">
             <div class="modal-header border-0 border-bottom py-3">
                 <div class="form-header modal-header-title text-start mb-0">
@@ -227,220 +228,250 @@
                 </button>
             </div>
             <div class="modal-body p-2" >
-                <table width="100%" cellpadding="0" cellspacing="0"
-                    style="border-collapse: collapse; max-width:400px; margin: 0 auto; background: #fff; border: 1px solid #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; font-size: 12px!important; color: #000!important;">
-                    <tr id="printInvoice2Content">
-                        <td>
-                            <table aria-describedby="table-description" style="width: 100%; table-layout: fixed;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: baseline;">
-                                            <table>
-                                                <tr>
-                                                    <td style="vertical-align: middle;">
-                                                        <img style="width: 60px; margin-right: 10px;"
-                                                            src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
-                                                    </td>
-                                                    <td>
-                                                        <strong >{{$invoice->warehouse->warehouse_name ?? ''}}</strong><br>
-                                                        {{$invoice->warehouse->address ?? ''}}<br>
-                                                        The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
-                                                        {{$invoice->warehouse->country ?? ''}}<br>
-                                                        Tel-{{$invoice->warehouse->phone ?? ''}}<br>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
+                <!DOCTYPE html>
+                <html lang="en">
 
-                                        <td style="text-align: right;">
-                                            @if(!empty($invoice->invoiceParcelData->arrivedWarehouse))
-                                            <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
-                                                ?? ''}}</b><br>
-                                                {{$invoice->invoiceParcelData->arrivedWarehouse->address
-                                                ?? ''}},<br>
-                                            The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br>
-                                            Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br>
-                                            {{-- Tel 718-954-9093<br> --}}
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: baseline;">
-                                            <b>Driver:</b>
-                                            <br>
-                                            {{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}
-                                        </td>
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style type="text/css">
+                            @page
+                            {
+                                margin: 15px 10px;
+                                padding: 0px;
+                                max-width: 370px;
+                            }
+                            td p
+                            {
+                                font-size: 12px!important;
+                            }
 
-                                        <td style="text-align: right;">
+                        </style>
+                    </head>
 
-                                        </td>
-                                    </tr>
+                    <body style="margin: 0; padding: 0;">
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                            style="height: auto!important; min-height: auto!important; max-height: auto!important; border-collapse: collapse; max-width:370px; margin: 0 auto; background: #fff; border: 1px solid #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; font-size: 12px!important; color: #000!important;">
+                            <tr id="printInvoice2Content">
+                                <td>
+                                    <table aria-describedby="table-description" style="width: 100%; table-layout: fixed;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="vertical-align: baseline;">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="vertical-align: middle;">
+                                                                <img style="width: 60px; margin-right: 10px;"
+                                                                    src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
+                                                            </td>
+                                                            <td>
+                                                                <p><strong>{{ $invoice->warehouse->warehouse_name ?? '' }}</strong></p>
+                                                                <p>{{ $invoice->warehouse->address ?? '' }}</p>
+                                                                <p>The {{ $invoice->warehouse->warehouse_code ?? '' }}</p>
+                                                                <p>{{ $invoice->warehouse->country ?? '' }}</p>
+                                                                <p>Tel-{{ $invoice->warehouse->phone ?? '' }}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
 
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"
-                                            style="font-weight: bold; font-size: 30px; color: #000; text-align: center;">
-                                            {{ $invoice->invoice_no ?? '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table aria-describedby="table-description"
-                                style="width: 100%; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td
-                                            style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px;">
-                                            {{ $invoice->created_at ? $invoice->created_at->format('m/d/Y') : '' }}</td>
-                                        <td
-                                            style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px; text-align: right;">
-                                            {{$invoice->warehouse->name ?? ''}}
-                                            {{$invoice->warehouse->address ?? ''}} </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table aria-describedby="table-description"
-                                style="width: 100%; table-layout: fixed; border-bottom: 1px solid #000;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr></tr>
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: baseline;">
-                                            <b>Customer:</b><br>
-                                            @if ($invoice->pickupAddress)
-                                                {{ $invoice->pickupAddress->full_name ?? '' }}<br>
-                                                {{ $invoice->pickupAddress->address ?? '' }}<br>
-                                                {{ $invoice->pickupAddress->state_id ?? '' }} {{ $invoice->pickupAddress->country_id ?? '' }}<br>
-                                                {{ $invoice->pickupAddress->mobile_number ?? '' }}
-                                            @else
-                                                {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
-                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
-                                                {{ $invoice->deliveryAddress->state_id ?? '' }} {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
-                                                {{ $invoice->deliveryAddress->mobile_number ?? '' }}
-                                            @endif
+                                                <td style="text-align: right;">
+                                                    @if (!empty($invoice->invoiceParcelData->arrivedWarehouse))
+                                                        <p><strong>{{ $invoice->invoiceParcelData->arrivedWarehouse->warehouse_name ?? '' }}</strong>
+                                                        </p>
+                                                        <p>{{ $invoice->invoiceParcelData->arrivedWarehouse->address ?? '' }},
+                                                        </p>
+                                                        <p>The {{ $invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? '' }}
+                                                        </p>
+                                                        <p>Tel-{{ $invoice->invoiceParcelData->arrivedWarehouse->phone ?? '' }}</p>
+                                                        {{-- Tel 718-954-9093<br> --}}
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                                            <td style="height: 10px!important;"></td>
+                                                        </tr> -->
+                                            <tr>
+                                                <td style="vertical-align: baseline;">
+                                                    <b>Driver:</b>
+                                                    <br>
+                                                    {{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}
+                                                </td>
 
-                                        </td>
+                                                <td style="text-align: right; height: 5px!important;">
 
-                                        <td style="text-align: right;">
-                                            @if ($invoice->deliveryAddress)
-                                                <b>Ship To:</b><br>
-                                                {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
-                                                {{ $invoice->deliveryAddress->address ?? '' }}<br>
-                                                {{ $invoice->deliveryAddress->mobile_number ?? '' }}
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Cont : {{ $invoice->container->unique_id ?? '' }}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 5px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left; font-weight: 500; font-size: 14px;" colspan="2">
-                                            <table aria-describedby="table-description"
-                                                style="width: 100%; table-layout: fixed; border-top: 1px solid #000000">
-                                                <tr>
-                                                    <td colspan="4"><b>* {{ $invoice->invoce_item[0]['supply_name'] ?? '' }}</b></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Qty</td>
-                                                    <td>Price</td>
-                                                    <td>Discount</td>
-                                                    <td>Total</td>
-                                                </tr>
-                                                @if(isset($invoice->invoce_item) && count($invoice->invoce_item))
-                                                    @foreach($invoice->invoce_item as $item)
-                                                    <tr>
-                                                        <td>{{ $item['qty'] ?? 0 }}</td>
-                                                        <td>${{ number_format($item['price'] ?? 0, 2) }}</td>
-                                                        <td>${{ number_format($item['discount'] ?? 0, 2) }}</td>
-                                                        <td>${{ number_format($item['total'] ?? 0, 2) }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td colspan="4">No Items</td>
-                                                    </tr>
-                                                @endif
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height:5px;"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table aria-describedby="table-description"
-                                style="width: 100%; border-radius: 0px; padding-bottom: 5px; margin-bottom: 10px;">
-                                <thead>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="2"><b>Total Items {{ $invoice->total_qty ?? count($invoice->invoce_item ?? []) }} : {{ $invoice->container->unique_id ?? '' }}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 120px!important; width: 50%; padding-bottom: 10px;">
-                                            <table style="border: 1px solid #000; height: 120px;">
-                                                <tr>
-                                                    <td
-                                                        style="vertical-align: baseline; height: auto!important; padding: 5px 3px;">
-                                                        I have read and accepted the terms and conditions<br>
+                                                </td>
+                                            </tr>
 
-                                                        <img style="width: 80px;"
-                                                                                src="{{$invoice->warehouse && $invoice->warehouse->signature ? $invoice->warehouse->signature->signature_file:'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td
-                                                        style="vertical-align: baseline; font-size: 14px; text-align: right; height: 20px!important;">
-                                                        <b>Signature</b>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td style="text-align: right; width: 50%; vertical-align: baseline;">
-                                            <b>
-                                                Sub-Total: ${{ number_format($invoice->sub_total ?? 0, 2) }}<br>
-                                                Ins.: ${{ number_format($invoice->insurance ?? 0, 2) }}<br>
-                                                Tax: ${{ number_format($invoice->tax ?? 0, 2) }}<br>
-                                                Total: ${{ number_format($invoice->grand_total ?? 0, 2) }}<br>
-                                                Payment: ${{ number_format($invoice->is_paid ?? 0, 2) }}<br>
-                                                Balance: ${{ number_format($invoice->balance ?? 0, 2) }}<br>
-                                            </b>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+                                            <!-- <tr>
+                                                            <td style="height: 5px!important;"></td>
+                                                        </tr> -->
+                                            <tr>
+                                                <td colspan="2"
+                                                    style="font-weight: bold; font-size: 30px; color: #000; text-align: center;">
+                                                    {{ $invoice->invoice_no ?? '' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 5px!important;"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table aria-describedby="table-description"
+                                        style="width: 100%; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px;">
+                                                    {{ $invoice->created_at ? $invoice->created_at->format('m/d/Y') : '' }}</td>
+                                                <td
+                                                    style="padding-top: 10px; padding-bottom: 10px; font-weight: 700; font-size: 14px; text-align: right;">
+                                                    {{-- {{ $invoice->warehouse->name ?? '' }}
+                                                    {{ $invoice->warehouse->address ?? '' }} </td> --}}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table aria-describedby="table-description"
+                                        style="width: 100%; table-layout: fixed; border-bottom: 1px solid #000;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr></tr>
+                                            <tr>
+                                                <td style="height: 5px!important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: baseline;">
+                                                    <b>Customer:</b><br>
+                                                    @if ($invoice->pickupAddress)
+                                                        {{ $invoice->pickupAddress->full_name ?? '' }}<br>
+                                                        {{ $invoice->pickupAddress->address ?? '' }}<br>
+                                                        {{ $invoice->pickupAddress->state_id ?? '' }}
+                                                        {{ $invoice->pickupAddress->country_id ?? '' }}<br>
+                                                        {{ $invoice->pickupAddress->mobile_number ?? '' }}
+                                                    @else
+                                                        {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->state_id ?? '' }}
+                                                        {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                    @endif
+
+                                                </td>
+
+                                                <td style="text-align: right;">
+                                                    @if ($invoice->deliveryAddress)
+                                                        <b>Ship To:</b><br>
+                                                        {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->address ?? '' }}<br>
+                                                        {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Cont : {{ $invoice->container->unique_id ?? '' }}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 5px!important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left; font-weight: 500; font-size: 14px;" colspan="2">
+                                                    <table aria-describedby="table-description"
+                                                        style="width: 100%; table-layout: fixed; border-top: 1px solid #000000">
+                                                        <tr>
+                                                            <td style="height:15px!important;" colspan="4"><b>*
+                                                                    {{ $invoice->invoce_item[0]['supply_name'] ?? '' }}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="height:15px!important;">Qty</td>
+                                                            <td style="height:15px!important;">Price</td>
+                                                            <td style="height:15px!important;">Discount</td>
+                                                            <td style="height:15px!important;">Total</td>
+                                                        </tr>
+                                                        @if (isset($invoice->invoce_item) && count($invoice->invoce_item))
+                                                            @foreach ($invoice->invoce_item as $item)
+                                                                <tr>
+                                                                    <td style="height:15px!important;">{{ $item['qty'] ?? 0 }}</td>
+                                                                    <td style="height:15px!important;">
+                                                                        ${{ number_format($item['price'] ?? 0, 2) }}</td>
+                                                                    <td style="height:15px!important;">
+                                                                        ${{ number_format($item['discount'] ?? 0, 2) }}</td>
+                                                                    <td style="height:15px!important;">
+                                                                        ${{ number_format($item['total'] ?? 0, 2) }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @else
+                                                            <tr>
+                                                                <td style="height:15px!important;" colspan="4">No Items</td>
+                                                            </tr>
+                                                        @endif
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table aria-describedby="table-description"
+                                        style="width: 100%; border-radius: 0px; padding-bottom: 5px; margin-bottom: 10px;">
+                                        <thead>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2"><b>Total Items
+                                                        {{ $invoice->total_qty ?? count($invoice->invoce_item ?? []) }} :
+                                                        {{ $invoice->container->unique_id ?? '' }}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 100px!important; width: 50%; padding-bottom: 10px;">
+                                                    <table style="border: 1px solid #000; ">
+                                                        <tr>
+                                                            <td
+                                                                style="vertical-align: baseline; height: auto!important; padding: 5px 3px;">
+                                                                I have read and accepted the terms and conditions<br>
+
+                                                                <img style="height: 50px;"
+                                                                    src="{{ $invoice->warehouse && $invoice->warehouse->signature ? $invoice->warehouse->signature->signature_file : 'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg' }}">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td
+                                                                style="vertical-align: baseline; font-size: 14px; text-align: right; height: 15px!important;">
+                                                                <b>Signature</b>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td style="text-align: right; width: 50%; vertical-align: baseline;">
+                                                    <b>
+                                                        Sub-Total: ${{ number_format($invoice->sub_total ?? 0, 2) }}<br>
+                                                        Ins.: ${{ number_format($invoice->insurance ?? 0, 2) }}<br>
+                                                        Tax: ${{ number_format($invoice->tax ?? 0, 2) }}<br>
+                                                        Total: ${{ number_format($invoice->grand_total ?? 0, 2) }}<br>
+                                                        Payment: ${{ number_format($invoice->is_paid ?? 0, 2) }}<br>
+                                                        Balance: ${{ number_format($invoice->balance ?? 0, 2) }}<br>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </body>
+
+                </html>
             </div>
         </div>
     </div>
@@ -556,45 +587,46 @@
 <!--/internal_2Comment Modal -->
 
 <!-- custom_Invoice Modal -->
-<div class="modal custom-modal invoiceSModel tableBody fade" id="customInvoice{{$invoice->id ?? ''}}" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+<div class="modal custom-modal invoiceSModel tableBody pdfModal fade" id="customInvoice{{$invoice->id ?? ''}}" role="dialog">
+    <div class="modal-dialog modal-dialog-centered widthauto">
         <div class="modal-content">
             <div class="modal-body p-2">
                 <table width="100%" cellpadding="0" cellspacing="0"
                     style="border-collapse: collapse; max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #ffffff; font-size: 14px; color: #000;">
                     <!-- Header -->
                     <tr>
-                        <td colspan="2" style="padding: 0 20px 0px 20px;">
+                        <td colspan="2" style="padding:0px;">
                             <table width="100%">
                                 <tr>
-                                    <td style="width: 40%; vertical-align: baseline;">
+                                    <td style="width: 45%; vertical-align: baseline;">
                                         <table>
                                             <tr>
                                                 <td style="vertical-align: middle;">
-                                                    <img style="width: 75px; margin-right: 5px;"
+                                                    <img style="width: 90px;"
                                                         src="https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg">
                                                 </td>
-                                                <td>
-                                                    <strong >{{$invoice->warehouse->warehouse_name ?? ''}}</strong><br>
-                                                        {{$invoice->warehouse->address ?? ''}}<br>
+                                                <td style="padding-left: 10px;">
+                                                    <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+                                                        <span style="font-weight: 400; color: #222222;">{{$invoice->warehouse->address ?? ''}}<br>
                                                         The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
-                                                        {{$invoice->warehouse->country ?? ''}}<br>
-                                                        Tel-{{$invoice->warehouse->phone ?? ''}}<br>
+                                                        {{$invoice->warehouse->country ?? ''}}
+                                                        Tel-{{$invoice->warehouse->phone ?? ''}}<br></span>
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
-                                    <td style="width: 25%; text-align: center;">
+                                    <td style="width: 20%; text-align: center;">
                                     </td>
                                     <td style="width: 35%; text-align: right;">
                                         @if(!empty($invoice->invoiceParcelData->arrivedWarehouse))
                                         <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                             ?? ''}}</b><br>
-                                            {{$invoice->invoiceParcelData->arrivedWarehouse->address
+                                            <span style="font-weight: 400; color: #222222;">{{$invoice->invoiceParcelData->arrivedWarehouse->address
                                             ?? ''}},<br>
                                         The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br>
                                         Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br>
                                         {{-- Tel 718-954-9093<br> --}}
+                                    </span>
                                         @endif
                                     </td>
                                 </tr>
@@ -662,11 +694,11 @@
                                                     <table width="100%">
                                                         <tr>
                                                             <td style="width: 40%; vertical-align: baseline;">
-                                                                <strong >{{$invoice->warehouse->warehouse_name ?? ''}}</strong><br>
-                                                                {{$invoice->warehouse->address ?? ''}}<br>
+                                                                <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+                                                                <span style="font-weight: 400; color: #222222;">{{$invoice->warehouse->address ?? ''}}<br>
                                                                 The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
-                                                                {{$invoice->warehouse->country ?? ''}}<br>
-                                                                Tel-{{$invoice->warehouse->phone ?? ''}}<br>
+                                                                {{$invoice->warehouse->country ?? ''}}
+                                                                Tel-{{$invoice->warehouse->phone ?? ''}}<br></span>
                                                             </td>
                                                             <td style="width: 20; text-align: center;">
                                                             </td>
@@ -674,10 +706,10 @@
                                                                 @if(!empty($invoice->invoiceParcelData->arrivedWarehouse))
                                                                 <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                                                     ?? ''}}</b><br>
-                                                                    {{$invoice->invoiceParcelData->arrivedWarehouse->address
+                                                                    <span style="font-weight: 400; color: #222222;">{{$invoice->invoiceParcelData->arrivedWarehouse->address
                                                                     ?? ''}},<br>
                                                                 The {{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_code ?? ''}}<br>
-                                                                Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br>
+                                                                Tel-{{$invoice->invoiceParcelData->arrivedWarehouse->phone ?? ''}}<br></span>
                                                                 {{-- Tel 718-954-9093<br> --}}
                                                                 @endif
                                                             </td>
@@ -723,17 +755,17 @@
                                                             <td>
                                                                 <b style="font-size: 18px;">Customer</b><br>
                                                                 @if ($invoice->pickupAddress)
-                                                                    {{ $invoice->pickupAddress->full_name ?? '' }}<br>
+                                                                    <span style="font-weight: 400; color: #222222;">{{ $invoice->pickupAddress->full_name ?? '' }}<br>
                                                                     {{ $invoice->pickupAddress->address ?? '' }}<br>
                                                                     {{ $invoice->pickupAddress->state_id ?? '' }}<br>
                                                                     {{ $invoice->pickupAddress->country_id ?? '' }}<br>
-                                                                    {{ $invoice->pickupAddress->mobile_number ?? '' }}
+                                                                    {{ $invoice->pickupAddress->mobile_number ?? '' }}<span>
                                                                 @else
-                                                                    {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                                    <span style="font-weight: 400; color: #222222;">{{ $invoice->deliveryAddress->full_name ?? '' }}<br>
                                                                     {{ $invoice->deliveryAddress->address ?? '' }}<br>
                                                                     {{ $invoice->deliveryAddress->state_id ?? '' }}<br>
                                                                     {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
-                                                                    {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                                    {{ $invoice->deliveryAddress->mobile_number ?? '' }}<span>
                                                                 @endif
 
                                                             </td>
@@ -743,11 +775,11 @@
                                                 <td style="width: 50%; padding:10px; padding-top: 5px; text-align: right;">
                                                     @if ($invoice->deliveryAddress)
                                                         <b style="font-size: 18px;">Ship To:</b><br>
-                                                        {{ $invoice->deliveryAddress->full_name ?? '' }}<br>
+                                                        <span style="font-weight: 400; color: #222222;">{{ $invoice->deliveryAddress->full_name ?? '' }}<br>
                                                         {{ $invoice->deliveryAddress->address ?? '' }}<br>
                                                         {{ $invoice->deliveryAddress->state_id ?? '' }}<br>
                                                         {{ $invoice->deliveryAddress->country_id ?? '' }}<br>
-                                                        {{ $invoice->deliveryAddress->mobile_number ?? '' }}
+                                                        {{ $invoice->deliveryAddress->mobile_number ?? '' }}</span>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -756,25 +788,25 @@
                                                     <table aria-describedby="table-description"
                                                         style="width: 100%; padding: 0 10px; table-layout: fixed; border-top: 1px solid #000000; border-bottom: 1px solid #000000; margin-bottom: 20px;">
                                                         <tr>
-                                                            <td colspan="6"><b>* {{ $invoice->invoce_item[0]['supply_name'] ?? '' }}</b></td>
+                                                            <td style="padding: 2px 10px;" colspan="6"><b>* {{ $invoice->invoce_item[0]['supply_name'] ?? '' }}</b></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Qty</td>
-                                                            <td>Price</td>
-                                                            <td>Discount</td>
-                                                            <td>Tax(%)</td>
-                                                            <td>Ins</td>
-                                                            <td>Total</td>
+                                                            <td  style="padding: 2px 10px;">Qty</td>
+                                                            <td  style="padding: 2px 10px;">Price</td>
+                                                            <td  style="padding: 2px 10px;">Discount</td>
+                                                            <td  style="padding: 2px 10px;">Tax(%)</td>
+                                                            <td  style="padding: 2px 10px;">Ins</td>
+                                                            <td  style="padding: 2px 10px;">Total</td>
                                                         </tr>
                                                         @if(isset($invoice->invoce_item) && count($invoice->invoce_item))
                                                             @foreach($invoice->invoce_item as $item)
                                                             <tr>
-                                                                <td>{{ $item['qty'] ?? 0 }}</td>
-                                                                <td>${{ number_format($item['price'] ?? 0, 2) }}</td>
-                                                                <td>${{ number_format($item['discount'] ?? 0, 2) }}</td>
-                                                                <td>${{ number_format($item['tax'] ?? 0, 2) }}</td>
-                                                                <td>${{ number_format($item['ins'] ?? 0, 2) }}</td>
-                                                                <td>${{ number_format($item['total'] ?? 0, 2) }}</td>
+                                                                <td  style="padding: 2px 10px;">{{ $item['qty'] ?? 0 }}</td>
+                                                                <td  style="padding: 2px 10px;">${{ number_format($item['price'] ?? 0, 2) }}</td>
+                                                                <td  style="padding: 2px 10px;">${{ number_format($item['discount'] ?? 0, 2) }}</td>
+                                                                <td  style="padding: 2px 10px;">${{ number_format($item['tax'] ?? 0, 2) }}</td>
+                                                                <td  style="padding: 2px 10px;">${{ number_format($item['ins'] ?? 0, 2) }}</td>
+                                                                <td  style="padding: 2px 10px;">${{ number_format($item['total'] ?? 0, 2) }}</td>
                                                             </tr>
                                                             @endforeach
                                                         @else
@@ -786,8 +818,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <table width="100%" style="padding: 10px;">
+                                                <td style="padding: 10px 10px 0 10px;">
+                                                    <table width="100%" >
                                                         <tr>
                                                             <td>
                                                                 Total Items: {{ $invoice->total_qty ?? count($invoice->invoce_item ?? []) }}
@@ -799,13 +831,13 @@
                                                                     style="width: 100%; border-collapse: collapse; border: 1px solid black;"
                                                                     cellpadding="8">
                                                                     <tr>
-                                                                        <td>
+                                                                        <td style="padding: 10px 10px 0 10px;">
                                                                             I have received the contract and
                                                                             accept the terms and condition
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="text-align: right; padding: 0;">
+                                                                        <td style="text-align: right; padding: 10px 10px 0 10px; ">
                                                                             <img style="width: 80px;"
                                                                                 src="{{$invoice->warehouse && $invoice->warehouse->signature ? $invoice->warehouse->signature->signature_file:'https://afrocargo.senomicsecurity.in/public/assets/images/AfroCargoLogo.svg'}}">
                                                                         </td>
@@ -815,10 +847,10 @@
                                                         </tr>
                                                     </table>
                                                 </td>
-                                                <td style="text-align: right;">
-                                                    <table style="width: 65%; margin-left: auto; padding: 10px;">
+                                                <td style="text-align: right; padding: 10px;">
+                                                    <table style="width: 65%; margin-left: auto;">
                                                         <tr>
-                                                            <td>
+                                                            <td >
                                                                 <b>Sub-Total:</b> ${{ number_format($invoice->sub_total ?? 0, 2) }} <br>
                                                                 <b>Ins:</b> ${{ number_format($invoice->insurance ?? 0, 2) }} <br>
                                                                 <b>Tax:</b> ${{ number_format($invoice->tax ?? 0, 2) }} <br>
@@ -833,7 +865,7 @@
                                                                     style="width: 100%; border-collapse: collapse; border: 1px solid black;"
                                                                     cellpadding="5">
                                                                     <tr>
-                                                                        <td style="font-size: 15px;">
+                                                                        <td style="font-size: 15px; padding: 5px;">
                                                                             Invoice#: {{ $invoice->invoice_no ?? '' }}
                                                                         </td>
                                                                     </tr>
@@ -1022,7 +1054,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="height: 5px;"></td>
+                                            <td style="height: 5px!important;"></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"
@@ -1031,7 +1063,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="height: 5px;"></td>
+                                            <td style="height: 5px!important;"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1307,6 +1339,7 @@
     </div>
 </div>
 <!--/Note Modal -->
+
 <!-- signature_Image Modal -->
 <div class="modal custom-modal invoiceSModel fade" id="signatureImage{{$invoice->id ?? ''}}" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -1382,3 +1415,32 @@
 </div>
 <!--/Contract_Image Modal -->
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('input[type="file"][id^="file_"]').forEach(input => {
+    const key = input.id.replace('file_','');
+    const preview = document.getElementById('preview_' + key);
+    const delBtn = document.getElementById('delete_' + key);
+
+    // show delete if DB already had an image (preview != default)
+    if (preview && preview.dataset && preview.src !== preview.dataset.default) {
+      delBtn.style.display = 'inline-block';
+    }
+
+    input.addEventListener('change', function () {
+      if (input.files && input.files[0]) {
+        preview.src = URL.createObjectURL(input.files[0]);
+        delBtn.style.display = 'inline-block';
+      }
+    });
+
+    delBtn.addEventListener('click', function () {
+      // reset preview and input
+      preview.src = preview.dataset.default;
+      input.value = '';
+      delBtn.style.display = 'none';
+    });
+  });
+});
+</script>

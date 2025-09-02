@@ -162,7 +162,7 @@
 
     {{-- <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
-    
+
     <script src="{{ asset('js/fcm.js') }}"></script> --}}
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJFnhTgQa7v75t28FbMgajOv-5mJuMTqI&libraries=places"
@@ -200,6 +200,10 @@
     @yield('script')
 
     <script>
+        setTimeout(function() {
+            // showLoader();
+        }, 1500);
+
         @session('success')
             Swal.fire({
                 title: "Good job!"

@@ -9,6 +9,7 @@ var invoce_type = "services";
 let exchangeRates = [];
 var maxPaymentAmountValue = 0;
 var deletedItrmId =[];
+var invoceType = "services";
 
 function toggleLoginForm(type) {
     if (type === "services") {
@@ -17,6 +18,7 @@ function toggleLoginForm(type) {
         document.getElementById("servicesBtn").classList.add("active3");
         document.getElementById("suppliesBtn").classList.remove("active3");
         $('#service_type').removeClass('d-none');
+        $('#product_type').removeClass('d-none');
 
         $('input[name="invoce_type"]').val("services");
         invoce_type = "services";
@@ -46,6 +48,7 @@ function toggleLoginForm(type) {
         document.getElementById("servicesBtn").classList.remove("active3");
         document.getElementById("suppliesBtn").classList.add("active3");
         $('#service_type').addClass('d-none');
+        $('#product_type').addClass('d-none');
 
         $('input[name="invoce_type"]').val("supplies");
         invoce_type = "supplies";
@@ -116,6 +119,7 @@ $("#add_ship_cancel").on("click", function () {
 
 // plus minus adding row
 document.addEventListener("DOMContentLoaded", function () {
+    invoceType = invoce_type;
     // Add new row
     $(document).on("click", ".addBtn", function () {
         var row = $(this).closest("tr");
@@ -292,6 +296,7 @@ $(document).ready(function () {
         let shipCountry = $('#ship_country option:selected').attr('data-shipcounty') ?? '';
         shipCountry = JSON.parse(shipCountry);
         console.log("shipCountry.id",shipCountry.id,shipCountry);
+
         if(shipCountry){
             console.log("shipCountry.id",shipCountry.id,shipCountry);
             $('select[name="warehouse_id"]').val(shipCountry.id ?? null).trigger('change');
@@ -346,6 +351,10 @@ $(document).ready(function () {
             $('#countryForLocation').val(deleveryCountry.iso2 ?? null).trigger('change');
         }
 
+        getContainer({
+            'country_id':deleveryCountry.country_id ?? null,
+            'container_id':$('select[name="container_id"]').val() ?? null,
+        })
         // --------------------------
         // Clear existing options
         $('#ship_customer').empty();
@@ -519,12 +528,12 @@ $(document).ready(function () {
         let inventoryItems = selectedObject.parcel_inventory;
         dynamicInventoryTable(inventoryItems);
 
-        setTimeout(() => {
-            $("#dynamicTable tbody tr").each(function () {
-                const row = $(this);
-                syncSummary(row);
-            });
-        }, 100); // Adjust the timeout as needed
+        // setTimeout(() => {
+        //     $("#dynamicTable tbody tr").each(function () {
+        //         const row = $(this);
+        //         syncSummary(row);
+        //     });
+        // }, 100); // Adjust the timeout as needed
 
         $('input[name="descriptions"]').val(selectedObject.descriptions);
         $('input[name="weight"]').val(selectedObject.weight ?? null);
@@ -561,9 +570,37 @@ $(document).ready(function () {
         }
     });
 
+    $("#suppliesBtn, #servicesBtn").on("click", function () {
+        if($('input[name="invoce_type"]').val() != invoceType){
+            invoceType = $('input[name="invoce_type"]').val();
+            dynamicInventoryTable(""); // 👈 call your function
+        }
+    });
 
 
+//  end of document ready
 });
+
+function getContainer(data={}){
+    $.ajax({
+            url: "/api/filterContainers",
+            method: "GET",
+            data: data,
+            success: function (res) {
+                if (res.containers) {
+                    let containerOptions = '<option value="">Select Container</option>';
+                    res.containers.forEach(function (container) {
+                        containerOptions += `<option value="${container.id}">${container.unique_id}, ${container.ship_to_country}</option>`;
+                    });
+
+                    $('select[name="container_id"]').html(containerOptions);
+                }
+            },
+            error: function (xhr) {
+                console.error("Error sending invoice:", xhr);
+            }
+        });
+}
 
 function getOrderList() {
     $('#order_list').empty() // Clear existing options
@@ -726,6 +763,13 @@ function dynamicInventoryTable(inventoryItems) {
 
                 </tr>`);
     }
+
+    setTimeout(() => {
+        $("#dynamicTable tbody tr").each(function () {
+            const row = $(this);
+            syncSummary(row);
+        });
+    }, 100);
 }
 
 function setPickupDeleveryFormValue(customer,setCustomerInfo = false) {
@@ -854,6 +898,14 @@ $("#auto_invoice_gen").on("click", function () {
 
 $(document).on("click", ".open-supply-modal", function () {
     currentRow = $(this).closest("tr");
+
+    let selector = $("#supplySelector");
+    let supplynm = $(this).closest("tr").find('input[name="price"]').val() || null;
+    console.log(supplynm);
+    if (selector.length && !supplynm) {
+        // Reset to default (first option or empty)
+        selector.val("").trigger("change");
+    }
 });
 
 $(document).on("click", ".confirm-supply", function () {
@@ -896,12 +948,12 @@ $("#supplySelector").on("change", function (e) {
     // console.log('selectedItem',selectedItem);
 
     if (selectedItem) {
-        $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
+        $("#volume_total_display").text(selectedItem.volume_total ?? 0);
         $("#volume_price_display").text(selectedItem.volume_price ?? 0);
         $("#price_display").text(selectedItem.price ?? 1);
-        $("#height_display").text(selectedItem.height ?? "N/A");
-        $("#width_display").text(selectedItem.width ?? "N/A");
-        $("#weight_display").text(selectedItem.weight ?? "N/A");
+        $("#height_display").text(selectedItem.height ?? 0);
+        $("#width_display").text(selectedItem.width ?? 0);
+        $("#weight_display").text(selectedItem.weight ?? 0);
     } else {
         $("#volume_total_display").text("");
         $("#volume_price_display").text(0);
@@ -962,12 +1014,12 @@ $("#supplyModal").on("shown.bs.modal", function () {
     }
 
     if (selectedItem) {
-        $("#volume_total_display").text(selectedItem.volume_total ?? "N/A");
+        $("#volume_total_display").text(selectedItem.volume_total ?? 0);
         $("#volume_price_display").text(selectedItem.volume_price ?? 0);
         $("#price_display").text(selectedItem.price ?? 1);
-        $("#height_display").text(selectedItem.height ?? "N/A");
-        $("#width_display").text(selectedItem.width ?? "N/A");
-        $("#weight_display").text(selectedItem.weight ?? "N/A");
+        $("#height_display").text(selectedItem.height ?? 0);
+        $("#width_display").text(selectedItem.width ?? 0);
+        $("#weight_display").text(selectedItem.weight ?? 0);
     } else {
         $("#volume_total_display").text("");
         $("#volume_price_display").text(0);
@@ -1262,7 +1314,11 @@ function getInvoiceItemsJSON() {
             tax: parseFloat($(this).find('[name="tax"]').val()) || 0,
             total: parseFloat($(this).find('[name="total"]').val()) || 0,
         };
-        items.push(item);
+        if(parseFloat($(this).find('[name="price"]').val()) > 0 && parseFloat($(this).find('[name="total"]').val()) > 0 && $(this).find('[name="supply_name"]').val()!="") {
+            // Only include items with price > 0 and qty > 0
+            items.push(item);
+
+        }
     });
 
     return items;
@@ -1274,6 +1330,7 @@ $("#services").on("submit", function (e) {
     const rules = {
         invoce_type: "required|in:services,supplies",
         delivery_address_id: "required",
+        payment_type: "required",
         // pickup_address_id: "required_if:invoce_type,services",
         // container_id:
         //     "required_if:invoce_type,services|required_if:transport_type,cargo|numeric",
@@ -1326,16 +1383,28 @@ $("#services").on("submit", function (e) {
         }
     }
 
+
+
+    const items = getInvoiceItemsJSON();
+    if (!items || items.length === 0) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please add at least one item.",
+        });
+        e.preventDefault();
+        return false;
+    }
+
+    const jsonData = JSON.stringify(items); // convert to JSON string
+
+    $('input[name="invoce_item"]').val(jsonData);
+
     if (!jsValidator(rules, $("#services"))) {
         // alert("Please fix the errors");
         e.preventDefault();
         return false;
     }
-
-    const items = getInvoiceItemsJSON();
-    const jsonData = JSON.stringify(items); // convert to JSON string
-
-    $('input[name="invoce_item"]').val(jsonData);
 
     if($('input[name="deletedItrmId"]')){
         const jsonDeletedItrmId = JSON.stringify(deletedItrmId); // convert to JSON string
@@ -1408,7 +1477,7 @@ function calculateExchangeFields(form) {
     // Get values
     form.find('input[name="exchange_rate"]').prop("readonly", false);
 
-    const payment = parseFloat($('input[name="payment_amount"]').val()) || 0;
+    const payment = parseFloat(form.find('input[name="payment_amount"]').val()) || 0;
     const totalBalance =
         parseFloat(form.find('input[name="total_balance"]').val()) || 0;
     let rate = form.find('input[name="exchange_rate"]').val() || 1;
@@ -1462,12 +1531,20 @@ function maxPaymentAmount(selt) {
     if (parseFloat(selt.value) < parseFloat(0)) return (selt.value = 0);
 }
 
-// Use delegated event for select[name="local_currency"] to ensure handler works for dynamically loaded elements
-$('input[name="payment_amount"], input[name="exchange_rate"]').on("input", function () {
+// // Use delegated event for select[name="local_currency"] to ensure handler works for dynamically loaded elements
+// $('input[name="payment_amount"], input[name="exchange_rate"]').on("input", function () {
+//     console.log("calculateExchangeFields called");
+//     const form = $(this).closest("form");
+//     calculateExchangeFields(form);
+// });
+
+// Use event delegation: listen on 'form', match the inputs via selector
+$(document).on("input", 'input[name="payment_amount"], input[name="exchange_rate"]', function () {
     console.log("calculateExchangeFields called");
     const form = $(this).closest("form");
     calculateExchangeFields(form);
 });
+
 
 // Delegated event for select[name="local_currency"]
 $(document).on("change", 'select[name="local_currency"]', function () {
