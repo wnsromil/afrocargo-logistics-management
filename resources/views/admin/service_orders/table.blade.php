@@ -11,7 +11,7 @@
                         <th>To</th>
                         <th>Shipping Type</th>
                         <th>Pickup Date</th>
-                        <th>Delivery Date</th>
+                        <th>Estimated Arrival</th>
                         <th>Container ID</th>
                         <th>From Warehouse</th>
                         <th>To Warehouse</th>
@@ -31,6 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @forelse ($parcels as $index => $parcel)
                         <tr>
                             <td> {{ $serialStart + $index + 1 }}</td>
@@ -114,7 +115,7 @@
                             <td>
                                 <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="{{  $parcel->descriptions ?? '-' }}">
-                                    {{  $parcel->descriptions ?? '-' }}
+                                    {{ $parcel->descriptions ?? '-' }}
                                 </p>
                             </td>
                             <td>
@@ -125,8 +126,7 @@
                                             <div class="row">Driver:</div>
                                         </div>
                                         <div class="col-6">
-                                            <div class="row">
-                                                ${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
+                                            <div class="row">${{ number_format($parcel->customer_estimate_cost ?? 0, 2) }}
                                             </div>
                                             <div class="row">${{ number_format($parcel->estimate_cost ?? 0, 2) }}
                                             </div>
@@ -195,14 +195,11 @@
                             </td>
                             <td>
                                 <li class="nav-item dropdown">
-                                    <a class="amargin user-link nav-link" href="javascript:void(0)"
-                                        @can('has-dynamic-permission', 'orders_list.order_status') data-bs-toggle="dropdown"
-                                        @endcan>
-                                        <span class="user-content droparrow droparrow"  @cannot('has-dynamic-permission', 'orders_list.order_status')
-                                                    style="opacity: 0.6;" @endcannot>
-                                            <div>
-                                                <img src="{{ asset('assets/img/downarrow.png') }}">
-                                            </div>
+                                    <a class="amargin" href="javascript:void(0)" class="user-link  nav-link"
+                                        data-bs-toggle="dropdown">
+
+                                        <span class="user-content droparrow droparrow">
+                                            <div><img src="{{asset('assets/img/downarrow.png')}}"></div>
                                         </span>
                                     </a>
                                     <div class="dropdown-menu menu-drop-user">
@@ -311,19 +308,9 @@
                                 </li>
                             </td>
                             <td class="btntext">
-                              @can('has-dynamic-permission', 'orders_list.order_details')
-                                <a href="{{ route('admin.service_orders.show', $parcel->id) }}">
-                                        <button class="orderbutton">
-                                            <img src="{{ asset('assets/img/ordereye.png') }}">
-                                        </button>
-                                    </a>
-                                @else
-                                    <a href="javascript:void(0)">
-                                        <button class="orderbutton" style="opacity: 0.6;">
-                                            <img src="{{ asset('assets/img/ordereye.png') }}">
-                                        </button>
-                                    </a>
-                                @endcan
+                                <a href="{{ route('admin.service_orders.show', $parcel->id) }}"> <button
+                                        class=orderbutton><img
+                                            src="{{asset(path: 'assets/img/ordereye.png')}}"></button></a>
                             </td>
                         </tr>
                     @empty

@@ -288,16 +288,16 @@ Version      : 1.0
         var end = moment(); // Aaj ka date
 
         // Set input as readonly, placeholder, styles
-        $(".Expensefillterdate")
-            .attr("readonly", true)
-            .attr(
-                "placeholder",
-                start.format("MM-DD-YYYY") + " - " + end.format("MM-DD-YYYY")
-            )
-            .css({
-                cursor: "pointer",
-                backgroundColor: "#ffffff",
-            });
+        // $(".Expensefillterdate")
+        //     .attr("readonly", true)
+        //     .attr(
+        //         "placeholder",
+        //         start.format("MM-DD-YYYY") + " - " + end.format("MM-DD-YYYY")
+        //     )
+        //     .css({
+        //         cursor: "pointer",
+        //         backgroundColor: "#ffffff",
+        //     });
 
         function booking_range(start, end) {
             $(".Expensefillterdate").val(

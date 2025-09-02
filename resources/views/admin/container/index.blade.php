@@ -368,6 +368,51 @@
                         },
                     });
                 });
+
+                $("#ajexTable").on("click", "input[name='close_invoice'], input[name='close_warehouse']", function (e) {
+                    let container_id = $(this).closest("tr").data("container-id");
+
+                    let close_invoice = $(this).closest("tr").find("input[name='close_invoice']").is(":checked") ? 'yes' : 'no';
+                    let close_warehouse = $(this).closest("tr").find("input[name='close_warehouse']").is(":checked") ? 'yes' : 'no';
+
+                    // 👇 Figure out which checkbox was clicked
+                    let clickedName = $(this).attr("name");
+                    let message = "";
+
+                    if (clickedName === "close_invoice") {
+                        message = close_invoice === "yes"
+                            ? "Invoice closed successfully!"
+                            : "Invoice reopened successfully!";
+                    } else if (clickedName === "close_warehouse") {
+                        message = close_warehouse === "yes"
+                            ? "Warehouse closed successfully!"
+                            : "Warehouse reopened successfully!";
+                    }
+
+                    $.ajax({
+                        url: "{{ route('updateCloseInvoiceWarehouse') }}",
+                        type: "POST",
+                        data: {
+                            container_id: container_id,
+                            close_invoice: close_invoice,
+                            close_warehouse: close_warehouse,
+                        },
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                title: "Success",
+                                text: message,   // 👈 dynamic message
+                                icon: "success",
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire("Error", "Failed to update container.", "error");
+                        },
+                    });
+                });
+
             });
 
         </script>

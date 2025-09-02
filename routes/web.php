@@ -246,6 +246,7 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('invoices/restore/{id}', [InvoiceController::class, 'restore'])->name('invoice.restore');
         Route::delete('invoices/delete/{id}', [InvoiceController::class, 'delete'])->name('invoice.delete');
         Route::post('/invoice-create-order-details-service', [InvoiceController::class, 'orderDetailsCreateInvoice']);
+        Route::delete('invoices/deleteIndividualPayment/{id}', [InvoiceController::class, 'deleteIndividualPayment'])->name('invoice.deleteIndividualPayment');
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');

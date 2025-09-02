@@ -8,16 +8,16 @@ class Vehicle extends Model
 {
     //
 
-    protected $fillable = [
-        'vehicle_type', // other fields you have in the vehicle model
-        'transfer_date',
-        'close_date',
-        'note',
-        'arrived_warehouse_id',
-        'container_status',
-        'status',
-        // add other fillable fields
-    ];
+    // protected $fillable = [
+    //     'vehicle_type', // other fields you have in the vehicle model
+    //     'transfer_date',
+    //     'close_date',
+    //     'note',
+    //     'arrived_warehouse_id',
+    //     'container_status',
+    //     'status',
+    //     // add other fillable fields
+    // ];
 
 
 

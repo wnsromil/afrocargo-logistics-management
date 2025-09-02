@@ -272,6 +272,35 @@ class User extends Authenticatable
     }
 
 
+    public function reviewsParcels()
+    {
+        return $this->hasMany(Parcel::class, 'driver_id')
+        ->whereNotNull('rating')->with('customer:id,name,last_name')
+        ->select('id','customer_id','driver_id','rating','review','created_at','updated_at');
+    }
+
+    // ✅ Average rating accessor
+    public function getAvgRatingAttribute()
+    {
+        return $this->reviewsParcels()->avg('rating');
+    }
+
+    // ✅ Total reviews count accessor
+    public function getReviewsCountAttribute()
+    {
+        return $this->reviewsParcels()->whereNotNull('rating')->count();
+    }
+
+    protected $appends = ['driver_reviews'];
+    public function getDriverReviewsAttribute()
+    {
+        return [
+            'average_rating' => $this->avg_rating,
+            'total_reviews' => $this->reviews_count,
+            'reviews' => $this->reviewsParcels,
+        ];
+    }
+
 
     public static function boot()
     {

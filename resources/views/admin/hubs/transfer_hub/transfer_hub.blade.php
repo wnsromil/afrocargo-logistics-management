@@ -263,6 +263,15 @@
 
     @section("script")
         <script>
+            $("#ajexTable").on("click", "a[vehicle-id]", function (e) {
+                e.preventDefault(); // prevent default link behavior
+
+                let container_id = $(this).attr("vehicle-id");
+                console.log("Container ID:", container_id);
+
+                $('input[name="vehicle_id_hidden"]').val(container_id);
+            });
+
             function openTransferModal(vehicleId, containerHistoryId) {
                 $.ajax({
                     url: "/api/fetch-transfer-to-hub-data",
@@ -314,7 +323,7 @@
                 let containerhistoryid = $("#container_history_id_input_hidden").val();
 
                 if (!vehicleId) {
-                    alert("Parcel ID is required.");
+                    alert("vehicle Id is required.");
                     return;
                 }
                 // Show Loading Indicator

@@ -59,7 +59,7 @@ class SettingsHelper
     {
         // Get unique country names from warehouses and convert to lowercase, with warehouse ids
         $warehouses = Warehouse::select('id', 'country_id')
-            ->where('status', 'Active')
+        ->where('status', 'Active')
             ->get()
             ->groupBy(function ($item) {
                 return strtolower($item->country_id);
@@ -229,6 +229,7 @@ class SettingsHelper
     }
 
 
+
     private static function formatValue($type, $value)
     {
         switch ($type) {
@@ -284,6 +285,10 @@ class SettingsHelper
 
         $validatedData['warehouse_id'] = $invoice->warehouse_id ?? null;
 
+        if ($invoice->delivery_type) {
+            $validatedData['delivery_type'] = $invoice->delivery_type ?? 'self';
+        }
+
         if (empty($invoice->parcel_id)) {
 
             $validatedData['weight'] = $orderData['weight'] ?? 0;
@@ -294,8 +299,7 @@ class SettingsHelper
             if (!empty($invoice->arrived_warehouse_id) && Warehouse::where('id', $invoice->arrived_warehouse_id)->exists()) {
                 $validatedData['arrived_warehouse_id'] = $invoice->arrived_warehouse_id;
             }
-            $validatedData['delivery_type'] = 'self';
-            $invoice->delivery_type = 'self';
+            $validatedData['pickup_type'] = 'self';
             $validatedData['driver_id'] = $invoice->driver_id ?? null;
 
             $parcel = Parcel::create($validatedData);
@@ -310,6 +314,84 @@ class SettingsHelper
 
             $parcel->update($validatedData);
         }
+
+        if($parcel->arrived_warehouse_id){
+            $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
+        }
+
+        if ($invoice->product_type) {
+            $parcel->product_type = $invoice->product_type;
+        }
+
+        $invoice->customer_id = optional($invoice->pickupAddress)->user_id ?? null;
+        $invoice->ship_customer_id = optional($invoice->deliveryAddress)->user_id ?? null;
+
+
+
+        // Create parcel history (if parcel was created or exists)
+        if ($parcel) {
+            $parcel->payment_type = $invoice->payment_type;
+
+            if(empty($parcel->container_id) && !empty($invoice->container_id))
+            {
+                $parcel->container_id = $invoice->container_id;
+            }
+            ParcelHistory::create([
+                'parcel_id' => $parcel->id,
+                'created_user_id' => auth()->id(),
+                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                'warehouse_id' => $invoice->warehouse_id,
+                'status' => $status,
+                'parcel_status' => 1,
+                'description' => []
+            ]);
+            $parcel->status = 1;
+            if(!empty($parcel->transport_type) && $parcel->transport_type!='null'){
+                ParcelHistory::create([
+                    'parcel_id' => $parcel->id,
+                    'created_user_id' => auth()->id(),
+                    'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                    'warehouse_id' => $invoice->warehouse_id,
+                    'status' => $status,
+                    'parcel_status' => 3,
+                    'description' => []
+                ]);
+                ParcelHistory::create([
+                    'parcel_id' => $parcel->id,
+                    'created_user_id' => auth()->id(),
+                    'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                    'warehouse_id' => $invoice->warehouse_id,
+                    'status' => $status,
+                    'parcel_status' => 4,
+                    'description' => []
+                ]);
+                $parcel->status = 4;
+            }else if(in_array(auth()->user()->role_id,[1,2])){
+                ParcelHistory::create([
+                    'parcel_id' => $parcel->id,
+                    'created_user_id' => auth()->id(),
+                    'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                    'warehouse_id' => $invoice->warehouse_id,
+                    'status' => $status,
+                    'parcel_status' => 37,
+                    'description' => []
+                ]);
+                ParcelHistory::create([
+                    'parcel_id' => $parcel->id,
+                    'created_user_id' => auth()->id(),
+                    'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
+                    'warehouse_id' => $invoice->warehouse_id,
+                    'status' => $status,
+                    'parcel_status' => 38,
+                    'description' => []
+                ]);
+
+                $parcel->status = 38;
+            }
+
+            $parcel->save();
+        }
+
         $qty = 0;
 
 
@@ -322,6 +404,8 @@ class SettingsHelper
             $saveData=[
                             'invoice_id' => $invoice->id,
                             'inventorie_item_quantity' => $item['qty'],
+                            'container_id' => $invoice->container_id,
+                            'status'=>$parcel->status,
                             'inventory_name' => $item['supply_name'],
                             'label_qty' => $item['label_qty'],
                             'price' => $item['price'] ?? 0,
@@ -363,47 +447,8 @@ class SettingsHelper
             }
         }
 
-        if($parcel->arrived_warehouse_id){
-            $invoice->arrived_warehouse_id = $parcel->arrived_warehouse_id;
-        }
-
         $invoice->total_qty = $qty;
-        $invoice->customer_id = optional($invoice->pickupAddress)->user_id ?? null;
-        $invoice->ship_customer_id = optional($invoice->deliveryAddress)->user_id ?? null;
         $invoice->save();
-
-
-
-        // Create parcel history (if parcel was created or exists)
-        if ($parcel) {
-            ParcelHistory::create([
-                'parcel_id' => $parcel->id,
-                'created_user_id' => auth()->id(),
-                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
-                'warehouse_id' => $invoice->warehouse_id,
-                'status' => $status,
-                'parcel_status' => 1,
-                'description' => []
-            ]);
-            ParcelHistory::create([
-                'parcel_id' => $parcel->id,
-                'created_user_id' => auth()->id(),
-                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
-                'warehouse_id' => $invoice->warehouse_id,
-                'status' => $status,
-                'parcel_status' => 3,
-                'description' => []
-            ]);
-            ParcelHistory::create([
-                'parcel_id' => $parcel->id,
-                'created_user_id' => auth()->id(),
-                'customer_id' => $invoice->customer_id ?? optional($invoice->pickupAddress)->user_id,
-                'warehouse_id' => $invoice->warehouse_id,
-                'status' => $status,
-                'parcel_status' => 4,
-                'description' => []
-            ]);
-        }
 
         return $parcel;
     }

@@ -171,7 +171,7 @@
                             </a> --}}
 
                             <button type="button" class="btn btn-primary buttons" data-bs-toggle="modal"
-                                data-bs-target="#shiptoAddressModal">
+                            data-bs-target="#shiptoAddressModal">
                                 Add Consignee Address
                             </button>
 
@@ -350,8 +350,7 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Zip_code">Zip code</label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip"
-                                        readonly>
+                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
                                 </div>
                             </div>
                         </div>
@@ -490,19 +489,14 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12">
-                                    <label for="payment_type">Payment Type</label>
+                                    <label for="payment_type">Payment Type<i class="text-danger">*</i></label>
                                     <select class="form-control select2  form-cs" name="payment_type">
-                                        <option value="" disabled>Select Type</option>
-                                        <option {{ $invoice->payment_type == 'Box credit' ? 'selected' : ''}}
-                                            value="Box credit">Box Credit</option>
-                                        <option {{ $invoice->payment_type == 'Cash' ? 'selected' : ''}} value="Cash">Cash
-                                        </option>
-                                        <option {{ $invoice->payment_type == 'Cheque' ? 'selected' : ''}} value="Cheque">
-                                            Cheque</option>
-                                        <option {{ $invoice->payment_type == 'Credit Card' ? 'selected' : ''}}
-                                            value="Credit Card">Credit Card</option>
-                                        <option {{ $invoice->payment_type == 'DigitalPay' ? 'selected' : ''}}
-                                            value="DigitalPay">DigitalPay</option>
+                                        <option value="" disabled >Select Type</option>
+                                        <option {{ $invoice->payment_type == 'Box credit' ? 'selected':''}} value="Box credit">Box Credit</option>
+                                        <option {{ $invoice->payment_type == 'Cash' ? 'selected':''}} value="Cash">Cash</option>
+                                        <option {{ $invoice->payment_type == 'Cheque' ? 'selected':''}} value="Cheque">Cheque</option>
+                                        <option {{ $invoice->payment_type == 'Credit Card' ? 'selected':''}} value="Credit Card">Credit Card</option>
+                                        <option {{ $invoice->payment_type == 'DigitalPay' ? 'selected':''}} value="DigitalPay">DigitalPay</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-9 col-md-9 d-none" id="service_type">
@@ -673,7 +667,7 @@
                                     <th class="thwidth">Volume</th>
                                     <th class="thwidth">Price</th>
                                     <th class="thwidth">Value</th>
-                                    <th class="thwidth">Ins</th>
+                                    <th class="thwidth">Insurance</th>
                                     <th class="thwidth d-none">Discount</th>
                                     <th class="thwidth">Tax%</th>
                                     <th class="thwidth">Total</th>
@@ -682,129 +676,129 @@
                             </thead>
                             <tbody>
                                 @if (isset($invoice->ParcelInventory) && count($invoice->ParcelInventory) > 0)
-                                    @foreach ($invoice->ParcelInventory as $key => $item)
-                                        <tr>
-                                            <td class="mwidth open-supply-modal">
-                                                <div class="d-flex align-items-center">
-                                                    <input type="text" name="supply_name"
-                                                        class="selected-supply-name form-control tdbor inputcolor"
-                                                        value="{{ $item['supply_name'] ?? '' }}">
-                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
-                                                        class="btn iconbtn p-0">
-                                                        <i class="ti ti-chevron-down"></i>
-                                                    </button>
-                                                </div>
-                                                <input type="hidden" name="supply_id" value="{{ $item['supply_id'] ?? '' }}">
-                                                <input type="hidden" name="inventory_id" value="{{ $item['id'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="qty" value="{{ $item['qty'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="label_qty" value="{{ $item['label_qty'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="volume" value="{{ $item['volume'] ?? '0' }}">
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center priceInput">
-                                                    <input type="text" class="form-control inputcolor" placeholder=""
-                                                        name="price" value="{{ $item['price'] ?? '' }}">
-                                                    <button type="button" class="btn btn-secondary p-0 flat-btn">
-                                                        <i class="ti ti-circle-plus col737"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="value" value="{{ $item['value'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="ins" value="{{ $item['ins'] ?? '' }}">
-                                            </td>
-                                            <td class="d-none">
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="discount" value="{{ $item['discount'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor " placeholder=""
-                                                    name="tax" value="{{ $item['tax'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                    name="total" value="{{ $item['total'] ?? '' }}">
-                                            </td>
-                                            <td>
-                                                <div class="text-center">
-                                                    <button type="button" class="btn btn-danger iconBtn dltBtn"><i
-                                                            class="ti ti-minus"></i></button>
-                                                    @if(count($invoice->invoce_item) > 0 && (count($invoice->invoce_item) - 1) != $key)
-                                                        <button type="button" class="btn btn-primary iconBtn addBtn"
-                                                            style="display: none;"><i class="ti ti-plus"></i></button>
-                                                    @else
-                                                        <button type="button" class="btn btn-primary iconBtn addBtn"><i
-                                                                class="ti ti-plus"></i></button>
-                                                    @endif
-                                                    <button type="button" class="btn btn-secondary iconBtn editBtn"><i
-                                                            class="ti ti-edit"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                @foreach ($invoice->ParcelInventory as $key=>$item)
+                                <tr>
+                                    <td class="mwidth open-supply-modal">
+                                        <div class="d-flex align-items-center">
+                                            <input type="text" name="supply_name"
+                                                class="selected-supply-name form-control tdbor inputcolor"
+                                                value="{{ $item['supply_name'] ?? '' }}">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
+                                                class="btn iconbtn p-0">
+                                                <i class="ti ti-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                        <input type="hidden" name="supply_id" value="{{ $item['supply_id'] ?? '' }}">
+                                        <input type="hidden" name="inventory_id" value="{{ $item['id'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="qty" value="{{ $item['qty'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="label_qty" value="{{ $item['label_qty'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="{{ $item['volume'] ?? '0' }}">
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center priceInput">
+                                            <input type="text" class="form-control inputcolor" placeholder=""
+                                                name="price" value="{{ $item['price'] ?? '' }}">
+                                            {{-- <button type="button" class="btn btn-secondary p-0 flat-btn">
+                                                <i class="ti ti-circle-plus col737"></i>
+                                            </button> --}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="value" value="{{ $item['value'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="ins" value="{{ $item['ins'] ?? '' }}">
+                                    </td>
+                                    <td class="d-none">
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="discount" value="{{ $item['discount'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor " placeholder=""
+                                            name="tax" value="{{ $item['tax'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="total" value="{{ $item['total'] ?? '' }}">
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
+                                                    class="ti ti-minus"></i></button>
+                                            @if(count($invoice->invoce_item) > 0 && (count($invoice->invoce_item)-1) != $key)
+                                            <button type="button" class="btn btn-primary iconBtn addBtn" style="display: none;"><i class="ti ti-plus"></i></button>
+                                            @else
+                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i class="ti ti-plus"></i></button>
+                                            @endif
+                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
+                                                    class="ti ti-edit"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
                                 @else
-                                    <tr>
-                                        <td class="mwidth open-supply-modal">
-                                            <div class="d-flex align-items-center">
-                                                <input type="text" name="supply_name"
-                                                    class="selected-supply-name form-control tdbor inputcolor">
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
-                                                    class="btn iconbtn p-0">
-                                                    <i class="ti ti-chevron-down"></i>
-                                                </button>
-                                            </div>
-                                            <input type="hidden" name="supply_id">
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                name="qty"></td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                name="label_qty">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                name="volume" value="{{ $item['volume'] ?? '0' }}">
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center priceInput"><input type="text"
-                                                    class="form-control inputcolor" placeholder="" name="price"><button
-                                                    type="button" class="btn btn-secondary p-0 flat-btn"><i
-                                                        class="ti ti-circle-plus col737"></i></button></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                name="value">
-                                        </td>
-                                        <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                name="ins"></td>
-                                        <td class="d-none"><input type="text" class="form-control tdbor inputcolor"
-                                                placeholder="" name="discount"></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
-                                                name="tax"></td>
-                                        <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
-                                                name="total"></td>
-                                        <td>
-                                            <div class="text-center">
-                                                <button type="button" class="btn btn-danger iconBtn dltBtn"><i
-                                                        class="ti ti-minus"></i></button>
-                                                <button type="button" class="btn btn-primary iconBtn addBtn"><i
-                                                        class="ti ti-plus"></i></button>
-                                                <button type="button" class="btn btn-secondary iconBtn editBtn"><i
-                                                        class="ti ti-edit"></i></button>
-                                            </div>
-                                        </td>
+                                <tr>
+                                    <td class="mwidth open-supply-modal">
+                                        <div class="d-flex align-items-center">
+                                            <input type="text" name="supply_name"
+                                                class="selected-supply-name form-control tdbor inputcolor">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
+                                                class="btn iconbtn p-0">
+                                                <i class="ti ti-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                        <input type="hidden" name="supply_id">
+                                    </td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="qty"></td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="label_qty">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="volume" value="{{ $item['volume'] ?? '0' }}">
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center priceInput"><input type="text"
+                                                class="form-control inputcolor" placeholder="" name="price">
+                                                {{-- <button
+                                                type="button" class="btn btn-secondary p-0 flat-btn"><i
+                                                    class="ti ti-circle-plus col737"></i></button> --}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="value">
+                                    </td>
+                                    <td> <input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="ins"></td>
+                                    <td class="d-none"><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="discount"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor " placeholder=""
+                                            name="tax"></td>
+                                    <td><input type="text" class="form-control tdbor inputcolor" placeholder=""
+                                            name="total"></td>
+                                    <td>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-danger iconBtn dltBtn"><i
+                                                    class="ti ti-minus"></i></button>
+                                            <button type="button" class="btn btn-primary iconBtn addBtn"><i
+                                                    class="ti ti-plus"></i></button>
+                                            <button type="button" class="btn btn-secondary iconBtn editBtn"><i
+                                                    class="ti ti-edit"></i></button>
+                                        </div>
+                                    </td>
 
                                     </tr>
                                 @endif
@@ -828,7 +822,7 @@
                         <input type="text" class="form-control smInput" placeholder="0" name="tax"
                             value="{{$invoice->tax ?? 0}}">
                     </div>
-                    <div><label>Ins</label>
+                    <div><label>Insurance</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
                             value="{{$invoice->ins ?? 0}}" value="{{$invoice->ins ?? 0}}">
                     </div>
@@ -931,35 +925,19 @@
                     });
                 }
             });
-
-        </script>
-        {{-- old --}}
-
-        <script src="https://rawgit.com/DoersGuild/jQuery.print/master/jQuery.print.js"></script>
-        <!-- Flatpickr CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-        <!-- Flatpickr JS -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-        <script src="{{asset('js/invoice.js')}}"></script>
-
-        <script>
-            var supplyItems = @json($inventories->get('Supply'));
-            var serviceItems = @json($inventories->get('Service'));
-
-            var pickupAddress = @json($pickupAddress);
-            var deliveryAddress = @json($deliveryAddress);
-            var currentRow = null;
-            var maxPaymentAmountValue = '{{ $invoice->balance ?? 0 }}';
-            var invoce_type = "{{ $invoice->invoce_type ?? 'services' }}";
-
-            window.onload = function () {
-                // const urlParams = new URLSearchParams(window.location.search);
-                // const formType = urlParams.get('id') || 'services';
-                // toggleLoginForm(formType);
-                $('#fnsubmit').prop('disabled', true);
-                $("#dynamicTable tbody tr:last").on('click', function () {
+            setTimeout(() => {
+                console.log("invoce_typ", invoce_type);
+                toggleInventoryList();
+                toggleLoginForm(invoce_type);
+                if ($('input[name="transport_type"]').val() != "Air Cargo") {
+                    $('select[name="container_id"]')
+                        .prop("disabled", true) // this is essential
+                        .css("pointer-events", "auto") // optional: restores interaction if previously styled with pointer-events
+                        .css("opacity", "1"); // optional: restores visual state
+                } else {
+                    $('select[name="container_id"]').prop("disabled", false);
+                }
+                $('#services').on('change',function(){
                     $('#fnsubmit').prop('disabled', false);
                 });
 

@@ -25,7 +25,7 @@ aria-hidden="true">
                                 <label for="masterPickUpAddressId" class="col-form-label text-dark">Country<i
                                         class="text-danger">*</i></label>
                             </div>
-                            <div class="col-9 pe-0">
+                            <div class="col-9 justify-content-end">
                                 <select id="country" name="country" class="js-example-basic-single select2">
                                     <option value="" disabled hidden {{ old('country') ? '' : 'selected' }}>
                                         Select

@@ -38,7 +38,7 @@
                                             {{ $invoice->balance <= 0 ? 'Paid' : 'Due Balance'}}
                                         </span>
                                     </td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: 600;">
+                                    <td style="text-align: center; font-size: 16px; font-weight: 600;">
                                         {{ $invoice->transport_type ?? 'Supply'}} Invoice
                                     </td>
                                 </tr>
@@ -53,9 +53,9 @@
             <td colspan="2" style="padding: 10px 0 0;">
                 <table width="100%" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td style="width: 40%; font-size: 16px;">
+                        <td style="width: 40%; font-size: 12px;">
                             @if($invoice->warehouse)
-                                <b style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+                                <b style="font-size: 14px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
                                 {{$invoice->warehouse->address ?? ''}}<br>
                                 {{-- The {{$invoice->warehouse->warehouse_code ?? ''}}<br> --}}
                                 {{-- {{$invoice->warehouse->country ?? ''}}<br> --}}
@@ -65,9 +65,9 @@
                         </td>
                         <td style="width: 20%;"></td>
 
-                        <td style="width: 40%; text-align: end; font-size: 16px; vertical-align: top;">
+                        <td style="width: 40%; text-align: end; font-size: 12px; vertical-align: top;">
                             @if($invoice->invoiceParcelData && $invoice->invoiceParcelData->arrivedWarehouse)
-                                                    <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
+                                                    <b style="font-size: 14px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
                                 ?? ''}}</b><br>
                                                     {{$invoice->invoiceParcelData->arrivedWarehouse->address
                                 ?? ''}},<br>
@@ -94,7 +94,7 @@
                 </span>
             </td> --}}
             <td style="width: 100%; padding: 10px 0px; text-align: left;" colspan="2">
-                <table style="width: 100%; font-size: 15px;">
+                <table style="width: 100%; font-size: 12px;">
                     <tr>
                         <td>User: <b>{{ $invoice->user->name ?? '' }} {{ $invoice->user->last_name ?? '' }}</b></td>
                         @if($invoice->transport_type && $invoice->driver)
@@ -120,7 +120,7 @@
                             <table cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <b style="font-size: 18px;">Customer</b><br>
+                                        <b style="font-size: 12px;">Customer</b><br>
                                         @if(isset($invoice->pickupAddress))
                                             {{$invoice->pickupAddress->full_name ?? ''}}<br>
                                             {{$invoice->pickupAddress->address ?? ''}}<br>
@@ -147,7 +147,7 @@
                         <td style="width: 35%;">
 
                             @if(isset($invoice->deliveryAddress))
-                                <b style="font-size: 18px;">Ship To:</b><br>
+                                <b style="font-size: 12px;">Ship To:</b><br>
                                 {{$invoice->deliveryAddress->full_name ?? ''}}<br>
                                 {{$invoice->deliveryAddress->address ?? ''}}<br>
                                 @if($invoice->deliveryAddress->neighborhood)
@@ -187,7 +187,7 @@
         <tr>
             <td colspan="2">
                 <table style="width: 100%; border-collapse: collapse; border: 1px solid black; border-bottom: none;">
-                    <tr style="background-color: #f2f2f2; border: 1px solid black; ">
+                    <tr style="background-color: #f2f2f2; border: 1px solid black; font-size: 12px;">
                         <td style="border: 1px solid black; padding: 9px 10px;text-align: start;">
                             Tracking# :
                             <b>{{$invoice->invoiceParcelData && !empty($invoice->invoiceParcelData->tracking_number) ? $invoice->invoiceParcelData->tracking_number : ''}}</b>
@@ -423,7 +423,11 @@
                         </td>
                         <td style="width: 20%;"> </td>
                         <td
+<<<<<<< HEAD
                             style="width: 40%; text-align: right; font-size: 16px; vertical-align: top; padding: 0px 20px;">
+=======
+                            style="width: 40%; text-align: right; font-size: 12px; vertical-align: top; padding: 0px 20px;">
+>>>>>>> 0a6cf514bf476698d623677c491377408f9279cd
                             <span style="color: #737B8B;">Sub-Total: <b
                                     style="color: #000;">${{numberFormat($invoice->grand_total ?? 0)}}</b></span><br><br>
                             <span style="color: #737B8B; line-height: 50px;">Paid: <b
@@ -445,7 +449,11 @@
                                 <tr>
                                     <td>
                                         <b
+<<<<<<< HEAD
                                             style="font-size: 18px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+=======
+                                            style="font-size: 16px;">{{$invoice->warehouse->warehouse_name ?? ''}}</b><br>
+>>>>>>> 0a6cf514bf476698d623677c491377408f9279cd
                                         The {{$invoice->warehouse->warehouse_code ?? ''}}<br>
                                         Tel-{{$invoice->warehouse->phone ?? ''}}<br>
                                         {{-- Tel 718-954-9093<br> --}}
@@ -456,7 +464,11 @@
                         <td style="width: 25%; text-align: center;"> </td>
                         <td style="width: 35%;">
                             @if($invoice->invoiceParcelData && $invoice->invoiceParcelData->arrivedWarehouse)
+<<<<<<< HEAD
                                                     <b style="font-size: 18px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
+=======
+                                                    <b style="font-size: 16px;">{{$invoice->invoiceParcelData->arrivedWarehouse->warehouse_name
+>>>>>>> 0a6cf514bf476698d623677c491377408f9279cd
                                 ?? ''}}</b><br>
                                                     {{$invoice->invoiceParcelData->arrivedWarehouse->address
                                 ?? ''}},<br>
