@@ -14,6 +14,7 @@
                         <th>Amount</th>
                         <th>Balance</th>
                         <th>Container</th>
+                        <th>Country</th>
                         <th>User</th>
                         <th>Warehouse </th>
                         {{-- <th>Items</th> --}}
@@ -57,6 +58,7 @@
                             <div>$ {{ number_format($invoice->balance ?? 0, 2) }}</div>
                         </td>
                         <td>{{ $invoice->container->unique_id ?? '-' }}</td>
+                        <td>{{ $invoice->container && $invoice->transport_type && $invoice->arrivedWarehouse ? $invoice->arrivedWarehouse->country_id : '-' }}</td>
                         <td>{{ $invoice->user->fullName ?? '-' }}</td>
                         <td>{{ $invoice->warehouse->warehouse_code ?? '-' }}, {{ $invoice->warehouse->address ?? '-' }}</td>
 
@@ -67,22 +69,17 @@
                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul>
-                                        @can('has-dynamic-permission', 'invoice_list.individuel_payment')
                                         <li>
                                             <a class="dropdown-item" data-bs-placement="bottom"
                                                 title="Individual Payment" data-bs-toggle="modal"
                                                 data-bs-target="#individualPayment{{$invoice->id ?? ''}}">
                                                 <i class="ti ti-cash me-2"></i>Payment</a>
                                         </li>
-                                        @endcan
-                                        @can('has-dynamic-permission', 'invoice_list.invoice_pdf')
                                         <li>
                                             <a class="dropdown-item" title="Invoice PDF" target="_blank"
                                                 href="{{ route('invoices.invoicesdownload', encrypt($invoice->id)) }}">
                                                 <i class="ti ti-file-invoice"></i>Invoice PDF</a>
                                         </li>
-                                        @endcan
-                                        @can('has-dynamic-permission', 'invoice_list.send_invoice')
                                         <li>
                                             <a class="dropdown-item" data-bs-placement="bottom"
                                                 title="Send Invoice pdf" data-bs-toggle="modal"
@@ -90,9 +87,7 @@
                                                 <i class="ti ti-mail me-2"></i>Send Email</a>
 
                                         </li>
-                                        @endcan
                                         @if(!empty($invoice->transport_type))
-                                        @can('has-dynamic-permission', 'invoice_list.label_pdf')
                                         <li>
 
                                             <a class="dropdown-item" title="Labels"
@@ -100,8 +95,6 @@
                                                     target="_blank">
                                                     <i class="ti ti-tag-starred me-2"></i>Labels</a>
                                         </li>
-                                        @endcan
-                                        @can('has-dynamic-permission', 'invoice_list.create_label')
                                         <li>
                                             <a class="dropdown-item" title="Labels"
                                                 href="javascript:void(0)"
@@ -111,23 +104,18 @@
                                                 <i class="ti ti-tag-plus me-2"></i>Create Labels</a>
 
                                         </li>
-                                        @endcan
                                         @endif
-                                        @can('has-dynamic-permission', 'invoice_list.edit')
                                         <li>
                                             <a class="dropdown-item" title="Edit Invoice"
                                                 href="{{route('admin.invoices.edit',$invoice->id)}}"><i
                                                     class="far fa-edit me-2"></i>Edit Invoice</a>
                                         </li>
-                                        @endcan
-                                        @can('has-dynamic-permission', 'invoice_list.delete')
                                         <li>
                                             <a class="dropdown-item" title="Delete Invoice"
                                                 href="javascript:void(0)"
                                                 onclick="deleteRaw('{{route('admin.invoices.destroy',$invoice->id)}}')"><i
                                                     class="ti ti-trash me-2"></i>Delete Invoice</a>
                                         </li>
-                                        @endcan
                                     </ul>
                                 </div>
                             </div>
@@ -144,7 +132,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body" style="font-size: 14px;">
+                                    {{-- <div class="modal-body" style="font-size: 14px;">
                                         <div>
                                             <strong>ID:</strong> {{ $invoice->invoice_no ?? 'INV-001' }}
                                         </div>
@@ -268,6 +256,103 @@
                                             Balance: {{
                                             number_format($invoice->balance ?? 0, 2) }}
                                         </div>
+                                    </div> --}}
+
+                                    <div class="modal-body">
+
+                                        {{-- Header Info --}}
+                                        <div>
+                                            <strong>User Name:</strong> {{ $invoice->user->full_name ?? '' }} {{ $invoice->createdByUser->last_name ?? '' }}
+                                        </div>
+                                        <div>
+                                            <strong>Update Date:</strong> {{ $invoice->created_at?->format('d/m/Y, H:i') ?? '-' }}
+                                        </div>
+
+                                        <hr>
+
+                                        {{-- Address Info --}}
+                                        <div class="row">
+                                            @php
+                                                $address = $invoice->pickupAddress ?? $invoice->deliveryAddress;
+                                            @endphp
+                                            <div class="col-md-6">
+                                                <div><strong>Customer:</strong> {{ $address->full_name ?? '-' }} {{ $address->address ?? '-' }}</div>
+                                                <div><strong>Cell:</strong> {{ $address->mobile_number ?? '-' }}</div>
+                                            </div>
+                                            @if (!empty($invoice->deliveryAddress))
+                                            <div class="col-md-6">
+                                                <div><strong>Ship To:</strong> {{ $invoice->deliveryAddress->full_name ?? '-' }} {{ $invoice->deliveryAddress->address ?? '-' }}</div>
+                                                <div><strong>Tel:</strong> {{ $invoice->deliveryAddress->mobile_number ?? '-' }}</div>
+                                            </div>
+                                            @endif
+                                        </div>
+
+                                        <hr>
+
+                                        {{-- Invoice Details --}}
+                                        <div class="row">
+                                            <div class="col-md-3"><strong>Date:</strong> {{ $invoice->issue_date ?? '-' }}</div>
+                                            <div class="col-md-3"><strong>Invoice No:</strong> {{ $invoice->invoice_no ?? '-' }}</div>
+                                            <div class="col-md-3"><strong>Driver:</strong> {{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</div>
+                                            <div class="col-md-3"><strong>Total:</strong> {{ $invoice->grand_total ?? '-' }}</div>
+                                            <div class="col-md-3"><strong>Due Date:</strong> {{ $invoice->duedaterange ?? '-' }}</div>
+                                            <div class="col-md-3"><strong>Status:</strong> {{ ucfirst($invoice->status ?? 'Pending') }}</div>
+                                            <div class="col-md-3"><strong>Payments:</strong> {{ $invoice->is_paid ? 'Paid' : 'Unpaid' }}</div>
+                                            <div class="col-md-3"><strong>Container:</strong> {{ $invoice->container->unique_id ?? '-' }}</div>
+                                            <div class="col-md-3"><strong>Balance:</strong> {{ $invoice->balance ?? '-' }}</div>
+                                            <div class="col-md-3"><strong>Total Box:</strong> {{ $invoice->total_qty ?? '-' }}</div>
+                                        </div>
+
+                                        <hr>
+
+                                        {{-- Invoice Items --}}
+                                        <div>
+                                            <div class="table-responsive">
+                                                <div class="d-grid border rounded">
+                                                    <!-- Header -->
+                                                    <div class="d-grid text-center fw-bold bg-light border-bottom" style="grid-template-columns: repeat(9, 1fr);">
+                                                        <div class="p-2 border-end">Item</div>
+                                                        <div class="p-2 border-end">Qty</div>
+                                                        <div class="p-2 border-end">Description</div>
+                                                        <div class="p-2 border-end">Price</div>
+                                                        <div class="p-2 border-end">Value</div>
+                                                        <div class="p-2 border-end">Discount</div>
+                                                        <div class="p-2 border-end">Ins</div>
+                                                        <div class="p-2 border-end">Tax</div>
+                                                        <div class="p-2">Total</div>
+                                                    </div>
+
+                                                    <!-- Body -->
+                                                    @if($invoice->invoce_item && count($invoice->invoce_item) > 0)
+                                                        @foreach ($invoice->invoce_item as $item)
+                                                        <div class="d-grid text-center border-bottom" style="grid-template-columns: repeat(9, 1fr);">
+                                                            <div class="p-2 border-end">{{ $item['supply_name'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['qty'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['label_qty'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['price'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['value'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['discount'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['ins'] ?? '-' }}</div>
+                                                            <div class="p-2 border-end">{{ $item['tax'] ?? '-' }}</div>
+                                                            <div class="p-2">{{ $item['total'] ?? '-' }}</div>
+                                                        </div>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="text-center text-muted p-3">No Items Found</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div style="color: gray; font-weight: bold;">
+                                            Invoice Amount: ${{
+                                            number_format($invoice->grand_total ?? 0, 2) }}
+                                        </div>
+                                        <div style="color: orangered; font-weight: bold;">
+                                            Balance: {{
+                                            number_format($invoice->balance ?? 0, 2) }}
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -282,14 +367,16 @@
                 </tbody>
 
             </table>
-            @foreach ($invoices as $invoice)
-                @include('admin.Invoices.modals.send_invoice_pdf_modal')
-                @include('admin.Invoices.modals.AddnewLable')
-                @include('admin.Invoices.modals.individual_payment_modal')
-            @endforeach
+
         </div>
     </div>
 </div>
 
 <x-pagination-toolbar :pagination="$invoices" defaultPerPage="10"
             queryKey="per_page" />
+
+@foreach ($invoices as $invoice)
+    @include('admin.Invoices.modals.send_invoice_pdf_modal')
+    @include('admin.Invoices.modals.AddnewLable')
+    @include('admin.Invoices.modals.individual_payment_modal')
+@endforeach

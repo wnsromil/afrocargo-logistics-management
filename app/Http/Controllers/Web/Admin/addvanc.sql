@@ -120,3 +120,26 @@ FROM
 ALTER TABLE `invoices` ADD `customer_id` INT NULL AFTER `deleted_at`, ADD `ship_customer_id` INT NULL AFTER `customer_id`;
 
  ALTER TABLE `individual_payments` ADD `warehouse_id` INT NULL AFTER `updated_at`, ADD `unique_id` VARCHAR(200) NULL AFTER `warehouse_id`;
+
+--  22-aug 25
+ALTER TABLE `parcels`
+CHANGE `payment_type` `payment_type` ENUM('COD', 'Online', 'Cash', 'Box Credit', 'Cheque', 'Credit Card', 'DigitalPay')
+NOT NULL
+DEFAULT 'Online';
+
+ALTER TABLE parcels
+MODIFY payment_type VARCHAR(20) NOT NULL DEFAULT 'Online';
+
+-- 26 aug 25
+ALTER TABLE `invoices` ADD `product_type` VARCHAR(100) NULL AFTER `delivery_type`;
+ALTER TABLE `parcels` ADD `product_type` VARCHAR(100) NULL AFTER `delivery_type`;
+
+-- 27 aug 25
+ALTER TABLE `parcels` ADD `rating` TINYINT NULL AFTER `status`,
+ADD `review` VARCHAR(255) NULL AFTER `rating`;
+
+-- 29 aug 25
+ALTER TABLE `vehicles` ADD `close_invoice` ENUM('yes','no') NULL DEFAULT 'no' AFTER `status`,
+ADD `close_warehouse` ENUM('yes','no') NULL DEFAULT 'no' AFTER `close_invoice`;
+
+

@@ -90,7 +90,7 @@
                                     <div class="row">${{ number_format($parcel->total_amount ?? 0, 2) }}</div>
                                 </div>
                             </td>
-                         
+
                             <td>
                                 <div> {{ $parcel->payment_type === 'COD' ? 'Cash' : ($parcel->payment_type ?? '-') }}
                                 </div>
@@ -193,6 +193,7 @@
                                         @php
                                             $isCompleted = isset($completedStatusMap[$code]) && $completedStatusMap[$code] === true;
                                         @endphp
+                                        @if($isCompleted)
                                         <div class="order-tracking {{ $isCompleted ? 'completed' : '' }}">
                                             <span class="is-complete"></span>
                                             <p>
@@ -200,6 +201,7 @@
                                                 <span>{{ $statusDates[$code] ?? '' }}</span>
                                             </p>
                                         </div>
+                                        @endif
                                     @endforeach
                                 </div>
 

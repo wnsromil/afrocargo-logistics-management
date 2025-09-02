@@ -105,7 +105,7 @@ class ContainerController extends Controller
         $drivers = User::where('status', 'Active')->where('role_id', '=', '4')
             ->Where('is_deleted', 'no')->select('id', 'name')->get();
 
-        $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+        $containerSizes = ContainerSize::take(3)->get(['id', 'container_name', 'volume']);
 
         return view('admin.container.create', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }
@@ -240,7 +240,7 @@ class ContainerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
 
-        $containerSizes = ContainerSize::take(2)->get(['id', 'container_name', 'volume']);
+        $containerSizes = ContainerSize::take(3)->get(['id', 'container_name', 'volume']);
 
         return view('admin.container.edit', compact('vehicle', 'warehouses', 'drivers', 'containerSizes'));
     }

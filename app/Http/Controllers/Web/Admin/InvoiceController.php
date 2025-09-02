@@ -22,9 +22,7 @@ use App\Models\{
     Country,
     Address,
     InvoiceComment,
-    Claim,
-    NotificationParcelMessage,
-    Notification
+    Claim
 };
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -259,7 +257,10 @@ class InvoiceController extends Controller
 
         $containers = Vehicle::where('vehicle_type', 1)->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
-        })->get();
+        })
+        ->where('close_invoice','no')
+        ->whereNotNull(['unique_id','ship_to_country'])
+        ->get();
 
         $user = collect(User::when($this->user->role_id != 1, function ($q) {
             // return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -300,12 +301,12 @@ class InvoiceController extends Controller
 
         $validated = $request->validate([
             'invoce_type' => 'required|in:services,supplies',
-            'arrived_warehouse_id' => 'nullable|numeric',
+            'arrived_warehouse_id' => 'nullable|required_if:invoce_type,services|numeric',
             'transport_type' => 'nullable|required_if:invoce_type,services|in:Air Cargo,Ocean Cargo',
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
             // 'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
-            'container_id' => 'nullable|numeric',
+            'container_id' => 'nullable|numeric|exists:vehicles,id',
             // 'driver_id' => [
             //     'nullable',
             //     'numeric',
@@ -340,6 +341,16 @@ class InvoiceController extends Controller
             'status' => 'required',
             'is_paid' => 'nullable|boolean'
         ]);
+
+        if (
+            $request->invoce_type === 'services' &&
+            $request->transport_type === 'Ocean Cargo' &&
+            empty($request->container_id)
+        ) {
+
+            return back()->with('error', 'The container field must not be empty for Ocean Cargo with service invoice type.');
+        }
+
         $invoiceItems = json_decode($request->input('invoce_item'), true);
         $invoice = null;
         if (!empty($request->parcel_id)) {
@@ -431,7 +442,7 @@ class InvoiceController extends Controller
             'payment_date' => now(),
         ];
         if ($invoice->payment > 0) {
-            $data = $this->individualPayment($validated);
+            $data = $this->individualPayment($validated,true);
         }
 
         setting()->saveInvoiceHistory($invoice->id, "created");
@@ -483,7 +494,9 @@ class InvoiceController extends Controller
 
         $containers = Vehicle::where('vehicle_type', 1)->when($this->user->role_id != 1, function ($q) {
             return $q->where('id', $this->user->warehouse_id);
-        })->get();
+        })->where('close_invoice','no')
+        ->whereNotNull(['unique_id','ship_to_country'])
+        ->get();
 
         $nextInvoiceNo = Invoice::getNextInvoiceNumber();
 
@@ -527,7 +540,7 @@ class InvoiceController extends Controller
             'delivery_address_id' => 'required|exists:addresses,id',
             'pickup_address_id' => 'nullable|required_if:invoce_type,services|exists:addresses,id',
             // 'container_id' => 'nullable|required_if:invoce_type,services|required_if:transport_type,cargo|numeric',
-            'container_id' => 'nullable|numeric',
+            'container_id' => 'nullable|numeric|exists:vehicles,id',
             'driver_id' => 'nullable|numeric',
             'warehouse_id' => 'required|numeric',
             'ins' => 'nullable|numeric',
@@ -548,7 +561,17 @@ class InvoiceController extends Controller
             'status' => 'required'
         ]);
 
+        if (
+            $request->invoce_type === 'services' &&
+            $request->transport_type === 'Ocean Cargo' &&
+            empty($request->container_id)
+        ) {
+
+            return back()->with('error', 'The container field must not be empty for Ocean Cargo with service invoice type.');
+        }
+
         $invoiceItems = json_decode($request->input('invoce_item'), true);
+
 
         $invoice = Invoice::findOrFail($id);
         $invoice->generated_by = \Auth::user()->role ?? $invoice->generated_by;
@@ -613,6 +636,13 @@ class InvoiceController extends Controller
 
         $invoice->save();
 
+        if($request->deletedItrmId){
+            $deletedItrmId = json_decode($request->input('deletedItrmId'), true);
+            if(is_array($deletedItrmId)){
+                ParcelInventorie::whereIn('id',$deletedItrmId)->delete();
+            }
+        }
+
         setting()->saveInvoiceHistory($invoice->id, "updated");
 
         return back()->with('success', 'Invoice updated successfully.');
@@ -654,40 +684,6 @@ class InvoiceController extends Controller
         $invoice->save();
 
         $invoice->delete();
-
-        if (auth()->user()->role_id != 1) {
-            $notificationInvoiceDelete = NotificationParcelMessage::find(35);
-
-            $managerData = User::where('id', auth()->id())->with('warehouse')->first();
-
-            $titleInvoiceDelete = str_replace(
-                '{invoice_id}',
-                $invoice->invoice_no ?? '',
-                $notificationInvoiceDelete->title
-            );
-
-            $bodyInvoiceDelete = str_replace(
-                ['{manager_name}', '{warehouse_name}', '{invoice_id}'],
-                [
-                    $managerData->name ?? '',
-                    $managerData->warehouse->warehouse_name ?? '',
-                    $invoice->invoice_no ?? ''
-                ],
-                $notificationInvoiceDelete->message
-            );
-
-            Notification::create([
-                'user_id' => 1,
-                'warehouse_id' => auth()->user()->warehouse_id,
-                'title' => $titleInvoiceDelete,
-                'message' => $bodyInvoiceDelete,
-                'notification_for' => 'Admin',
-                'role' => 'Admin',
-                'type' => 'Invoice Delete',
-            ]);
-
-            User::where('role_id', 1)->increment('notification_read', 1);
-        }
 
         return redirect()->route('admin.invoices.index')->with('success', 'Invoice deleted successfully.');
     }
@@ -1185,7 +1181,7 @@ class InvoiceController extends Controller
             'created_by' => 'nullable|exists:users,id',
             'personal' => 'nullable|string',
             'local_currency' => 'required|string',
-            'payment_type' => 'required|in:boxcredit,cash,cheque,CreditCard',
+            'payment_type' => 'required',
             'payment_amount' => 'required|numeric',
             'reference' => 'nullable|string',
             'comment' => 'nullable|string',
@@ -1200,6 +1196,8 @@ class InvoiceController extends Controller
             'payment_date' => 'required|date',
             'currentTime' => 'nullable',
         ]);
+
+        // return $request->all();
 
         $data = $this->individualPayment($validated);
         return redirect()->back()->with('success', 'Payment saved successfully!');
@@ -1240,7 +1238,7 @@ class InvoiceController extends Controller
         return redirect()->back()->with('success', 'Claim updated successfully.');
     }
 
-    protected function individualPayment($validated)
+    protected function individualPayment($validated,$isStore=false)
     {
         // Save individual payment
         $payment = IndividualPayment::create($validated);
@@ -1249,6 +1247,22 @@ class InvoiceController extends Controller
         if ($validated['invoice_id']) {
             $invoice = Invoice::find($validated['invoice_id']);
             $payment->warehouse_id = $invoice->warehouse_id;
+            $parcel = Parcel::find($invoice->parcel_id);
+            if($parcel){
+                $parcel->payment_type = $payment->payment_type;
+                $parcel->save();
+            }
+            if($isStore){
+                if ($invoice->balance <= 0) {
+                    $invoice->is_paid = 1;
+                    $invoice->status = 'paid'; // or whatever status indicates payment completion
+                    $invoice->save();
+                }
+                $payment->applied_payments = $validated['payment_amount'];
+                $payment->save();
+
+                return $payment;
+            }
             if ($invoice && empty($validated['current_balance']) && !isset($validated['current_balance'])) {
                 // Subtract payment from invoice balance
                 $newBalance = $invoice->balance - $validated['payment_amount'];
@@ -1280,7 +1294,6 @@ class InvoiceController extends Controller
                 $invoice->payment = ($invoice->payment ?? 0) + $paymentAmount;
 
                 $payment->payment_amount = $paymentAmount; //usd amont
-
                 $payment->save();
 
                 // If fully paid, update is_paid and status
@@ -1296,12 +1309,64 @@ class InvoiceController extends Controller
         return $payment;
     }
 
+
     protected function formatAddress($address, $parcel = null, $type = null)
     {
         if ((empty($address) || empty($address->user)) && empty($address->role_id)) return null;
         // if(!empty($type) && $type != $address->address_type){
         //     return null;
         // }
+
+        if(empty($address->user)){
+
+            if(empty($address->address_id) && !empty($address->id)){
+                $saveAd = [
+                    'name' => $address->name,
+                    'last_name' => $address->last_name,
+                    'full_name' => $address->name . " " . $address->last_name,
+                    'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? null,
+                    'mobile_number_code_id' => $address->phone_code_id ?? null,
+                    'alternative_mobile_number' => $address->phone_2 ?? null,
+                    'address_2' => $address->address_2 ?? null,
+                    'country_id' => $address->country_id,
+                    'state_id' => $address->state_id,
+                    'city_id' => $address->city_id ?? null,
+                    'pincode' => $address->pincode ?? null,
+                    'neighborhood' => $address->laddress ?? null,
+                    'lat' => $address->latitude ?? null,
+                    'long' => $address->longitude ?? null,
+                    'default_address' => 'Yes'
+                ];
+                $saveAd['mobile_number'] = $address->mobile_number;
+                $saveAd['user_id'] = $address->id;
+                $saveAd['address'] = $address->address;
+                $saveAd['address_type'] = 'pickup';
+                $address = Address::create($saveAd);
+            }elseif(!empty($address->address_id) && !empty($address->id)){
+               $address = Address::with('user')->find($address->address_id);
+
+               $saveAd = [
+                    'name' => $address->name,
+                    'last_name' => $address->last_name,
+                    'full_name' => $address->name . " " . $address->last_name,
+                    'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? null,
+                    'mobile_number_code_id' => $address->phone_code_id ?? null,
+                    'alternative_mobile_number' => $address->phone_2 ?? null,
+                    'address_2' => $address->address_2 ?? null,
+                    'country_id' => $address->country_id,
+                    'state_id' => $address->state_id,
+                    'city_id' => $address->city_id ?? null,
+                    'pincode' => $address->pincode ?? null,
+                    'neighborhood' => $address->laddress ?? null,
+                    'lat' => $address->latitude ?? null,
+                    'long' => $address->longitude ?? null,
+                    'default_address' => 'Yes'
+                ];
+                $address->update($saveAd);
+
+            }
+
+        }
 
         if (!empty($address->user)) {
             return [
@@ -1332,33 +1397,33 @@ class InvoiceController extends Controller
             ];
         }
 
-        return [
-            'id' => $address->address_id,
-            'user_id' => $address->id,
-            'default_address' => $address->defaultAddress ?? '',
-            'text' => $address->unique_id . ", " . $address->name . " " . $address->last_name . ", " . $address->address . " " . $address->name,
-            'name' => $address->name ?? '',
-            'last_name' => $address->last_name ?? '',
-            'phone' => $address->phone ?? '',
-            'full_name' => $address->name . " " . $address->last_name,
-            'mobile_number' => $address->phone,
-            'alternative_mobile_number' => $address->phone_2,
-            'mobile_number_code_id' => $address->phone_code_id ?? 1,
-            'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? 1,
-            'address1' => $address->address,
-            'address2' => $address->address_2,
-            'pincode' => $address->pincode,
-            'country_id' => $address->country_id,
-            'state_id' => $address->state_id,
-            'city_id' => $address->city_id,
-            'country' => $address->country_id,
-            'state' => $address->state_id,
-            'city' => $address->city_id,
-            'address_type' => $type,
-            'address_type_t' => $type ?? $address->address_type,
-            'license_number' => $address->license_number ?? null,
-            'license_document' => $address->license_document ?? null,
-        ];
+        // return [
+        //     'id' => $address->address_id,
+        //     'user_id' => $address->id,
+        //     'default_address' => $address->defaultAddress ?? '',
+        //     'text' => $address->unique_id . ", " . $address->name . " " . $address->last_name . ", " . $address->address . " " . $address->name,
+        //     'name' => $address->name ?? '',
+        //     'last_name' => $address->last_name ?? '',
+        //     'phone' => $address->phone ?? '',
+        //     'full_name' => $address->name . " " . $address->last_name,
+        //     'mobile_number' => $address->phone,
+        //     'alternative_mobile_number' => $address->phone_2,
+        //     'mobile_number_code_id' => $address->phone_code_id ?? 1,
+        //     'alternative_mobile_number_code_id' => $address->phone_2_code_id_id ?? 1,
+        //     'address1' => $address->address,
+        //     'address2' => $address->address_2,
+        //     'pincode' => $address->pincode,
+        //     'country_id' => $address->country_id,
+        //     'state_id' => $address->state_id,
+        //     'city_id' => $address->city_id,
+        //     'country' => $address->country_id,
+        //     'state' => $address->state_id,
+        //     'city' => $address->city_id,
+        //     'address_type' => $type,
+        //     'address_type_t' => $type ?? $address->address_type,
+        //     'license_number' => $address->license_number ?? null,
+        //     'license_document' => $address->license_document ?? null,
+        // ];
     }
 
 
@@ -1379,46 +1444,11 @@ class InvoiceController extends Controller
             return $this->formatAddress($usr->addresses, $parcel, $type);
         })->filter(fn($i) => $i)->values();
     }
-
     // Restore a soft-deleted invoice
     public function restore($id)
     {
         $invoice = Invoice::onlyTrashed()->findOrFail($id);
         $invoice->restore();
-
-        if (auth()->user()->role_id != 1) {
-            $notificationInvoiceDelete = NotificationParcelMessage::find(36);
-
-            $managerData = User::where('id', auth()->id())->with('warehouse')->first();
-
-            $titleInvoiceDelete = str_replace(
-                '{invoice_id}',
-                $invoice->invoice_no ?? '',
-                $notificationInvoiceDelete->title
-            );
-
-            $bodyInvoiceDelete = str_replace(
-                ['{manager_name}', '{warehouse_name}', '{invoice_id}'],
-                [
-                    $managerData->name ?? '',
-                    $managerData->warehouse->warehouse_name ?? '',
-                    $invoice->invoice_no ?? ''
-                ],
-                $notificationInvoiceDelete->message
-            );
-
-            Notification::create([
-                'user_id' => 1,
-                'warehouse_id' => auth()->user()->warehouse_id,
-                'title' => $titleInvoiceDelete,
-                'message' => $bodyInvoiceDelete,
-                'notification_for' => 'Admin',
-                'role' => 'Admin',
-                'type' => 'Invoice Delete',
-            ]);
-
-            User::where('role_id', 1)->increment('notification_read', 1);
-        }
 
         return back()->with('success', 'Invoice restored successfully.');
     }
@@ -1435,40 +1465,37 @@ class InvoiceController extends Controller
 
         $invoice->forceDelete();
 
-          if (auth()->user()->role_id != 1) {
-            $notificationInvoiceDelete = NotificationParcelMessage::find(37);
-
-            $managerData = User::where('id', auth()->id())->with('warehouse')->first();
-
-            $titleInvoiceDelete = str_replace(
-                '{invoice_id}',
-                $invoice->invoice_no ?? '',
-                $notificationInvoiceDelete->title
-            );
-
-            $bodyInvoiceDelete = str_replace(
-                ['{manager_name}', '{warehouse_name}', '{invoice_id}'],
-                [
-                    $managerData->name ?? '',
-                    $managerData->warehouse->warehouse_name ?? '',
-                    $invoice->invoice_no ?? ''
-                ],
-                $notificationInvoiceDelete->message
-            );
-
-            Notification::create([
-                'user_id' => 1,
-                'warehouse_id' => auth()->user()->warehouse_id,
-                'title' => $titleInvoiceDelete,
-                'message' => $bodyInvoiceDelete,
-                'notification_for' => 'Admin',
-                'role' => 'Admin',
-                'type' => 'Invoice Delete',
-            ]);
-
-            User::where('role_id', 1)->increment('notification_read', 1);
-        }
-
         return back()->with('success', 'Invoice permanently deleted.');
     }
+
+    public function deleteIndividualPayment($id)
+    {
+        // Retrieve the payment or fail gracefully
+        $payment = IndividualPayment::findOrFail($id);
+
+        // Check if the payment is linked to an invoice
+        if ($payment->invoice_id) {
+            $invoice = Invoice::find($payment->invoice_id);
+
+            if ($invoice) {
+                // Adjust the invoice balances using arithmetic safety
+                $applied = (float) $payment->payment_amount;
+
+                $invoice->balance += $applied;
+                $invoice->payment -= $applied;
+
+                // Optional: prevent negative values if needed
+                $invoice->payment = max($invoice->payment, 0);
+
+                $invoice->save();
+            }
+        }
+
+        $payment->delete();
+
+        return back()->with('success', 'Individual payment successfully deleted and invoice updated.');
+    }
+
+
+    // end
 }

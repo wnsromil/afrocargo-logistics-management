@@ -241,12 +241,13 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('invoices/restore/{id}', [InvoiceController::class, 'restore'])->name('invoice.restore');
         Route::delete('invoices/delete/{id}', [InvoiceController::class, 'delete'])->name('invoice.delete');
         Route::post('/invoice-create-order-details-service', [InvoiceController::class, 'orderDetailsCreateInvoice']);
+        Route::delete('invoices/deleteIndividualPayment/{id}', [InvoiceController::class, 'deleteIndividualPayment'])->name('invoice.deleteIndividualPayment');
 
         Route::get('transferHub', [HubTrackingController::class, 'transfer_hub'])->name('transfer.hub.list');
         Route::get('receivedHub', [HubTrackingController::class, 'received_hub'])->name('received.hub.list');
         Route::get('transferHub-history', [HubTrackingController::class, 'transfer_history_hub'])->name('transfer.hub.history.list');
         Route::get('receivedHub-history', [HubTrackingController::class, 'received_history_hub'])->name('received.hub.history.list');
-      
+
         Route::get('receivedOrders', [HubTrackingController::class, 'received_orders'])->name('received.orders.hub.list');
         Route::get('receivedOrders/{id}', [HubTrackingController::class, 'received_orders_show'])->name('received.received_orders_show');
         Route::get('container_order/{id}/{type}', [HubTrackingController::class, 'container_order'])->name('container.orders.percel.list');

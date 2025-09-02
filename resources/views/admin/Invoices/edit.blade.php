@@ -480,7 +480,55 @@
                                         <option {{ $invoice->payment_type == 'CreditCard' ? 'selected':''}} value="CreditCard">Credit Card</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-9 col-md-9 d-none" id="service_type">
+                                <div class="col-lg-3 col-md-3 d-none" id="service_type">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
+                                    </div>
+                                    <div class="d-fex mt-2">
+                                        <label class="foncolor mb-0 pt-0 me-1 col3A">Ocean Cargo</label>
+                                        <input class="form-check-input" type="radio" value="Ocean Cargo" name="transport_type"  {{ $invoice->transport_type == 'Ocean Cargo' ? 'checked' : '' }}>
+                                        <label class="foncolor mb-0 pt-0 me-1 col3A">Air Cargo</label>
+                                        <input class="form-check-input" type="radio" value="Air Cargo" name="transport_type" {{ $invoice->transport_type == 'Air Cargo' ? 'checked' : '' }}>
+                                    </div>
+                                    @error('transport_type')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">Transite <i class="text-danger">*</i></label>
+                                    </div>
+                                    <div class="d-fex mt-2 row">
+                                        <div class="col-6">
+                                            <label class="foncolor mb-0 pt-0 me-1 col3A">P</label>
+                                            <input class="form-check-input" type="radio" value="self" name="delivery_type" {{ $invoice->delivery_type == 'self' ? 'checked' : '' }}>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="foncolor mb-0 pt-0 me-1 col3A">D</label>
+                                            <input class="form-check-input" type="radio" value="driver" name="delivery_type" {{ $invoice->delivery_type == 'driver' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="input-block">
+                                        <label class="foncolor m-0 p-0">
+                                        </label>
+                                    </div>
+                                    <div class="d-fex mt-2 row d-none" id="product_type">
+                                        <div class="col-6">
+                                            <label class="foncolor mb-0 pt-0 me-1 col3A">F</label>
+                                            <input class="form-check-input" type="radio" value="F" name="product_type" {{ $invoice->product_type == 'F' ? 'checked' : '' }}>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="foncolor mb-0 pt-0 me-1 col3A">H</label>
+                                            <input class="form-check-input" type="radio" value="H" name="product_type" {{ $invoice->product_type == 'H' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    {{-- @error('transport_type')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror --}}
+                                </div>
+                                {{-- <div class="col-lg-9 col-md-9 d-none" id="service_type">
                                     <div class="input-block">
                                         <label class="foncolor m-0 p-0">Type <i class="text-danger">*</i></label>
                                     </div>
@@ -500,7 +548,7 @@
                                     @error('transport_type')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 

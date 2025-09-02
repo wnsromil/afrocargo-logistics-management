@@ -275,4 +275,53 @@ class ContainerController extends Controller
 
         return response()->json($vehicles);
     }
+
+    public function updateCloseInvoiceWarehouse(Request $request)
+    {
+        $request->validate([
+            'container_id' => 'required|exists:vehicles,id',
+            'close_invoice' => 'nullable|in:no,yes',
+            'close_warehouse' => 'nullable|in:no,yes',
+        ]);
+
+        $containers = Vehicle::where('vehicle_type', 1)
+            ->where('id', $request->container_id)
+            ->first();
+
+        if ($containers){
+            $containers->close_invoice = $request->close_invoice ?? $containers->close_invoice;
+            $containers->close_warehouse = $request->close_warehouse ?? $containers->close_warehouse;
+            $containers->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Container updated successfully.',
+            'container' => $containers,
+        ]);
+    }
+
+    public function filterContainers(Request $request)
+    {
+        // Sirf active aur Container type vehicles fetch kar rahe hain
+
+        $containers = Vehicle::where('vehicle_type', 1)
+        ->where('status', 'Active')
+        ->when($request->country_id,function ($q) use ($request) {
+            return $q->where('ship_to_country', $request->country_id);
+        })
+        ->when(!empty($request->container_id),function ($q) use ($request) {
+            return $q->where('id', $request->container_id);
+        })
+        ->where('close_invoice','no')
+        ->whereNotNull(['unique_id','ship_to_country'])
+        ->get();
+
+        return response()->json([
+            'message' => 'Active Containers fetched successfully',
+            'containers' => $containers
+        ]);
+    }
+
+    // end
 }

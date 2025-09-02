@@ -209,6 +209,35 @@ class WarehouseManagerController extends Controller
         // Find the warehouse by ID
         $warehouse = User::find($id);
 
+        // Check if email is changing before update
+        $emailChanged = $warehouse->email !== $request->email;
+
+        //if mail changed than send new mail with new credentials
+        if ($emailChanged) {
+            // Generate random password
+            $randomPassword = Str::random(8); // Random password of 8 characters
+            $hashedPassword = Hash::make($randomPassword); // Hashing password
+
+            // Update password
+            $warehouse->password = $hashedPassword;
+            $warehouse->save();
+
+            // Prepare Email Data
+            $manager_name   = $request->manager_name;
+            $email          = $request->email;
+            $mobileNumber   = $request->mobile_number;
+            $password       = $randomPassword;
+            $loginUrl       = route('login');
+            $warehouse_code = $warehouse->warehouse_id ?? ''; // adjust as per your schema
+
+            if (!empty($email)) {
+                // Send Email
+                Mail::to($email)->send(
+                    new WarehousemangerMail($manager_name, $email, $mobileNumber, $password, $loginUrl, $warehouse_code)
+                );
+            }
+        }
+
         // Update warehouse with validated data
         $warehouse->update([
             'warehouse_id' => $request->warehouse_name,

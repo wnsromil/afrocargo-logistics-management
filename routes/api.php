@@ -105,6 +105,7 @@ Route::post('/update-in-container-time', [ContainerController::class, 'updateCon
 Route::post('/update-out-container-time', [ContainerController::class, 'updateContainerOutDateTime']);
 Route::post('/updateContainer', [ContainerController::class, 'updateContainer'])->name('updateContainer');
 Route::get('/get-customers-container', [ContainerController::class, 'getVehiclesByWarehouseAndCustomer']);
+Route::post('/updateCloseInvoiceWarehouse', [ContainerController::class, 'updateCloseInvoiceWarehouse'])->name('updateCloseInvoiceWarehouse');
 
 
 //CBM
@@ -133,6 +134,7 @@ Route::get('/warehouse-customers/{id}', [CustomerController::class, 'getCustomer
 Route::get('/warehouse-vehicles/{id}', [VehicleController::class, 'getWarehouseVehicles']);
 
 Route::get('/get-all-items', [InventoryController::class, 'getAllItems']);
+Route::get('/filterContainers', [ContainerController::class, 'filterContainers']);
 
 Route::middleware(['auth:api'])->group(function () {
     Route::post('logout', [RegisterController::class, 'logout']);
