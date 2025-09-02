@@ -10,13 +10,13 @@
                line-height: 50px;
                color: $__black__nuetral;
                @include respond-below(custom767) {
-                   font-size: $__font__size__30; 
-               } 
+                   font-size: $__font__size__30;
+               }
             }
             .inv-header-right {
                 @include respond-below(custom767) {
                    margin-top: 10px;
-               } 
+               }
             }
 	    }
 	    .flight-invoice-details {
@@ -39,19 +39,19 @@
 	            }
 	             @include respond-below(custom767) {
                     display: $__block;
-                    margin-top: 20px;                      
+                    margin-top: 20px;
                 }
 	        }
 	        h3 {
-	            color: #28084B;
+	            color: #000000;
 		        font-size: $__font__size__40;
 		        font-weight: $__bold;
 		        text-align: center;
 		        @include margin-padding(30px 0,0);
 		        line-height: normal;
 		        @include respond-below(custom767) {
-                    font-size: $__font__size__30; 
-                    margin: 20px 0;                      
+                    font-size: $__font__size__30;
+                    margin: 20px 0;
                 }
 	        }
 	        .invoice-infomation {
@@ -65,12 +65,12 @@
 	               color: $__black;
 	               @include respond-below(custom767) {
                         width: 100%;
-                        margin-bottom: 10px; 
-                   } 
+                        margin-bottom: 10px;
+                   }
 	            }
 	            @include respond-below(custom767) {
                    display: $__block;
-                } 
+                }
 	        }
 	    }
 	    .invoice-address {
@@ -79,8 +79,8 @@
 	        div {
 	           width: 50%;
 	           @include respond-below(custom767) {
-                  width: 100%; 
-               } 
+                  width: 100%;
+               }
 	        }
 	    }
 	    .passenger-info {
@@ -92,7 +92,7 @@
 	           width: 50%;
 	           h5 {
 	              color: $__darktableheadbg;
-	              margin-bottom: 15px; 
+	              margin-bottom: 15px;
 	              font-size: $__font__size__18;
 	           }
 	           div {
@@ -106,14 +106,14 @@
 	                }
 	           }
 	            @include respond-below(custom767) {
-                  width: 100%; 
+                  width: 100%;
                   margin-bottom: 20px;
                   @include margin-padding(0 10px 20px 0, 15px);
-               } 
+               }
 	        }
 	        @include respond-below(custom767) {
                  display: $__block;
-            } 
+            }
 	    }
 	    .passenger-ticket-details {
 	         @include margin-padding(0,30px 20px);
@@ -143,18 +143,18 @@
 					   color: $__black__nuetral;
 					   span {
 					      display: $__block;
-					      color: $__grey__nuetral;			      
+					      color: $__grey__nuetral;
 					   }
 				    }
 				    td,th {
 		                @include respond-below(custom992) {
 				            white-space: $__nowrap;
-				        } 
-				    }			
+				        }
+				    }
 				}
 				@include respond-below(custom767) {
 		           @include margin-padding(0, 15px 20px 0);
-		        } 
+		        }
 			}
 			.invoice-table-footer {
 			    .table-footer-right {
@@ -178,14 +178,14 @@
 			   }
 			   @include respond-below(custom767) {
 		          @include margin-padding(0, 15px 20px);
-		       } 
+		       }
 			}
 	    }
 	    .totalamount-footer {
              background: $__bodybg__color;
              border: 0;
              @include margin-padding(10px 20px, 10px 10px 10px 15px);
-             @extend %align-items-center;             
+             @extend %align-items-center;
         }
         .invoice-table-footer {
             border: 0;
@@ -202,7 +202,7 @@
                 table {
                    td {
                       padding: 5px;
-					 
+
                    }
                 }
             }
@@ -216,26 +216,26 @@
         .payable-table {
             @include margin-padding(0,15px 20px);
             @include respond-below(custom767) {
-                flex-direction: column-reverse;                        
+                flex-direction: column-reverse;
             }
             .table-footer-left {
                @include respond-below(custom767) {
-                   width: 100%;    
+                   width: 100%;
                }
             }
             .amount-payable {
                 width: 35%;
                 @include respond-below(custom992) {
-                   width: 80%;    
+                   width: 80%;
                }
                @include respond-below(custom767) {
-                   width: 100%;    
+                   width: 100%;
                }
-            } 
+            }
         }
-        .bank-details {  
+        .bank-details {
             @include margin-padding(0 20px, 10px 0px);
-            border-bottom: 1px solid $__invborder__color;          
+            border-bottom: 1px solid $__invborder__color;
             .payment-info {
                color: $__black__nuetral;
               .payment-title {
@@ -265,7 +265,7 @@
         }
 	}
 }
-@media print { 
+@media print {
 	.file-link {
 		display: none !important;
 	}

@@ -67,15 +67,309 @@
                             placeholder="Enter Date">
                     </div>
 
-                    <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
-                        <label for="report_id" class="col-form-label">Report Type</label>
-                        <select class="form-select select2" name="report_type" id="report_id">
-                            <option selected value="">Select Report Type</option>
-                            <option {{request()->get('report_type') && request()->get('report_type') == 'Invoice' ?
-                                'selected':'' }} value="Invoice">Invoice</option>
-                            <option {{request()->get('report_type') && request()->get('report_type') == 'Tracking' ?
-                                'selected':'' }} value="Tracking">Tracking</option>
-                        </select>
+        <div class="col-md-3 col-sm-6 col-lg-3 align-items-center noBorder">
+            <label for="report_id" class="col-form-label">Report Type</label>
+            <select class="form-select select2">
+                <option selected>Select Report Type</option>
+                <option value="1">Invoice</option>
+                <option value="2">Tracking</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="d-flex align-items-center justify-content-end mt-2">
+            <button class="btn btn-primary" type="button">Search</button>
+            <button class="btn btn-outline-danger ms-2" type="button">Reset</button>
+
+        </div>
+    </div>
+
+    <div class="row mt-2 text-dark">
+        <div class="col-auto">
+            <div><strong>Total I-Amount:</strong>
+                $176,504.00</div>
+        </div> |
+        <div class="col-auto">
+            <div><strong>Total Expense:</strong>
+                $0</div>
+        </div> |
+        <div class="col-auto">
+            <div><strong>Total Income:</strong>
+                $176,504.00</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id='ajexTable'>
+            <div class="card-table">
+                <div class="table-body">
+                    <div class="table-responsive mt-3">
+                        <table class="table tables table-stripped table-hover datatable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="no-sort">Date</th>
+                                    <th>Branch</th>
+                                    <th>Container</th>
+                                    <th>Report Type</th>
+                                    <th>Doc Id</th>
+                                    <th>Invoice</th>
+                                    <th>Expense</th>
+                                    <th>Exp</th>
+                                    <th class="bg-transparent table-last-column">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>05/26/2025</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">Sudu8880982</a></td>
+                                    <td>Invoice</td>
+                                    <td>Billaly3Cars</td>
+                                    <td>6000</td>
+                                    <td class="text-danger">0</td>
+
+                                    <td class="text-success">6000
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>04/29/2024</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01425</a>
+                                    </td>
+                                    <td>Invoice</td>
+                                    <td>1</td>
+                                    <td>7502.5</td>
+                                    <td class="text-danger">0</td>
+                                    <td class="text-success">750
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>04/04/2025</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01045abj</a>
+                                    </td>
+                                    <td>Invoice</td>
+                                    <td>ACLUp787255</td>
+                                    <td>39408.5</td>
+                                    <td class="text-danger">0</td>
+
+                                    <td class="text-success">394
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>04/05/2025</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">Fafau5415337</a></td>
+                                    <td>Invoice</td>
+                                    <td>Fafau5415337</td>
+                                    <td>40811</td>
+                                    <td class="text-danger">0</td>
+
+                                    <td class="text-success">750
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>04/16/2025</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">01125abj</a>
+                                    </td>
+                                    <td>Invoice</td>
+                                    <td>Gcnu73886</td>
+                                    <td>44133</td>
+                                    <td class="text-danger">0</td>
+
+                                    <td class="text-success">441
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>04/29/2025</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">1225gcnu7853</a></td>
+                                    <td>Invoice</td>
+                                    <td>SEALUL5073</td>
+                                    <td>38649</td>
+                                    <td class="text-danger">0</td>
+
+                                    <td class="text-success">386
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>05/26/2025</td>
+                                    <td>Afro Cargo N...</td>
+                                    <td><a data-bs-toggle="modal" data-bs-target="#editContainerModal">Sudu8880982</a></td>
+                                    <td>Invoice</td>
+                                    <td>Billaly3Cars</td>
+                                    <td>6000</td>
+                                    <td class="text-danger">0</td>
+
+                                    <td class="text-success">600
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <ul>
+                                                    <li>
+                                                        <a data-bs-toggle="modal" data-bs-target="#trackingReportModal" class="dropdown-item"><i class="ti ti-mail me-2"></i></i>Send Pdf</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteCustomReportModal"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#expensePopupModal"><i class="ti ti-devices-dollar
+                                                         me-2"></i>Expense</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -418,16 +712,14 @@
                 </div>
                 <div class="modal-body">
 
-                    <div class="d-flex align-items-center justify-content-end mb-1 mt-3">
+                    <div class="d-flex align-items-center justify-content-end">
                         <div class="usersearch d-flex">
-                            <div class="mt-2">
-                                <button class="btn btn-primary buttons px-2" data-bs-toggle="modal" data-bs-target="#addExpensesModal">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-circle-plus me-1 text-white"></i>
-                                        New Report
-                                    </div>
-                                </button>
+                            <button class="btn btn-primary buttons px-2" data-bs-toggle="modal" data-bs-target="#addExpensesModal">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="ti ti-circle-plus me-1 text-white"></i>
+                                New Report
                             </div>
+                        </button>
                         </div>
                     </div>
 
@@ -438,6 +730,8 @@
                                 <table class="table table-stripped table-hover datatable">
                                     <thead class="thead-light ">
                                         <tr>
+                                            <th class="text-truncate text-start">Expense ID
+                                            </th>
                                             <th class="text-truncate text-start">Date
                                             </th>
                                             <th class="text-truncate text-start">Category
@@ -446,13 +740,98 @@
                                             </th>
                                             <th class="text-truncate text-start">Amount
                                             </th>
-                                            <th class="text-truncate text-start bg-transparent table-last-column">
+                                            <th class="text-truncate text-center bg-transparent table-last-column">
                                                 Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td colspan="5" class="text-center">No Rows to Show</td>
+                                            <td>TEX-000001</td>
+                                            <td>06-18-2025</td>
+                                            <td>Category 1</td>
+                                            <td>Dummy Content</td>
+                                            <td>2800</td>
+                                            <td>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TEX-000002</td>
+                                            <td>06-18-2025</td>
+                                            <td>Category 2</td>
+                                            <td>Dummy Content 3</td>
+                                            <td>2100</td>
+                                            <td>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TEX-000003</td>
+                                            <td>06-11-2025</td>
+                                            <td>Category 3</td>
+                                            <td>Dummy Content 3</td>
+                                            <td>2100</td>
+                                            <td>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TEX-000004</td>
+                                            <td>06-05-2025</td>
+                                            <td>Category 4</td>
+                                            <td>Dummy Content 4</td>
+                                            <td>4800</td>
+                                            <td>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-edit me-2"></i>Update</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#"><i class="ti ti-trash me-2"></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -510,7 +889,7 @@
                 if (warehouse_id) {
                     getContainersByWarehouse(warehouse_id, '#addReportcontainer');
                 }
-            }); 
+            });
         });
 
         function getContainersByWarehouse(warehouseId,pushToSelect = false) {

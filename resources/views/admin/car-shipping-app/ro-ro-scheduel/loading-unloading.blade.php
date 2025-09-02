@@ -1,0 +1,624 @@
+<x-app-layout>
+    @section('style')
+        <style>
+            .custom-uploader {
+                border: 2px dashed #dadada;
+                border-radius: 8px;
+                padding: 15px;
+                text-align: center;
+                cursor: pointer;
+                position: relative;
+                transition: border-color 0.2s ease;
+                height: 100px;
+                align-content: center;
+            }
+
+            .custom-uploader:hover {
+                border-color: #203f5f;
+            }
+
+            .custom-uploader input[type="file"] {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+            }
+
+            .preview-image {
+                max-height: 60px;
+                object-fit: cover;
+                border-radius: 6px;
+            }
+        </style>
+    @endsection
+    <x-slot name="header">
+        {{ __('Vehicle Loading / Unloading Tracker') }}
+    </x-slot>
+    <x-slot name="cardTitle">
+        <p class="head">Vehicle Loading / Unloading Tracker</p>
+        <div class="d-flex align-items-center justify-content-end mb-1">
+            <div class="usersearch d-flex">
+                <div class="mt-2">
+                    {{-- <a data-bs-toggle="modal" data-bs-target="#AddRequestForm" class="btn btn-primary buttons"
+                        style="background:#203A5F">
+                        <i class="ti ti-circle-plus me-2 text-white"></i>
+                        Add Request
+                    </a> --}}
+                </div>
+            </div>
+        </div>
+    </x-slot>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="input-block mb-3">
+                <label>RoRo ID</label>
+                <p>RORO-2025-001</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="input-block mb-3">
+                <label>Vessel Name</label>
+                <p>MV Grand Orion</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="input-block mb-3">
+                <label>Shipping Line / Company</label>
+                <p>MSE</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="input-block mb-3">
+                <label>Ports</label>
+                <p>Houston → Lagos</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="input-block mb-3">
+                <label>Departure Date & Time</label>
+                <p>06-25-2025 12:40 AM</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="input-block mb-3">
+                <label>Arrival Date & Time</label>
+                <p>07-05-2025 12:40 AM</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div id='ajexTable'>
+        <div class="card-table">
+            <div class="card-body">
+                <div class="table-responsive Minheight mt-3">
+
+                    <table class="table table-stripped table-hover datatable pxless">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Loading Status</th>
+                                <th>Loading Time (In/Out)</th>
+                                <th>Loading By</th>
+                                <th>Unloading Status</th>
+                                <th>Unloading Time</th>
+                                <th>Unloading By</th>
+                                <th>Images</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2015 Toyota Camry<br>
+                                    DSA222333323
+                                </td>
+                                <td><span class="badge badge-soft-warning fw_mid fs_13 py-2">Pending</span></td>
+                                <td>06-29-2025 10:00 PM</td>
+                                <td>Brian Bordina</td>
+                                <td><span class="badge badge-soft-warning fw_mid fs_13 py-2">Pending</span></td>
+                                <td>07-03-2025 10:00 PM</td>
+                                <td>Clark Markham</td>
+                                <td><a data-bs-toggle="modal" data-bs-target="#documentShows" class="imgover"><i
+                                            class="ti ti-photo fs_24"></i></a></td>
+                                <td>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a data-bs-toggle="modal" data-bs-target="#VehicleLoadingModal"
+                                                        class="dropdown-item">
+                                                        <i class="ti ti-s-turn-up me-2 fs_16"></i>
+                                                        Track Loading</a>
+                                                </li>
+                                                <li>
+                                                    <a data-bs-toggle="modal" data-bs-target="#VehicleUnLoadingModal"
+                                                        class="dropdown-item">
+                                                        <i class="ti ti-s-turn-down me-2 fs_16"></i>
+                                                        Track Unloading</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="VehicleLoadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header justify-content-between">
+                    <h5 class="modal-title">Vehicle Loading Tracker</h5>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="bl-3 py-1 ps-3 my-3 fs_18">Loading Details</h6>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="foncolor">Change Status <i class="text-danger">*</i></label>
+                            <select class="js-example-basic-single select2" name="main_type">
+                                <option hidden selected disabled value="">Select Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Picked Up">Picked Up</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="foncolor">Loaded By (Staff Name) <i class="text-danger">*</i></label>
+                            <select name="AssignDriver" class="js-example-basic-single select2">
+                                <option hidden disabled selected value="">Select Driver</option>
+                                <option value="1">Alex Carry</option>
+                                <option value="2">Brian O'Connor</option>
+                                <option value="3">Clare Minasa</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="foncolor">Loading Time</label>
+                            <div
+                                class="daterangepicker-wrap cal-icon cal-icon-info d-flex flex-wrap dateTime dateTime2">
+                                <input type="text"
+                                    class="btn-filters datetimepicker form-control form-cs inp text-lowercase"
+                                    name="InspectionDateTime" placeholder="mm-dd-yyyy" />
+                                <input type="text"
+                                    class="form-control inp inputs text-center onlyTimePicker smallinput flatpickr-input d-inline"
+                                    value="08:30 AM" name="currentTime">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="foncolor">Upload Loading Image</label>
+                            <div class="form-group">
+                                <div class="custom-uploader multiple">
+                                    <p id="frontText">
+                                        <i class="d-block fs_18 fa-solid fa-upload"></i>
+                                        Drag or tap to upload image<br><small>Upload clear photo</small>
+                                    </p>
+                                    <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                        multiple
+                                        onchange="previewMultipleUpload(event, 'frontPreviewContainer', 'frontText')" />
+                                    <div id="frontPreviewContainer"
+                                        class="d-flex justify-content-center flex-wrap mt-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="foncolor">Condition Notes</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" placeholder="Enter Your Notes" rows="4"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="foncolor">Damage Found?</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-block mb-3 d-flex align-items-center">
+                                                <label class="foncolor mb-0 pt-0 me-3">No</label>
+                                                <input class="form-check-input mt-0" type="radio"
+                                                    name="DamageFound" value="No" checked>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-block mb-3 d-flex align-items-center">
+                                                <label class="foncolor mb-0 pt-0 me-3">Yes</label>
+                                                <input class="form-check-input mt-0" type="radio"
+                                                    name="DamageFound" value="Yes">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="toggleDiv" class="col-md-8" style="display: none;">
+                                    <label class="foncolor">Damage Images</label>
+                                    <div class="form-group">
+                                        <div class="custom-uploader multiple">
+                                            <p id="frontText">
+                                                <i class="d-block fs_18 fa-solid fa-upload"></i>
+                                                Drag or tap to upload image<br><small>Upload clear photo</small>
+                                            </p>
+                                            <input type="file" accept="image/*" capture="environment"
+                                                id="frontImage" multiple
+                                                onchange="previewMultipleUpload(event, 'frontPreviewContainer', 'frontText')" />
+                                            <div id="frontPreviewContainer"
+                                                class="d-flex justify-content-center flex-wrap mt-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="foncolor">Signature of loader</label>
+                            <div class="form-group">
+                                <div class="custom-uploader multiple">
+                                    <p id="frontText">
+                                        <i class="d-block fs_18 fa-solid fa-upload"></i>
+                                        Drag or tap to upload image<br><small>Upload clear photo</small>
+                                    </p>
+                                    <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                        multiple
+                                        onchange="previewMultipleUpload(event, 'frontPreviewContainer', 'frontText')" />
+                                    <div id="frontPreviewContainer"
+                                        class="d-flex justify-content-center flex-wrap mt-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="checkbox-inline">
+                                <label class="checkbox d-flex align-items-center gap-1">
+                                    <input type="checkbox" name="Checkboxes3">
+                                    <span></span>Notify Customer</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary confirm-supply me-2"
+                        data-bs-dismiss="modal">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="VehicleUnLoadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header justify-content-between">
+                    <h5 class="modal-title">Vehicle Unloading Tracker</h5>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="bl-3 py-1 ps-3 my-3 fs_18">Unloading Details</h6>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="foncolor">Change Status <i class="text-danger">*</i></label>
+                            <select class="js-example-basic-single select2" name="main_type">
+                                <option hidden selected disabled value="">Select Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Picked Up">Picked Up</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="foncolor">Loaded By (Staff Name) <i class="text-danger">*</i></label>
+                            <select name="AssignDriver" class="js-example-basic-single select2">
+                                <option hidden disabled selected value="">Select Driver</option>
+                                <option value="1">Alex Carry</option>
+                                <option value="2">Brian O'Connor</option>
+                                <option value="3">Clare Minasa</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="foncolor">Unloading Time</label>
+                            <div
+                                class="daterangepicker-wrap cal-icon cal-icon-info d-flex flex-wrap dateTime dateTime2">
+                                <input type="text"
+                                    class="btn-filters datetimepicker form-control form-cs inp text-lowercase"
+                                    name="InspectionDateTime" placeholder="mm-dd-yyyy" />
+                                <input type="text"
+                                    class="form-control inp inputs text-center onlyTimePicker smallinput flatpickr-input d-inline"
+                                    value="08:30 AM" name="currentTime">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="foncolor">Upload Unloading Image</label>
+                            <div class="form-group">
+                                <div class="custom-uploader multiple">
+                                    <p id="frontText">
+                                        <i class="d-block fs_18 fa-solid fa-upload"></i>
+                                        Drag or tap to upload image<br><small>Upload clear photo</small>
+                                    </p>
+                                    <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                        multiple
+                                        onchange="previewMultipleUpload(event, 'frontPreviewContainer', 'frontText')" />
+                                    <div id="frontPreviewContainer"
+                                        class="d-flex justify-content-center flex-wrap mt-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="foncolor">Condition Notes</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" placeholder="Enter Your Notes" rows="4"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="foncolor">Damage Found?</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-block mb-3 d-flex align-items-center">
+                                                <label class="foncolor mb-0 pt-0 me-3">No</label>
+                                                <input class="form-check-input mt-0" type="radio"
+                                                    name="DamageFound" value="No" checked>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-block mb-3 d-flex align-items-center">
+                                                <label class="foncolor mb-0 pt-0 me-3">Yes</label>
+                                                <input class="form-check-input mt-0" type="radio"
+                                                    name="DamageFound" value="Yes">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="toggleDiv" class="col-md-8" style="display: none;">
+                                    <label class="foncolor">Damage Images</label>
+                                    <div class="form-group">
+                                        <div class="custom-uploader multiple">
+                                            <p id="frontText">
+                                                <i class="d-block fs_18 fa-solid fa-upload"></i>
+                                                Drag or tap to upload image<br><small>Upload clear photo</small>
+                                            </p>
+                                            <input type="file" accept="image/*" capture="environment"
+                                                id="frontImage" multiple
+                                                onchange="previewMultipleUpload(event, 'frontPreviewContainer', 'frontText')" />
+                                            <div id="frontPreviewContainer"
+                                                class="d-flex justify-content-center flex-wrap mt-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="foncolor">Signature of Unloader</label>
+                            <div class="form-group">
+                                <div class="custom-uploader multiple">
+                                    <p id="frontText">
+                                        <i class="d-block fs_18 fa-solid fa-upload"></i>
+                                        Drag or tap to upload image<br><small>Upload clear photo</small>
+                                    </p>
+                                    <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                        multiple
+                                        onchange="previewMultipleUpload(event, 'frontPreviewContainer', 'frontText')" />
+                                    <div id="frontPreviewContainer"
+                                        class="d-flex justify-content-center flex-wrap mt-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="checkbox-inline">
+                                <label class="checkbox d-flex align-items-center gap-1">
+                                    <input type="checkbox" name="Checkboxes3">
+                                    <span></span>Notify Customer</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary confirm-supply me-2"
+                        data-bs-dismiss="modal">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- jqury cdn --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('.activate, .deactivate').on('click', function() {
+            let id = $(this).data('id');
+            let status = $(this).data('status');
+
+            $.ajax({
+                url: "{{ route('admin.vehicle.status', '') }}/" + id,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status: status
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Status Updated',
+                            text: response.success
+                        });
+
+                        location.reload();
+                    }
+                }
+            });
+        });
+    </script>
+
+    @section('script')
+        <script>
+            // 🖼 Image Preview Function
+            function previewImage(input, imageType) {
+                if (input.files && input.files[0]) {
+                    let file = input.files[0];
+
+                    // Only PNG or JPG Allowed
+                    if (file.type === "image/png" || file.type === "image/jpeg") {
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('preview_' + imageType).src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert("Only PNG & JPG images are allowed!");
+                        input.value = ""; // remove Invalid file
+                    }
+                }
+            }
+
+            //  Remove Image Function
+            function removeImage(imageType) {
+                document.getElementById('preview_' + imageType).src = "{{ asset('../assets/img.png') }}";
+                document.getElementById('file_' + imageType).value = "";
+            }
+            $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+            $('.col-md-12').on('click', () => {
+                $('#country_code').val($('.mobile_code').find('.iti__selected-dial-code').text());
+            })
+
+            $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            $('.col-md-12').on('click', () => {
+                $('#country_code_2').val($('.alternate_mobile_no').find('.iti__selected-dial-code').text());
+            })
+        </script>
+        <script>
+            $(document).ready(function() {
+                var oldState = "{{ old('state') }}"; // Laravel old value
+                var oldCity = "{{ old('city') }}";
+
+                // ✅ Agar old state available hai toh state ke cities load kare
+                if (oldState) {
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $.ajax({
+                        url: '/api/get-states/' + $('#country').val(),
+                        type: 'GET',
+                        success: function(states) {
+                            $('#state').html('<option selected="selected">Select State</option>');
+                            $.each(states, function(key, state) {
+                                var selected = (state.id == oldState) ? 'selected' :
+                                    ''; // ✅ Old value match kare
+                                $('#state').append('<option value="' + state.id + '" ' + selected +
+                                    '>' + state.name + '</option>');
+                            });
+
+                            // ✅ Agar old city available hai, toh cities load kare
+                            if (oldCity) {
+                                $('#city').html('<option selected="selected">Loading...</option>');
+                                $.ajax({
+                                    url: '/api/get-cities/' + oldState,
+                                    type: 'GET',
+                                    success: function(cities) {
+                                        $('#city').html(
+                                            '<option selected="selected">Select City</option>'
+                                        );
+                                        $.each(cities, function(key, city) {
+                                            var selected = (city.id == oldCity) ?
+                                                'selected' :
+                                                ''; // ✅ Old value match kare
+                                            $('#city').append('<option value="' + city
+                                                .id + '" ' + selected + '>' + city
+                                                .name + '</option>');
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                // Country Change Event
+                $('#country').change(function() {
+                    var country_id = $(this).val();
+                    $('#state').html('<option selected="selected">Loading...</option>');
+                    $('#city').html('<option selected="selected">Select City</option>');
+
+                    $.ajax({
+                        url: '/api/get-states/' + country_id,
+                        type: 'GET',
+                        success: function(states) {
+                            $('#state').html(
+                                '<option selected="selected" value="">Select State</option>');
+                            $.each(states, function(key, state) {
+                                $('#state').append('<option value="' + state.id + '">' +
+                                    state.name + '</option>');
+                            });
+                        }
+                    });
+                });
+
+                // State Change Event
+                $('#state').change(function() {
+                    var state_id = $(this).val();
+                    $('#city').html('<option selected="selected">Loading...</option>');
+
+                    $.ajax({
+                        url: '/api/get-cities/' + state_id,
+                        type: 'GET',
+                        success: function(cities) {
+                            $('#city').html(
+                                '<option selected="selected" value="">Select City</option>');
+                            $.each(cities, function(key, city) {
+                                $('#city').append('<option value="' + city.id + '">' + city
+                                    .name + '</option>');
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            $(function() {
+                $('input[name="DamageFound"]').on('change', function() {
+                    $('#toggleDiv').toggle($(this).val() === 'Yes');
+                });
+            });
+        </script>
+        <script>
+            function previewMultipleUpload(event, containerId, textId) {
+                const files = event.target.files;
+                const container = document.getElementById(containerId);
+                const placeholder = document.getElementById(textId);
+
+                container.innerHTML = ''; // Clear previous previews
+                placeholder.style.display = 'none';
+
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const img = document.createElement('img');
+                        img.src = reader.result;
+                        img.className = 'preview-image m-1';
+                        img.style.maxWidth = '100px';
+                        img.style.borderRadius = '6px';
+                        container.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        </script>
+    @endsection
+</x-app-layout>

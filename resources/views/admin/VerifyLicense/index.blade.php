@@ -28,14 +28,14 @@
         </div>
     </x-slot>
 
-    <div class="container-fluid text-dark responsiveness">
-        <div class="rounded-2 p-2 mt-4">
+    <div class="text-dark responsiveness">
+        <div class="rounded-2">
             <div class="row rounded-2 bg-custom">
                 <div class="col-md-3 col-sm-6 col-lg-3 align-items-center mt-1">
 
                     <label for="search_id" class="col-form-label">Search</label>
 
-                    <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
+                    <input type="text" id="search_id" class="form-control inp rounded-1 form-control-lg"
                         placeholder="Search">
 
                 </div>
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row rounded-2 bg-custom">
+            <div class="row align-items-end rounded-2 bg-custom">
                 <div class="col-md-3 col-sm-6 col-lg-3 align-items-center mt-2">
                     <div class="col-md-12 col-sm-6 col-lg-12">
                         <label for="container_id" class="col-form-label">Container</label>
@@ -119,26 +119,28 @@
 
                 <div class="col-md-3 col-sm-6 col-lg-3 align-items-center mt-2">
                     <label for="date_id" class="col-form-label">Date</label>
-                    <input type="date" id="date_id" class="form-control rounded-1 form-control-lg">
+                    <input type="date" id="date_id" class="form-control inp rounded-1 form-control-lg">
+                </div>
+                <div class="col-md-6 align-items-center mt-1">
+                    <div class="d-flex align-items-center justify-content-end mt-2">
+                        <button class="btn btn-primary" type="button">Search</button>
+                        <button class="btn btn-outline-danger ms-2" type="button">Reset</button>
+
+                    </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="d-flex align-items-center justify-content-end mt-2">
-                    <button class="btn btn-primary" type="button">Search</button>
-                    <button class="btn btn-outline-danger ms-1" type="button">Reset</button>
 
-                </div>
-            </div>
         </div>
         <div class="row">
             <div id='ajexTable'>
                 <div class="card-table">
                     <div class="card-body">
-                        <div class="table-responsive table-height mt-3">
-                            <table class="table table-hover datatable">
+                        <div class="table-responsive table-height lesspadding mt-3">
+                            <table class="table table-hover datatable NewTable">
                                 <thead class="thead-light text-start">
                                     <tr>
+                                        <th class="text-center p-2">ID</th>
                                         <th class="p-2">Invoice Date</th>
                                         <th class="p-2">Invoice</th>
                                         <th class="p-2">Container</th>
@@ -157,7 +159,164 @@
 
                                 <tbody>
                                     <tr>
-                                        <td colspan="11" class="text-center">No Rows To Show</td>
+                                        <td>TVL-000001</td>
+                                        <td>05-16-2025</td>
+                                        <td>INV-000001</td>
+                                        <td>CTN-00125</td>
+                                        <td>Ryan Cooglar</td>
+                                        <td>Wich John</td>
+                                        <td>CSTL0001</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Lone Parker</td>
+                                        <td>SID000023</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>4800</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000002</td>
+                                        <td>05-17-2025</td>
+                                        <td>INV-000002</td>
+                                        <td>CTN-00125</td>
+                                        <td>Dean Froster</td>
+                                        <td>Karen Ko'stow</td>
+                                        <td>CSTL0003</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Mark Webber</td>
+                                        <td>SID000033</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>4100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000003</td>
+                                        <td>05-11-2025</td>
+                                        <td>INV-000003</td>
+                                        <td>CTN-00126</td>
+                                        <td>Ethan Hunt</td>
+                                        <td>Fin Pigg</td>
+                                        <td>CSTL0006</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Heather Hathway</td>
+                                        <td>SID000088</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>9900</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000004</td>
+                                        <td>05-10-2025</td>
+                                        <td>INV-000033</td>
+                                        <td>CTN-00111</td>
+                                        <td>Trane Boult</td>
+                                        <td>Ol'Coder</td>
+                                        <td>CSTL02233</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Backer Beans</td>
+                                        <td>SID003222</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>9900</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000005</td>
+                                        <td>05-16-2025</td>
+                                        <td>INV-000001</td>
+                                        <td>CTN-00125</td>
+                                        <td>Ryan Cooglar</td>
+                                        <td>Wich John</td>
+                                        <td>CSTL0001</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Lone Parker</td>
+                                        <td>SID000023</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>4800</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000006</td>
+                                        <td>05-17-2025</td>
+                                        <td>INV-000002</td>
+                                        <td>CTN-00125</td>
+                                        <td>Dean Froster</td>
+                                        <td>Karen Ko'stow</td>
+                                        <td>CSTL0003</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Mark Webber</td>
+                                        <td>SID000033</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>4100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000007</td>
+                                        <td>05-11-2025</td>
+                                        <td>INV-000003</td>
+                                        <td>CTN-00126</td>
+                                        <td>Ethan Hunt</td>
+                                        <td>Fin Pigg</td>
+                                        <td>CSTL0006</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Heather Hathway</td>
+                                        <td>SID000088</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>9900</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000008</td>
+                                        <td>05-16-2025</td>
+                                        <td>INV-000001</td>
+                                        <td>CTN-00125</td>
+                                        <td>Ryan Cooglar</td>
+                                        <td>Wich John</td>
+                                        <td>CSTL0001</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Lone Parker</td>
+                                        <td>SID000023</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>4800</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000009</td>
+                                        <td>05-17-2025</td>
+                                        <td>INV-000002</td>
+                                        <td>CTN-00125</td>
+                                        <td>Dean Froster</td>
+                                        <td>Karen Ko'stow</td>
+                                        <td>CSTL0003</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Mark Webber</td>
+                                        <td>SID000033</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>4100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TVL-000010</td>
+                                        <td>05-11-2025</td>
+                                        <td>INV-000003</td>
+                                        <td>CTN-00126</td>
+                                        <td>Ethan Hunt</td>
+                                        <td>Fin Pigg</td>
+                                        <td>CSTL0006</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>Heather Hathway</td>
+                                        <td>SID000088</td>
+                                        <td><img src="{{ asset('assets/images/license_ID.jpg') }}" alt="CustLicPic"
+                                                width="60" height="25"></td>
+                                        <td>9900</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -95,7 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::get('/send', function () {
-    Mail::to('krishnapawarwns@gmail.com')->send(new  RegistorMail());
+    Mail::to('krishnapawarwns@gmail.com')->send(new RegistorMail());
     return [
         'message' => 'Welcome to this api',
     ];
@@ -216,6 +216,11 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('templates', TemplateController::class);
         Route::resource('autocall', AutoCallBatchController::class);
         Route::resource('bill_of_lading', BillofLadingController::class);
+        Route::resource('ro-ro-shipping', RoRoShippingController::class);
+        Route::resource('vehicle_inspection', InspectionScheduleController::class);
+        Route::resource('ro-ro-scheduel', RoRoSheduelController::class);
+        Route::resource('vehicle-load-unload', VehicleLoadUnloadController::class);
+        Route::resource('carShippingLeads', CarShippingLeadsController::class);
         Route::resource('lading_details', LadingDetailsController::class);
         Route::resource('end_of_day', EODController::class);
 
@@ -302,6 +307,8 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('user_role/create', [RoleManagementController::class, 'create'])->name('user_role.create');
         Route::post('user_role/store', [RoleManagementController::class, 'store'])->name('user_role.store');
         //CBM Calculatoar
+        Route::get('inspection-list', [CarShippingLeadsController::class, 'vehicleInspection'])->name('car-shipping-app.vehicleInspection');
+
         Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
         Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
         Route::get('freight-Shipping', [CBMCalculatoarController::class, 'FreightShipping'])->name('cbm_calculator.freight_Shipping');

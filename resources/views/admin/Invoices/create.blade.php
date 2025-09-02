@@ -100,7 +100,7 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="delevery_customer_id">
                                 <option value="">Search Customer</option>
-                                {{-- @foreach($customers as $customer)
+                                {{-- @foreach ($customers as $customer)
                                                             <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach --}}
@@ -154,7 +154,7 @@
                             <select name="customer_id" class="form-control delevery_customer select2"
                                 id="ship_customer">
                                 <option value="">Search Customer</option>
-                                {{-- @foreach($customers as $customer)
+                                {{-- @foreach ($customers as $customer)
                                                             <option {{ old('customer_id') == $customer->id ? 'selected' : '' }} value="{{
                                     $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach --}}
@@ -218,8 +218,10 @@
             <div class="row mt-5 g-3">
 
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="delivery_customer_inf_form">
-                        <div class="borderset position-relative newCustomerAdd {{--disablesectionnew--}}" id="delivery_to_address">
+                    <form action="{{ route('admin.saveInvoceCustomer') }}" method="post"
+                        id="delivery_customer_inf_form">
+                        <div class="borderset position-relative newCustomerAdd {{-- disablesectionnew --}}"
+                            id="delivery_to_address">
                             <div class="row gx-3 gy-2">
 
                                 @csrf
@@ -328,8 +330,9 @@
                 </div>
 
                 <div class="col-md-6">
-                    <form action="{{route('admin.saveInvoceCustomer')}}" method="post" id="pick_up_customer_inf_form">
-                        <div class="borderset position-relative newShipmentAddress {{--disablesectionnew--}}"
+                    <form action="{{ route('admin.saveInvoceCustomer') }}" method="post"
+                        id="pick_up_customer_inf_form">
+                        <div class="borderset position-relative newShipmentAddress {{-- disablesectionnew --}}"
                             id="ship_to_address">
                             <div class="row gx-3 gy-2">
 
@@ -415,7 +418,7 @@
                                     <label class="foncolor" for="State">State</label>
                                     <input type="text" name="state" id="state" class="form-control inp address" placeholder="state" readonly>
                                     @error('state_id')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
                                 </div>
@@ -429,7 +432,8 @@
                                 <div class="col-md-6">
                                     <label class="foncolor" for="Zip_code">Zip code</label>
                                     <!-- Zip Code -->
-                                    <input type="text" name="zip_code" class="form-control inp" placeholder="Enter Zip" readonly>
+                                    <input type="text" name="zip_code" class="form-control inp"
+                                        placeholder="Enter Zip" readonly>
                                 </div>
 
                             </div>
@@ -439,7 +443,8 @@
             </div>
         </div>
 
-        <form action="{{ route('admin.invoices.store') }}" id="services" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.invoices.store') }}" id="services" method="POST"
+            enctype="multipart/form-data">
             @csrf
             <div class="form-group-customer customer-additional-form">
                 <!-- both form ended Ship to Address -->
@@ -466,11 +471,13 @@
                                     <div class="d-fex justify-content-between flex-wrap row mt-2">
                                         <div class="input-block mb-3 col-lg-3 col-md-3">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Ocean Cargo</label>
-                                            <input class="form-check-input mt-0" type="radio" value="Ocean Cargo" name="transport_type">
+                                            <input class="form-check-input mt-0" type="radio" value="Ocean Cargo"
+                                                name="transport_type">
                                         </div>
                                         <div class="input-block mb-3 col-lg-3 col-md-3">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Air Cargo</label>
-                                            <input class="form-check-input mt-0" type="radio" value="Air Cargo" name="transport_type">
+                                            <input class="form-check-input mt-0" type="radio" value="Air Cargo"
+                                                name="transport_type">
                                         </div>
                                         <div class="col-6"></div>
                                     </div>
@@ -483,19 +490,23 @@
                         <div class="col-md-3">
                             <label> Date <i class="text-danger">*</i></label>
                             <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text" class="btn-filters datetimepickerDefault form-control form-cs inp "
-                                    name="currentdate" placeholder="mm-dd-yyyy" value="{{ carbon()->now()->addDays(15)->format('Y/m/d') }}" />
-                                <input type="text" class="form-control inp inputs text-center timeOnlyInput smallinput"
-                                    readonly value="08:30 AM" name="currentTime">
+                                <input type="text"
+                                    class="btn-filters datetimepickerDefault form-control form-cs inp "
+                                    name="currentdate" placeholder="mm-dd-yyyy"
+                                    value="{{ carbon()->now()->addDays(15)->format('Y/m/d') }}" />
+                                <input type="text"
+                                    class="form-control inp inputs text-center timeOnlyInput smallinput" readonly
+                                    value="08:30 AM" name="currentTime">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <label>Invoice# <i class="text-danger">*</i></label>
                             <div class="input-container invoiceNoInput position-relative">
-                                <input type="text" name="nextInvoiceNo" value="{{$nextInvoiceNo}}"
+                                <input type="text" name="nextInvoiceNo" value="{{ $nextInvoiceNo }}"
                                     style="display: none">
-                                <button type="button" id="auto_invoice_gen" class="btn-primary square sm">Auto</button>
+                                <button type="button" id="auto_invoice_gen"
+                                    class="btn-primary square sm">Auto</button>
                                 <input type="text" name="invoice_no" class="form-control form-cs inp"
                                     placeholder="INV 00021">
                             </div>
@@ -519,9 +530,9 @@
                             <label>Total</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00"
-                                    style="padding-left: 35px; padding-top: 8px !important;" id="grand_total"
-                                    name="grand_total">
+                                <input type="text" class="form-control form-cs inp readonly" readonly
+                                    placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;"
+                                    id="grand_total" name="grand_total">
                             </div>
                         </div>
 
@@ -537,15 +548,15 @@
                             <label>Payment</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" class="form-control form-cs inp readonly" readonly placeholder="0.00"
-                                    style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" class="form-control form-cs inp readonly" readonly
+                                    placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
                         <div class="col-md-3 ">
                             <label>User</label>
                             <input type="text" class="form-control inp readonly" readonly placeholder="John Duo"
-                                value="{{auth()->user()->name ?? ''}} {{auth()->user()->last_name ?? ''}}">
+                                value="{{ auth()->user()->name ?? '' }} {{ auth()->user()->last_name ?? '' }}">
                         </div>
 
                         <div class="col-md-3">
@@ -572,8 +583,9 @@
                             <label>Balance</label>
                             <div class="input-container" style="position: relative;">
                                 <span class="dollarSign">$</span>
-                                <input type="text" name="balance" class="form-control form-cs inp readonly" readonly
-                                    placeholder="0.00" style="padding-left: 35px; padding-top: 8px !important;">
+                                <input type="text" name="balance" class="form-control form-cs inp readonly"
+                                    readonly placeholder="0.00"
+                                    style="padding-left: 35px; padding-top: 8px !important;">
                             </div>
                         </div>
 
@@ -626,8 +638,8 @@
                                         <div class="d-flex align-items-center">
                                             <input type="text" name="supply_name"
                                                 class="selected-supply-name form-control tdbor inputcolor">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#supplyModal"
-                                                class="btn iconbtn p-0">
+                                            <button type="button" data-bs-toggle="modal"
+                                                data-bs-target="#supplyModal" class="btn iconbtn p-0">
                                                 <i class="ti ti-chevron-down"></i>
                                             </button>
                                         </div>
@@ -694,14 +706,14 @@
                     </div>
                     <div><label>Insurance</label>
                         <input type="text" class="form-control smInput" placeholder="0" name="ins"
-                            value="{{$invoice->ins ?? 0}}">
+                            value="{{ $invoice->ins ?? 0 }}">
                     </div>
                     <div><label>Discount</label>
                         <input type="text" class="form-control" placeholder="0" id="dis" name="discount">
                     </div>
                     <div><label>Payment</label>
                         <input type="text" class="form-control" placeholder="0" name="payment"
-                            value="{{$invoice->payment ?? 0}}">
+                            value="{{ $invoice->payment ?? 0 }}">
                     </div>
                     <div><label>Service Fee</label>
                         <input type="text" class="form-control" placeholder="0" name="service_fee">

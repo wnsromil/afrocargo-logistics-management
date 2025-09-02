@@ -2,6 +2,8 @@
     <x-slot name="header">
         {{ __('Vehicle List') }}
     </x-slot>
+    <x-slot name="cardTitle">
+        <p class="head">All Vehicle</p>
 
     <x-slot name="cardTitle">
         <p class="head">All Vehicles</p>
@@ -27,7 +29,7 @@
     @endphp
 
     <form id="expenseFilterForm" action="{{ route('admin.vehicle.index') }}" method="GET">
-        <div class="row gx-3 inputheight40">
+        <div class="row gx-3 align-items-end inputheight40">
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
                 <div class="inputGroup height40 position-relative">
@@ -43,7 +45,8 @@
                     <select class="js-example-basic-single select2 form-control" name="warehouse_id">
                         <option value="">Select Warehouse</option>
                         @foreach ($warehouses as $warehouse)
-                            <option value="{{ $warehouse->id }}" {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                            <option value="{{ $warehouse->id }}"
+                                {{ $warehouseIdFromUrl == $warehouse->id || old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
                                 {{ $warehouse->warehouse_name ?? '' }}
                             </option>
                         @endforeach
@@ -62,7 +65,7 @@
                 @enderror
             </div>
 
-            <div class="col-12">
+            <div class="col-md-6 mb-3">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>
                     <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>

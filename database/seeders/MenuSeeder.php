@@ -124,16 +124,23 @@ class MenuSeeder extends Seeder
                 'title' => 'Bill of Lading',
                 'icon' => '<i class="menuIcon ti ti-truck"></i>',
                 'route' => 'admin.BillofLading.index',
-                // 'route' => '#',
+                //  'route' => '#',
                 'active' => 'bill_of_lading*,lading_details*',
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['bill_of_landing.view'],
             ],
             [
-                'title' => 'Custom Reports',
-                'icon' => '<i class="ti ti-chart-sankey"></i>',
-                'route' => '#',
-                'active' => 'custom-reports*,verify-license*',
+                'title' => 'Ro Ro Shipping',
+                'icon' => '<i class="menuIcon ti ti-ship"></i>',
+                'route' => 'admin.ro-ro-shipping.index',
+                'active' => 'ro-ro-shipping*,vehicle_inspection*,ro-ro-scheduel*,vehicle-load-unload*',
+                'roles' => ['admin', 'warehouse_manager']
+            ],
+            [
+                'title' => 'Car Shipping App',
+                'icon' => '<i class="menuIcon ti ti-car"></i>',
+                'route' => 'admin.carShippingLeads.index',
+                'active' => 'carShippingLeads*',
                 'roles' => ['admin', 'warehouse_manager']
             ],
             [
@@ -314,6 +321,27 @@ class MenuSeeder extends Seeder
         }
 
         // Add submenus
+        $vehicle = Menu::where('title', 'Vehicle Management')->first();
+        if ($vehicle) {
+
+            Menu::create([
+                'title' => 'Vehicle List',
+                'route' => 'admin.vehicle.index',
+                'active' => 'vehicle*',
+                'parent_id' => $vehicle->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+            Menu::create([
+                'icon' => 'assets/images/container_icon.svg',
+                'title' => 'Container List',
+                'route' => 'admin.container.index',
+                'active' => 'container*',
+                'parent_id' => $vehicle->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+
+        // Add submenus
         $template = Menu::where('title', 'Template Management')->first();
         if ($template) {
             Menu::create([
@@ -378,6 +406,51 @@ class MenuSeeder extends Seeder
                 'permissions' => ['invoice_trash_list.view'],
             ]);
         }
+        $roroshipping = Menu::where('title', 'Ro Ro Shipping')->first();
+        if ($roroshipping) {
+            Menu::create([
+                'title' => 'Request a Shipment',
+                'route' => 'admin.ro-ro-shipping.index',
+                'active' => 'ro-ro-shipping*',
+                'parent_id' => $roroshipping->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Vehicle Inspection',
+                'route' => 'admin.vehicle_inspection.index',
+                'active' => 'vehicle_inspection*',
+                'parent_id' => $roroshipping->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+            Menu::create([
+                'title' => 'Ro Ro Scheduel',
+                'route' => 'admin.ro-ro-scheduel.index',
+                'active' => 'ro-ro-scheduel*',
+                'parent_id' => $roroshipping->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+            Menu::create([
+                'title' => 'Vehicle Load Upload',
+                'route' => 'admin.vehicle-load-unload.index',
+                'active' => 'vehicle-load-unload*',
+                'parent_id' => $roroshipping->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+        }
+        $carShippingLeads = Menu::where('title', 'Car Shipping App')->first();
+        if ($carShippingLeads) {
+            Menu::create([
+                'title' => 'Car Shipping Leads',
+                'route' => 'admin.carShippingLeads.index',
+                'active' => 'carShippingLeads*',
+                'parent_id' => $carShippingLeads->id,
+                'roles' => ['admin', 'warehouse_manager']
+            ]);
+
+        }
+
 
         $cbm_calculator = Menu::where('title', 'CBM Calculator')->first();
 
