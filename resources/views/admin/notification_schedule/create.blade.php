@@ -20,7 +20,7 @@
             <label for="tab2" class="tab-title">Warehouse Managers</label>
             <label for="tab3" class="tab-title">Drivers</label>
             <label for="tab4" class="tab-title">Customer</label>
-            <label for="tab5" class="tab-title">Invoice</label>
+            {{-- <label for="tab5" class="tab-title">Invoice</label> --}}
         </div>
 
 

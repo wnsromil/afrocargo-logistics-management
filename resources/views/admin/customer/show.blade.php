@@ -21,10 +21,13 @@
             <div class="content-page-header">
                 <div class="d-flex innertopnav w-100 justify-content-between">
                     <p class="head">Customer ID - {{$user->unique_id ?? "N/A"}}</p>
-                    <!-- <div class="btnwrapper">
-                <button id="printBtn" class="btn btn-primary buttons me-1">Print</button>
-                <button id="exportBtn" class="btn btn-primary buttons">Export</button>
-            </div> -->
+                    <div class="btnwrapper">
+                        {{-- <button id="printBtn" class="btn btn-primary buttons me-1">Print</button>
+                        <button id="exportBtn" class="btn btn-primary buttons">Export</button> --}}
+                        @if($user->username)
+                            <p class="head">Username - {{$user->username ?? "-"}}</p>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,10 +37,10 @@
 
                 @if ($user->profile_pic)
                     <img src="{{ ($user->profile_pic) }}" alt="license" style="margin-left: 15px; max-width: 150px; 
-                                       border-top-left-radius: 50% 50%; 
-                                       border-top-right-radius: 50% 50%; 
-                                       border-bottom-right-radius: 50% 50%; 
-                                       border-bottom-left-radius: 50% 50%;">
+                                                   border-top-left-radius: 50% 50%; 
+                                                   border-top-right-radius: 50% 50%; 
+                                                   border-bottom-right-radius: 50% 50%; 
+                                                   border-bottom-left-radius: 50% 50%;">
 
                 @else
                     <p> - No Image</p>

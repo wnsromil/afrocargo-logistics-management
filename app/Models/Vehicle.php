@@ -104,6 +104,13 @@ class Vehicle extends Model
         return $this->belongsTo(TruckingCompany::class, 'trucking_company');
     }
 
+    public function invoiceData()
+    {
+        return $this->hasOne(Invoice::class, 'container_id', 'id')
+            ->selectRaw('container_id, SUM(balance) as total_balance, SUM(payment) as total_payment, SUM(grand_total) as total_grand')
+            ->groupBy('container_id');
+    }
+
     public function getVehicleTypeAttribute($value)
     {
         if ($this->relationLoaded('type') && $this->type) {

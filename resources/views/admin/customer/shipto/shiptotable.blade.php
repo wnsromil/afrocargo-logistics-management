@@ -4,7 +4,7 @@
             <table class="table tables table-stripped table-hover datatable ">
                 <thead class="thead-light">
                     <tr>
-                        <th>Ship To ID</th>
+                        <th>Consignee ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>License ID</th>

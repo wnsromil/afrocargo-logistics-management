@@ -98,9 +98,9 @@
 
     <div class="usersearch d-flex align-items-center justify-content-between">
         <div class="lablewrap d-flex text-dark">
-            <label class="me-sm-4 me-2 mb-0">Total Billed: $<b>{{number_format(0)}}</b></label>
-            <label class="me-sm-4 me-2 mb-0">Total Collected: $<b>{{number_format(0)}}</b></label>
-            <label class="me-sm-4 me-2 mb-0">Total Balance: $<b>{{number_format(0)}}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Billed: $<b>{{ number_format($container_total_grand ?? 0) }}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Collected: $<b>{{ number_format($container_total_payment ?? 0) }}</b></label>
+            <label class="me-sm-4 me-2 mb-0">Total Balance: $<b>{{ number_format($container_total_balance ?? 0) }}</b></label>
         </div>
     </div>
 

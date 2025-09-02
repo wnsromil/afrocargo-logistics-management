@@ -279,6 +279,13 @@ class User extends Authenticatable
 
         static::creating(function ($user) {
             $user->unique_id = self::generateUniqueId($user->role_id, $user->country_id);
+
+            // Agar username null hai to generate karna
+            if (empty($user->username)) {
+                $randomNumber = rand(100, 999); // 3 digit random number
+                $namePart = $user->name ?? 'user'; // agar name null ho to 'user' use karo
+                $user->username = strtolower($namePart) . '@' . $randomNumber;
+            }
         });
     }
 }

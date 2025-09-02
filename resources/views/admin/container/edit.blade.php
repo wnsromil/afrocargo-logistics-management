@@ -209,15 +209,8 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="mb-3">
                             <label for="trucking_company" class="foncolor">Trucking company<i class="text-danger">*</i></label>
-                            <select id="trucking_company" name="trucking_company" class="profileUpdateFont">
-                                <option value="">Select Trucking company</option>
-                                @foreach($viewTruckingCompanys as $viewTruckingCompany)
-                                    <option {{ old('trucking_company', $vehicle->TruckingCompanyData->name) == $viewTruckingCompany->name ? 'selected' : '' }}
-                                        value="{{ $viewTruckingCompany->name }}">
-                                        {{ $viewTruckingCompany->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                               <input type="text" name="trucking_company" class="form-control inp"
+                            placeholder="Enter Trucking company" value="{{ old('trucking_company', $vehicle->trucking_company) }}">
                             @error('trucking_company')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -227,15 +220,8 @@
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="mb-3">
                             <label for="trucking_company" class="foncolor">Trucking company<i class="text-danger">*</i></label>
-                            <select id="trucking_company" name="trucking_company" class="profileUpdateFont">
-                                <option value="">Select Trucking company</option>
-                                @foreach($viewTruckingCompanys as $viewTruckingCompany)
-                                    <option {{ old('trucking_company', $vehicle->TruckingCompanyData->name) == $viewTruckingCompany->name ? 'selected' : '' }}
-                                        value="{{ $viewTruckingCompany->name }}">
-                                        {{ $viewTruckingCompany->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="trucking_company" class="form-control inp"
+                            placeholder="Enter Trucking company" value="{{ old('trucking_company', $vehicle->trucking_company) }}">
                             @error('trucking_company')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

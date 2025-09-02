@@ -29,7 +29,7 @@
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3 disabled-tab" href="#"
                         data-bs-toggle="tab">Payments</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3 disabled-tab" href="#"
-                        data-bs-toggle="tab">ShipTo</a></li>
+                        data-bs-toggle="tab">Consignee</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3 disabled-tab" href="#"
                         data-bs-toggle="tab">Pickups</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3 disabled-tab" href="#"

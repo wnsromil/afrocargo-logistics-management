@@ -1,15 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Update Ship to Address') }}
+            {{ __('Update Consignee Address') }}
         </h2>
     </x-slot>
     <x-slot name="cardTitle">
         <div class="d-flex innertopnav w-100 justify-content-between">
-            <p class="subhead pheads">Update Ship to Address</p>
+            <p class="subhead pheads">Update Consignee Address</p>
             <div class="btnwrapper">
-                <a href="{{ route('admin.customer.viewPickups', $user->id) }}" class="btn btn-primary buttons me-1"> Pickup </a>
-                <a href="{{route('admin.invoices.create')}}" class="btn btn-primary buttons"> Invoice </a>
+                  <a
+                {{-- href="{{ route('admin.customer.viewPickups', $user->id) }}"  --}}
+                href="{{route('admin.invoices.create').'?type=supplies&customerId='.$user->id}}"
+                class="btn btn-primary buttons me-1">
+                    Pickup </a>
+                <a href="{{route('admin.invoices.create').'?type=services&customerId='.$user->id}}" class="btn btn-primary buttons"> Invoice </a>
             </div>
         </div>
     </x-slot>

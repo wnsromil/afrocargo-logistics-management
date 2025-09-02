@@ -645,4 +645,24 @@ class CustomerController extends Controller
             'data' => $customers
         ]);
     }
+
+    public function getWarehouseCustomer()
+    {
+        $user = $this->user;
+
+        $drivers = User::where('warehouse_id', $user->warehouse_id)
+            ->where('role_id', 3)
+            ->get();
+
+        if ($drivers->isEmpty()) {
+            return response()->json([
+                'message' => 'No customer found for this warehouse',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Customers fetched successfully',
+            'data' => $drivers
+        ]);
+    }
 }

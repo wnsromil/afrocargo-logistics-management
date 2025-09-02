@@ -34,7 +34,10 @@ class ContainerController extends Controller
         $closeDateRange = $request->input('close_date');
         $warehouseId = $request->input('warehouse_id');
 
-        $vehicles = Vehicle::with(['driver', 'warehouse'])
+        // ================================
+        //  Base Query (filters apply)
+        // ================================
+        $baseQuery = Vehicle::with(['driver', 'warehouse', 'InvoiceData'])
             ->where('vehicle_type', '1')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('warehouse_id', $this->user->warehouse_id);
@@ -70,26 +73,62 @@ class ContainerController extends Controller
                     \Carbon\Carbon::createFromFormat('m/d/Y', trim($start))->format('Y-m-d'),
                     \Carbon\Carbon::createFromFormat('m/d/Y', trim($end))->format('Y-m-d')
                 ]);
-            })
+            });
+
+        // ================================
+        //  Paginated List
+        // ================================
+        $vehicles = (clone $baseQuery) // clone to reuse filters
             ->latest()
             ->paginate($perPage)
             ->appends($request->all());
 
         $serialStart = ($currentPage - 1) * $perPage;
 
+        // ================================
+        //  Totals from Full Filtered List
+        // ================================
+        $allVehicles = (clone $baseQuery)->get();
+
+        $container_total_grand = $allVehicles->sum(fn($v) => optional($v->invoiceData)->total_grand ?? 0);
+        $container_total_payment = $allVehicles->sum(fn($v) => optional($v->invoiceData)->total_payment ?? 0);
+        $container_total_balance = $allVehicles->sum(fn($v) => optional($v->invoiceData)->total_balance ?? 0);
+
+        // ================================
+        //  Warehouses
+        // ================================
         $warehouses = Warehouse::where('status', 'Active')
             ->when($this->user->role_id != 1, function ($q) {
                 return $q->where('id', $this->user->warehouse_id);
             })
             ->get();
 
+        // ================================
+        //  Return
+        // ================================
+        
         if ($request->ajax()) {
-            return view('admin.container.table', compact('warehouses', 'vehicles', 'serialStart'))->render();
+            return view('admin.container.table', compact(
+                'warehouses',
+                'vehicles',
+                'serialStart',
+                'container_total_grand',
+                'container_total_payment',
+                'container_total_balance'
+            ))->render();
         }
 
-        return view('admin.container.index', compact('warehouses', 'vehicles', 'query', 'perPage', 'serialStart'));
+        return view('admin.container.index', compact(
+            'warehouses',
+            'vehicles',
+            'query',
+            'perPage',
+            'serialStart',
+            'container_total_grand',
+            'container_total_payment',
+            'container_total_balance'
+        ));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -180,10 +219,10 @@ class ContainerController extends Controller
             ['status' => 'Active']
         );
 
-        $truckingCompany = TruckingCompany::firstOrCreate(
-            ['name' => $request->trucking_company],
-            ['status' => 'Active']
-        );
+        // $truckingCompany = TruckingCompany::firstOrCreate(
+        //     ['name' => $request->trucking_company],
+        //     ['status' => 'Active']
+        // );
 
 
         // Create and save vehicle
@@ -202,7 +241,7 @@ class ContainerController extends Controller
         $vehicleStore->doc_id         = $request->doc_id;
         $vehicleStore->volume         = $request->volume;
         $vehicleStore->container_company_id = $containerCompany->id;
-        $vehicleStore->trucking_company = $truckingCompany->id;
+        $vehicleStore->trucking_company = $request->trucking_company;
         $vehicleStore->chassis_number = $request->chassis_number;
         $vehicleStore->vessel_voyage = $request->vessel_voyage;
         $vehicleStore->tir_number = $request->tir_number;
@@ -215,7 +254,7 @@ class ContainerController extends Controller
         $vehicleStore->celliling_date = Carbon::createFromFormat('m/d/Y', $request->celliling_date)->format('Y-m-d');
         $vehicleStore->eta_date = Carbon::createFromFormat('m/d/Y', $request->eta_date)->format('Y-m-d');
         $vehicleStore->transit_country = $request->transit_country;
-         $vehicleStore->created_by = auth()->id();
+        $vehicleStore->created_by = auth()->id();
         $vehicleStore->save();
 
         $insertedId = $vehicleStore->id;
@@ -314,10 +353,10 @@ class ContainerController extends Controller
             ['status' => 'Active']
         );
 
-        $truckingCompany = TruckingCompany::firstOrCreate(
-            ['name' => $request->trucking_company],
-            ['status' => 'Active']
-        );
+        // $truckingCompany = TruckingCompany::firstOrCreate(
+        //     ['name' => $request->trucking_company],
+        //     ['status' => 'Active']
+        // );
 
         $containerInDate = null;
         $containerInTime = null;
@@ -344,7 +383,7 @@ class ContainerController extends Controller
         $vehicle->doc_id         = $request->doc_id;
         $vehicle->volume         = $request->volume;
         $vehicle->container_company_id = $containerCompany->id;
-        $vehicle->trucking_company = $truckingCompany->id;
+        $vehicle->trucking_company = $request->trucking_company;
         $vehicle->chassis_number = $request->chassis_number;
         $vehicle->vessel_voyage = $request->vessel_voyage;
         $vehicle->tir_number = $request->tir_number;

@@ -236,6 +236,8 @@ Route::middleware(['auth:api'])->group(function () {
 
         Route::post('/invoiceUpdate/{id}', [InvoiceController::class, 'invoiceUpdate']);
         Route::post('/check-invoice-item-status', [InvoiceController::class, 'checkItemInvoices']);
+
+        Route::get('/warehouse-customers', [CustomerController::class, 'getWarehouseCustomer']);
     });
 
     //invoice controller

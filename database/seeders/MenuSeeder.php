@@ -241,7 +241,7 @@ class MenuSeeder extends Seeder
             ]);
 
             Menu::create([
-                'title' => 'Ship To Customers',
+                'title' => 'Consignee',
                 'route' => 'admin.customer.shipToIndex',
                 'active' => 'customer-shipTo',
                 'parent_id' => $customer->id,
@@ -300,11 +300,24 @@ class MenuSeeder extends Seeder
                 'permissions' => ['received_orders_list.view'],
 
             ]);
+        }
+
+        $container = Menu::where('title', 'Container')->first();
+        if ($container) {
+              Menu::create([
+                'title' => 'Container',
+                'route' => 'admin.container.index',
+                'active' => 'container',
+                'parent_id' => $container->id,
+                'roles' => ['admin', 'warehouse_manager'],
+                'permissions' => ['transfer_to_hub_list.view'],
+
+            ]);
             Menu::create([
                 'title' => 'Container Transfer To Hub',
                 'route' => 'admin.transfer.hub.list',
                 'active' => 'transferHub',
-                'parent_id' => $orderShip->id,
+                'parent_id' => $container->id,
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['transfer_to_hub_list.view'],
 
@@ -313,7 +326,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Container Received by Hub',
                 'route' => 'admin.received.hub.list',
                 'active' => 'receivedHub',
-                'parent_id' => $orderShip->id,
+                'parent_id' => $container->id,
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['container_received_by_hub_list.view'],
 
@@ -322,7 +335,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Container Transfer History',
                 'route' => 'admin.transfer.hub.history.list',
                 'active' => 'transferHub-history',
-                'parent_id' => $orderShip->id,
+                'parent_id' => $container->id,
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['container_transfer_history_list.view'],
 
@@ -331,7 +344,7 @@ class MenuSeeder extends Seeder
                 'title' => 'Container Received History',
                 'route' => 'admin.received.hub.history.list',
                 'active' => 'receivedHub-history',
-                'parent_id' => $orderShip->id,
+                'parent_id' => $container->id,
                 'roles' => ['admin', 'warehouse_manager'],
                 'permissions' => ['container_received_history_list.view'],
 

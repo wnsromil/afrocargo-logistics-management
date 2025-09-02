@@ -27,7 +27,7 @@
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#Payments"
                         data-bs-toggle="tab">Payments</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#ShipTo"
-                        data-bs-toggle="tab">ShipTo</a></li>
+                        data-bs-toggle="tab">Consignee</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#Pickups"
                         data-bs-toggle="tab">Pickups</a></li>
                 <li class="nav-item"><a class="btnBorder th-font col737 bg-light me-3" href="#PickupAddresss"
@@ -764,13 +764,13 @@
                 <form class="invoice">
                     <div class="row justify-content-between mb-3">
                         <div class="col-md-6">
-                            <p class="mainheading">ShipTo Address List</p>
+                            <p class="mainheading">Consignee Address List</p>
                         </div>
                         <div class="col-md-6 text-end">
                             <a href="{{ route('admin.customer.viewShipTo', $user->id) }}"
                                 class="btn btn-primary buttons">
                                 <i class="ti ti-circle-plus me-2 text-white"></i>
-                                Add ShipTo Address
+                                Add Consignee Address
                             </a>
                         </div>
                     </div>
@@ -802,7 +802,7 @@
                                     <table class="table table-stripped table-hover lessPadding datatable">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>ShipTo Id</th>
+                                                <th>Consignee Id</th>
                                                 <th>Name</th>
                                                 <th>Address</th>
                                                 <th>Cellphone</th>

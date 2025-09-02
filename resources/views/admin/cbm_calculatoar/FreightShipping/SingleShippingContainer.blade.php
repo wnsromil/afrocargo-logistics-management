@@ -151,7 +151,6 @@
                         class="form-control inp" value="0.0000">
                 </div>
             </div>
-
             <div class="col-md-11 col-lg-11 col-sm-12">
                 <p class="profileUpdateFont fw-semibold text-dark-shade my-2">Used Container Weight & Volume:</p>
 
@@ -214,7 +213,6 @@
                 </div>
 
             </div>
-
             <div class="table-responsive addProductsTables mt-3 px-0">
                 <table class="table">
                     <thead>
@@ -432,7 +430,7 @@
                                 </div>
                                 <div class="my-1 row">
                                     <button type="submit" for="inputProduct" id="UpdateBtn"
-                                        class="col-md-4 col-lg-4 col-sm-4 btn bg-transparent btn-text-color text-start btn-sm" disabled>Update
+                                        class="col-md-4 col-lg-4 col-sm-4 btn bg-transparent btn-text-color text-start btn-sm">Update
                                     </button>
                                 </div>
                             </td>
@@ -584,7 +582,11 @@
                     document.querySelector('[name="net_weight_kg"]').value = netWeightPerCarton.toFixed(2);
 
                     // Gross Weight per Carton
-                    const grossWeightPerCarton = (productWeight + packingWeight) * qtyPack;
+                    const grossWeightPerCarton = (productWeight * qtyPack) + packingWeight ;
+                    console.log("grossWeightPerCarton", grossWeightPerCarton);
+                    console.log("productWeight", productWeight);
+                    console.log("packingWeight", packingWeight);
+                    console.log("qtyPack", qtyPack);
                     document.querySelector('[name="gross_weight_kg"]').value = grossWeightPerCarton.toFixed(2);
 
                     // Total Net Weight (accurate)
@@ -626,30 +628,30 @@
                             let p = response.product_data;
 
                             let newRow = `
-                                    <tr id="product-row-${p.id}">
-                                            <td class="border-bottom border-dark-subtle text-middle fw-light">
-                                                <div class="d-block">
-                                                    <a href="#" class="decoration-text pe-2">Edit</a>
-                                                    <a href="#" class="decoration-text" onclick="deleteProduct(${p.id})">Delete</a>
-                                                </div>
-                                            </td>
-                                            <td class="border border-dark-subtle fw-light">${p.product_name}</td>
-                                            <td class="border border-dark-subtle fw-light">${p.description}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.total_quantity}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.qty_pack}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.packing_weight}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.length}*${p.breadth}*${p.height} ${p.dimensions_in}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.total_cartons}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.length}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.product_weight} ${p.product_weight_type}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.packing_weight} ${p.packing_weight_type}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.total_net_weight_kg}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.total_gross_weight_kg}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.single_CBM}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.total_CBM}</td>
-                                            <td class="border border-dark-subtle text-end fw-light">${p.product_weight_type}</td>
-                                        </tr>
-                                        `;
+                                            <tr id="product-row-${p.id}">
+                                                    <td class="border-bottom border-dark-subtle text-middle fw-light">
+                                                        <div class="d-block">
+                                                            <a href="#" class="decoration-text pe-2">Edit</a>
+                                                            <a href="#" class="decoration-text" onclick="deleteProduct(${p.id})">Delete</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="border border-dark-subtle fw-light">${p.product_name}</td>
+                                                    <td class="border border-dark-subtle fw-light">${p.description}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.total_quantity}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.qty_pack}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.packing_weight}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.length}*${p.breadth}*${p.height} ${p.dimensions_in}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.total_cartons}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.length}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.product_weight} ${p.product_weight_type}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.packing_weight} ${p.packing_weight_type}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.total_net_weight_kg}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.total_gross_weight_kg}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.single_CBM}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.total_CBM}</td>
+                                                    <td class="border border-dark-subtle text-end fw-light">${p.product_weight_type}</td>
+                                                </tr>
+                                                `;
 
                             let containerSize_volume = $('#containerSize_volume').val().split('/')[1]?.trim() || '';
                             let containerSize_max_weight = $('#containerSize_max_weight').val().split('/')[1]?.trim() || '';
