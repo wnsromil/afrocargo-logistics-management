@@ -86,6 +86,8 @@
                                 <th>Customer Name</th>
                                 <th>Contact</th>
                                 <th>Vehicle</th>
+                                <th>Value</th>
+                                <th>Insurance</th>
                                 <th>Date Requested</th>
                                 <th>Assigned To</th>
                                 <th>Inspection Status</th>
@@ -103,6 +105,8 @@
                                     brianbordina@gmail.com
                                 </td>
                                 <td>2015 Toyota Camry</td>
+                                <td>$35000</td>
+                                <td>$5000</td>
                                 <td>06-25-2025
                                 </td>
                                 <td>-</td>
@@ -154,7 +158,9 @@
                                     +1 2548574585</br>
                                     karenLuna@gmail.com
                                 </td>
-                                <td>2015 Toyota Camry</td>
+                                <td>2019 Toyota Camry</td>
+                                <td>$55000</td>
+                                <td>$9000</td>
                                 <td>06-24-2025
                                 </td>
                                 <td>Frido Kamado</td>
@@ -164,7 +170,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge badge-soft-info fs_13 py-2">
+                                    <span class="badge badge-soft-warning fs_13 py-2">
                                         In Progress
                                     </span>
                                 </td>
@@ -207,6 +213,8 @@
                                     nobaramichel@gmail.com
                                 </td>
                                 <td>2016 Tesla 360</td>
+                                <td>$30000</td>
+                                <td>$12000</td>
                                 <td>06-25-2025
                                 </td>
                                 <td>Lauren Pitbull</td>
@@ -259,12 +267,13 @@
                                     brunomars1@gmail.com
                                 </td>
                                 <td>2020 Comet MG</td>
-
+                                <td>$45000</td>
+                                <td>$20000</td>
                                 <td>06-22-2025
                                 </td>
                                 <td>Glenn Maxnes</td>
                                 <td>
-                                    <span class="badge badge-soft-info fs_13 py-2">
+                                    <span class="badge badge-soft-warning fs_13 py-2">
                                         In Progress
                                     </span>
                                 </td>
@@ -344,7 +353,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="foncolor">Inspection Location</label>
-                            <input type="text" class="form-control form-cs inp" name="InspectionLocation"
+                            <input type="text" class="form-control form-cs inp ps-3" name="InspectionLocation"
                                 placeholder="Enter Location" />
                         </div>
                         <div class="col-md-12 mb-3">
@@ -417,7 +426,7 @@
                                 <input type="email" class="form-control form-cs inp ps-3" name="email"
                                     placeholder="Enter Email" />
                             </div>
-                            <div class="col-md-3 mb-3 mobile_code">
+                            <div class="col-md-3 mb-3 ">
                                 <label class="foncolor" for="alternate_mobile_no">Mobile No.</label>
                                 <div class="flaginputwrap">
                                     <div class="customflagselect">
@@ -439,34 +448,52 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div id="itemQuantityWrapper" class="col-sm-12">
-                                <div class="row itemRow align-items-center">
-                                    <!-- Vehicle Type -->
-                                    <div class="col-lg-5">
-                                        <div class="input-block mb-3">
-                                            <label for="vehicleType">Vehicle Type <i class="text-danger">*</i></label>
-                                            <input type="text" name="vehicleType[]" class="form-control"
-                                                placeholder="Enter Vehicle Type">
-                                        </div>
+                            <div id="itemQuantityWrapper2" class="col-sm-12">
+                                <div class="row row-cols-sm-5 itemRow align-items-end">
+                                    <!-- Vehicle Details -->
+                                    <div class="col mb-3">
+                                        <label class="foncolor" for="vehicleDetails">Vehicle Details <i
+                                                class="text-danger">*</i></label>
+                                        <input type="text" name="vehicleDetails[]"
+                                            class="form-control form-cs inp ps-3" placeholder="Enter Vehicle Details">
                                     </div>
 
                                     <!-- Quantity -->
-                                    <div class="col-lg-5">
-                                        <div class="input-block mb-3">
-                                            <label for="vehicleQuantity">Quantity <i class="text-danger">*</i></label>
-                                            <input type="number" name="vehicleQuantity[]" class="form-control"
-                                                placeholder="Enter Quantity">
+                                    <div class="col mb-3">
+                                        <label class="foncolor" for="vehicleQuantity">Quantity <i
+                                                class="text-danger">*</i></label>
+                                        <input type="number" name="vehicleQuantity[]"
+                                            class="form-control form-cs inp ps-3" placeholder="Enter Quantity">
+                                    </div>
+                                    <!-- Value -->
+                                    <div class="col mb-3">
+                                        <label class="foncolor" for="vehicleValue">Vehicle Value <i
+                                                class="text-danger">*</i></label>
+                                        <input type="number" name="vehicleValue[]"
+                                            class="form-control form-cs inp ps-3" placeholder="Enter Vehicle Value">
+                                    </div>
+                                    <div class="col mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="">
+                                                <label class="foncolor" for="vehicleInsuerance">Vehicle Insuerance <i
+                                                        class="text-danger">*</i></label>
+                                                <input type="number" name="vehicleInsuerance[]"
+                                                    class="form-control form-cs inp ps-3"
+                                                    placeholder="Enter Insuerance">
+                                            </div>
                                         </div>
                                     </div>
-
                                     <!-- Buttons -->
-                                    <div class="col-lg-2 text-end">
-                                        <button type="button" class="btn btn-danger iconBtn deletebutton">
-                                            <i class="ti ti-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-primary iconBtn addbutton">
-                                            <i class="ti ti-plus"></i>
-                                        </button>
+                                    <div class="col mb-3">
+
+                                        <div class="btnWrapperWidth">
+                                            <button type="button" class="btn btn-danger iconBtn deletebutton2">
+                                                <i class="ti ti-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary iconBtn addbutton2">
+                                                <i class="ti ti-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -641,22 +668,24 @@
         <script>
             $(document).ready(function() {
                 function updateButtons() {
-                    $('.addbutton').hide(); // Hide all
-                    $('.itemRow').last().find('.addbutton').show(); // Show only last
+                    // Always show all plus buttons
+                    $('.addbutton2').show();
+
+                    // Hide minus button for the first row only
+                    $('.deletebutton2').show();
+                    $('.itemRow').first().find('.deletebutton2').hide();
                 }
 
-                $('#itemQuantityWrapper').on('click', '.addbutton', function() {
+                $('#itemQuantityWrapper2').on('click', '.addbutton2', function() {
                     let newRow = $(this).closest('.itemRow').clone();
                     newRow.find('input').val(''); // Clear inputs
-                    $('#itemQuantityWrapper').append(newRow);
+                    $('#itemQuantityWrapper2').append(newRow);
                     updateButtons();
                 });
 
-                $('#itemQuantityWrapper').on('click', '.deletebutton', function() {
-                    if ($('.itemRow').length > 1) {
-                        $(this).closest('.itemRow').remove();
-                        updateButtons();
-                    }
+                $('#itemQuantityWrapper2').on('click', '.deletebutton2', function() {
+                    $(this).closest('.itemRow').remove();
+                    updateButtons();
                 });
 
                 updateButtons(); // Initial call

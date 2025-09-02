@@ -28,7 +28,7 @@
 
     <div class="card p-0">
         <div class="card-body p-0">
-            <div class="row gx-3">
+            <div class="row">
                 {{-- Shipper Information --}}
                 <div class="col-12">
                     <h6 class="bl-3 py-1 ps-3 my-3 fs_18">Shipper Information</h6>
@@ -49,8 +49,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
                     <div class="input-block">
                         <label>Contact Details</label>
-                        <p><i class="fe fe-phone fs_15 me-1 nbottom1"></i> +1 212323221</p>
-                        <p><i class="fe fe-mail fs_15 me-1 nbottom1"></i> brianbordina@gmail.com</p>
+                        <p><i class="fe fe-phone fs_15 me-1"></i> +1 212323221</p>
+                        <p><i class="fe fe-mail fs_15 me-1"></i> brianbordina@gmail.com</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
@@ -91,12 +91,6 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
-                        <label>Fuel Level</label>
-                        <p>1/4 Tank</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
                         <label>Vehicle Value</label>
                         <p>$45000</p>
                     </div>
@@ -127,8 +121,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label>Contact Details</label>
-                        <p><i class="fe fe-phone fs_15 me-1 nbottom1"></i> +1 212323221</p>
-                        <p><i class="fe fe-mail fs_15 me-1 nbottom1"></i> brianbordina@gmail.com</p>
+                        <p><i class="fe fe-phone fs_15 me-1"></i> +1 212323221</p>
+                        <p><i class="fe fe-mail fs_15 me-1"></i> brianbordina@gmail.com</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
@@ -157,8 +151,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label>Contact Details</label>
-                        <p><i class="fe fe-phone fs_15 me-1 nbottom1"></i> +1 212323221</p>
-                        <p><i class="fe fe-mail fs_15 me-1 nbottom1"></i> brianbordina@gmail.com</p>
+                        <p><i class="fe fe-phone fs_15 me-1"></i> +1 212323221</p>
+                        <p><i class="fe fe-mail fs_15 me-1"></i> brianbordina@gmail.com</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
@@ -187,7 +181,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label>Vehicle Starts?</label>
-                        <p>Yes (Mandatory)</p>
+                        <p>Yes</p>
                     </div>
                 </div>
 
@@ -663,15 +657,184 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 mb-3">
+
+                {{-- Interior Condition Checklist --}}
+                <div class="col-12">
+                    <h6 class="bl-3 py-1 ps-3 my-3 fs_18">Interior Condition Checklist</h6>
+                </div>
+                <div class="col-md-6 mb-3">
                     <div class="card rounded-3 border-primary mb-0">
                         <div class="row">
-                            <div class="col-md-12">
-                                <label class="fs_16">Leaking Fluids Check</label>
+                            <div class="col-md-6">
+                                <label class="fs_16">Dashboard</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <p>Engine Oil, Brake Fluid, Coolant (Radiator), Transmission
-                                    Fluid</p>
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="fs_16 mt-3 mb-1">Note</label>
+                                <p>condimentum nulla ac, pharetra urna. Etiam ex odio, rhoncus ut commodo sed, mattis ac
+                                    tortor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card rounded-3 border-primary mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fs_16">Seats (Front/Rear)</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="fs_16 mt-3 mb-1">Note</label>
+                                <p>condimentum nulla ac, pharetra urna. Etiam ex odio, rhoncus ut commodo sed, mattis ac
+                                    tortor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card rounded-3 border-primary mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fs_16">Floor Mats / Carpets</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="fs_16 mt-3 mb-1">Note</label>
+                                <p>condimentum nulla ac, pharetra urna. Etiam ex odio, rhoncus ut commodo sed, mattis ac
+                                    tortor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card rounded-3 border-primary mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fs_16">Center Console</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="fs_16 mt-3 mb-1">Note</label>
+                                <p>condimentum nulla ac, pharetra urna. Etiam ex odio, rhoncus ut commodo sed, mattis ac
+                                    tortor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card rounded-3 border-primary mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fs_16">Steering Wheel</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="fs_16 mt-3 mb-1">Note</label>
+                                <p>condimentum nulla ac, pharetra urna. Etiam ex odio, rhoncus ut commodo sed, mattis ac
+                                    tortor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card rounded-3 border-primary mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fs_16">AC / Heater</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="fs_16 mt-3 mb-1">Note</label>
+                                <p>condimentum nulla ac, pharetra urna. Etiam ex odio, rhoncus ut commodo sed, mattis ac
+                                    tortor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card rounded-3 border-primary mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fs_16">Stereo System</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                    <img class="uploadedimg"
+                                        src="{{ asset('assets/images/inception_placeholder.jpg') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fs_16">Condition</label>
+                                <p>Scratched, Dented, Dusted</p>
                             </div>
                             <div class="col-md-12">
                                 <label class="fs_16 mt-3 mb-1">Note</label>
@@ -804,15 +967,15 @@
                                 <p>09/25-2025 10:40 AM</p>
                             </div>
                             <div class="mb-3 mb-sm-0 col-lg-3 col-md-6 col-sm-12">
-                                <div>
-                                    <label class="fs_16">Inspection Status</label><br>
+                                <div class="input-block">
+                                    <label class="d-block">Inspection Status</label>
                                     <span class="badge fw-medium bg-success-light fs_13 py-2">Inspection Completed
                                     </span>
                                 </div>
                             </div>
                             <div class="mb-3 mb-sm-0 col-lg-3 col-md-6 col-sm-12">
-                                <div>
-                                    <label class="fs_16">Status</label><br>
+                                <div class="input-block">
+                                    <label class="d-block">Status</label>
                                     <span class="badge fw-medium bg-success-light fs_13 py-2">
                                         In Progress
                                     </span>

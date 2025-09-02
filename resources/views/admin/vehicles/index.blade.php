@@ -25,7 +25,7 @@
     @endphp
 
     <form id="expenseFilterForm" action="{{ route('admin.vehicle.index') }}" method="GET">
-        <div class="row gx-3 inputheight40">
+        <div class="row gx-3 align-items-end inputheight40">
             <div class="col-md-3 mb-3">
                 <label for="searchInput">Search</label>
                 <div class="inputGroup height40 position-relative">
@@ -61,7 +61,7 @@
                 @enderror
             </div>
 
-            <div class="col-12">
+            <div class="col-md-6 mb-3">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btnf me-2">Search</button>
                     <button type="button" class="btn btn-outline-danger btnr" onclick="resetForm()">Reset</button>

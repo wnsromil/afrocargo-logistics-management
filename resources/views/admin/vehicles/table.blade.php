@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="table-responsive mt-3">
 
-            <table class="table table-stripped table-hover datatable">
+            <table class="table table-stripped table-hover datatable vehicleTable">
                 <thead class="thead-light">
                     <tr>
                         <th>Vehicle ID</th>
@@ -22,11 +22,11 @@
                             $result = checkVehicleExpiryStatus(
                                 $vehicle->licence_plate_exp_date,
                                 $vehicle->vehicle_registration_exp_date,
-                                $vehicle->vehicle_insurance_exp_date
+                                $vehicle->vehicle_insurance_exp_date,
                             );
                         @endphp
 
-                       <tr class="{{ collect($result)->firstWhere('bg_class')["bg_class"] ?? '' }}">
+                        <tr class="{{ collect($result)->firstWhere('bg_class')['bg_class'] ?? '' }}">
                             <td>
                                 {{ $vehicle->unique_id ?? '-' }}
                             </td>
@@ -40,21 +40,21 @@
                             <td>
                                 @if ($vehicle->status == 'Active')
                                     <div class="container">
-                                        <img src="{{asset('assets/img/checkbox.png')}}" alt="Image" />
+                                        <img src="{{ asset('assets/img/checkbox.png') }}" alt="Image" />
                                         <p>Active</p>
                                     </div>
                                 @else
                                     <div class="container">
-                                        <img src="{{asset('assets/img/inactive.png')}}" alt="Image" />
+                                        <img src="{{ asset('assets/img/inactive.png') }}" alt="Image" />
                                         <p>Inactive</p>
                                     </div>
                                 @endif
                             </td>
-                            <td class="d-flex align-items-center">
+                            <td class="">
 
                                 <div class="dropdown dropdown-action">
-                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i
-                                            class="fas fa-ellipsis-v"></i></a>
+                                    <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <ul>
                                             <li>
@@ -67,7 +67,7 @@
                                                     href="{{ route('admin.vehicle.show', $vehicle->id) }}"><i
                                                         class="far fa-eye me-2"></i>View</a>
                                             </li>
-                                            @if($vehicle->status == 'Active')
+                                            @if ($vehicle->status == 'Active')
                                                 <li>
                                                     <a class="dropdown-item deactivate" href="javascript:void(0)"
                                                         data-id="{{ $vehicle->id }}" data-status="Inactive">

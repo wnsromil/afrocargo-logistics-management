@@ -1,21 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Vehicle Inspection') }}
+        {{ __('car Shipping Leads') }}
     </x-slot>
     <x-slot name="cardTitle">
-        <p class="head">Vehicle Inspection</p>
-        <div class="d-flex align-items-center justify-content-end mb-1">
-            <div class="usersearch d-flex">
-                <div class="mt-2">
-                    {{-- <a data-bs-toggle="modal" data-bs-target="#AddRequestForm" class="btn btn-primary buttons"
-                        style="background:#203A5F">
-                        <i class="ti ti-circle-plus me-2 text-white"></i>
-                        Add Request
-                    </a> --}}
-                </div>
-            </div>
-        </div>
+        <p class="head mtop-20">car Shipping Leads</p>
     </x-slot>
+    @section('style')
+        <style>
+            .content-page-header:has(.mtop-20) {
+                margin-top: -10px;
+            }
+        </style>
+    @endsection
 
     <form id="expenseFilterForm">
         <div class="row gx-3 inputheight40">
@@ -54,22 +50,13 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <label>Customer</label>
+                <label>Assigned Staff</label>
                 <select class="js-example-basic-single select2" name="main_type">
-                    <option hidden selected disabled value="">Select Customer</option>
+                    <option hidden selected disabled value="">Select Staff</option>
                     <option value="Alex Serpent">Alex Serpent</option>
                     <option value="Lauren Pitbull">Lauren Pitbull</option>
                     <option value="Christofer Durreno">Christofer Durreno</option>
                     <option value="Vernonica vemola">Vernonica vemola</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label>Vehicle</label>
-                <select class="js-example-basic-single select2" name="main_type">
-                    <option hidden selected disabled value="">Select Vehicle</option>
-                    <option value="Toyota 2011">Toyota 2011</option>
-                    <option value="Telsa 2019">Telsa 2019</option>
-                    <option value="Ford EcoSport 2013">Ford EcoSport 2013</option>
                 </select>
             </div>
             <div class="col mb-3 d-flex justify-content-end align-items-end">
@@ -88,14 +75,16 @@
             <div class="card-body">
                 <div class="table-responsive mt-3">
 
-                    <table class="table table-stripped table-hover datatable pxless">
+                    <table class="table table-stripped table-hover datatable">
                         <thead class="thead-light">
                             <tr>
-                                <th>inspection ID</th>
+                                <th>Lead ID</th>
                                 <th>Customer Name</th>
+                                <th>Contact</th>
                                 <th>Vehicle</th>
+                                <th>Value</th>
+                                <th>Insurance</th>
                                 <th>Date Requested</th>
-                                <th>Shipper Address</th>
                                 <th>Assigned To</th>
                                 <th>Inspection Status</th>
                                 <th>Status</th>
@@ -105,18 +94,22 @@
                         <tbody>
 
                             <tr>
-                                <td>INS-2025-001</td>
+                                <td>SHL-00001</td>
                                 <td>Brian Bordina</td>
-                                <td>2015 Toyota Camry</td>
-                                <td>06-25-2025</td>
                                 <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-original-title="Times Square, New York, NY, USA">Times Square, New York,
-                                        NY, USA</p>
+                                    +1 2213211212</br>
+                                    brianbordina@gmail.com
                                 </td>
-                                <td>Ryan Cooglar</td>
+                                <td>2015 Toyota Camry</td>
+                                <td>$35000</td>
+                                <td>$5000</td>
+                                <td>06-25-2025
+                                </td>
+                                <td>-</td>
                                 <td>
-                                    <span class="badge badge-soft-success fs_13 py-2">Scheduled </span>
+                                    <span class="badge bg-danger-light fs_13 py-2">
+                                        Not Scheduled
+                                    </span>
                                 </td>
                                 <td>
                                     <span class="badge badge-soft-secondary fs_13 py-2">
@@ -131,20 +124,18 @@
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.vehicle_inspection.create') }}"><i
-                                                            class="ti ti-object-scan me-2 fs_18"
-                                                            style="margin-top: 1px;"></i>Inspection</a>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="far fa-edit me-2"></i>Update</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#InspectingScheduel">
                                                         <i class="ti ti-calendar-clock me-2 fs_16"></i>
-                                                        Re-Schedule</a>
+                                                        Schedule</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('admin.vehicle_inspection.show', 1) }}"><i
+                                                        href="{{ route('admin.carShippingLeads.show', 1) }}"><i
                                                             class="far fa-eye me-2"></i>Show</a>
                                                 </li>
                                                 <li>
@@ -157,24 +148,82 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>INS-2025-002</td>
-                                <td>John Duo</td>
-                                <td>Ford Figo 2012</td>
-                                <td>06-24-2025</td>
+                                <td>SHL-00002</td>
+                                <td>Karen Luna</td>
                                 <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-original-title="M 13, Mujan, Tulsa OK, USA">M 13, Mujan, Tulsa OK, USA
-                                    </p>
+                                    +1 2548574585</br>
+                                    karenLuna@gmail.com
                                 </td>
-                                <td>Karl Anderson</td>
-                                <td>
-                                    <span class="badge bg-success-light fs_13 py-2">Inspection Completed </span>
+                                <td>2019 Toyota Camry</td>
+                                <td>$55000</td>
+                                <td>$9000</td>
+                                <td>06-24-2025
                                 </td>
+                                <td>Frido Kamado</td>
                                 <td>
                                     <span class="badge badge-soft-success fs_13 py-2">
+                                        Scheduled
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-soft-warning fs_13 py-2">
+                                        In Progress
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class=" btn-action-icon fas" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="far fa-edit me-2"></i>Update</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#InspectingScheduel">
+                                                        <i class="ti ti-calendar-clock me-2 fs_16"></i>
+                                                        Schedule</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.carShippingLeads.show', 1) }}"><i
+                                                            class="far fa-eye me-2"></i>Show</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="far fa-trash-alt me-2"></i>Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SHL-00003</td>
+                                <td>Michel Nobara</td>
+                                <td>
+                                    +27 1745554545</br>
+                                    nobaramichel@gmail.com
+                                </td>
+                                <td>2016 Tesla 360</td>
+                                <td>$30000</td>
+                                <td>$12000</td>
+                                <td>06-25-2025
+                                </td>
+                                <td>Lauren Pitbull</td>
+                                <td>
+                                    <span class="badge bg-danger-light fs_13 py-2">
                                         Done
                                     </span>
                                 </td>
+                                <td>
+                                    <span class="badge badge-soft-success fs_13 py-2">
+                                        Approved
+                                    </span>
+                                </td>
 
                                 <td>
                                     <div class="dropdown dropdown-action">
@@ -182,21 +231,19 @@
                                             aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
-                                                {{-- <li>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.vehicle_inspection.create') }}"><i
-                                                            class="ti ti-object-scan me-2 fs_18"
-                                                            style="margin-top: 1px;"></i>Inspection</a>
+                                                <li>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="far fa-edit me-2"></i>Update</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#InspectingScheduel">
                                                         <i class="ti ti-calendar-clock me-2 fs_16"></i>
-                                                        Re-Schedule</a>
-                                                </li> --}}
+                                                        Schedule</a>
+                                                </li>
                                                 <li>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('admin.vehicle_inspection.show', 1) }}"><i
+                                                        href="{{ route('admin.carShippingLeads.show', 1) }}"><i
                                                             class="far fa-eye me-2"></i>Show</a>
                                                 </li>
                                                 <li>
@@ -209,22 +256,26 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>INS-2025-003</td>
-                                <td>Yahna Kubana</td>
-                                <td>Audi A3 2013</td>
-                                <td>06-22-2025</td>
+                                <td>SHL-00004</td>
+                                <td>Bruno Mars</td>
                                 <td>
-                                    <p class="overflow-ellpise" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        data-bs-original-title="San Andreas CIty, San Tiago USA">San Andreas CIty, San
-                                        Tiago USA</p>
+                                    +27 2136452525</br>
+                                    brunomars1@gmail.com
                                 </td>
-                                <td>Donnie Kubata</td>
+                                <td>2020 Comet MG</td>
+                                <td>$45000</td>
+                                <td>$20000</td>
+                                <td>06-22-2025
+                                </td>
+                                <td>Glenn Maxnes</td>
                                 <td>
-                                    <span class="badge badge-soft-success fs_13 py-2">Scheduled </span>
+                                    <span class="badge badge-soft-warning fs_13 py-2">
+                                        In Progress
+                                    </span>
                                 </td>
                                 <td>
-                                    <span class="badge badge-soft-secondary fs_13 py-2">
-                                        New
+                                    <span class="badge badge-soft-danger fs_13 py-2">
+                                        Rejected
                                     </span>
                                 </td>
 
@@ -235,20 +286,18 @@
                                         <div class="dropdown-menu dropdown-menu-end">
                                             <ul>
                                                 <li>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('admin.vehicle_inspection.show', 1) }}"><i
-                                                            createcs="ti ti-object-scan me-2 fs_18"
-                                                            style="margin-top: 1px;"></i>Inspection</a>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="far fa-edit me-2"></i>Update</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#InspectingScheduel">
                                                         <i class="ti ti-calendar-clock me-2 fs_16"></i>
-                                                        Re-Schedule</a>
+                                                        Schedule</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('admin.vehicle_inspection.show', 1) }}"><i
+                                                        href="{{ route('admin.carShippingLeads.show', 1) }}"><i
                                                             class="far fa-eye me-2"></i>Show</a>
                                                 </li>
                                                 <li>
@@ -300,7 +349,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="foncolor">Inspection Location</label>
-                            <input type="text" class="form-control form-cs inp" name="InspectionLocation"
+                            <input type="text" class="form-control form-cs inp ps-3" name="InspectionLocation"
                                 placeholder="Enter Location" />
                         </div>
                         <div class="col-md-12 mb-3">
@@ -333,104 +382,125 @@
                     <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label class="foncolor">Lead Source</label>
-                            <select class="js-example-basic-single select2" name="main_type">
-                                <option hidden selected disabled value="">Select Source</option>
-                                <option value="Walk-in">Walk-in</option>
-                                <option value="Phone">Phone</option>
-                                <option value="WhatsApp">WhatsApp</option>
-                                <option value="Website">Website</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="foncolor">Request Date</label>
-                            <div class="daterangepicker-wrap cal-icon cal-icon-info">
-                                <input type="text"
-                                    class="btn-filters datetimepicker form-control form-cs inp text-lowercase"
-                                    name="currentdate" placeholder="mm-dd-yyyy" />
+                    <form>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label class="foncolor">Lead Source</label>
+                                <select class="js-example-basic-single select2" name="main_type">
+                                    <option hidden selected disabled value="">Select Source</option>
+                                    <option value="Walk-in">Walk-in</option>
+                                    <option value="Phone">Phone</option>
+                                    <option value="WhatsApp">WhatsApp</option>
+                                    <option value="Website">Website</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="foncolor">Shipper Name</label>
-                            <input type="text" class="form-control form-cs inp ps-3" name="ShipperName"
-                                placeholder="Enter Shipper Name" />
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="foncolor">Company Name (Optional)</label>
-                            <input type="text" class="form-control form-cs inp ps-3" name="CompanyName"
-                                placeholder="Enter Company Name" />
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="foncolor">Shipper Address</label>
-                            <input type="text" class="form-control form-cs inp ps-3" name="ShipperAddress"
-                                placeholder="Enter Shipper Address" />
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="foncolor">Email</label>
-                            <input type="email" class="form-control form-cs inp ps-3" name="email"
-                                placeholder="Enter Email" />
-                        </div>
-                        <div class="col-md-3 mb-3 mobile_code">
-                            <label class="foncolor" for="alternate_mobile_no">Mobile No.</label>
-                            <div class="flaginputwrap">
-                                <div class="customflagselect">
-                                    <select class="flag-select" name="mobile_number_code_id">
-                                        @foreach ($coutry as $key => $item)
-                                            <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
-                                                data-name="{{ $item->name }}" data-code="{{ $item->phonecode }}">
-                                                {{ $item->name }} +{{ $item->phonecode }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                            <div class="col-md-3 mb-3">
+                                <label class="foncolor">Request Date</label>
+                                <div class="daterangepicker-wrap cal-icon cal-icon-info">
+                                    <input type="text"
+                                        class="btn-filters datetimepicker form-control form-cs inp text-lowercase"
+                                        name="currentdate" placeholder="mm-dd-yyyy" />
                                 </div>
-                                <input type="number" class="form-control flagInput inp"
-                                    placeholder="Enter Mobile No" name="mobile_number" value=""
-                                    oninput="this.value = this.value.slice(0, 10)">
                             </div>
-                            @error('mobile_number')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        <div id="itemQuantityWrapper" class="col-sm-12">
-                            <div class="row itemRow align-items-center">
-                                <!-- Vehicle Type -->
-                                <div class="col-lg-5">
-                                    <div class="input-block mb-3">
-                                        <label for="vehicleType">Vehicle Type <i class="text-danger">*</i></label>
-                                        <input type="text" name="vehicleType[]" class="form-control"
-                                            placeholder="Enter Vehicle Type">
+                            <div class="col-md-3 mb-3">
+                                <label class="foncolor">Shipper Name</label>
+                                <input type="text" class="form-control form-cs inp ps-3" name="ShipperName"
+                                    placeholder="Enter Shipper Name" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="foncolor">Company Name (Optional)</label>
+                                <input type="text" class="form-control form-cs inp ps-3" name="CompanyName"
+                                    placeholder="Enter Company Name" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="foncolor">Shipper Address</label>
+                                <input type="text" class="form-control form-cs inp ps-3" name="ShipperAddress"
+                                    placeholder="Enter Shipper Address" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="foncolor">Email</label>
+                                <input type="email" class="form-control form-cs inp ps-3" name="email"
+                                    placeholder="Enter Email" />
+                            </div>
+                            <div class="col-md-3 mb-3 ">
+                                <label class="foncolor" for="alternate_mobile_no">Mobile No.</label>
+                                <div class="flaginputwrap">
+                                    <div class="customflagselect">
+                                        <select class="flag-select" name="mobile_number_code_id">
+                                            @foreach ($coutry as $key => $item)
+                                                <option value="{{ $item->id }}" data-image="{{ $item->flag_url }}"
+                                                    data-name="{{ $item->name }}"
+                                                    data-code="{{ $item->phonecode }}">
+                                                    {{ $item->name }} +{{ $item->phonecode }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <input type="number" class="form-control flagInput inp"
+                                        placeholder="Enter Mobile No" name="mobile_number" value=""
+                                        oninput="this.value = this.value.slice(0, 10)">
+                                </div>
+                                @error('mobile_number')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div id="itemQuantityWrapper2" class="col-sm-12">
+                                <div class="row row-cols-sm-5 itemRow align-items-end">
+                                    <!-- Vehicle Details -->
+                                    <div class="col mb-3">
+                                        <label class="foncolor" for="vehicleDetails">Vehicle Details <i
+                                                class="text-danger">*</i></label>
+                                        <input type="text" name="vehicleDetails[]"
+                                            class="form-control form-cs inp ps-3" placeholder="Enter Vehicle Details">
+                                    </div>
+
+                                    <!-- Quantity -->
+                                    <div class="col mb-3">
+                                        <label class="foncolor" for="vehicleQuantity">Quantity <i
+                                                class="text-danger">*</i></label>
+                                        <input type="number" name="vehicleQuantity[]"
+                                            class="form-control form-cs inp ps-3" placeholder="Enter Quantity">
+                                    </div>
+                                    <!-- Value -->
+                                    <div class="col mb-3">
+                                        <label class="foncolor" for="vehicleValue">Vehicle Value <i
+                                                class="text-danger">*</i></label>
+                                        <input type="number" name="vehicleValue[]"
+                                            class="form-control form-cs inp ps-3" placeholder="Enter Vehicle Value">
+                                    </div>
+                                    <div class="col mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="">
+                                                <label class="foncolor" for="vehicleInsuerance">Vehicle Insuerance <i
+                                                        class="text-danger">*</i></label>
+                                                <input type="number" name="vehicleInsuerance[]"
+                                                    class="form-control form-cs inp ps-3"
+                                                    placeholder="Enter Insuerance">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="col mb-3">
+
+                                        <div class="btnWrapperWidth">
+                                            <button type="button" class="btn btn-danger iconBtn deletebutton2">
+                                                <i class="ti ti-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary iconBtn addbutton2">
+                                                <i class="ti ti-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Quantity -->
-                                <div class="col-lg-5">
-                                    <div class="input-block mb-3">
-                                        <label for="vehicleQuantity">Quantity <i class="text-danger">*</i></label>
-                                        <input type="number" name="vehicleQuantity[]" class="form-control"
-                                            placeholder="Enter Quantity">
-                                    </div>
-                                </div>
 
-                                <!-- Buttons -->
-                                <div class="col-lg-2 text-end">
-                                    <button type="button" class="btn btn-danger iconBtn deletebutton">
-                                        <i class="ti ti-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-primary iconBtn addbutton">
-                                        <i class="ti ti-plus"></i>
-                                    </button>
-                                </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="foncolor">Internal Notes</label>
+                                <textarea type="text" class="form-control" name="notes" placeholder="Enter Your Notes"></textarea>
                             </div>
                         </div>
-
-
-                        <div class="col-md-12 mb-3">
-                            <label class="foncolor">Internal Notes</label>
-                            <textarea type="text" class="form-control" name="notes" placeholder="Enter Your Notes"></textarea>
-                        </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
 
@@ -589,6 +659,32 @@
                         }
                     });
                 });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                function updateButtons() {
+                    // Always show all plus buttons
+                    $('.addbutton2').show();
+
+                    // Hide minus button for the first row only
+                    $('.deletebutton2').show();
+                    $('.itemRow').first().find('.deletebutton2').hide();
+                }
+
+                $('#itemQuantityWrapper2').on('click', '.addbutton2', function() {
+                    let newRow = $(this).closest('.itemRow').clone();
+                    newRow.find('input').val(''); // Clear inputs
+                    $('#itemQuantityWrapper2').append(newRow);
+                    updateButtons();
+                });
+
+                $('#itemQuantityWrapper2').on('click', '.deletebutton2', function() {
+                    $(this).closest('.itemRow').remove();
+                    updateButtons();
+                });
+
+                updateButtons(); // Initial call
             });
         </script>
     @endsection

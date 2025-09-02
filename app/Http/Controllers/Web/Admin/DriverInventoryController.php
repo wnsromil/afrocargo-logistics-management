@@ -32,6 +32,10 @@ class DriverInventoryController extends Controller
         $end_date = null;
         $dateRange = $request->input('daterangepicker');
 
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
         if ($dateRange) {
             try {
                 [$start_date, $end_date] = explode(' - ', $dateRange);
@@ -99,7 +103,8 @@ class DriverInventoryController extends Controller
                 'dateRange',
                 'perPage',
                 'serialStartItems',
-                'serialStartSold'
+                'serialStartSold',
+                'warehouses'
             ))->render();
         }
 
@@ -111,7 +116,8 @@ class DriverInventoryController extends Controller
             'dateRange',
             'perPage',
             'serialStartItems',
-            'serialStartSold'
+            'serialStartSold',
+            'warehouses'
         ));
     }
 
@@ -149,14 +155,14 @@ class DriverInventoryController extends Controller
     {
         // ✅ Basic Validation
         $request->validate([
-            'driverInventoryDate'   => 'required|date',
-            'currentTIme'           => 'required',
-            'driver_id'             => 'required|exists:users,id',
-            'InOutType'             => 'required|in:In,Out',
-            'item_id'               => 'required|array',
-            'item_id.*'             => 'required|exists:inventories,id',
-            'in_stock_quantity'     => 'required|array',
-            'in_stock_quantity.*'   => 'required|numeric|min:1',
+            'driverInventoryDate' => 'required|date',
+            'currentTIme' => 'required',
+            'driver_id' => 'required|exists:users,id',
+            'InOutType' => 'required|in:In,Out',
+            'item_id' => 'required|array',
+            'item_id.*' => 'required|exists:inventories,id',
+            'in_stock_quantity' => 'required|array',
+            'in_stock_quantity.*' => 'required|numeric|min:1',
         ]);
 
         // ✅ Format Date
@@ -164,9 +170,9 @@ class DriverInventoryController extends Controller
 
         // ✅ Custom Manual Validation
         foreach ($request->item_id as $index => $itemId) {
-            $driverId   = $request->driver_id;
-            $inOutType  = $request->InOutType;
-            $quantity   = $request->in_stock_quantity[$index];
+            $driverId = $request->driver_id;
+            $inOutType = $request->InOutType;
+            $quantity = $request->in_stock_quantity[$index];
 
             // Total Out - Total In = Available
             $totalOut = \App\Models\DriverInventory::where('driver_id', $driverId)
@@ -197,14 +203,14 @@ class DriverInventoryController extends Controller
         // ✅ Save All Items
         foreach ($request->item_id as $index => $itemId) {
             \App\Models\DriverInventory::create([
-                'date'         => $formattedDate,
+                'date' => $formattedDate,
                 'warehouse_id' => $request->warehouse_id,
-                'time'         => $request->currentTIme,
-                'driver_id'    => $request->driver_id,
-                'in_out'       => $request->InOutType,
-                'items_id'     => $itemId,
-                'quantity'     => $request->in_stock_quantity[$index],
-                'creator_id'   => auth()->id(),
+                'time' => $request->currentTIme,
+                'driver_id' => $request->driver_id,
+                'in_out' => $request->InOutType,
+                'items_id' => $itemId,
+                'quantity' => $request->in_stock_quantity[$index],
+                'creator_id' => auth()->id(),
             ]);
         }
 
@@ -248,8 +254,8 @@ class DriverInventoryController extends Controller
 
         // Validate incoming request data
         $request->validate([
-            'warehouse_id'      => 'required|exists:warehouses,id',
-            'inventory_name'    => 'required|string',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'inventory_name' => 'required|string',
             'in_stock_quantity' => 'required|numeric',
             'low_stock_warning' => 'required|numeric',
             // 'status'           => 'in:Active,Inactive',
@@ -262,17 +268,17 @@ class DriverInventoryController extends Controller
         ])->first();
 
         $inventory->update([
-            'total_quantity'      => $request->in_stock_quantity,
-            'in_stock_quantity'   => $request->in_stock_quantity,
-            'low_stock_warning'   => $request->low_stock_warning
+            'total_quantity' => $request->in_stock_quantity,
+            'in_stock_quantity' => $request->in_stock_quantity,
+            'low_stock_warning' => $request->low_stock_warning
         ]);
 
         // Create a new stock entry
         Stock::create([
-            'warehouse_id'    => $request->warehouse_id,
-            'category_id'     => $category_id,
-            'inventory_id'    => $inventory->id,
-            'user_id'         => auth()->id(),
+            'warehouse_id' => $request->warehouse_id,
+            'category_id' => $category_id,
+            'inventory_id' => $inventory->id,
+            'user_id' => auth()->id(),
             'in_stock_quantity' => $request->in_stock_quantity,
             'low_stock_warning' => $request->low_stock_warning,
             'status' => 'updated'

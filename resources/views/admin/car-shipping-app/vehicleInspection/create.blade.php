@@ -95,17 +95,6 @@
                 <input type="text" class="form-control form-cs inp ps-3" name="OdometerReading"
                     placeholder="Enter Odometer Reading" />
             </div>
-            <div class="col-md-4 mb-3">
-                <label class="foncolor">Fuel Level</label>
-                <select class="js-example-basic-single select2" name="FuelLevel">
-                    <option hidden selected disabled value="">Select Fuel Level</option>
-                    <option value="Empty">Empty</option>
-                    <option value="1/4 Tank">1/4 Tank</option>
-                    <option value="Half Tank">Half Tank</option>
-                    <option value="3/4 Tank">3/4 Tank</option>
-                    <option value="Full Tank">Full Tank</option>
-                </select>
-            </div>
 
             <div class="col-12">
                 <h6 class="bl-3 py-1 ps-3 my-3 fs_22">Shipper Information</h6>
@@ -139,14 +128,13 @@
                         </select>
                     </div>
                     <input type="number" class="form-control flagInput inp" placeholder="Enter Mobile No"
-                        name="mobile_number" value="2159658452" readonly
-                        oninput="this.value = this.value.slice(0, 10)">
+                        name="mobile_number" value="2159658452" readonly oninput="this.value = this.value.slice(0, 10)">
                 </div>
             </div>
             <div class="col-md-4 mb-3">
                 <label class="foncolor">Address1</label>
-                <input type="text" class="form-control form-cs inp ps-3" name="Address1"
-                    placeholder="Enter Address1" value="NYC NY USA" readonly />
+                <input type="text" class="form-control form-cs inp ps-3" name="Address1" placeholder="Enter Address1"
+                    value="NYC NY USA" readonly />
             </div>
             <div class="col-md-4 mb-3">
                 <label class="foncolor">Address2(optional)</label>
@@ -282,7 +270,7 @@
                 <label class="foncolor">Vehicle Starts?</label>
                 <div class="d-flex">
                     <div class="input-block d-flex align-items-center me-3">
-                        <label class="foncolor mb-0 pt-0 me-2 col3A">Yes (Mandatory)</label>
+                        <label class="foncolor mb-0 pt-0 me-2 col3A">Yes</label>
                         <input class="form-check-input mt-0" type="radio" value="Yes" name="VehicleStarts">
                     </div>
                     <div class="input-block d-flex align-items-center">
@@ -1330,32 +1318,57 @@
                 </div>
 
             </div>
+
+
+            <div class="col-12">
+                <h6 class="bl-3 py-1 ps-3 my-3 fs_22">Interior Condition Checklist</h6>
+            </div>
+
             <div class="col-12">
                 <div class="card p-3 rounded-3 setCard mb-3">
-                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Leaking Fluids Check</h5>
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Dashboard</h5>
 
                     <div class="centerBetween">
                         <div class="form-group">
+                            <label>Condition:</label><br />
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="frontEngineOil"
-                                    name="LeakingFluidsCheck[]" value="Engine Oil">
-                                <label class="form-check-label mt_2" for="frontEngineOil">Engine Oil</label>
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="frontBrakeFluid"
-                                    name="LeakingFluidsCheck[]" value="Brake Fluid">
-                                <label class="form-check-label mt_2" for="frontBrakeFluid">Brake Fluid</label>
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="frontCoolant"
-                                    name="LeakingFluidsCheck[]" value="CoolantRadiator">
-                                <label class="form-check-label mt_2" for="frontCoolant">Coolant (Radiator)</label>
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="frontTransmissionFluid"
-                                    name="LeakingFluidsCheck[]" value="Transmission Fluid">
-                                <label class="form-check-label mt_2" for="frontTransmissionFluid">Transmission
-                                    Fluid</label>
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
                             </div>
                         </div>
                         <div class="form-group maxw_200">
@@ -1365,6 +1378,333 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col-12">
+                <div class="card p-3 rounded-3 setCard mb-3">
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Seats (Front/Rear)</h5>
+
+                    <div class="centerBetween">
+                        <div class="form-group">
+                            <label>Condition:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
+                            </div>
+                        </div>
+                        <div class="form-group maxw_200">
+                            <label for="frontNotes">Notes (optional):</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="card p-3 rounded-3 setCard mb-3">
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Floor Mats / Carpets</h5>
+
+                    <div class="centerBetween">
+                        <div class="form-group">
+                            <label>Condition:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
+                            </div>
+                        </div>
+                        <div class="form-group maxw_200">
+                            <label for="frontNotes">Notes (optional):</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="card p-3 rounded-3 setCard mb-3">
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Center Console</h5>
+
+                    <div class="centerBetween">
+                        <div class="form-group">
+                            <label>Condition:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
+                            </div>
+                        </div>
+                        <div class="form-group maxw_200">
+                            <label for="frontNotes">Notes (optional):</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="card p-3 rounded-3 setCard mb-3">
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Steering Wheel</h5>
+
+                    <div class="centerBetween">
+                        <div class="form-group">
+                            <label>Condition:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
+                            </div>
+                        </div>
+                        <div class="form-group maxw_200">
+                            <label for="frontNotes">Notes (optional):</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card p-3 rounded-3 setCard mb-3">
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">AC / Heater</h5>
+
+                    <div class="centerBetween">
+                        <div class="form-group">
+                            <label>Condition:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
+                            </div>
+                        </div>
+                        <div class="form-group maxw_200">
+                            <label for="frontNotes">Notes (optional):</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card p-3 rounded-3 setCard mb-3">
+                    <h5 class="card-title fs_18 mb-2 mb-sm-0">Stereo System</h5>
+
+                    <div class="centerBetween">
+                        <div class="form-group">
+                            <label>Condition:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontGood"
+                                    name="front_condition[]" value="Good">
+                                <label class="form-check-label mt_2" for="frontGood">Good</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontScratched"
+                                    name="front_condition[]" value="Scratched">
+                                <label class="form-check-label mt_2" for="frontScratched">Scratched</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontDented"
+                                    name="front_condition[]" value="Dented">
+                                <label class="form-check-label mt_2" for="frontDented">Dented</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontRusted"
+                                    name="front_condition[]" value="Rusted">
+                                <label class="form-check-label mt_2" for="frontRusted">Rusted</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="frontMissing"
+                                    name="front_condition[]" value="Missing">
+                                <label class="form-check-label mt_2" for="frontMissing">Missing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-uploader" onclick="document.getElementById('frontImage').click();">
+                                <p id="frontText">
+
+                                    <i class="d-block fs_18 fa-solid fa-upload"></i> Drag or tap to
+                                    upload
+                                    image<br><small>Upload clear
+                                        photo</small>
+                                </p>
+                                <input type="file" accept="image/*" capture="environment" id="frontImage"
+                                    onchange="previewUpload(event, 'frontPreview', 'frontText')" />
+                                <img id="frontPreview" class="preview-image d-none" />
+                            </div>
+                        </div>
+                        <div class="form-group maxw_200">
+                            <label for="frontNotes">Notes (optional):</label>
+                            <textarea class="form-control" id="frontNotes" name="front_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="col-12">

@@ -39,7 +39,10 @@ use App\Http\Controllers\Web\Admin\{
     VerifyLicenseController,
     SupplyInventoryController,
     RoRoShippingController,
-    InspectionScheduleController
+    RoRoSheduelController,
+    InspectionScheduleController,
+    VehicleLoadUnloadController,
+    CarShippingLeadsController
 };
 use App\Mail\RegistorMail;
 
@@ -218,9 +221,12 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::resource('bill_of_lading', BillofLadingController::class);
         Route::resource('ro-ro-shipping', RoRoShippingController::class);
         Route::resource('vehicle_inspection', InspectionScheduleController::class);
+        Route::resource('ro-ro-scheduel', RoRoSheduelController::class);
+        Route::resource('vehicle-load-unload', VehicleLoadUnloadController::class);
+        Route::resource('carShippingLeads', CarShippingLeadsController::class);
         Route::resource('lading_details', LadingDetailsController::class);
         Route::get('bill-of-ladings/{id}', [LadingDetailsController::class, 'billOfLading'])->name('bill_of_lading.billOfLading');
-
+        Route::get('vehicle-load-unload/load_unload/{id}', [VehicleLoadUnloadController::class, 'loading_unloading'])->name('vehicle-load-unload.load_unload');
         Route::get('invoices/details/{id}', [InvoiceController::class, 'invoices_details'])->name('invoices.details');
         Route::get('customerSearch', [InvoiceController::class, 'customerSearch'])->name('customerSearch');
         Route::post('saveInvoceCustomer', [InvoiceController::class, 'saveInvoceCustomer'])->name('saveInvoceCustomer');
@@ -281,6 +287,8 @@ Route::group(['middleware' => 'auth', 'as' => 'admin.'], function () {
         Route::get('user_role/create', [RoleManagementController::class, 'create'])->name('user_role.create');
         Route::post('user_role/store', [RoleManagementController::class, 'store'])->name('user_role.store');
         //CBM Calculatoar
+        Route::get('inspection-list', [CarShippingLeadsController::class, 'vehicleInspection'])->name('car-shipping-app.vehicleInspection');
+
         Route::get('freight-Calculator', [CBMCalculatoarController::class, 'FreightCalculator'])->name('cbm_calculator.freight_Calculator');
         Route::get('Freight-ContainerSize', [CBMCalculatoarController::class, 'FreightContainerSize'])->name('cbm_calculator.freight_ContainerSize');
         Route::get('freight-Shipping', [CBMCalculatoarController::class, 'FreightShipping'])->name('cbm_calculator.freight_Shipping');

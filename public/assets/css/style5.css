@@ -252,10 +252,10 @@ td {
 }
 /* .container {
     display: flex;
-    align-items: center; 
+    align-items: center;
   }
   .container img {
-    margin-right: 10px; 
+    margin-right: 10px;
   } */
 .alignt {
     text-align: center;
@@ -919,7 +919,7 @@ h2 {
 }
 
 /* .innertopnav{
-  border-bottom: 1px dashed #DFDFDF; 
+  border-bottom: 1px dashed #DFDFDF;
   width: 100%;
  } */
 .pheads {
@@ -953,7 +953,8 @@ input[type="checkbox"]:checked {
 }
 
 input[type="checkbox"]:checked::after {
-    content: "✔";
+        content: "\ea5e" !important;
+    font-family: "tabler-icons";
     position: absolute;
     top: 50%;
     left: 50%;

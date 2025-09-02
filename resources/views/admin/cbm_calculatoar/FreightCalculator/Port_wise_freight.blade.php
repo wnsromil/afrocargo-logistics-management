@@ -26,11 +26,11 @@
                 <select class="form-select inp text-secondary select2" id="selectPort"
                     aria-label="Default select example">
                     <option value="add" selected>Add new freight information</option>
-                    @foreach($portWiseFreights as $index => $portWiseFreight)
-                        <option value="{{$portWiseFreight->id}}"
-                            data-from="{{$portWiseFreight->from_country . " : " . $portWiseFreight->fromPort->port_name}}"
-                            data-to="{{$portWiseFreight->to_country . " : " . $portWiseFreight->toPort->port_name}}">
-                            {{$portWiseFreight->from_country . " : " . $portWiseFreight->to_country . " - " . $portWiseFreight->fromPort->port_name . " : " . $portWiseFreight->toPort->port_name  }}
+                    @foreach ($portWiseFreights as $index => $portWiseFreight)
+                        <option value="{{ $portWiseFreight->id }}"
+                            data-from="{{ $portWiseFreight->from_country . ' : ' . $portWiseFreight->fromPort->port_name }}"
+                            data-to="{{ $portWiseFreight->to_country . ' : ' . $portWiseFreight->toPort->port_name }}">
+                            {{ $portWiseFreight->from_country . ' : ' . $portWiseFreight->to_country . ' - ' . $portWiseFreight->fromPort->port_name . ' : ' . $portWiseFreight->toPort->port_name }}
                         </option>
                     @endforeach
                 </select>
@@ -62,7 +62,7 @@
                             <select id="from_country_select" name="from_country_select"
                                 class="form-control inp select2">
                                 <option selected disabled hidden>Select Country</option>
-                                @foreach($countrys as $index => $country)
+                                @foreach ($countrys as $index => $country)
                                     <option value="{{ $country->name }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
@@ -83,7 +83,7 @@
                             <label for="new_to_country" class="form-label text-dark">To Country:</label>
                             <select id="to_country_select" name="to_country_select" class="form-control inp select2">
                                 <option selected disabled hidden>Select Country</option>
-                                @foreach($countrys as $index => $country)
+                                @foreach ($countrys as $index => $country)
                                     <option value="{{ $country->name }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
@@ -114,19 +114,20 @@
                         </div>
                     </div>
 
-                    @foreach($containerSizes as $index => $container)
+                    @foreach ($containerSizes as $index => $container)
                         <div class="row mt-2">
                             <div class="col-md-6 col-lg-6 col-sm-12">
-                                <input type="text" class="form-control inp" id="container_list" name="container_name[]"
-                                    value="{{ $container->container_name }}" placeholder="Country/Port" readonly>
+                                <input type="text" class="form-control inp" id="container_list"
+                                    name="container_name[]" value="{{ $container->container_name }}"
+                                    placeholder="Country/Port" readonly>
                             </div>
                             <div class="col-md-3 col-lg-3 col-sm-3">
                                 <input type="text" class="form-control inp text-end" id="freight_price_selected"
                                     name="freight_price[]" placeholder="">
                             </div>
                             <div class="col-md-3 col-lg-3 col-sm-3 border-0">
-                                <select class="form-control inp select2" id="freight_currency_selected" name="currency[]">
-                                    @foreach($viewCurrencys as $index => $currency)
+                                <select class="form-control inp select2" name="currency[]">
+                                    @foreach ($viewCurrencys as $index => $currency)
                                         <option value="{{ $currency }}">{{ $currency }}</option>
                                     @endforeach
                                 </select>
@@ -151,14 +152,14 @@
 
     @section('script')
         <script>
-            $(document).ready(function () {
-                $('#from_country_select').on('change', function () {
+            $(document).ready(function() {
+                $('#from_country_select').on('change', function() {
                     let country = $(this).val();
                     console.log(country); // ← ye tabhi chalega jab upar sab sahi hai
                     getPorts(country, '#from_port');
                 });
 
-                $('#to_country_select').on('change', function () {
+                $('#to_country_select').on('change', function() {
                     let country = $(this).val();
                     getPorts(country, '#to_port');
                 });
@@ -167,22 +168,26 @@
                     $.ajax({
                         url: '/api/get-ports/' + countryName,
                         type: 'GET',
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status) {
                                 let portSelect = $(portSelectId);
                                 portSelect.empty(); // clear old options
                                 if (response.data.length > 0) {
-                                    portSelect.append('<option selected disabled hidden>Select Port</option>');
+                                    portSelect.append(
+                                        '<option selected disabled hidden>Select Port</option>');
 
-                                    response.data.forEach(function (port) {
-                                        portSelect.append(`<option value="${port.id}">${port.port_name}</option>`);
+                                    response.data.forEach(function(port) {
+                                        portSelect.append(
+                                            `<option value="${port.id}">${port.port_name}</option>`
+                                        );
                                     });
                                 } else {
-                                    portSelect.append('<option selected disabled>No port available</option>');
+                                    portSelect.append(
+                                        '<option selected disabled>No port available</option>');
                                 }
                             }
                         },
-                        error: function () {
+                        error: function() {
                             alert('Failed to load ports.');
                         }
                     });
@@ -190,7 +195,7 @@
             });
         </script>
         <script>
-            $('#selectPort').on('change', function () {
+            $('#selectPort').on('change', function() {
                 const selectedOption = $(this).find('option:selected');
                 const selectedValue = $(this).val();
                 const from = selectedOption.data('from');
@@ -213,7 +218,7 @@
 
                     // Clear freight & currency
                     $('input[name="freight_price[]"]').val('');
-                    $('select[name="currency[]"]').each(function () {
+                    $('select[name="currency[]"]').each(function() {
                         $(this).val('AAD').trigger('change');
                     });
                     $portWiseFreightsId.val(null);
@@ -233,7 +238,7 @@
         <script>
             function updateFreightFields(containerSizes) {
                 // Loop through each container row and update the values
-                containerSizes.forEach(function (item, index) {
+                containerSizes.forEach(function(item, index) {
                     // Target nth input group
                     const row = $('.row.mt-2').eq(index);
 
@@ -246,19 +251,19 @@
             }
 
             // Example: You already made the API call
-            $('#selectPort').on('change', function () {
+            $('#selectPort').on('change', function() {
                 const selectedId = $(this).val();
                 if (selectedId !== 'add') {
                     $.ajax({
                         url: `/api/port-freight-containers/${selectedId}`,
                         type: 'GET',
-                        success: function (response) {
+                        success: function(response) {
                             console.log('API Response:', response);
                             if (response.status && response.container_size) {
                                 updateFreightFields(response.container_size);
                             }
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             console.error('Error:', xhr.responseText);
                         }
                     });
@@ -266,8 +271,8 @@
             });
         </script>
         <script>
-            $(document).ready(function () {
-                $('#deleteFreightBtn').on('click', function () {
+            $(document).ready(function() {
+                $('#deleteFreightBtn').on('click', function() {
                     const selectedId = $('#selectPort').val();
 
                     if (selectedId === 'add') {
@@ -286,9 +291,10 @@
                             $.ajax({
                                 url: `/api/port-freight-delete/${selectedId}`,
                                 type: 'DELETE',
-                                success: function (response) {
+                                success: function(response) {
                                     if (response.status) {
-                                        Swal.fire('Deleted!', 'The freight has been deleted.', 'success')
+                                        Swal.fire('Deleted!',
+                                                'The freight has been deleted.', 'success')
                                             .then(() => {
                                                 window.location.reload();
                                             });
@@ -296,7 +302,7 @@
                                         Swal.fire('Error', 'Delete failed.', 'error');
                                     }
                                 },
-                                error: function (xhr) {
+                                error: function(xhr) {
                                     Swal.fire('Error', 'Something went wrong.', 'error');
                                 }
                             });
@@ -305,7 +311,6 @@
                 });
             });
         </script>
-
     @endsection
 </x-app-layout>
 

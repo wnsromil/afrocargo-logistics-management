@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        Lead Details
+        Shipping Leads Details
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="head">Lead Details</p>
+        <p class="head">Shipping Leads Details</p>
     </x-slot>
 
     <div class="card p-0">
@@ -22,6 +22,12 @@
                         <p>Brian Bordina</p>
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label>Company Name</label>
+                        <p>Star Light Enterprise</p>
+                    </div>
+                </div>
 
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
@@ -31,6 +37,12 @@
                     </div>
                 </div>
 
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label>Preferred Ship By</label>
+                        <p>Ocean</p>
+                    </div>
+                </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="input-block mb-3">
                         <label>Vehicle Info</label>
@@ -61,13 +73,6 @@
                     <div class="input-block mb-3">
                         <label>Date Requested</label>
                         <p>06-22-2025</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="input-block mb-3">
-                        <label>Lead Source</label>
-                        <p>Walk-In</p>
                     </div>
                 </div>
 
@@ -106,7 +111,6 @@
             <div class="text-end">
                 <a data-bs-toggle="modal" data-bs-target="#InspectingScheduel" class="btn btn-primary me-2">Update
                     Scheduled</a>
-                <a href="#" class="btn btn-primary me-2">Upade</a>
             </div>
         </div>
     </div>

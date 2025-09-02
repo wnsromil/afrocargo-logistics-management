@@ -374,6 +374,198 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            // Initial select2 setup
+            $('.select2Tags').select2();
+
+            function updateButtons() {
+                $('.addbutton').hide();
+                $('.vehicleRow').last().find('.addbutton').show();
+            }
+
+            // Handle add row
+            $('#vehicleDocumentWrapper').on('click', '.addbutton', function() {
+                const $wrapper = $('#vehicleDocumentWrapper');
+
+                // Clone and clean
+                let $currentRow = $(this).closest('.vehicleRow');
+
+                // Destroy select2 before cloning
+                $currentRow.find('.select2Tags').select2('destroy');
+
+                let $newRow = $currentRow.clone();
+
+                // Restore select2 on original row
+                $currentRow.find('.select2Tags').select2();
+
+                // Clear inputs in clone
+                $newRow.find('select').val('');
+                $newRow.find('input[type="file"]').val('');
+
+                // Remove any Select2 DOM elements from cloned row
+                $newRow.find('.select2-container').remove();
+
+                // Re-attach select2 to cloned select
+                $newRow.find('select.select2Tags').select2();
+
+                // Append to wrapper
+                $wrapper.append($newRow);
+
+                updateButtons();
+            });
+
+            // Handle delete row
+            $('#vehicleDocumentWrapper').on('click', '.deletebutton', function() {
+                if ($('.vehicleRow').length > 1) {
+                    $(this).closest('.vehicleRow').remove();
+                    updateButtons();
+                }
+            });
+
+            updateButtons();
+        });
+
+
+
+        $('#addCustomerCreateModal').on('shown.bs.modal', function() {
+            $('.js-example-basic-single').select2({
+                dropdownParent: $('#addCustomerCreateModal'),
+                width: '100%',
+                templateResult: formatCountryOption,
+                templateSelection: formatCountrySelection
+            });
+        });
+
+        function formatCountryOption(option) {
+            if (!option.id) return option.text;
+
+            const img = $(option.element).data('image');
+            const name = $(option.element).data('name');
+            const code = $(option.element).data('code');
+
+            if (!img) return $('<span>' + option.text + '</span>');
+
+            return $(`
+        <span class="countryList">
+            <img src="${img}" class="customFlags" />
+            ${name} +${code}
+        </span>
+    `);
+        }
+
+        function formatCountrySelection(option) {
+            const img = $(option.element).data('image');
+            const name = $(option.element).data('name');
+            const code = $(option.element).data('code');
+
+            if (!img) return option.text;
+
+            return $(`
+        <span class="countryList">
+            <img src="${img}" class="customFlags" />
+            +${code}
+        </span>
+    `);
+        }
+    </script>
+    <script>
+        function injectTopTableScrollbar() {
+            const $wrapper = $('#ajexTable .table-responsive');
+
+            // Check if table and wrapper exist
+            if (!$wrapper.length || !$wrapper.find('table').length) return;
+
+            // Avoid duplicates
+            if ($('#top-scrollbar').length) return;
+
+            // Create top scrollbar container
+            const $topScroll = $('<div id="top-scrollbar"></div>').css({
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                height: '16px',
+                marginBottom: '-16px',
+                marginTop: '5px',
+                width: '100%',
+            });
+
+            // Create dummy inner div matching table's scrollWidth
+            const scrollWidth = $wrapper.find('table')[0].scrollWidth;
+            const $scrollContent = $('<div></div>').css({
+                width: scrollWidth + 'px',
+                height: '1px'
+            });
+
+            $topScroll.append($scrollContent);
+            $topScroll.insertBefore($wrapper);
+
+            // Sync scroll positions
+            $topScroll.on('scroll', function() {
+                $wrapper.scrollLeft($(this).scrollLeft());
+            });
+            $wrapper.on('scroll', function() {
+                $topScroll.scrollLeft($(this).scrollLeft());
+            });
+        }
+
+        function enableTableDragScroll() {
+            const $scrollContainer = $('#ajexTable .table-responsive');
+
+            let isDragging = false;
+            let startX;
+            let scrollLeft;
+
+            $scrollContainer.css('cursor', 'grab');
+
+            $scrollContainer.on('mousedown', function(e) {
+                isDragging = true;
+                $scrollContainer.css('cursor', 'grabbing');
+                startX = e.pageX - $scrollContainer.offset().left;
+                scrollLeft = $scrollContainer.scrollLeft();
+                e.preventDefault(); // Prevent text selection
+            });
+
+            $(document).on('mouseup', function() {
+                isDragging = false;
+                $scrollContainer.css('cursor', 'grab');
+            });
+
+            $(document).on('mousemove', function(e) {
+                if (!isDragging) return;
+                const x = e.pageX - $scrollContainer.offset().left;
+                const walk = x - startX;
+                $scrollContainer.scrollLeft(scrollLeft - walk);
+            });
+        }
+
+        $('#ajexTable').load('/some-url', function() {
+            injectTopTableScrollbar(); // ← call here
+            enableTableDragScroll();
+        });
+        const observer = new MutationObserver(() => {
+            injectTopTableScrollbar();
+            enableTableDragScroll();
+        });
+
+        observer.observe(document.getElementById('ajexTable'), {
+            childList: true,
+            subtree: true
+        });
+    </script>
+    <script>
+            $('.js-example-basic-single').on('change', function (e) {
+            const selection = $(this).find(':selected').val();
+            const rendered = $(this).next('.select2-container').find('.select2-selection__rendered');
+
+            if (selection) {
+                rendered.addClass('has-value');
+            } else {
+                rendered.removeClass('has-value');
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>
