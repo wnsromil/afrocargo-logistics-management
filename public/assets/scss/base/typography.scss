@@ -70,7 +70,7 @@ h1 {
 	font-weight:$__medium;
 	font-size:$__font__size__40;
 	font-family: $__body__font__family;
-	color: #28084B;
+	color: #000000;
 	@include respond-below(custom767){
 		font-size:$__font__size__26 + 1;
 	}
@@ -78,7 +78,7 @@ h1 {
 h2 {
 	font-weight:$__medium;
 	font-size:$__font__size__30;
-	color: #28084B;
+	color: #000000;
 	@include respond-below(custom767){
 		font-size:$__font__size__22 + 1;
 	}
@@ -86,7 +86,7 @@ h2 {
 h3 {
 	font-weight:$__medium;
 	font-size:$__font__size__28;
-	color: #28084B;
+	color: #000000;
 	@include respond-below(custom1023){
 		font-size:$__font__size__20;
 	}
@@ -98,7 +98,7 @@ h4 {
 	font-weight:$__medium;
 	font-size:$__font__size__24;
 	font-family: $__body__font__family;
-	color: #28084B;
+	color: #000000;
 	@include respond-below(custom1023){
 		font-size:$__font__size__18;
 	}
@@ -109,24 +109,24 @@ h4 {
 h5 {
 	font-weight:$__medium;
 	font-size:1.25rem;
-	color: #28084B;
+	color: #000000;
 	@include respond-below(custom992){
 		font-size:$__font__size__18;
-		@include margin-padding(0 0 0, null) 
+		@include margin-padding(0 0 0, null)
 	}
 }
 h6 {
 	font-weight:$__medium;
 	font-size:$__font__size__16;
-	color: #28084B;
+	color: #000000;
 	@include respond-below(custom1023){
 		font-size:$__font__size__16;
 	}
 }
 h1,h2,h3,h4,h5,h6 {
 	&.card-title {
-		color: #28084B;
-	
+		color: #000000;
+
 	}
 }
 .card-title {
@@ -134,4 +134,4 @@ h1,h2,h3,h4,h5,h6 {
 }
 .card-body {
 	color: #8A8E9C;
-}	
+}

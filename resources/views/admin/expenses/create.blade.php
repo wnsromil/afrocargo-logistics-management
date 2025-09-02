@@ -29,7 +29,7 @@
                                 @php
                                     $role_id = Auth::user()->role_id;
                                 @endphp
-                               
+
                                 @if($role_id == 2 || $role_id == 4)
                                     {{-- ✅ Readonly Input for Single Warehouse --}}
                                     <div class="col-md-12 mb-1">
@@ -56,7 +56,7 @@
                                         @enderror
                                     </div>
                                 @endif
-                               
+
                                 <div class="col-md-12 mb-1">
                                     <label> Date <i class="text-danger">*</i></label>
                                     <div class="daterangepicker-wrap cal-icon cal-icon-info">
@@ -117,7 +117,7 @@
                                     <label class="foncolor" for="Container">Container</label>
                                     <select class="js-example-basic-single select2 form-control" name="container_id">
                                         <option value="">Select Container</option>
-                                     
+
                                     </select>
                                 </div>
                                 @endif
@@ -173,13 +173,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="input-block mb-3 d-flex">
+                                    <div class="input-block mb-3 d-flex align-items-center">
                                         <label class="foncolor mb-0 pt-0 me-2 col3A">Expense</label> <input
                                             class="form-check-input mt-0" type="radio" {{ old('type', 'Expense') === 'Expense' ? 'checked' : '' }} value="Expense" name="type">
                                     </div>
                                 </div>
                                     <div class="col-md-3">
-                                        <div class="input-block mb-3 d-flex">
+                                        <div class="input-block mb-3 d-flex align-items-center">
                                             <label class="foncolor mb-0 pt-0 me-2 col3A">Income</label> <input
                                                 class="form-check-input mt-0" {{ old('type') === 'Income' ? 'checked' : '' }} type="radio" value="Income" name="type">
                                         </div>

@@ -29,223 +29,220 @@
     </x-slot>
 
 
-    <div class="container-fluid">
-        <div class="rounded-2 p-2 mt-2">
-            <div class="row rounded-2 bg-custom">
-                <div class="col-md-3 col-sm-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    <label for="search_id" class="col-form-label me-2">Search</label>
-                    <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
-                        placeholder="Search">
-                </div>
+    <div class="d-flex justify-content-between items-center">
+        <div class="col-md-5 col-lg-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <label for="search_id" class="col-form-label me-2">Search</label>
+                <input type="text" id="search_id" class="form-control rounded-1 form-control-lg"
+                    placeholder="Search">
             </div>
 
-            <div class="row">
-                <div class="d-flex align-items-center justify-content-end mt-2">
-                    <div class="d-grid gap-2 d-md-block justify-content-end">
-                        <button class="btn btn-primary btn-sm" type="button">Search</button>
-                        <button class="btn btn-outline-danger btn-sm ms-2" type="button">Reset</button>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end mt-2">
+            <div class="d-grid gap-2 d-md-block justify-content-end">
+                <button class="btn btn-primary btn-sm" type="button">Search</button>
+                <button class="btn btn-outline-danger btn-sm ms-2" type="button">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <button class="btn btn-primary btn-sm mt-2" type="button" data-bs-toggle="modal"
+            data-bs-target="#trackingReportModal">Item Report</button>
+        <button class="btn btn-primary btn-sm mt-2" type="button">Container Status Report</button>
+        <button class="btn btn-primary btn-sm mt-2" type="button">Container Status Print</button>
+        <button class="btn btn-primary btn-sm mt-2" type="button">Print Invoice Report</button>
+    </div>
+
+    <div class="row">
+        <div id='ajexTable'>
+            <div class="card-table">
+                <div class="card-body">
+                    <div class="table-responsive table-height mt-3">
+                        <table class="table table-stripped table-hover datatable">
+                            <thead class="thead-light text-start px-3">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Invoice No</th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Customer Lic</th>
+                                    <th>Shipto Lic</th>
+                                    <th>Items</th>
+                                    <th class=" bg-transparent table-last-column">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="px-3">
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001319</td>
+                                    <td>Layee Kromah</td>
+                                    <td>4 Upland Gardens Dr</td>
+                                    <td>null</td>
+                                    <td>-</td>
+                                    <td class="trunk-width text-truncate">Brown Box 8 With...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001299</td>
+                                    <td>Ahoua Kante</td>
+                                    <td class=" trunk-width text-truncate">796 East 163rd Street
+                                    </td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Afro International...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001308</td>
+                                    <td>Irene G Bagnan</td>
+                                    <td>220 Mt Nernon PI</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Barrel Large, Home...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001321</td>
+                                    <td>Seydou Saumahoro</td>
+                                    <td>3 Wells Park Dr</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Invoirien Cargo Car...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001309</td>
+                                    <td>Ali Fofana</td>
+                                    <td>1642 Park Ave</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">New Computer in B...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001316</td>
+                                    <td>Julien Kouame</td>
+                                    <td>6 Deerfield Rd</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Barrel Medium</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001298</td>
+                                    <td>Antou Diakite</td>
+                                    <td>200 W 148th St...</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Barrel large 3 doll...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001296</td>
+                                    <td>Fanta Fane</td>
+                                    <td class=" trunk-width text-truncate">200 Bradhurst Ave</td>
+                                    <td>null</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Peanut Butter Case...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001297</td>
+                                    <td>Mansse Balogun</td>
+                                    <td>171-14 103rd Rd</td>
+                                    <td>null</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Barrel Large</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>05/12/2025</td>
+                                    <td>TIV-001295</td>
+                                    <td>Khader Gbane</td>
+                                    <td>63 Wyckoff Aver</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td class=" trunk-width text-truncate">Suitecase(valise)...</td>
+                                    <td>
+                                        <i class="far fa-edit mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#editInvoiceReportModal"></i>
+                                        <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteInvoiceReportModal"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mb-2">
-            <button class="btn btn-primary btn-sm mt-2" type="button" data-bs-toggle="modal"
-                data-bs-target="#trackingReportModal">Item Report</button>
-            <button class="btn btn-primary btn-sm mt-2" type="button">Container Status Report</button>
-            <button class="btn btn-primary btn-sm mt-2" type="button">Container Status Print</button>
-            <button class="btn btn-primary btn-sm mt-2" type="button">Print Invoice Report</button>
-        </div>
-
-        <div class="row">
-            <div id='ajexTable'>
-                <div class="card-table">
-                  <div class="card-body">
-                        <div class="table-responsive table-height mt-3">
-                            <table class="table table-stripped table-hover datatable">
-                                <thead class="thead-light text-start px-3">
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Invoice No</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Customer Lic</th>
-                                        <th>Shipto Lic</th>
-                                        <th>Items</th>
-                                        <th class=" bg-transparent table-last-column">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                                <tbody class="px-3">
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001319</td>
-                                        <td>Layee Kromah</td>
-                                        <td>4 Upland Gardens Dr</td>
-                                        <td>null</td>
-                                        <td>-</td>
-                                        <td class="trunk-width text-truncate">Brown Box 8 With...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001299</td>
-                                        <td>Ahoua Kante</td>
-                                        <td class=" trunk-width text-truncate">796 East 163rd Street
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Afro International...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001308</td>
-                                        <td>Irene G Bagnan</td>
-                                        <td>220 Mt Nernon PI</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Barrel Large, Home...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001321</td>
-                                        <td>Seydou Saumahoro</td>
-                                        <td>3 Wells Park Dr</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Invoirien Cargo Car...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001309</td>
-                                        <td>Ali Fofana</td>
-                                        <td>1642 Park Ave</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">New Computer in B...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001316</td>
-                                        <td>Julien Kouame</td>
-                                        <td>6 Deerfield Rd</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Barrel Medium</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001298</td>
-                                        <td>Antou Diakite</td>
-                                        <td>200 W 148th St...</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Barrel large 3 doll...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001296</td>
-                                        <td>Fanta Fane</td>
-                                        <td class=" trunk-width text-truncate">200 Bradhurst Ave</td>
-                                        <td>null</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Peanut Butter Case...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001297</td>
-                                        <td>Mansse Balogun</td>
-                                        <td>171-14 103rd Rd</td>
-                                        <td>null</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Barrel Large</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>05/12/2025</td>
-                                        <td>TIV-001295</td>
-                                        <td>Khader Gbane</td>
-                                        <td>63 Wyckoff Aver</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class=" trunk-width text-truncate">Suitecase(valise)...</td>
-                                        <td>
-                                            <i class="far fa-edit mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editInvoiceReportModal"></i>
-                                            <i class="far fa-trash-alt mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteInvoiceReportModal"></i>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                   </div>
                 </div>
             </div>
         </div>
@@ -264,7 +261,8 @@
                     <h4 class="fw-bold mb-2">Are you sure?</h4>
                     <p class="mb-4 fs_18">You won't be able to revert this!</p>
                     <button type="button" class="btn btn-danger me-2 rounded-1">Yes, delete it!</button>
-                    <button type="button" class="btn btn-secondary rounded-1" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary rounded-1"
+                        data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -284,7 +282,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label for="lading_bill" class="form-label mb-0">Email Id<i class="text-danger">*</i>:</label>
+                        <label for="lading_bill" class="form-label mb-0">Email Id<i
+                                class="text-danger">*</i>:</label>
                         <input type="email" id="lading_bill" class="form-control" value=""
                             placeholder="Enter Emaill Id">
                     </div>
@@ -306,7 +305,8 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="expensePopupModalLabel">Edit Custom Report</h1>
-                    <button type="button" class="btn-close fs_18" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fs_18" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -327,8 +327,9 @@
                                                 class="text-danger">*</span>:
                                         </label>
                                         <div class="input-group mb-0">
-                                            <input type="date" id="batchPackageDate" name="date" placement="bottom"
-                                                class="form-control " placeholder="MM-DD-YYYY" value="04-29-2024">
+                                            <input type="date" id="batchPackageDate" name="date"
+                                                placement="bottom" class="form-control " placeholder="MM-DD-YYYY"
+                                                value="04-29-2024">
                                         </div>
                                     </div>
                                 </div>
@@ -354,8 +355,8 @@
                                 </div>
                                 <div class="mt-1">
                                     <div class="form-group">
-                                        <label for="customerAddress" class="form-label pt-3 mb-0">Customer Address<span
-                                                class="text-danger">*</span></label>
+                                        <label for="customerAddress" class="form-label pt-3 mb-0">Customer
+                                            Address<span class="text-danger">*</span></label>
                                         <input id="addressInput" formcontrolname="customerAddress"
                                             placeholder="Select Customer Address" maxlength="250"
                                             class="form-control  pac-target-input">
@@ -415,10 +416,11 @@
                                 </div>
                                 <div class="mt-1">
                                     <div class="form-group">
-                                        <label for="receiverAddress" class="form-label pt-3 mb-0">Receiver Address<span
-                                                class="text-danger">*</span></label>
+                                        <label for="receiverAddress" class="form-label pt-3 mb-0">Receiver
+                                            Address<span class="text-danger">*</span></label>
                                         <input id="addressInput" formcontrolname="receiverAddress"
-                                            placeholder="Select Receiver Address" value="Abidjan" class="form-control">
+                                            placeholder="Select Receiver Address" value="Abidjan"
+                                            class="form-control">
 
                                     </div>
                                 </div>
@@ -473,7 +475,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer p-0 pt-3">
-                                <button type="button" class="btn btn-primary btn-sm change-color">Save changes</button>
+                                <button type="button" class="btn btn-primary btn-sm change-color">Save
+                                    changes</button>
                                 <button type="button" class="btn btn-secondary btn-sm ms-2"
                                     data-bs-dismiss="modal">Cancel</button>
                             </div>

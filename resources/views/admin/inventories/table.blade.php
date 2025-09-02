@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="table-responsive mt-3">
 
-            <table class="table table-stripped table-hover datatable inheritbg" id="setBackground">
+            <table class="table table-stripped table-hover datatable" id="setBackground">
                 <thead class="thead-light">
                     <tr>
                         <th>Item No</th>
@@ -30,7 +30,8 @@
                             <td>{{ $inventory->unique_id }}</td>
                             <td class="product_img">
                                 @if (!empty($inventory->img))
-                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50" height="50">
+                                    <img src="{{ asset($inventory->img) }}" alt="Inventory Image" width="50"
+                                        height="50">
                                 @else
                                     <span>-</span>
                                 @endif

@@ -84,7 +84,7 @@
                             <label for="exampleCalculation" class="foncolor">From Country</label>
                             <select name="from_country" id="from_country_select" class="form-control inp select2">
                                 <option selected disabled hidden>Select Country</option>
-                                @foreach($countrys as $index => $country)
+                                @foreach ($countrys as $index => $country)
                                     <option value="{{ $country->name }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
@@ -109,7 +109,7 @@
                             <label for="exampleCalculation" class="foncolor">To Country</label>
                             <select id="to_country_select" name="to_country" class="form-control inp select2">
                                 <option selected disabled hidden>Select Country</option>
-                                @foreach($countrys as $index => $country)
+                                @foreach ($countrys as $index => $country)
                                     <option value="{{ $country->name }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
@@ -139,8 +139,9 @@
                     <div class="col-md-6">
                         <div class="input-block border-0 mb-2">
                             <label for="exampleCalculation" class="foncolor">Currency</label>
-                            <select class="form-select select2 inp form-select-sm" id="freight_currency">
-                                @foreach($viewCurrencys as $index => $currency)
+                            <select class="form-control inp form-control-sm  select2 inp form-select-sm"
+                                id="freight_currency">
+                                @foreach ($viewCurrencys as $index => $currency)
                                     <option value="{{ $currency }}">{{ $currency }}</option>
                                 @endforeach
                             </select>
@@ -158,7 +159,8 @@
                     <div class="col-lg-5 col-md-5 col-sm-12">
                         <div class="input-block mb-2">
                             <label for="exampleCalculation" class="foncolor">Volumn (cu. mt)</label>
-                            <input type="text" id="containerSize_volume" value="0/0" class="form-control inp" readonly>
+                            <input type="text" id="containerSize_volume" value="0/0" class="form-control inp"
+                                readonly>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -168,15 +170,15 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="progress inp">
-                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="40"
-                                        aria-valuemin="0" aria-valuemax="100">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar"
+                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="">
-                                    <input name="used_volume" type="text" id="progress-input" class="form-control inp"
-                                        value="0%" readonly>
+                                    <input name="used_volume" type="text" id="progress-input"
+                                        class="form-control inp" value="0%" readonly>
                                 </div>
                             </div>
                         </div>
@@ -185,8 +187,8 @@
                     <div class="col-lg-5 col-md-5 col-sm-12">
                         <div class="input-block mb-2">
                             <label for="exampleCalculation" class="foncolor">Weight (Kg)</label>
-                            <input type="text" id="containerSize_max_weight" value="0/0" class="form-control inp"
-                                readonly>
+                            <input type="text" id="containerSize_max_weight" value="0/0"
+                                class="form-control inp" readonly>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -196,15 +198,15 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="progress inp">
-                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="40"
-                                        aria-valuemin="0" aria-valuemax="100">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar"
+                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="">
-                                    <input name="used_weight" type="text" id="progress-input" class="form-control inp"
-                                        value="0%" readonly>
+                                    <input name="used_weight" type="text" id="progress-input"
+                                        class="form-control inp" value="0%" readonly>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +220,8 @@
                     <thead>
                         <th class="border border-dark-subtle fw-normal text-start">#</th>
                         <th class="border border-dark-subtle fw-normal text-start">Product</th>
-                        <th style="max-width: 76px;" class="border border-dark-subtle fw-normal text-start">Description
+                        <th style="max-width: 76px;" class="border border-dark-subtle fw-normal text-start">
+                            Description
                         </th>
                         <th class="border border-dark-subtle fw-normal text-start">Quantity</th>
                         <th style="max-width: 65px;" class="border border-dark-subtle fw-normal text-start">Qty/Pack
@@ -253,16 +256,21 @@
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Product</label>
                                     <div class="col-md-10 col-lg-10 col-sm-10 ps-4">
-                                        <input name="product_name" id="product_name" type="text"
-                                            class="form-control inp form-control-sm" id="inputProduct">
+                                        <select id="product_name" class="form-control inp form-control-sm select2">
+                                            <option hidden selected disabled>Select Product</option>
+                                            <option value="Chair">Chair</option>
+                                            <option value="Couch">Couch</option>
+                                            <option value="Ladder">Ladder</option>
+                                            <option value="BarbeQ">BArbeQ</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Description</label>
                                     <div class="col-md-10 col-lg-10 col-sm-10 ps-4">
-                                        <textarea name="description" id="description" type="text"
-                                            class="form-control inp form-control-sm" rows="4"></textarea>
+                                        <textarea name="description" id="description" type="text" class="form-control inp form-control-sm"
+                                            rows="4"></textarea>
                                     </div>
                                 </div>
 
@@ -277,18 +285,17 @@
                                     <label for="inputProduct"
                                         class="col-sm-2 col-form-label fw-light font13">Qty/Pack</label>
                                     <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <input name="qty_pack" type="text" class="form-control inp form-control-sm"
-                                            id="qty_pack" placeholder="0">
+                                        <input name="qty_pack" type="text"
+                                            class="form-control inp form-control-sm" id="qty_pack" placeholder="0">
                                     </div>
                                 </div>
 
                                 <div class="mb-2 row">
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">
                                         Dimensions in</label>
-                                    <div class="col-md-4 col-lg-4 col-sm-4 ps-4">
-                                        <select name="dimensions_in" class="form-select form-select-sm select2"
+                                    <div class="smSelect sm col-md-4 col-lg-4 col-sm-4 ps-4">
+                                        <select name="dimensions_in" class="form-control inp form-control-sm select2"
                                             id="dimensions_in">
-                                            <option disabled hidden selected value=""></option>
                                             <option value="cm">Cm</option>
                                             <option value="meter">Meter</option>
                                             <option value="inch">Inch</option>
@@ -320,10 +327,9 @@
                                 <div class="mb-2 row">
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Product
                                         Weight</label>
-                                    <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
+                                    <div class="smSelect col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
                                         <select name="product_weight_type" class="form-select form-select-sm select2"
                                             id="product_weight_type">
-                                            <option disabled hidden selected value=""></option>
                                             <option value="Kg">Kg</option>
                                             <option value="G">G</option>
                                             <option value="Lbs">Lbs</option>
@@ -337,10 +343,10 @@
                                     </div>
                                     <label for="inputProduct" class="col-sm-2 col-form-label fw-light font13">Packing
                                         Weight</label>
-                                    <div class="col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
-                                        <select name="packing_weight_type" class="form-select select2"
+                                    <div class="smSelect col-md-2 col-lg-2 col-sm-6 mt-1 pe-1 ps-4 border-0 sm">
+                                        <select name="packing_weight_type"
+                                            class="form-control inp form-control-sm  select2"
                                             id="packing_weight_type">
-                                            <option disabled hidden selected value=""></option>
                                             <option value="Kg">Kg</option>
                                             <option value="G">G</option>
                                             <option value="Lbs">Lbs</option>
@@ -361,8 +367,9 @@
                                         class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
                                         Cartons</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input name="total_cartons" type="text" class="form-control inp form-control-sm"
-                                            id="total_cartons" placeholder="0">
+                                        <input name="total_cartons" type="text"
+                                            class="form-control inp form-control-sm" id="total_cartons"
+                                            placeholder="0">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -370,8 +377,8 @@
                                         class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Single
                                         CBM</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input name="single_CBM" type="text" class="form-control inp form-control-sm"
-                                            id="single_CBM" placeholder="0">
+                                        <input name="single_CBM" type="text"
+                                            class="form-control inp form-control-sm" id="single_CBM" placeholder="0">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -379,8 +386,9 @@
                                         class="col-lg-4 col-md-4 col-sm-4 col-form-label fw-light font13 me-sm-3">Total
                                         CBM</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input name="total_CBM" type="text" class="form-control inp form-control-sm"
-                                            id="total_CBM_id" placeholder="0">
+                                        <input name="total_CBM" type="text"
+                                            class="form-control inp form-control-sm" id="total_CBM_id"
+                                            placeholder="0">
                                     </div>
                                 </div>
                                 <div class="my-1 row">
@@ -389,8 +397,9 @@
                                         Weight
                                         (kg.)</label>
                                     <div class="col-md-5 col-lg-5 col-sm-5">
-                                        <input name="net_weight_kg" type="text" class="form-control inp form-control-sm"
-                                            id="net_weight_kg" placeholder="0">
+                                        <input name="net_weight_kg" type="text"
+                                            class="form-control inp form-control-sm" id="net_weight_kg"
+                                            placeholder="0">
                                     </div>
                                 </div>
                                 <div class="my-2 row">
@@ -428,9 +437,12 @@
                                             placeholder="0">
                                     </div>
                                 </div>
-                                <div class="my-1 row">
+                                <div class="mt-3 mb-1 row gap-2">
                                     <button type="submit" for="inputProduct" id="UpdateBtn"
-                                        class="col-md-4 col-lg-4 col-sm-4 btn bg-transparent btn-text-color text-start btn-sm">Update
+                                        class="col-md-3 btn btn-primary" disabled>Update
+                                    </button>
+                                    <button type="reset" for="inputProduct" id="UpdateBtn"
+                                        class="col-md-3 btn btn-outline-primary">Cancel
                                     </button>
                                 </div>
                             </td>
@@ -443,7 +455,8 @@
                 <button type="button" id="addProductBtn" for="inputProduct" class="btn btn-primary">Add
                     Product
                 </button>
-                <button type="button" id="addProductBtn" for="inputProduct" class="btn buttons btn-primary mt-1">
+                <button type="button" id="addProductBtn" data-bs-toggle="modal" data-bs-target="#PrintCalculation"
+                    class="btn buttons btn-primary mt-1">
                     <i class="ti ti-printer me-1"></i>
                     Print Calculation
                 </button>
@@ -451,6 +464,213 @@
 
         </div>
     </form>
+
+    <div class="modal bg-white custom-modal fade" id="PrintCalculation" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-xxl-down">
+            <div class="modal-header pb-0 border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-body py-0">
+                    <table style=" width:100% !important; max-width: 1200px; margin: auto; color:black;">
+                        <tr>
+                            <td>
+                                <table style="width: 100%;">
+
+                                    <td colspan="4"
+                                        style="font-size: 18px; font-weight: 700; text-align: center; padding: 10px 0; margin: 4px 0px;">
+                                        Calculation
+                                        Report</td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="padding: 4px; margin-left:4px; background-color: white; vertical-align: middle; height:20px !important;">
+                                Customer:</strong></td>
+                            <td style="width:500px; height:20px !important;">tss</td>
+                            <td style="width:500px; height:20px !important;">Calculation #:</strong></td>
+                            <td style="width:500px; height:20px !important;">tss/1</td>
+                        </tr>
+                        <tr>
+                            <td style="width:500px; height:20px !important;">Container :</strong></td>
+                            <td style="width:500px; height:20px !important;">Standard 20 Feet</td>
+                            <td style="width:500px; height:20px !important;">Calculation date :</strong></td>
+                            <td style="width:500px; height:20px !important;">30/Jan/2021</td>
+                        </tr>
+                        <tr>
+                            <td style="width:500px; height:20px !important;">Container Dimension :</strong></td>
+                            <td style="width:500px; height:20px !important;">590 x 235 x 239 cm</td>
+                            <td style="width:500px; height:20px !important;">From :</strong></td>
+                            <td style="width:500px; height:20px !important;">India - Cochin</td>
+                        </tr>
+                        <tr>
+                            <td style="width:500px; height:20px !important;">Container Volume/Used Volume :</strong>
+                            </td>
+                            <td style="width:500px; height:20px !important;">10.31695/33.2000</td>
+                            <td style="width:500px; height:20px !important;">To :</strong></td>
+                            <td style="width:500px; height:20px !important;">United States - Houston, Texas</td>
+                        </tr>
+                        <tr>
+                            <td style="width:500px; height:20px !important;">Container Weight/Used Weight :</strong>
+                            </td>
+                            <td style="width:500px; height:20px !important;">8373.6/21770.00</td>
+                            <td style="width:500px; height:20px !important;">Container Freight :</strong></td>
+                            <td style="width:500px; height:20px !important;">1200.0000,USD</td>
+                        </tr>
+                    </table>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="15">
+                                            <table
+                                                style="width:100%; text-align: right; border-bottom: 1px solid black">
+                                                <tr>
+                                                    <td style="height: 20px!important"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        S.No.</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Product</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Quantity</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Pack
+                                                        Qty</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        TNOC
+                                                    </th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; text-align: left; background-color: white; vertical-align: baseline;">
+                                                        Dimension
+                                                    </th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        S.
+                                                        Volume (m³)</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        T.
+                                                        Volume (m³)</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Product Weight</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Pack
+                                                        Weight</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Carton Weight</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Total Weight</th>
+                                                    <th
+                                                        style="padding: 4px; margin-left:4px; background-color: white; vertical-align: baseline;">
+                                                        Per-unit Freight</th>
+                                                    <th style="padding: 4px; background-color: white;">Per-unit Freight
+                                                        By
+                                                        Volume</th>
+                                                    <th style="padding: 4px; background-color: white;">Per-unit Freight
+                                                        By
+                                                        Weight</th>
+                                                </tr>
+                                            </table>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="border-bottom: 1px solid black !important; margin-bottom:4px">
+                                    <tr style=" text-align: right; vertical-align:center;">
+                                        <td style="padding: 4px; text-align: left; vertical-align: middle;">1</td>
+                                        <td style="padding: 4px; text-align: left; vertical-align: middle;">Product 1
+                                        </td>
+                                        <td style="padding: 4px; vertical-align: middle;">4000</td>
+                                        <td style="padding: 4px; vertical-align: middle;">10</td>
+                                        <td style="padding: 4px; vertical-align: middle;">400</td>
+                                        <td style="padding: 4px; text-align: left; vertical-align: middle;">
+                                            35.00x25.00x20.00 Cm</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.0175</td>
+                                        <td style="padding: 4px; vertical-align: middle;">7</td>
+                                        <td style="padding: 4px; vertical-align: middle;">1.00 Kg</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.20 Kg</td>
+                                        <td style="padding: 4px; vertical-align: middle;">10.2</td>
+                                        <td style="padding: 4px; vertical-align: middle;">4080</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.1600</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.2035</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.1462</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="14" style="padding: 4px; text-align: left;">Product 1
+                                            Description
+                                        </td>
+                                    </tr>
+                                    <tr style=" text-align: right;">
+                                        <td style="padding: 4px; text-align: left; vertical-align: middle;">2</td>
+                                        <td style="padding: 4px; text-align: left; vertical-align: middle;">Product 2
+                                        </td>
+                                        <td style="padding: 4px; vertical-align: middle;">3500</td>
+                                        <td style="padding: 4px; vertical-align: middle;">15</td>
+                                        <td style="padding: 4px; vertical-align: middle;">234</td>
+                                        <td style="padding: 4px; text-align: left; vertical-align: middle;">
+                                            45.00x15.00x21.00 Cm</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.014175</td>
+                                        <td style="padding: 4px; vertical-align: middle;">3.31695</td>
+                                        <td style="padding: 4px; vertical-align: middle;">1.20 Kg</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.40 Kg</td>
+                                        <td style="padding: 4px; vertical-align: middle;">18.4</td>
+                                        <td style="padding: 4px; vertical-align: middle;">4293.6</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.1600</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.1102</td>
+                                        <td style="padding: 4px; vertical-align: middle;">0.1758</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="15" style="padding: 4px; text-align: left;">Product 2
+                                            Description
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="15">
+                                            <table
+                                                style="width: 100%; border-bottom: 2px solid #000000; border-top: 2px solid #bbbbbb; padding: 5px 0;">
+                                                <tr>
+                                                    <td colspan="2"></td>
+                                                    <td style="padding: 4px; text-align: end; vertical-align: middle;">
+                                                        7500</td>
+                                                    <td style="padding: 4px;"></td>
+                                                    <td
+                                                        style="padding: 4px; text-align: center; vertical-align: middle;">
+                                                        634</td>
+                                                    <td style="padding: 4px;"></td>
+                                                    <td style="padding: 4px;"></td>
+                                                    <td style="padding: 4px; vertical-align: middle;">10.31695</td>
+                                                    <td style="padding: 4px;"></td>
+                                                    <td style="padding: 4px;"></td>
+                                                    <td style="padding: 4px;"></td>
+                                                    <td style="padding: 4px; vertical-align: middle;">8373.6</td>
+                                                    <td colspan="3" style="padding: 4px;"></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     @section('script')
         <script>
             function deleteProduct(productId) {
@@ -470,7 +690,7 @@
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
-                            success: function (response) {
+                            success: function(response) {
                                 Swal.fire(
                                     'Deleted!',
                                     response.message,
@@ -478,9 +698,10 @@
                                 );
                                 $('#product-row-' + productId).remove(); // Remove row from DOM
 
-                                decreaseVolumeAndWeightBar(response.total_CBM, response.total_gross_weight_kg);
+                                decreaseVolumeAndWeightBar(response.total_CBM, response
+                                    .total_gross_weight_kg);
                             },
-                            error: function (xhr) {
+                            error: function(xhr) {
                                 Swal.fire(
                                     'Error!',
                                     xhr.responseJSON?.message || 'Something went wrong!',
@@ -519,11 +740,13 @@
 
                 // Weight
                 const weightPercent = maxWeight > 0 ? (usedWeight / maxWeight) * 100 : 0;
-                document.getElementById("containerSize_max_weight").value = `${usedWeight.toFixed(2)} / ${maxWeight.toFixed(2)}`;
+                document.getElementById("containerSize_max_weight").value =
+                    `${usedWeight.toFixed(2)} / ${maxWeight.toFixed(2)}`;
                 document.querySelector('[name="used_weight"]').value = `${weightPercent.toFixed(0)}%`;
                 document.querySelectorAll('#progress-bar')[1].style.width = `${weightPercent.toFixed(0)}%`;
                 document.querySelectorAll('#progress-bar')[1].setAttribute('aria-valuenow', weightPercent.toFixed(0));
             }
+
             function decreaseVolumeAndWeightBar(removedCBM, removedWeight) {
                 // Get existing used CBM & Weight from inputs (e.g. "1.20 / 6.00")
                 let existingCBMText = document.getElementById("containerSize_volume").value;
@@ -545,12 +768,12 @@
 
                 // Weight
                 const weightPercent = maxWeight > 0 ? (usedWeight / maxWeight) * 100 : 0;
-                document.getElementById("containerSize_max_weight").value = `${usedWeight.toFixed(2)} / ${maxWeight.toFixed(2)}`;
+                document.getElementById("containerSize_max_weight").value =
+                    `${usedWeight.toFixed(2)} / ${maxWeight.toFixed(2)}`;
                 document.querySelector('[name="used_weight"]').value = `${weightPercent.toFixed(0)}%`;
                 document.querySelectorAll('#progress-bar')[1].style.width = `${weightPercent.toFixed(0)}%`;
                 document.querySelectorAll('#progress-bar')[1].setAttribute('aria-valuenow', weightPercent.toFixed(0));
             }
-
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
@@ -609,8 +832,8 @@
             });
         </script>
         <script>
-            $(document).ready(function () {
-                $('#singleShippingContainerForm').on('submit', function (e) {
+            $(document).ready(function() {
+                $('#singleShippingContainerForm').on('submit', function(e) {
                     e.preventDefault(); // Prevent default form submit
 
                     let formData = new FormData(this);
@@ -622,9 +845,10 @@
                         processData: false,
                         contentType: false,
                         headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token if needed
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content') // CSRF token if needed
                         },
-                        success: function (response) {
+                        success: function(response) {
                             let p = response.product_data;
 
                             let newRow = `
@@ -653,13 +877,16 @@
                                                 </tr>
                                                 `;
 
-                            let containerSize_volume = $('#containerSize_volume').val().split('/')[1]?.trim() || '';
-                            let containerSize_max_weight = $('#containerSize_max_weight').val().split('/')[1]?.trim() || '';
+                            let containerSize_volume = $('#containerSize_volume').val().split('/')[
+                                1]?.trim() || '';
+                            let containerSize_max_weight = $('#containerSize_max_weight').val()
+                                .split('/')[1]?.trim() || '';
 
                             let total_CBM_id = $('#total_CBM_id').val();
                             let total_gross_weight_kg_id = $('#total_gross_weight_kg_id').val();
 
-                            updateVolumeAndWeightBar(total_CBM_id, containerSize_volume, total_gross_weight_kg_id, containerSize_max_weight);
+                            updateVolumeAndWeightBar(total_CBM_id, containerSize_volume,
+                                total_gross_weight_kg_id, containerSize_max_weight);
 
                             // Remove "No data to display" row if exists
                             $('#product_data tr:contains("No data to display")').remove();
@@ -690,7 +917,7 @@
 
 
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             console.error(xhr.responseText);
                             alert(xhr.responseText);
                         }
@@ -699,7 +926,7 @@
             });
         </script>
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 function fetchData() {
                     let from_country = $('#from_country_select').val();
                     let from_port = $('#from_port').val();
@@ -720,21 +947,24 @@
                                 to_port: to_port,
                                 containerSelect: containerSelect
                             },
-                            success: function (response) {
+                            success: function(response) {
                                 if (response.success) {
                                     $('#port_wise_freights_id').val(response.freight_data.id);
                                     // ✅ Freight Price
-                                    $('#Container_Freight_price').val(response.container_data.freight_price);
+                                    $('#Container_Freight_price').val(response.container_data
+                                        .freight_price);
 
                                     // ✅ Currency
                                     $('#freight_currency').val(response.container_data.currency).change();
 
                                     // ✅ Volume
-                                    const volumeMax = parseFloat(response.containerSizeData.volume).toFixed(3);
+                                    const volumeMax = parseFloat(response.containerSizeData.volume).toFixed(
+                                        3);
                                     $('#containerSize_volume').val("0/" + volumeMax);
 
                                     // ✅ Weight
-                                    const weightMax = parseFloat(response.containerSizeData.max_weight).toFixed(2);
+                                    const weightMax = parseFloat(response.containerSizeData.max_weight)
+                                        .toFixed(2);
                                     $('#containerSize_max_weight').val("0/" + weightMax);
 
                                     // ✅ Update Volume Progress Bar
@@ -752,11 +982,15 @@
                                     $('#progress-input-weight').val(weightPercent + '%');
 
                                 } else {
-                                    $('#freight-result').html('<div class="alert alert-danger">No matching record found.</div>');
+                                    $('#freight-result').html(
+                                        '<div class="alert alert-danger">No matching record found.</div>'
+                                    );
                                 }
                             },
-                            error: function (xhr) {
-                                $('#freight-result').html('<div class="alert alert-danger">An error occurred while fetching data.</div>');
+                            error: function(xhr) {
+                                $('#freight-result').html(
+                                    '<div class="alert alert-danger">An error occurred while fetching data.</div>'
+                                );
                             }
                         });
                     }
@@ -768,14 +1002,14 @@
             });
         </script>
         <script>
-            $(document).ready(function () {
-                $('#from_country_select').on('change', function () {
+            $(document).ready(function() {
+                $('#from_country_select').on('change', function() {
                     let country = $(this).val();
                     console.log(country); // ← ye tabhi chalega jab upar sab sahi hai
                     getPorts(country, '#from_port');
                 });
 
-                $('#to_country_select').on('change', function () {
+                $('#to_country_select').on('change', function() {
                     let country = $(this).val();
                     getPorts(country, '#to_port');
                 });
@@ -784,22 +1018,26 @@
                     $.ajax({
                         url: '/api/get-ports/' + countryName,
                         type: 'GET',
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status) {
                                 let portSelect = $(portSelectId);
                                 portSelect.empty(); // clear old options
                                 if (response.data.length > 0) {
-                                    portSelect.append('<option selected disabled hidden>Select Port</option>');
+                                    portSelect.append(
+                                        '<option selected disabled hidden>Select Port</option>');
 
-                                    response.data.forEach(function (port) {
-                                        portSelect.append(`<option value="${port.id}">${port.port_name}</option>`);
+                                    response.data.forEach(function(port) {
+                                        portSelect.append(
+                                            `<option value="${port.id}">${port.port_name}</option>`
+                                        );
                                     });
                                 } else {
-                                    portSelect.append('<option selected disabled>No port available</option>');
+                                    portSelect.append(
+                                        '<option selected disabled>No port available</option>');
                                 }
                             }
                         },
-                        error: function () {
+                        error: function() {
                             alert('Failed to load ports.');
                         }
                     });
@@ -807,8 +1045,8 @@
             });
         </script>
         <script>
-            $(document).ready(function () {
-                $('#containerSelect').on('change', function () {
+            $(document).ready(function() {
+                $('#containerSelect').on('change', function() {
                     let selectedOption = $(this).find('option:selected');
 
                     let length = selectedOption.data('length');
@@ -824,14 +1062,13 @@
             });
         </script>
         <script>
-            document.getElementById("addProductBtn").addEventListener("click", function () {
+            document.getElementById("addProductBtn").addEventListener("click", function() {
                 document.getElementById("update_data").classList.remove("d-none");
             });
 
-            document.getElementById("cancelUpdateBtn").addEventListener("click", function () {
+            document.getElementById("cancelUpdateBtn").addEventListener("click", function() {
                 document.getElementById("update_data").classList.add("d-none");
             });
-
         </script>
         <script>
             function updateProgress(percent) {
@@ -843,7 +1080,6 @@
 
             // Example: Dynamically set to 70%
             // updateProgress(20);
-
         </script>
     @endsection
 </x-app-layout>

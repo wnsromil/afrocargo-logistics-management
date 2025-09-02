@@ -4,8 +4,9 @@
     </x-slot>
 
     <x-slot name="cardTitle">
-        <p class="head">Supply Inventorys</p>
-        <div class="d-flex align-items-center justify-content-end mb-0">
+        <p class="head">Supply Inventory</p>
+
+        <div class="d-flex align-items-center justify-content-end mb-1 mtop-20">
             <div class="usersearch d-flex">
                 <div class="">
                     @can('has-dynamic-permission', 'supply_inventory_list.create')
