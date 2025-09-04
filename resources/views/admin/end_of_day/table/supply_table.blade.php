@@ -21,7 +21,7 @@
                 <tbody>
                     @forelse ($invoices as $key => $invoice)
                         <tr>
-                            <td>{{ $invoice->customer->name ?? '' }} {{ $invoice->customer->last_name ?? '' }}</td>
+                            <td style="text-align: left;">{{ $invoice->customer->name ?? '' }} {{ $invoice->customer->last_name ?? '' }}</td>
                             <td>{{ $invoice->driver->name ?? '' }} {{ $invoice->driver->last_name ?? '' }}</td>
                             <td>
                                 @if ($invoice->invoce_type === 'services')

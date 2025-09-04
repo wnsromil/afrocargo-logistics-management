@@ -36,7 +36,7 @@
             <div class="col-md-3 dposition">
                 <label for="searchInput">Search</label>
                 <i class="ti ti-search"></i>
-                <input type="text" id="searchInput" name="search" class="form-control form-cs" placeholder="Search"
+                <input type="text" name="search" class="form-control form-cs" placeholder="Search"
                     value="{{ request('search') }}">
             </div>
 
@@ -111,7 +111,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3 {{--text-end align-content-end--}}">
+            <div class="col-md-12 text-end align-content-end mb-3">
                 <button type="submit" class="btn px-4 btn-primary me-2">Filter</button>
                 <a href="{{ route(Route::currentRouteName()) }}" class="btn px-4 btn-outline-danger">Reset</a>
             </div>

@@ -63,7 +63,21 @@ class AdvanceReportsController extends Controller
                 $q->where('tracking_number', $request->tracking_id);
             })
             ->when($request->filled('customer'), function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->customer . '%');
+                // Find matching user IDs from User model
+                $userIds = User::where(function ($query) use ($request) {
+                    $query->where('username', 'like', '%' . $request->customer . '%')
+                        ->orWhere('name', 'like', '%' . $request->customer . '%')
+                        ->orWhere('last_name', 'like', '%' . $request->customer . '%')
+                        ->orWhere(DB::raw("CONCAT(name, ' ', last_name)"), 'like', '%' . $request->customer . '%');
+                })->pluck('id')->toArray();
+
+                if (!empty($userIds)) {
+                    $q->orWhereIn('pickup_address_id', $userIds)
+                        ->orWhereIn('delivery_address_id', $userIds)
+                        ->orWhereIn('driver_id', $userIds)
+                        ->orWhereIn('customer_id', $userIds)
+                        ->orWhereIn('ship_customer_id', $userIds);
+                }
             })
             ->when($request->filled('driver'), function ($q) use ($request) {
                 $q->where('driver_id', $request->driver);
@@ -116,15 +130,12 @@ class AdvanceReportsController extends Controller
 
         $serialStart = ($currentPage - 1) * $perPage;
 
-
-
         if ($request->ajax()) {
             return view('admin.advance_reports.table', compact('parcels', 'warehouses', 'drivers', 'containers', 'search', 'perPage', 'serialStart'));
         }
 
         return view('admin.advance_reports.index', compact('parcels', 'warehouses', 'drivers', 'containers', 'search', 'perPage', 'serialStart'));
     }
-
     public function exportReports(Request $request)
     {
         $search = $request->input('search');

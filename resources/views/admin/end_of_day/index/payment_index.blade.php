@@ -175,7 +175,7 @@
                         <tbody>
                             @forelse ($payments as $key => $payment)
                                 <tr>
-                                    <td>{{ $payment->invoice->customer->name ?? '' }}
+                                    <td style="text-align: left;">{{ $payment->invoice->customer->name ?? '' }}
                                         {{ $payment->invoice->customer->last_name ?? '' }}
                                     </td>
                                     <td>{{ $payment->invoice->driver->name ?? '' }}

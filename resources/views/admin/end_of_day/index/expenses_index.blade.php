@@ -170,7 +170,7 @@
                             @forelse ($expenses as $key => $expense)
                                 <tr>
                                     <td>{{ $expense->unique_id ?? '--' }}</td>
-                                    <td>{{ $expense->creatorUser->name ?? '--' }}</td>
+                                    <td style="text-align: left;">{{ $expense->creatorUser->name ?? '--' }}</td>
                                     <td>{{ $expense->warehouse->warehouse_name ?? '--' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($expense->date)->format('m-d-Y') }}</td>
                                     <td>{{ $expense->category ?? '--' }}</td>

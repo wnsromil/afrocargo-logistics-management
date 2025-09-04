@@ -4,7 +4,6 @@
             <table class="table table-stripped table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        <th>Sn no.</th>
                         <th>Notification ID</th>
                         <th>Title</th>
                         <th>Message</th>
@@ -17,8 +16,7 @@
                 </thead>
                 <tbody>
                     @foreach($notifications as $index => $notification)
-                        <tr class="alignt">
-                            <td>{{ $serialStart + $index + 1 }}</td>
+                        <tr>
                             <td>{{ $notification->unique_id ?? '-' }}</td>
                             <td>{{ $notification->title }}</td>
                             <td title="{{ $notification->message }}">

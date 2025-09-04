@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\Port;
 use App\Models\PortWiseFreight;
 use App\Models\PortWiseFreightContainer;
+use App\Models\Warehouse;
 use App\Models\PortSingleShippingContainer;
 use App\Models\PortSingleShippingContainerProduct;
 use Carbon\Carbon;
@@ -43,9 +44,14 @@ class CBMCalculatoarController extends Controller
     {
         $ContainerSizes = ContainerSize::all();
         $Countrys = Country::all();
+        $warehouses = Warehouse::when($this->user->role_id != 1, function ($q) {
+            return $q->where('id', $this->user->warehouse_id);
+        })->get();
+
         return view('admin.cbm_calculatoar.FreightShipping.SingleShippingContainer', [
             'containerSizes' => $ContainerSizes,
             'countrys' => $Countrys,
+            'warehouses' => $warehouses
         ]);
     }
 
@@ -279,6 +285,7 @@ class CBMCalculatoarController extends Controller
 
     public function storeContainerAndProduct(Request $request)
     {
+        //dd($request->all());
         // ✅ Validate request (simplified; add more rules as needed)
         $request->validate([
             'calculation_date' => 'required|date',

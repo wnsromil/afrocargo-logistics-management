@@ -239,6 +239,11 @@ class RegisterController extends Controller
 
         $success['userData'] = $user->load('userRole');
 
+        User::where('id', operator: $user->id)->update([
+            'firebase_token' => $request->firebase_token ?? null,
+            'device_type' => $request->device_type ?? null,
+        ]);
+
         User::where('id', $user->id)->update([
             'firebase_token' => $request->firebase_token ?? null,
             'device_type' => $request->device_type ?? null,
@@ -389,7 +394,7 @@ class RegisterController extends Controller
                 </div>
             </div>
             ";
-            storeDriverLog($html, $user->id, 'logout');
+                storeDriverLog($html, $user->id, 'logout');
             }
 
             $user->token()->revoke();

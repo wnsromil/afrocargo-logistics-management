@@ -291,7 +291,7 @@
                             <label>By Date</label>
                             <div class="daterangepicker-wrap mannual cal-icon cal-icon-info">
                                 <input type="text" name="logs_datetimes" placeholder="Select Date Range"
-                                    value="{{ request('logs_datetimes') }}" class="btn-filters form-control form-cs info"
+                                    value="{{ request('logs_datetimes') }}" class="btn-filters form-control form-cs info Expensefillterdate"
                                     readonly style="background-color:white;cursor:pointer;" />
                             </div>
                         </div>

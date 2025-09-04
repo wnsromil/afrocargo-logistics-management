@@ -169,7 +169,7 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        $containers = Vehicle::where('vehicle_type', '1')->select('id', 'container_no_1', 'container_no_2', 'unique_id','ship_to_country')->get();
+        $containers = Vehicle::where('vehicle_type', '1')->select('id', 'container_no_1', 'container_no_2', 'unique_id', 'ship_to_country')->get();
         return view('admin.customer.create', compact('roles', 'warehouses', 'countries', 'containers'));
     }
 
@@ -188,7 +188,7 @@ class CustomerController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
                 'unique:users,email'
@@ -202,7 +202,7 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
-            'username' => 'required|string|max:255|unique:users,username',
+            //'username' => 'required|string|max:255|unique:users,username',
             'latitude' => 'required|numeric', // Optional
             'longitude' => 'required|numeric', // Optional
         ]);
@@ -256,7 +256,7 @@ class CustomerController extends Controller
                 'status' => $request->status ?? 'Active',
                 'company_name'        => $request->company_name ?? null,
                 'apartment'        => $request->apartment ?? null,
-                'username'      => $validated['username'],
+                'username'      => $validated['username'] ?? null,
                 'latitude'       => $validated['latitude'] ?? null, // Optional Field
                 'longitude'      => $validated['longitude'] ?? null, // Optional Field
                 'website_url'        => $request->website_url ?? null,
@@ -324,9 +324,9 @@ class CustomerController extends Controller
             $mobileNumber = $validated['mobile_number'];
             $password = $randomPassword;
             $loginUrl = route('login');
-
-            Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
-
+            if ($email) {
+                Mail::to($email)->send(new RegistorMail($userName, $email, $mobileNumber, $password, $loginUrl));
+            }
             return redirect()->route('admin.customer.index')
                 ->with('success', 'User created successfully');
         } catch (\Throwable $th) {
@@ -369,7 +369,7 @@ class CustomerController extends Controller
             return $q->where('id', $this->user->warehouse_id);
         })->where('status', 'Active')->get();
         $countries = Country::all();
-        $containers = Vehicle::where('vehicle_type', '1')->select('id', 'container_no_1', 'container_no_2', 'unique_id','ship_to_country')->get();
+        $containers = Vehicle::where('vehicle_type', '1')->select('id', 'container_no_1', 'container_no_2', 'unique_id', 'ship_to_country')->get();
         $page_no = $request->page;
         $ShipToCustomer = User::where('parent_customer_id', $id)
             ->when($search, function ($q) use ($search) {
@@ -472,7 +472,7 @@ class CustomerController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
                 'unique:users,email,' . $id,
@@ -486,7 +486,7 @@ class CustomerController extends Controller
             'state' => 'required|string',
             'city' => 'required|string',
             'Zip_code' => 'nullable|string|max:10',
-            'username' => 'required|string|max:255|unique:users,username,' . $id,
+            //'username' => 'required|string|max:255|unique:users,username,' . $id,
             // 'password' => 'nullable|string|min:6|confirmed',
             // 'password_confirmation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
@@ -707,7 +707,7 @@ class CustomerController extends Controller
             'alternative_mobile_number_code_id' => 'required',
             'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2",
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
                 'unique:users,email'
@@ -751,7 +751,7 @@ class CustomerController extends Controller
             $userData = [
                 'name'       => $validated['first_name'],
                 'last_name' => $request->last_name ?? null,
-                'email'      => $validated['email'],
+                'email'      => $validated['email'] ?? null,
                 'phone'      => $validated['mobile_number'], // Correct this as per actual phone structure
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
                 'phone_code_id'        => (int) $validated['mobile_number_code_id'],
@@ -832,7 +832,7 @@ class CustomerController extends Controller
             'alternative_mobile_number_code_id' => 'nullable|exists:countries,id',
             'alternative_mobile_number' => "nullable|digits:$altPhoneLength|unique:users,phone_2," . $id,
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
                 'unique:users,email,' . $id,
@@ -873,7 +873,7 @@ class CustomerController extends Controller
             $userData = [
                 'name'       => $validated['first_name'],
                 'last_name' => $request->last_name ?? null,
-                'email'      => $validated['email'],
+                'email'      => $validated['email'] ?? null,
                 'phone'      => $validated['mobile_number'],
                 'phone_2'    => $validated['alternative_mobile_number'] ?? null,
                 'phone_code_id'        => (int) $validated['mobile_number_code_id'],

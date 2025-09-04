@@ -193,7 +193,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-12 mb-2">
+                                    {{-- <div class="col-md-12 mb-2">
                                         <label class="foncolor" for="username">Username <i
                                                 class="text-danger">*</i></label>
                                         <input type="text" name="username"
@@ -202,7 +202,7 @@
                                         @error('username')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
 
                                     <div class="col-md-6 mb-2">

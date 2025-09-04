@@ -35,6 +35,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-block mb-3">
+                        <label for="order_par_reward_dollar" class="foncolor">Order-Based Reward In Dollar</label>
+                        <div class="d-flex align-items-center justify-content-between form-control">
+                            <input class="no-border" type="number" name="order_par_reward_dollar" class="form-control inp"
+                                placeholder="Order-Based Reward In Dollar"
+                                value="{{ old('order_par_reward_dollar', $rewardData->order_par_reward_dollar ?? '') }}"
+                                style="width: 100%;">
+                            <i class="fa-solid fa-dollar-sign" style="color: #595C5F;"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
             <hr>
             <div class="row mt-3">

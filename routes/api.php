@@ -129,8 +129,6 @@ Route::post('/driver-logs', [DriverController::class, 'getLogsByUser']);
 
 //Manager
 Route::get('/warehouse-managers/{id}', [WarehouseManagerController::class, 'getWarehouseManagers']);
-
-//Manager
 Route::get('/warehouse-customers/{warehouseId}/{vehicleId}', [CustomerController::class, 'getCustomerByWarehouseAndVehicle']);
 
 //Vehicle
